@@ -2212,7 +2212,7 @@ typedef MoveData =
 /**
  * The sprite for the difficulty
  */
-class DifficultySprite extends FlxSprite//TODO make this a sprite group!
+class DifficultySprite extends FlxSpriteGroup//TODO make this a sprite group!
 {
 	/**
 	 * The difficulty id which this sprite represents.
