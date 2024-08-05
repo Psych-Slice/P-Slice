@@ -96,8 +96,8 @@ class ResultState extends MusicBeatSubstate
 
     difficulty = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.get(49, 62)));
     difficulty.text = Difficulty.list[PlayState.storyDifficulty].toUpperCase();
-    difficulty.color = 0xFFEC6A00;
-    difficulty.letterSpacing = -15; //!!!
+    difficulty.color = PlayState.storyDifficultyColor;
+    difficulty.letterSpacing = -11; //!!!
     difficulty.angle = -4.4;
     //difficulty.zIndex = 1000;
 
