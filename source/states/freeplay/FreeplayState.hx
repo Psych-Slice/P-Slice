@@ -280,7 +280,6 @@ class FreeplayState extends MusicBeatSubstate
 					continue;
 
 				songs.push(sngCard);
-
 				for (difficulty in sngCard.songDifficulties)
 				{
 					diffIdsTotal.pushUnique(difficulty);
@@ -1746,6 +1745,18 @@ class FreeplayState extends MusicBeatSubstate
 		var targetDifficultyId:String = currentDifficulty;
 		PlayState.storyWeek = cap.songData.levelId;
 
+		//Find current difficulty sprite
+		PlayState.storyDifficultyColor = FlxColor.GRAY;
+		for (diffSprite in grpDifficulties.group.members)
+		{
+			if (diffSprite == null)
+				continue;
+			if (diffSprite.difficultyId == currentDifficulty){
+				PlayState.storyDifficultyColor = diffSprite.difficultyColor;
+				break;
+			}	
+		}
+
 		// Visual and audio effects.
 		FlxG.sound.play(Paths.sound('confirmMenu'));
 		dj.confirm();
@@ -2158,7 +2169,7 @@ class FreeplaySongData
 			if(sngDataPath == null) return;
 
 			var chartFiles = FileSystem.readDirectory(sngDataPath)
-				.filter(s -> s.startsWith(fileSngName)).map(s -> s.substring(fileSngName.length+1,s.length-5));
+				.filter(s -> s.startsWith(fileSngName) && s.endsWith(".json")).map(s -> s.substring(fileSngName.length+1,s.length-5));
 			// Regrouping difficulties
 			if(chartFiles.remove(".")) chartFiles.insert(1,"normal");
 			if(chartFiles.remove("easy")) chartFiles.insert(0,"easy");
@@ -2201,12 +2212,13 @@ typedef MoveData =
 /**
  * The sprite for the difficulty
  */
-class DifficultySprite extends FlxSprite
+class DifficultySprite extends FlxSprite//TODO make this a sprite group!
 {
 	/**
 	 * The difficulty id which this sprite represents.
 	 */
 	public var difficultyId:String;
+	public var difficultyColor:FlxColor;
 
 	public function new(diffId:String)
 	{
@@ -2219,18 +2231,9 @@ class DifficultySprite extends FlxSprite
 				this.loadGraphic(Paths.image('freeplay/freeplay' + diffId));
 			default:
 				{
-					if (Assets.exists(Paths.modsXml('menudifficulties/${diffId}.xml')))
-					{
-						this.frames = Paths.getSparrowAtlas('menudifficulties/${diffId}');
-						this.animation.addByPrefix('idle', 'idle0', 24, true);
-						if (ClientPrefs.data.flashing)
-							this.animation.play('idle');
-					}
-					else
-					{
-						this.loadGraphic(Paths.image('menudifficulties/' + diffId));
-					}
+					this.loadGraphic(Paths.image('menudifficulties/' + diffId));
 				}
 		}
+		difficultyColor = CoolUtil.dominantColor(this);
 	}
 }

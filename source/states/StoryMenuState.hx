@@ -314,6 +314,7 @@ class StoryMenuState extends MusicBeatState
 				if(diffic == null) diffic = '';
 	
 				PlayState.storyDifficulty = curDifficulty;
+				PlayState.storyDifficultyColor = CoolUtil.dominantColor(sprDifficulty);
 	
 				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
 				PlayState.campaignScore = 0;
