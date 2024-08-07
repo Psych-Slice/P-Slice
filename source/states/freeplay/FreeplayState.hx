@@ -1,5 +1,6 @@
 package states.freeplay;
 
+import flixel.graphics.FlxGraphic;
 import substates.GameplayChangersSubstate;
 import funkin.Scoring;
 import funkin.AtlasText;
@@ -130,6 +131,9 @@ class FreeplayState extends MusicBeatSubstate
 	var curSelected:Int = 0;
 	var currentDifficulty:String = "normal";
 
+	
+	var colorTween:FreeplayColorTweener;
+
 	var fp:FreeplayScore;
 	var txtCompletion:AtlasText;
 	var lerpCompletion:Float = 0;
@@ -138,6 +142,7 @@ class FreeplayState extends MusicBeatSubstate
 	var intendedScore:Int = 0;
 
 	var grpDifficulties:FlxTypedSpriteGroup<DifficultySprite>;
+	var grpFallbackDifficulty:FlxText;
 
 	var coolColors:Array<Int> = [
 		0xFF9271FD,
@@ -173,19 +178,19 @@ class FreeplayState extends MusicBeatSubstate
 	var rankVignette:FlxSprite;
 
 	var backingTextYeah:FlxAtlasSprite;
-	var orangeBackShit:FlxSprite;
-	var alsoOrangeLOL:FlxSprite;
-	var pinkBack:FlxSprite;
+	public var orangeBackShit:FlxSprite;
+	public var alsoOrangeLOL:FlxSprite;
+	public var pinkBack:FlxSprite;
 	var confirmGlow:FlxSprite;
 	var confirmGlow2:FlxSprite;
 	var confirmTextGlow:FlxSprite;
 
-	var moreWays:BGScrollingText;
-	var funnyScroll:BGScrollingText;
-	var txtNuts:BGScrollingText;
-	var funnyScroll2:BGScrollingText;
-	var moreWays2:BGScrollingText;
-	var funnyScroll3:BGScrollingText;
+	public var moreWays:BGScrollingText;
+	public var funnyScroll:BGScrollingText;
+	public var txtNuts:BGScrollingText;
+	public var funnyScroll2:BGScrollingText;
+	public var moreWays2:BGScrollingText;
+	public var funnyScroll3:BGScrollingText;
 
 	var bgDad:FlxSprite;
 	var cardGlow:FlxSprite;
@@ -214,6 +219,7 @@ class FreeplayState extends MusicBeatSubstate
 
 	override function create():Void
 	{
+		colorTween = new FreeplayColorTweener(this);
 		super.create();
 		var diffIdsTotalModBinds:Map<String, String> = ["easy" => "", "normal" => "", "hard" => ""];
 
@@ -306,10 +312,12 @@ class FreeplayState extends MusicBeatSubstate
 		FlxTween.tween(pinkBack, {x: 0}, 0.6, {ease: FlxEase.quartOut});
 		
 
-		orangeBackShit = new FlxSprite(84, 440).makeSolidColor(Std.int(pinkBack.width), 75, 0xFFFEDA00);
+		orangeBackShit = new FlxSprite(84, 440).makeSolidColor(Std.int(pinkBack.width), 75, FlxColor.WHITE);
+		orangeBackShit.color = 0xFFFEDA00;
 		add(orangeBackShit);
 
-		alsoOrangeLOL = new FlxSprite(0, orangeBackShit.y).makeSolidColor(100, Std.int(orangeBackShit.height), 0xFFFFD400);
+		alsoOrangeLOL = new FlxSprite(0, orangeBackShit.y).makeSolidColor(100, Std.int(orangeBackShit.height), FlxColor.WHITE);
+		alsoOrangeLOL.color = 0xFFFFD400;
 		add(alsoOrangeLOL);
 
 		exitMovers.set([pinkBack, orangeBackShit, alsoOrangeLOL], {
@@ -472,6 +480,11 @@ class FreeplayState extends MusicBeatSubstate
 
 		grpCapsules = new FlxTypedGroup<SongMenuItem>();
 		add(grpCapsules);
+
+		grpFallbackDifficulty = new FlxText(70,90,250,"AAAAAAAAAAAAAA");
+		grpFallbackDifficulty.setFormat("VCR OSD Mono",60,FlxColor.WHITE,CENTER,OUTLINE,FlxColor.BLACK);
+		grpFallbackDifficulty.borderSize = 2;
+		add(grpFallbackDifficulty);
 
 		grpDifficulties = new FlxTypedSpriteGroup<DifficultySprite>(-300, 80);
 		add(grpDifficulties);
@@ -1482,6 +1495,11 @@ class FreeplayState extends MusicBeatSubstate
 			FlxTimer.globalManager.clear();		
 			dj.onIntroDone.removeAll();
 
+			//While exiting make sure that we aren't tweeneng a color rn
+			if(colorTween != null) {
+				colorTween.cancelTween();
+			}
+
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			Mods.loadTopMod();
 
@@ -1599,7 +1617,7 @@ class FreeplayState extends MusicBeatSubstate
 		var daSong:Null<FreeplaySongData> = grpCapsules.members[curSelected].songData;
 		if (daSong != null)
 		{
-			var diffId = daSong.loadAndGetDiffId();
+			var diffId = daSong.loadAndGetDiffId();//12
 			var songScore:Int = Highscore.getScore(daSong.songId,
 				diffId); // Save.instance.getSongScore(grpCapsules.members[curSelected].songData.songId, suffixedDifficulty);
 			intendedScore = songScore ?? 0;
@@ -1628,21 +1646,26 @@ class FreeplayState extends MusicBeatSubstate
 				continue;
 			if (diffSprite.difficultyId == currentDifficulty)
 			{
-				if (change != 0)
-				{
-					diffSprite.visible = true;
-					diffSprite.offset.y += 5;
-					diffSprite.alpha = 0.5;
-					new FlxTimer().start(1 / 24, function(swag)
+				grpFallbackDifficulty.text = "";
+				if(diffSprite.hasValidTexture){
+					if (change != 0)
 					{
-						diffSprite.alpha = 1;
-						diffSprite.updateHitbox();
-					});
+						diffSprite.visible = true;
+						diffSprite.offset.y += 5;
+						diffSprite.alpha = 0.5;
+						new FlxTimer().start(1 / 24, function(swag)
+						{
+							diffSprite.alpha = 1;
+							diffSprite.updateHitbox();
+						});
+					}
+					else { diffSprite.visible = true; }
 				}
-				else
-				{
-					diffSprite.visible = true;
+				else{
+					grpFallbackDifficulty.text = diffSprite.difficultyId;
+					grpFallbackDifficulty.updateHitbox();
 				}
+				
 			}
 		}
 
@@ -1941,6 +1964,7 @@ class FreeplayState extends MusicBeatSubstate
 				Difficulty.loadFromWeek();
 			}
 			playCurSongPreview(daSongCapsule);
+			tweenCurSongColor(daSongCapsule);
 			grpCapsules.members[curSelected].selected = true;
 		}
 	}
@@ -1976,6 +2000,10 @@ class FreeplayState extends MusicBeatSubstate
 			//     });
 			// }
 		}
+	}
+	public function tweenCurSongColor(daSongCapsule:SongMenuItem) { //H1
+		var newColor:FlxColor = (curSelected == 0)? 0xFFFFD863 : daSongCapsule.songData.color;
+		colorTween.tweenColor(newColor);
 	}
 
 	/**
@@ -2161,23 +2189,29 @@ class FreeplaySongData
 		this.songDifficulties = leWeek.difficulties.extractWeeks();
 		this.folder = leWeek.folder;
 
+		Mods.currentModDirectory = this.folder;
+		var fileSngName = songId.toLowerCase().replace(" ","-");
+		var sngDataPath = Paths.modFolders("data/"+fileSngName);
+		//if(sngDataPath == null) return;
+		var chartFiles = FileSystem.readDirectory(sngDataPath)
+				.filter(s -> s.startsWith(fileSngName) && s.endsWith(".json"));
 		if(this.songDifficulties.length == 0){
-			Mods.currentModDirectory = this.folder;
-			var fileSngName = songId.toLowerCase().replace(" ","-");
-			var sngDataPath = Paths.modFolders("data/"+fileSngName);
-
-			if(sngDataPath == null) return;
-
-			var chartFiles = FileSystem.readDirectory(sngDataPath)
-				.filter(s -> s.startsWith(fileSngName) && s.endsWith(".json")).map(s -> s.substring(fileSngName.length+1,s.length-5));
+			
+			var diffNames = chartFiles.map(s -> s.substring(fileSngName.length+1,s.length-5));
 			// Regrouping difficulties
-			if(chartFiles.remove(".")) chartFiles.insert(1,"normal");
-			if(chartFiles.remove("easy")) chartFiles.insert(0,"easy");
-			if(chartFiles.remove("hard")) chartFiles.insert(2,"hard");
-			this.songDifficulties = chartFiles;
+			if(diffNames.remove(".")) diffNames.insert(1,"normal");
+			if(diffNames.remove("easy")) diffNames.insert(0,"easy");
+			if(diffNames.remove("hard")) diffNames.insert(2,"hard");
+			this.songDifficulties = diffNames;
 		}
 		if (!this.songDifficulties.contains(currentDifficulty))
 			currentDifficulty = songDifficulties[0]; // TODO
+		
+		//trace("Pulling from: "+'$sngDataPath/${chartFiles[0]}'); //TODO
+		var bpmFinder = ~/"bpm": *([0-9]+)/g; //TODO fix this regex
+		var cleanChart = ~/"notes": *\[.*\]/gs.replace(File.getContent('$sngDataPath/${chartFiles[0]}'),"");
+		bpmFinder.match(cleanChart);
+		songStartingBpm = Std.parseInt(bpmFinder.matched(1));
 
 		// this.songStartingBpm = songDifficulty.getStartingBPM();
 		// this.songName = songDifficulty.songName;
@@ -2212,12 +2246,13 @@ typedef MoveData =
 /**
  * The sprite for the difficulty
  */
-class DifficultySprite extends FlxSpriteGroup//TODO make this a sprite group!
+class DifficultySprite extends FlxSprite//TODO make this a sprite group!
 {
 	/**
 	 * The difficulty id which this sprite represents.
 	 */
 	public var difficultyId:String;
+	public var hasValidTexture = true;
 	public var difficultyColor:FlxColor;
 
 	public function new(diffId:String)
@@ -2225,15 +2260,16 @@ class DifficultySprite extends FlxSpriteGroup//TODO make this a sprite group!
 		super();
 
 		difficultyId = diffId;
-		switch (diffId)
-		{
-			case "easy" | "normal" | "hard":
-				this.loadGraphic(Paths.image('freeplay/freeplay' + diffId));
-			default:
-				{
-					this.loadGraphic(Paths.image('menudifficulties/' + diffId));
-				}
+		var tex:FlxGraphic = null;
+		if(["easy", "normal", "hard"].contains(difficultyId)){
+			tex = Paths.image('freeplay/freeplay' + diffId);
 		}
+		else{
+			tex = Paths.image('menudifficulties/' + diffId);
+		}
+		hasValidTexture = (tex != null);
+		if(hasValidTexture) this.loadGraphic(tex);
+		
 		difficultyColor = CoolUtil.dominantColor(this);
 	}
 }

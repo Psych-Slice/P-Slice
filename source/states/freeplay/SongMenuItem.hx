@@ -465,7 +465,7 @@ class SongMenuItem extends FlxSpriteGroup
     return value;
   }
 
-  function textAppear():Void
+  function textAppear():Void //* ANIM SHIT. This is broken!
   {
     songText.scale.x = 1.7;
     songText.scale.y = 0.2;
@@ -476,6 +476,10 @@ class SongMenuItem extends FlxSpriteGroup
     });
 
     new FlxTimer().start(2 / 24, function(_) {
+      songText.scale.x = songText.scale.y = 1;
+    });
+
+    new FlxTimer().start(4 / 24, function(_) { // Attempting fallback in case the previous one fails!
       songText.scale.x = songText.scale.y = 1;
     });
   }
