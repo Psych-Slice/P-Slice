@@ -454,7 +454,9 @@ class ResultState extends MusicBeatSubstate
     rankBg.alpha = 0;
 
     //refresh();
-
+    // forEachOfType(FlxSprite,s ->{
+    //   s.antialiasing = ClientPrefs.data.antialiasing;
+    // }); // quick n dirty way to apply anit-aliasing to everything
     super.create();
   }
 

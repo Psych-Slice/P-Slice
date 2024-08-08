@@ -1,5 +1,6 @@
 package substates;
 
+import flixel.addons.ui.U;
 import funkin.StickerSubState;
 import backend.WeekData;
 import backend.Highscore;
@@ -84,7 +85,7 @@ class PauseSubState extends MusicBeatSubstate
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
-		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, "Difficulty: "+Difficulty.getString().toUpperCase(), 32);
+		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, "Difficulty: "+U.FUL(Difficulty.getString()), 32);
 		levelDifficulty.scrollFactor.set();
 		levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
 		levelDifficulty.updateHitbox();
