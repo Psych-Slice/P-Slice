@@ -219,7 +219,7 @@ class FreeplayState extends MusicBeatSubstate
 
 	override function create():Void
 	{
-		colorTween = new FreeplayColorTweener(this);
+		if(ClientPrefs.data.vsliceFreeplayColors) colorTween = new FreeplayColorTweener(this);
 		super.create();
 		var diffIdsTotalModBinds:Map<String, String> = ["easy" => "", "normal" => "", "hard" => ""];
 
@@ -660,7 +660,7 @@ class FreeplayState extends MusicBeatSubstate
 				});
 			});
 
-			pinkBack.color = 0xFFFFD863;
+			if(colorTween == null) pinkBack.color = 0xFFFFD863;
 			bgDad.visible = true;
 			pinkBack.visible = true;
 			orangeBackShit.visible = true;
@@ -1506,7 +1506,7 @@ class FreeplayState extends MusicBeatSubstate
 			var longestTimer:Float = 0;
 
 			// FlxTween.color(bgDad, 0.33, 0xFFFFFFFF, 0xFF555555, {ease: FlxEase.quadOut});
-			FlxTween.color(pinkBack, 0.25, 0xFFFFD863, 0xFFFFD0D5, {ease: FlxEase.quadOut});
+			FlxTween.color(pinkBack, 0.25, pinkBack.color, 0xFFFFD0D5, {ease: FlxEase.quadOut});
 
 			cardGlow.visible = true;
 			cardGlow.alpha = 1;
@@ -1964,9 +1964,10 @@ class FreeplayState extends MusicBeatSubstate
 				Difficulty.loadFromWeek();
 			}
 			playCurSongPreview(daSongCapsule);
-			tweenCurSongColor(daSongCapsule);
+			if (colorTween != null) tweenCurSongColor(daSongCapsule);
 			grpCapsules.members[curSelected].selected = true;
 		}
+		else if (prepForNewRank && colorTween != null) tweenCurSongColor(daSongCapsule);
 	}
 
 	public function playCurSongPreview(daSongCapsule:SongMenuItem):Void
