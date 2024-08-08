@@ -2271,6 +2271,6 @@ class DifficultySprite extends FlxSprite//TODO make this a sprite group!
 		hasValidTexture = (tex != null);
 		if(hasValidTexture) this.loadGraphic(tex);
 		
-		difficultyColor = CoolUtil.dominantColor(this);
+		difficultyColor = hasValidTexture ? CoolUtil.dominantColor(this) : FlxColor.GRAY;
 	}
 }

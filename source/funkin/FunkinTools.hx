@@ -19,6 +19,7 @@ class FunkinTools
 	public static function createSparrow(x:Float = 0.0, y:Float = 0.0, key:String):FlxSprite
 	{
 		var sprite:FlxSprite = new FlxSprite(x, y);
+		sprite.antialiasing = ClientPrefs.data.antialiasing;
 		sprite.frames = Paths.getSparrowAtlas(key);
 		return sprite;
 	}
