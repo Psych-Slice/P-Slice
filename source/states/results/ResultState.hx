@@ -68,6 +68,7 @@ class ResultState extends MusicBeatSubstate
   final cameraBG:PsychCamera;
   final cameraScroll:PsychCamera;
   final cameraEverything:PsychCamera;
+  final cameraOverlay:PsychCamera;
 	var resultingAccuracy:Float;
 
 
@@ -83,7 +84,7 @@ class ResultState extends MusicBeatSubstate
     cameraBG = new PsychCamera( 0, 0, FlxG.width, FlxG.height);
     cameraScroll = new PsychCamera(0, 0, FlxG.width, FlxG.height);
     cameraEverything = new PsychCamera(0, 0, FlxG.width, FlxG.height);
-
+    cameraOverlay = new PsychCamera(0, 0, FlxG.width, FlxG.height);
     // We build a lot of this stuff in the constructor, then place it in create().
     // This prevents having to do `null` checks everywhere.
 
@@ -93,10 +94,13 @@ class ResultState extends MusicBeatSubstate
     songName.letterSpacing = -15; //!!!
     songName.angle = -4.4;
     //songName.zIndex = 1000;
+    var difColor = PlayState.storyDifficultyColor;
+    var fractal = difColor.red*0.01;
+    difColor.greenFloat = Math.max(difColor.greenFloat,fractal);
 
     difficulty = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.get(49, 62)));
     difficulty.text = Difficulty.list[PlayState.storyDifficulty].toUpperCase();
-    difficulty.color = PlayState.storyDifficultyColor;
+    difficulty.color = difColor;
     difficulty.letterSpacing = -11; //!!!
     difficulty.angle = -4.4;
     //difficulty.zIndex = 1000;
@@ -130,10 +134,12 @@ class ResultState extends MusicBeatSubstate
     cameraBG.bgColor = FlxColor.MAGENTA;
     cameraScroll.bgColor = FlxColor.TRANSPARENT;
     cameraEverything.bgColor = FlxColor.TRANSPARENT;
+    cameraOverlay.bgColor = FlxColor.TRANSPARENT;
 
     FlxG.cameras.add(cameraBG, false);
     FlxG.cameras.add(cameraScroll, false);
     FlxG.cameras.add(cameraEverything, false);
+    FlxG.cameras.add(cameraOverlay, false);
 
     FlxG.cameras.setDefaultDrawTarget(cameraEverything, true);
     this.camera = cameraEverything;
@@ -413,7 +419,7 @@ class ResultState extends MusicBeatSubstate
         FlxTween.tween(rating, {curNumber: rating.neededNumber}, 0.5, {ease: FlxEase.quartOut});
       });
     }
-
+    //TODO monitor this. New feature?
     // if (params.isNewHighscore ?? false)
     // {
     //   highscoreNew.visible = true;
@@ -441,6 +447,7 @@ class ResultState extends MusicBeatSubstate
     });
 
     rankBg.makeSolidColor(FlxG.width, FlxG.height, 0xFF000000);
+    rankBg.cameras = [cameraOverlay];
     //rankBg.zIndex = 99999;
     
 
@@ -844,7 +851,7 @@ class ResultState extends MusicBeatSubstate
     {
       if (FlxG.sound.music != null)
       {
-        FlxTween.tween(FlxG.sound.music, {volume: 0}, 0.7);
+        FlxTween.tween(FlxG.sound.music, {volume: 0}, 0.5);
         FlxTween.tween(FlxG.sound.music, {pitch: 3}, 0.1,
           {
             onComplete: _ -> {
@@ -863,7 +870,6 @@ class ResultState extends MusicBeatSubstate
         if (rank > params.prevScoreRank) // if (rigged)
         {
           trace('THE RANK IS Higher.....');
-
           add(rankBg);
           FlxTween.tween(rankBg, {alpha: 1}, 0.5,
             {

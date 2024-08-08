@@ -130,6 +130,12 @@ class VisualsUISubState extends BaseOptionsMenu
 		addOption(option);
 		option.onChange = onChangePauseMusic;
 		
+		var option:Option = new Option('Freeplay dynamic coloring',
+			'Enables dynamic freeplay background color. Disable this if you prefer original V-slice freeplay menu colors',
+			'vsliceFreeplayColors',
+			'bool');
+		addOption(option);
+
 		#if CHECK_FOR_UPDATES
 		var option:Option = new Option('Check for Updates',
 			'On Release builds, turn this on to check for updates when you start the game.',

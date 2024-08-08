@@ -1,5 +1,6 @@
 package states.editors;
 
+import states.results.ResultState;
 import backend.WeekData;
 
 import objects.Character;
@@ -15,7 +16,8 @@ class MasterEditorMenu extends MusicBeatState
 		'Menu Character Editor',
 		'Dialogue Editor',
 		'Dialogue Portrait Editor',
-		'Note Splash Debug'
+		'Note Splash Debug',
+		'Preview results state'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
 	private var directories:Array<String> = [null];
@@ -117,6 +119,33 @@ class MasterEditorMenu extends MusicBeatState
 					LoadingState.loadAndSwitchState(new DialogueCharacterEditorState(), false);
 				case 'Note Splash Debug':
 					MusicBeatState.switchState(new NoteSplashDebugState());
+				case 'Preview results state':{
+					PlayState.storyDifficultyColor = 0xFFFF0000;
+					MusicBeatState.switchState(new ResultState(
+						{
+							storyMode: true,
+							prevScoreRank: EXCELLENT,
+							title: "Cum Song Erect by Kawai Sprite",
+							songId: "cum",
+							difficultyId: "nightmare",
+							isNewHighscore: true,
+							scoreData:
+							{
+	
+								score: 1_234_567,
+								accPoints: 190,
+								sick: 200,
+								good: 0,
+								bad: 0,
+								shit: 0,
+								missed: 0,
+								combo: 0,
+								maxCombo: 69,
+								totalNotesHit: 200,
+								totalNotes: 200 // 0,
+							},
+						}));
+				}
 			}
 			FlxG.sound.music.volume = 0;
 			//FreeplayState.destroyFreeplayVocals();
