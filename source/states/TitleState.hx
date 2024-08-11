@@ -82,6 +82,7 @@ class TitleState extends MusicBeatState
 
 		FlxG.fixedTimestep = false;
 		FlxG.game.focusLostFramerate = 60;
+		FlxG.mouse.load(Paths.image('cursor-default',null,false).bitmap);
 		FlxG.keys.preventDefaultKeys = [TAB];
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());

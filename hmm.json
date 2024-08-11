@@ -75,6 +75,13 @@
       "dir": null,
       "ref": "master",
       "url": "https://github.com/superpowers04/linc_luajit"
+    },
+    {
+      "name": "FlxPartialSound",
+      "type": "git",
+      "dir": null,
+      "ref": "f986332ba5ab02abd386ce662578baf04904604a",
+      "url": "https://github.com/FunkinCrew/FlxPartialSound.git"
     }
   ]
 }

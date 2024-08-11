@@ -315,7 +315,7 @@ class StoryMenuState extends MusicBeatState
 	
 				PlayState.storyDifficulty = curDifficulty;
 				PlayState.storyDifficultyColor = CoolUtil.dominantColor(sprDifficulty);
-	
+
 				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
 				PlayState.campaignScore = 0;
 				PlayState.storyCampaignTitle = txtWeekTitle.text == "" ? "Untitled week" : txtWeekTitle.text;
@@ -367,7 +367,8 @@ class StoryMenuState extends MusicBeatState
 		WeekData.setDirectoryFromWeek(loadedWeeks[curWeek]);
 
 		var diff:String = Difficulty.getString(curDifficulty);
-		var newImage:FlxGraphic = Paths.image('menudifficulties/' + Paths.formatToSongPath(diff));
+		// Caching this to GPU will prevent us from getting it's color!
+		var newImage:FlxGraphic = Paths.image('menudifficulties/' + Paths.formatToSongPath(diff),null,false); 
 		//trace(Mods.currentModDirectory + ', menudifficulties/' + Paths.formatToSongPath(diff));
 
 		if(sprDifficulty.graphic != newImage)

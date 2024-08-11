@@ -103,7 +103,7 @@ class ScreenshotPlugin extends FlxBasic
 
   public function hasPressedScreenshot():Bool
   {
-    return FlxG.keys.justPressed.F3; //TODO
+    return Controls.instance.SCREENSHOT;
   }
 
   public function updatePreferences():Void
