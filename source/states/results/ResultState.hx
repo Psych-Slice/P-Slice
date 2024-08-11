@@ -79,6 +79,8 @@ class ResultState extends MusicBeatSubstate
     this.params = params;
 
     resultingAccuracy = Math.min(1,params.scoreData.accPoints/params.scoreData.totalNotesHit); 
+    if(params.scoreData.totalNotesHit == 0) resultingAccuracy = 0;
+
     rank = Scoring.calculateRankFromData(params.scoreData.score,resultingAccuracy,params.scoreData.missed == 0) ?? SHIT;
 
     cameraBG = new PsychCamera( 0, 0, FlxG.width, FlxG.height);

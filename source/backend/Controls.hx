@@ -79,6 +79,7 @@ class Controls
 	public var BAR_RIGHT(get, never):Bool;
 	public var BACK(get, never):Bool;
 	public var PAUSE(get, never):Bool;
+	public var SCREENSHOT(get, never):Bool;
 	public var RESET(get, never):Bool;
 	private function get_ACCEPT() return justPressed('accept');
 	private function get_FAVORITE() return justPressed('favorite');
@@ -86,6 +87,7 @@ class Controls
 	private function get_BAR_RIGHT() return justPressed('bar_right');
 	private function get_BACK() return justPressed('back');
 	private function get_PAUSE() return justPressed('pause');
+	private function get_SCREENSHOT() return justPressed('screenshot');
 	private function get_RESET() return justPressed('reset');
 
 	//Gamepad & Keyboard stuff
