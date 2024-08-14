@@ -623,9 +623,9 @@ class TitleState extends MusicBeatState
 				case 1:
 					// FlxG.sound.music.stop();
 					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-					#if !linux
-					FlxG.sound.music.onComplete = moveToAttract;
-					#end
+					//#if !linux
+					//FlxG.sound.music.onComplete = moveToAttract;
+					//#end
 					FlxG.sound.music.fadeIn(4, 0, 0.7);
 				case 2:
 					createCoolText(['Funkin Crew Inc', 'Shadow Mario', 'mikolka9144']);
