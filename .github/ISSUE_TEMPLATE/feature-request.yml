@@ -1,5 +1,5 @@
 name: Feature Request
-description: 
+description: Request something to be added to P-Slice
 labels: [enhancement]
 body:
   - type: textarea
