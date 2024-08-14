@@ -39,6 +39,7 @@ typedef ScreenshotPluginParams =
 class ScreenshotPlugin extends FlxBasic
 {
   public static final SCREENSHOT_FOLDER = 'screenshots';
+  private var lastScreenshotTimeStamp:Float = 0;
 
   var _hotkeys:Array<FlxKey>;
 
@@ -79,9 +80,10 @@ class ScreenshotPlugin extends FlxBasic
   {
     super.update(elapsed);
 
-    if (hasPressedScreenshot())
+    if (hasPressedScreenshot() && lastScreenshotTimeStamp+2<Sys.time())
     {
-      trace("Capturing screen!");
+      lastScreenshotTimeStamp = Sys.time();
+      trace('Capturing screen at $lastScreenshotTimeStamp !');
       capture();
     }
   }
