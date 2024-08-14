@@ -52,6 +52,9 @@
 	<!--Switch-specific-->
 	<window if="switch" orientation="landscape" fullscreen="true" fps="60" width="0" height="0" resizable="true" />
 
+	<!-- XBOX / UWP Specific -->
+	<window if="uwp" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" vsync="false"/>
+
 	<!-- _____________________________ Path Settings ____________________________ -->
 
 	<set name="BUILD_DIR" value="export/debug" if="debug" />
@@ -94,6 +97,7 @@
 
 	<haxelib name="flixel" />
 	<haxelib name="flixel-ui" />
+	<haxelib name="faxe" if='xbox'/>
 	<haxelib name="flixel-addons" />
 	<haxelib name="FlxPartialSound" />
 	<haxelib name="tjson" />
