@@ -24,7 +24,7 @@ body:
       options:
         - Lua
         - Source
-        - None
+        - No modding
     validations:
       required: true
 
