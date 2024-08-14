@@ -2322,12 +2322,13 @@ class PlayState extends MusicBeatState
 		#end
 
 		var ret:Dynamic = callOnScripts('onEndSong', null, true);
+		var accPts = ratingPercent * totalPlayed;
 		if(ret != LuaUtils.Function_Stop && !transitioning)
 		{
 			var tempActiveTallises =
 			{
           		score: songScore,
-		  		accPoints: this.totalNotesHit,
+		  		accPoints: accPts,
 				
           		sick: ratingsData[0].hits,
             	good: ratingsData[1].hits,
@@ -2361,8 +2362,8 @@ class PlayState extends MusicBeatState
 				if (storyPlaylist.length <= 0)
 				{
 					var prevScore =Highscore.getWeekScore(WeekData.weeksList[storyWeek],storyDifficulty);
-					var wasFC = campaignMisses == 0;
-					var prevAcc = Math.min(1,campaignSaveData.accPoints/campaignSaveData.totalNotesHit);
+					var wasFC = Highscore.getWeekFC(WeekData.weeksList[storyWeek],storyDifficulty);
+					var prevAcc = Highscore.getWeekAccuracy(WeekData.weeksList[storyWeek],storyDifficulty);
 
 					var prevRank = Scoring.calculateRankFromData(prevScore,prevAcc,wasFC);
 					//FlxG.sound.playMusic(Paths.music('freakyMenu'));
@@ -2371,7 +2372,9 @@ class PlayState extends MusicBeatState
 					// if ()
 					if(!ClientPrefs.getGameplaySetting('practice') && !ClientPrefs.getGameplaySetting('botplay')) {
 						StoryMenuState.weekCompleted.set(WeekData.weeksList[storyWeek], true);
-						Highscore.saveWeekScore(WeekData.getWeekFileName(), campaignScore, storyDifficulty);
+
+						var weekAccuracy = FlxMath.bound(campaignSaveData.accPoints/campaignSaveData.totalNotesHit,0,1);
+						Highscore.saveWeekScore(WeekData.getWeekFileName(), campaignScore, storyDifficulty,weekAccuracy,campaignMisses == 0);
 
 						FlxG.save.data.weekCompleted = StoryMenuState.weekCompleted;
 						FlxG.save.flush();
@@ -2415,7 +2418,7 @@ class PlayState extends MusicBeatState
 			#if !switch
 			var percent:Float = ratingPercent;
 			if(Math.isNaN(percent)) percent = 0;
-			Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent);
+			Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent,songMisses == 0);
 			#end
 			transitioning = true;
 		}
