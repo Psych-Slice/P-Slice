@@ -1760,10 +1760,6 @@ class FreeplayState extends MusicBeatSubstate
 
 		var targetSong:SongMenuItem = FlxG.random.getObject(availableSongCapsules);
 
-		// Disabling color tweener
-		colorTween?.cancelTween();
-		colorTween = null;
-
 		// Seeing if I can do an animation...
 		curSelected = grpCapsules.members.indexOf(targetSong);
 		changeSelection(0); // Trigger an update.
@@ -1785,6 +1781,9 @@ class FreeplayState extends MusicBeatSubstate
 			FlxG.log.warn('WARN: could not find song with id (${cap.songData.songId})');
 			return;
 		}
+		// Disabling color tweener
+		colorTween?.cancelTween();
+		//colorTween = null;
 		var targetDifficultyId:String = currentDifficulty;
 		PlayState.storyWeek = cap.songData.levelId;
 
@@ -2218,7 +2217,7 @@ class FreeplaySongData
 		this.folder = leWeek.folder;
 
 		Mods.currentModDirectory = this.folder;
-		var fileSngName = songId.toLowerCase().replace(" ","-");
+		var fileSngName = Paths.formatToSongPath(songId);
 		var sngDataPath = Paths.modFolders("data/"+fileSngName);
 		//if(sngDataPath == null) return;
 		
