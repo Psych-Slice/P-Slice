@@ -2218,7 +2218,7 @@ class FreeplaySongData
 		this.folder = leWeek.folder;
 
 		Mods.currentModDirectory = this.folder;
-		var fileSngName = songId.toLowerCase().replace(" ","-");
+		var fileSngName = Paths.formatToSongPath(songId);
 		var sngDataPath = Paths.modFolders("data/"+fileSngName);
 		//if(sngDataPath == null) return;
 		
