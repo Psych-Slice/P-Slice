@@ -1,5 +1,5 @@
-name: Bug report
-description: Report bugs with the engine here
+name: Crash report
+description: Report bugs that cause the engine to crash here
 labels: [bug]
 body:
   - type: textarea
@@ -12,10 +12,10 @@ body:
   - type: textarea
     id: terminal
     attributes:
-      label: "Command Prompt/Terminal logs ()"
+      label: "Command Prompt/Terminal logs (required)"
       render: bash
     validations:
-      required: false
+      required: true
 
   - type: dropdown
     id: modding
