@@ -1,0 +1,7 @@
+{
+	"name": "Base FNF",
+	"description": "Assets and songs from the base game",
+	"restart":true,
+	"runsGlobally": true,
+	"color": [255, 189, 224]
+}

@@ -22,6 +22,7 @@ class DJBoyfriend extends FlxAtlasSprite
   public var animOffsets:Map<String, Array<Dynamic>>;
 
   var gotSpooked:Bool = false;
+  var abortCartoonTimers:Bool = false;
 
   static final SPOOK_PERIOD:Float = 60.0;
   static final TV_PERIOD:Float = 120.0;
@@ -34,16 +35,7 @@ class DJBoyfriend extends FlxAtlasSprite
     super(x, y, Paths.getLibraryPath("images/freeplay/freeplay-boyfriend"));
 
     animOffsets = new Map<String, Array<Dynamic>>();
-    anim.addCallbackTo("Boyfriend DJ watchin tv OG",() -> {
-      if (anim.curFrame == 80)
-        {
-          new FlxSound().loadEmbedded(Paths.sound('remote_click')).play();
-        }
-        if (anim.curFrame == 85)
-        {
-          runTvLogic();
-        }
-    });
+    
 
     setupAnimations();
 
@@ -258,9 +250,11 @@ class DJBoyfriend extends FlxAtlasSprite
   {
     cartoonSnd = new FlxSound().loadEmbedded(Paths.sound(getRandomFlashToon()), false, true, function() {
       anim.play("Boyfriend DJ watchin tv OG", true, false, 60);
+      startTVTimers(60);
     });
     cartoonSnd.volume = 1;
     cartoonSnd.play();
+    playingCartoon = true;
 
     // Fade out music to 40% volume over 1 second.
     // This helps make the TV a bit more audible.
@@ -270,14 +264,14 @@ class DJBoyfriend extends FlxAtlasSprite
     cartoonSnd.time = FlxG.random.float(0, Math.max(cartoonSnd.length - (5 * 1000), 0.0));
   }
 
-  final cartoonList:Array<String> = openfl.utils.Assets.list().filter(function(path) return path.startsWith("assets/sounds/cartoons/"));
+  final cartoonList:Array<String> = openfl.utils.Assets.list().filter(function(path) return path.startsWith("assets/shared/sounds/cartoons/"));
 
   function getRandomFlashToon():String
   {
     var randomFile = FlxG.random.getObject(cartoonList);
 
     // Strip folder prefix
-    randomFile = randomFile.replace("assets/sounds/", "");
+    randomFile = randomFile.replace("assets/shared/sounds/", "");
     // Strip file extension
     randomFile = randomFile.substring(0, randomFile.length - 4);
 
@@ -320,9 +314,19 @@ class DJBoyfriend extends FlxAtlasSprite
   public function playFlashAnimation(id:String, ?Force:Bool = false, ?Reverse:Bool = false, ?Frame:Int = 0):Void
   {
     anim.play(id, Force, Reverse, Frame);
+    if(id == "Boyfriend DJ watchin tv OG") startTVTimers();
     applyAnimOffset();
   }
 
+  function startTVTimers(frameSkip:Int = 0) {
+    // 24 is the default framerate for anims
+    FlxTimer.wait((80-frameSkip)/24,() -> {
+      if(!abortCartoonTimers) new FlxSound().loadEmbedded(Paths.sound('remote_click')).play();
+    });
+    FlxTimer.wait((85-frameSkip)/24,() -> {
+      if(!abortCartoonTimers) runTvLogic();
+  });
+  }
   function applyAnimOffset()
   {
     var AnimName = getCurrentAnimation();
@@ -348,6 +352,7 @@ class DJBoyfriend extends FlxAtlasSprite
   public override function destroy():Void
   {
     super.destroy();
+    abortCartoonTimers = true;
 
     if (cartoonSnd != null)
     {

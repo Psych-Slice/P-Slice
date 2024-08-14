@@ -97,7 +97,7 @@ class ResultState extends MusicBeatSubstate
     songName.angle = -4.4;
     //songName.zIndex = 1000;
     var difColor = PlayState.storyDifficultyColor;
-    var fractal = difColor.red*0.01;
+    var fractal = difColor.redFloat*0.33;
     difColor.greenFloat = Math.max(difColor.greenFloat,fractal);
 
     difficulty = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.get(49, 62)));
@@ -278,12 +278,12 @@ class ResultState extends MusicBeatSubstate
         bfShit.visible = false;
         //bfShit.zIndex = 500;
         add(bfShit);
-        bfShit.onAnimationFinish.add((animName) -> {
+        bfShit.anim.onComplete = () -> {
           if (bfShit != null)
           {
             bfShit.playAnimation('Loop Start');
           }
-        });
+        };
     }
 
     add(difficulty);
