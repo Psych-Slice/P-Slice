@@ -523,7 +523,7 @@ class SongMenuItem extends FlxSpriteGroup
    */
   public function setCharacter(char:String):Void
   {
-    trace(char);
+    //trace(char);
     var charPath:String = "icons/";
 
     // TODO: Put this in the character metadata where it belongs.

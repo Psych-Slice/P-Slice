@@ -81,6 +81,7 @@ class ScreenshotPlugin extends FlxBasic
 
     if (hasPressedScreenshot())
     {
+      trace("Capturing screen!");
       capture();
     }
   }

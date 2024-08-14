@@ -121,6 +121,8 @@ class MasterEditorMenu extends MusicBeatState
 					MusicBeatState.switchState(new NoteSplashDebugState());
 				case 'Preview results state':{
 					PlayState.storyDifficultyColor = 0xFFFF0000;
+					Difficulty.resetList();
+					PlayState.storyDifficulty = 2;
 					MusicBeatState.switchState(new ResultState(
 						{
 							storyMode: true,
@@ -133,12 +135,12 @@ class MasterEditorMenu extends MusicBeatState
 							{
 	
 								score: 1_234_567,
-								accPoints: 190,
-								sick: 200,
+								accPoints: 10,
+								sick: 199,
 								good: 0,
 								bad: 0,
 								shit: 0,
-								missed: 0,
+								missed: 1,
 								combo: 0,
 								maxCombo: 69,
 								totalNotesHit: 200,

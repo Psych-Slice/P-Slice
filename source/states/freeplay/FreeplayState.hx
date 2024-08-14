@@ -1,5 +1,6 @@
 package states.freeplay;
 
+import lime.app.Future;
 import haxe.Exception;
 import openfl.media.Sound;
 import funkin.util.flixel.sound.FlxPartialSound;
@@ -229,6 +230,8 @@ class FreeplayState extends MusicBeatSubstate
 	{
 		if(ClientPrefs.data.vsliceFreeplayColors) colorTween = new FreeplayColorTweener(this);
 		BPMCache.instance.clearCache(); // for good measure
+		
+
 		super.create();
 		var diffIdsTotalModBinds:Map<String, String> = ["easy" => "", "normal" => "", "hard" => ""];
 
@@ -1983,7 +1986,7 @@ class FreeplayState extends MusicBeatSubstate
 
 			FlxG.sound.music.pause(); // muting previous track must be done NOW
 			FlxTimer.wait(FADE_IN_DELAY,playCurSongPreview.bind(daSongCapsule)); // Wait a little before trying to pull a Inst file
-
+			
 			if (colorTween != null) tweenCurSongColor(daSongCapsule);
 			grpCapsules.members[curSelected].selected = true;
 		}
@@ -2006,16 +2009,22 @@ class FreeplayState extends MusicBeatSubstate
 			try{
 				Mods.currentModDirectory = daSongCapsule.songData.folder;
 				instPath = Paths.modFolders('songs/${daSongCapsule.songData.songId.toLowerCase().replace(" ","-")}/Inst.${Paths.SOUND_EXT}');
-				FlxPartialSound.partialLoadFromFile(instPath, 0.05,0.25).future.onComplete(function(sound:Sound)
+				var future = FlxPartialSound.partialLoadFromFile(instPath, 0.05,0.25);
+				if(future == null){
+					trace('Internal failure loading instrumentals for ${daSongCapsule.songData.songName} "${instPath}"');
+					return;
+				}
+				future.future.onComplete(function(sound:Sound)
 					{
 						if(!daSongCapsule.selected) return;
 						FlxG.sound.playMusic(sound,0);
-						FlxG.sound.music.fadeIn(FADE_IN_DURATION, FADE_IN_START_VOLUME, FADE_IN_END_VOLUME);
+						var endVolume = dj.playingCartoon? 0.1 : FADE_IN_END_VOLUME;
+						FlxG.sound.music.fadeIn(FADE_IN_DURATION, FADE_IN_START_VOLUME, endVolume);
 					});
 			}
-			catch (x:Exception){
+			catch (x){
 				var targetPath = instPath == "" ? "" : "from "+instPath;
-				trace('Failed to parialy load instrumentals for ${daSongCapsule.songData.songName} "${targetPath}"');
+				trace('Failed to parialy load instrumentals for ${daSongCapsule.songData.songName} ${targetPath}');
 			}
 			
 		}
