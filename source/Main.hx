@@ -203,8 +203,11 @@ class Main extends Sprite
 
 		Sys.println(errMsg);
 		Sys.println("Crash dump saved in " + Path.normalize(path));
-
+		#if windows
 		Application.current.window.alert(errMsg, "Error!");
+		#elseif linux
+		Sys.command("notify-send",["Error!",errMsg]);
+		#end
 		#if DISCORD_ALLOWED
 		DiscordClient.shutdown();
 		#end
