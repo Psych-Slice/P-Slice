@@ -131,7 +131,7 @@ class ClientPrefs {
 		'accept'		=> [A, START],
 		'back'			=> [B],
 		'pause'			=> [START],
-		'screenshot'    => [NONE],
+		'screenshot'    => [],
 		'reset'			=> [BACK]
 	];
 	public static var defaultKeys:Map<String, Array<FlxKey>> = null;
