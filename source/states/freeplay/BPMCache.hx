@@ -13,6 +13,10 @@ class BPMCache {
             return bpmMap[sngDataPath];
         }
         bpmMap[sngDataPath] = 0;
+        if(!FileSystem.exists(sngDataPath)){
+            trace('Missing data folder for $fileSngName in $sngDataPath for BPM scrapping!!'); //TODO
+            return 0;
+        }
         var chartFiles = FileSystem.readDirectory(sngDataPath)
 				.filter(s -> s.toLowerCase().startsWith(fileSngName) && s.endsWith(".json"));
         var chosenChartToScrap = '$sngDataPath/${chartFiles[0]}';
