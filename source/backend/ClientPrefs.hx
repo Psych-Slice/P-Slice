@@ -124,9 +124,9 @@ class ClientPrefs {
 		'ui_down'		=> [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN],
 		'ui_right'		=> [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT],
 		
-		'favorite'		=> [NONE],
-		'bar_left'		=> [NONE],
-		'bar_right'		=> [NONE],
+		'favorite'		=> [],
+		'bar_left'		=> [],
+		'bar_right'		=> [],
 
 		'accept'		=> [A, START],
 		'back'			=> [B],
@@ -247,11 +247,11 @@ class ClientPrefs {
 			reloadVolumeKeys();
 		}
 
-		// Additional checks
-		if(!keyBinds.exists('screenshot')) keyBinds.set('screenshot',[F3]);
-		if(!keyBinds.exists('favorite')) keyBinds.set('favorite',[F]);
-		if(!keyBinds.exists('bar_left')) keyBinds.set('bar_left',[Q]);
-		if(!keyBinds.exists('bar_right')) keyBinds.set('bar_right',[E]);
+		// Migrating because I am dumb
+		if(gamepadBinds.get('screenshot').contains(NONE)) gamepadBinds.get('screenshot').remove(NONE);
+		if(gamepadBinds.get('favorite').contains(NONE)) gamepadBinds.get('favorite').remove(NONE);
+		if(gamepadBinds.get('bar_left').contains(NONE)) gamepadBinds.get('bar_left').remove(NONE);
+		if(gamepadBinds.get('bar_right').contains(NONE)) gamepadBinds.get('bar_right').remove(NONE);
 	}
 
 	inline public static function getGameplaySetting(name:String, defaultValue:Dynamic = null, ?customDefaultValue:Bool = false):Dynamic
