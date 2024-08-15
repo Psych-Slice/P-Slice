@@ -2223,15 +2223,21 @@ class FreeplaySongData
 		//if(sngDataPath == null) return;
 		
 		if(this.songDifficulties.length == 0){
-			var chartFiles = FileSystem.readDirectory(sngDataPath)
+			if(FileSystem.exists(sngDataPath)){
+				var chartFiles = FileSystem.readDirectory(sngDataPath)
 				.filter(s -> s.toLowerCase().startsWith(fileSngName) && s.endsWith(".json"));
 
-			var diffNames = chartFiles.map(s -> s.substring(fileSngName.length+1,s.length-5));
-			// Regrouping difficulties
-			if(diffNames.remove(".")) diffNames.insert(1,"normal");
-			if(diffNames.remove("easy")) diffNames.insert(0,"easy");
-			if(diffNames.remove("hard")) diffNames.insert(2,"hard");
-			this.songDifficulties = diffNames;
+				var diffNames = chartFiles.map(s -> s.substring(fileSngName.length+1,s.length-5));
+				// Regrouping difficulties
+				if(diffNames.remove(".")) diffNames.insert(1,"normal");
+				if(diffNames.remove("easy")) diffNames.insert(0,"easy");
+				if(diffNames.remove("hard")) diffNames.insert(2,"hard");
+				this.songDifficulties = diffNames;
+			}
+			else{
+				trace('Directory $sngDataPath does not exist! $songName has no charts (difficulties)!');
+			}
+			
 		}
 		if (!this.songDifficulties.contains(currentDifficulty))
 			currentDifficulty = songDifficulties[0]; // TODO
