@@ -246,6 +246,12 @@ class ClientPrefs {
 			}
 			reloadVolumeKeys();
 		}
+
+		// Additional checks
+		if(!keyBinds.exists('screenshot')) keyBinds.set('screenshot',[F3]);
+		if(!keyBinds.exists('favorite')) keyBinds.set('favorite',[F]);
+		if(!keyBinds.exists('bar_left')) keyBinds.set('bar_left',[Q]);
+		if(!keyBinds.exists('bar_right')) keyBinds.set('bar_right',[E]);
 	}
 
 	inline public static function getGameplaySetting(name:String, defaultValue:Dynamic = null, ?customDefaultValue:Bool = false):Dynamic
