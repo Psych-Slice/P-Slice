@@ -2007,7 +2007,7 @@ class FreeplayState extends MusicBeatSubstate
 			
 			try{
 				Mods.currentModDirectory = daSongCapsule.songData.folder;
-				instPath = Paths.modFolders('songs/${daSongCapsule.songData.songId.toLowerCase().replace(" ","-")}/Inst.${Paths.SOUND_EXT}');
+				instPath = Paths.modFolders('songs/${Paths.formatToSongPath(daSongCapsule.songData.songId)}/Inst.${Paths.SOUND_EXT}');
 				var future = FlxPartialSound.partialLoadFromFile(instPath, 0.05,0.25);
 				if(future == null){
 					trace('Internal failure loading instrumentals for ${daSongCapsule.songData.songName} "${instPath}"');
@@ -2015,7 +2015,8 @@ class FreeplayState extends MusicBeatSubstate
 				}
 				future.future.onComplete(function(sound:Sound)
 					{
-						if(!daSongCapsule.selected) return;
+						if(!daSongCapsule.selected || busy) return;
+						trace("Playing preview!");
 						FlxG.sound.playMusic(sound,0);
 						var endVolume = dj.playingCartoon? 0.1 : FADE_IN_END_VOLUME;
 						FlxG.sound.music.fadeIn(FADE_IN_DURATION, FADE_IN_START_VOLUME, endVolume);
@@ -2222,15 +2223,21 @@ class FreeplaySongData
 		//if(sngDataPath == null) return;
 		
 		if(this.songDifficulties.length == 0){
-			var chartFiles = FileSystem.readDirectory(sngDataPath)
+			if(FileSystem.exists(sngDataPath)){
+				var chartFiles = FileSystem.readDirectory(sngDataPath)
 				.filter(s -> s.toLowerCase().startsWith(fileSngName) && s.endsWith(".json"));
 
-			var diffNames = chartFiles.map(s -> s.substring(fileSngName.length+1,s.length-5));
-			// Regrouping difficulties
-			if(diffNames.remove(".")) diffNames.insert(1,"normal");
-			if(diffNames.remove("easy")) diffNames.insert(0,"easy");
-			if(diffNames.remove("hard")) diffNames.insert(2,"hard");
-			this.songDifficulties = diffNames;
+				var diffNames = chartFiles.map(s -> s.substring(fileSngName.length+1,s.length-5));
+				// Regrouping difficulties
+				if(diffNames.remove(".")) diffNames.insert(1,"normal");
+				if(diffNames.remove("easy")) diffNames.insert(0,"easy");
+				if(diffNames.remove("hard")) diffNames.insert(2,"hard");
+				this.songDifficulties = diffNames;
+			}
+			else{
+				trace('Directory $sngDataPath does not exist! $songName has no charts (difficulties)!');
+			}
+			
 		}
 		if (!this.songDifficulties.contains(currentDifficulty))
 			currentDifficulty = songDifficulties[0]; // TODO

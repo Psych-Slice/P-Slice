@@ -1,6 +1,6 @@
 name: Crash report
 description: Report bugs that cause the engine to crash here
-labels: [bug]
+labels: [crash]
 body:
   - type: textarea
     id: description
