@@ -14,7 +14,7 @@
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
 	<!-- <app preloader="Preloader" resizable="true" /> -->
-	<app preloader="flixel.system.FlxPreloader" />
+	<app preloader="FunkinPreloader" />
 
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
 	<set name="SWF_VERSION" value="11.8" />
@@ -26,7 +26,7 @@
 	<define name="ACHIEVEMENTS_ALLOWED" />
 	<define name="DISCORD_ALLOWED" />
 	<define name="PSYCH_WATERMARKS"/>
-	<define name="VIDEOS_ALLOWED" if="windows || linux" unless="32bits"/>
+	<define name="VIDEOS_ALLOWED" if="desktop" unless="32bits"/>
 	<!-- DELETE THIS TO REMOVE WATERMARKS/DEV NAMES ON TITLE SCREEN -->
 
 	<section if="officialBuild">
@@ -66,6 +66,8 @@
 	<define name="CRASH_HANDLER" if="desktop" />
 
 	<!-- Assets -->
+	<library name="art" preload="false" />
+
 	<assets path="assets/fonts" />
 	<assets path="assets/shared" exclude="*.ogg" if="web"/>
 	<assets path="assets/shared" exclude="*.mp3" unless="web"/>

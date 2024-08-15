@@ -113,6 +113,12 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			'bool');
 		addOption(option);
 
+		var option:Option = new Option('Smooth Healthbar', //Name
+		'If checked, the healthbar fluctuates smoothly.', //Save data variable name
+		'smoothhealth',
+		'bool'); //Variable type
+		addOption(option);
+
 		super();
 	}
 

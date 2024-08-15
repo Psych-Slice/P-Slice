@@ -27,6 +27,12 @@ class VisualsUISubState extends BaseOptionsMenu
 		}
 
 		// options
+		var option:Option = new Option('UI Skin:',
+		"What type of UI do you want to use?",
+		'uiSkin',
+		'string',
+		['Psych', 'Vanilla', 'Kade']);
+		addOption(option);
 
 		var noteSkins:Array<String> = Mods.mergeAllTextsNamed('images/noteSkins/list.txt');
 		if(noteSkins.length > 0)
