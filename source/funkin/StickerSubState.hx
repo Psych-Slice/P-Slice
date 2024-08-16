@@ -150,8 +150,9 @@ class StickerSubState extends MusicBeatSubstate
     {
       grpStickers.clear();
     }
-
+    //
     var stickerInfo:StickerInfo = new StickerInfo('stickers-set-1');
+    // sticker group -> array of sticker names
     var stickers:Map<String, Array<String>> = new Map<String, Array<String>>();
     for (stickerSets in stickerInfo.getPack("all"))
     {
@@ -256,15 +257,8 @@ class StickerSubState extends MusicBeatSubstate
               // FlxG.addChildBelowMouse(dipshit);
              */
 
-            FlxG.switchState(() -> {
-              // TODO: Rework this asset caching stuff
-              // NOTE: This has to come AFTER the state switch,
-              // otherwise the game tries to render destroyed sprites!
-              //FunkinSprite.preparePurgeCache();
-              //FunkinSprite.purgeCache();
-
-              return targetState(this);
-            });
+            FlxG.switchState(targetState(this)
+            );
           }
         });
       });
