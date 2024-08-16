@@ -1,6 +1,6 @@
 package substates;
 
-import funkin.StickerSubState;
+import substates.StickerSubState;
 import backend.WeekData;
 import objects.Character;
 import flixel.FlxObject;
@@ -97,7 +97,8 @@ class GameOverSubstate extends MusicBeatSubstate
 			PlayState.seenCutscene = false;
 			PlayState.chartingMode = false;
 
-			Mods.loadTopMod();
+			//! not yet
+			//Mods.loadTopMod();
 			if (PlayState.isStoryMode)
 			{
 				PlayState.storyPlaylist = [];
