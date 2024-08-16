@@ -198,7 +198,7 @@ class SongMenuItem extends FlxSpriteGroup
     // TODO: Use value from metadata instead of random.
     updateDifficultyRating(FlxG.random.int(0, 20));
 
-    pixelIcon = new FlxSprite(60, 10);
+    pixelIcon = new FlxSprite(60, 14);
 
     pixelIcon.makeGraphic(32, 32, 0x00000000);
     pixelIcon.antialiasing = false;
@@ -523,30 +523,42 @@ class SongMenuItem extends FlxSpriteGroup
    */
   public function setCharacter(char:String):Void
   {
+    //60, 10
     //trace(char);
-    var charPath:String = "icons/";
-
-    // TODO: Put this in the character metadata where it belongs.
-    // TODO: Also, can use CharacterDataParser.getCharPixelIconAsset()
-    if(!char.startsWith("icon-")) charPath += "icon-";
-    charPath += '${char}';
-    
+    if(char.startsWith("icon-")) char.replace("icon-","");
     Mods.currentModDirectory = songData.folder;
-    var image = Paths.image(charPath);
 
-    if (image == null) //TODO
-    {
-      trace('[WARN] Character ${char} has no freeplay icon.');
-      image = Paths.image("icons/icon-face");
+    
+    if(!Paths.fileExists('images/freeplay/icons/${char}pixel.png',IMAGE)){
+      var charPath:String = "icons/";
+
+      // TODO: Put this in the character metadata where it belongs.
+      // TODO: Also, can use CharacterDataParser.getCharPixelIconAsset()
+      charPath += "icon-";
+      charPath += '${char}';
+      
+      
+      var image = Paths.image(charPath);
+
+      if (image == null) //TODO
+      {
+        trace('[WARN] Character ${char} has no freeplay icon.');
+        image = Paths.image("icons/icon-face");
+      }
+      pixelIcon.loadGraphic(image,true,Math.floor(image.width / 2), Math.floor(image.height));
+      pixelIcon.scale.x = pixelIcon.scale.y = 0.58;
+      pixelIcon.updateHitbox();
+      pixelIcon.origin.x = 100;
     }
-    //var graphic = Paths.image(name, allowGPU);
-		//loadGraphic(graphic, true, Math.floor(graphic.width / 2), Math.floor(graphic.height));
-    pixelIcon.loadGraphic(image,true,Math.floor(image.width / 2), Math.floor(image.height));
-    pixelIcon.scale.x = pixelIcon.scale.y = 0.55;
-    pixelIcon.updateHitbox();
-
-
-    pixelIcon.origin.x = 100;
+    else{
+      var image = Paths.image('freeplay/icons/${char}pixel');
+      pixelIcon.loadGraphic(image);
+      pixelIcon.scale.x = pixelIcon.scale.y = 2;
+      pixelIcon.updateHitbox();
+      pixelIcon.origin.x = 25;
+      if(char == "parents") pixelIcon.origin.x = 55;
+    }
+    
     
     // pixelIcon.origin.x = capsule.origin.x;
     // pixelIcon.offset.x -= pixelIcon.origin.x;
