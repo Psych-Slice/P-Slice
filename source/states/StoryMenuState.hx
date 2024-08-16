@@ -1,6 +1,6 @@
 package states;
 
-import funkin.StickerSubState;
+import substates.StickerSubState;
 import backend.WeekData;
 import backend.Highscore;
 import backend.Song;

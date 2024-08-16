@@ -1,4 +1,4 @@
-package funkin;
+package substates;
 
 import states.MainMenuState;
 import flixel.FlxSprite;
@@ -20,9 +20,12 @@ import flixel.FlxState;
 using Lambda;
 using funkin.IteratorTools;
 using StringTools;
+using funkin.ArrayTools;
 
 class StickerSubState extends MusicBeatSubstate
 {
+  public static var STICKER_SET = "stickers-set-1";
+  public static var STICKER_PACK = "all";
   public var grpStickers:FlxTypedGroup<StickerSprite>;
 
   // yes... a damn OpenFL sprite!!!
@@ -150,22 +153,63 @@ class StickerSubState extends MusicBeatSubstate
     {
       grpStickers.clear();
     }
-    //
-    var stickerInfo:StickerInfo = new StickerInfo('stickers-set-1');
+
+    trace("Collecting stickers...");
+    trace("Current mod: "+Mods.currentModDirectory);
+    var stickers:StickerInfo = null;
+
+    // var globalMods = Mods.getGlobalMods().map(s -> "mods/"+s);
+    // globalMods.pushUnique("mods/"+Mods.currentModDirectory);
+    // globalMods.push("assets/shared"); // base stickers
+
+
+      var modStickerDir = Paths.getPath('images/transitionSwag/$STICKER_SET');
+      if(!FileSystem.exists(modStickerDir)){
+        trace('Couldn\'t find sticker set "$STICKER_SET" in $modStickerDir');
+        
+      }
+      else if(!FileSystem.exists('$modStickerDir/stickers.json')){
+        trace('Sticker set $STICKER_SET doesn\'t contain a "stickers.json" file.');
+      }
+      else{
+        try{
+          var infoObj = new StickerInfo(STICKER_SET);
+          stickers = infoObj;
+          if(infoObj.getPack(STICKER_PACK) == null) trace('Sticker set ${infoObj.name} doesn\'t contain "$STICKER_PACK" pack. All available stickers will be loaded instead.');
+        }
+        catch(x){
+          trace('Error while creating "$modStickerDir" sticker pack: ${x.message}');
+        }
+      }
     // sticker group -> array of sticker names
-    var stickers:Map<String, Array<String>> = new Map<String, Array<String>>();
-    for (stickerSets in stickerInfo.getPack("all"))
-    {
-      stickers.set(stickerSets, stickerInfo.getStickers(stickerSets));
-    }
 
     var xPos:Float = -100;
     var yPos:Float = -100;
     while (xPos <= FlxG.width)
     {
-      var stickerSet:String = FlxG.random.getObject(stickers.keys().array());
-      var sticker:String = FlxG.random.getObject(stickers.get(stickerSet));
-      var sticky:StickerSprite = new StickerSprite(0, 0, stickerInfo.name, sticker);
+      // A little complicateb block, so let me explain:
+      var sticky:StickerSprite = null;
+      // Determinate if we actually have a valid set.
+      if(stickers != null){
+
+        // Select subsets defined by STICKER_PACK collection in the above "StickerSet"
+        var stickerPack:Array<String> = stickers.getPack(STICKER_PACK);
+        if(stickerPack == null){
+          stickerPack = stickers.stickers.keys().array();
+        }
+        // get all stickers from all subsets defined by "all" collection
+        var stickerSetCollection:Array<String> = [];
+        for(x in stickerPack){
+          stickerSetCollection = stickerSetCollection.concat(stickers.getStickers(x));
+        }
+
+        // get a random sticker 
+        var sticker:String = FlxG.random.getObject(stickerSetCollection);
+        sticky = new StickerSprite(0, 0, stickers.name, sticker);
+      }
+      else {
+        sticky = new StickerSprite(0, 0, null, "justBf");
+      }
       sticky.visible = false;
 
       sticky.x = xPos;
@@ -273,6 +317,10 @@ class StickerSubState extends MusicBeatSubstate
     lastOne.updateHitbox();
     lastOne.angle = 0;
     lastOne.screenCenter();
+
+    STICKER_SET = "stickers-set-1";
+    STICKER_PACK = "all";
+    Mods.loadTopMod(); // We won't be messing with mods from here on
   }
 
   override public function update(elapsed:Float):Void
@@ -307,7 +355,8 @@ class StickerSprite extends FlxSprite
   public function new(x:Float, y:Float, stickerSet:String, stickerName:String):Void
   {
     super(x, y);
-    loadGraphic(Paths.image('transitionSwag/' + stickerSet + '/' + stickerName));
+    var path = stickerSet == null ? stickerName : 'transitionSwag/$stickerSet/$stickerName';
+    loadGraphic(Paths.image(path));
     updateHitbox();
     scrollFactor.set();
   }
@@ -317,12 +366,13 @@ class StickerInfo
 {
   public var name:String;
   public var artist:String;
+  public var modDir:String;
   public var stickers:Map<String, Array<String>>;
   public var stickerPacks:Map<String, Array<String>>;
 
   public function new(stickerSet:String):Void
   {
-    var json = Json.parse(Paths.getTextFromFile('images/transitionSwag/' + stickerSet + '/stickers.json'));
+    var json = Json.parse(Paths.getTextFromFile('images/transitionSwag/${StickerSubState.STICKER_SET}/stickers.json'));
 
     // doin this dipshit nonsense cuz i dunno how to deal with casting a json object with
     // a dash in its name (sticker-packs)

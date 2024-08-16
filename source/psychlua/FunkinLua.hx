@@ -23,7 +23,7 @@ import objects.Note;
 import objects.NoteSplash;
 import objects.Character;
 
-import funkin.StickerSubState;
+import substates.StickerSubState;
 
 import states.MainMenuState;
 import states.StoryMenuState;

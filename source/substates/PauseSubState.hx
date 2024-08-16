@@ -1,7 +1,7 @@
 package substates;
 
 import flixel.addons.ui.U;
-import funkin.StickerSubState;
+import substates.StickerSubState;
 import backend.WeekData;
 import backend.Highscore;
 import backend.Song;
@@ -311,7 +311,8 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.deathCounter = 0;
 					PlayState.seenCutscene = false;
 
-					Mods.loadTopMod();
+					//! not yet
+					//Mods.loadTopMod();
 					if (PlayState.isStoryMode)
 					{
 						PlayState.storyPlaylist = [];

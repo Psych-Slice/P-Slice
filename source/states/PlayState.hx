@@ -2501,7 +2501,7 @@ class PlayState extends MusicBeatState
 
 	  var modManifest = Mods.getPack();
 	  var modName = modManifest != null ? modManifest.name : "unknown mod";
-	  Mods.loadTopMod();
+	  //Mods.loadTopMod();
 
 	  vocals.stop();
 	  camHUD.alpha = 1;

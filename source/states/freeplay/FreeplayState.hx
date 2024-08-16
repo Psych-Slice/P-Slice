@@ -18,7 +18,7 @@ import funkin.MathUtil;
 import funkin.IntervalShake;
 import backend.WeekData;
 import backend.animation.FlxAtlasSprite;
-import funkin.StickerSubState;
+import substates.StickerSubState;
 import funkin.Scoring.ScoringRank;
 import objects.TypedAlphabet;
 import backend.PsychCamera;

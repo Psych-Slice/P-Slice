@@ -3,7 +3,7 @@ package states.results;
 
 import backend.Highscore;
 import flixel.addons.transition.FlxTransitionableState;
-import funkin.StickerSubState;
+import substates.StickerSubState;
 import funkin.FunkinTools;
 import funkin.Scoring;
 import backend.PsychCamera;
