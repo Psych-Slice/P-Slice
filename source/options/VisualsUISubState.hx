@@ -27,13 +27,6 @@ class VisualsUISubState extends BaseOptionsMenu
 		}
 
 		// options
-		var option:Option = new Option('UI Skin:',
-		"What type of UI do you want to use?",
-		'uiSkin',
-		'string',
-		['Psych', 'Vanilla', 'Kade']);
-		addOption(option);
-
 		var noteSkins:Array<String> = Mods.mergeAllTextsNamed('images/noteSkins/list.txt');
 		if(noteSkins.length > 0)
 		{
@@ -161,6 +154,12 @@ class VisualsUISubState extends BaseOptionsMenu
 		var option:Option = new Option('Combo Stacking',
 			"If unchecked, Ratings and Combo won't stack, saving on System Memory and making them easier to read",
 			'comboStacking',
+			'bool');
+		addOption(option);
+
+		var option:Option = new Option('Victory Screens',
+			"If unchecked, the victory screen will not be displayed.",
+			'useVictory',
 			'bool');
 		addOption(option);
 

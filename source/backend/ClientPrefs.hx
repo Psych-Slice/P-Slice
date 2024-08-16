@@ -16,7 +16,6 @@ import states.TitleState;
 	public var flashing:Bool = true;
 	public var autoPause:Bool = true;
 	public var antialiasing:Bool = true;
-	public var uiSkin:String = 'Psych';
 	public var noteSkin:String = 'Default';
 	public var splashSkin:String = 'Psych';
 	public var splashAlpha:Float = 0.6;
@@ -79,6 +78,7 @@ import states.TitleState;
 	public var guitarHeroSustains:Bool = true;
 	public var discordRPC:Bool = true;
 	public var smoothhealth:Bool = true;
+	public var useVictory:Bool = true;
 }
 
 class ClientPrefs {

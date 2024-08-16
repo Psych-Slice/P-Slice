@@ -7,6 +7,7 @@ import states.results.Tallies;
 import states.results.ResultState;
 import openfl.media.Sound;
 import backend.Highscore;
+import funkin.StickerSubState;
 import backend.StageData;
 import backend.WeekData;
 import backend.Song;
@@ -278,8 +279,6 @@ class PlayState extends MusicBeatState
 	public var startCallback:Void->Void = null;
 	public var endCallback:Void->Void = null;
 
-	public var uiType:String;
-
 	override public function create()
 	{
 		//trace('Playback Rate: ' + playbackRate);
@@ -292,7 +291,6 @@ class PlayState extends MusicBeatState
 		instance = this;
 
 		PauseSubState.songName = null; //Reset to default
-		uiType = ClientPrefs.data.uiSkin;
 		playbackRate = ClientPrefs.getGameplaySetting('songspeed');
 
 		keysArray = [
@@ -497,20 +495,14 @@ class PlayState extends MusicBeatState
 		if(ClientPrefs.data.downScroll) timeTxt.y = FlxG.height - 44;
 		if(ClientPrefs.data.timeBarType == 'Song Name') timeTxt.text = SONG.song;
 
-		switch(uiType) {
-			case "Kade":
-				timeBar = new Bar(0, timeTxt.y + (timeTxt.height / 4), 'healthBar', function() return songPercent, 0, 1);
-				timeBar.setColors(FlxColor.fromRGB(0, 255, 128), FlxColor.fromRGB(90, 90, 90));
-			default: timeBar = new Bar(0, timeTxt.y + (timeTxt.height / 4), 'timeBar', function() return songPercent, 0, 1);
-		}
+		timeBar = new Bar(0, timeTxt.y + (timeTxt.height / 4), 'timeBar', function() return songPercent, 0, 1);
+		
 		timeBar.scrollFactor.set();
 		timeBar.screenCenter(X);
 		timeBar.alpha = 0;
 		timeBar.visible = showTime;
-		if (uiType != "Vanilla") {
-			uiGroup.add(timeBar);
-			uiGroup.add(timeTxt);
-		}
+		uiGroup.add(timeBar);
+		uiGroup.add(timeTxt);
 
 		strumLineNotes = new FlxTypedGroup<StrumNote>();
 		noteGroup.add(strumLineNotes);
@@ -577,14 +569,9 @@ class PlayState extends MusicBeatState
 		iconP2.alpha = ClientPrefs.data.healthBarAlpha;
 		uiGroup.add(iconP2);
 
-		trace("ui type:" + uiType);
-		if (uiType == "Vanilla") {
-			scoreTxt = new FlxText(-400, healthBar.y + 30, FlxG.width, "", 20);
-			scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		} else {
-			scoreTxt = new FlxText(0, healthBar.y + 40, FlxG.width, "", 20);
-			scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		}
+		scoreTxt = new FlxText(0, healthBar.y + 40, FlxG.width, "", 20);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+
 		scoreTxt.scrollFactor.set();
 		scoreTxt.borderSize = 1.25;
 		scoreTxt.visible = !ClientPrefs.data.hideHud;
@@ -739,12 +726,8 @@ class PlayState extends MusicBeatState
 	#end
 
 	public function reloadHealthBarColors() {
-		if (uiType == "Kade"||uiType == "Vanilla") {
-			healthBar.setColors(FlxColor.fromRGB(255, 0, 0), FlxColor.fromRGB(0, 255, 0));
-		} else {
-			healthBar.setColors(FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
-				FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2]));
-		}
+		healthBar.setColors(FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
+			FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2]));
 	}
 
 	public function addCharacterToList(newCharacter:String, type:Int) {
@@ -1172,10 +1155,6 @@ class PlayState extends MusicBeatState
 		var tempScore:String = 'Score: ${songScore}'
 		+ (!instakillOnMiss ? ' | Misses: ${songMisses}' : "")
 		+ ' | Rating: ${str}';
-		if (uiType == "Vanilla")
-			tempScore = 'Score: ${songScore}';
-		if (uiType == "Kade")
-			tempScore = 'Score: ${songScore} | Misses: ${songMisses} | Accuracy: ${percent}% | ${ratingFC}';
 		// "tempScore" variable is used to prevent another memory leak, just in case
 		// "\n" here prevents the text from being cut off by beat zooms
 		scoreTxt.text = '${tempScore}\n';
@@ -2485,15 +2464,32 @@ class PlayState extends MusicBeatState
 	  FlxG.camera.targetOffset.y -= 350;
 	  FlxG.camera.targetOffset.x += 20;
   
+	  
 	  // Replace zoom animation with a fade out for now.
 	  FlxG.camera.fade(FlxColor.BLACK, 0.6);
   
-	  FlxTween.tween(camHUD, {alpha: 0}, 0.6,
-		{
-		  onComplete: function(_) {
-			moveToResultsScreen(isNewHighscore, scoreData,prevScoreRank);
-		  }
-		});
+	  FlxTween.tween(camHUD, {alpha: 0}, 0.6, {
+		onComplete: function(_) {
+			if (ClientPrefs.data.useVictory) {
+				moveToResultsScreen(isNewHighscore, scoreData,prevScoreRank);
+			} else {
+				var resultingAccuracy = Math.min(1,scoreData.accPoints/scoreData.totalNotesHit); 
+				var rank = Scoring.calculateRankFromData(scoreData.score,resultingAccuracy,scoreData.missed == 0) ?? SHIT;
+				openSubState(new StickerSubState(null, (sticker) -> states.freeplay.FreeplayState.build(
+					{
+					  {
+						fromResults:
+						  {
+							oldRank: prevScoreRank,
+							playRankAnim: isNewHighscore,
+							newRank: rank,
+							songId: curSong,
+							difficultyId: Difficulty.getString()
+						  }
+					  }
+					}, sticker)));
+			}
+		}});
   
 	  // Zoom in on Girlfriend (or BF if no GF)
 	  new FlxTimer().start(0.8, function(_) {
