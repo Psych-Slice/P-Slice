@@ -66,8 +66,6 @@
 	<define name="CRASH_HANDLER" if="desktop" />
 
 	<!-- Assets -->
-	<library name="art" preload="false" />
-
 	<assets path="assets/fonts" />
 	<assets path="assets/shared" exclude="*.ogg" if="web"/>
 	<assets path="assets/shared" exclude="*.mp3" unless="web"/>
