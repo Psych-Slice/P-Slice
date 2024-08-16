@@ -7,7 +7,7 @@ class BPMCache {
         
     }
 
-    public function getBPM(sngDataPath:String, fileSngName:String) {
+    public function getBPM(sngDataPath:String, fileSngName:String):Int {
         if(bpmMap.exists(sngDataPath)){
             //trace("loading from cache");
             return bpmMap[sngDataPath];

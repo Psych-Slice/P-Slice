@@ -610,7 +610,7 @@ class Paths
 			}
 			else return null;
 		}
-		trace('MATCH WITH $key! RETURNING $searchDir');
+		//trace('MATCH WITH $key! RETURNING $searchDir');
 		return searchDir;
 	}
 

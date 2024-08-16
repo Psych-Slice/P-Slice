@@ -102,6 +102,7 @@ class ScreenshotPlugin extends FlxBasic
         shouldHideMouse: false,
         fancyPreview: true,
       }));
+      
   }
 
   public function hasPressedScreenshot():Bool
@@ -265,6 +266,18 @@ class ScreenshotPlugin extends FlxBasic
             });
           }
         });
+    });
+    FlxG.signals.postStateSwitch.addOnce(() ->{
+      if (wasMouseHidden)
+        {
+          FlxG.mouse.visible = false;
+        }
+
+        previewSprite.removeEventListener(MouseEvent.MOUSE_DOWN, openScreenshotsFolder);
+        previewSprite.removeEventListener(MouseEvent.MOUSE_OVER, onHover);
+        previewSprite.removeEventListener(MouseEvent.MOUSE_OUT, onHoverOut);
+
+        FlxG.stage.removeChild(previewSprite);
     });
   }
 
