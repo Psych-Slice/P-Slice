@@ -163,7 +163,7 @@ class StickerSubState extends MusicBeatSubstate
     // globalMods.push("assets/shared"); // base stickers
 
 
-      var modStickerDir = Paths.getPath('images/transitionSwag/$STICKER_SET');
+      var modStickerDir = Paths.getPath('images/transitionSwag/$STICKER_SET',TEXT,null,true);
       if(!FileSystem.exists(modStickerDir)){
         trace('Couldn\'t find sticker set "$STICKER_SET" in $modStickerDir');
         
