@@ -525,7 +525,7 @@ class SongMenuItem extends FlxSpriteGroup
   {
     //60, 10
     //trace(char);
-    if(char.startsWith("icon-")) char.replace("icon-","");
+    if(char.startsWith("icon-")) char = char.replace("icon-","");
     Mods.currentModDirectory = songData.folder;
 
     

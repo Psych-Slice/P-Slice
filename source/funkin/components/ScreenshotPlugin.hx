@@ -176,7 +176,12 @@ class ScreenshotPlugin extends FlxBasic
     flashSpr.addChild(flashBitmap);
     FlxG.stage.addChild(flashSpr);
     FlxTween.tween(flashSpr, {alpha: 0}, 0.15, {ease: FlxEase.quadOut, onComplete: _ -> FlxG.stage.removeChild(flashSpr)});
-
+    FlxG.signals.postStateSwitch.addOnce(() -> {
+      try{
+        FlxG.stage.removeChild(flashSpr);
+      }
+      catch(x){} // this can crach if flashSpr is not a child of stage anymore.
+    });
     // Play a sound (auto-play is true).
     FlxG.sound.play(Paths.sound('screenshot'),1.0);
   }
