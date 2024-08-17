@@ -1507,7 +1507,8 @@ class FreeplayState extends MusicBeatSubstate
 			busy = true;
 			FlxTween.globalManager.clear();
 			FlxTimer.globalManager.clear();
-			BPMCache.instance.clearCache();		
+			BPMCache.instance.clearCache();	
+			FlxG.signals.postStateSwitch.dispatch(); // for the screenshot plugin to clean itself
 			dj.onIntroDone.removeAll();
 
 			//While exiting make sure that we aren't tweeneng a color rn
