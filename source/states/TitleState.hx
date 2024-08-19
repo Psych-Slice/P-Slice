@@ -69,10 +69,8 @@ class TitleState extends MusicBeatState
 		Paths.clearStoredMemory();
 		ClientPrefs.loadPrefs();
 		Language.reloadPhrases();
-		FlxG.mouse.load(Paths.image('cursor-default', null, false).bitmap);
-
+		
 		super.create();
-
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
 		#if CHECK_FOR_UPDATES

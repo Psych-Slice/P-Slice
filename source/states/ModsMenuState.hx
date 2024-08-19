@@ -319,8 +319,6 @@ class ModsMenuState extends MusicBeatState
 				TitleState.closedState = false;
 				FlxG.sound.music.fadeOut(0.3);
 				FlxG.camera.fade(FlxColor.BLACK, 0.5, false, ()->{
-					Paths.currentTrackedAssets.remove("assets/shared/images/cursor-default.png");
-					Paths.clearStoredMemory();
 					FlxG.resetGame();
 				}, false);
 			}

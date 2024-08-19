@@ -153,6 +153,7 @@ class Main extends Sprite
 
 		FlxG.fixedTimestep = false;
 		FlxG.game.focusLostFramerate = 60;
+
 		FlxG.keys.preventDefaultKeys = [TAB];
 		
 		#if CRASH_HANDLER
