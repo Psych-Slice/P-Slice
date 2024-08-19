@@ -19,14 +19,22 @@ class CoolUtil
 	{
 		var daList:String = null;
 		#if (sys && MODS_ALLOWED)
-		var formatted:Array<String> = path.split(':'); //prevent "shared:", "preload:" and other library names on file path
-		path = formatted[formatted.length-1];
 		if(FileSystem.exists(path)) daList = File.getContent(path);
 		#else
 		if(Assets.exists(path)) daList = Assets.getText(path);
 		#end
 		return daList != null ? listFromString(daList) : [];
 	}
+
+	/**
+	 * Return string with first character uppercase'd, rest lowercase'd
+	 * @param	str
+	 * @return
+	 */
+	 inline public static function FUL(str:String):String
+		{
+			return str.substr(0, 1).toUpperCase() + str.substr(1, str.length - 1).toLowerCase();
+		}
 
 	inline public static function colorFromString(color:String):FlxColor
 	{
@@ -49,6 +57,20 @@ class CoolUtil
 
 		return daList;
 	}
+
+	public static function floorDecimal(value:Float, decimals:Int):Float
+	{
+		if(decimals < 1)
+			return Math.floor(value);
+
+		var tempMult:Float = 1;
+		for (i in 0...decimals)
+			tempMult *= 10;
+
+		var newValue:Float = Math.floor(value * tempMult);
+		return newValue / tempMult;
+	}
+
 	public static function sortAlphabetically(list:Array<String>):Array<String> {
 		// This moster here fixes order of scrips to match the windows implementation
 		// Why? because some people use this quirk (like me)
@@ -68,19 +90,7 @@ class CoolUtil
 			  });
 		return list;
 	}
-	public static function floorDecimal(value:Float, decimals:Int):Float
-	{
-		if(decimals < 1)
-			return Math.floor(value);
-
-		var tempMult:Float = 1;
-		for (i in 0...decimals)
-			tempMult *= 10;
-
-		var newValue:Float = Math.floor(value * tempMult);
-		return newValue / tempMult;
-	}
-
+	
 	inline public static function dominantColor(sprite:flixel.FlxSprite):Int
 	{
 		var countByColor:Map<Int, Int> = [];

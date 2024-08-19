@@ -32,7 +32,7 @@ class DJBoyfriend extends FlxAtlasSprite
 
   public function new(x:Float, y:Float)
   {
-    super(x, y, Paths.getLibraryPath("images/freeplay/freeplay-boyfriend"));
+    super(x, y, Paths.getSharedPath("images/freeplay/freeplay-boyfriend"));
 
     animOffsets = new Map<String, Array<Dynamic>>();
     
@@ -42,7 +42,7 @@ class DJBoyfriend extends FlxAtlasSprite
     FlxG.debugger.track(this);
     FlxG.console.registerObject("dj", this);
 
-    anim.onComplete = onFinishAnim;
+    anim.onComplete.add(onFinishAnim);
 
     FlxG.console.registerFunction("tv", function() {
       currentState = TV;

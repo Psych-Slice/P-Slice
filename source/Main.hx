@@ -29,6 +29,8 @@ import haxe.CallStack;
 import haxe.io.Path;
 #end
 
+import backend.Highscore;
+
 #if linux
 @:cppInclude('./external/gamemode_client.h')
 @:cppFileCode('
@@ -76,6 +78,9 @@ class Main extends Sprite
 		{
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
+		#if VIDEOS_ALLOWED
+		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0")  ['--no-lua'] #end);
+		#end
 	}
 
 	private function init(?E:Event):Void
@@ -101,13 +106,21 @@ class Main extends Sprite
 			game.width = Math.ceil(stageWidth / game.zoom);
 			game.height = Math.ceil(stageHeight / game.zoom);
 		}
-		
-		
+
+		#if LUA_ALLOWED
+		Mods.pushGlobalMods();
+		#end
+		Mods.loadTopMod();
+
+		FlxG.save.bind('funkin', CoolUtil.getSavePath());
+
+		Highscore.load();
 
 		#if LUA_ALLOWED Lua.set_callbacks_function(cpp.Callable.fromStaticFunction(psychlua.CallbackHandler.call)); #end
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
 		#if ACHIEVEMENTS_ALLOWED Achievements.load(); #end
+		
 		var gameObject = new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen);
 
 		// FlxG.game._customSoundTray wants just the class, it calls new from
@@ -137,6 +150,10 @@ class Main extends Sprite
 		FlxG.autoPause = false;
 		FlxG.mouse.visible = false;
 		#end
+
+		FlxG.fixedTimestep = false;
+		FlxG.game.focusLostFramerate = 60;
+		FlxG.keys.preventDefaultKeys = [TAB];
 		
 		#if CRASH_HANDLER
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
@@ -158,7 +175,6 @@ class Main extends Sprite
 			if (FlxG.game != null)
 			resetSpriteCache(FlxG.game);
 		});
-		
 	}
 
 	static function resetSpriteCache(sprite:Sprite):Void {
@@ -194,7 +210,15 @@ class Main extends Sprite
 			}
 		}
 
-		errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/mikolka9144/P-Slice\n\n> Crash Handler written by: sqirra-rng";
+		errMsg += "\nUncaught Error: " + e.error;
+		/*
+		 * remove if you're modding and want the crash log message to contain the link
+		 * please remember to actually modify the link for the github page to report the issues to.
+		*/
+		// 
+		#if officialBuild
+		errMsg += "\nPlease report this error to the GitHub page: https://github.com/mikolka9144/P-Slice\n\n> Crash Handler written by: sqirra-rng";
+		#end
 
 		if (!FileSystem.exists("./crash/"))
 			FileSystem.createDirectory("./crash/");
@@ -203,6 +227,7 @@ class Main extends Sprite
 
 		Sys.println(errMsg);
 		Sys.println("Crash dump saved in " + Path.normalize(path));
+
 		#if windows
 		Application.current.window.alert(errMsg, "Error!");
 		#elseif linux

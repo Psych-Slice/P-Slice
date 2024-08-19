@@ -5,7 +5,6 @@ import haxe.Exception;
 import openfl.media.Sound;
 import funkin.util.flixel.sound.FlxPartialSound;
 import flixel.graphics.FlxGraphic;
-import substates.GameplayChangersSubstate;
 import funkin.Scoring;
 import funkin.AtlasText;
 import shaders.PureColor;
@@ -23,7 +22,6 @@ import funkin.Scoring.ScoringRank;
 import objects.TypedAlphabet;
 import backend.PsychCamera;
 import flixel.addons.transition.FlxTransitionableState;
-import flixel.addons.ui.FlxInputText;
 import flixel.FlxCamera;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
@@ -427,7 +425,7 @@ class FreeplayState extends MusicBeatSubstate
 			speed: 0.3
 		});
 
-		backingTextYeah = new FlxAtlasSprite(640, 370, Paths.getLibraryPath("images/freeplay/backing-text-yeah"), {
+		backingTextYeah = new FlxAtlasSprite(640, 370, Paths.getSharedPath("images/freeplay/backing-text-yeah"), {
 			FrameRate: 24.0,
 			Reversed: false,
 			// ?OnComplete:Void -> Void,
@@ -2008,7 +2006,12 @@ class FreeplayState extends MusicBeatSubstate
 			
 			try{
 				Mods.currentModDirectory = daSongCapsule.songData.folder;
-				instPath = Paths.modFolders('songs/${Paths.formatToSongPath(daSongCapsule.songData.songId)}/Inst.${Paths.SOUND_EXT}');
+				instPath = 'assets/songs/${Paths.formatToSongPath(daSongCapsule.songData.songId)}/Inst.${Paths.SOUND_EXT}';
+				#if MODS_ALLOWED
+				var modsInstPath = Paths.modFolders('songs/${Paths.formatToSongPath(daSongCapsule.songData.songId)}/Inst.${Paths.SOUND_EXT}');
+				if(FileSystem.exists(modsInstPath)) instPath = modsInstPath;
+				#end
+				
 				var future = FlxPartialSound.partialLoadFromFile(instPath, 0.05,0.25);
 				if(future == null){
 					trace('Internal failure loading instrumentals for ${daSongCapsule.songData.songName} "${instPath}"');
@@ -2220,7 +2223,13 @@ class FreeplaySongData
 
 		Mods.currentModDirectory = this.folder;
 		var fileSngName = Paths.formatToSongPath(songId);
-		var sngDataPath = Paths.modFolders("data/"+fileSngName);
+		var sngDataPath = Paths.getSharedPath("data/"+fileSngName);
+
+		#if MODS_ALLOWED
+		var mod_path = Paths.modFolders("data/"+fileSngName);
+		if(FileSystem.exists(mod_path)) sngDataPath = mod_path;
+		#end
+		
 		//if(sngDataPath == null) return;
 		
 		if(this.songDifficulties.length == 0){

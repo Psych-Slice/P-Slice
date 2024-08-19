@@ -36,6 +36,7 @@ class HScript extends SScript
 		}
 		else
 		{
+			hs.varsToBring = varsToBring;
 			hs.doString(code);
 			@:privateAccess
 			if(hs.parsingException != null)
@@ -51,8 +52,6 @@ class HScript extends SScript
 	{
 		if (file == null)
 			file = '';
-
-		this.varsToBring = varsToBring;
 	
 		super(file, false, false);
 
@@ -75,11 +74,13 @@ class HScript extends SScript
 			#end
 		}
 
+		this.varsToBring = varsToBring;
+
 		preset();
 		execute();
 	}
 
-	var varsToBring:Any = null;
+	var varsToBring(default, set):Any = null;
 	override function preset() {
 		super.preset();
 
@@ -87,6 +88,7 @@ class HScript extends SScript
 		set('FlxG', flixel.FlxG);
 		set('FlxMath', flixel.math.FlxMath);
 		set('FlxSprite', flixel.FlxSprite);
+		set('FlxText', flixel.text.FlxText);
 		set('FlxCamera', flixel.FlxCamera);
 		set('PsychCamera', backend.PsychCamera);
 		set('FlxTimer', flixel.util.FlxTimer);
@@ -116,19 +118,19 @@ class HScript extends SScript
 
 		// Functions & Variables
 		set('setVar', function(name:String, value:Dynamic) {
-			PlayState.instance.variables.set(name, value);
+			MusicBeatState.getVariables().set(name, value);
 			return value;
 		});
 		set('getVar', function(name:String) {
 			var result:Dynamic = null;
-			if(PlayState.instance.variables.exists(name)) result = PlayState.instance.variables.get(name);
+			if(MusicBeatState.getVariables().exists(name)) result = MusicBeatState.getVariables().get(name);
 			return result;
 		});
 		set('removeVar', function(name:String)
 		{
-			if(PlayState.instance.variables.exists(name))
+			if(MusicBeatState.getVariables().exists(name))
 			{
-				PlayState.instance.variables.remove(name);
+				MusicBeatState.getVariables().remove(name);
 				return true;
 			}
 			return false;
@@ -280,6 +282,7 @@ class HScript extends SScript
 		#end
 		set('this', this);
 		set('game', FlxG.state);
+		set('controls', Controls.instance);
 
 		set('buildTarget', LuaUtils.getBuildTarget());
 		set('customSubstate', CustomSubstate.instance);
@@ -302,21 +305,12 @@ class HScript extends SScript
 			set('addBehindBF', PlayState.instance.addBehindBF);
 			setSpecialObject(PlayState.instance, false, PlayState.instance.instancesExclude);
 		}
-
-		if(varsToBring != null) {
-			for (key in Reflect.fields(varsToBring)) {
-				key = key.trim();
-				var value = Reflect.field(varsToBring, key);
-				//trace('Key $key: $value');
-				set(key, Reflect.field(varsToBring, key));
-			}
-			varsToBring = null;
-		}
 	}
 
-	public function executeCode(?funcToRun:String = null, ?funcArgs:Array<Dynamic> = null):TeaCall {
+	public function executeCode(?funcToRun:String = null, ?funcArgs:Array<Dynamic> = null):Tea {
 		if (funcToRun == null) return null;
 
+		trace('test');
 		if(!exists(funcToRun)) {
 			#if LUA_ALLOWED
 			FunkinLua.luaTrace(origin + ' - No HScript function named: $funcToRun', false, false, FlxColor.RED);
@@ -346,7 +340,7 @@ class HScript extends SScript
 		return callValue;
 	}
 
-	public function executeFunction(funcToRun:String = null, funcArgs:Array<Dynamic>):TeaCall {
+	public function executeFunction(funcToRun:String = null, funcArgs:Array<Dynamic>):Tea {
 		if (funcToRun == null) return null;
 		return call(funcToRun, funcArgs);
 	}
@@ -356,7 +350,7 @@ class HScript extends SScript
 		funk.addLocalCallback("runHaxeCode", function(codeToRun:String, ?varsToBring:Any = null, ?funcToRun:String = null, ?funcArgs:Array<Dynamic> = null):Dynamic {
 			#if SScript
 			initHaxeModuleCode(funk, codeToRun, varsToBring);
-			final retVal:TeaCall = funk.hscript.executeCode(funcToRun, funcArgs);
+			final retVal:Tea = funk.hscript.executeCode(funcToRun, funcArgs);
 			if (retVal != null) {
 				if(retVal.succeeded)
 					return (retVal.returnValue == null || LuaUtils.isOfTypes(retVal.returnValue, [Bool, Int, Float, String, Array])) ? retVal.returnValue : null;
@@ -384,7 +378,7 @@ class HScript extends SScript
 			{
 				var e = callValue.exceptions[0];
 				if (e != null)
-					FunkinLua.luaTrace('ERROR (${funk.hscript.origin}: ${callValue.calledFunction}) - ' + e.message.substr(0, e.message.indexOf('\n')), false, false, FlxColor.RED);
+					FunkinLua.luaTrace('ERROR (${funk.hscript.origin}: ${callValue.calledFunction}) - ' + e.details(), false, false, FlxColor.RED);
 				return null;
 			}
 			else
@@ -434,6 +428,23 @@ class HScript extends SScript
 		#if LUA_ALLOWED parentLua = null; #end
 
 		super.destroy();
+	}
+
+	function set_varsToBring(values:Any) {
+		if (varsToBring != null) {
+			for (key in Reflect.fields(varsToBring)) {
+				unset(key.trim());
+			}
+		}
+
+		if (values != null) {
+			for (key in Reflect.fields(values)) {
+				key = key.trim();
+				set(key, Reflect.field(values, key));
+			}
+		}
+
+		return varsToBring = values;
 	}
 }
 

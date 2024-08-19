@@ -1,6 +1,5 @@
 package states;
 
-import substates.GameplayChangersSubstate;
 import flixel.FlxObject;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
@@ -10,7 +9,7 @@ import options.OptionsState;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psychEngineVersion:String = '0.7.3'; // This is also used for Discord RPC
+	public static var psychEngineVersion:String = '1.0-prerelease'; // This is also used for Discord RPC
 	public static var pSliceVersion:String = '1.1'; 
 	public static var funkinVersion:String = '0.4.1'; // Version of funkin' we are emulationg
 	public static var curSelected:Int = 0;
@@ -46,8 +45,6 @@ class MainMenuState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
-		transIn = FlxTransitionableState.defaultTransIn;
-		transOut = FlxTransitionableState.defaultTransOut;
 
 		persistentUpdate = persistentDraw = true;
 
@@ -121,7 +118,7 @@ class MainMenuState extends MusicBeatState
 
 		super.create();
 
-		FlxG.camera.follow(camFollow, null, 3);
+		FlxG.camera.follow(camFollow, null, 0.06);
 	}
 
 	var selectedSomethin:Bool = false;
