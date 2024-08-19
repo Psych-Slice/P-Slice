@@ -32,7 +32,7 @@
 	<!-- <section if="officialBuild">
 		<define name="TITLE_SCREEN_EASTER_EGG"/>
 		
-		<!-- IF YOU WANT TO USE VIDEOS ON YOUR SOURCE MOD, GET THIS LINE OUTSIDE OF THE SECTION -->
+		 IF YOU WANT TO USE VIDEOS ON YOUR SOURCE MOD, GET THIS LINE OUTSIDE OF THE SECTION 
 	</section> -->
 
 	<!-- ____________________________ Window Settings ___________________________ -->
