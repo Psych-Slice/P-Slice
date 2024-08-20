@@ -1,21 +1,41 @@
 package options;
 
-typedef Keybind = {
-	keyboard:String,
-	gamepad:String
-}
+import flash.text.TextField;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.addons.display.FlxGridOverlay;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxMath;
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
+import lime.utils.Assets;
+import flixel.FlxSubState;
+import flash.text.TextField;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.util.FlxSave;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
+import flixel.input.keyboard.FlxKey;
+import flixel.graphics.FlxGraphic;
+import Controls;
+
+using StringTools;
 
 class Option
 {
-	public var child:Alphabet;
+	private var child:Alphabet;
 	public var text(get, set):String;
 	public var onChange:Void->Void = null; //Pressed enter (on Bool type options) or pressed/held left/right (on other types)
 
-	public var type(get, default):String = 'bool'; //bool, int (or integer), float (or fl), percent, string (or str), keybind (or key)
+	public var type(get, default):String = 'bool'; //bool, int (or integer), float (or fl), percent, string (or str)
 	// Bool will use checkboxes
 	// Everything else will use a text
 
+	public var showBoyfriend:Bool = false;
 	public var scrollSpeed:Float = 50; //Only works on int/float, defines how fast it scrolls per second while holding left/right
+
 	private var variable:String = null; //Variable from ClientPrefs.hx
 	public var defaultValue:Dynamic = null;
 
@@ -30,86 +50,75 @@ class Option
 	public var description:String = '';
 	public var name:String = 'Unknown';
 
-	public var defaultKeys:Keybind = null; //Only used in keybind type
-	public var keys:Keybind = null; //Only used in keybind type
-
-	public function new(name:String, description:String = '', variable:String, type:String = 'bool', ?options:Array<String> = null)
+	public function new(name:String, description:String = '', variable:String, type:String = 'bool', defaultValue:Dynamic = 'null variable value', ?options:Array<String> = null)
 	{
 		this.name = name;
 		this.description = description;
 		this.variable = variable;
 		this.type = type;
+		this.defaultValue = defaultValue;
 		this.options = options;
 
-		if(this.type != 'keybind') this.defaultValue = Reflect.getProperty(ClientPrefs.defaultData, variable);
+		if(defaultValue == 'null variable value')
+		{
+			switch(type)
+			{
+				case 'bool':
+					defaultValue = false;
+				case 'int' | 'float':
+					defaultValue = 0;
+				case 'percent':
+					defaultValue = 1;
+				case 'string':
+					defaultValue = '';
+					if(options.length > 0) {
+						defaultValue = options[0];
+					}
+			}
+		}
+
+		if(getValue() == null) {
+			setValue(defaultValue);
+		}
+
 		switch(type)
 		{
-			case 'bool':
-				if(defaultValue == null) defaultValue = false;
-			case 'int' | 'float':
-				if(defaultValue == null) defaultValue = 0;
+			case 'string':
+				var num:Int = options.indexOf(getValue());
+				if(num > -1) {
+					curOption = num;
+				}
+	
 			case 'percent':
-				if(defaultValue == null) defaultValue = 1;
 				displayFormat = '%v%';
 				changeValue = 0.01;
 				minValue = 0;
 				maxValue = 1;
 				scrollSpeed = 0.5;
 				decimals = 2;
-			case 'string':
-				if(defaultValue == null) defaultValue = '';
-				if(options.length > 0) {
-					defaultValue = options[0];
-				}
-
-			case 'keybind':
-				defaultValue = '';
-				defaultKeys = {gamepad: 'NONE', keyboard: 'NONE'};
-				keys = {gamepad: 'NONE', keyboard: 'NONE'};
 		}
-
-		try
-		{
-			if(getValue() == null) {
-				setValue(defaultValue);
-			}
-	
-			switch(type)
-			{
-				case 'string':
-					var num:Int = options.indexOf(getValue());
-					if(num > -1) {
-						curOption = num;
-					}
-			}
-		}
-		catch(e) {}
 	}
 
 	public function change()
 	{
 		//nothing lol
-		if(onChange != null)
+		if(onChange != null) {
 			onChange();
-	}
-
-	dynamic public function getValue():Dynamic
-	{
-		var value = Reflect.getProperty(ClientPrefs.data, variable);
-		if(type == 'keybind') return !Controls.instance.controllerMode ? value.keyboard : value.gamepad;
-		return value;
-	}
-
-	dynamic public function setValue(value:Dynamic)
-	{
-		if(type == 'keybind')
-		{
-			var keys = Reflect.getProperty(ClientPrefs.data, variable);
-			if(!Controls.instance.controllerMode) keys.keyboard = value;
-			else keys.gamepad = value;
-			return value;
 		}
-		return Reflect.setProperty(ClientPrefs.data, variable, value);
+	}
+
+	public function getValue():Dynamic
+	{
+		return Reflect.getProperty(ClientPrefs, variable);
+	}
+	public function setValue(value:Dynamic)
+	{
+		Reflect.setProperty(ClientPrefs, variable, value);
+	}
+
+	public function setChild(child:Alphabet)
+	{
+		this.child = child;
 	}
 
 	private function get_text()
@@ -132,8 +141,7 @@ class Option
 		var newValue:String = 'bool';
 		switch(type.toLowerCase().trim())
 		{
-			case 'key', 'keybind': newValue = 'keybind';
-			case 'int', 'float', 'percent', 'string': newValue = type;
+			case 'int' | 'float' | 'percent' | 'string': newValue = type;
 			case 'integer': newValue = 'int';
 			case 'str': newValue = 'string';
 			case 'fl': newValue = 'float';

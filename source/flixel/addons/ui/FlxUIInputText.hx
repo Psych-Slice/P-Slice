@@ -6,6 +6,7 @@ import flixel.addons.ui.interfaces.IResizable;
 
 /**
  * @author Lars Doucet
+ * Modified by PlankDev to support cut/copy/paste
  */
 class FlxUIInputText extends FlxInputText implements IResizable implements IFlxUIWidget implements IHasParams
 {

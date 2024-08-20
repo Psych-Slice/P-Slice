@@ -1,7 +1,31 @@
 package options;
 
-import states.MainMenuState;
-import backend.StageData;
+#if desktop
+import Discord.DiscordClient;
+#end
+import flash.text.TextField;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.addons.display.FlxGridOverlay;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxMath;
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
+import lime.utils.Assets;
+import flixel.FlxSubState;
+import flash.text.TextField;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.util.FlxSave;
+import haxe.Json;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
+import flixel.input.keyboard.FlxKey;
+import flixel.graphics.FlxGraphic;
+import Controls;
+
+using StringTools;
 
 class OptionsState extends MusicBeatState
 {
@@ -9,7 +33,6 @@ class OptionsState extends MusicBeatState
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
-	public static var onPlayState:Bool = false;
 
 	function openSelectedSubstate(label:String) {
 		switch(label) {
@@ -24,23 +47,24 @@ class OptionsState extends MusicBeatState
 			case 'Gameplay':
 				openSubState(new options.GameplaySettingsSubState());
 			case 'Adjust Delay and Combo':
-				MusicBeatState.switchState(new options.NoteOffsetState());
+				LoadingState.loadAndSwitchState(new options.NoteOffsetState());
 		}
 	}
 
-	//var selectorLeft:Alphabet;
-	//var selectorRight:Alphabet;
+	var selectorLeft:Alphabet;
+	var selectorRight:Alphabet;
 
 	override function create() {
-		#if DISCORD_ALLOWED
+		#if desktop
 		DiscordClient.changePresence("Options Menu", null);
 		#end
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGMagenta'));
-		bg.antialiasing = ClientPrefs.data.antialiasing;
+		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		bg.color = 0xFFea71fd;
 		bg.updateHitbox();
 
 		bg.screenCenter();
+		bg.antialiasing = ClientPrefs.globalAntialiasing;
 		add(bg);
 
 		grpOptions = new FlxTypedGroup<Alphabet>();
@@ -54,10 +78,10 @@ class OptionsState extends MusicBeatState
 			grpOptions.add(optionText);
 		}
 
-		//electorLeft = new Alphabet(0, 0, '>', true);
-		//add(selectorLeft);
-		//selectorRight = new Alphabet(0, 0, '<', true);
-		//add(selectorRight);
+		selectorLeft = new Alphabet(0, 0, '>', true);
+		add(selectorLeft);
+		selectorRight = new Alphabet(0, 0, '<', true);
+		add(selectorRight);
 
 		changeSelection();
 		ClientPrefs.saveSettings();
@@ -68,9 +92,6 @@ class OptionsState extends MusicBeatState
 	override function closeSubState() {
 		super.closeSubState();
 		ClientPrefs.saveSettings();
-		#if DISCORD_ALLOWED
-		DiscordClient.changePresence("Options Menu", null);
-		#end
 	}
 
 	override function update(elapsed:Float) {
@@ -85,15 +106,12 @@ class OptionsState extends MusicBeatState
 
 		if (controls.BACK) {
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			if(onPlayState)
-			{
-				StageData.loadDirectory(PlayState.SONG);
-				LoadingState.loadAndSwitchState(new PlayState());
-				FlxG.sound.music.volume = 0;
-			}
-			else MusicBeatState.switchState(new MainMenuState());
+			MusicBeatState.switchState(new MainMenuState());
 		}
-		else if (controls.ACCEPT) openSelectedSubstate(options[curSelected]);
+
+		if (controls.ACCEPT) {
+			openSelectedSubstate(options[curSelected]);
+		}
 	}
 	
 	function changeSelection(change:Int = 0) {
@@ -112,18 +130,12 @@ class OptionsState extends MusicBeatState
 			item.alpha = 0.6;
 			if (item.targetY == 0) {
 				item.alpha = 1;
-				//selectorLeft.x = item.x - 63;
-				//selectorLeft.y = item.y;
-				//selectorRight.x = item.x + item.width + 15;
-				//selectorRight.y = item.y;
+				selectorLeft.x = item.x - 63;
+				selectorLeft.y = item.y;
+				selectorRight.x = item.x + item.width + 15;
+				selectorRight.y = item.y;
 			}
 		}
 		FlxG.sound.play(Paths.sound('scrollMenu'));
-	}
-
-	override function destroy()
-	{
-		ClientPrefs.loadPrefs();
-		super.destroy();
 	}
 }
