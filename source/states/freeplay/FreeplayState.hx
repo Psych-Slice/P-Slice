@@ -1,5 +1,6 @@
 package states.freeplay;
 
+import backend.FreeplayMeta;
 import lime.app.Future;
 import haxe.Exception;
 import openfl.media.Sound;
@@ -2005,16 +2006,18 @@ class FreeplayState extends MusicBeatSubstate
 			var instPath = "";
 			
 			try{
-				Mods.currentModDirectory = daSongCapsule.songData.folder;
-				instPath = 'assets/songs/${Paths.formatToSongPath(daSongCapsule.songData.songId)}/Inst.${Paths.SOUND_EXT}';
+				var songData = daSongCapsule.songData;
+				Mods.currentModDirectory = songData.folder;
+
+				instPath = 'assets/songs/${Paths.formatToSongPath(songData.songId)}/Inst.${Paths.SOUND_EXT}';
 				#if MODS_ALLOWED
-				var modsInstPath = Paths.modFolders('songs/${Paths.formatToSongPath(daSongCapsule.songData.songId)}/Inst.${Paths.SOUND_EXT}');
+				var modsInstPath = Paths.modFolders('songs/${Paths.formatToSongPath(songData.songId)}/Inst.${Paths.SOUND_EXT}');
 				if(FileSystem.exists(modsInstPath)) instPath = modsInstPath;
 				#end
 				
-				var future = FlxPartialSound.partialLoadFromFile(instPath, 0.05,0.25);
+				var future = FlxPartialSound.partialLoadFromFile(instPath, songData.freeplayPrevStart,songData.freeplayPrevEnd);
 				if(future == null){
-					trace('Internal failure loading instrumentals for ${daSongCapsule.songData.songName} "${instPath}"');
+					trace('Internal failure loading instrumentals for ${songData.songName} "${instPath}"');
 					return;
 				}
 				future.future.onComplete(function(sound:Sound)
@@ -2170,6 +2173,8 @@ class FreeplaySongData
 	public var songStartingBpm(default, null):Float = 0;
 	public var difficultyRating(default, null):Int = 0;
 
+	public var freeplayPrevStart(default, null):Float = 0;
+	public var freeplayPrevEnd(default, null):Float = 0;
 	public var currentDifficulty(default, set):String = "normal";
 
 	public var scoringRank:Null<ScoringRank> = null;
@@ -2188,6 +2193,11 @@ class FreeplaySongData
 		this.songCharacter = songCharacter;
 		this.color = color;
 		this.songId = songId;
+
+		var meta = FreeplayMeta.getMeta(songId);
+		difficultyRating = meta.songRating;
+		freeplayPrevStart = meta.freeplayPrevStart;
+		freeplayPrevEnd = meta.freeplayPrevEnd;
 
 		updateValues();
 
@@ -2302,7 +2312,7 @@ class DifficultySprite extends FlxSprite
 
 		difficultyId = diffId;
 		var tex:FlxGraphic = null;
-		if(["easy", "normal", "hard"].contains(difficultyId)){
+		if(["easy", "normal", "hard", "erect", "nightmare"].contains(difficultyId)){
 			tex = Paths.image('freeplay/freeplay' + diffId,null,false);
 		}
 		else{

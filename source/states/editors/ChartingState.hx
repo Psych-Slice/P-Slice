@@ -1,5 +1,8 @@
 package states.editors;
 
+import backend.FreeplayMeta;
+import backend.FreeplayMeta.FreeplayMetaJSON;
+import openfl.net.FileReference;
 import flixel.FlxSubState;
 import flixel.util.FlxSave;
 import flixel.util.FlxSort;
@@ -374,7 +377,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		infoBox.getTab('Information').menu.add(infoText);
 		add(infoBox);
 
-		mainBox = new PsychUIBox(mainBoxPosition.x, mainBoxPosition.y, 300, 280, ['Charting', 'Data', 'Events', 'Note', 'Section', 'Song']);
+		mainBox = new PsychUIBox(mainBoxPosition.x, mainBoxPosition.y, 340, 280, ['Charting', 'Data', 'Events', 'Note', 'Section', 'Song','Metadata']);
 		mainBox.selectedName = 'Song';
 		mainBox.scrollFactor.set();
 		mainBox.cameras = [camUI];
@@ -426,6 +429,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		addNoteTab();
 		addSectionTab();
 		addSongTab();
+		addMetadataTab();
 		
 		////// for upper box
 		addFileTab();
@@ -434,6 +438,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		//
 
 		loadMusic();
+		loadMetadata();
 		reloadNotesDropdowns();
 		if(!_shouldReset)
 		{
@@ -596,6 +601,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		updateJsonData();
 		updateHeads(true);
 		loadMusic();
+		loadMetadata();
 		reloadNotes();
 		onChartLoaded();
 
@@ -1730,6 +1736,13 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		Conductor.bpm = PlayState.SONG.bpm;
 	}
 
+	function loadMetadata() {
+		var songMetadata = FreeplayMeta.getMeta(PlayState.SONG.song);
+		ratingInput.value = songMetadata.songRating;
+		prevStartInput.value = (songMetadata.freeplayPrevStart*maxTime)/1000;
+		prevEndInput.value = (songMetadata.freeplayPrevEnd*maxTime)/1000;
+	}
+
 	function loadMusic(?killAudio:Bool = false)
 	{
 		setSongPlaying(false);
@@ -1762,6 +1775,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			FlxG.sound.music.pause();
 			FlxG.sound.music.time = time;
 			FlxG.sound.music.onComplete = (function() songFinished = true);
+
+			maxTime = FlxG.sound.music.length;
+			prevEndInput.max = FlxMath.roundDecimal(maxTime/1000,2);
 		}
 		catch(e:Exception)
 		{
@@ -3216,6 +3232,41 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		tab_group.add(playerDropDown);
 	}
 
+	var ratingInput:PsychUINumericStepper;
+	var prevStartInput:PsychUINumericStepper;
+	var prevEndInput:PsychUINumericStepper;
+	var exportMetadataBtn:PsychUIButton;
+	var maxTime:Float = 0.0;
+	function addMetadataTab()
+	{
+		var tab_group = mainBox.getTab('Metadata').menu;
+		ratingInput = new PsychUINumericStepper(20, 30,1,0,0,99,0,60);
+		prevStartInput = new PsychUINumericStepper(20, 100,1,0,0,999,2,80); 
+		prevEndInput = new PsychUINumericStepper(20, 150,1,0,0,999,2,80);
+		exportMetadataBtn = new PsychUIButton(20,200,"Export metadata",onMetadataSaveClick.bind(),110);
+
+		tab_group.add(new FlxText(ratingInput.x, ratingInput.y - 15, 80, 'Rating:'));
+		tab_group.add(new FlxText(prevStartInput.x, prevStartInput.y - 15, 150, 'Freeplay preview start sec:'));
+		tab_group.add(new FlxText(prevEndInput.x, prevEndInput.y - 15, 150, 'Freeplay preview end sec:'));
+		tab_group.add(ratingInput);
+		tab_group.add(prevStartInput);
+		tab_group.add(prevEndInput);
+		tab_group.add(exportMetadataBtn);
+	}
+
+	function onMetadataSaveClick() {
+		var meta:FreeplayMetaJSON = {
+			songRating: Std.int(ratingInput.value),
+			freeplayPrevStart: (prevStartInput.value*1000)/maxTime,
+			freeplayPrevEnd: (prevEndInput.value*1000)/maxTime
+		};
+		var data:String = haxe.Json.stringify(meta, "\t");
+		if (data.length > 0)
+		{
+			var _file = new FileReference();
+			_file.save(data, "metadata.json");
+		}
+	}
 	function addFileTab()
 	{
 		var tab = upperBox.getTab('File');
