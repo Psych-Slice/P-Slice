@@ -5580,7 +5580,7 @@
                 "changeBPM": false
             }
         ],
-        "stage": "mainStage",
+        "stage": "stage",
         "player3": "gf"
     }
 }
