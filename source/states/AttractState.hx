@@ -88,7 +88,7 @@ class AttractState extends MusicBeatState
     super.update(elapsed);
 
     // If the user presses any button, skip the video.
-    if (FlxG.keys.justPressed.ANY && !controls.VOLUME_MUTE && !controls.VOLUME_UP && !controls.VOLUME_DOWN)
+    if (FlxG.keys.justPressed.ANY && !controls.justPressed("volume_up") && !controls.justPressed("volume_down") && !controls.justPressed("volume_mute"))
     {
       onAttractEnd();
     }
