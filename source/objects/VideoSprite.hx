@@ -5,6 +5,9 @@ import flixel.addons.display.FlxPieDial;
 #if hxvlc
 import hxvlc.flixel.FlxVideoSprite;
 #end
+#if hxCodec
+import hxcodec.flixel.FlxVideoSprite;
+#end
 
 class VideoSprite extends FlxSpriteGroup {
 	#if VIDEOS_ALLOWED
@@ -23,9 +26,12 @@ class VideoSprite extends FlxSpriteGroup {
 	public var waiting:Bool = false;
 	public var didPlay:Bool = false;
 
+	private var doWeLoop:Bool = false; // for hxCodec
+
 	public function new(videoName:String, isWaiting:Bool, canSkip:Bool = false, shouldLoop:Dynamic = false) {
 		super();
 
+		this.doWeLoop = shouldLoop;
 		this.videoName = videoName;
 		scrollFactor.set();
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
@@ -64,7 +70,7 @@ class VideoSprite extends FlxSpriteGroup {
 				alreadyDestroyed = true;
 			});
 		}
-
+		#if hxvlc
 		videoSprite.bitmap.onFormatSetup.add(function()
 		{
 			/*
@@ -79,9 +85,11 @@ class VideoSprite extends FlxSpriteGroup {
 			videoSprite.updateHitbox();
 			videoSprite.screenCenter();
 		});
-
+		#end
 		// start video and adjust resolution to screen size
+		#if hxvlc
 		videoSprite.load(videoName, shouldLoop ? ['input-repeat=65545'] : null);
+		#end
 	}
 
 	var alreadyDestroyed:Bool = false;
@@ -170,4 +178,12 @@ class VideoSprite extends FlxSpriteGroup {
 	public function resume() videoSprite?.resume();
 	public function pause() videoSprite?.pause();
 	#end
+
+	public function play() {
+		#if hxvlc
+		videoSprite.play();
+		#else
+		videoSprite.play(videoName, doWeLoop);
+		#end
+	}
 }

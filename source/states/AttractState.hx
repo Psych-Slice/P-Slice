@@ -2,11 +2,9 @@ package states;
 
 #if html5
 import funkin.graphics.video.FlxVideo;
+#else
+import objects.VideoSprite;
 #end
-#if hxCodec
-import hxcodec.flixel.FlxVideoSprite;
-#end
-
 
 /**
  * After about 2 minutes of inactivity on the title screen,
@@ -33,7 +31,7 @@ class AttractState extends MusicBeatState
     playVideoHTML5(ATTRACT_VIDEO_PATH);
     #end
 
-    #if hxCodec
+    #if (hxvlc || hxCodec)
     trace('Playing native video ${ATTRACT_VIDEO_PATH}');
     playVideoNative(ATTRACT_VIDEO_PATH);
     #end
@@ -61,21 +59,22 @@ class AttractState extends MusicBeatState
   }
   #end
 
-  #if hxCodec
-  var vid:FlxVideoSprite;
+  #if VIDEOS_ALLOWED
+  var vid:VideoSprite;
 
   function playVideoNative(filePath:String):Void
   {
     // Video displays OVER the FlxState.
-    vid = new FlxVideoSprite(0, 0);
+    vid = new VideoSprite(filePath,false);
 
     if (vid != null)
     {
       //vid.zIndex = 0;
-      vid.bitmap.onEndReached.add(onAttractEnd);
+      vid.finishCallback = onAttractEnd.bind();
 
       add(vid);
-      vid.play(filePath, false);
+      
+      vid.play();
     }
     else
     {
@@ -89,7 +88,7 @@ class AttractState extends MusicBeatState
     super.update(elapsed);
 
     // If the user presses any button, skip the video.
-    if (FlxG.keys.justPressed.ANY && !FlxG.keys.justPressed.MINUS && !FlxG.keys.justPressed.PLUS)//!controls.VOLUME_MUTE && !controls.VOLUME_UP && !controls.VOLUME_DOWN)
+    if (FlxG.keys.justPressed.ANY && !controls.VOLUME_MUTE && !controls.VOLUME_UP && !controls.VOLUME_DOWN)
     {
       onAttractEnd();
     }
@@ -108,11 +107,13 @@ class AttractState extends MusicBeatState
     }
     #end
 
-    #if hxCodec
+    #if (hxvlc || hxCodec)
     if (vid != null)
     {
-      vid.stop();
+      vid.pause();
       remove(vid);
+      @:privateAccess
+      vid.alreadyDestroyed = true;
     }
     #end
 
@@ -120,7 +121,7 @@ class AttractState extends MusicBeatState
     vid.destroy();
     vid = null;
     #end
-
+    FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.01);
     FlxG.switchState(() -> new TitleState());
   }
 }
