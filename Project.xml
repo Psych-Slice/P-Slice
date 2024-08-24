@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project>
+<project
+xmlns="http://lime.openfl.org/project/1.0.4"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/xsd/project-1.0.4.xsd">
 	<!-- _________________________ Application Settings _________________________ -->
 
 	<app title="Friday Night Funkin': P-Slice Engine" file="PsychEngine" packageName="com.mikolka9144.pslice" package="com.mikolka9144.pslice" main="Main" version="0.1" company="mikolka9144" />
@@ -26,7 +29,10 @@
 	<define name="ACHIEVEMENTS_ALLOWED" />
 	<define name="DISCORD_ALLOWED" />
 	<define name="TRANSLATIONS_ALLOWED" />
-	<define name="IRIS_DEBUG"/>
+
+	<section if="debug">
+		<define name="IRIS_DEBUG"/>
+	</section>
 	
 	<define name="SHOW_LOADING_SCREEN" />
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN -->
@@ -109,8 +115,10 @@
 	<!--Psych stuff needed-->
 	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
 	<haxelib name="hscript-iris" if="HSCRIPT_ALLOWED" version="1.0.2"/>
-	<haxelib name="hxCodec" if="VIDEOS_ALLOWED" unless="windows"/>
-	<haxelib name="hxvlc" if="VIDEOS_ALLOWED windows"/>
+	<section if="VIDEOS_ALLOWED">
+		<haxelib name="hxCodec" unless="windows"/>
+		<haxelib name="hxvlc" if="windows"/>
+	</section>
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
 	<haxelib name="flxanimate"/>
 

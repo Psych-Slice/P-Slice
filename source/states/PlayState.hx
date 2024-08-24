@@ -1,5 +1,7 @@
 package states;
 
+import substates.StickerSubState;
+import states.freeplay.FreeplayState;
 import backend.Highscore;
 import backend.StageData;
 import backend.WeekData;
@@ -168,6 +170,7 @@ class PlayState extends MusicBeatState
 
 	public var gfSpeed:Int = 1;
 	public var health(default, set):Float = 1;
+	private var healthLerp:Float = 1;
 	public var combo:Int = 0;
 	public var maxCombo:Int = 0;
 
@@ -518,7 +521,13 @@ class PlayState extends MusicBeatState
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 		moveCameraSection();
 
-		healthBar = new Bar(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11), 'healthBar', function() return health, 0, 2);
+		healthBar = new Bar(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11), 'healthBar', function(){
+			if(ClientPrefs.data.vsliceSmoothBar){
+				healthLerp = FlxMath.lerp(healthLerp, health, 0.15);
+				return healthLerp;
+			}
+			return health;
+		}, 0, 2);
 		healthBar.screenCenter(X);
 		healthBar.leftToRight = false;
 		healthBar.scrollFactor.set();
@@ -2509,8 +2518,50 @@ class PlayState extends MusicBeatState
    */
    function zoomIntoResultsScreen(isNewHighscore:Bool,scoreData:SaveScoreData,prevScoreRank:ScoringRank):Void
 	{
+		if(!ClientPrefs.data.vsliceResults){
+			var resultingAccuracy = Math.min(1,scoreData.accPoints/scoreData.totalNotesHit); 
+			var fpRank = Scoring.calculateRankFromData(scoreData.score,resultingAccuracy,scoreData.missed == 0) ?? SHIT;
+			if(isNewHighscore && !isStoryMode){
+				
+				camOther.fade(FlxColor.BLACK, 0.6,false,() -> {
+					FlxTransitionableState.skipNextTransOut = true;
+                FlxG.switchState(() -> states.freeplay.FreeplayState.build(
+                  {
+                    {
+                      fromResults:
+                        {
+                          oldRank: prevScoreRank,
+                          newRank: fpRank,
+                          songId: curSong,
+                          difficultyId: Difficulty.getString(),
+                          playRankAnim: true
+                        }
+                    }
+                  }));
+				});
+			}
+			else if (!isStoryMode){
+				openSubState(new StickerSubState(null, (sticker) -> states.freeplay.FreeplayState.build(
+					{
+					  {
+						fromResults:
+						  {
+							oldRank: null,
+							playRankAnim: false,
+							newRank: fpRank,
+							songId: curSong,
+                          	difficultyId: Difficulty.getString()
+						  }
+					  }
+					}, sticker)));
+			}
+			else {
+				openSubState(new StickerSubState(null, (sticker) -> new StoryMenuState(sticker)));
+			}
+			return;
+		}
 	  trace('WENT TO RESULTS SCREEN!');
-  
+	
 	  // If the opponent is GF, zoom in on the opponent.
 	  // Else, if there is no GF, zoom in on BF.
 	  // Else, zoom in on GF.

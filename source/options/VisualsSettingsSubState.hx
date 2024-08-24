@@ -129,12 +129,6 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 			['None', 'Tea Time', 'Breakfast', 'Breakfast (Pico)']);
 		addOption(option);
 		option.onChange = onChangePauseMusic;
-
-		var option:Option = new Option('Freeplay Dynamic Coloring',
-			'Enables dynamic freeplay background color. Disable this if you prefer original V-slice freeplay menu colors',
-			'vsliceFreeplayColors',
-			'bool');
-		addOption(option);
 		
 		#if CHECK_FOR_UPDATES
 		var option:Option = new Option('Check for Updates',

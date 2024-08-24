@@ -26,6 +26,8 @@ import states.TitleState;
 	public var camZooms:Bool = true;
 	public var hideHud:Bool = false;
 	public var vsliceFreeplayColors:Bool = true;
+	public var vsliceResults:Bool = true;
+	public var vsliceSmoothBar:Bool = true;
 	public var noteOffset:Int = 0;
 	public var arrowRGB:Array<Array<FlxColor>> = [
 		[0xFFC24B99, 0xFFFFFFFF, 0xFF3C1F56],
