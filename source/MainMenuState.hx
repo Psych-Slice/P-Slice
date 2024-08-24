@@ -169,7 +169,7 @@ class MainMenuState extends MusicBeatState
 				{
 					selectedSomethin = true;
 
-					if (ClientPrefs.data.flashing)
+					if (ClientPrefs.flashing)
 						FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
 					FlxFlicker.flicker(menuItems.members[curSelected], 1, 0.06, false, false, function(flick:FlxFlicker)
