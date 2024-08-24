@@ -1,6 +1,7 @@
 package funkin;
 
 import flixel.FlxSprite;
+import flixel.FlxG;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxSpriteGroup;
 import flixel.util.FlxStringUtil;

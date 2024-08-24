@@ -6,16 +6,13 @@ using StringTools;
 
 class Highscore
 {
-	#if (haxe >= "4.0.0")
 	public static var weekScores:Map<String, Int> = new Map();
-	public static var songScores:Map<String, Int> = new Map();
-	public static var songRating:Map<String, Float> = new Map();
-	#else
-	public static var weekScores:Map<String, Int> = new Map();
-	public static var songScores:Map<String, Int> = new Map<String, Int>();
-	public static var songRating:Map<String, Float> = new Map<String, Float>();
-	#end
+	public static var weekRating:Map<String, Float> = new Map<String, Float>();
+	public static var weekFCState:Map<String, Bool> = new Map<String, Bool>();
 
+	public static var songScores:Map<String, Int> = new Map<String, Int>();
+	public static var songFCState:Map<String, Bool> = new Map<String, Bool>();
+	public static var songRating:Map<String, Float> = new Map<String, Float>();
 
 	public static function resetSong(song:String, diff:Int = 0):Void
 	{
@@ -28,51 +25,50 @@ class Highscore
 	{
 		var daWeek:String = formatSong(week, diff);
 		setWeekScore(daWeek, 0);
+		setWeekRating(daWeek, 0);
+		setWeekFC(daWeek, false);
 	}
 
-	public static function floorDecimal(value:Float, decimals:Int):Float
-	{
-		if(decimals < 1)
-		{
-			return Math.floor(value);
-		}
-
-		var tempMult:Float = 1;
-		for (i in 0...decimals)
-		{
-			tempMult *= 10;
-		}
-		var newValue:Float = Math.floor(value * tempMult);
-		return newValue / tempMult;
-	}
-
-	public static function saveScore(song:String, score:Int = 0, ?diff:Int = 0, ?rating:Float = -1):Void
+	public static function saveScore(song:String, score:Int = 0, ?diff:Int = 0, ?rating:Float = -1,?FC:Bool = false):Void
 	{
 		var daSong:String = formatSong(song, diff);
 
-		if (songScores.exists(daSong)) {
-			if (songScores.get(daSong) < score) {
+		if (songScores.exists(daSong))
+		{
+			if (songScores.get(daSong) < score)
+			{
 				setScore(daSong, score);
-				if(rating >= 0) setRating(daSong, rating);
+				setFC(daSong,FC);
+				if (rating >= 0)
+					setRating(daSong, rating);
 			}
 		}
-		else {
+		else
+		{
 			setScore(daSong, score);
-			if(rating >= 0) setRating(daSong, rating);
+			setFC(daSong,FC);
+			if (rating >= 0)
+				setRating(daSong, rating);
 		}
 	}
 
-	public static function saveWeekScore(week:String, score:Int = 0, ?diff:Int = 0):Void
+	public static function saveWeekScore(week:String, score:Int = 0, ?diff:Int = 0, ?rating:Float = -1,?FC:Bool = false):Void
 	{
 		var daWeek:String = formatSong(week, diff);
 
 		if (weekScores.exists(daWeek))
 		{
-			if (weekScores.get(daWeek) < score)
+			if (weekScores.get(daWeek) < score){
 				setWeekScore(daWeek, score);
+				setWeekRating(daWeek,rating);
+				setWeekFC(daWeek,FC);
+			}
 		}
-		else
+		else{
 			setWeekScore(daWeek, score);
+			setWeekRating(daWeek,rating);
+			setWeekFC(daWeek,FC);
+		}
 	}
 
 	/**
@@ -85,6 +81,7 @@ class Highscore
 		FlxG.save.data.songScores = songScores;
 		FlxG.save.flush();
 	}
+
 	static function setWeekScore(week:String, score:Int):Void
 	{
 		// Reminder that I don't need to format this song, it should come formatted!
@@ -93,11 +90,35 @@ class Highscore
 		FlxG.save.flush();
 	}
 
+	static function setWeekRating(week:String, rating:Float):Void
+	{
+		// Reminder that I don't need to format this song, it should come formatted!
+		weekRating.set(week, rating);
+		FlxG.save.data.weekRating = weekRating;
+		FlxG.save.flush();
+	}
+
+	static function setWeekFC(week:String, isFC:Bool):Void
+	{
+		// Reminder that I don't need to format this song, it should come formatted!
+		weekFCState.set(week, isFC);
+		FlxG.save.data.weekFCState = weekFCState;
+		FlxG.save.flush();
+	}
+
 	static function setRating(song:String, rating:Float):Void
 	{
 		// Reminder that I don't need to format this song, it should come formatted!
 		songRating.set(song, rating);
 		FlxG.save.data.songRating = songRating;
+		FlxG.save.flush();
+	}
+
+	static function setFC(song:String, isFC:Bool):Void
+	{
+		// Reminder that I don't need to format this song, it should come formatted!
+		songFCState.set(song, isFC);
+		FlxG.save.data.songFCState = songFCState;
 		FlxG.save.flush();
 	}
 
@@ -113,6 +134,15 @@ class Highscore
 			setScore(daSong, 0);
 
 		return songScores.get(daSong);
+	}
+
+	public static function getFCState(song:String, diff:Int):Bool
+	{
+		var daSong:String = formatSong(song, diff);
+		if (!songFCState.exists(daSong))
+			setFC(daSong, false);
+
+		return songFCState.get(daSong);
 	}
 
 	public static function getRating(song:String, diff:Int):Float
@@ -133,11 +163,37 @@ class Highscore
 		return weekScores.get(daWeek);
 	}
 
+	public static function getWeekAccuracy(week:String, diff:Int):Float
+	{
+		var daWeek:String = formatSong(week, diff);
+		if (!weekRating.exists(daWeek))
+			setWeekRating(daWeek, 0);
+
+		return weekRating.get(daWeek);
+	}
+
+	public static function getWeekFC(week:String, diff:Int):Bool
+	{
+		var daWeek:String = formatSong(week, diff);
+		if (!weekScores.exists(daWeek))
+			setWeekFC(daWeek, false);
+
+		return weekFCState.get(daWeek);
+	}
+
 	public static function load():Void
 	{
 		if (FlxG.save.data.weekScores != null)
 		{
 			weekScores = FlxG.save.data.weekScores;
+		}
+		if (FlxG.save.data.weekRating != null)
+		{
+			weekRating = FlxG.save.data.weekRating;
+		}
+		if (FlxG.save.data.weekFCState != null)
+		{
+			weekFCState = FlxG.save.data.weekFCState;
 		}
 		if (FlxG.save.data.songScores != null)
 		{
@@ -146,6 +202,10 @@ class Highscore
 		if (FlxG.save.data.songRating != null)
 		{
 			songRating = FlxG.save.data.songRating;
+		}
+		if (FlxG.save.data.songFCState != null)
+		{
+			songFCState = FlxG.save.data.songFCState;
 		}
 	}
 }

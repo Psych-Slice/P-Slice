@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.transition.FlxTransitionableState;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.FlxG;
@@ -8,7 +9,6 @@ import flixel.text.FlxText;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxSprite;
 import flixel.FlxObject;
-import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
 import lime.app.Application;
 import editors.MasterEditorMenu;
@@ -211,7 +211,7 @@ class MainMenuState extends MusicBeatState
 							case 'credits':
 								MusicBeatState.switchState(new CreditsState());
 							case 'options':
-								MusicBeatState.switchState(new OptionsState());
+								MusicBeatState.switchState(new options.OptionsState());
 								if (PlayState.SONG != null)
 								{
 									PlayState.SONG.arrowSkin = null;
@@ -225,8 +225,8 @@ class MainMenuState extends MusicBeatState
 					{
 						if (i == curSelected)
 							continue;
-						FlxTween.tween(menuItems.members[i], {alpha: 0}, 0.4, {
-							ease: FlxEase.quadOut,
+						flixel.tweens.FlxTween.tween(menuItems.members[i], {alpha: 0}, 0.4, {
+							ease: flixel.tweens.FlxEase.quadOut,
 							onComplete: function(twn:FlxTween)
 							{
 								menuItems.members[i].kill();
@@ -236,12 +236,12 @@ class MainMenuState extends MusicBeatState
 				}
 			}
 			#if desktop
-			if (controls.justPressed('debug_1'))
+			if (controls.checkByName('debug_1'))
 			{
 				selectedSomethin = true;
-				FlxTransitionableState.skipNextTransIn = false;
-				FlxTransitionableState.skipNextTransOut = false;
-				MusicBeatState.switchState(new MasterEditorMenu());
+				//FlxTransitionableState.skipNextTransIn = false;
+				//FlxTransitionableState.skipNextTransOut = false;
+				MusicBeatState.switchState(new editors.MasterEditorMenu());
 			}
 			#end
 		}

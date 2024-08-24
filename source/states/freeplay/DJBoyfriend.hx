@@ -1,5 +1,7 @@
 package states.freeplay;
 
+import flixel.FlxG;
+import flixel.system.FlxSound;
 import backend.animation.FlxAtlasSprite;
 import flixel.FlxSprite;
 import flixel.util.FlxSignal;

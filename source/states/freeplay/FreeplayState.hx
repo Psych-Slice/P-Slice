@@ -5,23 +5,21 @@ import haxe.Exception;
 import openfl.media.Sound;
 import funkin.util.flixel.sound.FlxPartialSound;
 import flixel.graphics.FlxGraphic;
-import substates.GameplayChangersSubstate;
 import funkin.Scoring;
 import funkin.AtlasText;
 import shaders.PureColor;
-import backend.Song;
+import Song;
 import shaders.HSVShader;
 import shaders.StrokeShader;
 import shaders.AngleMask;
-import backend.Highscore;
+import Highscore;
 import funkin.MathUtil;
 import funkin.IntervalShake;
-import backend.WeekData;
+import WeekData;
 import backend.animation.FlxAtlasSprite;
 import substates.StickerSubState;
 import funkin.Scoring.ScoringRank;
 import TypedAlphabet;
-import PsychCamera;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxInputText;
 import flixel.FlxCamera;
@@ -181,8 +179,8 @@ class FreeplayState extends MusicBeatSubstate
 	public static var rememberedDifficulty:Null<String> = "normal";
 	public static var rememberedSongId:Null<String> = 'tutorial';
 
-	var funnyCam:PsychCamera;
-	var rankCamera:PsychCamera;
+	var funnyCam:FlxCamera;
+	var rankCamera:FlxCamera;
 	var rankBg:FlxSprite;
 	var rankVignette:FlxSprite;
 
@@ -240,7 +238,7 @@ class FreeplayState extends MusicBeatSubstate
 		FlxTransitionableState.skipNextTransIn = true;
 
 		// dedicated camera for the state so we don't need to fuk around with camera scrolls from the mainmenu / elsewhere
-		funnyCam = new PsychCamera(0, 0, FlxG.width, FlxG.height);
+		funnyCam = new FlxCamera(0, 0, FlxG.width, FlxG.height);
 		funnyCam.bgColor = FlxColor.TRANSPARENT;
 		FlxG.cameras.add(funnyCam, false);
 		this.cameras = [funnyCam];
@@ -695,7 +693,7 @@ class FreeplayState extends MusicBeatSubstate
 		generateSongList(null, false);
 
 		// dedicated camera for the state so we don't need to fuk around with camera scrolls from the mainmenu / elsewhere
-		funnyCam = new PsychCamera(0, 0, FlxG.width, FlxG.height);
+		funnyCam = new FlxCamera(0, 0, FlxG.width, FlxG.height);
 		funnyCam.bgColor = FlxColor.TRANSPARENT;
 		FlxG.cameras.add(funnyCam, false);
 
@@ -712,7 +710,7 @@ class FreeplayState extends MusicBeatSubstate
 			bs.cameras = [funnyCam];
 		});
 
-		rankCamera = new PsychCamera(0, 0, FlxG.width, FlxG.height);
+		rankCamera = new FlxCamera(0, 0, FlxG.width, FlxG.height);
 		rankCamera.bgColor = FlxColor.TRANSPARENT;
 		FlxG.cameras.add(rankCamera, false);
 		rankBg.cameras = [rankCamera];

@@ -1,12 +1,11 @@
 package states.results;
 
 
-import backend.Highscore;
+import Highscore;
 import flixel.addons.transition.FlxTransitionableState;
 import substates.StickerSubState;
 import funkin.FunkinTools;
 import funkin.Scoring;
-import backend.PsychCamera;
 import backend.animation.FlxAtlasSprite;
 import shaders.LeftMaskShader;
 import flixel.FlxSprite;
@@ -18,6 +17,8 @@ import flixel.math.FlxPoint;
 
 import flixel.math.FlxRect;
 import flixel.text.FlxBitmapText;
+
+import filxel.FlxCamera;
 
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
@@ -65,10 +66,10 @@ class ResultState extends MusicBeatSubstate
   var bfShit:Null<FlxAtlasSprite> = null;
 
   var rankBg:FlxSprite;
-  final cameraBG:PsychCamera;
-  final cameraScroll:PsychCamera;
-  final cameraEverything:PsychCamera;
-  final cameraOverlay:PsychCamera;
+  final cameraBG:FlxCamera;
+  final cameraScroll:FlxCamera;
+  final cameraEverything:FlxCamera;
+  final cameraOverlay:FlxCamera;
 	var resultingAccuracy:Float;
 
 
@@ -83,10 +84,10 @@ class ResultState extends MusicBeatSubstate
 
     rank = Scoring.calculateRankFromData(params.scoreData.score,resultingAccuracy,params.scoreData.missed == 0) ?? SHIT;
 
-    cameraBG = new PsychCamera( 0, 0, FlxG.width, FlxG.height);
-    cameraScroll = new PsychCamera(0, 0, FlxG.width, FlxG.height);
-    cameraEverything = new PsychCamera(0, 0, FlxG.width, FlxG.height);
-    cameraOverlay = new PsychCamera(0, 0, FlxG.width, FlxG.height);
+    cameraBG = new FlxCamera( 0, 0, FlxG.width, FlxG.height);
+    cameraScroll = new FlxCamera(0, 0, FlxG.width, FlxG.height);
+    cameraEverything = new FlxCamera(0, 0, FlxG.width, FlxG.height);
+    cameraOverlay = new FlxCamera(0, 0, FlxG.width, FlxG.height);
     // We build a lot of this stuff in the constructor, then place it in create().
     // This prevents having to do `null` checks everywhere.
 

@@ -1,6 +1,7 @@
 package funkin;
 
-import backend.Highscore;
+import Highscore;
+import flixel.FlxG;
 
 /**
  * Which system to use when scoring and judging notes.

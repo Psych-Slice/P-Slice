@@ -1,5 +1,7 @@
 package funkin;
 
+import flixel.FlxG;
+
 /**
  * Utilities for performing mathematical operations.
  */

@@ -1,9 +1,13 @@
 package states.freeplay;
 
+import flixel.util.FlxColor;
+
 class FreeplayColorTweener {
+
     var targetState:FreeplayState;
     var intendedColor:FlxColor;
     var tweens:List<FlxTween>;
+    
     public function new(state:FreeplayState) {
         targetState = state;
         tweens = new List<FlxTween>();
