@@ -14,5 +14,5 @@ haxelib install tjson 1.4.0
 haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git 0a51aed0d9523d22a83e453ce7b593ec7fed4742
 haxelib git flxanimate https://github.com/ShadowMario/flxanimate dev
 haxelib git linc_luajit https://github.com/superpowers04/linc_luajit
-haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
 haxelib git FlxPartialSound https://github.com/FunkinCrew/FlxPartialSound.git f986332ba5ab02abd386ce662578baf04904604a
