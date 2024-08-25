@@ -1,6 +1,7 @@
 package states.results;
 
 
+import flixel.FlxG;
 import Highscore;
 import flixel.addons.transition.FlxTransitionableState;
 import substates.StickerSubState;
@@ -18,7 +19,7 @@ import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.text.FlxBitmapText;
 
-import filxel.FlxCamera;
+import flixel.FlxCamera;
 
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
@@ -102,7 +103,7 @@ class ResultState extends MusicBeatSubstate
     difColor.greenFloat = Math.max(difColor.greenFloat,fractal);
 
     difficulty = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.get(49, 62)));
-    difficulty.text = Difficulty.list[PlayState.storyDifficulty].toUpperCase();
+    difficulty.text = CoolUtil.difficultyString();
     difficulty.color = difColor;
     difficulty.letterSpacing = -11; //!!!
     difficulty.angle = -4.4;
@@ -881,7 +882,7 @@ class ResultState extends MusicBeatSubstate
               ease: FlxEase.expoOut,
               onComplete: function(_) {
                 FlxTransitionableState.skipNextTransOut = true;
-                FlxG.switchState(() -> states.freeplay.FreeplayState.build(
+                FlxG.switchState(states.freeplay.FreeplayState.build(
                   {
                     {
                       fromResults:

@@ -1,7 +1,12 @@
 package funkin;
 
+import flixel.FlxG;
+import flixel.util.FlxColor;
 import states.results.ResultState.SaveScoreData;
 import flixel.graphics.FlxGraphic;
+import flixel.FlxSprite;
+
+using StringTools;
 
 class FunkinTools
 {
@@ -19,7 +24,7 @@ class FunkinTools
 	public static function createSparrow(x:Float = 0.0, y:Float = 0.0, key:String):FlxSprite
 	{
 		var sprite:FlxSprite = new FlxSprite(x, y);
-		sprite.antialiasing = ClientPrefs.data.antialiasing;
+		sprite.antialiasing = ClientPrefs.globalAntialiasing;
 		sprite.frames = Paths.getSparrowAtlas(key);
 		return sprite;
 	}

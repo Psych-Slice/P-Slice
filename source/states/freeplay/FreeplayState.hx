@@ -1,5 +1,7 @@
 package states.freeplay;
 
+import sys.FileSystem;
+import flixel.FlxG;
 import lime.app.Future;
 import haxe.Exception;
 import openfl.media.Sound;
@@ -42,6 +44,7 @@ import lime.utils.Assets;
 
 using funkin.FunkinTools;
 using funkin.ArrayTools;
+using StringTools;
 
 /**
  * Parameters used to initialize the FreeplayState.
@@ -226,7 +229,7 @@ class FreeplayState extends MusicBeatSubstate
 
 	override function create():Void
 	{
-		if(ClientPrefs.data.vsliceFreeplayColors) colorTween = new FreeplayColorTweener(this);
+		if(ClientPrefs.vsliceFreeplayColors) colorTween = new FreeplayColorTweener(this);
 		BPMCache.instance.clearCache(); // for good measure
 		
 
@@ -507,7 +510,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		for (diffId in diffIdsTotal)
 		{
-			Mods.currentModDirectory = diffIdsTotalModBinds.get(diffId);
+			Paths.currentModDirectory = diffIdsTotalModBinds.get(diffId);
 			var diffSprite:DifficultySprite = new DifficultySprite(diffId);
 			diffSprite.difficultyId = diffId;
 			diffSprite.x = -((diffSprite.width/2)-106);
@@ -1515,7 +1518,7 @@ class FreeplayState extends MusicBeatSubstate
 			}
 
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			Mods.loadTopMod();
+			WeekData.loadTheFirstEnabledMod();
 
 			var longestTimer:Float = 0;
 
@@ -1588,7 +1591,7 @@ class FreeplayState extends MusicBeatSubstate
 				}
 				else
 				{
-					FlxG.switchState(() -> new MainMenuState());
+					FlxG.switchState(new MainMenuState());
 				}
 			});
 		}
@@ -1845,7 +1848,7 @@ class FreeplayState extends MusicBeatSubstate
 
 			// Paths.setCurrentLevel(cap.songData.levelId);
 			persistentUpdate = false;
-			Mods.currentModDirectory = cap.songData.folder;
+			Paths.currentModDirectory = cap.songData.folder;
 
 			var diffId = cap.songData.loadAndGetDiffId();
 			if (diffId == -1)
@@ -1977,9 +1980,10 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			if (daSongCapsule.songData != null)
 			{
-				Mods.currentModDirectory = daSongCapsule.songData.folder;
+				Paths.currentModDirectory = daSongCapsule.songData.folder;
 				PlayState.storyWeek = daSongCapsule.songData.levelId; // TODO
-				Difficulty.loadFromWeek();
+				
+				CoolUtil.difficulties = daSongCapsule.songData.songDifficulties;
 			}
 
 			FlxG.sound.music.pause(); // muting previous track must be done NOW
@@ -2005,11 +2009,18 @@ class FreeplayState extends MusicBeatSubstate
 			var instPath = "";
 			
 			try{
-				Mods.currentModDirectory = daSongCapsule.songData.folder;
-				instPath = Paths.modFolders('songs/${Paths.formatToSongPath(daSongCapsule.songData.songId)}/Inst.${Paths.SOUND_EXT}');
-				var future = FlxPartialSound.partialLoadFromFile(instPath, 0.05,0.25);
+				var songData = daSongCapsule.songData;
+				Paths.currentModDirectory = songData.folder;
+
+				instPath = 'assets/songs/${Paths.formatToSongPath(songData.songId)}/Inst.${Paths.SOUND_EXT}';
+				#if MODS_ALLOWED
+				var modsInstPath = Paths.modFolders('songs/${Paths.formatToSongPath(songData.songId)}/Inst.${Paths.SOUND_EXT}');
+				if(FileSystem.exists(modsInstPath)) instPath = modsInstPath;
+				#end
+				
+				var future = FlxPartialSound.partialLoadFromFile(instPath, songData.freeplayPrevStart,songData.freeplayPrevEnd);
 				if(future == null){
-					trace('Internal failure loading instrumentals for ${daSongCapsule.songData.songName} "${instPath}"');
+					trace('Internal failure loading instrumentals for ${songData.songName} "${instPath}"');
 					return;
 				}
 				future.future.onComplete(function(sound:Sound)
@@ -2165,6 +2176,8 @@ class FreeplaySongData
 	public var songStartingBpm(default, null):Float = 0;
 	public var difficultyRating(default, null):Int = 0;
 
+	public var freeplayPrevStart(default, null):Float = 0;
+	public var freeplayPrevEnd(default, null):Float = 0;
 	public var currentDifficulty(default, set):String = "normal";
 
 	public var scoringRank:Null<ScoringRank> = null;
@@ -2184,9 +2197,14 @@ class FreeplaySongData
 		this.color = color;
 		this.songId = songId;
 
+		var meta = FreeplayMeta.getMeta(songId);
+		difficultyRating = meta.songRating;
+		freeplayPrevStart = meta.freeplayPrevStart;
+		freeplayPrevEnd = meta.freeplayPrevEnd;
+
 		updateValues();
 
-		this.isFav = ClientPrefs.data.favSongIds.contains(songId+this.levelName);//Save.instance.isSongFavorited(songId);
+		this.isFav = ClientPrefs.favSongIds.contains(songId+this.levelName);//Save.instance.isSongFavorited(songId);
 	}
 
 	/**
@@ -2198,11 +2216,11 @@ class FreeplaySongData
 		isFav = !isFav;
 		if (isFav)
 		{
-			ClientPrefs.data.favSongIds.pushUnique(this.songId+this.levelName);
+			ClientPrefs.favSongIds.pushUnique(this.songId+this.levelName);
 		}
 		else
 		{
-			ClientPrefs.data.favSongIds.remove(this.songId+this.levelName);
+			ClientPrefs.favSongIds.remove(this.songId+this.levelName);
 		}
 		ClientPrefs.saveSettings();
 		return isFav;
@@ -2216,9 +2234,15 @@ class FreeplaySongData
 		this.songDifficulties = leWeek.difficulties.extractWeeks();
 		this.folder = leWeek.folder;
 
-		Mods.currentModDirectory = this.folder;
+		Paths.currentModDirectory = this.folder;
 		var fileSngName = Paths.formatToSongPath(songId);
-		var sngDataPath = Paths.modFolders("data/"+fileSngName);
+		var sngDataPath = Paths.getLibraryPath("data/"+fileSngName);
+
+		#if MODS_ALLOWED
+		var mod_path = Paths.modFolders("data/"+fileSngName);
+		if(FileSystem.exists(mod_path)) sngDataPath = mod_path;
+		#end
+		
 		//if(sngDataPath == null) return;
 		
 		if(this.songDifficulties.length == 0){
@@ -2252,8 +2276,11 @@ class FreeplaySongData
 	}
 	public function loadAndGetDiffId() {
 		var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[levelId]);
-		Difficulty.loadFromWeek(leWeek);
-		return Difficulty.list.findIndex(s -> s.trim().toLowerCase() == currentDifficulty);
+
+		CoolUtil.difficulties = leWeek.difficulties.extractWeeks();
+		if(CoolUtil.difficulties.length == 0) CoolUtil.difficulties = CoolUtil.defaultDifficulties.copy();
+
+		return CoolUtil.difficulties.findIndex(s -> s.trim().toLowerCase() == currentDifficulty);
 	}
 }
 
@@ -2291,11 +2318,11 @@ class DifficultySprite extends FlxSprite
 
 		difficultyId = diffId;
 		var tex:FlxGraphic = null;
-		if(["easy", "normal", "hard"].contains(difficultyId)){
-			tex = Paths.image('freeplay/freeplay' + diffId,null,false);
+		if(["easy", "normal", "hard", "erect", "nightmare"].contains(difficultyId)){
+			tex = Paths.image('freeplay/freeplay' + diffId,null);
 		}
 		else{
-			tex = Paths.image('menudifficulties/' + diffId,null,false);
+			tex = Paths.image('menudifficulties/' + diffId,null);
 		}
 		hasValidTexture = (tex != null);
 		if(hasValidTexture) this.loadGraphic(tex);

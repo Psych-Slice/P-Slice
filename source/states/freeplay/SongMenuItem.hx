@@ -1,5 +1,6 @@
 package states.freeplay;
 
+import flixel.FlxG;
 import funkin.Scoring.ScoringRank;
 import states.freeplay.FreeplayState.FreeplaySongData;
 import shaders.Grayscale;
@@ -21,6 +22,8 @@ import flixel.tweens.FlxTween;
 import flixel.addons.effects.FlxTrail;
 import flixel.util.FlxColor;
 import funkin.MathUtil;
+
+using StringTools;
 
 class SongMenuItem extends FlxSpriteGroup
 {
@@ -526,7 +529,7 @@ class SongMenuItem extends FlxSpriteGroup
     //60, 10
     //trace(char);
     if(char.startsWith("icon-")) char = char.replace("icon-","");
-    Mods.currentModDirectory = songData.folder;
+    Paths.currentModDirectory = songData.folder;
 
     
     if(!Paths.fileExists('images/freeplay/icons/${char}pixel.png',IMAGE)){

@@ -137,6 +137,15 @@ class FlxAnimationController implements IFlxDestroyable
 		_prerotated.angle = _sprite.angle;
 	}
 
+	/**
+	 * Checks if an animation exists by it's name. Backported for P-slice
+	 * @param name The animation name.
+	 * @since 4.11.0
+	 */
+	 public function exists(name:String):Bool
+		{
+			return _animations.exists(name);
+		}
 	public function destroyAnimations():Void
 	{
 		clearAnimations();

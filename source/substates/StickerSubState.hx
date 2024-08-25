@@ -1,5 +1,7 @@
 package substates;
 
+import sys.FileSystem;
+import flixel.system.FlxSound;
 import MainMenuState;
 import flixel.FlxSprite;
 import haxe.Json;
@@ -155,15 +157,18 @@ class StickerSubState extends MusicBeatSubstate
     }
 
     trace("Collecting stickers...");
-    trace("Current mod: "+Mods.currentModDirectory);
+    trace("Current mod: "+Paths.currentModDirectory);
     var stickers:StickerInfo = null;
 
     // var globalMods = Mods.getGlobalMods().map(s -> "mods/"+s);
     // globalMods.pushUnique("mods/"+Mods.currentModDirectory);
     // globalMods.push("assets/shared"); // base stickers
 
-
-      var modStickerDir = Paths.getPath('images/transitionSwag/$STICKER_SET',TEXT,null,true);
+      var modStickerDir = Paths.modFolders('images/transitionSwag/$STICKER_SET');
+      if(!FileSystem.exists(modStickerDir)){
+        modStickerDir = Paths.getPath('images/transitionSwag/$STICKER_SET',TEXT);
+        // this does not check mods in PE 0.6.3
+      }
       if(!FileSystem.exists(modStickerDir)){
         trace('Couldn\'t find sticker set "$STICKER_SET" in $modStickerDir');
         
@@ -320,7 +325,7 @@ class StickerSubState extends MusicBeatSubstate
 
     STICKER_SET = "stickers-set-1";
     STICKER_PACK = "all";
-    Mods.loadTopMod(); // We won't be messing with mods from here on
+    WeekData.loadTheFirstEnabledMod(); // We won't be messing with mods from here on
   }
 
   override public function update(elapsed:Float):Void

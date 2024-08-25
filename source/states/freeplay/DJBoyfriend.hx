@@ -7,6 +7,8 @@ import flixel.FlxSprite;
 import flixel.util.FlxSignal;
 import flixel.util.FlxTimer;
 
+using StringTools;
+
 class DJBoyfriend extends FlxAtlasSprite
 {
   // Represents the sprite's current status.

@@ -1,5 +1,6 @@
 package states.freeplay;
 
+import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup;

@@ -7,6 +7,8 @@ import flixel.graphics.FlxGraphic;
 import Controls;
 
 class ClientPrefs {
+	public static var favSongIds:Array<String> = [];
+
 	public static var downScroll:Bool = false;
 	public static var middleScroll:Bool = false;
 	public static var opponentStrums:Bool = true;
@@ -61,6 +63,10 @@ class ClientPrefs {
 	public static var badWindow:Int = 135;
 	public static var safeFrames:Float = 10;
 
+	public static var vsliceFreeplayColors:Bool = true;
+	public static var vsliceResults:Bool = true;
+	public static var vsliceSmoothBar:Bool = true;
+
 	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
 		//Key Bind, Name for ControlsSubState
@@ -77,7 +83,12 @@ class ClientPrefs {
 		'accept'		=> [SPACE, ENTER],
 		'back'			=> [BACKSPACE, ESCAPE],
 		'pause'			=> [ENTER, ESCAPE],
+		'screenshot'    => [F3],
 		'reset'			=> [R, NONE],
+
+		'favorite'		=> [F],
+		'bar_left'		=> [Q],
+		'bar_right'		=> [E],
 		
 		'volume_mute'	=> [ZERO, NONE],
 		'volume_up'		=> [NUMPADPLUS, PLUS],
@@ -130,6 +141,11 @@ class ClientPrefs {
 		FlxG.save.data.pauseMusic = pauseMusic;
 		FlxG.save.data.checkForUpdates = checkForUpdates;
 		FlxG.save.data.comboStacking = comboStacking;
+
+		FlxG.save.data.vsliceFreeplayColors = vsliceFreeplayColors;
+		FlxG.save.data.vsliceResults = vsliceResults;
+		FlxG.save.data.vsliceSmoothBar = vsliceSmoothBar;
+		FlxG.save.data.favSongIds = favSongIds;
 	
 		FlxG.save.flush();
 
@@ -249,6 +265,19 @@ class ClientPrefs {
 			{
 				gameplaySettings.set(name, value);
 			}
+		}
+		//P-slice
+		if(FlxG.save.data.vsliceFreeplayColors != null) {
+			vsliceFreeplayColors = FlxG.save.data.vsliceFreeplayColors;
+		}
+		if(FlxG.save.data.vsliceResults != null) {
+			vsliceResults = FlxG.save.data.vsliceResults;
+		}
+		if(FlxG.save.data.vsliceSmoothBar != null) {
+			vsliceSmoothBar = FlxG.save.data.vsliceSmoothBar;
+		}
+		if(FlxG.save.data.favSongIds != null) {
+			favSongIds = FlxG.save.data.favSongIds;
 		}
 		
 		// flixel automatically saves your volume!

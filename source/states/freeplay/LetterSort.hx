@@ -2,13 +2,10 @@ package states.freeplay;
 
 import backend.animation.FlxAtlasSprite;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
-import flixel.tweens.FlxTween;
-import flixel.tweens.FlxEase;
-import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+
+using StringTools;
 
 class LetterSort extends FlxTypedSpriteGroup<FlxSprite>
 {
@@ -72,7 +69,7 @@ class LetterSort extends FlxTypedSpriteGroup<FlxSprite>
   var controls(get, never):Controls;
 
   inline function get_controls():Controls
-    return Controls.instance;
+    return PlayerSettings.player1.controls;
 
   override function update(elapsed:Float):Void
   {

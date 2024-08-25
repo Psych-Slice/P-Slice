@@ -1,6 +1,9 @@
 package states.freeplay;
 
+import flixel.math.FlxMath;
+import flixel.FlxSprite;
 import flixel.util.FlxColor;
+import flixel.tweens.FlxTween;
 
 class FreeplayColorTweener {
 

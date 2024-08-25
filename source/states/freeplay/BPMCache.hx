@@ -1,5 +1,10 @@
 package states.freeplay;
 
+import sys.io.File;
+import sys.FileSystem;
+
+using StringTools;
+
 class BPMCache {
     private var bpmMap:Map<String,Int> = [];
     public static var instance = new BPMCache();

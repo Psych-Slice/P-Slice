@@ -1,5 +1,6 @@
 package;
 
+import substates.StickerSubState;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -49,10 +50,30 @@ class StoryMenuState extends MusicBeatState
 
 	var loadedWeeks:Array<WeekData> = [];
 
+	var stickerSubState:StickerSubState;
+	public function new(?stickers:StickerSubState = null)
+	{
+		super();
+	  
+		if (stickers != null)
+		{
+			stickerSubState = stickers;
+		}
+	}
+
 	override function create()
 	{
-		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
+		if (stickerSubState != null)
+			{
+			  //this.persistentUpdate = true;
+			  //this.persistentDraw = true;
+		
+			  openSubState(stickerSubState);
+			  stickerSubState.degenStickers();
+			  FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			}
+		else Paths.clearStoredMemory();
 
 		PlayState.isStoryMode = true;
 		WeekData.reloadWeekFiles(true);
@@ -317,9 +338,11 @@ class StoryMenuState extends MusicBeatState
 			if(diffic == null) diffic = '';
 
 			PlayState.storyDifficulty = curDifficulty;
+			PlayState.storyDifficultyColor = CoolUtil.dominantColor(sprDifficulty);
 
 			PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
 			PlayState.campaignScore = 0;
+			PlayState.storyCampaignTitle = txtWeekTitle.text == "" ? "Untitled week" : txtWeekTitle.text;
 			PlayState.campaignMisses = 0;
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
