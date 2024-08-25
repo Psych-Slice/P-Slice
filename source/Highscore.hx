@@ -139,7 +139,9 @@ class Highscore
 
 	public static function formatSong(song:String, diff:Int):String
 	{
-		return Paths.formatToSongPath(song) + CoolUtil.getDifficultyFilePath(diff);
+		var diffName = CoolUtil.getDifficultyFilePath(diff);
+		if(diffName == "-normal") diffName = ""; // Psyck 0.6.3 is screwing this one up!
+		return Paths.formatToSongPath(song) + diffName;
 	}
 
 	public static function getScore(song:String, diff:Int):Int

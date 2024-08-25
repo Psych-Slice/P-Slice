@@ -441,22 +441,84 @@ class Paths
 		return modFolders('achievements/' + key + '.json');
 	}*/
 
-	static public function modFolders(key:String) {
-		if(currentModDirectory != null && currentModDirectory.length > 0) {
-			var fileToCheck:String = mods(currentModDirectory + '/' + key);
-			if(FileSystem.exists(fileToCheck)) {
-				return fileToCheck;
+	static public function modFolders(key:String)
+		{
+			if (currentModDirectory != null && currentModDirectory.length > 0)
+			{
+				var fileToCheck:String = mods(currentModDirectory + '/' + key);
+				if (FileSystem.exists(fileToCheck))
+					return fileToCheck;
+				#if linux
+				else
+				{
+					var newPath:String = findFile(key);
+					if (newPath != null)
+						return newPath;
+				}
+				#end
 			}
+	
+			for (mod in getGlobalMods())
+			{
+				var fileToCheck:String = mods(mod + '/' + key);
+				if (FileSystem.exists(fileToCheck))
+					return fileToCheck;
+				#if linux
+				else
+				{
+					var newPath:String = findFile(key);
+					if (newPath != null)
+						return newPath;
+				}
+				#end
+			}
+			return 'mods/' + key;
 		}
-
-		for(mod in getGlobalMods()){
-			var fileToCheck:String = mods(mod + '/' + key);
-			if(FileSystem.exists(fileToCheck))
-				return fileToCheck;
-
+	
+		#if linux
+		static function findFile(key:String):String // used above ^^^^
+		{ 
+			var targetDir:Array<String> = key.replace('\\','/').split('/');
+			var searchDir:String = mods(currentModDirectory + '/' + targetDir[0]);
+			targetDir.remove(targetDir[0]);
+	
+			for (x in targetDir)
+			{
+				if(x == '') continue;
+				var newPart:String = findNode(searchDir, x);
+				if (newPart != null)
+				{
+					searchDir += '/' + newPart;
+				}
+				else return null;
+			}
+			//trace('MATCH WITH $key! RETURNING $searchDir');
+			return searchDir;
 		}
-		return 'mods/' + key;
-	}
+	
+		static function findNode(dir:String, key:String):String
+		{
+			var allFiles:Array<String> = null;
+			try
+			{
+				allFiles = FileSystem.readDirectory(dir);
+			}
+			catch (e)
+			{
+				return null;
+			}
+	
+			var allSearchies:Array<String> = allFiles.map(s -> s.toLowerCase());
+			for (i => name in allSearchies)
+			{
+				if (key.toLowerCase() == name)
+				{
+					return allFiles[i];
+				}
+			}
+			return null;
+		}
+		#end
 
 	public static var globalMods:Array<String> = [];
 

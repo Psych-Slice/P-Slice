@@ -81,7 +81,7 @@ import sys.io.File;
 #end
 
 #if VIDEOS_ALLOWED
-import vlc.MP4Handler;
+import hxcodec.flixel.FlxVideoSprite;
 #end
 
 using StringTools;
@@ -194,15 +194,8 @@ class PlayState extends MusicBeatState
 	public var health:Float = 1;
 
 	//LERPING
-	private var _healthLerp:Float = 1;
-	public var healthLerp(get,never):Float;
-	inline function get_healthLerp(){
-		if(ClientPrefs.vsliceSmoothBar){
-			_healthLerp = FlxMath.lerp(_healthLerp, health, 0.15);
-			return _healthLerp;
-		}
-		return health;
-	}
+	public var healthLerp:Float = 1;
+
 
 
 	public var combo:Int = 0;
@@ -245,6 +238,8 @@ class PlayState extends MusicBeatState
 	public var camOther:FlxCamera;
 	public var cameraSpeed:Float = 1;
 
+	var video:FlxVideoSprite = null;
+
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 	var dialogueJson:DialogueFile = null;
 
@@ -262,6 +257,7 @@ class PlayState extends MusicBeatState
 	var blammedLightsBlack:FlxSprite;
 	var phillyWindowEvent:BGSprite;
 	var trainSound:FlxSound;
+	
 
 	var phillyGlowGradient:PhillyGlow.PhillyGlowGradient;
 	var phillyGlowParticles:FlxTypedGroup<PhillyGlow.PhillyGlowParticle>;
@@ -1156,6 +1152,7 @@ class PlayState extends MusicBeatState
 			'healthLerp', 0, 2);
 		healthBar.scrollFactor.set();
 		// healthBar
+		if(ClientPrefs.vsliceSmoothBar) healthBar.numDivisions = 1000;
 		healthBar.visible = !ClientPrefs.hideHud;
 		healthBar.alpha = ClientPrefs.healthBarAlpha;
 		add(healthBar);
@@ -1645,13 +1642,33 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
-		var video:MP4Handler = new MP4Handler();
-		video.playVideo(filepath);
-		video.finishCallback = function()
+		video = new FlxVideoSprite(0,0);
+		video.cameras = [camOther];
+		canPause = false;
+		add(video);
+		video.play(filepath);
+		video.bitmap.onTextureSetup.add(function()
+			{
+				/*
+				#if hxvlc
+				var wd:Int = videoSprite.bitmap.formatWidth;
+				var hg:Int = videoSprite.bitmap.formatHeight;
+				trace('Video Resolution: ${wd}x${hg}');
+				videoSprite.scale.set(FlxG.width / wd, FlxG.height / hg);
+				#end
+				*/
+				video.setGraphicSize(FlxG.width);
+				video.updateHitbox();
+				video.screenCenter();
+			});
+		video.bitmap.onEndReached.add(function()
 		{
 			startAndEnd();
+			remove(video);
+			FlxTimer.wait(0.01,() -> canPause = true);
+			video = null;
 			return;
-		}
+		});
 		#else
 		FlxG.log.warn('Platform not supported!');
 		startAndEnd();
@@ -2901,10 +2918,20 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
-		/*if (FlxG.keys.justPressed.NINE)
+		if (FlxG.keys.justPressed.NINE)
 		{
 			iconP1.swapOldIcon();
-		}*/
+		}
+		FlxG.watch.add(this,"healthLerp");
+		if(ClientPrefs.vsliceSmoothBar){
+			healthLerp = FlxMath.lerp(healthLerp, health, 0.15);
+		}
+		else healthLerp = health;
+		if(video != null && controls.ACCEPT) {
+			video.stop();
+			video.bitmap.onEndReached.dispatch();
+		}
+
 		callOnLuas('onUpdate', [elapsed]);
 
 		switch (curStage)
@@ -3085,9 +3112,9 @@ class PlayState extends MusicBeatState
 		iconP2.updateHitbox();
 
 		var iconOffset:Int = 26;
-
-		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) + (150 * iconP1.scale.x - 150) / 2 - iconOffset;
-		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (150 * iconP2.scale.x) / 2 - iconOffset * 2;
+		var hpPrecent = ClientPrefs.vsliceSmoothBar? healthBar.value*50 : healthBar.percent;
+		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(hpPrecent, 0, 100, 100, 0) * 0.01)) + (150 * iconP1.scale.x - 150) / 2 - iconOffset;
+		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(hpPrecent, 0, 100, 100, 0) * 0.01)) - (150 * iconP2.scale.x) / 2 - iconOffset * 2;
 
 		if (health > 2)
 			health = 2;
@@ -3992,14 +4019,7 @@ class PlayState extends MusicBeatState
             		
         	};
 
-			if (SONG.validScore)
-			{
-				#if !switch
-				var percent:Float = ratingPercent;
-				if(Math.isNaN(percent)) percent = 0;
-				Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent);
-				#end
-			}
+			
 			playbackRate = 1;
 
 			if (chartingMode)
@@ -4102,6 +4122,15 @@ class PlayState extends MusicBeatState
 				zoomIntoResultsScreen(prevScore<tempActiveTallises.score,tempActiveTallises,prevRank);
 				changedDifficulty = false;
 			}
+			if (SONG.validScore)
+				{
+					#if !switch
+					var percent:Float = ratingPercent;
+					if(Math.isNaN(percent)) percent = 0;
+					Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent,songMisses == 0);
+					#end
+				}
+
 			transitioning = true;
 		}
 	}

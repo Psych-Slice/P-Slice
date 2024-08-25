@@ -1,5 +1,7 @@
 package editors;
 
+import FreeplayMeta.FreeplayMetaJSON;
+import flixel.addons.ui.FlxUIButton;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -329,6 +331,7 @@ class ChartingState extends MusicBeatState
 			{name: "Note", label: 'Note'},
 			{name: "Events", label: 'Events'},
 			{name: "Charting", label: 'Charting'},
+			{name: "Metadata", label: 'Metadata'},
 		];
 
 		UI_box = new FlxUITabMenu(null, tabs, true);
@@ -365,6 +368,7 @@ class ChartingState extends MusicBeatState
 		}
 		add(UI_box);
 
+		addMetadataTab();
 		addSongUI();
 		addSectionUI();
 		addNoteUI();
@@ -373,6 +377,8 @@ class ChartingState extends MusicBeatState
 		updateHeads();
 		updateWaveform();
 		//UI_box.selected_tab = 4;
+
+		loadMetadata();
 
 		add(curRenderedSustains);
 		add(curRenderedNotes);
@@ -426,6 +432,7 @@ class ChartingState extends MusicBeatState
 		{
 			currentSongName = Paths.formatToSongPath(UI_songTitle.text);
 			loadSong();
+			loadMetadata();// freeplay metadata is VERY sensitive to song audio length!!
 			updateWaveform();
 		});
 
@@ -911,6 +918,60 @@ class ChartingState extends MusicBeatState
 
 		UI_box.addGroup(tab_group_section);
 	}
+
+//! META stuff
+function loadMetadata() {
+	var songMetadata = FreeplayMeta.getMeta(PlayState.SONG.song);
+	maxTime = FlxG.sound.music.length;// This should be loaded by now
+
+	prevEndInput.max = maxTime/1000;
+	prevStartInput.max = maxTime/1000;
+
+	ratingInput.value = songMetadata.songRating;
+	prevStartInput.value = (songMetadata.freeplayPrevStart*maxTime)/1000;
+	prevEndInput.value = (songMetadata.freeplayPrevEnd*maxTime)/1000;
+}
+
+var ratingInput:FlxUINumericStepper;
+	var prevStartInput:FlxUINumericStepper;
+	var prevEndInput:FlxUINumericStepper;
+	var exportMetadataBtn:FlxButton;
+	var maxTime:Float = 0.0;
+	function addMetadataTab()
+	{
+		var tab_group = new FlxUI(null, UI_box);
+		tab_group.name = 'Metadata';
+		ratingInput = new FlxUINumericStepper(20, 30,1,0,0,99,0);
+		prevStartInput = new FlxUINumericStepper(20, 100,1,0,0,999,1); 
+		prevEndInput = new FlxUINumericStepper(20, 150,1,0,0,999,1);
+		exportMetadataBtn = new FlxButton(20,200,"Export",onMetadataSaveClick.bind());
+
+		tab_group.add(new FlxText(ratingInput.x, ratingInput.y - 15, 80, 'Rating:'));
+		tab_group.add(new FlxText(prevStartInput.x, prevStartInput.y - 15, 150, 'Freeplay preview start sec:'));
+		tab_group.add(new FlxText(prevEndInput.x, prevEndInput.y - 15, 150, 'Freeplay preview end sec:'));
+		tab_group.add(ratingInput);
+		tab_group.add(prevStartInput);
+		tab_group.add(prevEndInput);
+		tab_group.add(exportMetadataBtn);
+
+		UI_box.addGroup(tab_group);
+	}
+
+	function onMetadataSaveClick() {
+		var meta:FreeplayMetaJSON = {
+			songRating: Std.int(ratingInput.value),
+			freeplayPrevStart: (prevStartInput.value*1000)/maxTime,
+			freeplayPrevEnd: (prevEndInput.value*1000)/maxTime
+		};
+		var data:String = haxe.Json.stringify(meta, "\t");
+		if (data.length > 0)
+		{
+			var _file = new FileReference();
+			_file.save(data, "metadata.json");
+		}
+	}
+
+//
 
 	var stepperSusLength:FlxUINumericStepper;
 	var strumTimeInputText:FlxUIInputText; //I wanted to use a stepper but we can't scale these as far as i know :(

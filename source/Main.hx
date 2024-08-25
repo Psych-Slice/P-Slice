@@ -1,5 +1,6 @@
 package;
 
+import lime.graphics.Image;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
 import flixel.FlxGame;
@@ -24,6 +25,13 @@ import sys.io.Process;
 #end
 
 using StringTools;
+
+#if linux
+@:cppInclude('./external/gamemode_client.h')
+@:cppFileCode('
+	#define GAMEMODE_AUTO
+')
+#end
 
 class Main extends Sprite
 {
@@ -102,6 +110,11 @@ class Main extends Sprite
 		}
 		#end
 
+		#if linux
+		var icon = Image.fromFile("icon.png");
+		Lib.current.stage.window.setIcon(icon);
+		#end
+		
 		#if html5
 		FlxG.autoPause = false;
 		FlxG.mouse.visible = false;
