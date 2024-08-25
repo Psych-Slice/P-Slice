@@ -11,7 +11,11 @@ typedef FreeplayMetaJSON = {
 
 class FreeplayMeta {
     public static function getMeta(songId:String):FreeplayMetaJSON {
-        var meta_file = Paths.getTextFromFile('data/${Paths.formatToSongPath(songId)}/metadata.json');
+        var meta_file = null;
+        try{
+            meta_file = Paths.getTextFromFile('data/${Paths.formatToSongPath(songId)}/metadata.json');
+        }
+        catch(x){}
         if(meta_file != null){
             var json_meta = getMetaFile(meta_file);
             json_meta.freeplayPrevStart = FlxMath.bound(json_meta.freeplayPrevStart,0,1);

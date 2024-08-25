@@ -1,5 +1,6 @@
 package;
 
+import flixel.input.keyboard.FlxKey;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
@@ -22,6 +23,7 @@ class MainMenuState extends MusicBeatState
 	public static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
+	var debugKeys:Array<FlxKey>;
 
 	var optionShit:Array<String> = [
 		'story_mode',
@@ -51,6 +53,7 @@ class MainMenuState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
+		debugKeys = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('debug_1'));
 
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
@@ -127,7 +130,7 @@ class MainMenuState extends MusicBeatState
 
 		super.create();
 
-		FlxG.camera.follow(camFollow, null, 3);
+		FlxG.camera.follow(camFollow, null, 0.06);
 	}
 
 	var selectedSomethin:Bool = false;
@@ -236,11 +239,11 @@ class MainMenuState extends MusicBeatState
 				}
 			}
 			#if desktop
-			if (controls.checkByName('debug_1'))
+			if (FlxG.keys.anyJustPressed(debugKeys))
 			{
 				selectedSomethin = true;
-				//FlxTransitionableState.skipNextTransIn = false;
-				//FlxTransitionableState.skipNextTransOut = false;
+				FlxTransitionableState.skipNextTransIn = false;
+				FlxTransitionableState.skipNextTransOut = false;
 				MusicBeatState.switchState(new editors.MasterEditorMenu());
 			}
 			#end

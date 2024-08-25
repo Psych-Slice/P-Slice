@@ -181,6 +181,8 @@
 	<!-- Show debug traces for hxCodec -->
 	<haxedef name="HXC_DEBUG_TRACE" if="debug" />
 
+	<haxedef name="NO_PRECOMPILED_HEADERS" if="linux" />
+	
 	<!--Disable deprecated warnings-->
 	<haxedef name='no-deprecation-warnings' />
 	
