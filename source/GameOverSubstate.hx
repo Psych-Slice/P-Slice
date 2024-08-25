@@ -1,5 +1,6 @@
 package;
 
+import substates.StickerSubState;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSubState;
@@ -96,11 +97,14 @@ class GameOverSubstate extends MusicBeatSubstate
 
 			WeekData.loadTheFirstEnabledMod();
 			if (PlayState.isStoryMode)
-				MusicBeatState.switchState(new StoryMenuState());
-			else
-				MusicBeatState.switchState(new FreeplayState());
-
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				{
+					PlayState.storyPlaylist = [];
+					openSubState(new StickerSubState(null, (sticker) -> new StoryMenuState(sticker)));
+				}
+				else
+				{
+					openSubState(new StickerSubState(null, (sticker) -> states.freeplay.FreeplayState.build(null, sticker)));
+				}
 			PlayState.instance.callOnLuas('onGameOverConfirm', [false]);
 		}
 

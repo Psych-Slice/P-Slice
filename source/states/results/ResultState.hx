@@ -177,7 +177,7 @@ class ResultState extends MusicBeatSubstate
     switch (rank)
     {
       case PERFECT | PERFECT_GOLD:
-        heartsPerfect = new FlxAtlasSprite(1342, 370, Paths.getLibraryPath("images/resultScreen/results-bf/resultsPERFECT/hearts", "shared"));
+        heartsPerfect = new FlxAtlasSprite(1342, 370, Paths.getPreloadPath("images/resultScreen/results-bf/resultsPERFECT/hearts"));
         heartsPerfect.visible = false;
         //heartsPerfect.zIndex = 501;
         add(heartsPerfect);
@@ -191,7 +191,7 @@ class ResultState extends MusicBeatSubstate
           }
         };
 
-        bfPerfect = new FlxAtlasSprite(1342, 370, Paths.getLibraryPath("images/resultScreen/results-bf/resultsPERFECT", "shared"));
+        bfPerfect = new FlxAtlasSprite(1342, 370, Paths.getPreloadPath("images/resultScreen/results-bf/resultsPERFECT"));
         bfPerfect.visible = false;
         //bfPerfect.zIndex = 500;
         add(bfPerfect);
@@ -206,7 +206,7 @@ class ResultState extends MusicBeatSubstate
         };
 
       case EXCELLENT:
-        bfExcellent = new FlxAtlasSprite(1329, 429, Paths.getLibraryPath("images/resultScreen/results-bf/resultsEXCELLENT", "shared"));
+        bfExcellent = new FlxAtlasSprite(1329, 429, Paths.getPreloadPath("images/resultScreen/results-bf/resultsEXCELLENT"));
         bfExcellent.visible = false;
         //bfExcellent.zIndex = 500;
         add(bfExcellent);
@@ -220,7 +220,7 @@ class ResultState extends MusicBeatSubstate
         };
 
       case GREAT:
-        gfGreat = new FlxAtlasSprite(802, 331, Paths.getLibraryPath("images/resultScreen/results-bf/resultsGREAT/gf", "shared"));
+        gfGreat = new FlxAtlasSprite(802, 331, Paths.getPreloadPath("images/resultScreen/results-bf/resultsGREAT/gf"));
         gfGreat.visible = false;
         //gfGreat.zIndex = 499;
         add(gfGreat);
@@ -235,7 +235,7 @@ class ResultState extends MusicBeatSubstate
           }
         };
 
-        bfGreat = new FlxAtlasSprite(929, 363, Paths.getLibraryPath("images/resultScreen/results-bf/resultsGREAT/bf", "shared"));
+        bfGreat = new FlxAtlasSprite(929, 363, Paths.getPreloadPath("images/resultScreen/results-bf/resultsGREAT/bf"));
         bfGreat.visible = false;
         //bfGreat.zIndex = 500;
         add(bfGreat);
@@ -276,7 +276,7 @@ class ResultState extends MusicBeatSubstate
         add(bfGood);
 
       case SHIT:
-        bfShit = new FlxAtlasSprite(0, 20, Paths.getLibraryPath("images/resultScreen/results-bf/resultsSHIT", "shared"));
+        bfShit = new FlxAtlasSprite(0, 20, Paths.getPreloadPath("images/resultScreen/results-bf/resultsSHIT"));
         bfShit.visible = false;
         //bfShit.zIndex = 500;
         add(bfShit);

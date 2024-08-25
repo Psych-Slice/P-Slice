@@ -1,5 +1,6 @@
 package;
 
+import substates.StickerSubState;
 import openfl.display.BitmapData;
 #if LUA_ALLOWED
 import llua.Lua;
@@ -1568,10 +1569,15 @@ class FunkinLua {
 			if(FlxTransitionableState.skipNextTransIn)
 				CustomFadeTransition.nextCamera = null;
 
-			if(PlayState.isStoryMode)
-				MusicBeatState.switchState(new StoryMenuState());
-			else
-				MusicBeatState.switchState(new FreeplayState());
+			if (PlayState.isStoryMode)
+				{
+					PlayState.storyPlaylist = [];
+					PlayState.instance.openSubState(new StickerSubState(null, (sticker) -> new StoryMenuState(sticker)));
+				}
+				else
+				{
+					PlayState.instance.openSubState(new StickerSubState(null, (sticker) -> states.freeplay.FreeplayState.build(null, sticker)));
+				}
 
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			PlayState.changedDifficulty = false;

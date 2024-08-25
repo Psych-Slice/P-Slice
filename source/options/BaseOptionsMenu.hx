@@ -259,7 +259,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			}
 		}
 
-		if(boyfriend != null && boyfriend.animation.curAnim.finished) {
+		if(boyfriend != null && boyfriend.animation.curAnim?.finished) {
 			boyfriend.dance();
 		}
 

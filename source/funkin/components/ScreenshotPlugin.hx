@@ -93,9 +93,9 @@ class ScreenshotPlugin extends FlxBasic
    */
   public static function initialize():Void
   {
-    FlxG.plugins.addPlugin(new ScreenshotPlugin(
+    FlxG.plugins.add(new ScreenshotPlugin(
       {
-        flashColor: ClientPrefs.data.flashing ? FlxColor.WHITE : null, // Was originally a black flash.
+        flashColor: ClientPrefs.flashing ? FlxColor.WHITE : null, // Was originally a black flash.
 
         // TODO: Add a way to configure screenshots from the options menu.
         hotkeys: [FlxKey.F3],
@@ -107,12 +107,12 @@ class ScreenshotPlugin extends FlxBasic
 
   public function hasPressedScreenshot():Bool
   {
-    return Controls.instance.SCREENSHOT;
+    return PlayerSettings.player1.controls.SCREENSHOT;
   }
 
   public function updatePreferences():Void
   {
-    _flashColor = ClientPrefs.data.flashing ? FlxColor.WHITE : null;
+    _flashColor = ClientPrefs.flashing ? FlxColor.WHITE : null;
   }
 
   /**

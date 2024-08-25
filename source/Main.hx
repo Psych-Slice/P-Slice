@@ -82,7 +82,15 @@ class Main extends Sprite
 		}
 	
 		ClientPrefs.loadDefaultKeys();
-		addChild(new FlxGame(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash, startFullscreen));
+		var game = new FlxGame(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash, startFullscreen);
+
+		// FlxG.game._customSoundTray wants just the class, it calls new from
+    	// create() in there, which gets called when it's added to stage
+    	// which is why it needs to be added before addChild(game) here
+    	@:privateAccess
+    	game._customSoundTray = funkin.components.FunkinSoundTray;
+
+		addChild(game);
 
 		#if !mobile
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
@@ -130,7 +138,7 @@ class Main extends Sprite
 			}
 		}
 
-		errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/ShadowMario/FNF-PsychEngine\n\n> Crash Handler written by: sqirra-rng";
+		errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/mikolka9144/P-Slice\n\n> Crash Handler written by: sqirra-rng";
 
 		if (!FileSystem.exists("./crash/"))
 			FileSystem.createDirectory("./crash/");
@@ -139,9 +147,14 @@ class Main extends Sprite
 
 		Sys.println(errMsg);
 		Sys.println("Crash dump saved in " + Path.normalize(path));
-
+		#if windows
 		Application.current.window.alert(errMsg, "Error!");
+		#elseif linux
+		Sys.command("notify-send",["Error!",errMsg]);
+		#end
+		#if DISCORD_ALLOWED
 		DiscordClient.shutdown();
+		#end
 		Sys.exit(1);
 	}
 	#end

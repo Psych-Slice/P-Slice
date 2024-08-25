@@ -4028,7 +4028,6 @@ class PlayState extends MusicBeatState
 					if(FlxTransitionableState.skipNextTransIn) {
 						CustomFadeTransition.nextCamera = null;
 					}
-					MusicBeatState.switchState(new StoryMenuState());
 
 					// if ()
 					if(!ClientPrefs.getGameplaySetting('practice', false) && !ClientPrefs.getGameplaySetting('botplay', false)) {
@@ -4224,7 +4223,7 @@ class PlayState extends MusicBeatState
 	  persistentUpdate = false;
 
 	  var modManifest = new ModMetadata(Paths.currentModDirectory);
-	  var modName = modManifest != null ? modManifest.name : "unknown mod";
+	  var modName = modManifest.name == "" ? modManifest.name : "unknown mod";
 	  //Mods.loadTopMod();
 
 	  vocals.stop();

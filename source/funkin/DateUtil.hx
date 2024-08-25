@@ -1,5 +1,7 @@
 package funkin;
 
+using StringTools;
+
 /**
  * Utilities for performing operations on dates.
  */

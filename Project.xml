@@ -37,9 +37,9 @@
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
-	<set name="BUILD_DIR" value="export/debug" if="debug" />
-	<set name="BUILD_DIR" value="export/release" unless="debug" />
-	<set name="BUILD_DIR" value="export/32bit" if="32bits" />
+	<set name="BUILD_DIR" value="export/PE0.6.3/debug" if="debug" />
+	<set name="BUILD_DIR" value="export/PE0.6.3/release" unless="debug" />
+	<set name="BUILD_DIR" value="export/PE0.6.3/32bit" if="32bits" />
 
 	<classpath name="source" />
 	
