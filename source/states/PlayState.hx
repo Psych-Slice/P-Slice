@@ -1,5 +1,6 @@
 package states;
 
+import mikolka.JoinedLuaVariables;
 import substates.StickerSubState;
 import states.freeplay.FreeplayState;
 import backend.Highscore;
@@ -266,6 +267,7 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
+		this.variables = new JoinedLuaVariables();
 		//trace('Playback Rate: ' + playbackRate);
 		Paths.clearStoredMemory();
 
@@ -633,6 +635,7 @@ class PlayState extends MusicBeatState
 		resetRPC();
 
 		stagesFunc(function(stage:BaseStage) stage.createPost());
+
 		callOnScripts('onCreatePost');
 		
 		var splash:NoteSplash = new NoteSplash();
