@@ -124,7 +124,7 @@ class AttractState extends MusicBeatState
     vid.destroy();
     vid = null;
     #end
-    FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.01);
+    FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.8);
     FlxG.switchState(new TitleState());
   }
 }

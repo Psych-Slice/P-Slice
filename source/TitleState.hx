@@ -474,7 +474,8 @@ class TitleState extends MusicBeatState
 		if (controls.FAVORITE)
 			moveToAttract(); // TODO remove
 		#end
-		if (!cheatActive && skippedIntro) cheatCodeShit();
+		if (!cheatActive && skippedIntro)
+			cheatCodeShit();
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
@@ -504,7 +505,8 @@ class TitleState extends MusicBeatState
 			#end
 		}
 
-		if(enterTimer != null && pressedEnter){
+		if (enterTimer != null && pressedEnter)
+		{
 			enterTimer.cancel();
 			enterTimer.onComplete(enterTimer);
 			enterTimer = null;
@@ -555,7 +557,8 @@ class TitleState extends MusicBeatState
 					}
 					else
 					{
-						if(cheatActive){
+						if (cheatActive)
+						{
 							FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 							FlxG.sound.music.fadeIn(4, 0, 0.7);
 						}
@@ -693,7 +696,8 @@ class TitleState extends MusicBeatState
 				gfDance.animation.play('danceLeft');
 		}
 
-		if (cheatActive && this.curBeat % 2 == 0 && swagShader != null ) swagShader.hue += 0.125;
+		if (cheatActive && this.curBeat % 2 == 0 && swagShader != null)
+			swagShader.hue += 0.125;
 
 		if (!closedState)
 		{
@@ -874,11 +878,14 @@ class TitleState extends MusicBeatState
 		FlxG.camera.flash(FlxColor.WHITE, 1);
 		FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 	}
-		  /**
-   * After sitting on the title screen for a while, transition to the attract screen.
-   */
-   function moveToAttract():Void
+
+	/**
+	 * After sitting on the title screen for a while, transition to the attract screen.
+	 */
+	function moveToAttract():Void
 	{
-	  FlxG.switchState(new AttractState());
+		if (!Std.isOfType(FlxG.state, TitleState))
+			return;
+		FlxG.switchState(new AttractState());
 	}
 }
