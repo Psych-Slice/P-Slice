@@ -364,6 +364,9 @@ class TitleState extends MusicBeatState
 		if (controls.FAVORITE)
 			moveToAttract();
 		#end
+		if (!cheatActive && skippedIntro)
+			cheatCodeShit();
+
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
@@ -581,6 +584,9 @@ class TitleState extends MusicBeatState
 				gfDance.animation.play('danceLeft');
 		}
 
+		if (cheatActive && this.curBeat % 2 == 0 && swagShader != null)
+			swagShader.hue += 0.125;
+		
 		if (!closedState)
 		{
 			sickBeats++;

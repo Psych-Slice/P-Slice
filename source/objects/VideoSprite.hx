@@ -72,6 +72,9 @@ class VideoSprite extends FlxSpriteGroup {
 		}
 		#if hxvlc
 		videoSprite.bitmap.onFormatSetup.add(function()
+		#else
+		videoSprite.bitmap.onTextureSetup.add(function()
+		#end
 		{
 			/*
 			#if hxvlc
@@ -85,7 +88,6 @@ class VideoSprite extends FlxSpriteGroup {
 			videoSprite.updateHitbox();
 			videoSprite.screenCenter();
 		});
-		#end
 		// start video and adjust resolution to screen size
 		#if hxvlc
 		videoSprite.load(videoName, shouldLoop ? ['input-repeat=65545'] : null);
