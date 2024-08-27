@@ -1,0 +1,155 @@
+{
+	"events": [
+		[
+			15420.9512195122,
+			[
+				["ZoomCamera", "expoOut", "32"]
+			]
+		],
+		[
+			21180.9512195122,
+			[
+				["ZoomCamera", "expoOut", "32"]
+			]
+		],
+		[
+			23070,
+			[
+				["ZoomCamera", "expoOut", "32"]
+			]
+		],
+		[
+			26940.9512195122,
+			[
+				["ZoomCamera", "32", "expoOut"]
+			]
+		],
+		[
+			30000.9512195122,
+			[
+				["ZoomCamera", "expoOut", "32"]
+			]
+		],
+		[
+			30780.9512195122,
+			[
+				["ZoomCamera", "expoOut", "32"]
+			]
+		],
+		[
+			34620.9512195122,
+			[
+				["ZoomCamera", "expoOut", "32"]
+			]
+		],
+		[
+			35520.9512195122,
+			[
+				["ZoomCamera", "32", "expoOut"]
+			]
+		],
+		[
+			36480.9512195122,
+			[
+				["ZoomCamera", "32", "expoOut"]
+			]
+		],
+		[
+			37440.9512195122,
+			[
+				["ZoomCamera", "32", "expoOut"]
+			]
+		],
+		[
+			38400.9512195122,
+			[
+				["ZoomCamera", "expoOut", "32"]
+			]
+		],
+		[
+			44220.9512195122,
+			[
+				["ZoomCamera", "32", "expoOut"]
+			]
+		],
+		[
+			44640.9512195122,
+			[
+				["ZoomCamera", "32", "expoOut"]
+			]
+		],
+		[
+			45120.9512195122,
+			[
+				["ZoomCamera", "32", "expoOut"]
+			]
+		],
+		[
+			46140.9512195122,
+			[
+				["ZoomCamera", "32", "expoOut"]
+			]
+		],
+		[
+			50880,
+			[
+				["ZoomCamera", "quadInOut", "21"]
+			]
+		],
+		[
+			53520,
+			[
+				["ZoomCamera", "expoOut", "4"]
+			]
+		],
+		[
+			54030,
+			[
+				["ZoomCamera", "32", "expoOut"]
+			]
+		],
+		[
+			61440,
+			[
+				["ZoomCamera", "32", "smoothStepInOut"]
+			]
+		],
+		[
+			65280.9512195122,
+			[
+				["ZoomCamera", "32", "expoOut"]
+			]
+		],
+		[
+			66240.9512195122,
+			[
+				["ZoomCamera", "32", "expoOut"]
+			]
+		],
+		[
+			67200.9512195122,
+			[
+				["ZoomCamera", "32", "expoOut"]
+			]
+		],
+		[
+			68160.9512195122,
+			[
+				["ZoomCamera", "32", "expoOut"]
+			]
+		],
+		[
+			69120,
+			[
+				["ZoomCamera", "expoOut", "32"]
+			]
+		],
+		[
+			72960,
+			[
+				["ZoomCamera", "32", "expoOut"]
+			]
+		]
+	],
+	"format": "psych_v1_convert"
+}
