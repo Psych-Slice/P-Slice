@@ -1,5 +1,6 @@
 package states.freeplay;
 
+import openfl.utils.AssetCache;
 import sys.FileSystem;
 import flixel.FlxG;
 import lime.app.Future;
@@ -41,6 +42,8 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxTimer;
 import lime.utils.Assets;
+
+#if ALLOW_BENCHMARKING import haxe.Timer; #end
 
 using funkin.FunkinTools;
 using funkin.ArrayTools;
@@ -229,9 +232,19 @@ class FreeplayState extends MusicBeatSubstate
 
 	override function create():Void
 	{
+		#if ALLOW_BENCHMARKING
+		var TIME_INIT = Timer.stamp();
+		trace("[BENCHMARK] Starting performance test");
+		#end
+
 		if(ClientPrefs.vsliceFreeplayColors) colorTween = new FreeplayColorTweener(this);
 		BPMCache.instance.clearCache(); // for good measure
 		
+		#if ALLOW_BENCHMARKING
+		var localTime = Timer.stamp();
+		trace('[BENCHMARK] Custom components executed in: ${localTime-TIME_INIT} seconds');
+		TIME_INIT =  localTime;
+		#end
 
 		super.create();
 		var diffIdsTotalModBinds:Map<String, String> = ["easy" => "", "normal" => "", "hard" => ""];
@@ -271,11 +284,24 @@ class FreeplayState extends MusicBeatSubstate
 		//   //FlxG.sound.playMusic(Paths.music('freakyMenu'));
 		// }
 
+		#if ALLOW_BENCHMARKING
+		var localTime = Timer.stamp();
+		trace('[BENCHMARK] Standard components executed in: ${localTime-TIME_INIT} seconds');
+		TIME_INIT =  localTime;
+		#end
+
 		// Add a null entry that represents the RANDOM option
 		songs.push(null);
 		// Init psych's weeks
 		PlayState.isStoryMode = false;
 		WeekData.reloadWeekFiles(false);
+
+		#if ALLOW_BENCHMARKING
+		var localTime = Timer.stamp();
+		trace('[BENCHMARK] Psych weeks reloaded in: ${localTime-TIME_INIT} seconds');
+		TIME_INIT =  localTime;
+		#end
+
 		// programmatically adds the songs via LevelRegistry and SongRegistry
 		for (i in 0...WeekData.weeksList.length)
 		{
@@ -308,6 +334,12 @@ class FreeplayState extends MusicBeatSubstate
 			}
 		}
 		//
+
+		#if ALLOW_BENCHMARKING
+		var localTime = Timer.stamp();
+		trace('[BENCHMARK] Psych songs loaded in: ${localTime-TIME_INIT} seconds');
+		TIME_INIT =  localTime;
+		#end
 
 		// LOAD MUSIC
 
@@ -693,7 +725,19 @@ class FreeplayState extends MusicBeatSubstate
 			}
 		});
 
+		#if ALLOW_BENCHMARKING
+		var localTime = Timer.stamp();
+		trace('[BENCHMARK] Components prepared in: ${localTime-TIME_INIT} seconds');
+		TIME_INIT =  localTime;
+		#end
+
 		generateSongList(null, false);
+
+		#if ALLOW_BENCHMARKING
+		var localTime = Timer.stamp();
+		trace('[BENCHMARK] Generated song list in: ${localTime-TIME_INIT} seconds');
+		TIME_INIT =  localTime;
+		#end
 
 		// dedicated camera for the state so we don't need to fuk around with camera scrolls from the mainmenu / elsewhere
 		funnyCam = new FlxCamera(0, 0, FlxG.width, FlxG.height);
@@ -723,6 +767,12 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			rankCamera.fade(0xFF000000, 0, false, null, true);
 		}
+
+		#if ALLOW_BENCHMARKING
+		var localTime = Timer.stamp();
+		trace('[BENCHMARK] completed the rest of code in: ${localTime-TIME_INIT} seconds');
+		TIME_INIT =  localTime;
+		#end
 	}
 
 	var currentFilter:SongFilter = null;
@@ -1719,17 +1769,21 @@ class FreeplayState extends MusicBeatSubstate
 		// albumRoll.setDifficultyStars(daSong?.difficultyRating);
 	}
 
-	// Clears the cache of songs, frees up memory, they' ll have to be loaded in later tho function clearDaCache(actualSongTho:String)
+	// Clears the cache of song previews, frees up memory, they' ll have to be loaded in later tho function clearDaCache(actualSongTho:String)
 	function clearDaCache(actualSongTho:String):Void
 	{
-		for (song in songs)
+		trace("Purging song previews!");
+		var cacheObj = cast(openfl.Assets.cache,AssetCache);
+		@:privateAccess
+		var list = cacheObj.sound.keys();
+		for (song in list)
 		{
 			if (song == null)
 				continue;
-			if (song.songName != actualSongTho)
+			if (!song.contains(actualSongTho) && song.contains(".partial")) //.partial
 			{
-				trace('trying to remove: ' + song.songName);
-				// openfl.Assets.cache.clear(Paths.inst(song.songName));
+				trace('trying to remove: ' + song);
+				openfl.Assets.cache.clear(song);
 			}
 		}
 	}

@@ -58,7 +58,8 @@ class SongMenuItem extends FlxSpriteGroup
   public var doJumpOut:Bool = false;
 
   public var onConfirm:Void->Void;
-  public var grayscaleShader:Grayscale;
+  //? is this even used
+  //public var grayscaleShader:Grayscale;
 
   public var hsvShader(default, set):HSVShader;
 
@@ -185,7 +186,8 @@ class SongMenuItem extends FlxSpriteGroup
     //     ranking.x -= 10;
     // }
 
-    grayscaleShader = new Grayscale(1);
+    //? seems to be unused
+    //grayscaleShader = new Grayscale(1);
 
     // diffRatingSprite = new FlxSprite(145, 90).loadGraphic(Paths.image('freeplay/diffRatings/diff00'));
     // diffRatingSprite.shader = grayscaleShader;
@@ -199,7 +201,7 @@ class SongMenuItem extends FlxSpriteGroup
     grpHide.add(songText);
 
     // TODO: Use value from metadata instead of random.
-    updateDifficultyRating(FlxG.random.int(0, 20));
+    //updateDifficultyRating(FlxG.random.int(0, 20));
 
     pixelIcon = new FlxSprite(60, 14);
 
@@ -720,7 +722,8 @@ class SongMenuItem extends FlxSpriteGroup
 
   function updateSelected():Void
   {
-    grayscaleShader.setAmount(this.selected ? 0 : 0.8);
+    //? is this used
+    //grayscaleShader.setAmount(this.selected ? 0 : 0.8);
     songText.alpha = this.selected ? 1 : 0.6;
     songText.blurredText.visible = this.selected ? true : false;
     capsule.offset.x = this.selected ? 0 : -5;
