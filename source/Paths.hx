@@ -457,7 +457,7 @@ class Paths
 				}
 				#end
 			}
-	
+
 			for (mod in getGlobalMods())
 			{
 				var fileToCheck:String = mods(mod + '/' + key);
