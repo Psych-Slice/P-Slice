@@ -1,5 +1,6 @@
 {
-	"events": [
+	"song": {
+		"events": [
 		[
 			15903.9512195122,
 			[
@@ -444,6 +445,5 @@
 				["SetCameraBop", "4", "0.2"]
 			]
 		]
-	],
-	"format": "psych_v1_convert"
+	]}
 }

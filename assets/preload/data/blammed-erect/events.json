@@ -1,5 +1,6 @@
 {
-	"events": [
+	"song": {
+		"events": [
 		[
 			44,
 			[
@@ -444,6 +445,5 @@
 				["ZoomCamera", "64", "sineInOut"]
 			]
 		]
-	],
-	"format": "psych_v1_convert"
+	]}
 }

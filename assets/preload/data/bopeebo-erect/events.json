@@ -1,5 +1,6 @@
 {
-	"events": [
+	"song": {
+		"events": [
 		[
 			7682.92682926829,
 			[
@@ -156,6 +157,5 @@
 				["ZoomCamera", "32", "expoOut"]
 			]
 		]
-	],
-	"format": "psych_v1_convert"
+	]}
 }
