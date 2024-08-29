@@ -1,5 +1,6 @@
 package;
 
+import funkin.ArrayTools;
 import ModsMenuState.ModMetadata;
 import funkin.FunkinTools;
 import funkin.Scoring;
@@ -187,6 +188,7 @@ class PlayState extends MusicBeatState
 
 	public var camZooming:Bool = false;
 	public var camZoomingMult:Float = 1;
+	public var camZoomingFrequency:Float = 4;
 	public var camZoomingDecay:Float = 1;
 	private var curSong:String = "";
 
@@ -301,6 +303,8 @@ class PlayState extends MusicBeatState
 	public static var campaignSaveData:SaveScoreData = FunkinTools.newTali();
 
 	public var defaultCamZoom:Float = 1.05;
+	public var defaultStageZoom:Float = 1.05;
+	private static var zoomTween:FlxTween;
 
 	// how big to stretch the pixel art assets
 	public static var daPixelZoom:Float = 6;
@@ -504,6 +508,7 @@ class PlayState extends MusicBeatState
 		}
 
 		defaultCamZoom = stageData.defaultZoom;
+		defaultStageZoom = defaultCamZoom;
 		isPixelStage = stageData.isPixelStage;
 		BF_X = stageData.boyfriend[0];
 		BF_Y = stageData.boyfriend[1];
@@ -2680,7 +2685,6 @@ class PlayState extends MusicBeatState
 				smoke.flipX = true;
 				dadbattleSmokes.add(smoke);
 
-
 			case 'Philly Glow':
 				blammedLightsBlack = new FlxSprite(FlxG.width * -0.5, FlxG.height * -0.5).makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
 				blammedLightsBlack.visible = false;
@@ -3862,6 +3866,35 @@ class PlayState extends MusicBeatState
 				} else {
 					FunkinLua.setVarInArray(this, value1, value2);
 				}
+			case 'SetCameraBop': //P-slice event notes
+				var val1 = Std.parseFloat(value1);
+				var val2 = Std.parseFloat(value2);
+				camZoomingMult = !Math.isNaN(val2) ? val2 : 1;
+				camZoomingFrequency = !Math.isNaN(val1) ? val1 : 4;
+			case 'ZoomCamera': //defaultCamZoom
+				var keyValues = value1.split(",");
+				if(keyValues.length != 2) {
+					trace("INVALID EVENT VALUE");
+					return;
+				}
+				var floaties = keyValues.map(s -> Std.parseFloat(s));
+				if(ArrayTools.findIndex(floaties,s -> Math.isNaN(s)) != -1) {
+					trace("INVALID FLOATIES");
+					return;
+				}
+				var easeFunc = FunkinLua.getFlxEaseByString(value2);
+				if(zoomTween != null) zoomTween.cancel();
+				var targetZoom = floaties[1]*defaultStageZoom;
+				zoomTween = FlxTween.tween(this,{ defaultCamZoom:targetZoom},(Conductor.stepCrochet/1000)*floaties[0],{
+					onStart: (x) ->{
+						camZoomingDecay = 3;
+					},
+					ease: easeFunc,
+					onComplete: (x) ->{
+						camZoomingDecay = 1;
+						zoomTween = null;
+					}
+				});
 		}
 		callOnLuas('onEvent', [eventName, value1, value2]);
 	}
@@ -5256,6 +5289,12 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
+		if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && (curBeat % camZoomingFrequency) == 0)
+			{
+				FlxG.camera.zoom += 0.015 * camZoomingMult;
+				camHUD.zoom += 0.03 * camZoomingMult;
+			}
+
 		if (generatedMusic)
 		{
 			notes.sort(FlxSort.byY, ClientPrefs.downScroll ? FlxSort.ASCENDING : FlxSort.DESCENDING);
@@ -5349,12 +5388,6 @@ class PlayState extends MusicBeatState
 			if (generatedMusic && !endingSong && !isCameraOnForcedPos)
 			{
 				moveCameraSection();
-			}
-
-			if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms)
-			{
-				FlxG.camera.zoom += 0.015 * camZoomingMult;
-				camHUD.zoom += 0.03 * camZoomingMult;
 			}
 
 			if (SONG.notes[curSection].changeBPM)
