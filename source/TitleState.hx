@@ -608,10 +608,6 @@ class TitleState extends MusicBeatState
 								}
 							});
 							FlxG.sound.music.fadeOut();
-							if (FreeplayState.vocals != null)
-							{
-								FreeplayState.vocals.fadeOut();
-							}
 							closedState = true;
 							transitioning = true;
 							playJingle = true;
@@ -819,10 +815,6 @@ class TitleState extends MusicBeatState
 				if (easteregg == 'SHADOW')
 				{
 					FlxG.sound.music.fadeOut();
-					if (FreeplayState.vocals != null)
-					{
-						FreeplayState.vocals.fadeOut();
-					}
 				}
 				#end
 			}
