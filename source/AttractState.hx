@@ -1,11 +1,18 @@
 package;
 
+
 import flixel.FlxG;
+
 #if html5
 import funkin.graphics.video.FlxVideo;
 #end
+
 #if hxCodec
 import hxcodec.flixel.FlxVideoSprite;
+import sys.FileSystem;
+
+using funkin.ArrayTools;
+using StringTools;
 #end
 
 
@@ -18,7 +25,34 @@ import hxcodec.flixel.FlxVideoSprite;
  */
 class AttractState extends MusicBeatState
 {
-  static final ATTRACT_VIDEO_PATH:String = Paths.video('toyCommercial');
+  #if html5
+  static final ATTRACT_VIDEO_PATH:String = Paths.video("commercials/"+FlxG.random.getObject([
+    'toyCommercial',
+    'kickstarterTrailer',
+    'erectSamplers'
+  ]));
+  #else
+  private static function collectVideos():String{
+    var dirsToList = new Array<String>();
+    dirsToList.push('assets/videos/commercials/');
+    if(FileSystem.exists('mods/videos/commercials'))dirsToList.push('mods/videos/commercials/');
+    WeekData.loadTheFirstEnabledMod();
+    var modsToSearch = Paths.getGlobalMods();
+    modsToSearch.pushUnique(Paths.currentModDirectory);
+    modsToSearch = modsToSearch.filter(s -> FileSystem.exists('mods/$s/videos/commercials')).map(s -> 'mods/$s/videos/commercials');
+    
+    dirsToList = dirsToList.concat(modsToSearch);
+    var commercialsToSelect = new Array<String>();
+    for(potencialComercials in dirsToList){
+      for (file in FileSystem.readDirectory(potencialComercials).filter(s -> s.endsWith(".mp4"))) {
+        commercialsToSelect.push(potencialComercials + '/'+file);
+      }
+    }
+    return FlxG.random.getObject(commercialsToSelect);
+  }
+
+  static var ATTRACT_VIDEO_PATH:String = '';
+  #end
 
   public override function create():Void
   {
@@ -34,7 +68,9 @@ class AttractState extends MusicBeatState
     playVideoHTML5(ATTRACT_VIDEO_PATH);
     #end
 
+
     #if hxCodec
+    ATTRACT_VIDEO_PATH = collectVideos();
     trace('Playing native video ${ATTRACT_VIDEO_PATH}');
     playVideoNative(ATTRACT_VIDEO_PATH);
     #end
