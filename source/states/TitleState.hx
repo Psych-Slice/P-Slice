@@ -769,7 +769,8 @@ class TitleState extends MusicBeatState
 	 * After sitting on the title screen for a while, transition to the attract screen.
 	 */
 	function moveToAttract():Void
-	{
+	{	
+		if(!Std.isOfType(FlxG.state,TitleState)) return;
 		FlxG.switchState(() -> new AttractState());
 	}
 }
