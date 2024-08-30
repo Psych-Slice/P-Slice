@@ -12,6 +12,7 @@ import flixel.FlxSprite;
 import flixel.FlxObject;
 import flixel.effects.FlxFlicker;
 import lime.app.Application;
+import funkin.components.PsychCamera;
 import editors.MasterEditorMenu;
 import options.OptionsState;
 
@@ -44,6 +45,7 @@ class MainMenuState extends MusicBeatState
 	}
 	override function create()
 	{
+		FlxG.cameras.reset(new PsychCamera());
 		#if MODS_ALLOWED
 		Paths.pushGlobalMods();
 		#end
@@ -130,7 +132,7 @@ class MainMenuState extends MusicBeatState
 
 		super.create();
 
-		FlxG.camera.follow(camFollow, null, 0.04);
+		FlxG.camera.follow(camFollow, null, 0.06);
 	}
 
 	var selectedSomethin:Bool = false;
