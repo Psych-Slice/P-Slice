@@ -1,5 +1,6 @@
 package;
 
+import funkin.components.MemoryCounter;
 import lime.graphics.Image;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
@@ -43,6 +44,7 @@ class Main extends Sprite
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
 	public static var fpsVar:FPS;
+	public static var memoryCounter:MemoryCounter;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
@@ -107,6 +109,15 @@ class Main extends Sprite
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 		if(fpsVar != null) {
 			fpsVar.visible = ClientPrefs.showFPS;
+		}
+		#end
+
+		#if !html5
+		// TODO: disabled on HTML5 (todo: find another method that works?)
+		memoryCounter = new MemoryCounter(10, 13, 0xFFFFFF);
+		addChild(memoryCounter);
+		if(memoryCounter != null) {
+			memoryCounter.visible = ClientPrefs.showFPS;
 		}
 		#end
 
