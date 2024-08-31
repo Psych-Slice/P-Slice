@@ -31,7 +31,7 @@ class VisualsUISubState extends BaseOptionsMenu
 {
 	public function new()
 	{
-		title = 'Visuals and UI';
+		title = 'Visuals';
 		rpcTitle = 'Visuals & UI Settings Menu'; //for Discord Rich Presence
 
 		var option:Option = new Option('Note Splashes',
@@ -149,6 +149,8 @@ class VisualsUISubState extends BaseOptionsMenu
 	{
 		if(Main.fpsVar != null)
 			Main.fpsVar.visible = ClientPrefs.showFPS;
+		if(Main.memoryCounter != null)
+			Main.memoryCounter.visible = ClientPrefs.showFPS;
 	}
 	#end
 }
