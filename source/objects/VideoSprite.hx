@@ -179,7 +179,6 @@ class VideoSprite extends FlxSpriteGroup {
 
 	public function resume() videoSprite?.resume();
 	public function pause() videoSprite?.pause();
-	#end
 
 	public function play() {
 		#if hxvlc
@@ -188,4 +187,6 @@ class VideoSprite extends FlxSpriteGroup {
 		videoSprite.play(videoName, doWeLoop);
 		#end
 	}
+
+	#end
 }
