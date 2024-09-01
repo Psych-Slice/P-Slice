@@ -243,11 +243,7 @@ class TitleState extends MusicBeatState
 
 		add(gfDance);
 		add(logoBl);
-		if (swagShader != null)
-		{
-			gfDance.shader = swagShader.shader;
-			logoBl.shader = swagShader.shader;
-		}
+		
 
 		titleText = new FlxSprite(titleJSON.startx, titleJSON.starty);
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
@@ -276,6 +272,13 @@ class TitleState extends MusicBeatState
 		titleText.updateHitbox();
 		// titleText.screenCenter(X);
 		add(titleText);
+
+		if (swagShader != null)
+		{
+			gfDance.shader = swagShader.shader;
+			logoBl.shader = swagShader.shader;
+			titleText.shader = swagShader.shader;
+		}
 
 		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('logo'));
 		logo.antialiasing = ClientPrefs.data.antialiasing;
