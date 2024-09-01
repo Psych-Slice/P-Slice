@@ -95,7 +95,6 @@ class GameOverSubstate extends MusicBeatSubstate
 			PlayState.seenCutscene = false;
 			PlayState.chartingMode = false;
 
-			WeekData.loadTheFirstEnabledMod();
 			if (PlayState.isStoryMode)
 				{
 					PlayState.storyPlaylist = [];

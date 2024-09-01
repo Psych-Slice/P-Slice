@@ -259,7 +259,7 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.deathCounter = 0;
 					PlayState.seenCutscene = false;
 
-					WeekData.loadTheFirstEnabledMod();
+					//WeekData.loadTheFirstEnabledMod();
 					if (PlayState.isStoryMode)
 						{
 							PlayState.storyPlaylist = [];
