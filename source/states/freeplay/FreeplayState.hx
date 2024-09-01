@@ -1,5 +1,6 @@
 package states.freeplay;
 
+import openfl.utils.AssetCache;
 import backend.FreeplayMeta;
 import lime.app.Future;
 import haxe.Exception;
@@ -1720,14 +1721,18 @@ class FreeplayState extends MusicBeatSubstate
 	// Clears the cache of songs, frees up memory, they' ll have to be loaded in later tho function clearDaCache(actualSongTho:String)
 	function clearDaCache(actualSongTho:String):Void
 	{
-		for (song in songs)
+		trace("Purging song previews!");
+		var cacheObj = cast(openfl.Assets.cache,AssetCache);
+		@:privateAccess
+		var list = cacheObj.sound.keys();
+		for (song in list)
 		{
 			if (song == null)
 				continue;
-			if (song.songName != actualSongTho)
+			if (!song.contains(actualSongTho) && song.contains(".partial")) //.partial
 			{
-				trace('trying to remove: ' + song.songName);
-				// openfl.Assets.cache.clear(Paths.inst(song.songName));
+				trace('trying to remove: ' + song);
+				openfl.Assets.cache.clear(song);
 			}
 		}
 	}
