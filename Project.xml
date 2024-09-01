@@ -30,9 +30,6 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<define name="DISCORD_ALLOWED" />
 	<define name="TRANSLATIONS_ALLOWED" />
 
-	<section if="debug">
-		<define name="IRIS_DEBUG"/>
-	</section>
 	
 	<define name="SHOW_LOADING_SCREEN" />
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN -->
@@ -186,6 +183,10 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!--Macro fixes-->
 	<haxeflag name="--macro" value="allowPackage('flash')" />
 	<haxeflag name="--macro" value="include('my.pack')" />
+
+	<!-- more verbose HScript-->
+	<define name="IRIS_DEBUG" if="debug"/>
+	<haxedef name="hscriptPos" if="HSCRIPT_ALLOWED"/>
 
 	<!-- _________________________________ Custom _______________________________ -->
 

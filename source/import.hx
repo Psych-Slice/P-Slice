@@ -47,6 +47,12 @@ import flxanimate.*;
 import flxanimate.PsychFlxAnimate as FlxAnimate;
 #end
 
+// Mod libs
+import flixel.ui.FlxBar;
+#if hxCodec
+import hxcodec.flixel.FlxVideo;
+#end
+
 //Flixel
 import flixel.sound.FlxSound;
 import flixel.FlxG;

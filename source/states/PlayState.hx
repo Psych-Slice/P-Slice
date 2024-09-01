@@ -166,6 +166,7 @@ class PlayState extends MusicBeatState
 
 	public var camZooming:Bool = false;
 	public var camZoomingMult:Float = 1;
+	public var camZoomingFrequency:Float = 4;
 	public var camZoomingDecay:Float = 1;
 	private var curSong:String = "";
 
@@ -223,6 +224,8 @@ class PlayState extends MusicBeatState
 	public static var campaignSaveData:SaveScoreData = FunkinTools.newTali();
 
 	public var defaultCamZoom:Float = 1.05;
+	public var defaultStageZoom:Float = 1.05;
+	private static var zoomTween:FlxTween;
 
 	// how big to stretch the pixel art assets
 	public static var daPixelZoom:Float = 6;
@@ -336,6 +339,7 @@ class PlayState extends MusicBeatState
 
 		var stageData:StageFile = StageData.getStageFile(curStage);
 		defaultCamZoom = stageData.defaultZoom;
+		defaultStageZoom = defaultCamZoom;
 
 		stageUI = "normal";
 		if (stageData.stageUI != null && stageData.stageUI.trim().length > 0)
@@ -2282,6 +2286,35 @@ class PlayState extends MusicBeatState
 			case 'Play Sound':
 				if(flValue2 == null) flValue2 = 1;
 				FlxG.sound.play(Paths.sound(value1), flValue2);
+				case 'SetCameraBop': //P-slice event notes
+				var val1 = Std.parseFloat(value1);
+				var val2 = Std.parseFloat(value2);
+				camZoomingMult = !Math.isNaN(val2) ? val2 : 1;
+				camZoomingFrequency = !Math.isNaN(val1) ? val1 : 4;
+			case 'ZoomCamera': //defaultCamZoom
+				var keyValues = value1.split(",");
+				if(keyValues.length != 2) {
+					trace("INVALID EVENT VALUE");
+					return;
+				}
+				var floaties = keyValues.map(s -> Std.parseFloat(s));
+				if(funkin.ArrayTools.findIndex(floaties,s -> Math.isNaN(s)) != -1) {
+					trace("INVALID FLOATIES");
+					return;
+				}
+				var easeFunc = LuaUtils.getTweenEaseByString(value2);
+				if(zoomTween != null) zoomTween.cancel();
+				var targetZoom = floaties[1]*defaultStageZoom;
+				zoomTween = FlxTween.tween(this,{ defaultCamZoom:targetZoom},(Conductor.stepCrochet/1000)*floaties[0],{
+					onStart: (x) ->{
+						camZoomingDecay = 3;
+					},
+					ease: easeFunc,
+					onComplete: (x) ->{
+						camZoomingDecay = 1;
+						zoomTween = null;
+					}
+				});
 		}
 
 		stagesFunc(function(stage:BaseStage) stage.eventCalled(eventName, value1, value2, flValue1, flValue2, strumTime));
@@ -3362,6 +3395,12 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
+		if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.data.camZooms && (curBeat % camZoomingFrequency) == 0)
+			{
+				FlxG.camera.zoom += 0.015 * camZoomingMult;
+				camHUD.zoom += 0.03 * camZoomingMult;
+			}
+
 		if (generatedMusic)
 			notes.sort(FlxSort.byY, ClientPrefs.data.downScroll ? FlxSort.ASCENDING : FlxSort.DESCENDING);
 
@@ -3403,12 +3442,6 @@ class PlayState extends MusicBeatState
 		{
 			if (generatedMusic && !endingSong && !isCameraOnForcedPos)
 				moveCameraSection();
-
-			if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.data.camZooms)
-			{
-				FlxG.camera.zoom += 0.015 * camZoomingMult;
-				camHUD.zoom += 0.03 * camZoomingMult;
-			}
 
 			if (SONG.notes[curSection].changeBPM)
 			{
