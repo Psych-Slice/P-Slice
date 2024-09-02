@@ -205,7 +205,7 @@ class StickerSubState extends MusicBeatSubstate
 
         // get a random sticker 
         var sticker:String = FlxG.random.getObject(stickerSetCollection);
-        sticky = new StickerSprite(0, 0, stickers.name, sticker);
+        sticky = new StickerSprite(0, 0, STICKER_SET, sticker);
       }
       else {
         sticky = new StickerSprite(0, 0, null, "justBf");

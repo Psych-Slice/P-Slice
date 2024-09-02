@@ -642,6 +642,9 @@ class TitleState extends MusicBeatState
 	{
 		if (!skippedIntro)
 		{
+			#if VIDEOS_ALLOWED
+				FlxG.sound.music.onComplete = moveToAttract;
+			#end
 			#if TITLE_SCREEN_EASTER_EGG
 			if (playJingle) // Ignore deez
 			{

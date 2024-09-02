@@ -125,7 +125,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<!-- Enables a terminal log prompt on debug builds -->
 	<haxelib name="hxcpp-debug-server" if="debug"/>
-	<section if="VIDEOS_ALLOWED debug">
+	<section if="debug">
 		<!--These defines are mostly for testing (aren't required to be used)-->
 		<haxedef name="HXVLC_VERBOSE" value="2" />
 		<haxedef name="HXC_LIBVLC_LOGGING"/>
