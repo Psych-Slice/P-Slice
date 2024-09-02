@@ -746,6 +746,9 @@ class TitleState extends MusicBeatState
 	{
 		if (!skippedIntro)
 		{
+			#if VIDEOS_ALLOWED
+				FlxG.sound.music.onComplete = moveToAttract;
+			#end
 			if (playJingle) // Ignore deez
 			{
 				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;

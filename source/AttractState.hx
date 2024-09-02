@@ -110,6 +110,12 @@ class AttractState extends MusicBeatState
     {
       //vid.zIndex = 0;
       vid.bitmap.onEndReached.add(onAttractEnd);
+      vid.bitmap.onTextureSetup.add(function()
+        {
+          vid.setGraphicSize(FlxG.width);
+          vid.updateHitbox();
+          vid.screenCenter();
+        });
 
       add(vid);
       vid.play(filePath, false);
@@ -160,7 +166,7 @@ class AttractState extends MusicBeatState
     vid.destroy();
     vid = null;
     #end
-    FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.8);
+    FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.7);
     FlxG.switchState(new TitleState());
   }
 }
