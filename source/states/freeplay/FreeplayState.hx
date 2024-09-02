@@ -1,11 +1,12 @@
 package states.freeplay;
 
+import openfl.utils.AssetCache;
+import backend.FreeplayMeta;
 import lime.app.Future;
 import haxe.Exception;
 import openfl.media.Sound;
 import funkin.util.flixel.sound.FlxPartialSound;
 import flixel.graphics.FlxGraphic;
-import substates.GameplayChangersSubstate;
 import funkin.Scoring;
 import funkin.AtlasText;
 import shaders.PureColor;
@@ -23,7 +24,6 @@ import funkin.Scoring.ScoringRank;
 import objects.TypedAlphabet;
 import backend.PsychCamera;
 import flixel.addons.transition.FlxTransitionableState;
-import flixel.addons.ui.FlxInputText;
 import flixel.FlxCamera;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
@@ -427,7 +427,7 @@ class FreeplayState extends MusicBeatSubstate
 			speed: 0.3
 		});
 
-		backingTextYeah = new FlxAtlasSprite(640, 370, Paths.getLibraryPath("images/freeplay/backing-text-yeah"), {
+		backingTextYeah = new FlxAtlasSprite(640, 370, Paths.getSharedPath("images/freeplay/backing-text-yeah"), {
 			FrameRate: 24.0,
 			Reversed: false,
 			// ?OnComplete:Void -> Void,
@@ -1721,14 +1721,18 @@ class FreeplayState extends MusicBeatSubstate
 	// Clears the cache of songs, frees up memory, they' ll have to be loaded in later tho function clearDaCache(actualSongTho:String)
 	function clearDaCache(actualSongTho:String):Void
 	{
-		for (song in songs)
+		trace("Purging song previews!");
+		var cacheObj = cast(openfl.Assets.cache,AssetCache);
+		@:privateAccess
+		var list = cacheObj.sound.keys();
+		for (song in list)
 		{
 			if (song == null)
 				continue;
-			if (song.songName != actualSongTho)
+			if (!song.contains(actualSongTho) && song.contains(".partial")) //.partial
 			{
-				trace('trying to remove: ' + song.songName);
-				// openfl.Assets.cache.clear(Paths.inst(song.songName));
+				trace('trying to remove: ' + song);
+				openfl.Assets.cache.clear(song);
 			}
 		}
 	}
@@ -2007,11 +2011,18 @@ class FreeplayState extends MusicBeatSubstate
 			var instPath = "";
 			
 			try{
-				Mods.currentModDirectory = daSongCapsule.songData.folder;
-				instPath = Paths.modFolders('songs/${Paths.formatToSongPath(daSongCapsule.songData.songId)}/Inst.${Paths.SOUND_EXT}');
-				var future = FlxPartialSound.partialLoadFromFile(instPath, 0.05,0.25);
+				var songData = daSongCapsule.songData;
+				Mods.currentModDirectory = songData.folder;
+
+				instPath = 'assets/songs/${Paths.formatToSongPath(songData.songId)}/Inst.${Paths.SOUND_EXT}';
+				#if MODS_ALLOWED
+				var modsInstPath = Paths.modFolders('songs/${Paths.formatToSongPath(songData.songId)}/Inst.${Paths.SOUND_EXT}');
+				if(FileSystem.exists(modsInstPath)) instPath = modsInstPath;
+				#end
+				
+				var future = FlxPartialSound.partialLoadFromFile(instPath, songData.freeplayPrevStart,songData.freeplayPrevEnd);
 				if(future == null){
-					trace('Internal failure loading instrumentals for ${daSongCapsule.songData.songName} "${instPath}"');
+					trace('Internal failure loading instrumentals for ${songData.songName} "${instPath}"');
 					return;
 				}
 				future.future.onComplete(function(sound:Sound)
@@ -2167,6 +2178,8 @@ class FreeplaySongData
 	public var songStartingBpm(default, null):Float = 0;
 	public var difficultyRating(default, null):Int = 0;
 
+	public var freeplayPrevStart(default, null):Float = 0;
+	public var freeplayPrevEnd(default, null):Float = 0;
 	public var currentDifficulty(default, set):String = "normal";
 
 	public var scoringRank:Null<ScoringRank> = null;
@@ -2185,6 +2198,11 @@ class FreeplaySongData
 		this.songCharacter = songCharacter;
 		this.color = color;
 		this.songId = songId;
+
+		var meta = FreeplayMeta.getMeta(songId);
+		difficultyRating = meta.songRating;
+		freeplayPrevStart = meta.freeplayPrevStart;
+		freeplayPrevEnd = meta.freeplayPrevEnd;
 
 		updateValues();
 
@@ -2220,7 +2238,13 @@ class FreeplaySongData
 
 		Mods.currentModDirectory = this.folder;
 		var fileSngName = Paths.formatToSongPath(songId);
-		var sngDataPath = Paths.modFolders("data/"+fileSngName);
+		var sngDataPath = Paths.getSharedPath("data/"+fileSngName);
+
+		#if MODS_ALLOWED
+		var mod_path = Paths.modFolders("data/"+fileSngName);
+		if(FileSystem.exists(mod_path)) sngDataPath = mod_path;
+		#end
+		
 		//if(sngDataPath == null) return;
 		
 		if(this.songDifficulties.length == 0){
@@ -2236,7 +2260,9 @@ class FreeplaySongData
 				this.songDifficulties = diffNames;
 			}
 			else{
+				this.songDifficulties = ['normal'];
 				trace('Directory $sngDataPath does not exist! $songName has no charts (difficulties)!');
+				trace('Forcing "normal" difficulty. Expect issues!!');
 			}
 			
 		}
@@ -2293,7 +2319,7 @@ class DifficultySprite extends FlxSprite
 
 		difficultyId = diffId;
 		var tex:FlxGraphic = null;
-		if(["easy", "normal", "hard"].contains(difficultyId)){
+		if(["easy", "normal", "hard", "erect", "nightmare"].contains(difficultyId)){
 			tex = Paths.image('freeplay/freeplay' + diffId,null,false);
 		}
 		else{

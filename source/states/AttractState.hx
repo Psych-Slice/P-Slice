@@ -2,11 +2,11 @@ package states;
 
 #if html5
 import funkin.graphics.video.FlxVideo;
-#end
-#if hxCodec
-import hxcodec.flixel.FlxVideoSprite;
-#end
+#else
+import objects.VideoSprite;
 
+using funkin.ArrayTools;
+#end
 
 /**
  * After about 2 minutes of inactivity on the title screen,
@@ -17,7 +17,34 @@ import hxcodec.flixel.FlxVideoSprite;
  */
 class AttractState extends MusicBeatState
 {
-  static final ATTRACT_VIDEO_PATH:String = Paths.video('toyCommercial');
+  #if html5
+  static final ATTRACT_VIDEO_PATH:String = Paths.video("commercials/"+FlxG.random.getObject([
+    'toyCommercial',
+    'kickstarterTrailer',
+    'erectSamplers'
+  ]));
+  #else
+  private static function collectVideos():String{
+    var dirsToList = new Array<String>();
+    dirsToList.push('assets/videos/commercials/');
+    if(FileSystem.exists('mods/videos/commercials'))dirsToList.push('mods/videos/commercials/');
+    Mods.loadTopMod();
+    var modsToSearch = Mods.getGlobalMods();
+    modsToSearch.pushUnique(Mods.currentModDirectory);
+    modsToSearch = modsToSearch.filter(s -> FileSystem.exists('mods/$s/videos/commercials')).map(s -> 'mods/$s/videos/commercials');
+    
+    dirsToList = dirsToList.concat(modsToSearch);
+    var commercialsToSelect = new Array<String>();
+    for(potencialComercials in dirsToList){
+      for (file in FileSystem.readDirectory(potencialComercials).filter(s -> s.endsWith(".mp4"))) {
+        commercialsToSelect.push(potencialComercials + '/'+file);
+      }
+    }
+    return FlxG.random.getObject(commercialsToSelect);
+  }
+
+  static var ATTRACT_VIDEO_PATH:String = '';
+  #end
 
   public override function create():Void
   {
@@ -33,7 +60,8 @@ class AttractState extends MusicBeatState
     playVideoHTML5(ATTRACT_VIDEO_PATH);
     #end
 
-    #if hxCodec
+    #if (hxvlc || hxCodec)
+    ATTRACT_VIDEO_PATH = collectVideos();
     trace('Playing native video ${ATTRACT_VIDEO_PATH}');
     playVideoNative(ATTRACT_VIDEO_PATH);
     #end
@@ -61,21 +89,22 @@ class AttractState extends MusicBeatState
   }
   #end
 
-  #if hxCodec
-  var vid:FlxVideoSprite;
+  #if VIDEOS_ALLOWED
+  var vid:VideoSprite;
 
   function playVideoNative(filePath:String):Void
   {
     // Video displays OVER the FlxState.
-    vid = new FlxVideoSprite(0, 0);
+    vid = new VideoSprite(filePath,false);
 
     if (vid != null)
     {
       //vid.zIndex = 0;
-      vid.bitmap.onEndReached.add(onAttractEnd);
+      vid.finishCallback = onAttractEnd.bind();
 
       add(vid);
-      vid.play(filePath, false);
+      
+      vid.play();
     }
     else
     {
@@ -89,7 +118,7 @@ class AttractState extends MusicBeatState
     super.update(elapsed);
 
     // If the user presses any button, skip the video.
-    if (FlxG.keys.justPressed.ANY && !FlxG.keys.justPressed.MINUS && !FlxG.keys.justPressed.PLUS)//!controls.VOLUME_MUTE && !controls.VOLUME_UP && !controls.VOLUME_DOWN)
+    if (FlxG.keys.justPressed.ANY && !controls.justPressed("volume_up") && !controls.justPressed("volume_down") && !controls.justPressed("volume_mute"))
     {
       onAttractEnd();
     }
@@ -108,11 +137,13 @@ class AttractState extends MusicBeatState
     }
     #end
 
-    #if hxCodec
+    #if (hxvlc || hxCodec)
     if (vid != null)
     {
-      vid.stop();
+      vid.pause();
       remove(vid);
+      @:privateAccess
+      vid.alreadyDestroyed = true;
     }
     #end
 
@@ -120,7 +151,7 @@ class AttractState extends MusicBeatState
     vid.destroy();
     vid = null;
     #end
-
+    FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.7);
     FlxG.switchState(() -> new TitleState());
   }
 }

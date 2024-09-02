@@ -13,4 +13,8 @@ Mods made for P-Slice now can select which sticker pack and set to use on the ne
 
 > custom freeplay icons
 
-You can now put V-slice freeplay icons into `images/freeplay/icons/{charId}pixel.png`
+You can now put V-slice freeplay icons into `images/freeplay/icons/{charId}pixel.png` where {charId} is the name of the character icon.
+
+> custom commercials
+
+If your mod affects entire engine (either is global or loaded as the first mod), you can add additional commercials in `videos/commercials`

@@ -175,78 +175,78 @@ class ResultState extends MusicBeatSubstate
     switch (rank)
     {
       case PERFECT | PERFECT_GOLD:
-        heartsPerfect = new FlxAtlasSprite(1342, 370, Paths.getLibraryPath("images/resultScreen/results-bf/resultsPERFECT/hearts", "shared"));
+        heartsPerfect = new FlxAtlasSprite(1342, 370, Paths.getSharedPath("images/resultScreen/results-bf/resultsPERFECT/hearts"));
         heartsPerfect.visible = false;
         //heartsPerfect.zIndex = 501;
         add(heartsPerfect);
 
-        heartsPerfect.anim.onComplete = () -> {
+        heartsPerfect.anim.onComplete.add(() -> {
           if (heartsPerfect != null)
           {
             // bfPerfect.anim.curFrame = 137;
             heartsPerfect.anim.curFrame = 43;
             heartsPerfect.anim.play(); // unpauses this anim, since it's on PlayOnce!
           }
-        };
+        });
 
-        bfPerfect = new FlxAtlasSprite(1342, 370, Paths.getLibraryPath("images/resultScreen/results-bf/resultsPERFECT", "shared"));
+        bfPerfect = new FlxAtlasSprite(1342, 370, Paths.getSharedPath("images/resultScreen/results-bf/resultsPERFECT"));
         bfPerfect.visible = false;
         //bfPerfect.zIndex = 500;
         add(bfPerfect);
 
-        bfPerfect.anim.onComplete = () -> {
+        bfPerfect.anim.onComplete.add(() -> {
           if (bfPerfect != null)
           {
             // bfPerfect.anim.curFrame = 137;
             bfPerfect.anim.curFrame = 137;
             bfPerfect.anim.play(); // unpauses this anim, since it's on PlayOnce!
           }
-        };
+        });
 
       case EXCELLENT:
-        bfExcellent = new FlxAtlasSprite(1329, 429, Paths.getLibraryPath("images/resultScreen/results-bf/resultsEXCELLENT", "shared"));
+        bfExcellent = new FlxAtlasSprite(1329, 429, Paths.getSharedPath("images/resultScreen/results-bf/resultsEXCELLENT"));
         bfExcellent.visible = false;
         //bfExcellent.zIndex = 500;
         add(bfExcellent);
 
-        bfExcellent.anim.onComplete = () -> {
+        bfExcellent.anim.onComplete.add(() -> {
           if (bfExcellent != null)
           {
             bfExcellent.anim.curFrame = 28;
             bfExcellent.anim.play(); // unpauses this anim, since it's on PlayOnce!
           }
-        };
+        });
 
       case GREAT:
-        gfGreat = new FlxAtlasSprite(802, 331, Paths.getLibraryPath("images/resultScreen/results-bf/resultsGREAT/gf", "shared"));
+        gfGreat = new FlxAtlasSprite(802, 331, Paths.getSharedPath("images/resultScreen/results-bf/resultsGREAT/gf"));
         gfGreat.visible = false;
         //gfGreat.zIndex = 499;
         add(gfGreat);
 
         gfGreat.scale.set(0.93, 0.93);
 
-        gfGreat.anim.onComplete = () -> {
+        gfGreat.anim.onComplete.add(() -> {
           if (gfGreat != null)
           {
             gfGreat.anim.curFrame = 9;
             gfGreat.anim.play(); // unpauses this anim, since it's on PlayOnce!
           }
-        };
+        });
 
-        bfGreat = new FlxAtlasSprite(929, 363, Paths.getLibraryPath("images/resultScreen/results-bf/resultsGREAT/bf", "shared"));
+        bfGreat = new FlxAtlasSprite(929, 363, Paths.getSharedPath("images/resultScreen/results-bf/resultsGREAT/bf"));
         bfGreat.visible = false;
         //bfGreat.zIndex = 500;
         add(bfGreat);
 
         bfGreat.scale.set(0.93, 0.93);
 
-        bfGreat.anim.onComplete = () -> {
+        bfGreat.anim.onComplete.add(() -> {
           if (bfGreat != null)
           {
             bfGreat.anim.curFrame = 15;
             bfGreat.anim.play(); // unpauses this anim, since it's on PlayOnce!
           }
-        };
+        });
 
       case GOOD:
         gfGood = FunkinTools.createSparrow(625, 325,'resultScreen/results-bf/resultsGOOD/resultGirlfriendGOOD');
@@ -274,16 +274,16 @@ class ResultState extends MusicBeatSubstate
         add(bfGood);
 
       case SHIT:
-        bfShit = new FlxAtlasSprite(0, 20, Paths.getLibraryPath("images/resultScreen/results-bf/resultsSHIT", "shared"));
+        bfShit = new FlxAtlasSprite(0, 20, Paths.getSharedPath("images/resultScreen/results-bf/resultsSHIT"));
         bfShit.visible = false;
         //bfShit.zIndex = 500;
         add(bfShit);
-        bfShit.anim.onComplete = () -> {
+        bfShit.anim.onComplete.add(() -> {
           if (bfShit != null)
           {
             bfShit.playAnimation('Loop Start');
           }
-        };
+        });
     }
 
     add(difficulty);

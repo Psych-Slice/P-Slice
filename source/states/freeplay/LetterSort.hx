@@ -185,7 +185,7 @@ class FreeplayLetter extends FlxAtlasSprite
 
   public function new(x:Float, y:Float, ?letterInd:Int)
   {
-    super(x, y, Paths.getLibraryPath("images/freeplay/sortedLetters")); //TODO
+    super(x, y, Paths.getSharedPath("images/freeplay/sortedLetters")); //TODO
 
     // this is used for the regex
     // /^[OR].*/gi doesn't work for showing the song Pico, so now it's

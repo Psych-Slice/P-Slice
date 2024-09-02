@@ -73,6 +73,11 @@ jobs:
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
         run: haxelib run lime build windows --app-version="4.0.0-${{ github.run_id}}"  -D officialBuild
+      - name: Cleanup
+        run: |
+          rd /s /q .\"export/release/windows/bin/lua"
+          rd /s /q .\"export/release/windows/bin/hrtfs"
+        shell: cmd
       - name: Publish Artifact
         uses: actions/upload-artifact@v4.3.4
         with:
