@@ -29,8 +29,29 @@ class PauseSubState extends MusicBeatSubstate
 	var missingTextBG:FlxSprite;
 	var missingText:FlxText;
 
+	var inVid:Bool;
+	public var cutscene_allowSkipping = true;
+	public var cutscene_hardReset = true;
+	public var cutscene_type = true;
+	public var specialAction:PauseSpecialAction = PauseSpecialAction.NOTHING;
+
+	var cutscene_branding:String = 'lol';
+	var cutscene_resetTxt:String = 'lol';
+	var cutscene_skipTxt:String = 'lol';
+
 	public static var songName:String = null;
 
+	public function new(inCutscene:Bool = false,type:PauseType = PauseType.CUTSCENE) {
+		super();
+		cutscene_branding = switch(type){
+			case VIDEO: "Video";
+			case CUTSCENE: "Cutscene";
+			case DIALOGUE: "Dialogue";
+		};
+		cutscene_resetTxt = 'Restart $cutscene_branding';
+		cutscene_skipTxt = 'Skip $cutscene_branding';
+		this.inVid = inCutscene;
+	}
 	override function create()
 	{
 		if(Difficulty.list.length < 2) menuItemsOG.remove('Change Difficulty'); //No need to change difficulty if there is only one!
@@ -49,7 +70,13 @@ class PauseSubState extends MusicBeatSubstate
 			menuItemsOG.insert(4 + num, 'Toggle Practice Mode');
 			menuItemsOG.insert(5 + num, 'Toggle Botplay');
 		}
-		menuItems = menuItemsOG;
+		if(inVid) {
+			menuItems = ['Resume',cutscene_resetTxt , cutscene_skipTxt , 'Options', 'Exit to menu'];
+			if(!cutscene_allowSkipping) menuItems.remove(cutscene_skipTxt);
+
+		}
+		else menuItems = menuItemsOG;
+		
 
 		for (i in 0...Difficulty.list.length) {
 			var diff:String = Difficulty.getString(i);
@@ -89,7 +116,9 @@ class PauseSubState extends MusicBeatSubstate
 		levelDifficulty.updateHitbox();
 		add(levelDifficulty);
 
-		var blueballedTxt:FlxText = new FlxText(20, 15 + 64, 0, Language.getPhrase("blueballed", "{1} Blue Balls", [PlayState.deathCounter]), 32);
+		
+		var ballsTxt = inVid ? '$cutscene_branding Paused' : Language.getPhrase("blueballed", "{1} Blue Balls", [PlayState.deathCounter]);
+		var blueballedTxt:FlxText = new FlxText(20, 15 + 64, 0, ballsTxt , 32);
 		blueballedTxt.scrollFactor.set();
 		blueballedTxt.setFormat(Paths.font('vcr.ttf'), 32);
 		blueballedTxt.updateHitbox();
@@ -168,6 +197,7 @@ class PauseSubState extends MusicBeatSubstate
 
 		if(controls.BACK)
 		{
+			specialAction = RESUME;
 			close();
 			return;
 		}
@@ -258,6 +288,7 @@ class PauseSubState extends MusicBeatSubstate
 			switch (daSelected)
 			{
 				case "Resume":
+					specialAction = RESUME;
 					close();
 				case 'Change Difficulty':
 					menuItems = difficultyChoices;
@@ -330,6 +361,17 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.changedDifficulty = false;
 					PlayState.chartingMode = false;
 					FlxG.camera.followLerp = 0;
+				default:
+					if(daSelected == cutscene_skipTxt){
+						specialAction = SKIP;
+						close();
+					}else if(daSelected == cutscene_resetTxt){
+						if(cutscene_hardReset) restartSong();
+							else{
+								specialAction = RESTART;
+								close();
+							}
+					}
 			}
 		}
 	}
@@ -431,4 +473,17 @@ class PauseSubState extends MusicBeatSubstate
 
 	function updateSkipTimeText()
 		skipTimeText.text = FlxStringUtil.formatTime(Math.max(0, Math.floor(curTime / 1000)), false) + ' / ' + FlxStringUtil.formatTime(Math.max(0, Math.floor(FlxG.sound.music.length / 1000)), false);
+
+	
+}
+enum PauseSpecialAction {
+	NOTHING;
+	RESTART;
+	SKIP;
+	RESUME;
+}
+enum PauseType{
+	VIDEO;
+	CUTSCENE;
+	DIALOGUE;
 }

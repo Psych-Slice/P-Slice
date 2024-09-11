@@ -2327,7 +2327,12 @@ class DifficultySprite extends FlxSprite
 		}
 		hasValidTexture = (tex != null);
 		if(hasValidTexture) this.loadGraphic(tex);
-		
-		difficultyColor = hasValidTexture ? CoolUtil.dominantColor(this) : FlxColor.GRAY;
+		try{
+			difficultyColor = hasValidTexture ? CoolUtil.dominantColor(this) : FlxColor.GRAY;
+		}
+		catch(x){
+			trace('Failed to get prime color for $diffId: ${x.message}');
+			difficultyColor = FlxColor.GRAY;
+		}
 	}
 }

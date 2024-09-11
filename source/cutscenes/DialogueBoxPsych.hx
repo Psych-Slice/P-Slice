@@ -1,5 +1,6 @@
 package cutscenes;
 
+import substates.PauseSubState;
 import haxe.Json;
 import openfl.utils.Assets;
 
@@ -46,6 +47,9 @@ class DialogueBoxPsych extends FlxSpriteGroup
 	var textBoxTypes:Array<String> = ['normal', 'angry'];
 	
 	var curCharacter:String = "";
+
+	var pauseJustClosed:Bool = false;
+	var staticDialList:Array<DialogueLine> = [];
 	//var charPositionList:Array<String> = ['left', 'center', 'right'];
 
 	public function new(dialogueList:DialogueFile, ?song:String = null)
@@ -68,6 +72,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		add(bgFade);
 
 		this.dialogueList = dialogueList;
+		this.staticDialList = dialogueList.dialogue.copy();
 		spawnCharacters();
 
 		box = new FlxSprite(70, 370);
@@ -174,35 +179,53 @@ class DialogueBoxPsych extends FlxSpriteGroup
 					if(skipDialogueThing != null) {
 						skipDialogueThing();
 					}
+					FlxG.sound.play(Paths.sound(closeSound), closeVolume);
 				}
-				else if(back || currentText >= dialogueList.dialogue.length)
-				{
-					dialogueEnded = true;
-					for (i in 0...textBoxTypes.length) {
-						var checkArray:Array<String> = ['', 'center-'];
-						var animName:String = box.animation.curAnim.name;
-						for (j in 0...checkArray.length) {
-							if(animName == checkArray[j] + textBoxTypes[i] || animName == checkArray[j] + textBoxTypes[i] + 'Open') {
-								box.animation.play(checkArray[j] + textBoxTypes[i] + 'Open', true);
-							}
-						}
-					}
-
-					box.animation.curAnim.curFrame = box.animation.curAnim.frames.length - 1;
-					box.animation.curAnim.reverse();
-					if(daText != null)
+				else if (back && !pauseJustClosed && !dialogueEnded)
 					{
-						daText.kill();
-						remove(daText);
-						daText.destroy();
+						var game = PlayState.instance;
+						FlxG.camera.followLerp = 0;
+						FlxG.state.persistentUpdate = false;
+						FlxG.state.persistentDraw = true;
+						FlxG.sound.music.pause();
+			
+						var pauseState = new PauseSubState(true,DIALOGUE);
+						pauseState.cutscene_allowSkipping = true;
+						pauseState.cutscene_hardReset = false;
+						game.openSubState(pauseState);
+			
+						game.subStateClosed.addOnce(s ->
+						{ // TODO
+							pauseJustClosed = true;
+							FlxTimer.wait(0.1, () -> pauseJustClosed = false);
+							switch (pauseState.specialAction)
+							{
+								case SKIP: {
+										trace('skipped cutscene');
+										skipDialogue();
+										FlxG.sound.play(Paths.sound(closeSound), closeVolume);
+									}
+								case RESUME: {
+									FlxG.sound.music.resume();
+								}
+								case NOTHING: {}
+								case RESTART: {
+									dialogueList.dialogue = staticDialList.copy();
+									currentText = 0;
+									startNextDialog();
+									FlxG.sound.play(Paths.sound(closeSound), closeVolume);
+								}
+							}
+						});
 					}
-					skipText.visible = false;
-					updateBoxOffsets(box);
-					FlxG.sound.music.fadeOut(1, 0, (_) -> FlxG.sound.music.stop());
+				else if(currentText >= dialogueList.dialogue.length)
+				{
+					FlxG.sound.play(Paths.sound(closeSound), closeVolume);
+					skipDialogue();
 				} else {
+					FlxG.sound.play(Paths.sound(closeSound), closeVolume);
 					startNextDialog();
 				}
-				FlxG.sound.play(Paths.sound(closeSound), closeVolume);
 			} else if(daText.finishedText) {
 				var char:DialogueCharacter = arrayCharacters[lastCharacter];
 				if(char != null && char.animation.curAnim != null && char.animationIsLoop() && char.animation.finished) {
@@ -314,6 +337,30 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		super.update(elapsed);
 	}
 
+	function skipDialogue(){
+		dialogueEnded = true;
+					for (i in 0...textBoxTypes.length) {
+						var checkArray:Array<String> = ['', 'center-'];
+						var animName:String = box.animation.curAnim.name;
+						for (j in 0...checkArray.length) {
+							if(animName == checkArray[j] + textBoxTypes[i] || animName == checkArray[j] + textBoxTypes[i] + 'Open') {
+								box.animation.play(checkArray[j] + textBoxTypes[i] + 'Open', true);
+							}
+						}
+					}
+
+					box.animation.curAnim.curFrame = box.animation.curAnim.frames.length - 1;
+					box.animation.curAnim.reverse();
+					if(daText != null)
+					{
+						daText.kill();
+						remove(daText);
+						daText.destroy();
+					}
+					skipText.visible = false;
+					updateBoxOffsets(box);
+					FlxG.sound.music.fadeOut(1, 0, (_) -> FlxG.sound.music.stop());
+	}
 	var lastCharacter:Int = -1;
 	var lastBoxType:String = '';
 	function startNextDialog():Void
