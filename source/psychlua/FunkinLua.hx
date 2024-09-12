@@ -42,6 +42,8 @@ import flixel.input.gamepad.FlxGamepadInputID;
 
 import haxe.Json;
 
+import mikolka.vslice.freeplay.FreeplayState;
+
 class FunkinLua {
 	public var lua:State = null;
 	public var camTarget:FlxCamera;
@@ -763,7 +765,7 @@ class FunkinLua {
 				}
 				else
 				{
-					game.openSubState(new StickerSubState(null, (sticker) -> states.freeplay.FreeplayState.build(null, sticker)));
+					game.openSubState(new StickerSubState(null, (sticker) -> FreeplayState.build(null, sticker)));
 				}
 
 

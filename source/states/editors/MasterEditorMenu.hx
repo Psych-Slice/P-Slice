@@ -1,7 +1,7 @@
 package states.editors;
 
 import backend.WeekData;
-import states.results.ResultState;
+import mikolka.vslice.results.ResultState;
 
 import objects.Character;
 

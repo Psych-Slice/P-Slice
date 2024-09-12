@@ -42,6 +42,9 @@ import objects.BGSprite;
 import states.PlayState;
 import states.LoadingState;
 
+//P-Slice
+import mikolka.funkin.*;
+
 #if flxanimate
 import flxanimate.*;
 import flxanimate.PsychFlxAnimate as FlxAnimate;

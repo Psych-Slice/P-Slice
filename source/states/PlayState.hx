@@ -2,7 +2,7 @@ package states;
 
 import mikolka.JoinedLuaVariables;
 import substates.StickerSubState;
-import states.freeplay.FreeplayState;
+import mikolka.vslice.freeplay.FreeplayState;
 import backend.Highscore;
 import backend.StageData;
 import backend.WeekData;
@@ -27,10 +27,10 @@ import cutscenes.DialogueBoxPsych;
 import states.StoryMenuState;
 
 import lime.math.Matrix3;
-import funkin.Scoring;
-import funkin.FunkinTools;
-import states.results.Tallies;
-import states.results.ResultState;
+import mikolka.funkin.Scoring;
+import mikolka.funkin.FunkinTools;
+import mikolka.vslice.results.Tallies;
+import mikolka.vslice.results.ResultState;
 import openfl.media.Sound;
 
 import states.editors.ChartingState;
@@ -2298,7 +2298,7 @@ class PlayState extends MusicBeatState
 					return;
 				}
 				var floaties = keyValues.map(s -> Std.parseFloat(s));
-				if(funkin.ArrayTools.findIndex(floaties,s -> Math.isNaN(s)) != -1) {
+				if(mikolka.funkin.ArrayTools.findIndex(floaties,s -> Math.isNaN(s)) != -1) {
 					trace("INVALID FLOATIES");
 					return;
 				}
@@ -2566,7 +2566,7 @@ class PlayState extends MusicBeatState
 				
 				camOther.fade(FlxColor.BLACK, 0.6,false,() -> {
 					FlxTransitionableState.skipNextTransOut = true;
-                FlxG.switchState(() -> states.freeplay.FreeplayState.build(
+                FlxG.switchState(() -> FreeplayState.build(
                   {
                     {
                       fromResults:
@@ -2582,7 +2582,7 @@ class PlayState extends MusicBeatState
 				});
 			}
 			else if (!isStoryMode){
-				openSubState(new StickerSubState(null, (sticker) -> states.freeplay.FreeplayState.build(
+				openSubState(new StickerSubState(null, (sticker) -> FreeplayState.build(
 					{
 					  {
 						fromResults:

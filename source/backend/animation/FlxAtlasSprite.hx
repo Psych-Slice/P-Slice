@@ -9,6 +9,7 @@ import openfl.utils.Assets;
 
 /**
  * A sprite which provides convenience functions for rendering a texture atlas with animations.
+ * ! psych dependent
  */
 class FlxAtlasSprite extends FlxAnimate
 {

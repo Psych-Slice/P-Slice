@@ -1,5 +1,6 @@
 package states;
 
+import mikolka.vslice.freeplay.FreeplayState;
 import flixel.FlxObject;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
@@ -176,7 +177,7 @@ class MainMenuState extends MusicBeatState
 								FlxTransitionableState.skipNextTransIn = true;
 								FlxTransitionableState.skipNextTransOut = true;
 
-								openSubState(new states.freeplay.FreeplayState());
+								openSubState(new FreeplayState());
 								subStateOpened.addOnce(state -> {
 									for (i in 0...menuItems.members.length) {
 										menuItems.members[i].revive();

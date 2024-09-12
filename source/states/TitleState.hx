@@ -15,7 +15,7 @@ import shaders.ColorSwap;
 import states.StoryMenuState;
 import states.OutdatedState;
 import states.MainMenuState;
-import funkin.components.ScreenshotPlugin;
+import mikolka.vslice.components.ScreenshotPlugin;
 
 typedef TitleData =
 {

@@ -1,5 +1,6 @@
 package substates;
 
+import mikolka.vslice.freeplay.FreeplayState;
 import backend.WeekData;
 
 import objects.Character;
@@ -174,7 +175,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				}
 				else
 				{
-					openSubState(new StickerSubState(null, (sticker) -> states.freeplay.FreeplayState.build(null, sticker)));
+					openSubState(new StickerSubState(null, (sticker) -> FreeplayState.build(null, sticker)));
 				}
 				PlayState.instance.callOnScripts('onGameOverConfirm', [false]);
 			}

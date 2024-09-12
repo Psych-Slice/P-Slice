@@ -6,7 +6,7 @@ import android.content.Context;
 #end
 
 
-import funkin.components.MemoryCounter;
+import mikolka.vslice.components.MemoryCounter;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxGame;
 import flixel.FlxState;
@@ -129,7 +129,7 @@ class Main extends Sprite
     	// create() in there, which gets called when it's added to stage
     	// which is why it needs to be added before addChild(game) here
     	@:privateAccess
-    	gameObject._customSoundTray = funkin.components.FunkinSoundTray;
+    	gameObject._customSoundTray = mikolka.vslice.components.FunkinSoundTray;
 
 		addChild(gameObject);
 

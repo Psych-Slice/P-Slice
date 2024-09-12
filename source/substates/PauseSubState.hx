@@ -1,5 +1,6 @@
 package substates;
 
+import mikolka.vslice.freeplay.FreeplayState;
 import backend.WeekData;
 import backend.Highscore;
 import backend.Song;
@@ -356,7 +357,7 @@ class PauseSubState extends MusicBeatSubstate
 						}
 						else
 						{
-							openSubState(new StickerSubState(null, (sticker) -> states.freeplay.FreeplayState.build(null, sticker)));
+							openSubState(new StickerSubState(null, (sticker) -> FreeplayState.build(null, sticker)));
 						}
 					PlayState.changedDifficulty = false;
 					PlayState.chartingMode = false;
