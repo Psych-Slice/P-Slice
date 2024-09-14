@@ -1,6 +1,7 @@
 package mikolka.vslice.freeplay;
 
 import flixel.graphics.FlxGraphic;
+import mikolka.compatibility.FunkinPath as Paths;
 
 /**
  * The sprite for the difficulty
@@ -21,10 +22,10 @@ import flixel.graphics.FlxGraphic;
          difficultyId = diffId;
          var tex:FlxGraphic = null;
          if(["easy", "normal", "hard", "erect", "nightmare"].contains(difficultyId)){
-             tex = Paths.image('freeplay/freeplay' + diffId,null,false);
+             tex = Paths.noGpuImage('freeplay/freeplay' + diffId);
          }
          else{
-             tex = Paths.image('menudifficulties/' + diffId,null,false);
+             tex = Paths.noGpuImage('menudifficulties/' + diffId);
          }
          hasValidTexture = (tex != null);
          if(hasValidTexture) this.loadGraphic(tex);

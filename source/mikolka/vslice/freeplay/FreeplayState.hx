@@ -5,10 +5,8 @@ import mikolka.compatibility.FunkinCamera;
 import mikolka.vslice.freeplay.pslice.BPMCache;
 import mikolka.vslice.freeplay.pslice.FreeplayColorTweener;
 import mikolka.compatibility.FreeplaySongData;
-import states.MainMenuState;
 import mikolka.compatibility.FreeplayHelpers;
 import mikolka.compatibility.FunkinPath as Paths;
-import backend.Highscore;
 
 import openfl.utils.AssetCache;
 import mikolka.funkin.AtlasText;
@@ -1554,7 +1552,7 @@ class FreeplayState extends MusicBeatSubstate
 				}
 				else
 				{
-					FlxG.switchState(() -> new MainMenuState());
+					FlxG.switchState(new MainMenuState());
 				}
 			});
 		}

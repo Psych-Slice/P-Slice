@@ -117,4 +117,7 @@ class FreeplayHelpers {
 		PlayState.storyWeek = songData.levelId; // TODO
 		Difficulty.loadFromWeek();
 	}
+	public static function getDifficultyName() {
+		return Difficulty.list[PlayState.storyDifficulty].toUpperCase();
+	}
 }

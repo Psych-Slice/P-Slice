@@ -1,9 +1,9 @@
 package mikolka.vslice.results;
 
+import mikolka.compatibility.FreeplayHelpers;
 import mikolka.compatibility.FunkinPath as Paths;
 import mikolka.vslice.results.Tallies.SaveScoreData;
 import mikolka.compatibility.FunkinCamera;
-import states.StoryMenuState;
 import mikolka.vslice.freeplay.FreeplayState;
 import flixel.addons.transition.FlxTransitionableState;
 import substates.StickerSubState;
@@ -96,7 +96,7 @@ class ResultState extends MusicBeatSubState
     difColor.greenFloat = Math.max(difColor.greenFloat,fractal);
 
     difficulty = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.get(49, 62)));
-    difficulty.text = Difficulty.list[PlayState.storyDifficulty].toUpperCase();
+    difficulty.text = FreeplayHelpers.getDifficultyName();
     difficulty.color = difColor;
     difficulty.letterSpacing = -11; //!!!
     difficulty.angle = -4.4;
@@ -471,7 +471,9 @@ class ResultState extends MusicBeatSubState
     bgFlash.visible = true;
     FlxTween.tween(bgFlash, {alpha: 0}, 5 / 24);
     var clearPercentFloat = (params.scoreData.accPoints/params.scoreData.totalNotesHit)* 100; //? different rating system 
+    if(params.scoreData.totalNotesHit == 0) clearPercentFloat = 0;
     clearPercentTarget = Math.floor(clearPercentFloat);
+
     // Prevent off-by-one errors.
 
     clearPercentLerp = Std.int(Math.max(0, clearPercentTarget - 36));
@@ -881,7 +883,7 @@ class ResultState extends MusicBeatSubState
               ease: FlxEase.expoOut,
               onComplete: function(_) {
                 FlxTransitionableState.skipNextTransOut = true;
-                FlxG.switchState(() -> FreeplayState.build(
+                FlxG.switchState(FreeplayState.build(
                   {
                     {
                       fromResults:

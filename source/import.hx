@@ -32,6 +32,7 @@ import backend.Conductor;
 import backend.BaseStage;
 import backend.Difficulty;
 import backend.Mods;
+import backend.Highscore;
 import backend.Language;
 
 import backend.ui.*; //Psych-UI
@@ -40,6 +41,8 @@ import objects.Alphabet;
 import objects.BGSprite;
 
 import states.PlayState;
+import states.MainMenuState;
+import states.StoryMenuState;
 import states.LoadingState;
 
 //P-Slice

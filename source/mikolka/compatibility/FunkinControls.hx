@@ -9,4 +9,8 @@ class FunkinControls {
     public static function get_FREEPLAY_RIGHT():Bool {
         return Controls.instance.BAR_RIGHT;
     }
+    public static var SCREENSHOT(get,never):Bool;    
+    public static function get_SCREENSHOT():Bool {
+        return Controls.instance.SCREENSHOT;
+    }
 }
