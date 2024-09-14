@@ -68,9 +68,9 @@ class FunkinSoundTray extends FlxSoundTray
     y = -height;
     screenCenter();
 
-    volumeUpSound = Paths.getPath("sounds/soundtray/Volup."+Paths.SOUND_EXT);
-    volumeDownSound = Paths.getPath("sounds/soundtray/Voldown."+Paths.SOUND_EXT);
-    volumeMaxSound = Paths.getPath("sounds/soundtray/VolMAX."+Paths.SOUND_EXT);
+    volumeUpSound = Paths.getPath("sounds/soundtray/Volup.ogg");
+    volumeDownSound = Paths.getPath("sounds/soundtray/Voldown.ogg");
+    volumeMaxSound = Paths.getPath("sounds/soundtray/VolMAX.ogg");
 
     trace("Custom tray added!");
   }

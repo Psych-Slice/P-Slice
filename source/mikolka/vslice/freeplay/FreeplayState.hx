@@ -1624,9 +1624,10 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			if (diffSprite == null)
 				continue;
-			if (diffSprite.difficultyId == currentDifficulty)
+			if (diffSprite.difficultyId == currentDifficulty) //? added code related to FallbackDifficulty
 			{
 				grpFallbackDifficulty.text = "";
+
 				if(diffSprite.hasValidTexture){
 					if (change != 0)
 					{
