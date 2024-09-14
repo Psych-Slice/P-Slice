@@ -1,5 +1,6 @@
 package mikolka.vslice.results;
 
+//? V-slice utility classes (P-Slice exclusive)
 @:forward
 abstract Tallies(RawTallies)
 {
@@ -52,5 +53,23 @@ typedef RawTallies =
   /**
    * How many notes in the current chart
    */
+  var totalNotes:Int;
+}
+typedef SaveScoreData =
+{
+  /**
+   * The score achieved.
+   */
+  var score:Int;
+  var accPoints:Float; // Hit points. Divide by all notes to get accuracy
+
+  var sick:Int;
+  var good:Int;
+  var bad:Int;
+  var shit:Int;
+  var missed:Int;
+  var combo:Int;
+  var maxCombo:Int;
+  var totalNotesHit:Int;
   var totalNotes:Int;
 }

@@ -1,13 +1,13 @@
 package mikolka.vslice.results;
 
-
+import mikolka.compatibility.FunkinPath as Paths;
+import mikolka.vslice.results.Tallies.SaveScoreData;
+import mikolka.compatibility.FunkinCamera;
 import states.StoryMenuState;
 import mikolka.vslice.freeplay.FreeplayState;
-import backend.Highscore;
 import flixel.addons.transition.FlxTransitionableState;
 import substates.StickerSubState;
 import mikolka.funkin.Scoring;
-import backend.PsychCamera;
 import backend.animation.FlxAtlasSprite;
 import shaders.LeftMaskShader;
 import flixel.FlxSprite;
@@ -20,7 +20,6 @@ import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.text.FlxBitmapText;
 
-import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxEase;
 
@@ -29,27 +28,28 @@ import flixel.addons.display.FlxBackdrop;
 
 import flixel.util.FlxGradient;
 import flixel.util.FlxTimer;
+import mikolka.funkin.VsliceSubState as MusicBeatSubState;
 using mikolka.funkin.FunkinTools;
 
 /**
  * The state for the results screen after a song or week is finished.
  */
-//@:nullSafety
-class ResultState extends MusicBeatSubstate
+//TODO  documented?
+class ResultState extends MusicBeatSubState
 {
   final params:ResultsStateParams;
 
   final rank:ScoringRank;
   final songName:FlxBitmapText;
-  final difficulty:FlxBitmapText;
+  final difficulty:FlxBitmapText; //? turned this to text
   final clearPercentSmall:ClearPercentCounter;
 
   final maskShaderSongName:LeftMaskShader = new LeftMaskShader();
   final maskShaderDifficulty:LeftMaskShader = new LeftMaskShader();
 
-  final resultsAnim:FlxSprite;
-  final ratingsPopin:FlxSprite;
-  final scorePopin:FlxSprite;
+  final resultsAnim:FunkinSprite;
+  final ratingsPopin:FunkinSprite;
+  final scorePopin:FunkinSprite;
 
   final bgFlash:FlxSprite;
 
@@ -65,13 +65,10 @@ class ResultState extends MusicBeatSubstate
   var gfGood:Null<FlxSprite> = null;
   var bfShit:Null<FlxAtlasSprite> = null;
 
-  var rankBg:FlxSprite;
-  final cameraBG:PsychCamera;
-  final cameraScroll:PsychCamera;
-  final cameraEverything:PsychCamera;
-  final cameraOverlay:PsychCamera;
-	var resultingAccuracy:Float;
-
+  var rankBg:FunkinSprite;
+  final cameraBG:FunkinCamera;
+  final cameraScroll:FunkinCamera;
+  final cameraEverything:FunkinCamera;
 
   public function new(params:ResultsStateParams)
   {
@@ -79,25 +76,22 @@ class ResultState extends MusicBeatSubstate
 
     this.params = params;
 
-    resultingAccuracy = Math.min(1,params.scoreData.accPoints/params.scoreData.totalNotesHit); 
-    if(params.scoreData.totalNotesHit == 0) resultingAccuracy = 0;
+    rank = Scoring.calculateRank(params.scoreData) ?? SHIT;
 
-    rank = Scoring.calculateRankFromData(params.scoreData.score,resultingAccuracy,params.scoreData.missed == 0) ?? SHIT;
+    cameraBG = new FunkinCamera('resultsBG', 0, 0, FlxG.width, FlxG.height);
+    cameraScroll = new FunkinCamera('resultsScroll', 0, 0, FlxG.width, FlxG.height);
+    cameraEverything = new FunkinCamera('resultsEverything', 0, 0, FlxG.width, FlxG.height);
 
-    cameraBG = new PsychCamera( 0, 0, FlxG.width, FlxG.height);
-    cameraScroll = new PsychCamera(0, 0, FlxG.width, FlxG.height);
-    cameraEverything = new PsychCamera(0, 0, FlxG.width, FlxG.height);
-    cameraOverlay = new PsychCamera(0, 0, FlxG.width, FlxG.height);
     // We build a lot of this stuff in the constructor, then place it in create().
     // This prevents having to do `null` checks everywhere.
 
     var fontLetters:String = "AaBbCcDdEeFfGgHhiIJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz:1234567890";
     songName = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.get(49, 62)));
     songName.text = params.title;
-    songName.letterSpacing = -15; //!!!
+    songName.letterSpacing = -15;
     songName.angle = -4.4;
-    //songName.zIndex = 1000;
-    var difColor = PlayState.storyDifficultyColor;
+    songName.zIndex = 1000;
+    var difColor = PlayState.storyDifficultyColor; //? support for difficulty text
     var fractal = difColor.redFloat*0.33;
     difColor.greenFloat = Math.max(difColor.greenFloat,fractal);
 
@@ -106,25 +100,25 @@ class ResultState extends MusicBeatSubstate
     difficulty.color = difColor;
     difficulty.letterSpacing = -11; //!!!
     difficulty.angle = -4.4;
-    //difficulty.zIndex = 1000;
+    difficulty.zIndex = 1000;
 
     clearPercentSmall = new ClearPercentCounter(FlxG.width / 2 + 300, FlxG.height / 2 - 100, 100, true);
-    //clearPercentSmall.zIndex = 1000;
+    clearPercentSmall.zIndex = 1000;
     clearPercentSmall.visible = false;
 
     bgFlash = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [0xFFFFF1A6, 0xFFFFF1BE], 90);
 
-    resultsAnim = FunkinTools.createSparrow(-200, -10, "resultScreen/results");
+    resultsAnim = FunkinSprite.createSparrow(-200, -10, "resultScreen/results");
 
-    ratingsPopin = FunkinTools.createSparrow(-135, 135, "resultScreen/ratingsPopin");
+    ratingsPopin = FunkinSprite.createSparrow(-135, 135, "resultScreen/ratingsPopin");
 
-    scorePopin = FunkinTools.createSparrow(-180, 515, "resultScreen/scorePopin");
+    scorePopin = FunkinSprite.createSparrow(-180, 515, "resultScreen/scorePopin");
 
     highscoreNew = new FlxSprite(44, 557);
 
     score = new ResultScore(35, 305, 10, params.scoreData.score);
 
-    rankBg = new FlxSprite(0, 0);
+    rankBg = new FunkinSprite(0, 0);
   }
 
   override function create():Void
@@ -137,12 +131,10 @@ class ResultState extends MusicBeatSubstate
     cameraBG.bgColor = FlxColor.MAGENTA;
     cameraScroll.bgColor = FlxColor.TRANSPARENT;
     cameraEverything.bgColor = FlxColor.TRANSPARENT;
-    cameraOverlay.bgColor = FlxColor.TRANSPARENT;
 
     FlxG.cameras.add(cameraBG, false);
     FlxG.cameras.add(cameraScroll, false);
     FlxG.cameras.add(cameraEverything, false);
-    FlxG.cameras.add(cameraOverlay, false);
 
     FlxG.cameras.setDefaultDrawTarget(cameraEverything, true);
     this.camera = cameraEverything;
@@ -152,108 +144,108 @@ class ResultState extends MusicBeatSubstate
 
     var bg:FlxSprite = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [0xFFFECC5C, 0xFFFDC05C], 90);
     bg.scrollFactor.set();
-    //bg.zIndex = 10;
+    bg.zIndex = 10;
     bg.cameras = [cameraBG];
     add(bg);
 
     bgFlash.scrollFactor.set();
     bgFlash.visible = false;
-    //bgFlash.zIndex = 20;
+    bgFlash.zIndex = 20;
     // bgFlash.cameras = [cameraBG];
     add(bgFlash);
 
     // The sound system which falls into place behind the score text. Plays every time!
-    var soundSystem:FlxSprite = FunkinTools.createSparrow(-15, -180, 'resultScreen/soundSystem');
+    var soundSystem:FlxSprite = FunkinSprite.createSparrow(-15, -180, 'resultScreen/soundSystem');
     soundSystem.animation.addByPrefix("idle", "sound system", 24, false);
     soundSystem.visible = false;
     new FlxTimer().start(8 / 24, _ -> {
       soundSystem.animation.play("idle");
       soundSystem.visible = true;
     });
-    //soundSystem.zIndex = 1100;
-    
+    soundSystem.zIndex = 1100;
+    add(soundSystem);
 
     switch (rank)
     {
       case PERFECT | PERFECT_GOLD:
-        heartsPerfect = new FlxAtlasSprite(1342, 370, Paths.getSharedPath("images/resultScreen/results-bf/resultsPERFECT/hearts"));
+        heartsPerfect = new FlxAtlasSprite(1342, 370, Paths.animateAtlas("resultScreen/results-bf/resultsPERFECT/hearts", "shared"));
         heartsPerfect.visible = false;
-        //heartsPerfect.zIndex = 501;
+        heartsPerfect.zIndex = 501;
         add(heartsPerfect);
 
-        heartsPerfect.anim.onComplete.add(() -> {
+        heartsPerfect.onComplete = () -> { //? psych exclusive
           if (heartsPerfect != null)
           {
             // bfPerfect.anim.curFrame = 137;
             heartsPerfect.anim.curFrame = 43;
             heartsPerfect.anim.play(); // unpauses this anim, since it's on PlayOnce!
           }
-        });
+        };
 
-        bfPerfect = new FlxAtlasSprite(1342, 370, Paths.getSharedPath("images/resultScreen/results-bf/resultsPERFECT"));
+        bfPerfect = new FlxAtlasSprite(1342, 370, Paths.animateAtlas("resultScreen/results-bf/resultsPERFECT", "shared"));
         bfPerfect.visible = false;
-        //bfPerfect.zIndex = 500;
+        bfPerfect.zIndex = 500;
         add(bfPerfect);
 
-        bfPerfect.anim.onComplete.add(() -> {
+        bfPerfect.onComplete = () -> {
           if (bfPerfect != null)
           {
             // bfPerfect.anim.curFrame = 137;
             bfPerfect.anim.curFrame = 137;
             bfPerfect.anim.play(); // unpauses this anim, since it's on PlayOnce!
           }
-        });
+        };
 
       case EXCELLENT:
-        bfExcellent = new FlxAtlasSprite(1329, 429, Paths.getSharedPath("images/resultScreen/results-bf/resultsEXCELLENT"));
+        bfExcellent = new FlxAtlasSprite(1329, 429, Paths.animateAtlas("resultScreen/results-bf/resultsEXCELLENT", "shared"));
         bfExcellent.visible = false;
-        //bfExcellent.zIndex = 500;
+        bfExcellent.zIndex = 500;
         add(bfExcellent);
 
-        bfExcellent.anim.onComplete.add(() -> {
+        bfExcellent.onComplete = () -> {
           if (bfExcellent != null)
           {
             bfExcellent.anim.curFrame = 28;
             bfExcellent.anim.play(); // unpauses this anim, since it's on PlayOnce!
           }
-        });
+        };
 
       case GREAT:
-        gfGreat = new FlxAtlasSprite(802, 331, Paths.getSharedPath("images/resultScreen/results-bf/resultsGREAT/gf"));
+        gfGreat = new FlxAtlasSprite(802, 331, Paths.animateAtlas("resultScreen/results-bf/resultsGREAT/gf", "shared"));
         gfGreat.visible = false;
-        //gfGreat.zIndex = 499;
+        gfGreat.zIndex = 499;
         add(gfGreat);
 
         gfGreat.scale.set(0.93, 0.93);
 
-        gfGreat.anim.onComplete.add(() -> {
+        gfGreat.onComplete = () -> {
           if (gfGreat != null)
           {
             gfGreat.anim.curFrame = 9;
             gfGreat.anim.play(); // unpauses this anim, since it's on PlayOnce!
           }
-        });
+        };
 
-        bfGreat = new FlxAtlasSprite(929, 363, Paths.getSharedPath("images/resultScreen/results-bf/resultsGREAT/bf"));
+        bfGreat = new FlxAtlasSprite(929, 363, Paths.animateAtlas("resultScreen/results-bf/resultsGREAT/bf", "shared"));
         bfGreat.visible = false;
-        //bfGreat.zIndex = 500;
+        bfGreat.zIndex = 500;
         add(bfGreat);
 
         bfGreat.scale.set(0.93, 0.93);
 
-        bfGreat.anim.onComplete.add(() -> {
+        bfGreat.onComplete = () -> {
           if (bfGreat != null)
           {
             bfGreat.anim.curFrame = 15;
             bfGreat.anim.play(); // unpauses this anim, since it's on PlayOnce!
           }
-        });
+        };
 
       case GOOD:
-        gfGood = FunkinTools.createSparrow(625, 325,'resultScreen/results-bf/resultsGOOD/resultGirlfriendGOOD');
+        gfGood = FunkinSprite.createSparrow(625, 325, 'resultScreen/results-bf/resultsGOOD/resultGirlfriendGOOD');
         gfGood.animation.addByPrefix("clap", "Girlfriend Good Anim", 24, false);
         gfGood.visible = false;
-        //gfGood.zIndex = 500;
+        gfGood.zIndex = 500;
         gfGood.animation.finishCallback = _ -> {
           if (gfGood != null)
           {
@@ -262,10 +254,10 @@ class ResultState extends MusicBeatSubstate
         };
         add(gfGood);
 
-        bfGood = FunkinTools.createSparrow(640, -200, 'resultScreen/results-bf/resultsGOOD/resultBoyfriendGOOD');
+        bfGood = FunkinSprite.createSparrow(640, -200, 'resultScreen/results-bf/resultsGOOD/resultBoyfriendGOOD');
         bfGood.animation.addByPrefix("fall", "Boyfriend Good Anim0", 24, false);
         bfGood.visible = false;
-        //bfGood.zIndex = 501;
+        bfGood.zIndex = 501;
         bfGood.animation.finishCallback = function(_) {
           if (bfGood != null)
           {
@@ -275,16 +267,16 @@ class ResultState extends MusicBeatSubstate
         add(bfGood);
 
       case SHIT:
-        bfShit = new FlxAtlasSprite(0, 20, Paths.getSharedPath("images/resultScreen/results-bf/resultsSHIT"));
+        bfShit = new FlxAtlasSprite(0, 20, Paths.animateAtlas("resultScreen/results-bf/resultsSHIT", "shared"));
         bfShit.visible = false;
-        //bfShit.zIndex = 500;
+        bfShit.zIndex = 500;
         add(bfShit);
-        bfShit.anim.onComplete.add(() -> {
+        bfShit.onComplete = () -> {
           if (bfShit != null)
           {
             bfShit.playAnimation('Loop Start');
           }
-        });
+        };
     }
 
     add(difficulty);
@@ -296,24 +288,22 @@ class ResultState extends MusicBeatSubstate
     speedOfTween.y = -1.0 * Math.sin(angleRad);
 
     timerThenSongName(1.0, false);
-    //TODOtt
+    //TODO
     //songName.shader = maskShaderSongName;
     //difficulty.shader = maskShaderDifficulty;
 
-    //maskShaderSongName.swagMaskX = difficulty.x - 15;
+    // maskShaderSongName.swagMaskX = difficulty.x - 15;
     //maskShaderDifficulty.swagMaskX = difficulty.x - 15;
 
     var blackTopBar:FlxSprite = new FlxSprite().loadGraphic(Paths.image("resultScreen/topBarBlack"));
     blackTopBar.y = -blackTopBar.height;
     FlxTween.tween(blackTopBar, {y: 0}, 7 / 24, {ease: FlxEase.quartOut, startDelay: 3 / 24});
-    //blackTopBar.zIndex = 1010;
+    blackTopBar.zIndex = 1010;
     add(blackTopBar);
-    add(clearPercentSmall);
-    add(soundSystem);
 
     resultsAnim.animation.addByPrefix("result", "results instance 1", 24, false);
     resultsAnim.visible = false;
-    //resultsAnim.zIndex = 1200;
+    resultsAnim.zIndex = 1200;
     add(resultsAnim);
     new FlxTimer().start(6 / 24, _ -> {
       resultsAnim.visible = true;
@@ -322,7 +312,7 @@ class ResultState extends MusicBeatSubstate
 
     ratingsPopin.animation.addByPrefix("idle", "Categories", 24, false);
     ratingsPopin.visible = false;
-    //ratingsPopin.zIndex = 1200;
+    ratingsPopin.zIndex = 1200;
     add(ratingsPopin);
     new FlxTimer().start(21 / 24, _ -> {
       ratingsPopin.visible = true;
@@ -331,7 +321,7 @@ class ResultState extends MusicBeatSubstate
 
     scorePopin.animation.addByPrefix("score", "tally score", 24, false);
     scorePopin.visible = false;
-    //scorePopin.zIndex = 1200;
+    scorePopin.zIndex = 1200;
     add(scorePopin);
     new FlxTimer().start(36 / 24, _ -> {
       scorePopin.visible = true;
@@ -358,7 +348,7 @@ class ResultState extends MusicBeatSubstate
     highscoreNew.visible = false;
     // highscoreNew.setGraphicSize(Std.int(highscoreNew.width * 0.8));
     highscoreNew.updateHitbox();
-    //highscoreNew.zIndex = 1200;
+    highscoreNew.zIndex = 1200;
     add(highscoreNew);
 
     new FlxTimer().start(rank.getHighscoreDelay(), _ -> {
@@ -377,7 +367,7 @@ class ResultState extends MusicBeatSubstate
     var hStuf:Int = 50;
 
     var ratingGrp:FlxTypedGroup<TallyCounter> = new FlxTypedGroup<TallyCounter>();
-    //ratingGrp.zIndex = 1200;
+    ratingGrp.zIndex = 1200;
     add(ratingGrp);
 
     /**
@@ -411,7 +401,7 @@ class ResultState extends MusicBeatSubstate
     ratingGrp.add(tallyMissed);
 
     score.visible = false;
-    //score.zIndex = 1200;
+    score.zIndex = 1200;
     add(score);
 
     for (ind => rating in ratingGrp.members)
@@ -422,7 +412,7 @@ class ResultState extends MusicBeatSubstate
         FlxTween.tween(rating, {curNumber: rating.neededNumber}, 0.5, {ease: FlxEase.quartOut});
       });
     }
-    //TODO monitor this. New feature?
+
     // if (params.isNewHighscore ?? false)
     // {
     //   highscoreNew.visible = true;
@@ -435,31 +425,40 @@ class ResultState extends MusicBeatSubstate
     // }
 
     new FlxTimer().start(rank.getMusicDelay(), _ -> {
-      var rankMusicPath = rank.getMusicPath();
       if (rank.hasMusicIntro())
       {
-        FlxG.sound.play(Paths.music(rankMusicPath + '/' + rankMusicPath + '-intro'),1,false,null,true,() -> {
-          FlxG.sound.playMusic(Paths.music(rankMusicPath),1,rank.shouldMusicLoop());
-        });
         // Play the intro music.
+        var introMusic = Paths.music(rank.getMusicPath() + '/' + rank.getMusicPath() + '-intro');
+        FunkinSound.load(introMusic, 1.0, false, true, true, () -> {
+          FunkinSound.playMusic(rank.getMusicPath(),
+            {
+              startingVolume: 1.0,
+              overrideExisting: true,
+              restartTrack: true,
+              loop: rank.shouldMusicLoop()
+            });
+        });
       }
       else
       {
-        FlxG.sound.playMusic(Paths.music(rankMusicPath),1,rank.shouldMusicLoop());
+        FunkinSound.playMusic(rank.getMusicPath(),
+          {
+            startingVolume: 1.0,
+            overrideExisting: true,
+            restartTrack: true,
+            loop: rank.shouldMusicLoop()
+          });
       }
     });
 
     rankBg.makeSolidColor(FlxG.width, FlxG.height, 0xFF000000);
-    rankBg.cameras = [cameraOverlay];
-    //rankBg.zIndex = 99999;
-    
+    rankBg.zIndex = 99999;
+    add(rankBg);
 
     rankBg.alpha = 0;
 
-    //refresh();
-    // forEachOfType(FlxSprite,s ->{
-    //   s.antialiasing = ClientPrefs.data.antialiasing;
-    // }); // quick n dirty way to apply anit-aliasing to everything
+    refresh();
+
     super.create();
   }
 
@@ -471,7 +470,7 @@ class ResultState extends MusicBeatSubstate
   {
     bgFlash.visible = true;
     FlxTween.tween(bgFlash, {alpha: 0}, 5 / 24);
-    var clearPercentFloat = resultingAccuracy* 100;
+    var clearPercentFloat = (params.scoreData.accPoints/params.scoreData.totalNotesHit)* 100; //? different rating system 
     clearPercentTarget = Math.floor(clearPercentFloat);
     // Prevent off-by-one errors.
 
@@ -488,12 +487,12 @@ class ResultState extends MusicBeatSubstate
           if (clearPercentLerp != clearPercentCounter.curNumber)
           {
             clearPercentLerp = clearPercentCounter.curNumber;
-            FlxG.sound.play(Paths.sound('scrollMenu'));
+            FunkinSound.playOnce(Paths.sound('scrollMenu'));
           }
         },
         onComplete: _ -> {
           // Play confirm sound.
-          FlxG.sound.play(Paths.sound('confirmMenu'));
+          FunkinSound.playOnce(Paths.sound('confirmMenu'));
 
           // Just to be sure that the lerp didn't mess things up.
           clearPercentCounter.curNumber = clearPercentTarget;
@@ -520,7 +519,7 @@ class ResultState extends MusicBeatSubstate
           });
         }
       });
-    //clearPercentCounter.zIndex = 450;
+    clearPercentCounter.zIndex = 450;
     add(clearPercentCounter);
 
     if (ratingsPopin == null)
@@ -549,7 +548,7 @@ class ResultState extends MusicBeatSubstate
       };
     }
 
-    //refresh();
+    refresh();
   }
 
   function displayRankText():Void
@@ -561,7 +560,7 @@ class ResultState extends MusicBeatSubstate
     var rankTextVert:FlxBackdrop = new FlxBackdrop(Paths.image(rank.getVerTextAsset()), Y, 0, 30);
     rankTextVert.x = FlxG.width - 44;
     rankTextVert.y = 100;
-    //rankTextVert.zIndex = 990;
+    rankTextVert.zIndex = 990;
     add(rankTextVert);
 
     FlxFlicker.flicker(rankTextVert, 2 / 24 * 3, 2 / 24, true);
@@ -577,7 +576,7 @@ class ResultState extends MusicBeatSubstate
       rankTextBack.x = FlxG.width / 2 - 320;
       rankTextBack.y = 50 + (135 * i / 2) + 10;
       // rankTextBack.angle = -3.8;
-      //rankTextBack.zIndex = 100;
+      rankTextBack.zIndex = 100;
       rankTextBack.cameras = [cameraScroll];
       add(rankTextBack);
 
@@ -585,7 +584,7 @@ class ResultState extends MusicBeatSubstate
       rankTextBack.velocity.x = (i % 2 == 0) ? -7.0 : 7.0;
     }
 
-    //refresh();
+    refresh();
   }
 
   function afterRankTallySequence():Void
@@ -696,7 +695,7 @@ class ResultState extends MusicBeatSubstate
 
     if (clearPercentSmall != null)
     {
-      clearPercentSmall.x = (difficulty.x + difficulty.width) + 50;
+      clearPercentSmall.x = (difficulty.x + difficulty.width) + 60;
       clearPercentSmall.y = -clearPercentSmall.height;
       FlxTween.tween(clearPercentSmall, {y: 122 - 5}, 0.5, {ease: FlxEase.expoOut, startDelay: 0.85});
     }
@@ -720,7 +719,7 @@ class ResultState extends MusicBeatSubstate
   {
     if (clearPercentSmall != null)
     {
-      
+      add(clearPercentSmall);
       clearPercentSmall.visible = true;
       clearPercentSmall.flash(true);
       new FlxTimer().start(0.4, _ -> {
@@ -728,8 +727,8 @@ class ResultState extends MusicBeatSubstate
       });
 
       clearPercentSmall.curNumber = clearPercentTarget;
-      //clearPercentSmall.zIndex = 1000;
-      //refresh();
+      clearPercentSmall.zIndex = 1000;
+      refresh();
     }
 
     new FlxTimer().start(2.5, _ -> {
@@ -856,7 +855,7 @@ class ResultState extends MusicBeatSubstate
     {
       if (FlxG.sound.music != null)
       {
-        FlxTween.tween(FlxG.sound.music, {volume: 0}, 0.5);
+        FlxTween.tween(FlxG.sound.music, {volume: 0}, 0.5); //? fixed timing a bit
         FlxTween.tween(FlxG.sound.music, {pitch: 3}, 0.1,
           {
             onComplete: _ -> {
@@ -866,16 +865,17 @@ class ResultState extends MusicBeatSubstate
       }
       if (params.storyMode)
       {
+        FlxG.sound.pause(); //? fix sound
         openSubState(new StickerSubState(null, (sticker) -> new StoryMenuState(sticker)));
       }
       else
       {
         var rigged:Bool = true;
 
-        if (rank > params.prevScoreRank) // if (rigged)
+        if (rank > params.prevScoreRank) //? refactor this???
         {
           trace('THE RANK IS Higher.....');
-          add(rankBg);
+
           FlxTween.tween(rankBg, {alpha: 1}, 0.5,
             {
               ease: FlxEase.expoOut,
@@ -950,27 +950,9 @@ typedef ResultsStateParams =
    * The score, accuracy, and judgements.
    */
   var scoreData:SaveScoreData;
+
   /**
-   * Previous
+   * The previous score data, used for rank comparision.
    */
-  var prevScoreRank:ScoringRank;
+  var prevScoreRank:ScoringRank; //? Added this field
 };
-
-typedef SaveScoreData =
-{
-  /**
-   * The score achieved.
-   */
-  var score:Int;
-  var accPoints:Float; // Hit points. Divide by all notes to get accuracy
-
-  var sick:Int;
-  var good:Int;
-  var bad:Int;
-  var shit:Int;
-  var missed:Int;
-  var combo:Int;
-  var maxCombo:Int;
-  var totalNotesHit:Int;
-  var totalNotes:Int;
-}

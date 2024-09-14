@@ -20,7 +20,7 @@ import flixel.FlxState;
 using Lambda;
 using mikolka.funkin.IteratorTools;
 using StringTools;
-using mikolka.funkin.ArrayTools;
+using mikolka.funkin.utils.ArrayTools;
 
 class StickerSubState extends MusicBeatSubstate
 {

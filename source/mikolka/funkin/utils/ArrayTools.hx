@@ -1,4 +1,4 @@
-package mikolka.funkin;
+package mikolka.funkin.utils;
 /**
  * A static extension which provides utility functions for Arrays.
  */

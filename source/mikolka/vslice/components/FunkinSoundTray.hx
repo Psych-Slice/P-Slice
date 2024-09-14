@@ -7,7 +7,6 @@ import flixel.tweens.FlxEase;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.utils.Assets;
-import mikolka.funkin.MathUtil;
 
 /**
  *  Extends the default flixel soundtray, but with some art

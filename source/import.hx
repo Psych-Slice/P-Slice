@@ -44,6 +44,7 @@ import states.LoadingState;
 
 //P-Slice
 import mikolka.funkin.*;
+import mikolka.funkin.utils.*;
 
 #if flxanimate
 import flxanimate.*;

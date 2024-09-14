@@ -20,9 +20,6 @@ import openfl.geom.Rectangle;
 import openfl.utils.ByteArray;
 import openfl.events.MouseEvent;
 
-import mikolka.funkin.DateUtil;
-import mikolka.funkin.FileUtil;
-
 typedef ScreenshotPluginParams =
 {
   hotkeys:Array<FlxKey>,

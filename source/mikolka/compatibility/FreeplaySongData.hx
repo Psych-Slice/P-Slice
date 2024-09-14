@@ -1,13 +1,13 @@
 package mikolka.compatibility;
 
+import mikolka.vslice.freeplay.pslice.BPMCache;
 import backend.FreeplayMeta;
 import mikolka.funkin.Scoring.ScoringRank;
-import mikolka.vslice.freeplay.BPMCache;
 import backend.Highscore;
 import backend.WeekData;
 
 using mikolka.funkin.FunkinTools;
-using mikolka.funkin.ArrayTools;
+using mikolka.funkin.utils.ArrayTools;
 
 /**
  * Data about a specific song in the freeplay menu. Very heaviely dependent on exact engine
@@ -130,7 +130,7 @@ using mikolka.funkin.ArrayTools;
          // this.songStartingBpm = songDifficulty.getStartingBPM();
          // this.songName = songDifficulty.songName;
          // this.difficultyRating = songDifficulty.difficultyRating;
-         this.scoringRank = Scoring.calculateRank(Highscore.formatSong(songId, loadAndGetDiffId()));
+         this.scoringRank = Scoring.calculateRankForSong(Highscore.formatSong(songId, loadAndGetDiffId()));
  
          this.isNew = false; // song.isSongNew(currentDifficulty);
      }

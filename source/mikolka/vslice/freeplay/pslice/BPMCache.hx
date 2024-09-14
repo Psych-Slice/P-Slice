@@ -1,4 +1,4 @@
-package mikolka.vslice.freeplay;
+package mikolka.vslice.freeplay.pslice;
 
 //? no psych. uses sys
 class BPMCache {

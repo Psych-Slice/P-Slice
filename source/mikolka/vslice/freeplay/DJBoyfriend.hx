@@ -332,7 +332,7 @@ class DJBoyfriend extends FlxAtlasSprite
   function startTVTimers(frameSkip:Int = 0) {
     // 24 is the default framerate for anims
     FlxTimer.wait((80-frameSkip)/24,() -> {
-      if(!abortCartoonTimers) new FlxSound().loadEmbedded(Paths.sound('remote_click')).play();
+      if(!abortCartoonTimers) FunkinSound.playOnce(Paths.sound('remote_click'));
     });
     FlxTimer.wait((85-frameSkip)/24,() -> {
       if(!abortCartoonTimers) runTvLogic();

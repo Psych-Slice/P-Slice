@@ -1,5 +1,7 @@
 package mikolka.compatibility;
 
+import mikolka.vslice.freeplay.pslice.FreeplayColorTweener;
+import mikolka.vslice.freeplay.pslice.BPMCache;
 import mikolka.vslice.freeplay.FreeplayState;
 import backend.Song;
 import backend.Highscore;
@@ -99,4 +101,20 @@ class FreeplayHelpers {
                 && leWeek.weekBefore.length > 0
                 && (!StoryMenuState.weekCompleted.exists(leWeek.weekBefore) || !StoryMenuState.weekCompleted.get(leWeek.weekBefore)));
         }
+	public static function loadModDir(directory:String) {
+		Mods.currentModDirectory = directory;
+	}
+	public static function exitFreeplay() {
+		BPMCache.instance.clearCache();	
+		Mods.loadTopMod();
+		FlxG.signals.postStateSwitch.dispatch(); //? for the screenshot plugin to clean itself
+
+		//While exiting make sure that we aren't tweeneng a color rn
+		FreeplayColorTweener.cancelTween();	
+	}
+	public static function loadDiffsFromWeek(songData:FreeplaySongData){
+		Mods.currentModDirectory = songData.folder;
+		PlayState.storyWeek = songData.levelId; // TODO
+		Difficulty.loadFromWeek();
+	}
 }

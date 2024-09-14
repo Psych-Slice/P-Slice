@@ -1,4 +1,4 @@
-package mikolka.funkin;
+package mikolka.funkin.utils;
 
 import haxe.io.Path;
 import lime.utils.Bytes;

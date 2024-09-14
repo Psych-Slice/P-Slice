@@ -1,6 +1,8 @@
 package mikolka.funkin;
 
-import mikolka.vslice.results.ResultState.SaveScoreData;
+import mikolka.vslice.results.Tallies.SaveScoreData;
+import mikolka.funkin.Scoring.ScoringRank;
+import backend.Highscore;
 import flixel.graphics.FlxGraphic;
 
 class FunkinTools
@@ -13,14 +15,6 @@ class FunkinTools
 		sprite.scale.set(width / 2.0, height / 2.0);
 		sprite.updateHitbox();
 
-		return sprite;
-	}
-
-	public static function createSparrow(x:Float = 0.0, y:Float = 0.0, key:String):FlxSprite
-	{
-		var sprite:FlxSprite = new FlxSprite(x, y);
-		sprite.antialiasing = ClientPrefs.data.antialiasing;
-		sprite.frames = Paths.getSparrowAtlas(key);
 		return sprite;
 	}
 
@@ -40,33 +34,35 @@ class FunkinTools
 		combinedTally.sick = newTally.sick + baseTally.sick;
 		combinedTally.totalNotes = newTally.totalNotes + baseTally.totalNotes;
 		combinedTally.totalNotesHit = newTally.totalNotesHit + baseTally.totalNotesHit;
-		combinedTally.accPoints = newTally.accPoints+baseTally.accPoints;
-    	combinedTally.score = newTally.score + baseTally.score;
+		combinedTally.accPoints = newTally.accPoints + baseTally.accPoints;
+		combinedTally.score = newTally.score + baseTally.score;
 		// Current combo = use most recent.
 		combinedTally.combo = newTally.combo;
-    
+
 		// Max combo = use maximum value.
 		combinedTally.maxCombo = Std.int(Math.max(newTally.maxCombo, baseTally.maxCombo));
 
 		return combinedTally;
 	}
-  public static function newTali():SaveScoreData{
-    return {
-      score: 0,
-      accPoints: 0,
-	  
-    combo: 0,
-    missed: 0,
-    shit: 0,
-    bad: 0,
-    good: 0,
-    sick: 0,
-    totalNotes: 0,
-    totalNotesHit: 0,
-    maxCombo: 0
-      
-    };
-  }
+
+	public static function newTali():SaveScoreData
+	{
+		return {
+			score: 0,
+			accPoints: 0,
+
+			combo: 0,
+			missed: 0,
+			shit: 0,
+			bad: 0,
+			good: 0,
+			sick: 0,
+			totalNotes: 0,
+			totalNotesHit: 0,
+			maxCombo: 0
+		};
+	}
+
 	public static function extractWeeks(text:String)
 	{
 		if (text == null)

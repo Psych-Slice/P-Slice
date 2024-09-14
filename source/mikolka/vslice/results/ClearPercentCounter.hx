@@ -13,6 +13,7 @@ import flixel.util.FlxColor;
 /**
  * Numerical counters used to display the clear percent.
  */
+ //? Native
 class ClearPercentCounter extends FlxTypedSpriteGroup<FlxSprite>
 {
   public var curNumber(default, set):Int = 0;
@@ -39,7 +40,7 @@ class ClearPercentCounter extends FlxTypedSpriteGroup<FlxSprite>
 
     this.small = small;
 
-    var clearPercentText:FlxSprite = new FlxSprite(0, 0, Paths.image('resultScreen/clearPercent/clearPercentText${small ? 'Small' : ''}'));
+    var clearPercentText:FunkinSprite = FunkinSprite.create(0, 0, 'resultScreen/clearPercent/clearPercentText${small ? 'Small' : ''}');
     clearPercentText.x = small ? 40 : 0;
     add(clearPercentText);
 

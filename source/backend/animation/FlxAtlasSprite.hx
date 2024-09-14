@@ -30,6 +30,12 @@ class FlxAtlasSprite extends FlxAnimate
    */
   public var onAnimationFinish:FlxTypedSignal<String->Void> = new FlxTypedSignal<String->Void>();
 
+  public var onComplete(never,set):Void->Void; //? psych exclusive
+  public function set_onComplete(value:Void->Void) {
+    anim.onComplete.add(value);
+    return value;
+  }
+
   var currentAnimation:String;
 
   var canPlayOtherAnims:Bool = true;

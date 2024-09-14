@@ -2298,7 +2298,7 @@ class PlayState extends MusicBeatState
 					return;
 				}
 				var floaties = keyValues.map(s -> Std.parseFloat(s));
-				if(mikolka.funkin.ArrayTools.findIndex(floaties,s -> Math.isNaN(s)) != -1) {
+				if(mikolka.funkin.utils.ArrayTools.findIndex(floaties,s -> Math.isNaN(s)) != -1) {
 					trace("INVALID FLOATIES");
 					return;
 				}

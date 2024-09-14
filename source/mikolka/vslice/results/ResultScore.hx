@@ -6,6 +6,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
 
+//? native
 class ResultScore extends FlxTypedSpriteGroup<ScoreNum>
 {
   public var scoreShit(default, set):Int = 0;

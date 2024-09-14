@@ -1,4 +1,4 @@
-package mikolka.funkin;
+package mikolka.funkin.utils;
 
 /**
  * Utilities for performing operations on dates.

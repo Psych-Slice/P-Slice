@@ -5,7 +5,7 @@ import funkin.graphics.video.FlxVideo;
 #else
 import objects.VideoSprite;
 
-using mikolka.funkin.ArrayTools;
+using mikolka.funkin.utils.ArrayTools;
 #end
 
 /**

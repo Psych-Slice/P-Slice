@@ -183,6 +183,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!--Macro fixes-->
 	<haxeflag name="--macro" value="allowPackage('flash')" />
 	<haxeflag name="--macro" value="include('my.pack')" />
+	<!-- This macro allows addition of new functionality to existing Flixel. -->
+	<haxeflag name="--macro" value="addMetadata('@:build(mikolka.FlxMacro.buildFlxBasic())', 'flixel.FlxBasic')" />
 
 	<!-- more verbose HScript-->
 	<define name="IRIS_DEBUG" if="debug"/>

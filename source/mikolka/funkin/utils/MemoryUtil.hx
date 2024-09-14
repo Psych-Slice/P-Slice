@@ -1,4 +1,4 @@
-package mikolka.funkin;
+package mikolka.funkin.utils;
 
 /**
  * Utilities for working with the garbage collector.

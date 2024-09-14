@@ -1,5 +1,9 @@
 package mikolka.funkin;
 
+import openfl.media.Sound;
+import mikolka.vslice.freeplay.FreeplayState;
+import funkin.util.flixel.sound.FlxPartialSound;
+import haxe.exceptions.NotImplementedException;
 import openfl.media.SoundMixer;
 import flixel.system.FlxAssets.FlxSoundAsset;
 
@@ -33,17 +37,18 @@ class FunkinSound extends FlxSound
 	public static function load(embeddedSound:FlxSoundAsset, volume:Float = 1.0, looped:Bool = false, autoDestroy:Bool = false, autoPlay:Bool = false,
 			?onComplete:Void->Void, ?onLoad:Void->Void):Null<FunkinSound>
 	{
-		@:privateAccess
-		if (SoundMixer.__soundChannels.length >= SoundMixer.MAX_ACTIVE_CHANNELS)
-		{
-			FlxG.log.error('FunkinSound could not play sound, channels exhausted! Found ${SoundMixer.__soundChannels.length} active sound channels.');
-			return null;
-		}
+		//? Why was that a thing again?
+		// @:privateAccess
+		// if (SoundMixer.__soundChannels.length >= SoundMixer.MAX_ACTIVE_CHANNELS)
+		// {
+		// 	FlxG.log.error('FunkinSound could not play sound, channels exhausted! Found ${SoundMixer.__soundChannels.length} active sound channels.');
+		// 	return null;
+		// }
 
 		var sound:FunkinSound = new FunkinSound(); // pool.recycle(construct);
 
-		// Load the sound.
 		// Sets `exists = true` as a side effect.
+		if(embeddedSound is String) embeddedSound = Paths.sound(embeddedSound);
 		sound.loadEmbedded(embeddedSound, looped, autoDestroy, onComplete);
 
 		//   if (embeddedSound is String)
@@ -73,4 +78,117 @@ class FunkinSound extends FlxSound
 
 		return sound;
 	}
+	public static function playMusic(key:String, params:FunkinSoundPlayMusicParams):Bool {
+		if(params.pathsFunction == INST){
+			var instPath = "";
+			
+			try{
+				//key = songData.songId
+
+				instPath = 'assets/songs/${Paths.formatToSongPath(key)}/Inst.${Paths.SOUND_EXT}';
+				#if MODS_ALLOWED
+				var modsInstPath = Paths.modFolders('songs/${Paths.formatToSongPath(key)}/Inst.${Paths.SOUND_EXT}');
+				if(FileSystem.exists(modsInstPath)) instPath = modsInstPath;
+				#end
+				
+				var future = FlxPartialSound.partialLoadFromFile(instPath,params.partialParams.start,params.partialParams.end);
+				if(future == null){
+					trace('Internal failure loading instrumentals for ${key} "${instPath}"');
+					return false;
+				}
+				future.future.onComplete(function(sound:Sound)
+					{
+						@:privateAccess{
+							var fp = cast (FlxG.state.subState,FreeplayState);
+							if(fp == null) return;
+
+							var cap = fp.grpCapsules.members[fp.curSelected];
+							if(cap.songData == null || cap.songData.songId != key || fp.busy) return;
+						}
+						
+						trace("Playing preview!");
+						FlxG.sound.playMusic(sound,0);
+						params.onLoad();
+					});
+				return true;
+			}
+			catch (x){
+				var targetPath = instPath == "" ? "" : "from "+instPath;
+				trace('Failed to parialy load instrumentals for ${key} ${targetPath}');
+				return false;
+			}
+		}
+		else{
+			FlxG.sound.playMusic(Paths.music(key),params.startingVolume,params.loop);
+			return true;
+		}
+	}
+}
+
+/**
+ * Additional parameters for `FunkinSound.playMusic()`
+ */
+ typedef FunkinSoundPlayMusicParams =
+ {
+   /**
+	* The volume you want the music to start at.
+	* @default `1.0`
+	*/
+   var ?startingVolume:Float;
+ 
+   /**
+	* The suffix of the music file to play. Usually for "-erect" tracks when loading an INST file
+	* @default ``
+	*/
+   var ?suffix:String;
+ 
+   /**
+	* Whether to override music if a different track is already playing.
+	* @default `false`
+	*/
+   var ?overrideExisting:Bool;
+ 
+   /**
+	* Whether to override music if the same track is already playing.
+	* @default `false`
+	*/
+   var ?restartTrack:Bool;
+ 
+   /**
+	* Whether the music should loop or play once.
+	* @default `true`
+	*/
+   var ?loop:Bool;
+ 
+   /**
+	* Whether to check for `SongMusicData` to update the Conductor with.
+	* @default `true`
+	*/
+   var ?mapTimeChanges:Bool;
+ 
+   /**
+	* Which Paths function to use to load a song
+	* @default `MUSIC`
+	*/
+   var ?pathsFunction:PathsFunction;
+ 
+   var ?partialParams:PartialSoundParams;
+ 
+   var ?onComplete:Void->Void;
+   var ?onLoad:Void->Void;
+ }
+
+ typedef PartialSoundParams =
+{
+  var loadPartial:Bool;
+  var start:Float;
+  var end:Float;
+}
+
+enum abstract PathsFunction(String)
+{
+  var MUSIC;
+  var INST;
+  var VOICES;
+  var SOUND;
 }

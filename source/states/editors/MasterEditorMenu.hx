@@ -1,5 +1,6 @@
 package states.editors;
 
+import flixel.math.FlxRandom;
 import backend.WeekData;
 import mikolka.vslice.results.ResultState;
 
@@ -130,6 +131,7 @@ class MasterEditorMenu extends MusicBeatState
 					case 'Preview results state':{
 						PlayState.storyDifficultyColor = 0xFFFF0000;
 						Difficulty.resetList();
+						var lol = FlxG.random.getObject([10,120,180,200]);
 						PlayState.storyDifficulty = 2;
 						MusicBeatState.switchState(new ResultState(
 							{
@@ -143,7 +145,7 @@ class MasterEditorMenu extends MusicBeatState
 								{
 		
 									score: 1_234_567,
-									accPoints: 10,
+									accPoints: lol,
 									sick: 199,
 									good: 0,
 									bad: 0,
