@@ -1,5 +1,6 @@
 package;
 
+import mikolka.compatibility.FunkinCamera;
 import flixel.input.keyboard.FlxKey;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.tweens.FlxTween;
@@ -12,7 +13,6 @@ import flixel.FlxSprite;
 import flixel.FlxObject;
 import flixel.effects.FlxFlicker;
 import lime.app.Application;
-import funkin.components.PsychCamera;
 import editors.MasterEditorMenu;
 import options.OptionsState;
 
@@ -45,7 +45,7 @@ class MainMenuState extends MusicBeatState
 	}
 	override function create()
 	{
-		FlxG.cameras.reset(new PsychCamera());
+		FlxG.cameras.reset(new FunkinCamera());
 		#if MODS_ALLOWED
 		Paths.pushGlobalMods();
 		#end
@@ -190,7 +190,7 @@ class MainMenuState extends MusicBeatState
 								FlxTransitionableState.skipNextTransIn = true;
 								FlxTransitionableState.skipNextTransOut = true;
 
-								openSubState(new states.freeplay.FreeplayState());
+								openSubState(new mikolka.vslice.freeplay.FreeplayState());
 								subStateOpened.addOnce(state -> {
 									for (i in 0...menuItems.members.length) {
 										menuItems.members[i].revive();

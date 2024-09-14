@@ -1,18 +1,14 @@
 package;
 
-import funkin.ArrayTools;
+import mikolka.funkin.FunkinTools;
+import mikolka.vslice.results.Tallies.SaveScoreData;
 import ModsMenuState.ModMetadata;
-import funkin.FunkinTools;
-import funkin.Scoring;
-import funkin.Scoring.ScoringRank;
-import states.results.ResultState.SaveScoreData;
-import states.results.ResultState;
+import mikolka.funkin.Scoring.ScoringRank;
 import flixel.graphics.FlxGraphic;
 #if desktop
 import Discord.DiscordClient;
 #end
 import substates.StickerSubState;
-import states.freeplay.FreeplayState;
 import Section.SwagSection;
 import Song.SwagSong;
 import WiggleEffect.WiggleEffectType;

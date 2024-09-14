@@ -1,6 +1,6 @@
 package;
 
-import funkin.components.ScreenshotPlugin;
+import mikolka.vslice.components.ScreenshotPlugin;
 import flixel.util.FlxDirectionFlags;
 #if desktop
 import Discord.DiscordClient;

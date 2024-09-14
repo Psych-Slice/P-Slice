@@ -1,6 +1,6 @@
 package;
 
-import funkin.components.MemoryCounter;
+import mikolka.vslice.components.MemoryCounter;
 import lime.graphics.Image;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
@@ -98,7 +98,7 @@ class Main extends Sprite
     	// create() in there, which gets called when it's added to stage
     	// which is why it needs to be added before addChild(game) here
     	@:privateAccess
-    	game._customSoundTray = funkin.components.FunkinSoundTray;
+    	game._customSoundTray = mikolka.vslice.components.FunkinSoundTray;
 
 		addChild(game);
 
