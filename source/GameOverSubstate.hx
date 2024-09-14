@@ -102,7 +102,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				}
 				else
 				{
-					openSubState(new StickerSubState(null, (sticker) -> states.freeplay.FreeplayState.build(null, sticker)));
+					openSubState(new StickerSubState(null, (sticker) -> mikolka.vslice.freeplay.FreeplayState.build(null, sticker)));
 				}
 			PlayState.instance.callOnLuas('onGameOverConfirm', [false]);
 		}

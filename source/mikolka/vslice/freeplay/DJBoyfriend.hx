@@ -63,7 +63,7 @@ class DJBoyfriend extends FlxAtlasSprite
     FlxG.console.registerObject("dj", this);
 
     //TODO make this indenpendedt
-    onComplete.add(onFinishAnim);
+    onComplete = onFinishAnim;
 
     FlxG.console.registerFunction("tv", function() {
       currentState = TV;

@@ -45,7 +45,7 @@ class MainMenuState extends MusicBeatState
 	}
 	override function create()
 	{
-		FlxG.cameras.reset(new FunkinCamera());
+		FlxG.cameras.reset(new FunkinCamera("lol"));
 		#if MODS_ALLOWED
 		Paths.pushGlobalMods();
 		#end

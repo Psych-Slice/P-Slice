@@ -1,5 +1,7 @@
 package mikolka.vslice.components;
 
+import mikolka.compatibility.FunkinControls;
+import mikolka.compatibility.VsliceOptions;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -31,7 +33,7 @@ typedef ScreenshotPluginParams =
 
 /**
  * What if `flixel.addons.plugin.screengrab.FlxScreenGrab` but it's better?
- * TODO: Contribute this upstream.
+ * ! Psych dependednt
  */
 class ScreenshotPlugin extends FlxBasic
 {
@@ -90,9 +92,13 @@ class ScreenshotPlugin extends FlxBasic
    */
   public static function initialize():Void
   {
+    #if (flixel == "git")
     FlxG.plugins.addPlugin(new ScreenshotPlugin(
+    #else
+    FlxG.plugins.add(new ScreenshotPlugin(
+    #end
       {
-        flashColor: ClientPrefs.data.flashing ? FlxColor.WHITE : null, // Was originally a black flash.
+        flashColor: VsliceOptions.FLASHBANG ? FlxColor.WHITE : null, // Was originally a black flash.
 
         // TODO: Add a way to configure screenshots from the options menu.
         hotkeys: [FlxKey.F3],
@@ -104,12 +110,12 @@ class ScreenshotPlugin extends FlxBasic
 
   public function hasPressedScreenshot():Bool
   {
-    return Controls.instance.SCREENSHOT;
+    return FunkinControls.SCREENSHOT;
   }
 
   public function updatePreferences():Void
   {
-    _flashColor = ClientPrefs.data.flashing ? FlxColor.WHITE : null;
+    _flashColor = VsliceOptions.FLASHBANG ? FlxColor.WHITE : null;
   }
 
   /**

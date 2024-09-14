@@ -1576,7 +1576,7 @@ class FunkinLua {
 				}
 				else
 				{
-					PlayState.instance.openSubState(new StickerSubState(null, (sticker) -> states.freeplay.FreeplayState.build(null, sticker)));
+					PlayState.instance.openSubState(new StickerSubState(null, (sticker) -> mikolka.vslice.freeplay.FreeplayState.build(null, sticker)));
 				}
 
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));

@@ -11,7 +11,7 @@ import funkin.graphics.video.FlxVideo;
 import hxcodec.flixel.FlxVideoSprite;
 import sys.FileSystem;
 
-using funkin.ArrayTools;
+using mikolka.funkin.utils.ArrayTools;
 using StringTools;
 #end
 

@@ -122,4 +122,8 @@ class FreeplayHelpers
 		PlayState.storyWeek = songData.levelId; // TODO
 		CoolUtil.difficulties = songData.songDifficulties;
 	}
+	public static function getDifficultyName(){
+		//Difficulty.list[PlayState.storyDifficulty].toUpperCase()
+		return CoolUtil.difficultyString();
+	}
 }

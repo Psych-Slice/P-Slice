@@ -1,5 +1,8 @@
 package;
 
+import mikolka.funkin.utils.ArrayTools;
+import mikolka.vslice.results.ResultState;
+import mikolka.funkin.Scoring;
 import mikolka.funkin.FunkinTools;
 import mikolka.vslice.results.Tallies.SaveScoreData;
 import ModsMenuState.ModMetadata;
@@ -4544,7 +4547,7 @@ class PlayState extends MusicBeatState
 				camOther.fade(FlxColor.BLACK, 0.6, false, () ->
 				{
 					FlxTransitionableState.skipNextTransOut = true;
-					FlxG.switchState(states.freeplay.FreeplayState.build({
+					FlxG.switchState(mikolka.vslice.freeplay.FreeplayState.build({
 						{
 							fromResults: {
 								oldRank: prevScoreRank,
@@ -4559,7 +4562,7 @@ class PlayState extends MusicBeatState
 			}
 			else if (!isStoryMode)
 			{
-				openSubState(new StickerSubState(null, (sticker) -> states.freeplay.FreeplayState.build({
+				openSubState(new StickerSubState(null, (sticker) -> mikolka.vslice.freeplay.FreeplayState.build({
 					{
 						fromResults: {
 							oldRank: null,
