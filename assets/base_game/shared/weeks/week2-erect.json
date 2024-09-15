@@ -1,7 +1,7 @@
 {
 	"songs": [
-		["Spookeez Erect", "spooky", [34, 51, 68]],
-		["South Erect", "spooky", [34, 51, 68]]
+		["Spookeez (Pico mix)", "spooky", [34, 51, 68]],
+		["South (Pico mix)", "spooky", [34, 51, 68]]
 	],
 
 	"weekCharacters": [
@@ -14,7 +14,7 @@
 	"storyName": "Spooky Month",
 	"weekBefore": "week1",
 	"weekName": "Week 2",
-	"difficulties": "Erect,Nightmare",
+	"difficulties": "Easy,Normal,Hard",
 	"startUnlocked": true,
 
 	"hideStoryMode": true,

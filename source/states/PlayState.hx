@@ -1,5 +1,6 @@
 package states;
 
+import mikolka.ABotManager;
 import mikolka.JoinedLuaVariables;
 import substates.StickerSubState;
 import mikolka.vslice.freeplay.FreeplayState;
@@ -641,6 +642,7 @@ class PlayState extends MusicBeatState
 		stagesFunc(function(stage:BaseStage) stage.createPost());
 
 		callOnScripts('onCreatePost');
+		ABotManager.ABot_onCreatePost(); // Simulate a Script call
 		
 		var splash:NoteSplash = new NoteSplash();
 		grpNoteSplashes.add(splash);
@@ -1268,6 +1270,7 @@ class PlayState extends MusicBeatState
 		#end
 		setOnScripts('songLength', songLength);
 		callOnScripts('onSongStart');
+		ABotManager.ABot_songStart();// emulate a script call
 	}
 
 	private var noteTypes:Array<String> = [];
@@ -3458,6 +3461,7 @@ class PlayState extends MusicBeatState
 
 		setOnScripts('curSection', curSection);
 		callOnScripts('onSectionHit');
+		ABotManager.ABot_sectionHit(); // Simulate a Script call
 	}
 
 	#if LUA_ALLOWED
