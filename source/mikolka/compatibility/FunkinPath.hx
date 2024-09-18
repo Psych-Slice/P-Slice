@@ -17,7 +17,7 @@ class FunkinPath {
         //We'll handle this later in FunkinSound
     }
     public static function music(key:String):Sound {
-        // V-Slice 
+        
         return Paths.music(key);
     }
 
@@ -32,4 +32,15 @@ class FunkinPath {
     public static function noGpuImage(s:String):FlxGraphic {
         return Paths.image(s,null,false);
     }
+
+    public static function exists(s:String):Bool {
+        // Check if a file exists somethere
+        return Paths.fileExists(s,SOUND);
+    }
+    public static function stripLibrary(path:String):String
+        {
+          var parts:Array<String> = path.split(':');
+          if (parts.length < 2) return path;
+          return parts[1];
+        }
 }

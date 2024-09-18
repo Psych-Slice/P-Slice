@@ -6,7 +6,7 @@ class ABotManager {
 	static var abot:ABotSpeaker;
     public static function ABot_onCreatePost() {
         var game = PlayState.instance;
-        if(PlayState.SONG.gfVersion != 'nene' || PlayState.SONG.stage == 'phillyStreets' || PlayState.SONG.stage == 'phillyBlazin') return;
+        if((PlayState.SONG.gfVersion != 'nene' && PlayState.SONG.gfVersion != 'nene-christmas') || PlayState.SONG.stage == 'phillyStreets' || PlayState.SONG.stage == 'phillyBlazin') return;
         game.gfGroup.y -= 200;
         abot = new ABotSpeaker(game.gfGroup.x-50, game.gfGroup.y+550-30);
 		updateABotEye(true);
@@ -15,9 +15,9 @@ class ABotManager {
     }
     public static function ABot_songStart() {
         if(abot == null) return;
-        FlxG.signals.postStateSwitch.addOnce(() -> {
-            abot = null; // cleaning reference
-        });
+        // FlxG.signals.postStateSwitch.addOnce(() -> {
+        //     abot = null; // cleaning reference
+        // });
         abot.snd = FlxG.sound.music;
     }
     public static function ABot_sectionHit() {

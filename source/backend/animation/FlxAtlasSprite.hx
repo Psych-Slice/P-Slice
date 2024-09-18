@@ -1,7 +1,6 @@
 package backend.animation;
 
 import flixel.util.FlxSignal.FlxTypedSignal;
-import flxanimate.FlxAnimate;
 import flxanimate.FlxAnimate.Settings;
 import flxanimate.frames.FlxAnimateFrames;
 import openfl.display.BitmapData;

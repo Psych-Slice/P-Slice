@@ -119,7 +119,9 @@ class FunkinSound extends FlxSound
 			}
 		}
 		else{
-			FlxG.sound.playMusic(Paths.music(key),params.startingVolume,params.loop);
+			var targetPath = key+"/"+key;
+			if(key == "freakyMenu") targetPath = "freakyMenu";
+			FlxG.sound.playMusic(Paths.music(targetPath),params.startingVolume,params.loop);
 			return true;
 		}
 	}

@@ -5,6 +5,7 @@ import mikolka.funkin.Scoring.ScoringRank;
 import backend.Highscore;
 import flixel.graphics.FlxGraphic;
 
+//? P-Slice utility class (I think)
 class FunkinTools
 {
 	public static function makeSolidColor(sprite:FlxSprite, width:Int, height:Int, color:FlxColor = FlxColor.WHITE):FlxSprite
@@ -72,5 +73,19 @@ class FunkinTools
 			return [];
 		var base_weeks = baseStr.split(",").map(s -> s.trim().toLowerCase());
 		return base_weeks;
+	}
+	public static function mergeWithJson<T>(target:T,source:Dynamic,?ignoreFields:Array<String>):T{
+		if(ignoreFields == null) ignoreFields = [];
+		var fillInFields = Type.getInstanceFields(Type.getClass(target)).filter(s -> !ignoreFields.contains(s));
+
+		for (field in Reflect.fields(source)){
+			if(fillInFields.contains(field)) Reflect.setField(target,field,Reflect.field(source,field));
+			#if debug
+			else if (!ignoreFields.contains(field)) throw 'Class ${Type.getClassName(Type.getClass(target))} doesn\'t contain field field $field';
+			#else
+			else if (!ignoreFields.contains(field)) trace('Class ${Type.getClassName(Type.getClass(target))} doesn\'t contain field field $field');
+			#end
+		}
+		return target;
 	}
 }
