@@ -3,7 +3,7 @@ package mikolka.compatibility;
 import mikolka.vslice.freeplay.pslice.BPMCache;
 import mikolka.funkin.Scoring.ScoringRank;
 
-using mikolka.funkin.FunkinTools;
+using mikolka.funkin.custom.FunkinTools;
 using mikolka.funkin.utils.ArrayTools;
 
 /**

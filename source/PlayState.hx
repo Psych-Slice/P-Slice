@@ -3,7 +3,7 @@ package;
 import mikolka.funkin.utils.ArrayTools;
 import mikolka.vslice.results.ResultState;
 import mikolka.funkin.Scoring;
-import mikolka.funkin.FunkinTools;
+import mikolka.funkin.custom.FunkinTools;
 import mikolka.vslice.results.Tallies.SaveScoreData;
 import ModsMenuState.ModMetadata;
 import mikolka.funkin.Scoring.ScoringRank;
@@ -4538,7 +4538,8 @@ class PlayState extends MusicBeatState
 	 */
 	function zoomIntoResultsScreen(isNewHighscore:Bool, scoreData:SaveScoreData, prevScoreRank:ScoringRank):Void
 	{
-		if (!ClientPrefs.vsliceResults)
+		var botplay = ClientPrefs.getGameplaySetting('botplay', false);
+		if (!ClientPrefs.vsliceResults || botplay)
 		{
 			var resultingAccuracy = Math.min(1, scoreData.accPoints / scoreData.totalNotesHit);
 			var fpRank = Scoring.calculateRankFromData(scoreData.score, resultingAccuracy, scoreData.missed == 0) ?? SHIT;
@@ -4554,7 +4555,7 @@ class PlayState extends MusicBeatState
 								newRank: fpRank,
 								songId: curSong,
 								difficultyId: CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase(),
-								playRankAnim: true
+								playRankAnim: !botplay
 							}
 						}
 					}));
@@ -4664,6 +4665,7 @@ class PlayState extends MusicBeatState
 			title: isStoryMode ? ('${storyCampaignTitle}') : ('${curSong} from ${modName}'),
 			scoreData: scoreData,
 			prevScoreRank: prevScoreRank,
+			characterId: SONG.player1,
 			isNewHighscore: isNewHighscore
 		});
 		this.persistentDraw = false;

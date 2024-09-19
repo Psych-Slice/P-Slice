@@ -1,5 +1,6 @@
 package editors;
 
+import mikolka.vslice.results.ResultState;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -26,7 +27,12 @@ class MasterEditorMenu extends MusicBeatState
 		'Week Editor',
 		'Menu Character Editor',
 		'Dialogue Editor',
-		'Dialogue Portrait Editor'
+		'Dialogue Portrait Editor',
+		'Preview results (perfect)', 
+		'Preview results (excellent)', 
+		'Preview results (great)', 
+		'Preview results (good)', 
+		'Preview results (shit)'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
 	private var directories:Array<String> = [null];
@@ -126,6 +132,16 @@ class MasterEditorMenu extends MusicBeatState
 					LoadingState.loadAndSwitchState(new DialogueEditorState(), false);
 				case 'Chart Editor'://felt it would be cool maybe
 					LoadingState.loadAndSwitchState(new ChartingState(), false);
+				case 'Preview results (perfect)':
+					runResults(200);
+				case 'Preview results (excellent)':
+					runResults(190);
+				case 'Preview results (great)':
+					runResults(140);
+				case 'Preview results (good)':
+					runResults(80);
+				case 'Preview results (shit)':
+					runResults(30);
 			}
 			FlxG.sound.music.volume = 0;
 		}
@@ -147,6 +163,35 @@ class MasterEditorMenu extends MusicBeatState
 		}
 		super.update(elapsed);
 	}
+
+	function runResults(lol:Int)
+		{
+			PlayState.storyDifficultyColor = 0xFFFF0000;
+			CoolUtil.difficulties = ['Hard'];
+			PlayState.storyDifficulty = 0;
+			MusicBeatState.switchState(new ResultState({
+				storyMode: true,
+				prevScoreRank: EXCELLENT,
+				title: "Cum Song Erect by Kawai Sprite",
+				songId: "cum",
+				difficultyId: "nightmare",
+				isNewHighscore: true,
+				characterId: "pico-playable",
+				scoreData: {
+					score: 1_234_567,
+					accPoints: lol,
+					sick: 199,
+					good: 0,
+					bad: 0,
+					shit: 0,
+					missed: 1,
+					combo: 0,
+					maxCombo: 69,
+					totalNotesHit: 200,
+					totalNotes: 200 // 0,
+				},
+			}));
+		}
 
 	function changeSelection(change:Int = 0)
 	{

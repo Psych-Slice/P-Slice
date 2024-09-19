@@ -3,7 +3,6 @@ package mikolka.vslice.freeplay;
 import mikolka.compatibility.FunkinControls as Controls;
 import mikolka.compatibility.FunkinPath as Paths;
 
-import backend.animation.FlxAtlasSprite;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.util.FlxTimer;

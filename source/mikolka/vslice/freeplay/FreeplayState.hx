@@ -16,7 +16,6 @@ import shaders.StrokeShader;
 import shaders.AngleMask;
 
 import mikolka.funkin.IntervalShake;
-import backend.animation.FlxAtlasSprite;
 import substates.StickerSubState;
 import mikolka.funkin.Scoring.ScoringRank;
 import flixel.addons.transition.FlxTransitionableState;
@@ -36,7 +35,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
-using mikolka.funkin.FunkinTools;
+using mikolka.funkin.custom.FunkinTools;
 using mikolka.funkin.utils.ArrayTools;
 
 /**
@@ -1624,10 +1623,9 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			if (diffSprite == null)
 				continue;
-			if (diffSprite.difficultyId == currentDifficulty) //? added code related to FallbackDifficulty
+			if (diffSprite.difficultyId == currentDifficulty)
 			{
 				grpFallbackDifficulty.text = "";
-
 				if(diffSprite.hasValidTexture){
 					if (change != 0)
 					{

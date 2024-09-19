@@ -32,4 +32,14 @@ class FunkinPath {
     public static function getPath(path:String){
         return Paths.getPreloadPath(path);
     }
+    public static function exists(s:String):Bool {
+        // Check if a file exists somethere
+        return Paths.fileExists(s,SOUND);
+    }
+    public static function stripLibrary(path:String):String
+        {
+          var parts:Array<String> = path.split(':');
+          if (parts.length < 2) return path;
+          return parts[1];
+        }
 }

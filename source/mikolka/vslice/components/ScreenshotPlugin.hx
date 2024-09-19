@@ -92,11 +92,8 @@ class ScreenshotPlugin extends FlxBasic
    */
   public static function initialize():Void
   {
-    #if (flixel == "git")
-    FlxG.plugins.addPlugin(new ScreenshotPlugin(
-    #else
+
     FlxG.plugins.add(new ScreenshotPlugin(
-    #end
       {
         flashColor: VsliceOptions.FLASHBANG ? FlxColor.WHITE : null, // Was originally a black flash.
 
