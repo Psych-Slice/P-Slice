@@ -1,8 +1,5 @@
 package mikolka.vslice.freeplay;
 
-import backend.animation.FlxAtlasSprite;
-
-
 import mikolka.compatibility.FunkinPath as Paths;
 
 import flixel.FlxSprite;

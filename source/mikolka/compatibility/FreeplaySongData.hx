@@ -6,7 +6,7 @@ import mikolka.funkin.Scoring.ScoringRank;
 import backend.Highscore;
 import backend.WeekData;
 
-using mikolka.funkin.FunkinTools;
+using mikolka.funkin.custom.FunkinTools;
 using mikolka.funkin.utils.ArrayTools;
 
 /**

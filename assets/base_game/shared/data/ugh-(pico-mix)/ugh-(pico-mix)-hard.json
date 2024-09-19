@@ -60,19 +60,19 @@
 					1500,
 					1,
 					140.625,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					1687.5,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					2062.5,
 					1,
 					140.625,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					2250,
@@ -83,7 +83,7 @@
 					2625,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				]
 			],
 			"sectionBeats": 4,
@@ -130,7 +130,7 @@
 					4312.5,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				]
 			],
 			"sectionBeats": 4,
@@ -197,7 +197,7 @@
 					5625,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				]
 			],
 			"sectionBeats": 4,
@@ -209,7 +209,7 @@
 					6000,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					6000.5,
@@ -225,7 +225,7 @@
 					6187.5,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					6375,
@@ -236,7 +236,7 @@
 					6375,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					6562.5,
@@ -262,13 +262,13 @@
 					6750,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					6937.5,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					6937.5,
@@ -284,7 +284,7 @@
 					7125,
 					3,
 					328.125,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					7312.5,
@@ -306,7 +306,7 @@
 					7500,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					7500,
@@ -327,7 +327,7 @@
 					7781.25,
 					2,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					7875,
@@ -338,13 +338,13 @@
 					7875,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					8062.5,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					8250,
@@ -355,13 +355,13 @@
 					8250,
 					2,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					8250,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					8437.5,
@@ -377,7 +377,7 @@
 					8625,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					8812.5,
@@ -404,7 +404,7 @@
 					9000,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					9187.5,
@@ -415,7 +415,7 @@
 					9187.5,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					9375,
@@ -446,13 +446,13 @@
 					9750,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					9750,
 					2,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					9937.5,
@@ -468,7 +468,7 @@
 					10125,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					10312.5,
@@ -510,13 +510,13 @@
 					11437.5,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					11625,
 					3,
 					328.125,
-					"mom"
+					"Alt Animation"
 				]
 			],
 			"sectionBeats": 4,
@@ -599,7 +599,7 @@
 					13875,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					14062.5,
@@ -620,19 +620,19 @@
 					14250,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					14250,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					14437.5,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					14437.5,
@@ -653,7 +653,7 @@
 					14812.5,
 					2,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					14812.5,
@@ -680,13 +680,13 @@
 					15000,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					15000,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					15187.5,
@@ -697,7 +697,7 @@
 					15187.5,
 					2,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					15281.25,
@@ -774,7 +774,7 @@
 					16875,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					17062.5,
@@ -856,7 +856,7 @@
 					18375,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					18375,
@@ -867,7 +867,7 @@
 					18562.5,
 					2,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					18562.5,
@@ -883,19 +883,19 @@
 					18750,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					18750,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					18937.5,
 					2,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					19125,
@@ -962,7 +962,7 @@
 					20250,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					20250,
@@ -973,19 +973,19 @@
 					20437.5,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					20625,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					20812.5,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				]
 			],
 			"sectionBeats": 4,
@@ -1032,7 +1032,7 @@
 					21562.5,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					21562.5,
@@ -1048,7 +1048,7 @@
 					21750,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					21750,
@@ -1130,7 +1130,7 @@
 					23062.5,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					23156.25,
@@ -1146,7 +1146,7 @@
 					23250,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					23250,
@@ -1157,7 +1157,7 @@
 					23437.5,
 					2,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					23531.25,
@@ -1173,7 +1173,7 @@
 					23812.5,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				]
 			],
 			"sectionBeats": 4,
@@ -1210,7 +1210,7 @@
 					24562.5,
 					0,
 					140.625,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					24562.5,
@@ -1226,7 +1226,7 @@
 					24750,
 					2,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					24750,
@@ -1252,7 +1252,7 @@
 					25125,
 					3,
 					140.625,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					25218.75,
@@ -1268,7 +1268,7 @@
 					25312.5,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					25406.25,
@@ -1320,7 +1320,7 @@
 					26062.5,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					26250,
@@ -1331,7 +1331,7 @@
 					26250,
 					2,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					26250,
@@ -1398,7 +1398,7 @@
 					28125,
 					2,
 					140.625,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					28125,
@@ -1409,7 +1409,7 @@
 					28312.5,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				]
 			],
 			"sectionBeats": 4,
@@ -1456,19 +1456,19 @@
 					29250,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					29250,
 					2,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					29437.5,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					29625,
@@ -1479,13 +1479,13 @@
 					29625,
 					2,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					29812.5,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				]
 			],
 			"sectionBeats": 4,
@@ -1527,13 +1527,13 @@
 					30562.5,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					30656.25,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					30750,
@@ -1544,7 +1544,7 @@
 					30750,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					30750,
@@ -1565,13 +1565,13 @@
 					30937.5,
 					2,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					31031.25,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					31125,
@@ -1582,13 +1582,13 @@
 					31125,
 					2,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					31125,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					31312.5,
@@ -1675,7 +1675,7 @@
 					32625,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					32625,
@@ -1691,7 +1691,7 @@
 					32812.5,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					32812.5,
@@ -1748,13 +1748,13 @@
 					33562.5,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					33656.25,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					33750,
@@ -1765,7 +1765,7 @@
 					33750,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					33750,
@@ -1781,7 +1781,7 @@
 					34031.25,
 					2,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					34125,
@@ -1792,19 +1792,19 @@
 					34125,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					34312.5,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					34406.25,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				]
 			],
 			"sectionBeats": 4,
@@ -1821,7 +1821,7 @@
 					34500,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					34593.75,
@@ -1847,19 +1847,19 @@
 					34875,
 					2,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					34968.75,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					35062.5,
 					1,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					35250,
@@ -1870,13 +1870,13 @@
 					35250,
 					3,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					35437.5,
 					0,
 					0,
-					"mom"
+					"Alt Animation"
 				],
 				[
 					35625,

@@ -44,9 +44,9 @@
 			17090.6363636364,
 			[
 				[
-					"ScrollSpeed",
-					"both",
-					"quartInOut"
+					"Vslice Scroll Speed",
+					2.4,
+					4
 				]
 			]
 		],
@@ -74,9 +74,9 @@
 			20000.6363636364,
 			[
 				[
-					"ScrollSpeed",
-					"both",
-					"cubeInOut"
+					"Vslice Scroll Speed",
+					2.6,
+					4
 				]
 			]
 		],
@@ -104,9 +104,9 @@
 			22909.6363636364,
 			[
 				[
-					"ScrollSpeed",
-					"both",
-					"quartInOut"
+					"Vslice Scroll Speed",
+					2.4,
+					4
 				]
 			]
 		],
@@ -134,9 +134,9 @@
 			25818.6363636364,
 			[
 				[
-					"ScrollSpeed",
-					"both",
-					"cubeInOut"
+					"Vslice Scroll Speed",
+					2.6,
+					4
 				]
 			]
 		],
@@ -164,9 +164,9 @@
 			28727.6363636364,
 			[
 				[
-					"ScrollSpeed",
-					"both",
-					"quartInOut"
+					"Vslice Scroll Speed",
+					2.4,
+					4
 				]
 			]
 		],
@@ -224,9 +224,9 @@
 			31636.6363636364,
 			[
 				[
-					"ScrollSpeed",
-					"both",
-					"cubeInOut"
+					"Vslice Scroll Speed",
+					2.6,
+					4
 				]
 			]
 		],
@@ -474,9 +474,9 @@
 			57818.6363636364,
 			[
 				[
-					"ScrollSpeed",
-					"both",
-					"quartInOut"
+					"Vslice Scroll Speed",
+					2.4,
+					4
 				]
 			]
 		],
@@ -504,9 +504,9 @@
 			60727.6363636364,
 			[
 				[
-					"ScrollSpeed",
-					"both",
-					"cubeInOut"
+					"Vslice Scroll Speed",
+					2.6,
+					4
 				]
 			]
 		],
@@ -544,9 +544,9 @@
 			63636.6363636364,
 			[
 				[
-					"ScrollSpeed",
-					"both",
-					"quartInOut"
+					"Vslice Scroll Speed",
+					2.4,
+					4
 				]
 			]
 		],
@@ -574,9 +574,9 @@
 			66545.6363636364,
 			[
 				[
-					"ScrollSpeed",
-					"both",
-					"cubeInOut"
+					"Vslice Scroll Speed",
+					2.6,
+					4
 				]
 			]
 		],
@@ -604,9 +604,9 @@
 			69454.6363636364,
 			[
 				[
-					"ScrollSpeed",
-					"both",
-					"quartInOut"
+					"Vslice Scroll Speed",
+					2.4,
+					4
 				]
 			]
 		],
@@ -644,9 +644,9 @@
 			72363.6363636364,
 			[
 				[
-					"ScrollSpeed",
-					"both",
-					"cubeInOut"
+					"Vslice Scroll Speed",
+					2.6,
+					4
 				]
 			]
 		],
@@ -674,9 +674,9 @@
 			75272.6363636364,
 			[
 				[
-					"ScrollSpeed",
-					"both",
-					"quartInOut"
+					"Vslice Scroll Speed",
+					2.4,
+					4
 				]
 			]
 		],
@@ -734,9 +734,9 @@
 			78181.6363636364,
 			[
 				[
-					"ScrollSpeed",
-					"both",
-					"cubeInOut"
+					"Vslice Scroll Speed",
+					2.6,
+					4
 				]
 			]
 		],
@@ -784,7 +784,7 @@
 			85772.9090909091,
 			[
 				[
-					"PlayAnimation",
+					"Play Animation",
 					"burpShit",
 					"boyfriend"
 				]
@@ -804,7 +804,7 @@
 			87954.6363636364,
 			[
 				[
-					"PlayAnimation",
+					"Play Animation",
 					"burpSmile",
 					"boyfriend"
 				]
@@ -844,9 +844,9 @@
 			14181.6363636364,
 			[
 				[
-					"ScrollSpeed",
-					"both",
-					"cubeInOut"
+					"Vslice Scroll Speed",
+					2.6,
+					4
 				]
 			]
 		],

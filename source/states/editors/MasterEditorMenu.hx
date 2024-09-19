@@ -3,27 +3,25 @@ package states.editors;
 import flixel.math.FlxRandom;
 import backend.WeekData;
 import mikolka.vslice.results.ResultState;
-
 import objects.Character;
-
 import states.MainMenuState;
 
 class MasterEditorMenu extends MusicBeatState
 {
 	var options:Array<String> = [
-		'Chart Editor',
-		'Character Editor',
-		'Stage Editor',
-		'Week Editor',
-		'Menu Character Editor',
-		'Dialogue Editor',
+		'Chart Editor', 
+		'Character Editor', 
+		'Stage Editor', 
+		'Week Editor', 
+		'Menu Character Editor', 
+		'Dialogue Editor', 
 		'Dialogue Portrait Editor',
-		'Note Splash Editor'
-		#if debug
-		,
-		'Crash the game',
-		'Preview results state'
-		#end
+		'Note Splash Editor', 
+		'Preview results (perfect)', 
+		'Preview results (excellent)', 
+		'Preview results (great)', 
+		'Preview results (good)', 
+		'Preview results (shit)'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
 	private var directories:Array<String> = [null];
@@ -56,7 +54,7 @@ class MasterEditorMenu extends MusicBeatState
 			grpTexts.add(leText);
 			leText.snapToPosition();
 		}
-		
+
 		#if MODS_ALLOWED
 		var textBG:FlxSprite = new FlxSprite(0, FlxG.height - 42).makeGraphic(FlxG.width, 42, 0xFF000000);
 		textBG.alpha = 0.6;
@@ -66,14 +64,15 @@ class MasterEditorMenu extends MusicBeatState
 		directoryTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
 		directoryTxt.scrollFactor.set();
 		add(directoryTxt);
-		
+
 		for (folder in Mods.getModDirectories())
 		{
 			directories.push(folder);
 		}
 
 		var found:Int = directories.indexOf(Mods.currentModDirectory);
-		if(found > -1) curDirectory = found;
+		if (found > -1)
+			curDirectory = found;
 		changeDirectory();
 		#end
 		changeSelection();
@@ -93,11 +92,11 @@ class MasterEditorMenu extends MusicBeatState
 			changeSelection(1);
 		}
 		#if MODS_ALLOWED
-		if(controls.UI_LEFT_P)
+		if (controls.UI_LEFT_P)
 		{
 			changeDirectory(-1);
 		}
-		if(controls.UI_RIGHT_P)
+		if (controls.UI_RIGHT_P)
 		{
 			changeDirectory(1);
 		}
@@ -110,8 +109,9 @@ class MasterEditorMenu extends MusicBeatState
 
 		if (controls.ACCEPT)
 		{
-			switch(options[curSelected]) {
-				case 'Chart Editor'://felt it would be cool maybe
+			switch (options[curSelected])
+			{
+				case 'Chart Editor': // felt it would be cool maybe
 					LoadingState.loadAndSwitchState(new ChartingState(), false);
 				case 'Character Editor':
 					LoadingState.loadAndSwitchState(new CharacterEditorState(Character.DEFAULT_CHARACTER, false));
@@ -127,45 +127,20 @@ class MasterEditorMenu extends MusicBeatState
 					LoadingState.loadAndSwitchState(new DialogueCharacterEditorState(), false);
 				case 'Note Splash Editor':
 					MusicBeatState.switchState(new NoteSplashEditorState());
-					#if debug
-					case 'Preview results state':{
-						PlayState.storyDifficultyColor = 0xFFFF0000;
-						Difficulty.resetList();
-						var lol = FlxG.random.getObject([10,120,180,200]);
-						PlayState.storyDifficulty = 2;
-						MusicBeatState.switchState(new ResultState(
-							{
-								storyMode: true,
-								prevScoreRank: EXCELLENT,
-								title: "Cum Song Erect by Kawai Sprite",
-								songId: "cum",
-								difficultyId: "nightmare",
-								isNewHighscore: true,
-								scoreData:
-								{
-		
-									score: 1_234_567,
-									accPoints: lol,
-									sick: 199,
-									good: 0,
-									bad: 0,
-									shit: 0,
-									missed: 1,
-									combo: 0,
-									maxCombo: 69,
-									totalNotesHit: 200,
-									totalNotes: 200 // 0,
-								},
-							}));
-					}
-					case 'Crash the game':{
-						throw "Manually innited crash!";
-					}
-					#end
+				case 'Preview results (perfect)':
+					runResults(200);
+				case 'Preview results (excellent)':
+					runResults(190);
+				case 'Preview results (great)':
+					runResults(140);
+				case 'Preview results (good)':
+					runResults(80);
+				case 'Preview results (shit)':
+					runResults(30);
 			}
 			FlxG.sound.music.volume = 0;
 		}
-		
+
 		for (num => item in grpTexts.members)
 		{
 			item.targetY = num - curSelected;
@@ -174,6 +149,35 @@ class MasterEditorMenu extends MusicBeatState
 				item.alpha = 1;
 		}
 		super.update(elapsed);
+	}
+
+	function runResults(lol:Int)
+	{
+		PlayState.storyDifficultyColor = 0xFFFF0000;
+		Difficulty.resetList();
+		PlayState.storyDifficulty = 2;
+		MusicBeatState.switchState(new ResultState({
+			storyMode: true,
+			prevScoreRank: EXCELLENT,
+			title: "Cum Song Erect by Kawai Sprite",
+			songId: "cum",
+			difficultyId: "nightmare",
+			isNewHighscore: true,
+			characterId: "pico-playable",
+			scoreData: {
+				score: 1_234_567,
+				accPoints: lol,
+				sick: 199,
+				good: 0,
+				bad: 0,
+				shit: 0,
+				missed: 1,
+				combo: 0,
+				maxCombo: 69,
+				totalNotesHit: 200,
+				totalNotes: 200 // 0,
+			},
+		}));
 	}
 
 	function changeSelection(change:Int = 0)
@@ -189,13 +193,13 @@ class MasterEditorMenu extends MusicBeatState
 
 		curDirectory += change;
 
-		if(curDirectory < 0)
+		if (curDirectory < 0)
 			curDirectory = directories.length - 1;
-		if(curDirectory >= directories.length)
+		if (curDirectory >= directories.length)
 			curDirectory = 0;
-	
+
 		WeekData.setDirectoryFromWeek();
-		if(directories[curDirectory] == null || directories[curDirectory].length < 1)
+		if (directories[curDirectory] == null || directories[curDirectory].length < 1)
 			directoryTxt.text = '< No Mod Directory Loaded >';
 		else
 		{

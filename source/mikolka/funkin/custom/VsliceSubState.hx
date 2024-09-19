@@ -1,4 +1,4 @@
-package mikolka.funkin;
+package mikolka.funkin.custom;
 
 import flixel.FlxBasic;
 import flixel.util.FlxSort;

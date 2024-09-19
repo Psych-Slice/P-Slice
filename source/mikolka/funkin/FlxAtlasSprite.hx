@@ -1,5 +1,6 @@
-package backend.animation;
+package mikolka.funkin;
 
+import mikolka.compatibility.VsliceOptions;
 import flixel.util.FlxSignal.FlxTypedSignal;
 import flxanimate.FlxAnimate.Settings;
 import flxanimate.frames.FlxAnimateFrames;
@@ -18,7 +19,7 @@ class FlxAtlasSprite extends FlxAnimate
       FrameRate: 24.0,
       Reversed: false,
       // ?OnComplete:Void -> Void,
-      ShowPivot: #if debug false #else false #end,
+      ShowPivot: false,
       Antialiasing: true,
       ScrollFactor: null,
       // Offset: new FlxPoint(0, 0), // This is just FlxSprite.offset
@@ -31,7 +32,11 @@ class FlxAtlasSprite extends FlxAnimate
 
   public var onComplete(never,set):Void->Void; //? psych exclusive
   public function set_onComplete(value:Void->Void) {
+    #if LEGACY_PSYCH
+    anim.onComplete = value;
+    #else
     anim.onComplete.add(value);
+    #end
     return value;
   }
 
@@ -41,6 +46,7 @@ class FlxAtlasSprite extends FlxAnimate
 
   public function new(x:Float, y:Float, ?path:String, ?settings:Settings)
   {
+    SETTINGS.Antialiasing = VsliceOptions.ANTIALIASING; //? bit dirty, but should work
     if (settings == null) settings = SETTINGS;
 
     if (path == null)

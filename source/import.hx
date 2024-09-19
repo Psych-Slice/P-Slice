@@ -21,6 +21,12 @@ import sys.io.*;
 import js.html.*;
 #end
 
+//P-Slice
+import mikolka.funkin.*;
+import mikolka.funkin.utils.*;
+import mikolka.funkin.custom.*;
+import mikolka.funkin.players.*;
+
 import backend.Paths;
 import backend.Controls;
 import backend.CoolUtil;
@@ -44,10 +50,6 @@ import states.PlayState;
 import states.MainMenuState;
 import states.StoryMenuState;
 import states.LoadingState;
-
-//P-Slice
-import mikolka.funkin.*;
-import mikolka.funkin.utils.*;
 
 #if flxanimate
 import flxanimate.*;

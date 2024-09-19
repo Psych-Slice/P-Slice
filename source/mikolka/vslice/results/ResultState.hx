@@ -1,5 +1,7 @@
 package mikolka.vslice.results;
 
+import mikolka.funkin.FlxAtlasSprite;
+import mikolka.funkin.FunkinSprite;
 import mikolka.funkin.players.PlayerData;
 import flixel.FlxSubState;
 import mikolka.compatibility.FreeplayHelpers;
@@ -10,7 +12,6 @@ import mikolka.vslice.freeplay.FreeplayState;
 import flixel.addons.transition.FlxTransitionableState;
 import substates.StickerSubState;
 import mikolka.funkin.Scoring;
-import backend.animation.FlxAtlasSprite;
 import shaders.LeftMaskShader;
 import flixel.FlxSprite;
 
@@ -32,8 +33,8 @@ import flixel.util.FlxGradient;
 import flixel.util.FlxTimer;
 import mikolka.funkin.players.*;
 import mikolka.funkin.players.PlayerData.PlayerFreeplayDJData;
-import mikolka.funkin.VsliceSubState as MusicBeatSubState;
-using mikolka.funkin.FunkinTools;
+import mikolka.funkin.custom.VsliceSubState as MusicBeatSubState;
+using mikolka.funkin.custom.FunkinTools;
 
 /**
  * The state for the results screen after a song or week is finished.
@@ -176,8 +177,8 @@ class ResultState extends MusicBeatSubState
 
     // Fetch playable character data. Default to BF on the results screen if we can't find it.
     //? changed a little code here
-    var player1 = PlayState.SONG == null ? "boyfriend" : PlayState.SONG.player1;
-    playerCharacterId = PlayerRegistry.instance.getCharacterOwnerId(player1);
+
+    playerCharacterId = PlayerRegistry.instance.getCharacterOwnerId(params.characterId);
     var playerCharacter:Null<PlayableCharacter> = PlayerRegistry.instance.fetchEntry(playerCharacterId ?? 'bf');
 
     //trace('Got playable character: ${playerCharacter?.getName()}');
@@ -860,6 +861,12 @@ typedef ResultsStateParams =
   var title:String;
 
   var songId:String;
+
+  /**
+   * The character ID for the song we just played.
+   * @default `bf`
+   */
+   var ?characterId:String;
 
   /**
    * Whether the displayed score is a new highscore

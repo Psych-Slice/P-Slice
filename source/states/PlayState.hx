@@ -29,7 +29,7 @@ import states.StoryMenuState;
 
 import lime.math.Matrix3;
 import mikolka.funkin.Scoring;
-import mikolka.funkin.FunkinTools;
+import mikolka.funkin.custom.FunkinTools;
 import mikolka.vslice.results.Tallies;
 import mikolka.vslice.results.ResultState;
 import openfl.media.Sound;
@@ -2259,7 +2259,23 @@ class PlayState extends MusicBeatState
 							}
 						});
 				}
+			case 'Vslice Scroll Speed':
+				if (songSpeedType != "constant")
+				{
+					if(flValue1 == null) flValue1 = 1;
+					if(flValue2 == null) flValue2 = 0;
 
+					var newValue:Float = ClientPrefs.getGameplaySetting('scrollspeed') * flValue1;
+					if(flValue2 <= 0)
+						songSpeed = newValue;
+					else
+						songSpeedTween = FlxTween.tween(this, {songSpeed: newValue}, flValue2 / playbackRate, {ease: FlxEase.quadInOut, onComplete:
+							function (twn:FlxTween)
+							{
+								songSpeedTween = null;
+							}
+						});
+				}
 			case 'Set Property':
 				try
 				{
@@ -2308,13 +2324,14 @@ class PlayState extends MusicBeatState
 				var easeFunc = LuaUtils.getTweenEaseByString(value2);
 				if(zoomTween != null) zoomTween.cancel();
 				var targetZoom = floaties[1]*defaultStageZoom;
-				zoomTween = FlxTween.tween(this,{ defaultCamZoom:targetZoom},(Conductor.stepCrochet/1000)*floaties[0],{
+				zoomTween = FlxTween.tween(camGame,{ zoom:targetZoom},(Conductor.stepCrochet/1000)*floaties[0],{
 					onStart: (x) ->{
-						camZoomingDecay = 5;
+						camZooming = false;
 					},
 					ease: easeFunc,
 					onComplete: (x) ->{
-						camZoomingDecay = 1;
+						defaultCamZoom = targetZoom;
+						camZooming = true;
 						zoomTween = null;
 					}
 				});
@@ -2547,9 +2564,11 @@ class PlayState extends MusicBeatState
 			}
 
 			#if !switch
-			var percent:Float = ratingPercent;
-			if(Math.isNaN(percent)) percent = 0;
-			Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent,songMisses == 0);
+			if(!ClientPrefs.getGameplaySetting('practice') && !ClientPrefs.getGameplaySetting('botplay')){
+				var percent:Float = ratingPercent;
+				if(Math.isNaN(percent)) percent = 0;
+				Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent,songMisses == 0);
+			}
 			#end
 
 			transitioning = true;
@@ -2562,7 +2581,8 @@ class PlayState extends MusicBeatState
    */
    function zoomIntoResultsScreen(isNewHighscore:Bool,scoreData:SaveScoreData,prevScoreRank:ScoringRank):Void
 	{
-		if(!ClientPrefs.data.vsliceResults){
+		var botplay = ClientPrefs.getGameplaySetting('botplay');
+		if(!ClientPrefs.data.vsliceResults || botplay){
 			var resultingAccuracy = Math.min(1,scoreData.accPoints/scoreData.totalNotesHit); 
 			var fpRank = Scoring.calculateRankFromData(scoreData.score,resultingAccuracy,scoreData.missed == 0) ?? SHIT;
 			if(isNewHighscore && !isStoryMode){
@@ -2578,7 +2598,7 @@ class PlayState extends MusicBeatState
                           newRank: fpRank,
                           songId: curSong,
                           difficultyId: Difficulty.getString(),
-                          playRankAnim: true
+                          playRankAnim: !botplay
                         }
                     }
                   }));
@@ -2688,7 +2708,8 @@ class PlayState extends MusicBeatState
 		  title: isStoryMode ? ('${storyCampaignTitle}') : ('${curSong} from ${modName}'),
 		  scoreData:scoreData,
 		  prevScoreRank: prevScoreRank,
-		  isNewHighscore: isNewHighscore
+		  isNewHighscore: isNewHighscore,
+		  characterId: SONG.player1
 		});
 	  this.persistentDraw = false;
 	  openSubState(res);

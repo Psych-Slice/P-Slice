@@ -4,7 +4,7 @@ import haxe.Json;
 import mikolka.funkin.players.PlayerData;
 import mikolka.compatibility.FunkinPath;
 
-using mikolka.funkin.FunkinTools;
+using mikolka.funkin.custom.FunkinTools;
 //TODO softcode this soon
 class PlayerRegistry {
     public static var instance:PlayerRegistry = new PlayerRegistry();

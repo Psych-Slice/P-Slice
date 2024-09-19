@@ -1,4 +1,4 @@
-package mikolka.funkin;
+package mikolka.funkin.custom;
 
 import mikolka.vslice.results.Tallies.SaveScoreData;
 import mikolka.funkin.Scoring.ScoringRank;

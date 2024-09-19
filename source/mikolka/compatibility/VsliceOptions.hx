@@ -9,4 +9,8 @@ class VsliceOptions {
     public static function get_FLASHBANG():Bool {
         return ClientPrefs.data.flashing;
     }
+    public static var ANTIALIASING(get,never):Bool;    
+    public static function get_ANTIALIASING():Bool {
+        return ClientPrefs.data.antialiasing;
+    }
 }
