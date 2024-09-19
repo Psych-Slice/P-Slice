@@ -2,7 +2,6 @@ package mikolka.funkin.custom;
 
 import mikolka.vslice.results.Tallies.SaveScoreData;
 import mikolka.funkin.Scoring.ScoringRank;
-import backend.Highscore;
 import flixel.graphics.FlxGraphic;
 
 //? P-Slice utility class (I think)

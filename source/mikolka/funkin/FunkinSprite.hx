@@ -1,5 +1,7 @@
 package mikolka.funkin;
 
+import mikolka.compatibility.VsliceOptions;
+
 class FunkinSprite extends FlxSprite
 {
 	public static function create(x:Float = 0.0, y:Float = 0.0, key:String)
@@ -18,7 +20,7 @@ class FunkinSprite extends FlxSprite
 	public static function createSparrow(x:Float = 0.0, y:Float = 0.0, key:String):FunkinSprite
 	{
 		var sprite:FunkinSprite = new FunkinSprite(x, y);
-		sprite.antialiasing = ClientPrefs.data.antialiasing;
+		sprite.antialiasing = VsliceOptions.ANTIALIASING;
 		sprite.frames = Paths.getSparrowAtlas(key);
 		return sprite;
 	}
