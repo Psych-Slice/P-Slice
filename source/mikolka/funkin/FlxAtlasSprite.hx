@@ -32,11 +32,7 @@ class FlxAtlasSprite extends FlxAnimate
 
   public var onComplete(never,set):Void->Void; //? psych exclusive
   public function set_onComplete(value:Void->Void) {
-    #if LEGACY_PSYCH
-    anim.onComplete = value;
-    #else
     anim.onComplete.add(value);
-    #end
     return value;
   }
 
