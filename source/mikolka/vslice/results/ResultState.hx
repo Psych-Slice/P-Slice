@@ -193,11 +193,9 @@ class ResultState extends MusicBeatSubState
       var animLibrary:String = "";//Paths.getLibrary(animData.assetPath); Libraries aren't used in P-Slice
       var offsets = animData.offsets ?? [0, 0];
 
-      #if !LEGACY_PSYCH
       //? Scaling offsets because Pico decided to be annoying
       offsets[0] = offsets[0]* (animData.scale ?? 1.0);
       offsets[1] = offsets[1]* (animData.scale ?? 1.0);
-      #end
       
       switch (animData.renderType)
       {
