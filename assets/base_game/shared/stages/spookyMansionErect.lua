@@ -3,22 +3,36 @@
 
 animatedStage = false;
 function onCreate()
-	if not lowQuality then --If the player has Low Quality option turned off, it loads an animated version of the stage
-		makeAnimatedLuaSprite('halloweenBG', 'halloween_bg', -200, -100);
-		addAnimationByPrefix('halloweenBG', 'idle', 'halloweem bg0', 24, true);
-		addAnimationByPrefix('halloweenBG', 'strike', 'halloweem bg lightning strike', 24, false);
-		animatedStage = true;
-	else --If the player has Low Quality option turned on, it loads a static version of the stage
-		makeLuaSprite('halloweenBG', 'halloween_bg_low', -200, -100);
-	end
-	addLuaSprite('halloweenBG', false);
+	luaDebugMode = true;
+	makeAnimatedLuaSprite('halloweenOutside', 'erect/bgtrees', 200, 50);
+	addAnimationByPrefix('halloweenOutside', 'idle', 'bgtrees0', 24, true);
+	setScrollFactor("halloweenOutside", 0.8, 0.8)
+	addLuaSprite('halloweenOutside', false);
+	
+	addHaxeLibrary("RainShader","shaders")
+	runHaxeCode([[
+	var shader = new shaders.RainShader();
+	shader.scale = FlxG.height / 200 * 2;
+		shader.intensity = 0.4;
+		shader.spriteMode = true;
 
-	makeLuaSprite('thunderFlash', nil, -200, -100);
-	setScrollFactor('thunderFlash', 0, 0);
-	makeGraphic('thunderFlash', screenWidth * 1.2, screenHeight * 1.2, 'FFFFFF');
-	setBlendMode('thunderFlash', 'ADD'); --this works *kind of* like photoshop's blend modes
-	addLuaSprite('thunderFlash', true);
-	setProperty('thunderFlash.alpha', 0);
+	var target = game.variables.get("halloweenOutside");
+	target.shader = shader;
+	target.animation.callback = function(name,b,c) { shader.updateFrameInfo(target.frame); };
+	]])
+	
+	animatedStage = true;
+	 --If the player has Low Quality option turned on, it loads a static version of the stage
+	makeLuaSprite('halloweenBG-dark', 'erect/bgDark', -360, -220);
+	addLuaSprite('halloweenBG-dark', false);
+	makeLuaSprite('stairs-dark', 'erect/stairsDark', 966, -225);
+	addLuaSprite('halloweenBG-dark', false);
+
+	makeLuaSprite('halloweenBG-light', 'erect/bgLight', -360, -220);
+	setProperty('halloweenBG-light.alpha', 0);
+	addLuaSprite("halloweenBG-light",false)
+
+	playAnim("halloweenOutside", "idle")
 
 	-- PRECACHE SOUNDS TO PREVENT STUTTERS
 	precacheSound('thunder_1');
@@ -28,6 +42,9 @@ end
 lightningStrikeBeat = 0;
 lightningOffset = 8;
 
+function onUpdate(elapsed)
+	runHaxeCode('shader.update('+elapsed+');')
+end
 function onBeatHit()
 	--10% chance per beat hit
 	if getRandomBool(10) and curBeat > lightningStrikeBeat + lightningOffset then
@@ -37,16 +54,12 @@ end
 
 function lightningStrikeShit()
 	playSound('thunder_'..getRandomInt(1, 2));
-	if animatedStage then
-		playAnim('halloweenBG', 'strike');
-	end
 
 	lightningStrikeBeat = curBeat;
 	lightningOffset = getRandomInt(8, 24);
-
-	playAnim('boyfriend', 'scared', true);
-	playAnim('gf', 'scared', true);
-
+	
+	runTimer("reset pico",0.06);
+	runTimer("scare pico",0.12);
 	if cameraZoomOnBeat then
 		setProperty('camGame.zoom', getProperty('camGame.zoom') + 0.015);
 		setProperty('camHUD.zoom', getProperty('camHUD.zoom') + 0.03);
@@ -58,15 +71,30 @@ function lightningStrikeShit()
 		end
 	end
 
-	if flashingLights then
-		setProperty('thunderFlash.alpha', 0.4);
-		doTweenAlpha('thunderFlash alpha tween', 'thunderFlash', 0.5, 0.075, 'linear');
-		runTimer('thunderFlash do end tween', 0.15);
-	end
+	
 end
 
 function onTimerCompleted(tag, loops, loopsLeft)
-	if tag == 'thunderFlash do end tween' then
-		doTweenAlpha('thunderFlash alpha tween', 'thunderFlash', 0, 0.25, 'linear');
+	if tag == 'reset pico' then
+		setProperty('halloweenBG-light.alpha', 0);
+		--setProperty('boyfriend.alpha', 1);
+		setProperty('dad.alpha', 1);
+		setProperty('gf.alpha', 1);
+	elseif tag == 'scare pico' then
+		
+
+		playAnim('boyfriend', 'scared', true);
+		playAnim('gf', 'scared', true);
+		if flashingLights then
+			setProperty('boyfriend.alpha', 0);
+			setProperty('dad.alpha', 0);
+			setProperty('gf.alpha', 0);
+			setProperty('halloweenBG-light.alpha', 1);
+
+			doTweenAlpha('thunderFlash alpha tween', 'halloweenBG-light', 0, 1.5, 'linear');
+			doTweenAlpha('Nene alpha tween', 'gf', 1, 1.5, 'linear');
+			doTweenAlpha('Kid alpha tween', 'dad', 1, 1.5, 'linear');
+			doTweenAlpha('Pico alpha tween', 'boyfriend', 1, 1.5, 'linear');
+		end
 	end
 end
