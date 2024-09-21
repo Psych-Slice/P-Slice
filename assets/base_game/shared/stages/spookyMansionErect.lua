@@ -18,7 +18,10 @@ function onCreate()
 
 	var target = game.variables.get("halloweenOutside");
 	target.shader = shader;
-	target.animation.callback = function(name,b,c) { shader.updateFrameInfo(target.frame); };
+	target.animation.callback = function(name,b,c) { 
+		shader.updateFrameInfo(target.frame); 
+		shader.update(FlxG.elapsed);
+	};
 	]])
 	
 	animatedStage = true;
@@ -42,9 +45,6 @@ end
 lightningStrikeBeat = 0;
 lightningOffset = 8;
 
-function onUpdate(elapsed)
-	runHaxeCode('shader.update('+elapsed+');')
-end
 function onBeatHit()
 	--10% chance per beat hit
 	if getRandomBool(10) and curBeat > lightningStrikeBeat + lightningOffset then

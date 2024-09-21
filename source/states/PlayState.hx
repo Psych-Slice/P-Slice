@@ -2305,7 +2305,7 @@ class PlayState extends MusicBeatState
 			case 'Play Sound':
 				if(flValue2 == null) flValue2 = 1;
 				FlxG.sound.play(Paths.sound(value1), flValue2);
-				case 'SetCameraBop': //P-slice event notes
+			case 'SetCameraBop': //P-slice event notes
 				var val1 = Std.parseFloat(value1);
 				var val2 = Std.parseFloat(value2);
 				camZoomingMult = !Math.isNaN(val2) ? val2 : 1;
@@ -2324,14 +2324,16 @@ class PlayState extends MusicBeatState
 				var easeFunc = LuaUtils.getTweenEaseByString(value2);
 				if(zoomTween != null) zoomTween.cancel();
 				var targetZoom = floaties[1]*defaultStageZoom;
-				zoomTween = FlxTween.tween(camGame,{ zoom:targetZoom},(Conductor.stepCrochet/1000)*floaties[0],{
+				zoomTween = FlxTween.tween(this,{ defaultCamZoom:targetZoom},(Conductor.stepCrochet/1000)*floaties[0],{
 					onStart: (x) ->{
-						camZooming = false;
+						//camZooming = false;
+						camZoomingDecay = 7;
 					},
 					ease: easeFunc,
 					onComplete: (x) ->{
 						defaultCamZoom = targetZoom;
-						camZooming = true;
+						camZoomingDecay = 1;
+						//camZooming = true;
 						zoomTween = null;
 					}
 				});
@@ -3419,10 +3421,15 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
-		if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.data.camZooms && (curBeat % camZoomingFrequency) == 0)
+		if (FlxG.camera.zoom < 1.35 && ClientPrefs.data.camZooms && (curBeat % camZoomingFrequency) == 0)
 			{
-				FlxG.camera.zoom += 0.015 * camZoomingMult;
-				camHUD.zoom += 0.03 * camZoomingMult;
+				if(camZooming){
+					FlxG.camera.zoom += 0.015 * camZoomingMult;
+					camHUD.zoom += 0.03 * camZoomingMult;
+				}
+				else if (zoomTween != null){
+					camHUD.zoom += 0.03 * camZoomingMult;
+				}
 			}
 
 		if (generatedMusic)

@@ -7,26 +7,25 @@ function onCreate()
 
 	--only loads if low quality option is turned off
 	if not lowQuality then
-		makeAnimatedLuaSprite('upperBoppers', 'christmas/upperBop', -240, -90);
-		addAnimationByPrefix('upperBoppers', 'idle', 'Upper Crowd Bob', 24, false);
+		makeAnimatedLuaSprite('upperBoppers', 'christmas/erect/upperBop', -240, -90);
+		addAnimationByPrefix('upperBoppers', 'idle', 'upperBop', 24, false);
 		scaleObject('upperBoppers', 0.85, 0.85);
 		setScrollFactor('upperBoppers', 0.33, 0.33);
 		addLuaSprite('upperBoppers', false);
 		
-		makeLuaSprite('escalator', 'christmas/bgEscalator', -1100, -600);
+		makeLuaSprite('escalator', 'christmas/erect/bgEscalator', -1100, -600);
 		scaleObject('escalator', 0.9, 0.9);
 		setScrollFactor('escalator', 0.3, 0.3);
 		addLuaSprite('escalator', false);
 		hasUpperBoppers = true;
 	end
 	
-	makeLuaSprite('tree', 'christmas/christmasTree', 370, -250);
+	makeLuaSprite('tree', 'christmas/erect/christmasTree', 370, -250);
 	setScrollFactor('tree', 0.4, 0.4);
 	addLuaSprite('tree', false);
 	
-	makeAnimatedLuaSprite('bottomBoppers', 'christmas/bottomBop', -300, 140);
-	addAnimationByPrefix('bottomBoppers', 'idle', 'Bottom Level Boppers Idle', 24, false);
-	addAnimationByPrefix('bottomBoppers', 'hey', 'Bottom Level Boppers HEY', 24, false);
+	makeAnimatedLuaSprite('bottomBoppers', 'christmas/erect/bottomBop', -300, 140);
+	addAnimationByPrefix('bottomBoppers', 'idle', 'bottomBop', 24, false);
 	setScrollFactor('bottomBoppers', 0.9, 0.9);
 	addLuaSprite('bottomBoppers', false);
 	
@@ -34,7 +33,7 @@ function onCreate()
 	addLuaSprite('snow', false);
 
 	makeAnimatedLuaSprite('santa', 'christmas/santa', -840, 150);
-	addAnimationByPrefix('santa', 'idle', 'santa idle in fear', 24, false);
+	addAnimationByPrefix('santa', 'idle', 'santa idle in fear', 24, true);
 	addLuaSprite('santa', false);
 end
 
