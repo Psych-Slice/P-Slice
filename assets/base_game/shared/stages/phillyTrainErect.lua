@@ -1,18 +1,18 @@
 function onCreate()
 	-- background shit
 	if not lowQuality then
-		makeLuaSprite('sky', 'philly/sky', -100, 0);
+		makeLuaSprite('sky', 'philly/erect/sky', -100, 0);
 		setScrollFactor('sky', 0.1, 0.1);
 
-		makeLuaSprite('behindTrain', 'philly/behindTrain', -40, 50);
+		makeLuaSprite('behindTrain', 'philly/erect/behindTrain', -40, 50);
 	end
 	
-	makeLuaSprite('city', 'philly/city', -10, 0);
+	makeLuaSprite('city', 'philly/erect/city', -10, 0);
 	setScrollFactor('city', 0.3, 0.3);
 	scaleObject('city', 0.85, 0.85);
 	
-	makeLuaSprite('train', 'philly/train', 2000, 360);
-	makeLuaSprite('street', 'philly/street', -40, 50);
+	makeLuaSprite('train', 'philly/erect/train', 2000, 360);
+	makeLuaSprite('street', 'philly/erect/street', -40, 50);
 	
 	addLuaSprite('sky', false);
 	addLuaSprite('city', false);
