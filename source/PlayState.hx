@@ -4219,7 +4219,7 @@ class PlayState extends MusicBeatState
 				zoomTween = FlxTween.tween(this, {defaultCamZoom: targetZoom}, (Conductor.stepCrochet / 1000) * floaties[0], {
 					onStart: (x) ->
 					{
-						camZoomingDecay = 5;
+						camZoomingDecay = 7;
 					},
 					ease: easeFunc,
 					onComplete: (x) ->
