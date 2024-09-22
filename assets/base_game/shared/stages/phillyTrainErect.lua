@@ -11,7 +11,7 @@ function onCreate()
 	setScrollFactor('city', 0.3, 0.3);
 	scaleObject('city', 0.85, 0.85);
 	
-	makeLuaSprite('train', 'philly/erect/train', 2000, 360);
+	makeLuaSprite('train', 'philly/train', 2000, 360);
 	makeLuaSprite('street', 'philly/erect/street', -40, 50);
 	
 	addLuaSprite('sky', false);
@@ -32,11 +32,11 @@ function onCreate()
 end
 
 phillyLightsColors = {
-	'31A2FD',
-	'31FD8C',
-	'FB33F5',
-	'FD4531',
-	'FBA633'
+	'502d64',
+	'2663ac',
+	'932c28',
+	'329a6d',
+	'b66f43'
 };
 
 trainMoving = false;
