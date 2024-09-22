@@ -1,5 +1,7 @@
 package;
 
+import flixel.FlxCamera;
+import Achievements.AchievementObject;
 import mikolka.compatibility.FunkinCamera;
 import flixel.input.keyboard.FlxKey;
 import flixel.addons.transition.FlxTransitionableState;
@@ -19,11 +21,12 @@ import options.OptionsState;
 class MainMenuState extends MusicBeatState
 {
 	public static var psychEngineVersion:String = '0.6.3'; // This is also used for Discord RPC
-	public static var pSliceVersion:String = '1.2'; 
-	public static var funkinVersion:String = '0.4.1'; // Version of funkin' we are emulationg
+	public static var pSliceVersion:String = '2.0'; 
+	public static var funkinVersion:String = '0.5.1'; // Version of funkin' we are emulationg
 	public static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
+	private var camAchievement:FlxCamera;
 	var debugKeys:Array<FlxKey>;
 
 	var optionShit:Array<String> = [
@@ -45,7 +48,11 @@ class MainMenuState extends MusicBeatState
 	}
 	override function create()
 	{
+		camAchievement = new FlxCamera();
+		camAchievement.bgColor.alpha = 0;
 		FlxG.cameras.reset(new FunkinCamera("lol"));
+		FlxG.cameras.add(camAchievement, false);
+
 		#if MODS_ALLOWED
 		Paths.pushGlobalMods();
 		#end
@@ -122,9 +129,14 @@ class MainMenuState extends MusicBeatState
 		#if ACHIEVEMENTS_ALLOWED
 		// Unlocks "Freaky on a Friday Night" achievement if it's a Friday and between 18:00 PM and 23:59 PM
 		var leDate = Date.now();
-		if (leDate.getDay() == 5 && leDate.getHours() >= 18)
-			Achievements.unlockAchievement('friday_night_play');
-
+		if (leDate.getDay() == 5 && leDate.getHours() >= 18 || true) {
+			var achieveID:Int = Achievements.getAchievementIndex('friday_night_play');
+			if(!Achievements.isAchievementUnlocked(Achievements.achievementsStuff[achieveID][2])) { //It's a friday night. WEEEEEEEEEEEEEEEEEE
+				Achievements.achievementsMap.set(Achievements.achievementsStuff[achieveID][2], true);
+				giveAchievement();
+				ClientPrefs.saveSettings();
+			}
+		}
 		#if MODS_ALLOWED
 		Achievements.loadAchievements();
 		#end
@@ -135,6 +147,15 @@ class MainMenuState extends MusicBeatState
 		FlxG.camera.follow(camFollow, null, 0.06);
 	}
 
+	#if ACHIEVEMENTS_ALLOWED
+	// Unlocks "Freaky on a Friday Night" achievement
+	function giveAchievement() {
+		add(new AchievementObject('friday_night_play', camAchievement));
+		FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
+		trace('Giving achievement "friday_night_play"');
+	}
+	#end
+	
 	var selectedSomethin:Bool = false;
 
 	override function update(elapsed:Float)
