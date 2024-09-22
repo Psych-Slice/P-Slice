@@ -193,16 +193,19 @@ class ResultState extends MusicBeatSubState
       var animLibrary:String = "";//Paths.getLibrary(animData.assetPath); Libraries aren't used in P-Slice
       var offsets = animData.offsets ?? [0, 0];
 
-      //? Scaling offsets because Pico decided to be annoying
-      offsets[0] = offsets[0]* (animData.scale ?? 1.0);
-      offsets[1] = offsets[1]* (animData.scale ?? 1.0);
+      
       
       switch (animData.renderType)
       {
         case 'animateatlas':
+          //? Scaling offsets because Pico decided to be annoying
+          var xDiff = offsets[0] - (offsets[0]* (animData.scale ?? 1.0));
+          var yDiff = offsets[1] - (offsets[1]* (animData.scale ?? 1.0));
+          offsets[0] -= xDiff*1.8;
+          offsets[1] -= yDiff*1.8;
+
           var animation:FlxAtlasSprite = new FlxAtlasSprite(offsets[0], offsets[1], Paths.animateAtlas(animPath, animLibrary));
           animation.zIndex = animData.zIndex ?? 500;
-
           animation.scale.set(animData.scale ?? 1.0, animData.scale ?? 1.0);
 
           if (!(animData.looped ?? true))
