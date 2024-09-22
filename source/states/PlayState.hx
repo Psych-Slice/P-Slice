@@ -3420,15 +3420,11 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
-		if (FlxG.camera.zoom < 1.35 && ClientPrefs.data.camZooms && (curBeat % camZoomingFrequency) == 0)
+		if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.data.camZooms && (curBeat % camZoomingFrequency) == 0)
 			{
-				if(camZooming){
-					FlxG.camera.zoom += 0.015 * camZoomingMult;
-					camHUD.zoom += 0.03 * camZoomingMult;
-				}
-				else if (zoomTween != null){
-					camHUD.zoom += 0.03 * camZoomingMult;
-				}
+				FlxG.camera.zoom += 0.015 * camZoomingMult;
+				camHUD.zoom += 0.03 * camZoomingMult;
+				
 			}
 
 		if (generatedMusic)

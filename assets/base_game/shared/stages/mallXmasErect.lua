@@ -29,7 +29,7 @@ function onCreate()
 	setScrollFactor('bottomBoppers', 0.9, 0.9);
 	addLuaSprite('bottomBoppers', false);
 	
-	makeLuaSprite('snow', 'christmas/fgSnow', -600, 700);
+	makeLuaSprite('snow', 'christmas/erect/fgSnow', -880, 700);--280
 	addLuaSprite('snow', false);
 
 	makeAnimatedLuaSprite('santa', 'christmas/santa', -840, 150);

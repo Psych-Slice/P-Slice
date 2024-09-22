@@ -5,10 +5,13 @@ import states.stages.objects.ABotSpeaker;
 class ABotManager {
 	static var abot:ABotSpeaker;
     public static function ABot_onCreatePost() {
+        abot = null;
         var game = PlayState.instance;
-        if((PlayState.SONG.gfVersion != 'nene' && PlayState.SONG.gfVersion != 'nene-christmas') || PlayState.SONG.stage == 'phillyStreets' || PlayState.SONG.stage == 'phillyBlazin') return;
+        if((!['nene','nene-christmas','nene-dark'].contains(PlayState.SONG.gfVersion)) 
+        || PlayState.SONG.stage == 'phillyStreets' 
+        || PlayState.SONG.stage == 'phillyBlazin') return;
         game.gfGroup.y -= 200;
-        abot = new ABotSpeaker(game.gfGroup.x-50, game.gfGroup.y+550-30);
+        abot = new ABotSpeaker(game.gfGroup.x-50, game.gfGroup.y+550-30,PlayState.SONG.gfVersion == "nene-dark");
 		updateABotEye(true);
 		game.addBehindGF(abot);
         
@@ -22,7 +25,7 @@ class ABotManager {
     }
     public static function ABot_sectionHit() {
         if(abot == null) return;
-        updateABotEye();
+        updateABotEye(); // If this fails we probably need to dispose our ABot
     }
     static function updateABotEye(finishInstantly:Bool = false)
         {

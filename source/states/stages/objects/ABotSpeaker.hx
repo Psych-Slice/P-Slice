@@ -25,12 +25,11 @@ class ABotSpeaker extends FlxSpriteGroup
 		return snd;
 	}
 
-	public function new(x:Float = 0, y:Float = 0)
+	public function new(x:Float = 0, y:Float = 0,useDark:Bool = false)
 	{
 		super(x, y);
 
 		var antialias = ClientPrefs.data.antialiasing;
-
 		bg = new FlxSprite(90, 20).loadGraphic(Paths.image('abot/stereoBG'));
 		bg.antialiasing = antialias;
 		add(bg);
@@ -69,7 +68,7 @@ class ABotSpeaker extends FlxSpriteGroup
 		add(eyes);
 
 		speaker = new FlxAnimate(-65, -10);
-		Paths.loadAnimateAtlas(speaker, 'abot/abotSystem');
+		Paths.loadAnimateAtlas(speaker, '${useDark? "abot/dark" : "abot"}/abotSystem');
 		speaker.anim.addBySymbol('anim', 'Abot System', 24, false);
 		speaker.anim.play('anim', true);
 		speaker.anim.curFrame = speaker.anim.length - 1;
