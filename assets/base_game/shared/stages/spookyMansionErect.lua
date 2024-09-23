@@ -29,11 +29,15 @@ function onCreate()
 	makeLuaSprite('halloweenBG-dark', 'erect/bgDark', -360, -220);
 	addLuaSprite('halloweenBG-dark', false);
 	makeLuaSprite('stairs-dark', 'erect/stairsDark', 966, -225);
-	addLuaSprite('halloweenBG-dark', false);
+	addLuaSprite('stairs-dark', true);
 
 	makeLuaSprite('halloweenBG-light', 'erect/bgLight', -360, -220);
 	setProperty('halloweenBG-light.alpha', 0);
-	addLuaSprite("halloweenBG-light",false)
+	addLuaSprite("halloweenBG-light",true)
+	
+	makeLuaSprite('stairs-light', 'erect/stairsLight', 966, -225);
+	setProperty('stairs-light.alpha', 0);
+	addLuaSprite('stairs-light', true);
 
 	playAnim("halloweenOutside", "idle")
 
@@ -77,7 +81,8 @@ end
 function onTimerCompleted(tag, loops, loopsLeft)
 	if tag == 'reset pico' then
 		setProperty('halloweenBG-light.alpha', 0);
-		--setProperty('boyfriend.alpha', 1);
+		setProperty('stairs-light.alpha', 0);
+		setProperty('boyfriend.alpha', 1);
 		setProperty('dad.alpha', 1);
 		setProperty('gf.alpha', 1);
 	elseif tag == 'scare pico' then
@@ -90,8 +95,10 @@ function onTimerCompleted(tag, loops, loopsLeft)
 			setProperty('dad.alpha', 0);
 			setProperty('gf.alpha', 0);
 			setProperty('halloweenBG-light.alpha', 1);
+			setProperty('stairs-light.alpha', 1);
 
 			doTweenAlpha('thunderFlash alpha tween', 'halloweenBG-light', 0, 1.5, 'linear');
+			doTweenAlpha('thunderFlash alpha stairs', 'stairs-light', 0, 1.5, 'linear');
 			doTweenAlpha('Nene alpha tween', 'gf', 1, 1.5, 'linear');
 			doTweenAlpha('Kid alpha tween', 'dad', 1, 1.5, 'linear');
 			doTweenAlpha('Pico alpha tween', 'boyfriend', 1, 1.5, 'linear');
