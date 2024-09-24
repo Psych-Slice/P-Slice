@@ -90,7 +90,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		['ZoomCamera', "An attempt to emulate V-slice camera zoom.\nNot really accurate, but whatever.\n\nValue 1: Zoom length (in steps) and zoom scale.\n[separated with ',']\n\nValue 2: Zooming ease"]
 	];
 	
-	public static var keysArray:Array<String> = [ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT]; //Used for Vortex Editor
+	public static var keysArray:Array<FlxKey> = [ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT]; //Used for Vortex Editor
 	public static var SHOW_EVENT_COLUMN = true;
 	public static var GRID_COLUMNS_PER_PLAYER = 4;
 	public static var GRID_PLAYERS = 2;
@@ -601,12 +601,12 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	function prepareReload()
 	{
 		updateJsonData();
-		updateHeads(true);
 		loadMusic();
 		loadMetadata();
 		reloadNotes();
 		onChartLoaded();
-
+		updateHeads(true);
+		
 		autoSaveTime = 0;
 		Conductor.songPosition = 0;
 		if(FlxG.sound.music != null) FlxG.sound.music.time = 0;
@@ -1044,7 +1044,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 						selectedNotes.shift();
 						if(note == null) continue;
 		
-						trace('Removed ${!note.isEvent ? 'note' : 'event'} at time: ${note.strumTime}');
+						var kind:String = !note.isEvent ? 'note' : 'event';
+						trace('Removed $kind at time: ${note.strumTime}');
 						if(!note.isEvent)
 						{
 							notes.remove(note);
@@ -1275,7 +1276,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 					var closeNotes:Array<MetaNote> = curRenderedNotes.members.filter(function(note:MetaNote)
 					{
 						var chartY:Float = FlxG.mouse.y - note.chartY;
-						return ((note.isEvent && noteData < 0) || note.songData[1] == noteData) && chartY >= 0 && chartY < GRID_SIZE;
+						return ((note.isEvent && noteData < 0) || (!note.isEvent && note.songData[1] == noteData)) && chartY >= 0 && chartY < GRID_SIZE;
 					});
 					closeNotes.sort(function(a:MetaNote, b:MetaNote) return Math.abs(a.strumTime - FlxG.mouse.y) < Math.abs(b.strumTime - FlxG.mouse.y) ? 1 : -1);
 
@@ -1293,16 +1294,15 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 							else if(!holdingAlt)
 							{
 								resetSelectedNotes();
-								selectedNotes = sel.copy();
 								selectedNotes.remove(closest);
 								addUndoAction(SELECT_NOTE, {old: sel, current: selectedNotes.copy()});
 							}
-
 							trace('Notes selected: ' + selectedNotes.length);
 						}
 						else if(!FlxG.keys.pressed.CONTROL) // Remove Note/Event
 						{
-							trace('Removed ${!closest.isEvent ? 'note' : 'event'} at time: ${closest.strumTime}');
+							var kind:String = !closest.isEvent ? 'note' : 'event';
+							trace('Removed $kind at time: ${closest.strumTime}');
 							if(!closest.isEvent)
 								notes.remove(closest);
 							else
@@ -1535,11 +1535,19 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		var pushedEvents:Array<EventMetaNote> = [];
 		movingNotes.forEachAlive(function(note:MetaNote)
 		{
-			notes.push(note);
-			if(!note.isEvent) pushedNotes.push(note);
-			else pushedEvents.push(cast (note, EventMetaNote));
+			if(!note.isEvent)
+			{
+				notes.push(note);
+				pushedNotes.push(note);
+			}
+			else
+			{
+				events.push(cast (note, EventMetaNote));
+				pushedEvents.push(cast (note, EventMetaNote));
+			}
 		});
 		notes.sort(PlayState.sortByTime);
+		events.sort(PlayState.sortByTime);
 		movingNotes.clear();
 		isMovingNotes = false;
 		softReloadNotes();
@@ -2668,6 +2676,11 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 				note.setStrumTime(Math.max(-5000, strumTimeStepper.value + (note.strumTime - firstTime)));
 				positionNoteYOnTime(note, curSec);
+
+				if(note.isEvent)
+				{
+					cast (note, EventMetaNote).updateEventText();
+				}
 			}
 			softReloadNotes();
 		};
@@ -2853,25 +2866,16 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		});
 		var clearButton:PsychUIButton = new PsychUIButton(objX + 200, objY, 'Clear', function()
 		{
-			if(affectNotes.checked)
+			for (note in curRenderedNotes)
 			{
-				for (note in curRenderedNotes)
-				{
-					if(note == null || note.isEvent) continue;
+				if(note == null) continue;
 
-					selectedNotes.remove(note);
+				if(!note.isEvent && affectNotes.checked)
 					notes.remove(note);
-				}
-			}
-			if(affectEvents.checked)
-			{
-				for (event in curRenderedNotes)
-				{
-					if(event == null || !event.isEvent) continue;
+				if(note.isEvent && affectEvents.checked)
+					events.remove(cast (note, EventMetaNote));
 
-					selectedNotes.remove(event);
-					events.remove(cast (event, EventMetaNote));
-				}
+				selectedNotes.remove(note);
 			}
 			softReloadNotes(true);
 		});
@@ -4825,10 +4829,12 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			case MOVE_NOTE:
 				actionRemoveNotes(action.data.movedNotes, action.data.movedEvents);
 				actionPushNotes(action.data.originalNotes, action.data.originalEvents);
+				onSelectNote();
 
 			case SELECT_NOTE:
 				resetSelectedNotes();
 				selectedNotes = action.data.old;
+				if(lockedEvents) selectedNotes = selectedNotes.filter((note:MetaNote) -> !note.isEvent);
 				onSelectNote();
 		}
 		showOutput('Undo #${currentUndo+1}: ${action.action}');
@@ -4856,10 +4862,12 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			case MOVE_NOTE:
 				actionRemoveNotes(action.data.originalNotes, action.data.originalEvents);
 				actionPushNotes(action.data.movedNotes, action.data.movedEvents);
+				onSelectNote();
 
 			case SELECT_NOTE:
 				resetSelectedNotes();
 				selectedNotes = action.data.current;
+				if(lockedEvents) selectedNotes = selectedNotes.filter((note:MetaNote) -> !note.isEvent);
 				onSelectNote();
 		}
 		showOutput('Redo #${currentUndo+1}: ${action.action}');
@@ -4877,6 +4885,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 				{
 					notes.push(note);
 					selectedNotes.push(note);
+					note.songData[0] = note.strumTime;
+					note.songData[1] = note.chartNoteData;
 				}
 			}
 			notes.sort(PlayState.sortByTime);
@@ -4889,6 +4899,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 				{
 					events.push(event);
 					selectedNotes.push(event);
+					event.songData[0] = event.strumTime;
 				}
 			}
 			events.sort(PlayState.sortByTime);
@@ -4899,21 +4910,40 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	function actionRemoveNotes(dataNotes:Array<MetaNote>, dataEvents:Array<EventMetaNote>)
 	{
 		if(dataNotes != null && dataNotes.length > 0)
+		{
 			for (note in dataNotes)
+			{
 				if(note != null)
 				{
 					notes.remove(note);
 					selectedNotes.remove(note);
+
+					if(note.exists)
+					{
+						note.colorTransform.redMultiplier = note.colorTransform.greenMultiplier = note.colorTransform.blueMultiplier = 1;
+						if(note.animation.curAnim != null) note.animation.curAnim.curFrame = 0;
+					}
 				}
 
+			}
+		}
 		if(dataEvents != null && dataEvents.length > 0)
+		{
 			for (event in dataEvents)
+			{
 				if(event != null)
 				{
-					events.remove(event);
+					trace(events.remove(event));
 					selectedNotes.remove(event);
-				}
 
+					if(event.exists)
+					{
+						event.colorTransform.redMultiplier = event.colorTransform.greenMultiplier = event.colorTransform.blueMultiplier = 1;
+						if(event.animation.curAnim != null) event.animation.curAnim.curFrame = 0;
+					}
+				}
+			}
+		}
 		softReloadNotes();
 	}
 

@@ -203,6 +203,14 @@ class PauseSubState extends MusicBeatSubstate
 			return;
 		}
 
+		if(FlxG.keys.justPressed.F5)
+		{
+			FlxTransitionableState.skipNextTransIn = true;
+			FlxTransitionableState.skipNextTransOut = true;
+			PlayState.nextReloadAll = true;
+			MusicBeatState.resetState();
+		}
+
 		updateSkipTextStuff();
 		if (controls.UI_UP_P)
 		{

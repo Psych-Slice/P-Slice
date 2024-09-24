@@ -269,11 +269,14 @@ class PlayState extends MusicBeatState
 	public var startCallback:Void->Void = null;
 	public var endCallback:Void->Void = null;
 
+	public static var nextReloadAll:Bool = false;
 	override public function create()
 	{
 		this.variables = new JoinedLuaVariables();
 		//trace('Playback Rate: ' + playbackRate);
 		Paths.clearStoredMemory();
+		if(nextReloadAll) Paths.clearUnusedMemory();
+		nextReloadAll = false;
 
 		startCallback = startCountdown;
 		endCallback = endSong;
@@ -1375,8 +1378,8 @@ class PlayState extends MusicBeatState
 				}
 
 				var swagNote:Note = new Note(spawnTime, noteColumn, oldNote);
-				var isAlt: Bool = section.altAnim && !swagNote.mustPress && !section.gfSection;
-				swagNote.gfNote = (section.gfSection && gottaHitNote);
+				var isAlt: Bool = section.altAnim && !gottaHitNote;
+				swagNote.gfNote = (section.gfSection && gottaHitNote == section.mustHitSection);
 				swagNote.animSuffix = isAlt ? "-alt" : "";
 				swagNote.mustPress = gottaHitNote;
 				swagNote.sustainLength = holdLength;
@@ -1385,7 +1388,7 @@ class PlayState extends MusicBeatState
 				swagNote.scrollFactor.set();
 				unspawnNotes.push(swagNote);
 
-				final roundSus:Int = Math.round(swagNote.sustainLength / Conductor.stepCrochet);
+				final roundSus:Int = Math.floor(swagNote.sustainLength / Conductor.stepCrochet);
 				if(roundSus > 0)
 				{
 					for (susNote in 0...roundSus + 1)
@@ -1495,8 +1498,9 @@ class PlayState extends MusicBeatState
 	}
 
 	function eventEarlyTrigger(event:EventNote):Float {
-		var returnedValue:Null<Float> = callOnScripts('eventEarlyTrigger', [event.event, event.value1, event.value2, event.strumTime], true, [], [0]);
-		if(returnedValue != null && returnedValue != 0 && returnedValue != LuaUtils.Function_Continue) {
+		var returnedValue:Dynamic = callOnScripts('eventEarlyTrigger', [event.event, event.value1, event.value2, event.strumTime], true, [], [0]);
+		returnedValue = Std.parseFloat(returnedValue);
+		if(!Math.isNaN(returnedValue) && returnedValue != 0) {
 			return returnedValue;
 		}
 
@@ -3373,7 +3377,7 @@ class PlayState extends MusicBeatState
 		for (script in hscriptArray)
 			if(script != null)
 			{
-				script.call('onDestroy');
+				script.executeFunction('onDestroy');
 				script.destroy();
 			}
 
@@ -3538,7 +3542,7 @@ class PlayState extends MusicBeatState
 		try
 		{
 			newScript = new HScript(null, file);
-			newScript.call('onCreate');
+			newScript.executeFunction('onCreate');
 			trace('initialized hscript interp successfully: $file');
 			hscriptArray.push(newScript);
 		}
@@ -3553,7 +3557,7 @@ class PlayState extends MusicBeatState
 	#end
 
 	public function callOnScripts(funcToCall:String, args:Array<Dynamic> = null, ignoreStops = false, exclusions:Array<String> = null, excludeValues:Array<Dynamic> = null):Dynamic {
-		var returnVal:Dynamic = LuaUtils.Function_Continue;
+		var returnVal:String = LuaUtils.Function_Continue;
 		if(args == null) args = [];
 		if(exclusions == null) exclusions = [];
 		if(excludeValues == null) excludeValues = [LuaUtils.Function_Continue];
@@ -3564,7 +3568,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public function callOnLuas(funcToCall:String, args:Array<Dynamic> = null, ignoreStops = false, exclusions:Array<String> = null, excludeValues:Array<Dynamic> = null):Dynamic {
-		var returnVal:Dynamic = LuaUtils.Function_Continue;
+		var returnVal:String = LuaUtils.Function_Continue;
 		#if LUA_ALLOWED
 		if(args == null) args = [];
 		if(exclusions == null) exclusions = [];
@@ -3603,7 +3607,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null, ?ignoreStops:Bool = false, exclusions:Array<String> = null, excludeValues:Array<Dynamic> = null):Dynamic {
-		var returnVal:Dynamic = LuaUtils.Function_Continue;
+		var returnVal:String = LuaUtils.Function_Continue;
 
 		#if HSCRIPT_ALLOWED
 		if(exclusions == null) exclusions = new Array();
@@ -3623,12 +3627,9 @@ class PlayState extends MusicBeatState
 			try
 			{
 				var callValue = script.call(funcToCall, args);
-				var myValue:Dynamic = callValue.methodVal;
+				var myValue:Dynamic = callValue.signature;
 
-				// compiler fuckup fix
-				final stopHscript = myValue == LuaUtils.Function_StopHScript;
-				final stopAll = myValue == LuaUtils.Function_StopAll;
-				if((stopHscript || stopAll) && !excludeValues.contains(myValue) && !ignoreStops)
+				if((myValue == LuaUtils.Function_StopHScript || myValue == LuaUtils.Function_StopAll) && !excludeValues.contains(myValue) && !ignoreStops)
 				{
 					returnVal = myValue;
 					break;
@@ -3722,10 +3723,12 @@ class PlayState extends MusicBeatState
 			}
 			fullComboFunction();
 		}
-		updateScore(badHit); // score will only update after rating is calculated, if it's a badHit, it shouldn't bounce
 		setOnScripts('rating', ratingPercent);
 		setOnScripts('ratingName', ratingName);
 		setOnScripts('ratingFC', ratingFC);
+		setOnScripts('totalPlayed', totalPlayed);
+		setOnScripts('totalNotesHit', totalNotesHit);
+		updateScore(badHit); // score will only update after rating is calculated, if it's a badHit, it shouldn't bounce
 	}
 
 	#if ACHIEVEMENTS_ALLOWED

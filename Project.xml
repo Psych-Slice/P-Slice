@@ -111,12 +111,13 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<!--Psych stuff needed-->
 	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
-	<haxelib name="hscript-iris" if="HSCRIPT_ALLOWED" version="1.0.2"/>
+	<haxelib name="hscript-iris" if="HSCRIPT_ALLOWED" version="1.1.0"/>
 	<section if="VIDEOS_ALLOWED">
 		<haxelib name="hxCodec" unless="windows"/>
 		<haxelib name="hxvlc" if="windows"/>
 	</section>
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
+
 	<haxelib name="flxanimate"/>
 
 	<!-- Disable Discord IO Thread -->
