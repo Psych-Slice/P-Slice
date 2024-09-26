@@ -209,37 +209,37 @@ class ResultState extends MusicBeatSubState
           animation.scale.set(animData.scale ?? 1.0, animData.scale ?? 1.0);
 
           if (!(animData.looped ?? true))
-          {
-            // Animation is not looped.
-            animation.onComplete = () -> {
-              trace("AHAHAH 2");
-              if (animation != null)
-              {
-                animation.anim.pause();
-              }
-            };
-          }
-          else if (animData.loopFrameLabel != null)
-          {
-            animation.onComplete = () -> {
-              trace("AHAHAH 2");
-              if (animation != null)
-              {
-                animation.playAnimation(animData.loopFrameLabel ?? '', true, false, true); // unpauses this anim, since it's on PlayOnce!
-              }
-            };
-          }
-          else if (animData.loopFrame != null)
-          {
-            animation.onComplete = () -> {
-              if (animation != null)
-              {
-                trace("AHAHAH");
-                animation.anim.curFrame = animData.loopFrame ?? 0;
-                animation.anim.play(); // unpauses this anim, since it's on PlayOnce!
-              }
-            };
-          }
+            {
+              // Animation is not looped.
+              animation.onAnimationComplete.add((_name:String) -> {
+                trace("AHAHAH 2");
+                if (animation != null)
+                {
+                  animation.anim.pause();
+                }
+              });
+            }
+            else if (animData.loopFrameLabel != null)
+            {
+              animation.onAnimationComplete.add((_name:String) -> {
+                trace("AHAHAH 2");
+                if (animation != null)
+                {
+                  animation.playAnimation(animData.loopFrameLabel ?? '', true, false, true); // unpauses this anim, since it's on PlayOnce!
+                }
+              });
+            }
+            else if (animData.loopFrame != null)
+            {
+              animation.onAnimationComplete.add((_name:String) -> {
+                if (animation != null)
+                {
+                  trace("AHAHAH");
+                  animation.anim.curFrame = animData.loopFrame ?? 0;
+                  animation.anim.play(); // unpauses this anim, since it's on PlayOnce!
+                }
+              });
+            }
 
           // Hide until ready to play.
           animation.visible = false;

@@ -13,6 +13,7 @@ class MasterEditorMenu extends MusicBeatState
 		'Character Editor', 
 		'Stage Editor', 
 		'Week Editor', 
+		'Char select', 
 		'Menu Character Editor', 
 		'Dialogue Editor', 
 		'Dialogue Portrait Editor',
@@ -127,6 +128,8 @@ class MasterEditorMenu extends MusicBeatState
 					LoadingState.loadAndSwitchState(new DialogueCharacterEditorState(), false);
 				case 'Note Splash Editor':
 					MusicBeatState.switchState(new NoteSplashEditorState());
+				case 'Char select':
+						MusicBeatState.switchState(new mikolka.vslice.charSelect.CharSelectSubState());
 				case 'Preview results (perfect)':
 					runResults(200);
 				case 'Preview results (excellent)':

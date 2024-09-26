@@ -43,4 +43,8 @@ class FunkinPath {
           if (parts.length < 2) return path;
           return parts[1];
         }
+    //! used by FileSystem
+    public static function file(s:String) { // this returns a full path to the file
+        return "assets/"+s;
+    }
 }

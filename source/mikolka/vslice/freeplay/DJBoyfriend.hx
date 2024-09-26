@@ -60,7 +60,7 @@ class DJBoyfriend extends FlxAtlasSprite
     FlxG.console.registerObject("dj", this);
 
     //TODO make this indenpendedt
-    onComplete = onFinishAnim;
+    onAnimationComplete.add(s -> onFinishAnim());
 
     FlxG.console.registerFunction("tv", function() {
       currentState = TV;
@@ -101,7 +101,7 @@ class DJBoyfriend extends FlxAtlasSprite
           playFlashAnimation('Boyfriend DJ', true);
         }
 
-        if (getCurrentAnimation() == 'Boyfriend DJ' && this.isLoopFinished())
+        if (getCurrentAnimation() == 'Boyfriend DJ' && this.isLoopComplete())
         {
           if (timeSinceSpook >= SPOOK_PERIOD && !gotSpooked)
           {
