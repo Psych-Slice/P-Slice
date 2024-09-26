@@ -41,6 +41,7 @@ class HScript extends Iris
 			hs.varsToBring = varsToBring;
 			try
 			{
+				if(hs.scriptCode != code) hs.expr = null; //? Force regenerate expression if the code changes
 				hs.scriptCode = code;
 				hs.execute();
 			}

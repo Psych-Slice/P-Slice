@@ -119,11 +119,27 @@
 			"anim": "intro2",
 			"loop": false,
 			"name": "shoot and return0"
+		},
+		{
+		"anim": "burpSmile",
+		"loop": false,
+		"indices": [],
+		"fps": 24,
+		"name": "burpsmile",
+		"offsets": [33, -3]
+		},
+		{
+		"anim": "shit",
+		"loop": false,
+		"indices": [],
+		"fps": 24,
+		"name": "shit",
+		"offsets": [0, -3]
 		}
 	],
 	"vocals_file": "",
 	"no_antialiasing": false,
-	"image": "characters/Pico_FNF_assetss, characters/picoAnims/Pico_Intro, characters/picoAnims/Pico_Shooting",
+	"image": "characters/pico-erect, characters/picoAnims/Pico_Intro, characters/picoAnims/Pico_Shooting",
 	"position": [0, 300],
 	"healthicon": "pico",
 	"flip_x": true,

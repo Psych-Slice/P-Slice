@@ -33,6 +33,12 @@ function onCreate()
 		makeLuaSprite('TheOneAbove', 'erect/lightAbove', 804, -117);
 	end
 
+	setProperty("stagelight_small.blend", 0)
+	setProperty("greenLOL.blend", 0)
+	setProperty("redLOL.blend", 0)
+	setProperty("orangeLOL.blend", 0)
+	setProperty("greenLOL.blend", 0)
+
 	addLuaSprite('stageback', false);
 	addLuaSprite('stageCrowd', false);
 	addLuaSprite('stagelight_small', false);
@@ -44,4 +50,25 @@ function onCreate()
 
 	addLuaSprite('lights', false);
 	addLuaSprite('TheOneAbove', false);
+end
+function onCreatePost()
+	initLuaShader("adjustColor")
+
+	setSpriteShader("boyfriend", "adjustColor")
+	setShaderFloat("boyfriend", "hue", 12)
+	setShaderFloat("boyfriend", "saturation", 0)
+	setShaderFloat("boyfriend", "brightness", -23)
+	setShaderFloat("boyfriend", "contrast", 7)
+
+	setSpriteShader("dad", "adjustColor")
+	setShaderFloat("dad", "hue", -32)
+	setShaderFloat("dad", "saturation", 0)
+	setShaderFloat("dad", "brightness", -33)
+	setShaderFloat("dad", "contrast", -23)
+
+	setSpriteShader("gf", "adjustColor")
+	setShaderFloat("gf", "hue", -9)
+	setShaderFloat("gf", "saturation", 0)
+	setShaderFloat("gf", "brightness", -30)
+	setShaderFloat("gf", "contrast", -4)
 end

@@ -23,6 +23,17 @@ class ABotManager {
         // });
         abot.snd = FlxG.sound.music;
     }
+    public static function ABot_plink() { // silly daniel
+        if(abot == null || abot.speakerAlt == null) return;
+        abot.speakerAlt.alpha = 1;
+        abot.speaker.alpha = 0;
+        FlxTween.tween(abot.speakerAlt,{alpha:0},1.5,{
+            ease: FlxEase.linear
+        });
+        FlxTween.tween(abot.speaker,{alpha:1},1.5,{
+            ease: FlxEase.linear
+        });
+    }
     public static function ABot_sectionHit() {
         if(abot == null) return;
         updateABotEye(); // If this fails we probably need to dispose our ABot

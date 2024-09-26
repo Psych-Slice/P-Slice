@@ -2,7 +2,7 @@
 	"animations": [
 	{
       "anim": "idle",
-      "loop": true,
+      "loop": false,
 	  "fps": 24,
       "name": "Pico Idle Dance",
       "offsets": [0, 0]
