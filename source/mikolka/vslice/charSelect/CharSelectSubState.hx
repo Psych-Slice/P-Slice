@@ -1,5 +1,6 @@
 package mikolka.vslice.charSelect;
 
+import states.AttractState;
 import mikolka.vslice.freeplay.FreeplayState;
 import openfl.filters.BitmapFilter;
 import flixel.FlxObject;
@@ -280,29 +281,22 @@ class CharSelectSubState extends MusicBeatSubState
     grpCursors.add(cursorBlue);
     grpCursors.add(cursor);
 
-    selectSound = new FunkinSound();
-    selectSound.loadEmbedded(Paths.sound('CS_select'));
+    selectSound = FunkinSound.load(Paths.sound('CS_select'),0.7); //? fix loaders
     selectSound.pitch = 1;
-    selectSound.volume = 0.7;
 
     FlxG.sound.defaultSoundGroup.add(selectSound);
     FlxG.sound.list.add(selectSound);
 
-    unlockSound = new FunkinSound();
-    unlockSound.loadEmbedded(Paths.sound('CS_unlock'));
+    unlockSound = FunkinSound.load(Paths.sound('CS_unlock'),0); //? fix loaders
     unlockSound.pitch = 1;
 
-    unlockSound.volume = 0;
     unlockSound.play(true);
 
     FlxG.sound.defaultSoundGroup.add(unlockSound);
     FlxG.sound.list.add(unlockSound);
 
-    lockedSound = new FunkinSound();
-    lockedSound.loadEmbedded(Paths.sound('CS_locked'));
+    lockedSound = FunkinSound.load(Paths.sound('CS_locked'),1); //? fix loaders
     lockedSound.pitch = 1;
-
-    lockedSound.volume = 1.;
 
     FlxG.sound.defaultSoundGroup.add(lockedSound);
     FlxG.sound.list.add(lockedSound);
@@ -361,7 +355,7 @@ class CharSelectSubState extends MusicBeatSubState
     add(temp);
     temp.alpha = 0.0;
 
-    Conductor.stepHit.add(spamOnStep);
+    //Conductor.stepHit.add(spamOnStep); //? moved
     // FlxG.debugger.track(temp, "tempBG");
 
     transitionGradient = new FlxSprite(0, 0).loadGraphic(Paths.image('freeplay/transitionGradient'));
@@ -388,15 +382,13 @@ class CharSelectSubState extends MusicBeatSubState
     blackScreen.y = -(FlxG.height * 0.5);
     add(blackScreen);
 
-    introSound = new FunkinSound();
-    introSound.loadEmbedded(Paths.sound('CS_Lights'));
+    introSound = FunkinSound.load(Paths.sound('CS_Lights'),0); //? fix call
     introSound.pitch = 1;
-    introSound.volume = 0;
 
     FlxG.sound.defaultSoundGroup.add(introSound);
     FlxG.sound.list.add(introSound);
 
-    openSubState(new IntroSubState());
+    openSubState(new AttractState('asstes/videos/introSelect.mp4'));
     subStateClosed.addOnce((_) -> {
       remove(blackScreen);
       if (!Save.instance.oldChar)
@@ -791,7 +783,7 @@ class CharSelectSubState extends MusicBeatSubState
 
         grpCursors.visible = false;
 
-        FlxG.sound.play(Paths.sound('CS_confirm'));
+        FunkinSound.playOnce(Paths.sound('CS_confirm')); //? replace with FunkinSound call
 
         FlxTween.tween(FlxG.sound.music, {pitch: 0.1}, 1, {ease: FlxEase.quadInOut});
         FlxTween.tween(FlxG.sound.music, {volume: 0.0}, 1.5, {ease: FlxEase.quadInOut});
@@ -918,10 +910,15 @@ class CharSelectSubState extends MusicBeatSubState
       bopFr++;
     }
   }
+
   override function beatHit() {
     super.beatHit(); //? We have no enevt system here.
     playerChill.onBeatHit(); //? emulate beats here
     gfChill.onBeatHit(this.curBeat);
+  }
+  override function stepHit() { //? emulate Conductor, which would call this every step
+    spamOnStep();
+    super.stepHit();
   }
 
   function spamOnStep():Void

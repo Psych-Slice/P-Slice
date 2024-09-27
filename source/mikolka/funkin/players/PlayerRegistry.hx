@@ -5,6 +5,7 @@ import mikolka.funkin.players.PlayerData;
 import mikolka.compatibility.FunkinPath;
 
 using mikolka.funkin.custom.FunkinTools;
+using StringTools;
 //TODO softcode this soon
 class PlayerRegistry {
     public static var instance:PlayerRegistry = new PlayerRegistry();
@@ -30,5 +31,10 @@ class PlayerRegistry {
 
     public function isCharacterOwned(id:String):Bool {
         return true;
+    }
+    // return ALL characters avaliable (from current mod)
+    public function listEntryIds():Array<String> {
+        var char_path = FunkinPath.getPath('registry/playableChars/');
+        return FileSystem.readDirectory(char_path).filter(s -> s.endsWith(".json")).map(s -> s.substr(0,s.length-5));
     }
 }

@@ -44,13 +44,19 @@ class PixelatedIcon extends FlxFilteredSprite
         image = Paths.image("icons/icon-face");
       }
       this.loadGraphic(image,true,Math.floor(image.width / 2), Math.floor(image.height));
+      animation.add("idle",[0]);
+      animation.add("confirm",[1]);
       this.scale.x = this.scale.y = 0.58;
       this.updateHitbox();
       this.origin.x = 100;
+      animation.play("idle");
     }
     else{
       var image = Paths.image('freeplay/icons/${char}pixel');
       this.loadGraphic(image);
+      animation.add("idle",[0]);
+      animation.add("confirm",[0]);
+      animation.play("idle");
       this.scale.x = this.scale.y = 2;
       this.updateHitbox();
       this.origin.x = 25;

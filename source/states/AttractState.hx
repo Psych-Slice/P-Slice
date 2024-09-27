@@ -15,10 +15,10 @@ using mikolka.funkin.utils.ArrayTools;
  * In the current version, this just plays the ~~Kickstarter trailer~~ Erect teaser, but this can be changed to
  * gameplay footage, a generic game trailer, or something more elaborate.
  */
-class AttractState extends MusicBeatState
+class AttractState extends MusicBeatSubstate
 {
   #if html5
-  static final ATTRACT_VIDEO_PATH:String = Paths.video("commercials/"+FlxG.random.getObject([
+  var ATTRACT_VIDEO_PATH:String = Paths.video("commercials/"+FlxG.random.getObject([
     'toyCommercial',
     'kickstarterTrailer',
     'erectSamplers'
@@ -43,9 +43,13 @@ class AttractState extends MusicBeatState
     return FlxG.random.getObject(commercialsToSelect);
   }
 
-  static var ATTRACT_VIDEO_PATH:String = '';
+   var ATTRACT_VIDEO_PATH:String = '';
   #end
 
+  public function new(video:String = null) {
+    if(video != null) ATTRACT_VIDEO_PATH = video;
+    super();
+  }
   public override function create():Void
   {
     // Pause existing music.
@@ -61,7 +65,7 @@ class AttractState extends MusicBeatState
     #end
 
     #if (hxvlc || hxCodec)
-    ATTRACT_VIDEO_PATH = collectVideos();
+    if (ATTRACT_VIDEO_PATH == '') ATTRACT_VIDEO_PATH = collectVideos();
     trace('Playing native video ${ATTRACT_VIDEO_PATH}');
     playVideoNative(ATTRACT_VIDEO_PATH);
     #end
@@ -151,7 +155,12 @@ class AttractState extends MusicBeatState
     vid.destroy();
     vid = null;
     #end
-    FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.7);
-    FlxG.switchState(() -> new TitleState());
+    if(FlxG.state.subState == this){
+      close();
+    }
+    else{
+      FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.7);
+      FlxG.switchState(() -> new TitleState());
+    }
   }
 }

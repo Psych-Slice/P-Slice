@@ -45,6 +45,6 @@ class FunkinPath {
         }
     //! used by FileSystem
     public static function file(s:String) { // this returns a full path to the file
-        return "assets/"+s;
+        return Paths.getSharedPath(s);
     }
 }
