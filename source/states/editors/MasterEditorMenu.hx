@@ -1,5 +1,6 @@
 package states.editors;
 
+import mikolka.compatibility.VsliceOptions;
 import flixel.math.FlxRandom;
 import backend.WeekData;
 import mikolka.vslice.results.ResultState;
@@ -135,9 +136,9 @@ class MasterEditorMenu extends MusicBeatState
 				case 'Preview results (excellent)':
 					runResults(190);
 				case 'Preview results (great)':
-					runResults(140);
+					runResults(160);
 				case 'Preview results (good)':
-					runResults(80);
+					runResults(110);
 				case 'Preview results (shit)':
 					runResults(30);
 			}
@@ -159,14 +160,14 @@ class MasterEditorMenu extends MusicBeatState
 		PlayState.storyDifficultyColor = 0xFFFF0000;
 		Difficulty.resetList();
 		PlayState.storyDifficulty = 2;
-		MusicBeatState.switchState(new ResultState({
+		var results = new ResultState({
 			storyMode: true,
 			prevScoreRank: EXCELLENT,
 			title: "Cum Song Erect by Kawai Sprite",
 			songId: "cum",
 			difficultyId: "nightmare",
 			isNewHighscore: true,
-			characterId: "pico-playable",
+			characterId: '',
 			scoreData: {
 				score: 1_234_567,
 				accPoints: lol,
@@ -180,7 +181,10 @@ class MasterEditorMenu extends MusicBeatState
 				totalNotesHit: 200,
 				totalNotes: 200 // 0,
 			},
-		}));
+		});
+		@:privateAccess
+		results.playerCharacterId = VsliceOptions.LAST_MOD.char_name;
+		MusicBeatState.switchState(results);
 	}
 
 	function changeSelection(change:Int = 0)

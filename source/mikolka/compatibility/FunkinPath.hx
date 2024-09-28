@@ -5,6 +5,7 @@ import openfl.media.Sound;
 import flixel.graphics.frames.FlxAtlasFrames;
 
 class FunkinPath {
+
     public static function animateAtlas(path:String,lib:String = "preload"):String {
         return Paths.getSharedPath("images/"+path);
     }

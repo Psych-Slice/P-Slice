@@ -13,4 +13,19 @@ class VsliceOptions {
     public static function get_ANTIALIASING():Bool {
         return ClientPrefs.data.antialiasing;
     }
+    public static var LAST_MOD(get,set):CharSave; //format: "mod_dir||char_name"
+    public static function get_LAST_MOD():CharSave {
+        var shards = ClientPrefs.data.lastFreeplayMod.split('||');
+        if(shards.length != 2) return {mod_dir: "", char_name: "bf"};
+        else return {mod_dir: shards[0],char_name: shards[1]};
+    }
+    public static function set_LAST_MOD(value:CharSave) {
+        ClientPrefs.data.lastFreeplayMod = '${value.mod_dir}||${value.char_name}';
+        ClientPrefs.saveSettings();
+        return value;
+    }
+}
+typedef CharSave={
+    mod_dir:String,
+    char_name:String
 }

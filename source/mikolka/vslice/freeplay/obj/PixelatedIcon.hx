@@ -1,5 +1,6 @@
 package mikolka.vslice.freeplay.obj;
 
+import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.FreeplayHelpers;
 import flixel.FlxSprite;
 import mikolka.funkin.FlxFilteredSprite;
@@ -24,7 +25,7 @@ class PixelatedIcon extends FlxFilteredSprite
     //60, 10
     //trace(char);
     if(char.startsWith("icon-")) char = char.replace("icon-","");
-    FreeplayHelpers.loadModDir(modFolder);
+    ModsHelper.loadModDir(modFolder);
 
     
     if(!Paths.fileExists('images/freeplay/icons/${char}pixel.png',IMAGE)){

@@ -1,5 +1,6 @@
 package mikolka.vslice.freeplay;
 
+import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.compatibility.FunkinCamera;
 import mikolka.vslice.freeplay.pslice.BPMCache;
@@ -477,7 +478,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		for (diffId in diffIdsTotal)
 		{
-			FreeplayHelpers.loadModDir(diffIdsTotalModBinds.get(diffId));
+			ModsHelper.loadModDir(diffIdsTotalModBinds.get(diffId));
 			var diffSprite:DifficultySprite = new DifficultySprite(diffId);
 			diffSprite.difficultyId = diffId;
 			grpDifficulties.add(diffSprite);
@@ -1913,7 +1914,7 @@ class FreeplayState extends MusicBeatSubstate
 			var potentiallyErect:String = (currentDifficulty == "erect") || (currentDifficulty == "nightmare") ? "-erect" : "";
 			//? psych dir setting
 			var songData = daSongCapsule.songData;
-			FreeplayHelpers.loadModDir(songData.folder);
+			ModsHelper.loadModDir(songData.folder);
 			FunkinSound.playMusic(daSongCapsule.songData.songId, {
 				startingVolume: 0.0,
 				overrideExisting: true,

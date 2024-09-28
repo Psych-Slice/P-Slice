@@ -101,8 +101,9 @@ class FreeplayHelpers {
                 && leWeek.weekBefore.length > 0
                 && (!StoryMenuState.weekCompleted.exists(leWeek.weekBefore) || !StoryMenuState.weekCompleted.get(leWeek.weekBefore)));
         }
-	public static function loadModDir(directory:String) {
-		Mods.currentModDirectory = directory;
+	
+	public static function setBPM(value:Float) {
+		Conductor.bpm = value;
 	}
 	public static function exitFreeplay() {
 		BPMCache.instance.clearCache();	

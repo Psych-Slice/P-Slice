@@ -1,5 +1,7 @@
 package mikolka.vslice.charSelect;
 
+import mikolka.compatibility.VsliceOptions;
+import mikolka.compatibility.FreeplayHelpers;
 import states.AttractState;
 import mikolka.vslice.freeplay.FreeplayState;
 import openfl.filters.BitmapFilter;
@@ -301,13 +303,8 @@ class CharSelectSubState extends MusicBeatSubState
     FlxG.sound.defaultSoundGroup.add(lockedSound);
     FlxG.sound.list.add(lockedSound);
 
-    staticSound = new FunkinSound();
-    staticSound.loadEmbedded(Paths.sound('static loop'));
+    staticSound = FunkinSound.load(Paths.sound('static loop'),0.6,true); //? fix loaders
     staticSound.pitch = 1;
-
-    staticSound.looped = true;
-
-    staticSound.volume = 0.6;
 
     FlxG.sound.defaultSoundGroup.add(staticSound);
     FlxG.sound.list.add(staticSound);
@@ -320,7 +317,7 @@ class CharSelectSubState extends MusicBeatSubState
         overrideExisting: true,
         restartTrack: true,
       });
-
+    FreeplayHelpers.setBPM(90);
     initLocks();
 
     for (index => member in grpIcons.members)
@@ -355,7 +352,6 @@ class CharSelectSubState extends MusicBeatSubState
     add(temp);
     temp.alpha = 0.0;
 
-    //Conductor.stepHit.add(spamOnStep); //? moved
     // FlxG.debugger.track(temp, "tempBG");
 
     transitionGradient = new FlxSprite(0, 0).loadGraphic(Paths.image('freeplay/transitionGradient'));
@@ -388,7 +384,12 @@ class CharSelectSubState extends MusicBeatSubState
     FlxG.sound.defaultSoundGroup.add(introSound);
     FlxG.sound.list.add(introSound);
 
-    openSubState(new AttractState('asstes/videos/introSelect.mp4'));
+    if(!Save.instance.oldChar) openSubState(new AttractState('assets/videos/introSelect.mp4')); //? added a missing check
+    else {
+      remove(blackScreen);
+      checkNewChar();
+    }
+
     subStateClosed.addOnce((_) -> {
       remove(blackScreen);
       if (!Save.instance.oldChar)
@@ -516,7 +517,7 @@ class CharSelectSubState extends MusicBeatSubState
 
       sync = true;
 
-      lock.onAnimationComplete.addOnce(function(_) { 
+      lock.onAnimationComplete.addOnce(function(_) {
         syncLock = null;
         var char = availableChars.get(index);
         camera.flash(0xFFFFFFFF, 0.1);
@@ -539,7 +540,7 @@ class CharSelectSubState extends MusicBeatSubState
         bopPlay = true;
 
         updateIconPositions();
-        playerChillOut.onAnimationComplete.addOnce((_) -> if (_ == "death") 
+        playerChillOut.onAnimationComplete.addOnce((_) -> if (_ == "death")
         {
           // sync = false;
           playerChillOut.visible = false;
@@ -629,7 +630,8 @@ class CharSelectSubState extends MusicBeatSubState
 
   function goToFreeplay():Void
   {
-    autoFollow = false;
+    autoFollow = false; //! Add mod support
+    VsliceOptions.LAST_MOD = {mod_dir: "",char_name: curChar}; //? save selected character
 
     FlxTween.tween(cursor, {alpha: 0}, 0.8, {ease: FlxEase.expoOut});
     FlxTween.tween(cursorBlue, {alpha: 0}, 0.8, {ease: FlxEase.expoOut});
@@ -652,13 +654,16 @@ class CharSelectSubState extends MusicBeatSubState
       {
         ease: FlxEase.backIn,
         onComplete: function(_) {
-          FlxG.switchState(FreeplayState.build(
-            {
-              {
-                character: curChar //TODO fix this once we import new freeplay
-                //fromCharSelect: true
-              }
-            }));
+          if(!FlxG.random.bool(0.01)) FlxTransitionableState.skipNextTransOut = true; //? a fix
+          FlxG.switchState(FreeplayState.build(null));
+          // FlxG.switchState(FreeplayState.build(
+          //   {
+          //     {
+          //       character: curChar, //TODO fix this once we import new freeplay
+          //       fromCharSelect: true
+          //     }
+          //   }
+          //   ));
         }
       });
   }
@@ -674,6 +679,7 @@ class CharSelectSubState extends MusicBeatSubState
 
   override public function update(elapsed:Float):Void
   {
+    if(FlxG.sound.music != null) Conductor.songPosition = FlxG.sound.music.time; //? update song position
     super.update(elapsed);
 
     if (controls.UI_UP_R || controls.UI_DOWN_R || controls.UI_LEFT_R || controls.UI_RIGHT_R) selectSound.pitch = 1;
@@ -869,7 +875,7 @@ class CharSelectSubState extends MusicBeatSubState
 
     cursorBlue.x = MathUtil.coolLerp(cursorBlue.x, cursor.x, lerpAmnt * 0.4);
     cursorBlue.y = MathUtil.coolLerp(cursorBlue.y, cursor.y, lerpAmnt * 0.4);
-
+    //! buggy code
     cursorDarkBlue.x = MathUtil.coolLerp(cursorDarkBlue.x, cursorLocIntended.x, lerpAmnt * 0.2);
     cursorDarkBlue.y = MathUtil.coolLerp(cursorDarkBlue.y, cursorLocIntended.y, lerpAmnt * 0.2);
   }

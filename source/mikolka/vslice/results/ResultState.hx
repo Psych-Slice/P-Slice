@@ -129,6 +129,9 @@ class ResultState extends MusicBeatSubState
     score = new ResultScore(35, 305, 10, params.scoreData.score);
 
     rankBg = new FunkinSprite(0, 0);
+
+    playerCharacterId = PlayerRegistry.instance.getCharacterOwnerId(params.characterId); 
+    //? moved this line so we can edit it in debug options
   }
 
   override function create():Void
@@ -178,7 +181,7 @@ class ResultState extends MusicBeatSubState
     // Fetch playable character data. Default to BF on the results screen if we can't find it.
     //? changed a little code here
 
-    playerCharacterId = PlayerRegistry.instance.getCharacterOwnerId(params.characterId);
+    
     var playerCharacter:Null<PlayableCharacter> = PlayerRegistry.instance.fetchEntry(playerCharacterId ?? 'bf');
 
     //trace('Got playable character: ${playerCharacter?.getName()}');

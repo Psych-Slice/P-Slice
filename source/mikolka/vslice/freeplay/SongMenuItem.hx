@@ -1,5 +1,6 @@
 package mikolka.vslice.freeplay;
 
+import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.FreeplayHelpers;
 import mikolka.funkin.Scoring.ScoringRank;
 import mikolka.compatibility.FreeplaySongData;
@@ -527,7 +528,7 @@ class SongMenuItem extends FlxSpriteGroup
     //60, 10
     //trace(char);
     if(char.startsWith("icon-")) char = char.replace("icon-","");
-    FreeplayHelpers.loadModDir(songData.folder);
+    ModsHelper.loadModDir(songData.folder);
 
     
     if(!Paths.fileExists('images/freeplay/icons/${char}pixel.png',IMAGE)){

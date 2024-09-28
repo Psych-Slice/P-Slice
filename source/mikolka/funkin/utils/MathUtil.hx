@@ -19,7 +19,7 @@ class MathUtil
    *
    * @return The interpolated value.
    */
-  @:deprecated('Use smoothLerp instead')
+  @:deprecated('Use smoothLerp instead.')
   public static function coolLerp(base:Float, target:Float, ratio:Float):Float
   {
     return base + cameraLerp(ratio) * (target - base);
@@ -27,6 +27,7 @@ class MathUtil
 
   /**
    * Perform linear interpolation based on the current framerate.
+   * It makes sure to return a value between 0 and 1
    * @param lerp Value used to interpolate between `base` and `target`.
    *
    * @return The interpolated value.
