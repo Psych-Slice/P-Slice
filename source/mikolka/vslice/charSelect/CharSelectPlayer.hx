@@ -43,7 +43,7 @@ class CharSelectPlayer extends FlxAtlasSprite
     //
     if (getCurrentAnimation() == "idle")
     {
-      trace('Player beat hit');
+      //trace('Player beat hit');
       playAnimation("idle", true, false, false);
     }
   };

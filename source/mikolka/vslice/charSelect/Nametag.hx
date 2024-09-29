@@ -63,6 +63,7 @@ class Nametag extends FlxSprite
       setBlockTimer(2, width / 10, height / 10);
 
       setBlockTimer(3, 1, 1);
+      setBlockTimer(5, 1, 1); //? repeat just in case
     }
     else
     {

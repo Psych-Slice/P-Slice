@@ -9,7 +9,7 @@ import states.StoryMenuState;
 import backend.WeekData;
 
 class FreeplayHelpers {
-    public static function loadSongs(){
+    public inline static function loadSongs(){
         var songs = [];
         WeekData.reloadWeekFiles(false);
 		// programmatically adds the songs via LevelRegistry and SongRegistry

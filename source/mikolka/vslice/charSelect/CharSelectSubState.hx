@@ -1,5 +1,7 @@
 package mikolka.vslice.charSelect;
 
+import mikolka.compatibility.ModsHelper;
+import mikolka.vslice.charSelect.pslice.ModSelector;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.compatibility.FreeplayHelpers;
 import states.AttractState;
@@ -39,6 +41,7 @@ import mikolka.compatibility.FunkinPath as Paths;
 class CharSelectSubState extends MusicBeatSubState
 {
   var cursor:FlxSprite;
+  var modSelector:ModSelector;
 
   var cursorBlue:FlxSprite;
   var cursorDarkBlue:FlxSprite;
@@ -89,6 +92,10 @@ class CharSelectSubState extends MusicBeatSubState
   public function new()
   {
     super();
+    var charData = VsliceOptions.LAST_MOD;
+    ModsHelper.loadModDir(charData.mod_dir);
+    @:bypassAccessor
+    curChar = charData.char_name;
     loadAvailableCharacters();
   }
 
@@ -283,6 +290,18 @@ class CharSelectSubState extends MusicBeatSubState
     grpCursors.add(cursorBlue);
     grpCursors.add(cursor);
 
+    //? P-Slice mods
+    var UICam = new FunkinCamera("special",0,0,FlxG.width,FlxG.height);
+    UICam.bgColor = 0x00FFFFFF;
+    FlxG.cameras.add(UICam,false);
+    modSelector = new ModSelector(this);
+    modSelector.camera = UICam;
+    add(modSelector);
+
+    modSelector.y +=80;
+    FlxTween.tween(modSelector, {y: modSelector.y - 80}, 1.3, {ease: FlxEase.expoOut});
+    //?
+
     selectSound = FunkinSound.load(Paths.sound('CS_select'),0.7); //? fix loaders
     selectSound.pitch = 1;
 
@@ -317,8 +336,16 @@ class CharSelectSubState extends MusicBeatSubState
         overrideExisting: true,
         restartTrack: true,
       });
+    //? I did some tweaks here
     FreeplayHelpers.setBPM(90);
     initLocks();
+    for (k => v in availableChars){
+      if(v == curChar){
+        cursorX = (k%3)-1;
+        cursorY = Math.floor(k/3)-1;
+      }
+    }
+    //?
 
     for (index => member in grpIcons.members)
     {
@@ -347,10 +374,10 @@ class CharSelectSubState extends MusicBeatSubState
     var fadeShaderFilter:ShaderFilter = new ShaderFilter(fadeShader);
     FlxG.camera.filters = [fadeShaderFilter];
 
-    var temp:FlxSprite = new FlxSprite();
-    temp.loadGraphic(Paths.image('charSelect/placement'));
-    add(temp);
-    temp.alpha = 0.0;
+    // var temp:FlxSprite = new FlxSprite(); //? why was this a thing?
+    // temp.loadGraphic(Paths.image('charSelect/placement'));
+    // add(temp);
+    // temp.alpha = 0.0;
 
     // FlxG.debugger.track(temp, "tempBG");
 
@@ -450,7 +477,7 @@ class CharSelectSubState extends MusicBeatSubState
       {
         var path:String = availableChars.get(i);
         var temp:PixelatedIcon = new PixelatedIcon(0, 0);
-        temp.setCharacter(path,""); //! TODO: Make this moddable
+        temp.setCharacter(path); //! TODO: Make this moddable
         temp.setGraphicSize(128, 128);
         temp.updateHitbox();
         temp.ID = 0;
@@ -530,7 +557,7 @@ class CharSelectSubState extends MusicBeatSubState
         gfChill.switchGF(char);
 
         var icon = new PixelatedIcon(0, 0);
-        icon.setCharacter(char,""); //! TODO: Make this moddable
+        icon.setCharacter(char); //! TODO: Make this moddable
         icon.setGraphicSize(128, 128);
         icon.updateHitbox();
         grpIcons.insert(id, icon);
@@ -631,8 +658,11 @@ class CharSelectSubState extends MusicBeatSubState
   function goToFreeplay():Void
   {
     autoFollow = false; //! Add mod support
+    //? P-Slice mods
     VsliceOptions.LAST_MOD = {mod_dir: "",char_name: curChar}; //? save selected character
 
+    FlxTween.tween(modSelector, {y: modSelector.y + 80}, 0.8, {ease: FlxEase.backIn});
+    //?
     FlxTween.tween(cursor, {alpha: 0}, 0.8, {ease: FlxEase.expoOut});
     FlxTween.tween(cursorBlue, {alpha: 0}, 0.8, {ease: FlxEase.expoOut});
     FlxTween.tween(cursorDarkBlue, {alpha: 0}, 0.8, {ease: FlxEase.expoOut});
@@ -755,14 +785,16 @@ class CharSelectSubState extends MusicBeatSubState
         selectSound.play(true);
       }
     }
-
+    // Overflow handlers
     if (cursorX < -1)
     {
       cursorX = 1;
+      modSelector.changeDirectory(-1);
     }
     if (cursorX > 1)
     {
       cursorX = -1;
+      modSelector.changeDirectory(1);
     }
     if (cursorY < -1)
     {
@@ -777,8 +809,10 @@ class CharSelectSubState extends MusicBeatSubState
       && availableChars.exists(getCurrentSelected())
       && Save.instance.charactersSeen.contains(availableChars[getCurrentSelected()]))
     {
-      gfChill.visible = true;
       curChar = availableChars.get(getCurrentSelected());
+      playerChillOut.onAnimationFrame.addOnce((s, i) -> {
+        gfChill.visible = true;
+      });
 
       if (!pressedSelect && controls.ACCEPT)
       {
@@ -870,14 +904,14 @@ class CharSelectSubState extends MusicBeatSubState
     cursorLocIntended.x += cursorOffsetX;
     cursorLocIntended.y += cursorOffsetY;
 
-    cursor.x = MathUtil.coolLerp(cursor.x, cursorLocIntended.x, lerpAmnt);
-    cursor.y = MathUtil.coolLerp(cursor.y, cursorLocIntended.y, lerpAmnt);
+    cursor.x = MathUtil.coolLerp(cursor.x, cursorLocIntended.x, lerpAmnt,false); //? disable wobbling here
+    cursor.y = MathUtil.coolLerp(cursor.y, cursorLocIntended.y, lerpAmnt,false);
 
-    cursorBlue.x = MathUtil.coolLerp(cursorBlue.x, cursor.x, lerpAmnt * 0.4);
-    cursorBlue.y = MathUtil.coolLerp(cursorBlue.y, cursor.y, lerpAmnt * 0.4);
+    cursorBlue.x = MathUtil.coolLerp(cursorBlue.x, cursor.x, lerpAmnt * 0.4,false);
+    cursorBlue.y = MathUtil.coolLerp(cursorBlue.y, cursor.y, lerpAmnt * 0.4,false);
     //! buggy code
-    cursorDarkBlue.x = MathUtil.coolLerp(cursorDarkBlue.x, cursorLocIntended.x, lerpAmnt * 0.2);
-    cursorDarkBlue.y = MathUtil.coolLerp(cursorDarkBlue.y, cursorLocIntended.y, lerpAmnt * 0.2);
+    cursorDarkBlue.x = MathUtil.coolLerp(cursorDarkBlue.x, cursorLocIntended.x, lerpAmnt * 0.2,false);
+    cursorDarkBlue.y = MathUtil.coolLerp(cursorDarkBlue.y, cursorLocIntended.y, lerpAmnt * 0.2,false);
   }
 
   var bopTimer:Float = 0;

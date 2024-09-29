@@ -2699,7 +2699,7 @@ class PlayState extends MusicBeatState
 	  persistentUpdate = false;
 
 	  var modManifest = Mods.getPack();
-	  var modName = modManifest != null ? modManifest.name : "unknown mod";
+	  var fpText = modManifest != null ? '${curSong} from ${modManifest.name}' : curSong;
 	  //Mods.loadTopMod();
 
 	  vocals.stop();
@@ -2710,7 +2710,7 @@ class PlayState extends MusicBeatState
 		  storyMode: isStoryMode,
 		  songId: curSong,
 		  difficultyId: Difficulty.getString(),
-		  title: isStoryMode ? ('${storyCampaignTitle}') : ('${curSong} from ${modName}'),
+		  title: isStoryMode ? ('${storyCampaignTitle}') : fpText,
 		  scoreData:scoreData,
 		  prevScoreRank: prevScoreRank,
 		  isNewHighscore: isNewHighscore,

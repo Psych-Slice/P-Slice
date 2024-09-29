@@ -35,6 +35,11 @@ class PlayerRegistry {
     // return ALL characters avaliable (from current mod)
     public function listEntryIds():Array<String> {
         var char_path = FunkinPath.getPath('registry/playableChars/');
-        return FileSystem.readDirectory(char_path).filter(s -> s.endsWith(".json")).map(s -> s.substr(0,s.length-5));
+        var basedCharFiles = FileSystem.readDirectory(char_path);
+        if(char_path == 'mods/registry/playableChars'){
+            var nativeChars = FileSystem.readDirectory(FunkinPath.getPath('registry/playableChars/',true));
+            basedCharFiles = basedCharFiles.concat(nativeChars);
+        }
+        return basedCharFiles.filter(s -> s.endsWith(".json")).map(s -> s.substr(0,s.length-5));
     }
 }

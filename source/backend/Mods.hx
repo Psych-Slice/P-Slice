@@ -15,6 +15,7 @@ class Mods
 		'characters',
 		'custom_events',
 		'custom_notetypes',
+		'registry',
 		'data',
 		'songs',
 		'music',

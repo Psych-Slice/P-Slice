@@ -1,5 +1,6 @@
 package mikolka.vslice.freeplay.obj;
 
+import mikolka.compatibility.FunkinPath;
 import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.FreeplayHelpers;
 import flixel.FlxSprite;
@@ -19,20 +20,15 @@ class PixelatedIcon extends FlxFilteredSprite
     this.active = false;
   }
 
-  public function setCharacter(char:String,modFolder:String):Void
+  public function setCharacter(char:String):Void
   {
     //? rewrote this to allow for cuistom character icons
     //60, 10
     //trace(char);
     if(char.startsWith("icon-")) char = char.replace("icon-","");
-    ModsHelper.loadModDir(modFolder);
-
-    
-    if(!Paths.fileExists('images/freeplay/icons/${char}pixel.png',IMAGE)){
+    if(!FunkinPath.exists('images/freeplay/icons/${char}pixel.png')){
+      // Legacy FNF icon (no freeplay one)
       var charPath:String = "icons/";
-
-      // TODO: Put this in the character metadata where it belongs.
-      // TODO: Also, can use CharacterDataParser.getCharPixelIconAsset()
       charPath += "icon-";
       charPath += '${char}';
       
@@ -53,10 +49,20 @@ class PixelatedIcon extends FlxFilteredSprite
       animation.play("idle");
     }
     else{
-      var image = Paths.image('freeplay/icons/${char}pixel');
-      this.loadGraphic(image);
-      animation.add("idle",[0]);
-      animation.add("confirm",[0]);
+      if(FunkinPath.exists('images/freeplay/icons/${char}pixel.xml')){
+        // NEW freeplay animated icon
+        frames = FunkinPath.getSparrowAtlas('freeplay/icons/${char}pixel');
+        this.animation.addByPrefix('idle', 'idle0', 10, true);
+        this.animation.addByPrefix('confirm', 'confirm0', 10, false);
+        this.animation.addByPrefix('confirm-hold', 'confirm-hold0', 10, true);
+      }
+      else{
+        // legacy P-Slice freeplay icons
+        var image = Paths.image('freeplay/icons/${char}pixel');
+        this.loadGraphic(image);
+        animation.add("idle",[0]);
+        animation.add("confirm",[0]);
+      }
       animation.play("idle");
       this.scale.x = this.scale.y = 2;
       this.updateHitbox();

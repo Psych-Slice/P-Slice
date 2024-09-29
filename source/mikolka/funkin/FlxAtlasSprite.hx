@@ -1,5 +1,8 @@
 package mikolka.funkin;
 
+import flixel.graphics.FlxGraphic;
+import haxe.macro.Expr.Catch;
+import flixel.graphics.frames.FlxFramesCollection;
 import mikolka.compatibility.VsliceOptions;
 import flixel.util.FlxSignal.FlxTypedSignal;
 import flxanimate.FlxAnimate;
@@ -15,7 +18,7 @@ import flxanimate.animate.FlxKeyFrame;
 /**
  * A sprite which provides convenience functions for rendering a texture atlas with animations.
  */
-class FlxAtlasSprite extends FlxAnimate
+class FlxAtlasSprite extends PsychFlxAnimate
 {
   static final SETTINGS:Settings =
     {
@@ -75,7 +78,26 @@ class FlxAtlasSprite extends FlxAnimate
     this.anim.onComplete.add(_onAnimationComplete);
     this.anim.onFrame.add(_onAnimationFrame);
   }
-
+  //? P-Slice fix for mods
+  override function loadAtlas(path:String) {
+    if(Assets.exists('$path/Animation.json')) {
+      super.loadAtlas(path);
+      return;
+    }
+    try{
+      trace(path);
+      super.loadAtlasEx(BitmapData.fromFile('$path/spritemap1.png'),
+      File.getContent('$path/spritemap1.json'),
+        File.getContent('$path/Animation.json')
+        );
+    }
+    catch(x){
+      FlxG.log.error('Failed to load "$path" via EXtended loader: $x');
+      trace('Failed to load "$path" via EXtended loader: $x');
+    }
+    
+    
+  }
   /**
    * @return A list of all the animations this sprite has available.
    */
@@ -185,7 +207,7 @@ class FlxAtlasSprite extends FlxAnimate
 
     // Move to the first frame of the animation.
     // goToFrameLabel(id);
-    trace('Playing animation $id');
+    //trace('Playing animation $id');
     if ((id == null || id == "") || this.anim.symbolDictionary.exists(id) || (this.anim.getByName(id) != null))
     {
       this.anim.play(id, restart, false, startFrame);

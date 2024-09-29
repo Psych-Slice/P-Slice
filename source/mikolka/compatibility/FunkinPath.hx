@@ -7,10 +7,16 @@ import flixel.graphics.frames.FlxAtlasFrames;
 class FunkinPath {
 
     public static function animateAtlas(path:String,lib:String = "preload"):String {
-        return Paths.getSharedPath("images/"+path);
+        return getPath("images/"+path);
     }
-    public static function getPath(path:String):String {
-        return Paths.getSharedPath(path);
+    public static function getPath(path:String,forceNative:Bool = false):String {
+        if(forceNative) return Paths.getSharedPath(path);
+        
+        var curMod = Mods.currentModDirectory;
+        if(curMod != null && curMod != '' && FileSystem.exists('mods/$curMod/$path'))
+            return 'mods/$curMod/$path';
+        else if (FileSystem.exists('mods/$path')) return 'mods/$path';
+        else return Paths.getSharedPath(path);
     }
 
     public static function sound(key:String):String {
@@ -36,7 +42,7 @@ class FunkinPath {
 
     public static function exists(s:String):Bool {
         // Check if a file exists somethere
-        return Paths.fileExists(s,SOUND);
+        return Paths.fileExists(s,TEXT);
     }
     public static function stripLibrary(path:String):String
         {
@@ -46,6 +52,6 @@ class FunkinPath {
         }
     //! used by FileSystem
     public static function file(s:String) { // this returns a full path to the file
-        return Paths.getSharedPath(s);
+        return getPath(s);
     }
 }

@@ -82,7 +82,7 @@ class CharSelectGF extends FlxAtlasSprite
     // danceEvery isn't necessary if that gets fixed.
     if (getCurrentAnimation() == "idle" && (beat % danceEvery == 0))
     {
-      trace('GF beat hit');
+      //trace('GF beat hit');
       playAnimation("idle", true, false, false);
     }
   };
