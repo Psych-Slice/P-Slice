@@ -229,6 +229,7 @@ typedef PlayerCharSelectData =
 	 * and others get shifted over.
 	 */
 	public var position:Null<Int>;
+	public var gf:PlayerCharSelectGFData;
 }
 
 typedef PlayerResultsData =
@@ -241,6 +242,15 @@ typedef PlayerResultsData =
 	var good:Array<PlayerResultsAnimationData>;
 	var loss:Array<PlayerResultsAnimationData>;
 };
+
+typedef PlayerCharSelectGFData =
+{
+  public var assetPath:String;
+
+  public var animInfoPath:String;
+
+  public var visualizer:Bool;
+}
 
 typedef PlayerResultsMusicData =
 {

@@ -1,7 +1,5 @@
 package mikolka.funkin;
 
-import mikolka.compatibility.FunkinPath;
-
 /**
  * See `funScripts/jsfl/frames.jsfl` for more information in the art repo/folder!
  * Homemade dipshit proprietary format to get simple animation info out of flash!
@@ -11,6 +9,7 @@ class FramesJSFLParser
 {
   public static function parse(path:String):FramesJSFLInfo
   {
+    if(!FileSystem.exists(path)) throw 'Cannot load JSFL from $path'; //? no dirty crash here
     var text:String = File.getContent(path);
 
     // TODO: error handle if text is null

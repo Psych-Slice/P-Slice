@@ -6,71 +6,64 @@ import flixel.FlxSprite;
 import flixel.util.FlxSignal;
 import flixel.util.FlxTimer;
 
-//? Documented
-class DJBoyfriend extends FlxAtlasSprite
+class FreeplayDJ extends FlxAtlasSprite
 {
   // Represents the sprite's current status.
   // Without state machines I would have driven myself crazy years ago.
-  public var currentState:DJBoyfriendState = Intro;
+  // Made this PRIVATE so we can keep track of everything that can alter the state!
+  //   Add a function to this class if you want to edit this value from outside.
+  private var currentState:FreeplayDJState = Intro;
 
   // A callback activated when the intro animation finishes.
   public var onIntroDone:FlxSignal = new FlxSignal();
 
-  // A callback activated when Boyfriend gets spooked.
-  public var onSpook:FlxSignal = new FlxSignal();
+  // A callback activated when the idle easter egg plays.
+  public var onIdleEasterEgg:FlxSignal = new FlxSignal();
 
-  // playAnim stolen from Character.hx, cuz im lazy lol!
-  // TODO: Switch this class to use SwagSprite instead.
-  public var animOffsets:Map<String, Array<Dynamic>>;
+  var seenIdleEasterEgg:Bool = false;
 
-  var gotSpooked:Bool = false;
-  var abortCartoonTimers:Bool = false;
+  static final IDLE_EGG_PERIOD:Float = 60.0;
+  static final IDLE_CARTOON_PERIOD:Float = 120.0;
 
-  static final SPOOK_PERIOD:Float = 60.0;
-  static final TV_PERIOD:Float = 120.0;
+  // Time since last special idle animation you.
+  var timeIdling:Float = 0;
 
-  // Time since dad last SPOOKED you.
-  var timeSinceSpook:Float = 0;
+  final characterId:String = Constants.DEFAULT_CHARACTER;
+  final playableCharData:PlayerFreeplayDJData;
 
-  public function new(x:Float, y:Float)
+  public function new(x:Float, y:Float, characterId:String)
   {
-    super(x, y, Paths.animateAtlas("freeplay/freeplay-boyfriend", "preload"));
+    this.characterId = characterId;
 
-    animOffsets = new Map<String, Array<Dynamic>>();
-    //? reimplementing timers for those
-    // anim.callback = function(name, number) {
-    //   switch (name)
-    //   {
-    //     case "Boyfriend DJ watchin tv OG":
-    //       if (number == 80)
-    //       {
-    //         FunkinSound.playOnce(Paths.sound('remote_click'));
-    //       }
-    //       if (number == 85)
-    //       {
-    //         runTvLogic();
-    //       }
-    //     default:
-    //   }
-    // };
+    var playableChar = PlayerRegistry.instance.fetchEntry(characterId);
+    playableCharData = playableChar.getFreeplayDJData();
 
-    setupAnimations();
+    super(x, y, playableCharData.getAtlasPath());
+
+    onAnimationFrame.add(function(name, number) {
+      if (name == playableCharData.getAnimationPrefix('cartoon'))
+      {
+        if (number == playableCharData.getCartoonSoundClickFrame())
+        {
+          FunkinSound.playOnce(Paths.sound('remote_click'));
+        }
+        if (number == playableCharData.getCartoonSoundCartoonFrame())
+        {
+          runTvLogic();
+        }
+      }
+    });
 
     FlxG.debugger.track(this);
     FlxG.console.registerObject("dj", this);
 
-    //TODO make this indenpendedt
-    onAnimationComplete.add(s -> onFinishAnim());
+    onAnimationComplete.add(onFinishAnim);
 
-    FlxG.console.registerFunction("tv", function() {
-      currentState = TV;
+    FlxG.console.registerFunction("freeplayCartoon", function() {
+      currentState = Cartoon;
     });
   }
 
-  /*
-    [remote hand under,boyfriend top head,brim piece,arm cringe l,red lazer,dj arm in,bf fist pump arm,hand raised right,forearm left,fist shaking,bf smile eyes closed face,arm cringe r,bf clenched face,face shrug,boyfriend falling,blue tint 1,shirt sleeve,bf clenched fist,head BF relaxed,blue tint 2,hand down left,blue tint 3,blue tint 4,head less smooshed,blue tint 5,boyfriend freeplay,BF head slight turn,blue tint 6,arm shrug l,blue tint 7,shoulder raised w sleeve,blue tint 8,fist pump face,blue tint 9,foot rested light,hand turnaround,arm chill right,Boyfriend DJ,arm shrug r,head back bf,hat top piece,dad bod,face surprise snap,Boyfriend DJ fist pump,office chair,foot rested right,chest down,office chair upright,body chill,bf dj afk,head mouth open dad,BF Head defalt HAIR BLOWING,hand shrug l,face piece,foot wag,turn table,shoulder up left,turntable lights,boyfriend dj body shirt blowing,body chunk turned,hand down right,dj arm out,hand shrug r,body chest out,rave hand,palm,chill face default,head back semi bf,boyfriend bottom head,DJ arm,shoulder right dad,bf surprise,boyfriend dj body,hs1,Boyfriend DJ watchin tv OG,spinning disk,hs2,arm chill left,boyfriend dj intro,hs3,hs4,chill face extra,hs5,remote hand upright,hs6,pant over table,face surprise,bf arm peace,arm turnaround,bf eyes 1,arm slammed table,eye squit,leg BF,head mid piece,arm backing,arm swoopin in,shoe right lowering,forearm right,hand out,blue tint 10,body falling back,remote thumb press,shoulder,hair spike single,bf bent
-    arm,crt,foot raised right,dad hand,chill face 1,chill face 2,clenched fist,head SMOOSHED,shoulder left dad,df1,body chunk upright,df2,df3,df4,hat front piece,df5,foot rested right 2,hand in,arm spun,shoe raised left,bf 1 finger hand,bf mouth 1,Boyfriend DJ confirm,forearm down ,hand raised left,remote thumb up]
-   */
   override public function listAnimations():Array<String>
   {
     var anims:Array<String> = [];
@@ -92,53 +85,120 @@ class DJBoyfriend extends FlxAtlasSprite
     {
       case Intro:
         // Play the intro animation then leave this state immediately.
-        if (getCurrentAnimation() != 'boyfriend dj intro') playFlashAnimation('boyfriend dj intro', true);
-        timeSinceSpook = 0;
+        var animPrefix = playableCharData.getAnimationPrefix('intro');
+        if (getCurrentAnimation() != animPrefix) playFlashAnimation(animPrefix, true);
+        timeIdling = 0;
       case Idle:
         // We are in this state the majority of the time.
-        if (getCurrentAnimation() != 'Boyfriend DJ')
+        var animPrefix = playableCharData.getAnimationPrefix('idle');
+        if (getCurrentAnimation() != animPrefix)
         {
-          playFlashAnimation('Boyfriend DJ', true);
+          playFlashAnimation(animPrefix, true, false, true);
         }
 
-        if (getCurrentAnimation() == 'Boyfriend DJ' && this.isLoopComplete())
+        if (getCurrentAnimation() == animPrefix && this.isLoopComplete())
         {
-          if (timeSinceSpook >= SPOOK_PERIOD && !gotSpooked)
+          if (timeIdling >= IDLE_EGG_PERIOD && !seenIdleEasterEgg)
           {
-            currentState = Spook;
+            currentState = IdleEasterEgg;
           }
-          else if (timeSinceSpook >= TV_PERIOD)
+          else if (timeIdling >= IDLE_CARTOON_PERIOD)
           {
-            currentState = TV;
+            currentState = Cartoon;
           }
         }
-        timeSinceSpook += elapsed;
+        timeIdling += elapsed;
+      case NewUnlock:
+        var animPrefix = playableCharData.getAnimationPrefix('newUnlock');
+        if (!hasAnimation(animPrefix))
+        {
+          currentState = Idle;
+        }
+        if (getCurrentAnimation() != animPrefix)
+        {
+          playFlashAnimation(animPrefix, true, false, true);
+        }
       case Confirm:
-        if (getCurrentAnimation() != 'Boyfriend DJ confirm') playFlashAnimation('Boyfriend DJ confirm', false);
-        timeSinceSpook = 0;
-      case PumpIntro:
-        if (getCurrentAnimation() != 'Boyfriend DJ fist pump') playFlashAnimation('Boyfriend DJ fist pump', false);
-        if (getCurrentAnimation() == 'Boyfriend DJ fist pump' && anim.curFrame >= 4)
-        {
-          anim.play("Boyfriend DJ fist pump", true, false, 0);
-        }
-      case FistPump:
+        var animPrefix = playableCharData.getAnimationPrefix('confirm');
+        if (getCurrentAnimation() != animPrefix) playFlashAnimation(animPrefix, false);
+        timeIdling = 0;
+      case FistPumpIntro:
+        var animPrefixA = playableCharData.getAnimationPrefix('fistPump');
+        var animPrefixB = playableCharData.getAnimationPrefix('loss');
 
-      case Spook:
-        if (getCurrentAnimation() != 'bf dj afk')
+        if (getCurrentAnimation() == animPrefixA)
         {
-          onSpook.dispatch();
-          playFlashAnimation('bf dj afk', false);
-          gotSpooked = true;
+          var endFrame = playableCharData.getFistPumpIntroEndFrame();
+          if (endFrame > -1 && anim.curFrame >= endFrame)
+          {
+            playFlashAnimation(animPrefixA, true, false, false, playableCharData.getFistPumpIntroStartFrame());
+          }
         }
-        timeSinceSpook = 0;
-      case TV:
-        if (getCurrentAnimation() != 'Boyfriend DJ watchin tv OG') playFlashAnimation('Boyfriend DJ watchin tv OG', true);
-        timeSinceSpook = 0;
+        else if (getCurrentAnimation() == animPrefixB)
+        {
+          trace("Loss Intro");
+          var endFrame = playableCharData.getFistPumpIntroBadEndFrame();
+          if (endFrame > -1 && anim.curFrame >= endFrame)
+          {
+            playFlashAnimation(animPrefixB, true, false, false, playableCharData.getFistPumpIntroBadStartFrame());
+          }
+        }
+        else
+        {
+          FlxG.log.warn("Unrecognized animation in FistPumpIntro: " + getCurrentAnimation());
+        }
+
+      case FistPump:
+        var animPrefixA = playableCharData.getAnimationPrefix('fistPump');
+        var animPrefixB = playableCharData.getAnimationPrefix('loss');
+
+        if (getCurrentAnimation() == animPrefixA)
+        {
+          var endFrame = playableCharData.getFistPumpLoopEndFrame();
+          if (endFrame > -1 && anim.curFrame >= endFrame)
+          {
+            playFlashAnimation(animPrefixA, true, false, false, playableCharData.getFistPumpLoopStartFrame());
+          }
+        }
+        else if (getCurrentAnimation() == animPrefixB)
+        {
+          trace("Loss GYATT");
+          var endFrame = playableCharData.getFistPumpLoopBadEndFrame();
+          if (endFrame > -1 && anim.curFrame >= endFrame)
+          {
+            playFlashAnimation(animPrefixB, true, false, false, playableCharData.getFistPumpLoopBadStartFrame());
+          }
+        }
+        else
+        {
+          FlxG.log.warn("Unrecognized animation in FistPump: " + getCurrentAnimation());
+        }
+
+      case IdleEasterEgg:
+        var animPrefix = playableCharData.getAnimationPrefix('idleEasterEgg');
+        if (getCurrentAnimation() != animPrefix)
+        {
+          onIdleEasterEgg.dispatch();
+          playFlashAnimation(animPrefix, false);
+          seenIdleEasterEgg = true;
+        }
+        timeIdling = 0;
+      case Cartoon:
+        var animPrefix = playableCharData.getAnimationPrefix('cartoon');
+        if (animPrefix == null)
+        {
+          currentState = IdleEasterEgg;
+        }
+        else
+        {
+          if (getCurrentAnimation() != animPrefix) playFlashAnimation(animPrefix, true);
+          timeIdling = 0;
+        }
       default:
         // I shit myself.
     }
 
+    #if FEATURE_DEBUG_FUNCTIONS
     if (FlxG.keys.pressed.CONTROL)
     {
       if (FlxG.keys.justPressed.LEFT)
@@ -161,77 +221,101 @@ class DJBoyfriend extends FlxAtlasSprite
         this.offsetY += FlxG.keys.pressed.ALT ? 0.1 : (FlxG.keys.pressed.SHIFT ? 10.0 : 1.0);
       }
 
-      if (FlxG.keys.justPressed.SPACE)
+      if (FlxG.keys.justPressed.C)
       {
-        currentState = (currentState == Idle ? TV : Idle);
+        currentState = (currentState == Idle ? Cartoon : Idle);
       }
     }
+    #end
   }
 
-  function onFinishAnim():Void
+  function onFinishAnim(name:String):Void
   {
-    var name = anim.curSymbol.name;
-    switch (name)
+    // var name = anim.curSymbol.name;
+
+    if (name == playableCharData.getAnimationPrefix('intro'))
     {
-      case "boyfriend dj intro":
-        // trace('Finished intro');
+      if (PlayerRegistry.instance.hasNewCharacter())
+      {
+        currentState = NewUnlock;
+      }
+      else
+      {
         currentState = Idle;
-        onIntroDone.dispatch();
-      case "Boyfriend DJ":
+      }
+      onIntroDone.dispatch();
+    }
+    else if (name == playableCharData.getAnimationPrefix('idle'))
+    {
       // trace('Finished idle');
-      case "bf dj afk":
-        // trace('Finished spook');
-        currentState = Idle;
-      case "Boyfriend DJ confirm":
+    }
+    else if (name == playableCharData.getAnimationPrefix('confirm'))
+    {
+      // trace('Finished confirm');
+    }
+    else if (name == playableCharData.getAnimationPrefix('fistPump'))
+    {
+      // trace('Finished fist pump');
+      currentState = Idle;
+    }
+    else if (name == playableCharData.getAnimationPrefix('idleEasterEgg'))
+    {
+      // trace('Finished spook');
+      currentState = Idle;
+    }
+    else if (name == playableCharData.getAnimationPrefix('loss'))
+    {
+      // trace('Finished loss reaction');
+      currentState = Idle;
+    }
+    else if (name == playableCharData.getAnimationPrefix('cartoon'))
+    {
+      // trace('Finished cartoon');
 
-      case "Boyfriend DJ fist pump":
-        currentState = Idle;
+      var frame:Int = FlxG.random.bool(33) ? playableCharData.getCartoonLoopBlinkFrame() : playableCharData.getCartoonLoopFrame();
 
-      case "Boyfriend DJ loss reaction 1":
-        currentState = Idle;
-
-      case "Boyfriend DJ watchin tv OG":
-        var frame:Int = FlxG.random.bool(33) ? 112 : 166;
-
-        // BF switches channels when the video ends, or at a 10% chance each time his idle loops.
-        if (FlxG.random.bool(5))
-        {
-          frame = 60;
-          // boyfriend switches channel code?
-          // runTvLogic();
-        }
-        trace('Replay idle: ${frame}');
-        anim.play("Boyfriend DJ watchin tv OG", true, false, frame);
-        // trace('Finished confirm');
+      // Character switches channels when the video ends, or at a 10% chance each time his idle loops.
+      if (FlxG.random.bool(5))
+      {
+        frame = playableCharData.getCartoonChannelChangeFrame();
+        // boyfriend switches channel code?
+        // runTvLogic();
+      }
+      trace('Replay idle: ${frame}');
+      playFlashAnimation(playableCharData.getAnimationPrefix('cartoon'), true, false, false, frame);
+      // trace('Finished confirm');
+    }
+    else if (name == playableCharData.getAnimationPrefix('newUnlock'))
+    {
+      // Animation should loop.
+    }
+    else if (name == playableCharData.getAnimationPrefix('charSelect'))
+    {
+      onCharSelectComplete();
+    }
+    else
+    {
+      trace('Finished ${name}');
     }
   }
 
   public function resetAFKTimer():Void
   {
-    timeSinceSpook = 0;
-    gotSpooked = false;
+    timeIdling = 0;
+    seenIdleEasterEgg = false;
+  }
+
+  /**
+   * Dynamic function, it's actually a variable you can reassign!
+   * `dj.onCharSelectComplete = function() {};`
+   */
+  public dynamic function onCharSelectComplete():Void
+  {
+    trace('onCharSelectComplete()');
   }
 
   var offsetX:Float = 0.0;
   var offsetY:Float = 0.0;
-
-  function setupAnimations():Void
-  {
-    // Intro
-    addOffset('boyfriend dj intro', 8.0 - 1.3, 3.0 - 0.4);
-
-    // Idle
-    addOffset('Boyfriend DJ', 0, 0);
-
-    // Confirm
-    addOffset('Boyfriend DJ confirm', 0, 0);
-
-    // AFK: Spook
-    addOffset('bf dj afk', 649.5, 58.5);
-
-    // AFK: TV
-    addOffset('Boyfriend DJ watchin tv OG', 0, 0);
-  }
 
   var cartoonSnd:Null<FunkinSound> = null;
 
@@ -261,7 +345,7 @@ class DJBoyfriend extends FlxAtlasSprite
   function loadCartoon()
   {
     cartoonSnd = FunkinSound.load(Paths.sound(getRandomFlashToon()), 1.0, false, true, true, function() {
-      anim.play("Boyfriend DJ watchin tv OG", true, false, 60);
+      playFlashAnimation(playableCharData.getAnimationPrefix('cartoon'), true, false, false, 60);
     });
 
     // Fade out music to 40% volume over 1 second.
@@ -288,29 +372,87 @@ class DJBoyfriend extends FlxAtlasSprite
 
   public function confirm():Void
   {
+    // We really don't want to play anything but the new character animation here.
+    if (PlayerRegistry.instance.hasNewCharacter())
+    {
+      currentState = NewUnlock;
+      return;
+    }
+
     currentState = Confirm;
+  }
+
+  public function toCharSelect():Void
+  {
+    if (hasAnimation(playableCharData.getAnimationPrefix('charSelect')))
+    {
+      currentState = CharSelect;
+      var animPrefix = playableCharData.getAnimationPrefix('charSelect');
+      playFlashAnimation(animPrefix, true, false, false, 0);
+    }
+    else
+    {
+      FlxG.log.warn("Freeplay character does not have 'charSelect' animation!");
+      currentState = Confirm;
+      // Call this immediately; otherwise, we get locked out of Character Select.
+      onCharSelectComplete();
+    }
+  }
+
+  public function fistPumpIntro():Void
+  {
+    // We really don't want to play anything but the new character animation here.
+    if (PlayerRegistry.instance.hasNewCharacter())
+    {
+      currentState = NewUnlock;
+      return;
+    }
+
+    currentState = FistPumpIntro;
+    var animPrefix = playableCharData.getAnimationPrefix('fistPump');
+    playFlashAnimation(animPrefix, true, false, false, playableCharData.getFistPumpIntroStartFrame());
   }
 
   public function fistPump():Void
   {
-    currentState = PumpIntro;
-  }
+    // We really don't want to play anything but the new character animation here.
+    if (PlayerRegistry.instance.hasNewCharacter())
+    {
+      currentState = NewUnlock;
+      return;
+    }
 
-  public function pumpFist():Void
-  {
     currentState = FistPump;
-    anim.play("Boyfriend DJ fist pump", true, false, 4);
+    var animPrefix = playableCharData.getAnimationPrefix('fistPump');
+    playFlashAnimation(animPrefix, true, false, false, playableCharData.getFistPumpLoopStartFrame());
   }
 
-  public function pumpFistBad():Void
+  public function fistPumpLossIntro():Void
   {
+    // We really don't want to play anything but the new character animation here.
+    if (PlayerRegistry.instance.hasNewCharacter())
+    {
+      currentState = NewUnlock;
+      return;
+    }
+
+    currentState = FistPumpIntro;
+    var animPrefix = playableCharData.getAnimationPrefix('loss');
+    playFlashAnimation(animPrefix, true, false, false, playableCharData.getFistPumpIntroBadStartFrame());
+  }
+
+  public function fistPumpLoss():Void
+  {
+    // We really don't want to play anything but the new character animation here.
+    if (PlayerRegistry.instance.hasNewCharacter())
+    {
+      currentState = NewUnlock;
+      return;
+    }
+
     currentState = FistPump;
-    anim.play("Boyfriend DJ loss reaction 1", true, false, 4);
-  }
-
-  public inline function addOffset(name:String, x:Float = 0, y:Float = 0)
-  {
-    animOffsets[name] = [x, y];
+    var animPrefix = playableCharData.getAnimationPrefix('loss');
+    playFlashAnimation(animPrefix, true, false, false, playableCharData.getFistPumpLoopBadStartFrame());
   }
 
   override public function getCurrentAnimation():String
@@ -319,28 +461,17 @@ class DJBoyfriend extends FlxAtlasSprite
     return this.anim.curSymbol.name;
   }
 
-  public function playFlashAnimation(id:String, ?Force:Bool = false, ?Reverse:Bool = false, ?Frame:Int = 0):Void
+  public function playFlashAnimation(id:String, Force:Bool = false, Reverse:Bool = false, Loop:Bool = false, Frame:Int = 0):Void
   {
-    anim.play(id, Force, Reverse, Frame);
-    if(id == "Boyfriend DJ watchin tv OG") startTVTimers();
+    playAnimation(id, Force, Reverse, Loop, Frame);
     applyAnimOffset();
-  }
-
-  function startTVTimers(frameSkip:Int = 0) {
-    // 24 is the default framerate for anims
-    FlxTimer.wait((80-frameSkip)/24,() -> {
-      if(!abortCartoonTimers) FunkinSound.playOnce(Paths.sound('remote_click'));
-    });
-    FlxTimer.wait((85-frameSkip)/24,() -> {
-      if(!abortCartoonTimers) runTvLogic();
-  });
   }
 
   function applyAnimOffset()
   {
     var AnimName = getCurrentAnimation();
-    var daOffset = animOffsets.get(AnimName);
-    if (animOffsets.exists(AnimName))
+    var daOffset = playableCharData.getAnimationOffsetsByPrefix(AnimName);
+    if (daOffset != null)
     {
       var xValue = daOffset[0];
       var yValue = daOffset[1];
@@ -350,10 +481,12 @@ class DJBoyfriend extends FlxAtlasSprite
         yValue += offsetY;
       }
 
+      trace('Successfully applied offset ($AnimName): ' + xValue + ', ' + yValue);
       offset.set(xValue, yValue);
     }
     else
     {
+      trace('No offset found ($AnimName), defaulting to: 0, 0');
       offset.set(0, 0);
     }
   }
@@ -371,13 +504,53 @@ class DJBoyfriend extends FlxAtlasSprite
   }
 }
 
-enum DJBoyfriendState
+enum FreeplayDJState
 {
+  /**
+   * Character enters the frame and transitions to Idle.
+   */
   Intro;
+
+  /**
+   * Character loops in idle.
+   */
   Idle;
+
+  /**
+   * Plays an easter egg animation after a period in Idle, then reverts to Idle.
+   */
+  IdleEasterEgg;
+
+  /**
+   * Plays an elaborate easter egg animation. Does not revert until another animation is triggered.
+   */
+  Cartoon;
+
+  /**
+   * Player has selected a song.
+   */
   Confirm;
-  PumpIntro;
+
+  /**
+   * Character preps to play the fist pump animation; plays after the Results screen.
+   * The actual frame label that gets played may vary based on the player's success.
+   */
+  FistPumpIntro;
+
+  /**
+   * Character plays the fist pump animation.
+   * The actual frame label that gets played may vary based on the player's success.
+   */
   FistPump;
-  Spook;
-  TV;
+
+  /**
+   * Plays an animation to indicate that the player has a new unlock in Character Select.
+   * Overrides all idle animations as well as the fist pump. Only Confirm and CharSelect will override this.
+   */
+  NewUnlock;
+
+  /**
+   * Plays an animation to transition to the Character Select screen.
+   */
+  CharSelect;
 }

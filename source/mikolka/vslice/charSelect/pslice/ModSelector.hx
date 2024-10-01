@@ -61,7 +61,7 @@ class ModSelector extends FlxTypedSpriteGroup<FlxSprite> {
             }
             directoryTxt.text = directoryTxt.text.toUpperCase();
             @:privateAccess{
-                if(change != 0) {
+                if(change != 0 && directories.length != 1) {
                     parent.remove(parent.grpIcons);
                     //parent.grpIcons.destroy();
                     parent.availableChars.clear();

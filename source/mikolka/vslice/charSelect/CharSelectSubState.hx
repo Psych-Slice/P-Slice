@@ -65,13 +65,14 @@ class CharSelectSubState extends MusicBeatSubState
   var chooseDipshit:FlxSprite;
   var dipshitBlur:FlxSprite;
   var transitionGradient:FlxSprite;
-  var curChar(default, set):String = "pico";
+  var curChar(default, set):String = "bf";
   var nametag:Nametag;
   var camFollow:FlxObject;
   var autoFollow:Bool = false;
   var availableChars:Map<Int, String> = new Map<Int, String>();
   var pressedSelect:Bool = false;
   var selectTimer:FlxTimer = new FlxTimer();
+  var allowInput:Bool = false;
 
   var selectSound:FunkinSound;
   var unlockSound:FunkinSound;
@@ -92,10 +93,12 @@ class CharSelectSubState extends MusicBeatSubState
   public function new()
   {
     super();
-    var charData = VsliceOptions.LAST_MOD;
-    ModsHelper.loadModDir(charData.mod_dir);
-    @:bypassAccessor
-    curChar = charData.char_name;
+    var charData = VsliceOptions.LAST_MOD; //? Added character save store
+    if(ModsHelper.isModDirEnabled(charData.mod_dir) || charData.mod_dir == ''){
+      ModsHelper.loadModDir(charData.mod_dir);
+      @:bypassAccessor
+      curChar = charData.char_name;
+    }
     loadAvailableCharacters();
   }
 
@@ -174,15 +177,16 @@ class CharSelectSubState extends MusicBeatSubState
     add(charLightGF);
 
     gfChill = new CharSelectGF();
-    gfChill.switchGF("bf");
+    gfChill.switchGF(curChar);
     add(gfChill);
 
     playerChillOut = new CharSelectPlayer(0, 0);
-    playerChillOut.switchChar("bf");
+    playerChillOut.switchChar(curChar); //? Do not init him
+    playerChillOut.visible = false;
     add(playerChillOut);
 
     playerChill = new CharSelectPlayer(0, 0);
-    playerChill.switchChar("bf");
+    playerChill.switchChar(curChar); //? Set to current character
     add(playerChill);
 
     var speakers:FlxAtlasSprite = new FlxAtlasSprite(0, 0, Paths.animateAtlas("charSelect/charSelectSpeakers"));
@@ -229,7 +233,7 @@ class CharSelectSubState extends MusicBeatSubState
     dipshitBacking.scrollFactor.set();
     dipshitBlur.scrollFactor.set();
 
-    nametag = new Nametag();
+    nametag = new Nametag(0,0,curChar);//? Set to current char
     add(nametag);
 
     nametag.scrollFactor.set();
@@ -445,6 +449,8 @@ class CharSelectSubState extends MusicBeatSubState
           overrideExisting: true,
           restartTrack: true,
           onLoad: function() {
+            allowInput = true;
+
             @:privateAccess
             gfChill.analyzer = new SpectralAnalyzer(FlxG.sound.music._channel.__audioSource, 7, 0.1);
             #if desktop
@@ -477,7 +483,7 @@ class CharSelectSubState extends MusicBeatSubState
       {
         var path:String = availableChars.get(i);
         var temp:PixelatedIcon = new PixelatedIcon(0, 0);
-        temp.setCharacter(path); //! TODO: Make this moddable
+        temp.setCharacter(path);
         temp.setGraphicSize(128, 128);
         temp.updateHitbox();
         temp.ID = 0;
@@ -557,7 +563,7 @@ class CharSelectSubState extends MusicBeatSubState
         gfChill.switchGF(char);
 
         var icon = new PixelatedIcon(0, 0);
-        icon.setCharacter(char); //! TODO: Make this moddable
+        icon.setCharacter(char);
         icon.setGraphicSize(128, 128);
         icon.updateHitbox();
         grpIcons.insert(id, icon);
@@ -588,6 +594,8 @@ class CharSelectSubState extends MusicBeatSubState
               overrideExisting: true,
               restartTrack: true,
               onLoad: function() {
+                allowInput = true;
+
                 @:privateAccess
                 gfChill.analyzer = new SpectralAnalyzer(FlxG.sound.music._channel.__audioSource, 7, 0.1);
                 #if desktop
@@ -657,9 +665,10 @@ class CharSelectSubState extends MusicBeatSubState
 
   function goToFreeplay():Void
   {
+    allowInput = false;
     autoFollow = false; //! Add mod support
     //? P-Slice mods
-    VsliceOptions.LAST_MOD = {mod_dir: "",char_name: curChar}; //? save selected character
+    VsliceOptions.LAST_MOD = {mod_dir: modSelector.curMod,char_name: curChar}; //? save selected character
 
     FlxTween.tween(modSelector, {y: modSelector.y + 80}, 0.8, {ease: FlxEase.backIn});
     //?
@@ -716,7 +725,7 @@ class CharSelectSubState extends MusicBeatSubState
 
     syncAudio(elapsed);
 
-    if (!pressedSelect)
+    if (allowInput && !pressedSelect)
     {
       if (controls.UI_UP) holdTmrUp += elapsed;
       if (controls.UI_UP_R)
@@ -814,7 +823,7 @@ class CharSelectSubState extends MusicBeatSubState
         gfChill.visible = true;
       });
 
-      if (!pressedSelect && controls.ACCEPT)
+      if (allowInput && !pressedSelect && controls.ACCEPT)
       {
         cursorConfirmed.visible = true;
         cursorConfirmed.x = cursor.x - 2;
@@ -842,7 +851,7 @@ class CharSelectSubState extends MusicBeatSubState
         });
       }
 
-      if (pressedSelect && controls.BACK)
+      if (allowInput && pressedSelect && controls.BACK)
       {
         cursorConfirmed.visible = false;
         grpCursors.visible = true;
@@ -872,7 +881,7 @@ class CharSelectSubState extends MusicBeatSubState
 
       gfChill.visible = false;
 
-      if (controls.ACCEPT)
+      if (allowInput && controls.ACCEPT)
       {
         cursorDenied.visible = true;
         cursorDenied.x = cursor.x - 2;

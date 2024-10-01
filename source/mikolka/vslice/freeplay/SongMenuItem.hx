@@ -24,7 +24,7 @@ class SongMenuItem extends FlxSpriteGroup
 {
   public var capsule:FlxSprite;
 
-  var pixelIcon:FlxSprite;
+  var pixelIcon:PixelatedIcon;
 
   /**
    * Modify this by calling `init()`
@@ -71,7 +71,7 @@ class SongMenuItem extends FlxSpriteGroup
 
   public var weekNumbers:Array<CapsuleNumber> = [];
 
-  var impactThing:FlxSprite;
+  var impactThing:FunkinSprite;
 
   public var sparkle:FlxSprite;
 
@@ -82,7 +82,7 @@ class SongMenuItem extends FlxSpriteGroup
     super(x, y);
 
     capsule = new FlxSprite();
-    capsule.frames = Paths.getSparrowAtlas('freeplay/freeplayCapsule');
+    capsule.frames = Paths.getSparrowAtlas('freeplay/freeplayCapsule/capsule/freeplayCapsule');
     capsule.animation.addByPrefix('selected', 'mp3 capsule w backing0', 24);
     capsule.animation.addByPrefix('unselected', 'mp3 capsule w backing NOT SELECTED', 24);
     // capsule.animation
@@ -156,7 +156,7 @@ class SongMenuItem extends FlxSpriteGroup
 
     sparkle = new FlxSprite(ranking.x, ranking.y);
     sparkle.frames = Paths.getSparrowAtlas('freeplay/sparkle');
-    sparkle.animation.addByPrefix('sparkle', 'sparkle', 24, false);
+    sparkle.animation.addByPrefix('sparkle', 'sparkle Export0', 24, false);
     sparkle.animation.play('sparkle', true);
     sparkle.scale.set(0.8, 0.8);
     sparkle.blend = BlendMode.ADD;
@@ -196,11 +196,7 @@ class SongMenuItem extends FlxSpriteGroup
     // TODO: Use value from metadata instead of random.
     updateDifficultyRating(FlxG.random.int(0, 20));
     //? changed offsets
-    pixelIcon = new FlxSprite(60, 14);
-
-    pixelIcon.makeGraphic(32, 32, 0x00000000);
-    pixelIcon.antialiasing = false;
-    pixelIcon.active = false;
+    pixelIcon = new PixelatedIcon(60,14);
     add(pixelIcon);
     grpHide.add(pixelIcon);
 
@@ -208,6 +204,7 @@ class SongMenuItem extends FlxSpriteGroup
     favIconBlurred.frames = Paths.getSparrowAtlas('freeplay/favHeart');
     favIconBlurred.animation.addByPrefix('fav', 'favorite heart', 24, false);
     favIconBlurred.animation.play('fav');
+
     favIconBlurred.setGraphicSize(50, 50);
     favIconBlurred.blend = BlendMode.ADD;
     favIconBlurred.shader = new GaussianBlurShader(1.2);
@@ -367,7 +364,7 @@ class SongMenuItem extends FlxSpriteGroup
 
   public function fadeAnim():Void
   {
-    impactThing = new FlxSprite(0, 0);
+    impactThing = new FunkinSprite(0, 0);
     impactThing.frames = capsule.frames;
     impactThing.frame = capsule.frame;
     impactThing.updateHitbox();
@@ -375,14 +372,14 @@ class SongMenuItem extends FlxSpriteGroup
     // impactThing.y = capsule.y;
     // picoFade.stamp(this, 0, 0);
     impactThing.alpha = 0;
-    //impactThing.zIndex = capsule.zIndex - 3;
+    impactThing.zIndex = capsule.zIndex - 3;
     add(impactThing);
     FlxTween.tween(impactThing.scale, {x: 2.5, y: 2.5}, 0.5);
     // FlxTween.tween(impactThing, {alpha: 0}, 0.5);
 
     evilTrail = new FlxTrail(impactThing, null, 15, 2, 0.01, 0.069);
     evilTrail.blend = BlendMode.ADD;
-    //evilTrail.zIndex = capsule.zIndex - 5;
+    evilTrail.zIndex = capsule.zIndex - 5;
     FlxTween.tween(evilTrail, {alpha: 0}, 0.6,
       {
         ease: FlxEase.quadOut,
@@ -496,74 +493,40 @@ class SongMenuItem extends FlxSpriteGroup
     updateSelected();
   }
 
-  public function init(?x:Float, ?y:Float, songData:Null<FreeplaySongData>):Void
+  public function init(?x:Float, ?y:Float, songData:Null<FreeplaySongData>, ?styleData:FreeplayStyle = null):Void
   {
     if (x != null) this.x = x;
     if (y != null) this.y = y;
     this.songData = songData;
 
+    // im so mad i have to do this but im pretty sure with the capsules recycling i cant call the new function properly :/
+    // if thats possible someone Please change the new function to be something like
+    // capsule.frames = Paths.getSparrowAtlas(styleData == null ? 'freeplay/freeplayCapsule/capsule/freeplayCapsule' : styleData.getCapsuleAssetKey()); thank u luv u
+    if (styleData != null)
+    {
+      capsule.frames = Paths.getSparrowAtlas(styleData.getCapsuleAssetKey());
+      //! TODO remove this shit
+      capsule.animation.addByPrefix('selected', 'mp3 capsule w backing0', 24);
+      capsule.animation.addByPrefix('unselected', 'mp3 capsule w backing NOT SELECTED', 24);
+      songText.applyStyle(styleData);
+      //!
+    }
+
     // Update capsule text.
     songText.text = songData?.songName ?? 'Random';
     // Update capsule character.
-    if (songData?.songCharacter != null) setCharacter(songData.songCharacter);
+    if (songData?.songCharacter != null) pixelIcon.setCharacter(songData.songCharacter);
     updateBPM(Std.int(songData?.songStartingBpm) ?? 0);
     updateDifficultyRating(songData?.difficultyRating ?? 0);
     updateScoringRank(songData?.scoringRank);
     newText.visible = songData?.isNew;
+    favIcon.animation.curAnim.curFrame = favIcon.animation.curAnim.numFrames - 1;
+    favIconBlurred.animation.curAnim.curFrame = favIconBlurred.animation.curAnim.numFrames - 1;
+
     // Update opacity, offsets, etc.
     updateSelected();
 
-    //? a litle change
-    checkWeek(songData?.levelId);
-  }
-
-  /**
-   * Set the character displayed next to this song in the freeplay menu.
-   * @param char The character ID used by this song.
-   *             If the character has no freeplay icon, a warning will be thrown and nothing will display.
-   */
-  public function setCharacter(char:String):Void
-  {
-    //? rewrote this to allow for cuistom character icons
-    //60, 10
-    //trace(char);
-    if(char.startsWith("icon-")) char = char.replace("icon-","");
-    ModsHelper.loadModDir(songData.folder);
-
-    
-    if(!Paths.fileExists('images/freeplay/icons/${char}pixel.png',IMAGE)){
-      var charPath:String = "icons/";
-
-      // TODO: Put this in the character metadata where it belongs.
-      // TODO: Also, can use CharacterDataParser.getCharPixelIconAsset()
-      charPath += "icon-";
-      charPath += '${char}';
-      
-      
-      var image = Paths.image(charPath);
-
-      if (image == null) //TODO
-      {
-        trace('[WARN] Character ${char} has no freeplay icon.');
-        image = Paths.image("icons/icon-face");
-      }
-      pixelIcon.loadGraphic(image,true,Math.floor(image.width / 2), Math.floor(image.height));
-      pixelIcon.scale.x = pixelIcon.scale.y = 0.58;
-      pixelIcon.updateHitbox();
-      pixelIcon.origin.x = 100;
-    }
-    else{
-      var image = Paths.image('freeplay/icons/${char}pixel');
-      pixelIcon.loadGraphic(image);
-      pixelIcon.scale.x = pixelIcon.scale.y = 2;
-      pixelIcon.updateHitbox();
-      pixelIcon.origin.x = 25;
-      if(char == "parents") pixelIcon.origin.x = 55;
-    }
-    
-    
-    // pixelIcon.origin.x = capsule.origin.x;
-    // pixelIcon.offset.x -= pixelIcon.origin.x;
+    checkWeek(songData?.songId);
   }
 
   var frameInTicker:Float = 0;
@@ -702,6 +665,18 @@ class SongMenuItem extends FlxSpriteGroup
     }
 
     super.update(elapsed);
+  }
+
+  /**
+   * Play any animations associated with selecting this song.
+   */
+  public function confirm():Void
+  {
+    if (songText != null) songText.flickerText();
+    if (pixelIcon != null && pixelIcon.visible)
+    {
+      pixelIcon.animation.play('confirm');
+    }
   }
 
   public function intendedY(index:Int):Float

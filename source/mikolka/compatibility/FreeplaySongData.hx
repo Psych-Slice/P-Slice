@@ -33,6 +33,7 @@ using mikolka.funkin.utils.ArrayTools;
      public var songCharacter(default, null):String = '';
      public var songStartingBpm(default, null):Float = 0;
      public var difficultyRating(default, null):Int = 0;
+     public var albumId(default, null):Null<String> = null;
  
      public var freeplayPrevStart(default, null):Float = 0;
      public var freeplayPrevEnd(default, null):Float = 0;

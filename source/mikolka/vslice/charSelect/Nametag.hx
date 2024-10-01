@@ -11,14 +11,14 @@ class Nametag extends FlxSprite
   var midpointY(default, set):Float = 100;
   var mosaicShader:MosaicEffect;
 
-  public function new(?x:Float = 0, ?y:Float = 0)
+  public function new(?x:Float = 0, ?y:Float = 0,initialChar:String)
   {
     super(x, y);
 
     mosaicShader = new MosaicEffect();
     shader = mosaicShader;
 
-    switchChar("bf");
+    switchChar(initialChar);
 
     FlxG.debugger.addTrackerProfile(new TrackerProfile(Nametag, ["midpointX", "midpointY"]));
     FlxG.debugger.track(this, "Nametag");

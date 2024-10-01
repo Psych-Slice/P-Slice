@@ -26,7 +26,8 @@ class CharSelectGF extends FlxAtlasSprite
 
   var analyzer:SpectralAnalyzer;
 
-  var curGF:GFChar = GF;
+  var currentGFPath:Null<String>;
+  var enableVisualizer:Bool = false;
 
   public function new()
   {
@@ -95,7 +96,7 @@ class CharSelectGF extends FlxAtlasSprite
 
   function drawFFT()
   {
-    if (curGF == NENE)
+    if (enableVisualizer)
     {
       var levels = analyzer.getLevels();
       var frame = anim.curSymbol.timeline.get("VIZ_bars").get(anim.curFrame);
@@ -170,28 +171,36 @@ class CharSelectGF extends FlxAtlasSprite
    */
   public function switchGF(bf:String):Void
   {
-    var prevGF:GFChar = curGF;
-    switch (bf)
-    {
-      case "pico":
-        curGF = NENE;
-      case "bf":
-        curGF = GF;
-      default:
-        curGF = GF;
+    var previousGFPath = currentGFPath;
+    if(bf == "locked"){
+      this.visible = false; //? 'locked' is a special character
+      return;//? and ??? doesn't have gf (yet)
     }
+    var bfObj = PlayerRegistry.instance.fetchEntry(bf);
+    var gfData = bfObj?.getCharSelectData()?.gf;
+    currentGFPath = gfData?.assetPath != null ? Paths.animateAtlas(gfData?.assetPath) : null;
 
     // We don't need to update any anims if we didn't change GF
-    if (prevGF != curGF)
+    trace('currentGFPath(${currentGFPath})');
+    if (currentGFPath == null)
     {
-      loadAtlas(Paths.animateAtlas("charSelect/" + curGF + "Chill"));
+      this.visible = false;
+      return;
+    }
+    else if (previousGFPath != currentGFPath)
+    {
+      this.visible = true;
+      loadAtlas(currentGFPath);
 
-      animInInfo = FramesJSFLParser.parse(Paths.file("images/charSelect/" + curGF + "AnimInfo/" + curGF + "In.txt"));
-      animOutInfo = FramesJSFLParser.parse(Paths.file("images/charSelect/" + curGF + "AnimInfo/" + curGF + "Out.txt"));
+      enableVisualizer = gfData?.visualizer ?? false;
+
+      var animInfoPath = Paths.file('images/${gfData?.animInfoPath}');
+
+      animInInfo = FramesJSFLParser.parse(animInfoPath + '/In.txt');
+      animOutInfo = FramesJSFLParser.parse(animInfoPath + '/Out.txt');
     }
 
     playAnimation("idle", true, false, false);
-    // addFrameCallback(getNextFrameLabel("idle"), () -> playAnimation("idle", true, false, false));
 
     updateHitbox();
   }

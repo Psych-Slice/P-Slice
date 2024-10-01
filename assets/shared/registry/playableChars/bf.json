@@ -82,7 +82,12 @@
     ]
   },
   "charSelect": {
-    "position": 4
+    "position": 4,
+    "gf": {
+      "assetPath": "charSelect/gfChill",
+      "animInfoPath": "charSelect/gfAnimInfo",
+      "visualizer": false
+    }
   },
   "results": {
     "music": {
@@ -93,6 +98,23 @@
       "GOOD": "resultsNORMAL",
       "SHIT": "resultsSHIT"
     },
+    "perfectGold": [
+      {
+        "renderType": "animateatlas",
+        "assetPath": "shared:resultScreen/results-bf/resultsPERFECT",
+        "zIndex": 500,
+        "offsets": [1342, 370],
+        "loopFrame": 137
+      },
+      {
+        "renderType": "animateatlas",
+        "assetPath": "shared:resultScreen/results-bf/resultsPERFECT/hearts",
+        "zIndex": 501,
+        "delay": 4.41,
+        "offsets": [1342, 370],
+        "loopFrame": 43
+      }
+    ],
     "perfect": [
       {
         "renderType": "animateatlas",

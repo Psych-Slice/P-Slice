@@ -1,5 +1,6 @@
 package mikolka.funkin;
 
+import mikolka.compatibility.ModsHelper;
 import flixel.graphics.FlxGraphic;
 import haxe.macro.Expr.Catch;
 import flixel.graphics.frames.FlxFramesCollection;
@@ -86,7 +87,7 @@ class FlxAtlasSprite extends PsychFlxAnimate
     }
     try{
       trace(path);
-      super.loadAtlasEx(BitmapData.fromFile('$path/spritemap1.png'),
+      super.loadAtlasEx(ModsHelper.loadabsoluteGraphic('$path/spritemap1.png'),
       File.getContent('$path/spritemap1.json'),
         File.getContent('$path/Animation.json')
         );
