@@ -1,5 +1,7 @@
 package mikolka.vslice.freeplay;
 
+import mikolka.funkin.freeplay.FreeplayStyle;
+import mikolka.vslice.freeplay.obj.PixelatedIcon;
 import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.FreeplayHelpers;
 import mikolka.funkin.Scoring.ScoringRank;

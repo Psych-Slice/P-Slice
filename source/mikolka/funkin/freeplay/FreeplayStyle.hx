@@ -1,4 +1,4 @@
-package funkin.ui.freeplay;
+package mikolka.funkin.freeplay;
 
 import flixel.graphics.FlxGraphic;
 import flixel.util.FlxColor;
@@ -25,7 +25,7 @@ class FreeplayStyle
 
     if (_data == null)
     {
-      throw 'Could not parse album data for id: $id';
+      throw 'Could not parse freeplay data for id: $id';
     }
   }
 
@@ -112,6 +112,6 @@ class FreeplayStyle
 
   static function _fetchData(id:String):Null<FreeplayStyleData>
   {
-    return FreeplayStyleRegistry.instance.parseEntryDataWithMigration(id, FreeplayStyleRegistry.instance.fetchEntryVersion(id));
+    return FreeplayStyleRegistry.instance.parseEntryDataWithMigration(id);
   }
 }

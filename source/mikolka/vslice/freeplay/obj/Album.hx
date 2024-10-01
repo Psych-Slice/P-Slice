@@ -1,15 +1,12 @@
-package funkin.ui.freeplay;
+package mikolka.vslice.freeplay.obj;
 
-import funkin.data.freeplay.album.AlbumData;
-import funkin.data.freeplay.album.AlbumRegistry;
-import funkin.data.animation.AnimationData;
-import funkin.data.IRegistryEntry;
+import mikolka.funkin.freeplay.album.AlbumData;
 import flixel.graphics.FlxGraphic;
 
 /**
  * A class representing the data for an album as displayed in Freeplay.
  */
-class Album implements IRegistryEntry<AlbumData>
+class Album
 {
   /**
    * The internal ID for this album.

@@ -1,5 +1,6 @@
 package mikolka.vslice.freeplay;
 
+import mikolka.funkin.freeplay.FreeplayStyle;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 

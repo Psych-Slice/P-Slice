@@ -1,5 +1,9 @@
 package mikolka.vslice.freeplay;
 
+import shaders.BlueFade;
+import mikolka.funkin.freeplay.FreeplayStyle;
+import mikolka.vslice.freeplay.backcards.BackingCard;
+import mikolka.vslice.freeplay.DJBoyfriend.FreeplayDJ;
 import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.compatibility.FunkinCamera;
