@@ -1,25 +1,13 @@
-package funkin.ui.freeplay.backcards;
+package mikolka.vslice.freeplay.backcards;
 
-import funkin.ui.freeplay.FreeplayState;
-import flixel.FlxCamera;
+import mikolka.compatibility.FreeplayHelpers;
+import mikolka.compatibility.VsliceOptions;
+import mikolka.vslice.freeplay.pslice.FreeplayColorTweener;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
-import flixel.math.FlxAngle;
-import flixel.math.FlxPoint;
-import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
-import flixel.util.FlxTimer;
-import funkin.graphics.adobeanimate.FlxAtlasSprite;
-import funkin.graphics.FunkinSprite;
-import funkin.ui.freeplay.charselect.PlayableCharacter;
-import funkin.ui.MusicBeatSubState;
 import openfl.display.BlendMode;
-import flixel.group.FlxSpriteGroup;
 
 class BoyfriendCard extends BackingCard
 {
@@ -29,6 +17,7 @@ class BoyfriendCard extends BackingCard
   public var funnyScroll2:BGScrollingText;
   public var moreWays2:BGScrollingText;
   public var funnyScroll3:BGScrollingText;
+	public var colorEngine:FreeplayColorTweener;
 
   var glow:FlxSprite;
   var glowDark:FlxSprite;
@@ -91,6 +80,7 @@ class BoyfriendCard extends BackingCard
   public override function new(currentCharacter:PlayableCharacter)
   {
     super(currentCharacter);
+    if(VsliceOptions.ALLOW_COLORING) colorEngine = new FreeplayColorTweener(this); 
 
     funnyScroll = new BGScrollingText(0, 220, currentCharacter.getFreeplayDJText(1), FlxG.width / 2, false, 60);
     funnyScroll2 = new BGScrollingText(0, 335, currentCharacter.getFreeplayDJText(1), FlxG.width / 2, false, 60);
@@ -109,7 +99,7 @@ class BoyfriendCard extends BackingCard
 
     add(alsoOrangeLOL);
 
-    FlxSpriteUtil.alphaMaskFlxSprite(orangeBackShit, pinkBack, orangeBackShit);
+    //FlxSpriteUtil.alphaMaskFlxSprite(orangeBackShit, pinkBack, orangeBackShit);
     orangeBackShit.visible = false;
     alsoOrangeLOL.visible = false;
 
@@ -178,12 +168,12 @@ class BoyfriendCard extends BackingCard
   var beatFreq:Int = 1;
   var beatFreqList:Array<Int> = [1, 2, 4, 8];
 
-  public override function beatHit():Void
+  public override function beatHit(curBeat:Int):Void
   {
     // increases the amount of beats that need to go by to pulse the glow because itd flash like craazy at high bpms.....
-    beatFreq = beatFreqList[Math.floor(Conductor.instance.bpm / 140)];
+    beatFreq = beatFreqList[Math.floor(FreeplayHelpers.BPM / 140)];
 
-    if (Conductor.instance.currentBeat % beatFreq != 0) return;
+    if (curBeat % beatFreq != 0) return;
     FlxTween.cancelTweensOf(glow);
     FlxTween.cancelTweensOf(glowDark);
 
@@ -196,6 +186,7 @@ class BoyfriendCard extends BackingCard
   public override function introDone():Void
   {
     super.introDone();
+    //if) pinkBack.color = 0xFFFFD863;
     moreWays.visible = true;
     funnyScroll.visible = true;
     txtNuts.visible = true;
@@ -210,6 +201,8 @@ class BoyfriendCard extends BackingCard
   public override function confirm():Void
   {
     super.confirm();
+    //? Disabling color tweener
+		colorEngine?.cancelTween();
     // FlxTween.color(bgDad, 0.33, 0xFFFFFFFF, 0xFF555555, {ease: FlxEase.quadOut});
 
     moreWays.visible = false;
@@ -224,8 +217,10 @@ class BoyfriendCard extends BackingCard
 
   public override function disappear():Void
   {
-    super.disappear();
+    //While exiting make sure that we aren't tweeneng a color rn
+		colorEngine?.cancelTween();	
 
+    super.disappear();
     moreWays.visible = false;
     funnyScroll.visible = false;
     txtNuts.visible = false;

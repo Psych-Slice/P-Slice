@@ -6,12 +6,13 @@ package mikolka.funkin.freeplay.album;
  * It includes things like what graphics to display in Freeplay.
  * @see https://lib.haxe.org/p/json2object/
  */
-typedef AlbumData =
+class AlbumData //? making this a class lets us define some defaults
 {
+  public function new() {}
   /**
    * Semantic version for album data.
    */
-  public var version:String;
+  public var version:String = "1.0";
 
   /**
    * Readable name of the album.
@@ -38,7 +39,5 @@ typedef AlbumData =
   /**
    * An optional array of animations for the album title.
    */
-  @:optional
-  @:default([])
-  public var albumTitleAnimations:Array<AnimationData>;
+  public var albumTitleAnimations:Array<AnimationData> = null;
 }

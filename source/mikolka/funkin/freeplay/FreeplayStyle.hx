@@ -18,10 +18,10 @@ class FreeplayStyle
    */
   public final _data:FreeplayStyleData;
 
-  public function new(id:String)
+  public function new(id:String,data:FreeplayStyleData)
   {
     this.id = id;
-    this._data = _fetchData(id);
+    this._data = data;
 
     if (_data == null)
     {
@@ -109,9 +109,4 @@ class FreeplayStyle
   }
 
   public function destroy():Void {}
-
-  static function _fetchData(id:String):Null<FreeplayStyleData>
-  {
-    return FreeplayStyleRegistry.instance.parseEntryDataWithMigration(id);
-  }
 }

@@ -1,25 +1,24 @@
 package mikolka.vslice.freeplay.pslice;
 
+import mikolka.vslice.freeplay.backcards.BoyfriendCard;
+
+
 // ? P-Slice class
 // Made this static so that it isn't tied with freeplay as much
 class FreeplayColorTweener
 {
-	private static var targetState:FreeplayState;
-	private static var intendedColor:Null<FlxColor>;
-	static var tweens:List<FlxTween>;
+	private var targetState:BoyfriendCard;
+	private var intendedColor:Null<FlxColor>;
+	var tweens:List<FlxTween>;
 
-	public static function setup(state:FreeplayState)
+	public function new(state:BoyfriendCard)
 	{
 		targetState = state;
 		intendedColor = null;
 		tweens = new List<FlxTween>();
-		state.closeCallback = () -> {
-			targetState = null;
-			intendedColor = null;
-		}
 	}
 
-	public static function cancelTween()
+	public function cancelTween()
 	{
 		for (tw in tweens)
 		{
@@ -28,7 +27,7 @@ class FreeplayColorTweener
 		tweens = new List<FlxTween>();
 	}
 
-	public static function tweenColor(newColor:FlxColor)
+	public function tweenColor(newColor:FlxColor)
 	{
 		if (newColor != intendedColor && targetState != null)
 		{
@@ -51,14 +50,14 @@ class FreeplayColorTweener
 		}
 	}
 
-	private static function twnSprite(sprite:FlxSprite, offset:Array<Int>)
+	private function twnSprite(sprite:FlxSprite, offset:Array<Int>)
 	{
 		var realColor = FlxColor.fromRGB(addClrComp(intendedColor.red, offset[0]), addClrComp(intendedColor.green, offset[1]),
 			addClrComp(intendedColor.blue, offset[2]));
 		return FlxTween.color(sprite, 1, sprite.color, realColor);
 	}
 
-	private static function twnText(sprite:BGScrollingText, offset:Array<Int>)
+	private function twnText(sprite:BGScrollingText, offset:Array<Int>)
 	{
 		var textCurColor = sprite.funnyColor;
 		var realColor = FlxColor.fromRGB(addClrComp(intendedColor.red, offset[0]), addClrComp(intendedColor.green, offset[1]),
@@ -69,7 +68,7 @@ class FreeplayColorTweener
 		});
 	}
 
-	private static function addClrComp(clr1:Int, clr2:Int)
+	private function addClrComp(clr1:Int, clr2:Int)
 	{
 		var rawResult = clr1 + clr2;
 		// s if(!FlxMath.inBounds(0,255,rawResult)) rawResult = clr1-clr2;

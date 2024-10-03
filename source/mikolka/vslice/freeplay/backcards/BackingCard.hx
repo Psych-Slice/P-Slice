@@ -17,6 +17,7 @@ import flixel.util.FlxTimer;
 import mikolka.funkin.players.PlayableCharacter;
 import openfl.display.BlendMode;
 import flixel.group.FlxSpriteGroup;
+import mikolka.compatibility.FunkinPath as Paths;
 
 /**
  * A class for the backing cards so they dont have to be part of freeplayState......
@@ -225,14 +226,14 @@ class BackingCard extends FlxSpriteGroup
   /**
    * Called on each beat in freeplay state.
    */
-  public function beatHit():Void {}
+  public function beatHit(curBeat:Int):Void {}
 
   /**
    * Called when exiting the freeplay menu.
    */
   public function disappear():Void
   {
-    FlxTween.color(pinkBack, 0.25, 0xFFFFD863, 0xFFFFD0D5, {ease: FlxEase.quadOut});
+    FlxTween.color(pinkBack, 0.25, pinkBack.color, 0xFFFFD0D5, {ease: FlxEase.quadOut});
 
     cardGlow.visible = true;
     cardGlow.alpha = 1;

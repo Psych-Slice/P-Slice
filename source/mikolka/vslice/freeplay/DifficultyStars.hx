@@ -3,6 +3,7 @@ package mikolka.vslice.freeplay;
 import shaders.HSVShader;
 import mikolka.vslice.freeplay.obj.FreeplayFlames;
 import flixel.group.FlxSpriteGroup;
+import mikolka.compatibility.FunkinPath as Paths;
 
 class DifficultyStars extends FlxSpriteGroup
 {

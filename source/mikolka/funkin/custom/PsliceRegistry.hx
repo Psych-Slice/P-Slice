@@ -1,5 +1,8 @@
 package mikolka.funkin.custom;
 
+import mikolka.compatibility.FunkinPath;
+import haxe.Json;
+
 class PsliceRegistry {
     final regPath:String;
     public function new(registryName:String) {

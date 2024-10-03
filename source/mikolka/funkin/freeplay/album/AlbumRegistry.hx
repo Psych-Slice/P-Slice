@@ -1,4 +1,7 @@
-package funkin.data.freeplay.album;
+package mikolka.funkin.freeplay.album;
+
+import mikolka.funkin.freeplay.album.AlbumData;
+using mikolka.funkin.custom.FunkinTools;
 
 class AlbumRegistry extends PsliceRegistry
 {
@@ -7,17 +10,13 @@ class AlbumRegistry extends PsliceRegistry
 
   public function new()
   {
-    super('albums');
+    super('ui/freeplay/albums');
   }
 
-  /**
-   * Read, parse, and validate the JSON data and produce the corresponding data object.
-   * @param id The ID of the entry to load.
-   * @return The parsed data object.
-   */
-  public function parseEntryData(id:String):Null<AlbumData>
-  {
-    
+  public function fetchEntry(albumId:Null<String>):Album {
+    var data = readJson(albumId);
+    var album_data = new AlbumData();
+    album_data.mergeWithJson(data);
+    return new Album(albumId,album_data);
   }
-
 }

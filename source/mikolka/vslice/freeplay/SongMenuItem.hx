@@ -528,7 +528,7 @@ class SongMenuItem extends FlxSpriteGroup
     // Update opacity, offsets, etc.
     updateSelected();
 
-    checkWeek(songData?.songId);
+    checkWeek(songData?.levelId);
   }
 
   var frameInTicker:Float = 0;

@@ -1,12 +1,13 @@
 package mikolka.vslice.freeplay;
 
-import mikolka.vslice.freeplay.obj.Album;
+import mikolka.funkin.freeplay.album.AlbumRegistry;
+import mikolka.funkin.freeplay.album.Album;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 import flixel.util.FlxSort;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
-import flixel.tweens.FlxEase;
+import mikolka.compatibility.FunkinPath as Paths;
 
 /**
  * The graphic for the album roll in the FreeplayState.

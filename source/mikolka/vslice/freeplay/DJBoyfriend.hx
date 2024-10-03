@@ -1,5 +1,6 @@
 package mikolka.vslice.freeplay;
 
+import mikolka.funkin.players.PlayerData.PlayerFreeplayDJData;
 import mikolka.compatibility.FunkinPath as Paths;
 
 import flixel.FlxSprite;
@@ -494,7 +495,7 @@ class FreeplayDJ extends FlxAtlasSprite
   public override function destroy():Void
   {
     super.destroy();
-    abortCartoonTimers = true;
+    //abortCartoonTimers = true;
 
     if (cartoonSnd != null)
     {

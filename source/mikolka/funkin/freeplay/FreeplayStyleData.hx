@@ -1,4 +1,4 @@
-package funkin.data.freeplay.style;
+package mikolka.funkin.freeplay;
 
 import mikolka.funkin.AnimationData;
 

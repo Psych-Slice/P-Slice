@@ -10,7 +10,7 @@ using StringTools;
 class PlayerRegistry extends PsliceRegistry{
     public static var instance:PlayerRegistry = new PlayerRegistry();
     public function new() {
-        super('playableChars');
+        super('players');
     }
     // Based on a character ID from a stage obtain it's playable character ID
     public function getCharacterOwnerId(charId:String) {
@@ -21,7 +21,9 @@ class PlayerRegistry extends PsliceRegistry{
     public function isCharacterOwned(id:String):Bool {
         return true;
     }
-
+    public function hasNewCharacter():Bool {
+        return false;
+    }
     public function fetchEntry(playableCharId:String):PlayableCharacter {
 
         var player_blob:Dynamic = readJson(playableCharId);// new PlayerData();
@@ -35,5 +37,9 @@ class PlayerRegistry extends PsliceRegistry{
     // return ALL characters avaliable (from current mod)
     public function listEntryIds():Array<String> {
         return listJsons();
+    }
+    // This is only used to check if we should allow the player to open charSelect
+    public function countUnlockedCharacters():Int {
+        return 2;
     }
 }

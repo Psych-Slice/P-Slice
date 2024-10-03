@@ -1,5 +1,6 @@
 package mikolka.funkin.custom;
 
+import mikolka.compatibility.FreeplayHelpers;
 import flixel.FlxBasic;
 import flixel.util.FlxSort;
 
@@ -12,22 +13,10 @@ class VsliceSubState extends MusicBeatSubstate
 	 */
 	public function refresh()
 	{
-		sort(byZIndex, FlxSort.ASCENDING);
+		sort(SortUtil.byZIndex, FlxSort.ASCENDING);
 	}
-
-	/**
-	 * You can use this function in FlxTypedGroup.sort() to sort FlxObjects by their z-index values.
-	 * The value defaults to 0, but by assigning it you can easily rearrange objects as desired.
-	 *
-	 * @param order Either `FlxSort.ASCENDING` or `FlxSort.DESCENDING`
-	 * @param a The first FlxObject to compare.
-	 * @param b The second FlxObject to compare.
-	 * @return 1 if `a` has a higher z-index, -1 if `b` has a higher z-index.
-	 */
-	static inline function byZIndex(order:Int, a:FlxBasic, b:FlxBasic):Int
-	{
-		if (a == null || b == null)
-			return 0;
-		return FlxSort.byValues(order, a.zIndex, b.zIndex);
+	override function update(elapsed:Float) {
+		if(FlxG.sound.music != null)  FreeplayHelpers.updateConductorSongTime(FlxG.sound.music.time); //? update song position
+		super.update(elapsed);
 	}
 }

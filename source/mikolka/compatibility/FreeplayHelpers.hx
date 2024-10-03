@@ -9,6 +9,14 @@ import states.StoryMenuState;
 import backend.WeekData;
 
 class FreeplayHelpers {
+	public static var BPM(get,set):Float;
+	public static function set_BPM(value:Float) {
+		Conductor.bpm = value;
+		return value;
+	}
+	public static function get_BPM() {
+		return Conductor.bpm;
+	}
     public inline static function loadSongs(){
         var songs = [];
         WeekData.reloadWeekFiles(false);
@@ -101,17 +109,12 @@ class FreeplayHelpers {
                 && leWeek.weekBefore.length > 0
                 && (!StoryMenuState.weekCompleted.exists(leWeek.weekBefore) || !StoryMenuState.weekCompleted.get(leWeek.weekBefore)));
         }
-	
-	public static function setBPM(value:Float) {
-		Conductor.bpm = value;
-	}
 	public static function exitFreeplay() {
 		BPMCache.instance.clearCache();	
 		Mods.loadTopMod();
 		FlxG.signals.postStateSwitch.dispatch(); //? for the screenshot plugin to clean itself
 
-		//While exiting make sure that we aren't tweeneng a color rn
-		FreeplayColorTweener.cancelTween();	
+		
 	}
 	public static function loadDiffsFromWeek(songData:FreeplaySongData){
 		Mods.currentModDirectory = songData.folder;
@@ -120,5 +123,9 @@ class FreeplayHelpers {
 	}
 	public static function getDifficultyName() {
 		return Difficulty.list[PlayState.storyDifficulty].toUpperCase();
+	}
+
+	public static function updateConductorSongTime(time:Float) {
+		Conductor.songPosition = time;
 	}
 }

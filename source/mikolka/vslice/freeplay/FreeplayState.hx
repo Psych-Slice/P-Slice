@@ -1,5 +1,12 @@
 package mikolka.vslice.freeplay;
 
+import mikolka.vslice.charSelect.CharSelectSubState;
+import openfl.filters.ShaderFilter;
+import mikolka.vslice.freeplay.backcards.PicoCard;
+import mikolka.vslice.freeplay.backcards.NewCharacterCard;
+import mikolka.vslice.freeplay.backcards.PicoCard;
+import mikolka.funkin.freeplay.FreeplayStyleRegistry;
+import mikolka.vslice.freeplay.backcards.BoyfriendCard;
 import shaders.BlueFade;
 import mikolka.funkin.freeplay.FreeplayStyle;
 import mikolka.vslice.freeplay.backcards.BackingCard;
@@ -12,6 +19,7 @@ import mikolka.vslice.freeplay.pslice.FreeplayColorTweener;
 import mikolka.compatibility.FreeplaySongData;
 import mikolka.compatibility.FreeplayHelpers;
 import mikolka.compatibility.FunkinPath as Paths;
+import mikolka.funkin.custom.VsliceSubState as MusicBeatSubstate;
 
 import openfl.utils.AssetCache;
 import mikolka.funkin.AtlasText;
@@ -141,7 +149,7 @@ class FreeplayState extends MusicBeatSubstate
 	var diffIdsTotal:Array<String> = ['easy', "normal", "hard"]; //? forcing this diff order
 
 	var curSelected:Int = 0;
-	var currentUnsuffixedDifficulty:String = Constants.DEFAULT_DIFFICULTY;
+	var currentDifficulty:String = Constants.DEFAULT_DIFFICULTY;
 
 	var fp:FreeplayScore;
 	var txtCompletion:AtlasText;
@@ -218,20 +226,19 @@ class FreeplayState extends MusicBeatSubstate
 
 	public function new(?params:FreeplayStateParams, ?stickers:StickerSubState)
 	{
+		super();
 		currentCharacterId = params?.character ?? rememberedCharacterId;
 		styleData = FreeplayStyleRegistry.instance.fetchEntry(currentCharacterId);
-		var fetchPlayableCharacter = function():PlayableCharacter
-		{
-			var targetCharId = params?.character ?? rememberedCharacterId;
-			var result = PlayerRegistry.instance.fetchEntry(targetCharId);
-			if (result == null)
-				throw 'No valid playable character with id ${targetCharId}';
-			return result;
-		};
-		currentCharacter = fetchPlayableCharacter();
+
+		var targetCharId = params?.character ?? rememberedCharacterId;
+		var result = PlayerRegistry.instance.fetchEntry(targetCharId);
+		if (result == null)
+			throw 'No valid playable character with id ${targetCharId}';
+
+		currentCharacter = result;
 
 		styleData = FreeplayStyleRegistry.instance.fetchEntry(currentCharacter.getFreeplayStyleID());
-		rememberedCharacterId = currentCharacter?.id ?? Constants.DEFAULT_CHARACTER;
+		rememberedCharacterId = targetCharId ?? Constants.DEFAULT_CHARACTER;
 
 		fromCharSelect = params?.fromCharSelect;
 
@@ -242,7 +249,7 @@ class FreeplayState extends MusicBeatSubstate
 			prepForNewRank = true;
 		}
 
-		super(FlxColor.TRANSPARENT);
+		super();
 
 		if (stickers?.members != null)
 		{
@@ -288,7 +295,6 @@ class FreeplayState extends MusicBeatSubstate
 
 	override function create():Void
 	{
-		if(VsliceOptions.ALLOW_COLORING) FreeplayColorTweener.setup(this);
 		BPMCache.instance.clearCache(); // for good measure
 		
 
@@ -401,7 +407,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		add(bgDad);
 		//? changed offset
-		FlxTween.tween(blackOverlayBullshitLOLXD, {x: (pinkBack.width * 0.74)-37}, 0.7, {ease: FlxEase.quintOut});
+		FlxTween.tween(blackOverlayBullshitLOLXD, {x: (backingCard.pinkBack.width * 0.74)-37}, 0.7, {ease: FlxEase.quintOut});
 
 		blackOverlayBullshitLOLXD.shader = bgDad.shader;
 
@@ -432,7 +438,7 @@ class FreeplayState extends MusicBeatSubstate
 			wait: 0.1
 		});
 
-		for (diffId in suffixedDiffIdsTotal)
+		for (diffId in diffIdsTotal)
 		{
 			ModsHelper.loadModDir(diffIdsTotalModBinds.get(diffId));
 			var diffSprite:DifficultySprite = new DifficultySprite(diffId);
@@ -475,7 +481,7 @@ class FreeplayState extends MusicBeatSubstate
 		charSelectHint.alignment = CENTER;
 		charSelectHint.font = "5by7";
 		charSelectHint.color = 0xFF5F5F5F;
-		charSelectHint.text = 'Press [ ${controls.getDialogueNameFromControl(FREEPLAY_CHAR_SELECT, true)} ] to change characters';
+		charSelectHint.text = 'Press [ TAB ] to change characters'; //?! ${controls.getDialogueNameFromControl(FREEPLAY_CHAR_SELECT, true)}
 		charSelectHint.y -= 100;
 		FlxTween.tween(charSelectHint, {y: charSelectHint.y + 100}, 0.8, {ease: FlxEase.quartOut});
 
@@ -650,7 +656,6 @@ class FreeplayState extends MusicBeatSubstate
 				});
 			});
 
-			if(!VsliceOptions.ALLOW_COLORING) pinkBack.color = 0xFFFFD863;
 			bgDad.visible = true;
 			backingCard?.introDone();
 
@@ -1253,7 +1258,7 @@ class FreeplayState extends MusicBeatSubstate
 		FlxG.sound.music.fadeOut(0.9, 0);
 		new FlxTimer().start(0.9, _ ->
 		{
-			FlxG.switchState(new funkin.ui.charSelect.CharSelectSubState());
+			FlxG.switchState(new CharSelectSubState());
 		});
 		for (grpSpr in exitMoversCharSel.keys())
 		{
@@ -1398,18 +1403,18 @@ class FreeplayState extends MusicBeatSubstate
 			});
 		}
 
-		// if (FlxG.keys.justPressed.H)
-		// {
-		//   rankDisplayNew(fromResultsParams);
-		// }
+		if (FlxG.keys.justPressed.H)
+		{
+		  rankDisplayNew(fromResultsParams);
+		}
 
-		// if (FlxG.keys.justPressed.G)
-		// {
-		//   rankAnimSlam(fromResultsParams);
-		// }
+		if (FlxG.keys.justPressed.G)
+		{
+		  rankAnimSlam(fromResultsParams);
+		}
 		#end // ^<-- FEATURE_DEBUG_FUNCTIONS
 
-		if (controls.FREEPLAY_CHAR_SELECT && !busy)
+		if (FlxG.keys.justPressed.TAB && !busy) //! placer a proper key here (controls.FREEPLAY_CHAR_SELECT)
 		{
 			tryOpenCharSelect();
 		}
@@ -1755,11 +1760,11 @@ class FreeplayState extends MusicBeatSubstate
 		}
 	}
 
-	override function beatHit():Bool
+	override function beatHit()
 	{
-		backingCard?.beatHit();
+		backingCard?.beatHit(curBeat);
 
-		return super.beatHit();
+		super.beatHit();
 	}
 
 	public override function destroy():Void
@@ -1943,77 +1948,16 @@ class FreeplayState extends MusicBeatSubstate
 	 */
 	function capsuleOnOpenDefault(cap:SongMenuItem):Void
 	{
-		var targetSongId:String = cap?.songData?.songId ?? 'unknown';
-		var targetSongNullable:Null<Song> = SongRegistry.instance.fetchEntry(targetSongId);
-		if (targetSongNullable == null)
-		{
-			FlxG.log.warn('WARN: could not find song with id (${targetSongId})');
-			return;
-		}
-		var targetSong:Song = targetSongNullable;
-		var targetDifficultyId:String = currentUnsuffixedDifficulty;
-		var targetVariation:Null<String> = currentVariation;
-		trace('target song: ${targetSongId} (${targetVariation})');
-		var targetLevelId:Null<String> = cap?.songData?.levelId;
-		PlayStatePlaylist.campaignId = targetLevelId ?? null;
-
-		var targetDifficulty:Null<SongDifficulty> = targetSong.getDifficulty(targetDifficultyId, targetVariation);
-		if (targetDifficulty == null)
-		{
-			FlxG.log.warn('WARN: could not find difficulty with id (${targetDifficultyId})');
-			return;
-		}
-
-		trace('target difficulty: ${targetDifficultyId}');
-		trace('target variation: ${targetDifficulty?.variation ?? Constants.DEFAULT_VARIATION}');
-
-		var baseInstrumentalId:String = targetSong.getBaseInstrumentalId(targetDifficultyId, targetDifficulty?.variation ?? Constants.DEFAULT_VARIATION) ?? '';
-		var altInstrumentalIds:Array<String> = targetSong.listAltInstrumentalIds(targetDifficultyId,
-			targetDifficulty?.variation ?? Constants.DEFAULT_VARIATION) ?? [];
-
-		if (altInstrumentalIds.length > 0)
-		{
-			var instrumentalIds = [baseInstrumentalId].concat(altInstrumentalIds);
-			openInstrumentalList(cap, instrumentalIds);
-		}
-		else
-		{
-			trace('NO ALTS');
-			capsuleOnConfirmDefault(cap);
-		}
+		// We don't have a good way to do this in psych
+		//? yet
+		trace('ALT INSTRUMENTALS ARE DISABLED!');
+		capsuleOnConfirmDefault(cap);
+		
 	}
 
 	public function getControls():Controls
 	{
 		return controls;
-	}
-
-	function openInstrumentalList(cap:SongMenuItem, instrumentalIds:Array<String>):Void
-	{
-		busy = true;
-
-		capsuleOptionsMenu = new CapsuleOptionsMenu(this, cap.x + 175, cap.y + 115, instrumentalIds);
-		capsuleOptionsMenu.cameras = [funnyCam];
-		capsuleOptionsMenu.zIndex = 10000;
-		add(capsuleOptionsMenu);
-
-		capsuleOptionsMenu.onConfirm = function(targetInstId:String)
-		{
-			capsuleOnConfirmDefault(cap, targetInstId);
-		};
-	}
-
-	var capsuleOptionsMenu:Null<CapsuleOptionsMenu> = null;
-
-	public function cleanupCapsuleOptionsMenu():Void
-	{
-		this.busy = false;
-
-		if (capsuleOptionsMenu != null)
-		{
-			remove(capsuleOptionsMenu);
-			capsuleOptionsMenu = null;
-		}
 	}
 
 	/**
@@ -2032,8 +1976,7 @@ class FreeplayState extends MusicBeatSubstate
 			FlxG.log.warn('WARN: could not find song with id (${cap.songData.songId})');
 			return;
 		}
-		//? Disabling color tweener
-		FreeplayColorTweener.cancelTween();
+		
 		//colorTween = null;
 		var targetDifficultyId:String = currentDifficulty;
 		PlayState.storyWeek = cap.songData.levelId;
@@ -2060,7 +2003,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		backingCard?.confirm();
 		// FlxTween.color(bgDad, 0.33, 0xFFFFFFFF, 0xFF555555, {ease: FlxEase.quadOut});
-		FlxTween.color(pinkBack, 0.33, 0xFFFFD0D5, 0xFF171831, {ease: FlxEase.quadOut});
+		//FlxTween.color(pinkBack, 0.33, 0xFFFFD0D5, 0xFF171831, {ease: FlxEase.quadOut});
 
 		new FlxTimer().start(styleData?.getStartDelay(), function(tmr:FlxTimer)
 		{
@@ -2187,21 +2130,21 @@ class FreeplayState extends MusicBeatSubstate
 					//? onLoad doesn't start plaing music automatically here
 					var endVolume = dj.playingCartoon? 0.1 : FADE_IN_END_VOLUME;
 					FlxG.sound.music.fadeIn(FADE_IN_DURATION, FADE_IN_START_VOLUME, endVolume);
+					//? set BPMs
+					var newBPM = daSongCapsule.songData.songStartingBpm;
+					FreeplayHelpers.BPM = newBPM; //? reimplementing
 				}
 			});
-
-			if (songDifficulty != null) //TODO implement this
-			{
-				//Conductor.instance.mapTimeChanges(songDifficulty.timeChanges);
-				//Conductor.instance.update(FlxG.sound?.music?.time ?? 0.0);
-			}
 			
 		}
 	}
 
 	public function tweenCurSongColor(daSongCapsule:SongMenuItem) { //H1
-		var newColor:FlxColor = (curSelected == 0)? 0xFFFFD863 : daSongCapsule.songData.color;
-		FreeplayColorTweener.tweenColor(newColor);
+		if(Std.isOfType(backingCard,BoyfriendCard)){
+			var newColor:FlxColor = (curSelected == 0)? 0xFFFFD863 : daSongCapsule.songData.color;
+			var bfCard = cast (backingCard,BoyfriendCard);
+			bfCard.colorEngine?.tweenColor(newColor);
+		}
 	}
 
 	/**
@@ -2211,7 +2154,7 @@ class FreeplayState extends MusicBeatSubstate
 	public static function build(?params:FreeplayStateParams, ?stickers:StickerSubState):MusicBeatState
 	{
 		var result:MainMenuState;
-		if (params?.fromResults.playRankAnim)
+		if (params?.fromResults?.playRankAnim)
 			result = new MainMenuState(true);
 		else
 			result = new MainMenuState(false);
@@ -2226,54 +2169,54 @@ class FreeplayState extends MusicBeatSubstate
 /**
  * The difficulty selector arrows to the left and right of the difficulty.
  */
-class DifficultySelector extends FlxSprite
-{
-	var controls:Controls;
-	var whiteShader:PureColor;
-
-	public function new(x:Float, y:Float, flipped:Bool, controls:Controls)
-	{
-		super(x, y);
-
-		this.controls = controls;
-
-		frames = Paths.getSparrowAtlas('freeplay/freeplaySelector');
-		animation.addByPrefix('shine', 'arrow pointer loop', 24);
-		animation.play('shine');
-
-		whiteShader = new PureColor(FlxColor.WHITE);
-
-		shader = whiteShader;
-
-		flipX = flipped;
-	}
-
-	override function update(elapsed:Float):Void
-	{
-		if (flipX && controls.UI_RIGHT_P && !FlxG.keys.pressed.CONTROL)
-			moveShitDown();
-		if (!flipX && controls.UI_LEFT_P && !FlxG.keys.pressed.CONTROL)
-			moveShitDown();
-
-		super.update(elapsed);
-	}
-
-	function moveShitDown():Void
-	{
-		offset.y -= 5;
-
-		whiteShader.colorSet = true;
-
-		scale.x = scale.y = 0.5;
-
-		new FlxTimer().start(2 / 24, function(tmr)
-		{
-			scale.x = scale.y = 1;
-			whiteShader.colorSet = false;
-			updateHitbox();
-		});
-	}
-}
+ class DifficultySelector extends FlxSprite
+ {
+   var controls:Controls;
+   var whiteShader:PureColor;
+ 
+   var parent:FreeplayState;
+ 
+   public function new(parent:FreeplayState, x:Float, y:Float, flipped:Bool, controls:Controls, ?styleData:FreeplayStyle = null)
+   {
+	 super(x, y);
+ 
+	 this.parent = parent;
+	 this.controls = controls;
+ 
+	 frames = Paths.getSparrowAtlas(styleData == null ? 'freeplay/freeplaySelector' : styleData.getSelectorAssetKey());
+	 animation.addByPrefix('shine', 'arrow pointer loop', 24);
+	 animation.play('shine');
+ 
+	 whiteShader = new PureColor(FlxColor.WHITE);
+ 
+	 shader = whiteShader;
+ 
+	 flipX = flipped;
+   }
+ 
+   override function update(elapsed:Float):Void
+   {
+	 if (flipX && controls.UI_RIGHT_P && !parent.busy) moveShitDown();
+	 if (!flipX && controls.UI_LEFT_P && !parent.busy) moveShitDown();
+ 
+	 super.update(elapsed);
+   }
+ 
+   function moveShitDown():Void
+   {
+	 offset.y -= 5;
+ 
+	 whiteShader.colorSet = true;
+ 
+	 scale.x = scale.y = 0.5;
+ 
+	 new FlxTimer().start(2 / 24, function(tmr) {
+	   scale.x = scale.y = 1;
+	   whiteShader.colorSet = false;
+	   updateHitbox();
+	 });
+   }
+ }
 
 /**
  * Structure for the current song filter.

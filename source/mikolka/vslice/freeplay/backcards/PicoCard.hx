@@ -1,30 +1,16 @@
-package funkin.ui.freeplay.backcards;
+package mikolka.vslice.freeplay.backcards;
 
-import funkin.ui.freeplay.FreeplayState;
-import flash.display.BitmapData;
-import flixel.FlxCamera;
+import flixel.addons.display.FlxBackdrop;
+import mikolka.compatibility.FreeplayHelpers;
 import flixel.math.FlxMath;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
-import flixel.math.FlxAngle;
-import flixel.math.FlxPoint;
-import flixel.text.FlxText;
-import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
-import flixel.util.FlxTimer;
-import funkin.graphics.adobeanimate.FlxAtlasSprite;
-import funkin.graphics.FunkinSprite;
-import funkin.ui.freeplay.charselect.PlayableCharacter;
-import funkin.ui.MusicBeatSubState;
 import openfl.display.BlendMode;
 import flixel.group.FlxSpriteGroup;
-import funkin.graphics.shaders.AdjustColorShader;
-import flixel.addons.display.FlxTiledSprite;
-import flixel.addons.display.FlxBackdrop;
+
+import mikolka.compatibility.FunkinPath as Paths;
 
 class PicoCard extends BackingCard
 {
@@ -234,12 +220,12 @@ class PicoCard extends BackingCard
   var beatFreq:Int = 1;
   var beatFreqList:Array<Int> = [1, 2, 4, 8];
 
-  public override function beatHit():Void
+  public override function beatHit(curBeat:Int):Void
   {
     // increases the amount of beats that need to go by to pulse the glow because itd flash like craazy at high bpms.....
-    beatFreq = beatFreqList[Math.floor(Conductor.instance.bpm / 140)];
+    beatFreq = beatFreqList[Math.floor(FreeplayHelpers.BPM / 140)];
 
-    if (Conductor.instance.currentBeat % beatFreq != 0) return;
+    if (curBeat % beatFreq != 0) return;
     FlxTween.cancelTweensOf(glow);
     FlxTween.cancelTweensOf(glowDark);
 

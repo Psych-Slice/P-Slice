@@ -341,7 +341,7 @@ class CharSelectSubState extends MusicBeatSubState
         restartTrack: true,
       });
     //? I did some tweaks here
-    FreeplayHelpers.setBPM(90);
+    FreeplayHelpers.BPM = 90;
     initLocks();
     for (k => v in availableChars){
       if(v == curChar){
@@ -695,14 +695,14 @@ class CharSelectSubState extends MusicBeatSubState
         onComplete: function(_) {
           if(!FlxG.random.bool(0.01)) FlxTransitionableState.skipNextTransOut = true; //? a fix
           FlxG.switchState(FreeplayState.build(null));
-          // FlxG.switchState(FreeplayState.build(
-          //   {
-          //     {
-          //       character: curChar, //TODO fix this once we import new freeplay
-          //       fromCharSelect: true
-          //     }
-          //   }
-          //   ));
+          FlxG.switchState(FreeplayState.build(
+            {
+              {
+                character: curChar, //TODO fix this once we import new freeplay
+                fromCharSelect: true
+              }
+            }
+            ));
         }
       });
   }
@@ -718,7 +718,7 @@ class CharSelectSubState extends MusicBeatSubState
 
   override public function update(elapsed:Float):Void
   {
-    if(FlxG.sound.music != null) Conductor.songPosition = FlxG.sound.music.time; //? update song position
+    
     super.update(elapsed);
 
     if (controls.UI_UP_R || controls.UI_DOWN_R || controls.UI_LEFT_R || controls.UI_RIGHT_R) selectSound.pitch = 1;
@@ -840,7 +840,7 @@ class CharSelectSubState extends MusicBeatSubState
         gfChill.playAnimation("confirm", true, false, true);
         pressedSelect = true;
         selectTimer.start(1.5, (_) -> {
-          // pressedSelect = false;
+           pressedSelect = false;
           // FlxG.switchState(FreeplayState.build(
           //   {
           //     {

@@ -1,6 +1,5 @@
-package funkin.ui.freeplay.backcards;
+package mikolka.vslice.freeplay.backcards;
 
-import funkin.ui.freeplay.FreeplayState;
 import flash.display.BitmapData;
 import flixel.FlxCamera;
 import flixel.math.FlxMath;
@@ -16,13 +15,8 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxTimer;
-import funkin.graphics.adobeanimate.FlxAtlasSprite;
-import funkin.graphics.FunkinSprite;
-import funkin.ui.freeplay.charselect.PlayableCharacter;
-import funkin.ui.MusicBeatSubState;
 import openfl.display.BlendMode;
 import flixel.group.FlxSpriteGroup;
-import funkin.graphics.shaders.AdjustColorShader;
 import flixel.addons.display.FlxTiledSprite;
 import flixel.addons.display.FlxBackdrop;
 
