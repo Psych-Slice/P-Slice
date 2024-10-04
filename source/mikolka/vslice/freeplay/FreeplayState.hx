@@ -56,8 +56,6 @@ using mikolka.funkin.utils.ArrayTools;
  */
 typedef FreeplayStateParams =
 {
-	?character:String,
-
 	?fromCharSelect:Bool,
 
 	?fromResults:FromResultsParams,
@@ -202,11 +200,6 @@ class FreeplayState extends MusicBeatSubstate
 	 */
 	public static var rememberedSongId:Null<String> = 'tutorial';
 
-	/**
-	 * The character we were on when this menu was last accessed.
-	 */
-	public static var rememberedCharacterId:String = Constants.DEFAULT_CHARACTER; //! fix this
-
 	var funnyCam:FunkinCamera;
 	var rankCamera:FunkinCamera;
 	var rankBg:FunkinSprite;
@@ -227,18 +220,18 @@ class FreeplayState extends MusicBeatSubstate
 	public function new(?params:FreeplayStateParams, ?stickers:StickerSubState)
 	{
 		super();
-		currentCharacterId = params?.character ?? rememberedCharacterId;
-		styleData = FreeplayStyleRegistry.instance.fetchEntry(currentCharacterId);
-
-		var targetCharId = params?.character ?? rememberedCharacterId;
-		var result = PlayerRegistry.instance.fetchEntry(targetCharId);
-		if (result == null)
-			throw 'No valid playable character with id ${targetCharId}';
-
+		var saveBox = VsliceOptions.LAST_MOD; 
+		currentCharacterId = saveBox.char_name;
+		
+		if(ModsHelper.isModDirEnabled(saveBox.mod_dir)) ModsHelper.loadModDir(saveBox.mod_dir);
+		var result = PlayerRegistry.instance.fetchEntry(currentCharacterId);
+		if (result == null){
+			currentCharacterId = Constants.DEFAULT_CHARACTER;
+			result = PlayerRegistry.instance.fetchEntry(Constants.DEFAULT_CHARACTER);
+		}
 		currentCharacter = result;
 
 		styleData = FreeplayStyleRegistry.instance.fetchEntry(currentCharacter.getFreeplayStyleID());
-		rememberedCharacterId = targetCharId ?? Constants.DEFAULT_CHARACTER;
 
 		fromCharSelect = params?.fromCharSelect;
 
@@ -465,10 +458,12 @@ class FreeplayState extends MusicBeatSubstate
 
 		// albumRoll.applyExitMovers(exitMovers);
 
-		var overhangStuff:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 64, FlxColor.BLACK);
-		overhangStuff.y -= overhangStuff.height;
+		var overhangStuff:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 64*2, FlxColor.BLACK);
+
+		if(!fromCharSelect) overhangStuff.y -= overhangStuff.height; //? This messes up transition for some reason
+		else overhangStuff.y -= overhangStuff.height/2; 
 		add(overhangStuff);
-		FlxTween.tween(overhangStuff, {y: 0}, 0.3, {ease: FlxEase.quartOut});
+		FlxTween.tween(overhangStuff, {y: -64}, 0.3, {ease: FlxEase.quartOut});
 
 		var fnfFreeplay:FlxText = new FlxText(8, 8, 0, 'FREEPLAY', 48);
 		fnfFreeplay.font = 'VCR OSD Mono';
@@ -498,6 +493,9 @@ class FreeplayState extends MusicBeatSubstate
 			wait: 0.1
 		});
 
+		//FlxG.debugger.addTrackerProfile(new TrackerProfile(FlxSprite, ["x", "y", "alpha", "scale", "blend"]));
+		//FlxG.debugger.track(overhangStuff);
+		
 		var sillyStroke:StrokeShader = new StrokeShader(0xFFFFFFFF, 2, 2);
 		fnfFreeplay.shader = sillyStroke;
 		ostName.shader = sillyStroke;
@@ -673,7 +671,7 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			onDJIntroDone();
 		}
-
+		currentDifficulty = rememberedDifficulty; //? use last difficulty to create this list
 		generateSongList(null, false);
 
 		// dedicated camera for the state so we don't need to fuk around with camera scrolls from the mainmenu / elsewhere
@@ -1670,6 +1668,7 @@ class FreeplayState extends MusicBeatSubstate
 			if (dj != null)
 				dj.resetAFKTimer();
 			changeDiff(-1);
+			rememberedDifficulty = currentDifficulty; //? make sure to remember it, because otherwise we'll forget about it
 			generateSongList(currentFilter, true);
 		}
 		if (controls.UI_RIGHT_P)
@@ -1677,6 +1676,7 @@ class FreeplayState extends MusicBeatSubstate
 			if (dj != null)
 				dj.resetAFKTimer();
 			changeDiff(1);
+			rememberedDifficulty = currentDifficulty; //? make sure to remember it, because otherwise we'll forget about it
 			generateSongList(currentFilter, true);
 		}
 
@@ -1796,6 +1796,7 @@ class FreeplayState extends MusicBeatSubstate
 			currentDifficultyIndex = 0;
 
 		currentDifficulty = diffIdsCurrent[currentDifficultyIndex];
+		
 
 		var daSong:Null<FreeplaySongData> = grpCapsules.members[curSelected].songData;
 		if (daSong != null)
@@ -1813,6 +1814,7 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			intendedScore = 0;
 			intendedCompletion = 0.0;
+			
 		}
 
 		if (intendedCompletion == Math.POSITIVE_INFINITY || intendedCompletion == Math.NEGATIVE_INFINITY || Math.isNaN(intendedCompletion))

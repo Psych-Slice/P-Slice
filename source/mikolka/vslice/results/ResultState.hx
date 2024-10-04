@@ -801,7 +801,6 @@ class ResultState extends MusicBeatSubState
           targetState = FreeplayState.build(
             {
               {
-                character: playerCharacterId ?? "bf",
                 fromResults:
                   {
                     oldRank: params.prevScoreRank,
@@ -834,6 +833,7 @@ class ResultState extends MusicBeatSubState
               }
               else
               {
+                FlxG.sound.pause(); //? fix sound
                 FlxG.switchState(targetState);
               }
             }

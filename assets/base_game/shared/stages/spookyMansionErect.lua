@@ -3,7 +3,7 @@
 
 animatedStage = false;
 function onCreate()
-	luaDebugMode = true;
+	--luaDebugMode = true;
 	makeAnimatedLuaSprite('halloweenOutside', 'erect/bgtrees', 200, 50);
 	addAnimationByPrefix('halloweenOutside', 'idle', 'bgtrees0', 24, true);
 	setScrollFactor("halloweenOutside", 0.8, 0.8)

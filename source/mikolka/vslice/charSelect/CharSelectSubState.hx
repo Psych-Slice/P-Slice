@@ -698,7 +698,6 @@ class CharSelectSubState extends MusicBeatSubState
           FlxG.switchState(FreeplayState.build(
             {
               {
-                character: curChar, //TODO fix this once we import new freeplay
                 fromCharSelect: true
               }
             }

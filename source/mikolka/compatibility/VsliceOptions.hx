@@ -25,7 +25,3 @@ class VsliceOptions {
         return value;
     }
 }
-typedef CharSave={
-    mod_dir:String,
-    char_name:String
-}
