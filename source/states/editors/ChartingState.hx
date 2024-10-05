@@ -1,7 +1,6 @@
 package states.editors;
 
-import backend.FreeplayMeta;
-import backend.FreeplayMeta.FreeplayMetaJSON;
+import mikolka.funkin.custom.FreeplayMeta.FreeplayMetaJSON;
 import openfl.net.FileReference;
 import flixel.FlxSubState;
 import flixel.util.FlxSave;
@@ -602,7 +601,6 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	{
 		updateJsonData();
 		loadMusic();
-		loadMetadata();
 		reloadNotes();
 		onChartLoaded();
 		updateHeads(true);
@@ -1749,8 +1747,10 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	function loadMetadata() {
 		var songMetadata = FreeplayMeta.getMeta(PlayState.SONG.song);
 		ratingInput.value = songMetadata.songRating;
-		prevStartInput.value = (songMetadata.freeplayPrevStart*maxTime)/1000;
-		prevEndInput.value = (songMetadata.freeplayPrevEnd*maxTime)/1000;
+		prevStartInput.value = songMetadata.freeplayPrevStart;
+		prevEndInput.value = songMetadata.freeplayPrevEnd;
+		characterName.text = songMetadata.freeplayCharacter;
+		albumName.text = songMetadata.albumId;
 	}
 
 	function loadMusic(?killAudio:Bool = false)
@@ -3241,6 +3241,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	var ratingInput:PsychUINumericStepper;
 	var prevStartInput:PsychUINumericStepper;
 	var prevEndInput:PsychUINumericStepper;
+	var characterName:PsychUIInputText;
+	var albumName:PsychUIInputText;
 	var exportMetadataBtn:PsychUIButton;
 	var maxTime:Float = 0.0;
 	function addMetadataTab()
@@ -3249,23 +3251,38 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		ratingInput = new PsychUINumericStepper(20, 30,1,0,0,99,0,60);
 		prevStartInput = new PsychUINumericStepper(20, 100,1,0,0,999,2,80); 
 		prevEndInput = new PsychUINumericStepper(20, 150,1,0,0,999,2,80);
-		exportMetadataBtn = new PsychUIButton(20,200,"Export metadata",onMetadataSaveClick.bind(),110);
+		characterName = new PsychUIInputText(20,200,100,"",8);
+		albumName = new PsychUIInputText(20,220,100,"",8);
+
+		exportMetadataBtn = new PsychUIButton(20,250,"Export metadata",onMetadataSaveClick.bind(),110);
 
 		tab_group.add(new FlxText(ratingInput.x, ratingInput.y - 15, 80, 'Rating:'));
-		tab_group.add(new FlxText(prevStartInput.x, prevStartInput.y - 15, 150, 'Freeplay preview start sec:'));
-		tab_group.add(new FlxText(prevEndInput.x, prevEndInput.y - 15, 150, 'Freeplay preview end sec:'));
 		tab_group.add(ratingInput);
+
+		tab_group.add(new FlxText(prevStartInput.x, prevStartInput.y - 15, 150, 'Freeplay preview start sec:'));
 		tab_group.add(prevStartInput);
+
+		tab_group.add(new FlxText(prevEndInput.x, prevEndInput.y - 15, 150, 'Freeplay preview end sec:'));
 		tab_group.add(prevEndInput);
+
+		tab_group.add(new FlxText(characterName.x, characterName.y - 15, 150, 'Player character:'));
+		tab_group.add(characterName);
+
+		tab_group.add(new FlxText(albumName.x, albumName.y - 15, 150, 'Song album:'));
+		tab_group.add(albumName);
+
 		tab_group.add(exportMetadataBtn);
 	}
 
 	function onMetadataSaveClick() {
-		var meta:FreeplayMetaJSON = {
-			songRating: Std.int(ratingInput.value),
-			freeplayPrevStart: (prevStartInput.value*1000)/maxTime,
-			freeplayPrevEnd: (prevEndInput.value*1000)/maxTime
-		};
+		var meta:FreeplayMetaJSON = new FreeplayMetaJSON();
+		
+		meta.songRating = Std.int(ratingInput.value);
+		meta.freeplayPrevStart = prevStartInput.value;
+		meta.freeplayPrevEnd = prevEndInput.value;
+		meta.albumId = albumName.text;
+		meta.freeplayCharacter = characterName.text;
+		
 		var data:String = haxe.Json.stringify(meta, "\t");
 		if (data.length > 0)
 		{
