@@ -1,7 +1,6 @@
 package mikolka.compatibility;
 
 import mikolka.vslice.freeplay.pslice.BPMCache;
-import backend.FreeplayMeta;
 import mikolka.funkin.Scoring.ScoringRank;
 import backend.Highscore;
 import backend.WeekData;
@@ -58,8 +57,9 @@ using mikolka.funkin.utils.ArrayTools;
  
          var meta = FreeplayMeta.getMeta(songId);
          difficultyRating = meta.songRating;
-         freeplayPrevStart = meta.freeplayPrevStart;
-         freeplayPrevEnd = meta.freeplayPrevEnd;
+         freeplayPrevStart = meta.freeplayPrevStart/meta.freeplaySongLength;
+         freeplayPrevEnd = meta.freeplayPrevEnd/meta.freeplaySongLength;
+         albumId = meta.albumId;
  
          updateValues();
  

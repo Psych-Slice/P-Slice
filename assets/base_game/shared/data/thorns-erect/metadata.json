@@ -1,5 +1,8 @@
 {
-	"freeplayPrevEnd": 0.25,
-	"songRating": 8,
-	"freeplayPrevStart": 0.05
+	"songRating": 7,
+	"albumId": "volume3",
+	"freeplayCharacter": "erect",
+	"freeplaySongLength": 113.684218,
+	"freeplayPrevEnd": 15,
+	"freeplayPrevStart": 0
 }

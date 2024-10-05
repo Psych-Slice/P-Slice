@@ -17,12 +17,12 @@ class AlbumData //? making this a class lets us define some defaults
   /**
    * Readable name of the album.
    */
-  public var name:String;
+  public var name:String = "";
 
   /**
    * Readable name of the artist(s) of the album.
    */
-  public var artists:Array<String>;
+  public var artists:Array<String> = ["Is this even used?"];
 
   /**
    * Asset key for the album art.

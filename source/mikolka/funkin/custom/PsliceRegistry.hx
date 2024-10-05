@@ -10,6 +10,7 @@ class PsliceRegistry {
     }
     function readJson(id:String):Dynamic {
         var char_path = FunkinPath.getPath('$regPath/$id.json');
+        if(!FileSystem.exists(char_path)) return null;
         var text = File.getContent(char_path);
 
         return Json.parse(text);// new PlayerData();

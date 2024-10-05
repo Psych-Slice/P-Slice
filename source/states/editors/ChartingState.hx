@@ -3251,10 +3251,10 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		ratingInput = new PsychUINumericStepper(20, 30,1,0,0,99,0,60);
 		prevStartInput = new PsychUINumericStepper(20, 100,1,0,0,999,2,80); 
 		prevEndInput = new PsychUINumericStepper(20, 150,1,0,0,999,2,80);
-		characterName = new PsychUIInputText(20,200,100,"",8);
-		albumName = new PsychUIInputText(20,220,100,"",8);
+		characterName = new PsychUIInputText(160,100,100,"",8);
+		albumName = new PsychUIInputText(160,150,100,"",8);
 
-		exportMetadataBtn = new PsychUIButton(20,250,"Export metadata",onMetadataSaveClick.bind(),110);
+		exportMetadataBtn = new PsychUIButton(20,200,"Export metadata",onMetadataSaveClick.bind(),110);
 
 		tab_group.add(new FlxText(ratingInput.x, ratingInput.y - 15, 80, 'Rating:'));
 		tab_group.add(ratingInput);
@@ -3282,6 +3282,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		meta.freeplayPrevEnd = prevEndInput.value;
 		meta.albumId = albumName.text;
 		meta.freeplayCharacter = characterName.text;
+		meta.freeplaySongLength = FlxG.sound.music.length/1000;
 		
 		var data:String = haxe.Json.stringify(meta, "\t");
 		if (data.length > 0)
