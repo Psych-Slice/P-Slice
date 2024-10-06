@@ -452,18 +452,24 @@ class FreeplayState extends MusicBeatSubstate
 				diffSprite.visible = true;
 		}
 
-		// albumRoll = new AlbumRoll();
-		// albumRoll.albumId = null;
-		// add(albumRoll);
+		albumRoll.albumId = null;
+		add(albumRoll);
 
-		// albumRoll.applyExitMovers(exitMovers);
+		var overhangStuff:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 164, FlxColor.BLACK);
+		overhangStuff.y -= overhangStuff.height;
 
-		var overhangStuff:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 64*2, FlxColor.BLACK);
-
-		if(!fromCharSelect) overhangStuff.y -= overhangStuff.height; //? This messes up transition for some reason
-		else overhangStuff.y -= overhangStuff.height/2; 
-		add(overhangStuff);
-		FlxTween.tween(overhangStuff, {y: -64}, 0.3, {ease: FlxEase.quartOut});
+		if (fromCharSelect == true)
+		{
+			blackOverlayBullshitLOLXD.x = 387.76;
+			overhangStuff.y = -100;
+			backingCard?.skipIntroTween();
+		}
+		else
+		{
+			albumRoll.applyExitMovers(exitMovers, exitMoversCharSel);
+			FlxTween.tween(overhangStuff, {y: -100}, 0.3, {ease: FlxEase.quartOut});
+			FlxTween.tween(blackOverlayBullshitLOLXD, {x: 387.76}, 0.7, {ease: FlxEase.quintOut});
+		}
 
 		var fnfFreeplay:FlxText = new FlxText(8, 8, 0, 'FREEPLAY', 48);
 		fnfFreeplay.font = 'VCR OSD Mono';

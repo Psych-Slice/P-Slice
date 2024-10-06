@@ -351,7 +351,7 @@ class FlxAtlasSprite extends PsychFlxAnimate
 
   public function replaceFrameGraphic(index:Int, ?graphic:FlxGraphicAsset):Void
   {
-    if (graphic == null || !Assets.exists(graphic))
+    if (graphic == null) //? removed this bitch: {|| !Assets.exists(graphic))}
     {
       var prevFrame:Null<FlxFrame> = prevFrames.get(index);
       if (prevFrame == null) return;

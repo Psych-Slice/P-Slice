@@ -41,18 +41,6 @@ class AlbumRoll extends FlxSpriteGroup
 
   var albumData:Album;
 
-  final animNames:Map<String, String> = [
-    "volume1-active" => "ENTRANCE",
-    "volume2-active" => "ENTRANCE VOL2",
-    "volume3-active" => "ENTRANCE VOL3",
-    "volume1-trans" => "VOL1 TRANS",
-    "volume2-trans" => "VOL2 TRANS",
-    "volume3-trans" => "VOL3 TRANS",
-    "volume1-idle" => "VOL1 STILL",
-    "volume2-idle" => "VOL2 STILL",
-    "volume3-idle" => "VOL3 STILL",
-  ];
-
   public function new()
   {
     super();
@@ -106,7 +94,7 @@ class AlbumRoll extends FlxSpriteGroup
     };
 
     // Update the album art.
-    var albumGraphic = Paths.image(albumData.getAlbumArtAssetKey());
+    var albumGraphic = Paths.noGpuImage(albumData.getAlbumArtAssetKey());
     newAlbumArt.replaceFrameGraphic(0, albumGraphic);
 
     buildAlbumTitle(albumData.getAlbumTitleAssetKey());
