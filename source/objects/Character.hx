@@ -5,7 +5,6 @@ import backend.animation.PsychAnimationController;
 import flixel.graphics.frames.FlxAtlasFrames;
 
 import flixel.util.FlxSort;
-import flixel.util.FlxDestroyUtil;
 
 import openfl.utils.AssetType;
 import openfl.utils.Assets;

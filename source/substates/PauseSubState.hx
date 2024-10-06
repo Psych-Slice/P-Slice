@@ -16,7 +16,7 @@ class PauseSubState extends MusicBeatSubstate
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
 	var menuItems:Array<String> = [];
-	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty', 'Options', 'Exit to menu'];
+	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Chart Editor', 'Change Difficulty', 'Options', 'Exit to menu'];
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
 
@@ -144,6 +144,9 @@ class PauseSubState extends MusicBeatSubstate
 		regenMenu();
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
+		addTouchPad(PlayState.chartingMode ? 'LEFT_FULL' : 'UP_DOWN', 'A');
+		addTouchPadCamera();
+
 		super.create();
 	}
 	
@@ -258,6 +261,7 @@ class PauseSubState extends MusicBeatSubstate
 			switch (daSelected)
 			{
 				case "Resume":
+					Paths.clearUnusedMemory();
 					close();
 				case 'Change Difficulty':
 					menuItems = difficultyChoices;
@@ -269,6 +273,8 @@ class PauseSubState extends MusicBeatSubstate
 					practiceText.visible = PlayState.instance.practiceMode;
 				case "Restart Song":
 					restartSong();
+				case 'Chart Editor':
+					PlayState.instance.openChartEditor();
 				case "Leave Charting Mode":
 					restartSong();
 					PlayState.chartingMode = false;
@@ -331,6 +337,12 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.chartingMode = false;
 					FlxG.camera.followLerp = 0;
 			}
+		}
+
+		if (touchPad == null) //sometimes it dosent add the tpad, hopefully this fixes it
+		{
+			addTouchPad(PlayState.chartingMode ? 'LEFT_FULL' : 'UP_DOWN', 'A');
+			addTouchPadCamera();
 		}
 	}
 

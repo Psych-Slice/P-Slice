@@ -17,16 +17,22 @@ class FlashingState extends MusicBeatState
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
 
-		warnText = new FlxText(0, 0, FlxG.width,
-			"Hey, watch out!\n
-			This Mod contains some flashing lights!\n
-			Press ENTER to disable them now or go to Options Menu.\n
-			Press ESCAPE to ignore this message.\n
-			You've been warned!",
-			32);
+		final silly:String = controls.mobileC ? 'A' : 'ENTER';
+		final baka:String = controls.mobileC ? 'B' : 'ENTER';
+
+		var guh:String = 'Hey, watch out!\n
+		This Mod contains some flashing lights!\n
+		Press $silly to disable them now or go to Options Menu.\n
+		Press $baka to ignore this message.\n
+		You\'ve been warned!';
+
+		controls.isInSubstate = false; // qhar I hate it
+		warnText = new FlxText(0, 0, FlxG.width, guh, 32);
 		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
 		add(warnText);
+
+		addTouchPad('NONE', 'A_B');
 	}
 
 	override function update(elapsed:Float)

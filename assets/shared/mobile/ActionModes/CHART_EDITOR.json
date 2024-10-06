@@ -1,0 +1,112 @@
+{
+  "buttons": [
+    {
+      "button": "buttonV",
+      "graphic": "v",
+      "x": 770,
+      "y": 463,
+      "width": 132,
+      "height": 125,
+      "color": "0x49A9B2"
+    },
+    {
+      "button": "buttonD",
+      "graphic": "d",
+      "x": 770,
+      "y": 587,
+      "width": 132,
+      "height": 125,
+      "color": "0x0078FF"
+    },
+    {
+      "button": "buttonX",
+      "graphic": "x",
+      "x": 896,
+      "y": 463,
+      "width": 132,
+      "height": 125,
+      "color": "0x99062D"
+    },
+    {
+      "button": "buttonC",
+      "graphic": "c",
+      "x": 1022,
+      "y": 587,
+      "width": 132,
+      "height": 125,
+      "color": "0x44FF00"
+    },
+    {
+      "button": "buttonY",
+      "graphic": "y",
+      "x": 1022,
+      "y": 463,
+      "width": 132,
+      "height": 125,
+      "color": "0x4A35B9"
+    },
+    {
+      "button": "buttonZ",
+      "graphic": "z",
+      "x": 896,
+      "y": 587,
+      "width": 132,
+      "height": 125,
+      "color": "0xCCB98E"
+    },
+    {
+      "button": "buttonA",
+      "graphic": "a",
+      "x": 1148,
+      "y": 587,
+      "width": 132,
+      "height": 125,
+      "color": "0xFF0000"
+    },
+    {
+      "button": "buttonUp2",
+      "graphic": "up",
+      "x": 644,
+      "y": 463,
+      "width": 132,
+      "height": 125,
+      "color": "0xFF12FA05"
+    },
+    {
+      "button": "buttonDown2",
+      "graphic": "down",
+      "x": 644,
+      "y": 587,
+      "width": 132,
+      "height": 125,
+      "color": "0xFF00FFFF"
+    },
+    {
+      "button": "buttonF",
+      "graphic": "f",
+      "x": 1022,
+      "y": 339,
+      "width": 132,
+      "height": 125,
+      "color": "0xB1FC00"
+    },
+    {
+      "button": "buttonG",
+      "graphic": "g",
+      "x": 1148,
+      "y": 339,
+      "width": 132,
+      "height": 125,
+      "color": "0xFF009D"
+    },
+    {
+      "button": "buttonH",
+      "graphic": "h",
+      "x": 1148,
+      "y": 463,
+      "width": 132,
+      "height": 125,
+      "color": "0xF3A505"
+    }
+  ]
+}

@@ -34,7 +34,7 @@ class Paths
 			dumpExclusions.push(key);
 	}
 
-	public static var dumpExclusions:Array<String> = ['assets/shared/music/freakyMenu.$SOUND_EXT',"assets/shared/images/cursor-default.png"];
+	public static var dumpExclusions:Array<String> = ['assets/shared/music/freakyMenu.$SOUND_EXT',"assets/shared/images/cursor-default.png", 'assets/shared/mobile/touchpad/bg.png'];
 	// haya I love you for the base cache dump I took to the max
 	public static function clearUnusedMemory()
 	{
@@ -104,6 +104,8 @@ class Paths
 			if(FileSystem.exists(modded)) return modded;
 		}
 		#end
+		if(parentfolder == "mobile")
+			return getSharedPath('mobile/$file');
 
 		if (parentfolder != null)
 			return getFolderPath(file, parentfolder);
@@ -374,7 +376,7 @@ class Paths
 
 	#if MODS_ALLOWED
 	inline static public function mods(key:String = '')
-		return 'mods/' + key;
+		return #if mobile Sys.getCwd() + #end 'mods/' + key;
 
 	inline static public function modsFont(key:String)
 		return modFolders('fonts/' + key);
@@ -431,7 +433,7 @@ class Paths
 				}
 				#end
 			}
-			return 'mods/' + key;
+			return #if mobile Sys.getCwd() + #end 'mods/' + key;
 		}
 	
 		#if linux
@@ -460,7 +462,7 @@ class Paths
 			var allFiles:Array<String> = null;
 			try
 			{
-				allFiles = FileSystem.readDirectory(dir);
+				allFiles = Paths.readDirectory(dir);
 			}
 			catch (e)
 			{
@@ -550,4 +552,25 @@ class Paths
 		spr.loadAtlasEx(folderOrImg, spriteJson, animationJson);
 	}
 	#end
+
+	public static function readDirectory(directory:String):Array<String>
+	{
+		#if MODS_ALLOWED
+		return FileSystem.readDirectory(directory);
+		#else
+		var dirs:Array<String> = [];
+		for(dir in Assets.list().filter(folder -> folder.startsWith(directory)))
+		{
+			@:privateAccess
+			for(library in lime.utils.Assets.libraries.keys())
+			{
+				if(library != 'default' && Assets.exists('$library:$dir') && (!dirs.contains('$library:$dir') || !dirs.contains(dir)))
+					dirs.push('$library:$dir');
+				else if(Assets.exists(dir) && !dirs.contains(dir))
+					dirs.push(dir);
+			}
+		}
+		return dirs;
+		#end
+	}
 }

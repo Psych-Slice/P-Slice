@@ -18,27 +18,20 @@ import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.app.Application;
 import states.TitleState;
-
+import backend.Highscore;
+import lime.system.System as LimeSystem;
+#if mobile
+import mobile.backend.MobileScaleMode;
+import mobile.states.CopyState;
+#end
 #if linux
 import lime.graphics.Image;
-#end
 
-//crash handler stuff
-#if CRASH_HANDLER
-import openfl.events.UncaughtErrorEvent;
-import haxe.CallStack;
-import haxe.io.Path;
-#end
-
-import backend.Highscore;
-
-#if linux
 @:cppInclude('./external/gamemode_client.h')
 @:cppFileCode('
 	#define GAMEMODE_AUTO
 ')
 #end
-
 class Main extends Sprite
 {
 	var game = {
@@ -53,6 +46,7 @@ class Main extends Sprite
 
 	public static var fpsVar:FPS;
 	public static var memoryCounter:MemoryCounter;
+	public static final platform:String = #if mobile "Phones" #else "PCs" #end;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
@@ -64,12 +58,21 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
-
-		// Credits to MAJigsaw77 (he's the og author for this code)
+		#if mobile
 		#if android
-		Sys.setCwd(Path.addTrailingSlash(Context.getExternalFilesDir()));
-		#elseif ios
-		Sys.setCwd(lime.system.System.applicationStorageDirectory);
+		StorageUtil.requestPermissions();
+		#end
+		Sys.setCwd(StorageUtil.getStorageDirectory());
+		#end
+		backend.CrashHandler.init();
+
+		#if windows
+		@:functionCode("
+			#include <windows.h>
+			#include <winuser.h>
+			setProcessDPIAware() // allows for more crisp visuals
+			DisableProcessWindowsGhosting() // lets you move the window and such if it's not responding
+		")
 		#end
 
 		if (stage != null)
@@ -81,7 +84,7 @@ class Main extends Sprite
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		#if hxvlc
-		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0")  ['--no-lua'] #end);
+		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0") ['--no-lua'] #end);
 		#end
 	}
 
@@ -97,6 +100,7 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
+		#if (openfl <= "9.2.0")
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 
@@ -108,6 +112,10 @@ class Main extends Sprite
 			game.width = Math.ceil(stageWidth / game.zoom);
 			game.height = Math.ceil(stageHeight / game.zoom);
 		}
+		#else
+		if (game.zoom == -1.0)
+			game.zoom = 1.0;
+		#end
 
 		#if LUA_ALLOWED
 		Mods.pushGlobalMods();
@@ -122,32 +130,42 @@ class Main extends Sprite
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
 		#if ACHIEVEMENTS_ALLOWED Achievements.load(); #end
-		
-		var gameObject = new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen);
+
+		var gameObject = new FlxGame(game.width, game.height,
+			#if (mobile && MODS_ALLOWED) CopyState.checkExistingFiles() ? game.initialState : CopyState #else game.initialState #end,
+			#if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen);
 
 		// FlxG.game._customSoundTray wants just the class, it calls new from
-    	// create() in there, which gets called when it's added to stage
-    	// which is why it needs to be added before addChild(game) here
-    	@:privateAccess
-    	gameObject._customSoundTray = funkin.components.FunkinSoundTray;
+		// create() in there, which gets called when it's added to stage
+		// which is why it needs to be added before addChild(game) here
+		@:privateAccess
+		gameObject._customSoundTray = funkin.components.FunkinSoundTray;
 
 		addChild(gameObject);
 
-		#if !mobile
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
+		#if mobile
+		FlxG.game.addChild(fpsVar);
+	  	#else
 		addChild(fpsVar);
+		#end
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
-		if(fpsVar != null) {
+		if (fpsVar != null)
+		{
 			fpsVar.visible = ClientPrefs.data.showFPS;
 		}
-		#end
 
 		#if !html5
 		// TODO: disabled on HTML5 (todo: find another method that works?)
 		memoryCounter = new MemoryCounter(10, 13, 0xFFFFFF);
+		#if mobile
+		FlxG.game.addChild(memoryCounter);
+	  	#else
 		addChild(memoryCounter);
-		if(memoryCounter != null) {
+		#end
+		if (memoryCounter != null)
+		{
 			memoryCounter.visible = ClientPrefs.data.showFPS;
 		}
 		#end
@@ -163,92 +181,46 @@ class Main extends Sprite
 		#end
 
 		FlxG.fixedTimestep = false;
-		FlxG.game.focusLostFramerate = 60;
-
+		FlxG.game.focusLostFramerate = #if mobile 30 #else 60 #end;
+		#if web
+		FlxG.keys.preventDefaultKeys.push(TAB);
+		#else
 		FlxG.keys.preventDefaultKeys = [TAB];
-		
-		#if CRASH_HANDLER
-		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		#end
 
 		#if DISCORD_ALLOWED
 		DiscordClient.prepare();
 		#end
 
+		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
+
+		#if mobile
+		LimeSystem.allowScreenTimeout = ClientPrefs.data.screensaver;
+		FlxG.scaleMode = new MobileScaleMode();
+		#end
+
 		// shader coords fix
-		FlxG.signals.gameResized.add(function (w, h) {
-		     if (FlxG.cameras != null) {
-			   for (cam in FlxG.cameras.list) {
-				if (cam != null && cam.filters != null)
-					resetSpriteCache(cam.flashSprite);
-			   }
+		FlxG.signals.gameResized.add(function(w, h)
+		{
+			if (FlxG.cameras != null)
+			{
+				for (cam in FlxG.cameras.list)
+				{
+					if (cam != null && cam.filters != null)
+						resetSpriteCache(cam.flashSprite);
+				}
 			}
 
 			if (FlxG.game != null)
-			resetSpriteCache(FlxG.game);
+				resetSpriteCache(FlxG.game);
 		});
 	}
 
-	static function resetSpriteCache(sprite:Sprite):Void {
+	static function resetSpriteCache(sprite:Sprite):Void
+	{
 		@:privateAccess {
-		        sprite.__cacheBitmap = null;
+			sprite.__cacheBitmap = null;
 			sprite.__cacheBitmapData = null;
 		}
 	}
-
-	// Code was entirely made by sqirra-rng for their fnf engine named "Izzy Engine", big props to them!!!
-	// very cool person for real they don't get enough credit for their work
-	#if CRASH_HANDLER
-	function onCrash(e:UncaughtErrorEvent):Void
-	{
-		var errMsg:String = "";
-		var path:String;
-		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
-		var dateNow:String = Date.now().toString();
-
-		dateNow = dateNow.replace(" ", "_");
-		dateNow = dateNow.replace(":", "'");
-
-		path = "./crash/" + "PsychEngine_" + dateNow + ".txt";
-
-		for (stackItem in callStack)
-		{
-			switch (stackItem)
-			{
-				case FilePos(s, file, line, column):
-					errMsg += file + " (line " + line + ")\n";
-				default:
-					Sys.println(stackItem);
-			}
-		}
-
-		errMsg += "\nUncaught Error: " + e.error;
-		/*
-		 * remove if you're modding and want the crash log message to contain the link
-		 * please remember to actually modify the link for the github page to report the issues to.
-		*/
-		// 
-		#if officialBuild
-		errMsg += "\nPlease report this error to the GitHub page: https://github.com/mikolka9144/P-Slice\n\n> Crash Handler written by: sqirra-rng";
-		#end
-
-		if (!FileSystem.exists("./crash/"))
-			FileSystem.createDirectory("./crash/");
-
-		File.saveContent(path, errMsg + "\n");
-
-		Sys.println(errMsg);
-		Sys.println("Crash dump saved in " + Path.normalize(path));
-
-		#if windows
-		Application.current.window.alert(errMsg, "Error!");
-		#elseif linux
-		Sys.command("notify-send",["Error!",errMsg]);
-		#end
-		#if DISCORD_ALLOWED
-		DiscordClient.shutdown();
-		#end
-		Sys.exit(1);
-	}
-	#end
 }

@@ -2,6 +2,11 @@ package options;
 
 import states.MainMenuState;
 import backend.StageData;
+import flixel.FlxObject;
+#if (target.threaded)
+import sys.thread.Mutex;
+import sys.thread.Thread;
+#end
 
 class OptionsState extends MusicBeatState
 {
@@ -12,21 +17,37 @@ class OptionsState extends MusicBeatState
 		'Graphics',
 		'Visuals',
 		'Gameplay',
-		'V-slice options'
+		'V-Slice Options'
 		#if TRANSLATIONS_ALLOWED , 'Language' #end
+		,'Mobile Options'
 	];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
 	public static var onPlayState:Bool = false;
+	#if (target.threaded) var mutex:Mutex = new Mutex(); #end
+
+	private var mainCam:FlxCamera;
+	private var funnyCam:FlxCamera;
+	private var camFollow:FlxObject;
+	private var camFollowPos:FlxObject;
 
 	function openSelectedSubstate(label:String) {
+		if (label != "Adjust Delay and Combo")
+			funnyCam.visible = persistentUpdate = false;
+
 		switch(label)
 		{
 			case 'Note Colors':
 				openSubState(new options.NotesSubState());
 			case 'Controls':
-				openSubState(new options.ControlsSubState());
+				switch (controls.mobileC)
+				{
+					case true:
+						removeTouchPad();
+						openSubState(new mobile.substates.MobileControlSelectSubState());
+					default: openSubState(new options.ControlsSubState());
+				}
 			case 'Graphics':
 				openSubState(new options.GraphicsSettingsSubState());
 			case 'Visuals':
@@ -35,8 +56,10 @@ class OptionsState extends MusicBeatState
 				openSubState(new options.GameplaySettingsSubState());
 			case 'Adjust Delay and Combo':
 				MusicBeatState.switchState(new options.NoteOffsetState());
-			case 'V-slice options':
+			case 'V-Slice Options':
 				openSubState(new BaseGameSubState());
+			case 'Mobile Options':
+				openSubState(new mobile.options.MobileOptionsSubState());
 			case 'Language':
 				openSubState(new options.LanguageSubState());
 		}
@@ -44,6 +67,17 @@ class OptionsState extends MusicBeatState
 
 	override function create()
 	{
+		mainCam = initPsychCamera();
+		funnyCam = new FlxCamera();
+		funnyCam.bgColor.alpha = 0;
+		FlxG.cameras.add(funnyCam, false);
+
+		camFollow = new FlxObject(0, 0, 1, 1);
+		camFollowPos = new FlxObject(0, 0, 1, 1);
+		add(camFollow);
+		add(camFollowPos);
+		FlxG.cameras.list[FlxG.cameras.list.indexOf(funnyCam)].follow(camFollowPos);
+
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Options Menu", null);
 		#end
@@ -64,11 +98,28 @@ class OptionsState extends MusicBeatState
 			var optionText:Alphabet = new Alphabet(0, 0, Language.getPhrase('options_$option', option), true);
 			optionText.screenCenter();
 			optionText.y += (92 * (num - (options.length / 2))) + 45;
+			optionText.cameras = [funnyCam];
 			grpOptions.add(optionText);
 		}
 
 		changeSelection();
 		ClientPrefs.saveSettings();
+
+		#if (target.threaded)
+		Thread.create(()->{
+			mutex.acquire();
+
+			for (music in VisualsSettingsSubState.pauseMusics)
+			{
+				if (music.toLowerCase() != "none")
+					Paths.music(Paths.formatToSongPath(music));
+			}
+
+			mutex.release();
+		});
+		#end
+
+		addTouchPad('UP_DOWN', 'A_B');
 
 		super.create();
 	}
@@ -80,6 +131,10 @@ class OptionsState extends MusicBeatState
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Options Menu", null);
 		#end
+		controls.isInSubstate = false;
+		persistentUpdate = funnyCam.visible = true;
+		removeTouchPad();
+		addTouchPad('UP_DOWN', 'A_B');
 	}
 
 	override function update(elapsed:Float) {
@@ -89,6 +144,25 @@ class OptionsState extends MusicBeatState
 			changeSelection(-1);
 		if (controls.UI_DOWN_P)
 			changeSelection(1);
+
+		var lerpVal:Float = Math.max(0, Math.min(1, elapsed * 7.5));
+		camFollowPos.setPosition(635, FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
+
+		var bullShit:Int = 0;
+
+		for (item in grpOptions.members)
+		{
+			item.targetY = bullShit - curSelected;
+			bullShit++;
+
+			var thing:Float = 0;
+			if (item.targetY == 0) {
+				if(grpOptions.members.length > 6) {
+					thing = grpOptions.members.length * 2;
+				}
+				camFollow.setPosition(635, item.getGraphicMidpoint().y + 100 - thing);
+			}
+		}
 
 		if (controls.BACK)
 		{

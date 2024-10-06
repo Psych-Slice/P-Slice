@@ -29,6 +29,8 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	public var bg:FlxSprite;
 	public function new()
 	{
+		controls.isInSubstate = true;
+
 		super();
 
 		if(title == null) title = 'Options';
@@ -103,6 +105,8 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 		changeSelection();
 		reloadCheckboxes();
+		
+		addTouchPad('LEFT_FULL', 'A_B_C');
 	}
 
 	public function addOption(option:Option) {
@@ -171,7 +175,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 						bindingText.alignment = CENTERED;
 						add(bindingText);
 						
-						bindingText2 = new Alphabet(FlxG.width / 2, 340, Language.getPhrase('controls_rebinding2', 'Hold ESC to Cancel\nHold Backspace to Delete'), true);
+						bindingText2 = new Alphabet(FlxG.width / 2, 340, Language.getPhrase('controls_rebinding2', (controls.mobileC) ? 'Hold B to Cancel\nHold C to Delete' : 'Hold ESC to Cancel\nHold Backspace to Delete'), true);
 						bindingText2.alignment = CENTERED;
 						add(bindingText2);
 	
@@ -262,7 +266,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 					}
 			}
 
-			if(controls.RESET)
+			if(controls.RESET || touchPad.buttonC.justPressed)
 			{
 				var leOption:Option = optionsArray[curSelected];
 				if(leOption.type != KEYBIND)
@@ -292,7 +296,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 	function bindingKeyUpdate(elapsed:Float)
 	{
-		if(FlxG.keys.pressed.ESCAPE || FlxG.gamepads.anyPressed(B))
+		if(touchPad.buttonB.pressed || FlxG.keys.pressed.ESCAPE || FlxG.gamepads.anyPressed(B))
 		{
 			holdingEsc += elapsed;
 			if(holdingEsc > 0.5)
@@ -301,7 +305,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 				closeBinding();
 			}
 		}
-		else if (FlxG.keys.pressed.BACKSPACE || FlxG.gamepads.anyPressed(BACK))
+		else if (touchPad.buttonC.pressed || FlxG.keys.pressed.BACKSPACE || FlxG.gamepads.anyPressed(BACK))
 		{
 			holdingEsc += elapsed;
 			if(holdingEsc > 0.5)

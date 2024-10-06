@@ -851,7 +851,7 @@ class ResultState extends MusicBeatSubstate
       speedOfTween.x -= 0.1;
     }
 
-    if (controls.PAUSE)
+    if (controls.mobileC && FlxG.mouse.justPressed || controls.PAUSE)
     {
       if (FlxG.sound.music != null)
       {

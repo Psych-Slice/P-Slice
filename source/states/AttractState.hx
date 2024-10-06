@@ -36,7 +36,7 @@ class AttractState extends MusicBeatState
     dirsToList = dirsToList.concat(modsToSearch);
     var commercialsToSelect = new Array<String>();
     for(potencialComercials in dirsToList){
-      for (file in FileSystem.readDirectory(potencialComercials).filter(s -> s.endsWith(".mp4"))) {
+      for (file in Paths.readDirectory(potencialComercials).filter(s -> s.endsWith(".mp4"))) {
         commercialsToSelect.push(potencialComercials + '/'+file);
       }
     }
@@ -118,7 +118,7 @@ class AttractState extends MusicBeatState
     super.update(elapsed);
 
     // If the user presses any button, skip the video.
-    if (FlxG.keys.justPressed.ANY && !controls.justPressed("volume_up") && !controls.justPressed("volume_down") && !controls.justPressed("volume_mute"))
+    if (controls.mobileC && FlxG.mouse.justPressed || FlxG.keys.justPressed.ANY && !controls.justPressed("volume_up") && !controls.justPressed("volume_down") && !controls.justPressed("volume_mute"))
     {
       onAttractEnd();
     }

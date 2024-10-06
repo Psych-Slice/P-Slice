@@ -1,6 +1,5 @@
 package flxanimate;
 
-import flixel.util.FlxDestroyUtil;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flxanimate.frames.FlxAnimateFrames;
 import flxanimate.data.AnimationData;

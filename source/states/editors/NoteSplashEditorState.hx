@@ -71,9 +71,11 @@ class NoteSplashEditorState extends MusicBeatState
         shaderUI.y = UI.y + UI.height + 10;
         add(shaderUI);
 
+        final buttonF1:String = controls.mobileC ? "F" : "F1";
+
         var tipText:FlxText = new FlxText();
         tipText.setFormat(null, 32);
-        tipText.text = "Press F1 for Help";
+        tipText.text = 'Press $buttonF1 for Help';
         tipText.setPosition(properUI.x - properUI.width - 60, UI.y);
         add(tipText);
 
@@ -115,6 +117,8 @@ class NoteSplashEditorState extends MusicBeatState
         curText.y = FlxG.height - curText.height;
         curText.x += 5;
         add(curText);
+
+        addTouchPad('LEFT_FULL', 'NOTE_SPLASH_EDITOR');
 
         super.create();
     }
@@ -354,8 +358,10 @@ class NoteSplashEditorState extends MusicBeatState
         templateButton = new PsychUIButton(20, 155, "Template");
         ui.add(templateButton);
 
+        #if !mobile
         var loadButton:PsychUIButton = new PsychUIButton(180, 155, "Convert TXT", loadTxt);
         ui.add(loadButton);
+        #end
 
         var allowRGBCheck:PsychUICheckBox = new PsychUICheckBox(20, 105, "", 1);
         function check()
@@ -541,13 +547,13 @@ class NoteSplashEditorState extends MusicBeatState
             }
 
             var changedOffset = false;
-            if (FlxG.keys.pressed.CONTROL && config.animations.get(curAnim) != null)
+            if (controls.mobileC || FlxG.keys.pressed.CONTROL && config.animations.get(curAnim) != null)
             {
-                if (FlxG.keys.justPressed.C)
+                if (touchPad.buttonC.justPressed || FlxG.keys.justPressed.C)
                 {
                     copiedOffset = config.animations.get(curAnim).offsets.copy();
                 }
-                else if (FlxG.keys.justPressed.V)
+                else if (touchPad.buttonV.justPressed || FlxG.keys.justPressed.V)
                 {
                     var conf = config.animations.get(curAnim);
                     conf.offsets = copiedOffset.copy(); 
@@ -563,9 +569,9 @@ class NoteSplashEditorState extends MusicBeatState
                 }
             }
 
-            var multiplier:Int = (FlxG.keys.pressed.SHIFT || FlxG.gamepads.anyPressed(LEFT_SHOULDER)) ? 10 : 1;
+            var multiplier:Int = (touchPad.buttonZ.pressed || FlxG.keys.pressed.SHIFT || FlxG.gamepads.anyPressed(LEFT_SHOULDER)) ? 10 : 1;
 
-            var moveKeysP = [FlxG.keys.justPressed.LEFT, FlxG.keys.justPressed.RIGHT, FlxG.keys.justPressed.UP, FlxG.keys.justPressed.DOWN];
+            var moveKeysP = [touchPad.buttonLeft.justPressed || FlxG.keys.justPressed.LEFT,touchPad.buttonRight.justPressed || FlxG.keys.justPressed.RIGHT, touchPad.buttonUp.justPressed || FlxG.keys.justPressed.UP, touchPad.buttonDown.justPressed || FlxG.keys.justPressed.DOWN];
             if(moveKeysP.contains(true))
             {
                 config.animations[curAnim].offsets[0] += ((moveKeysP[0] ? 1 : 0) - (moveKeysP[1] ? 1 : 0)) * multiplier;
@@ -573,7 +579,7 @@ class NoteSplashEditorState extends MusicBeatState
                 changedOffset = true;
             }
     
-            var moveKeys = [FlxG.keys.pressed.LEFT, FlxG.keys.pressed.RIGHT, FlxG.keys.pressed.UP, FlxG.keys.pressed.DOWN];
+            var moveKeys = [touchPad.buttonLeft.pressed || FlxG.keys.pressed.LEFT, touchPad.buttonRight.pressed || FlxG.keys.pressed.RIGHT, touchPad.buttonUp.pressed || FlxG.keys.pressed.UP, touchPad.buttonDown.pressed || FlxG.keys.pressed.DOWN];
             if(moveKeys.contains(true))
             {
                 holdingArrowsTime += elapsed;
@@ -598,8 +604,11 @@ class NoteSplashEditorState extends MusicBeatState
         {
             if (controls.BACK)
                 MusicBeatState.switchState(new MasterEditorMenu());
-            if (FlxG.keys.justPressed.F1)
+            if (touchPad.buttonF.justPressed || FlxG.keys.justPressed.F1)
+            {
+                removeTouchPad();
                 openSubState(new NoteSplashEditorHelpSubState());
+            }
         }
 
         if (FlxG.mouse.overlaps(strums))
@@ -669,6 +678,12 @@ class NoteSplashEditorState extends MusicBeatState
                 strum.playAnim('static');
         }
     }
+
+    override function closeSubState()
+	{
+		super.closeSubState();
+		addTouchPad('LEFT_FULL', 'NOTE_SPLASH_EDITOR');
+	}
 
     function playStrumAnim(?name:String, noteData:Int)
     {
@@ -815,11 +830,15 @@ class NoteSplashEditorState extends MusicBeatState
         var data:String = Json.stringify(config, "\t");
         if (data.length > 0)
         {
+            #if mobile
+            StorageUtil.saveContent('$imageSkin.json', data);
+            #else
             _file = new FileReference();
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data, imageSkin + ".json");
+            #end
         }
     }
 
@@ -1004,7 +1023,16 @@ class NoteSplashEditorHelpSubState extends MusicBeatSubstate
         bg.alpha = 0.6;
         add(bg);
 
-		var str:Array<String> = ["Click on a Strum or Press Space",
+		var str:Array<String> = controls.mobileC ? ["Touch on a Strum",
+        "to spawn a Splash",
+        "",
+        "Arrow Keys - Move Offset",
+        "Hold Z - Move Offsets 10x faster",
+        "",
+        "",
+        "C - Copy Current Offset",
+		"V - Paste Copied Offset on Current Splash"
+        ]: ["Click on a Strum or Press Space",
 		"to spawn a Splash",
 		"",
 		"Arrow Keys - Move Offset",
@@ -1039,6 +1067,9 @@ class NoteSplashEditorHelpSubState extends MusicBeatSubstate
         noteDataText.y = FlxG.height - noteDataText.height - 5;
 
         add(noteDataText);
+
+        addTouchPad('NONE', 'B');
+        touchPad.y -= 205;
     }
 
     override function update(elapsed:Float)
@@ -1046,6 +1077,9 @@ class NoteSplashEditorHelpSubState extends MusicBeatSubstate
         super.update(elapsed);
 
         if (controls.BACK || FlxG.keys.justPressed.F1)
+        {
+            removeTouchPad();
             close();
+        }
     }
 }

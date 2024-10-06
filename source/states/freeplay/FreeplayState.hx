@@ -1,3 +1,5 @@
+//MTODO
+
 package states.freeplay;
 
 import openfl.utils.AssetCache;
@@ -2249,7 +2251,7 @@ class FreeplaySongData
 		
 		if(this.songDifficulties.length == 0){
 			if(FileSystem.exists(sngDataPath)){
-				var chartFiles = FileSystem.readDirectory(sngDataPath)
+				var chartFiles = Paths.readDirectory(sngDataPath)
 				.filter(s -> s.toLowerCase().startsWith(fileSngName) && s.endsWith(".json"));
 
 				var diffNames = chartFiles.map(s -> s.substring(fileSngName.length+1,s.length-5));

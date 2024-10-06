@@ -14,9 +14,54 @@ class ExtraFunctions
 		var lua:State = funk.lua;
 		
 		// Keyboard & Gamepads
-		Lua_helper.add_callback(lua, "keyboardJustPressed", function(name:String) return Reflect.getProperty(FlxG.keys.justPressed, name));
-		Lua_helper.add_callback(lua, "keyboardPressed", function(name:String) return Reflect.getProperty(FlxG.keys.pressed, name));
-		Lua_helper.add_callback(lua, "keyboardReleased", function(name:String) return Reflect.getProperty(FlxG.keys.justReleased, name));
+		funk.set("keyboardJustPressed", function(name:String)
+		{
+			switch (name.toUpperCase())
+			{
+				case 'SPACE':
+					var space = Reflect.getProperty(FlxG.keys.justPressed, 'SPACE');
+					var mobileShit:Bool = false;
+					if (Controls.instance.mobileC)
+						if (MusicBeatState.getState().mobileControls != null)
+							mobileShit = MusicBeatState.getState().mobileControls.buttonExtra.justPressed;
+					return space || mobileShit;
+
+				default:
+					return Reflect.getProperty(FlxG.keys.justPressed, name.toUpperCase());
+			}
+		});
+		funk.set("keyboardPressed", function(name:String)
+		{
+			switch (name.toUpperCase())
+			{
+				case 'SPACE':
+					var space = Reflect.getProperty(FlxG.keys.pressed, 'SPACE');
+					var mobileShit:Bool = false;
+					if (Controls.instance.mobileC)
+						if (MusicBeatState.getState().mobileControls != null)
+							mobileShit = MusicBeatState.getState().mobileControls.buttonExtra.pressed;
+					return space || mobileShit;
+
+				default:
+					return Reflect.getProperty(FlxG.keys.pressed, name.toUpperCase());
+			}
+		});
+		funk.set("keyboardReleased", function(name:String)
+		{
+			switch (name.toUpperCase())
+			{
+				case 'SPACE':
+					var space = Reflect.getProperty(FlxG.keys.justReleased, 'SPACE');
+					var mobileShit:Bool = false;
+					if (Controls.instance.mobileC)
+						if (MusicBeatState.getState().mobileControls != null)
+							mobileShit = MusicBeatState.getState().mobileControls.buttonExtra.justReleased;
+					return space || mobileShit;
+
+				default:
+					return Reflect.getProperty(FlxG.keys.justReleased, name.toUpperCase());
+			}
+		});
 
 		Lua_helper.add_callback(lua, "anyGamepadJustPressed", function(name:String) return FlxG.gamepads.anyJustPressed(name));
 		Lua_helper.add_callback(lua, "anyGamepadPressed", function(name:String) FlxG.gamepads.anyPressed(name));
@@ -198,7 +243,7 @@ class ExtraFunctions
 			var list:Array<String> = [];
 			#if sys
 			if(FileSystem.exists(folder)) {
-				for (folder in FileSystem.readDirectory(folder)) {
+				for (folder in Paths.readDirectory(folder)) {
 					if (!list.contains(folder)) {
 						list.push(folder);
 					}

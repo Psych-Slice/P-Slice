@@ -38,6 +38,9 @@ class CreditsState extends MusicBeatState
 		#end
 
 		var defaultList:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
+			['Mobile Porting Team'],
+			['mcagabe19',			'lily',             'Porter of P-slice Mobile',                       'https://youtube.com/@mcagabe19',		'FFE7C0'],
+			[''],
 			['P-Slice Engine Team'],
 			['Mikolka9144',			'mikolka',			'Did everything for P-slice',								 'https://gamebanana.com/members/3329541',									'2ebcfa'],
 			[""],
@@ -131,6 +134,7 @@ class CreditsState extends MusicBeatState
 		bg.color = CoolUtil.colorFromString(creditsStuff[curSelected][4]);
 		intendedColor = bg.color;
 		changeSelection();
+		addTouchPad('UP_DOWN', 'A_B');
 		super.create();
 	}
 

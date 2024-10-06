@@ -114,8 +114,8 @@ class ABotSpeaker extends FlxSpriteGroup
 		@:privateAccess
 		analyzer = new SpectralAnalyzerEx(snd._channel.__audioSource, 7, 0.1, 40);
 	
-		#if desktop
-		// On desktop it uses FFT stuff that isn't as optimized as the direct browser stuff we use on HTML5
+		#if !web
+		// On native it uses FFT stuff that isn't as optimized as the direct browser stuff we use on HTML5
 		// So we want to manually change it!
 		analyzer.fftN = 256;
 		#end

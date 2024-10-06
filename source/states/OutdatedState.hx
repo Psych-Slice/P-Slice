@@ -11,18 +11,31 @@ class OutdatedState extends MusicBeatState
 
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
-		leftState = false;
-		warnText = new FlxText(0, 0, FlxG.width,
-			"Sup bro, looks like you're running an   \n
-			outdated version of P-Slice Engine (" + MainMenuState.pSliceVersion + "),\n
+
+		var guh:String;
+
+		if (controls.mobileC) {
+			guh = "Sup kiddo, looks like you're running an   \n
+			outdated version of Psych Engine (" + MainMenuState.psychEngineVersion + "),\n
+			please update to " + TitleState.updateVersion + "!\n
+			Press B to proceed anyway.\n
+			\n
+			Thank you for using the Port!";
+		} else {
+			guh = "Sup bro, looks like you're running an   \n
+			outdated version of Psych Engine (" + MainMenuState.psychEngineVersion + "),\n
 			please update to " + TitleState.updateVersion + "!\n
 			Press ESCAPE to proceed anyway.\n
 			\n
-			Thank you for using the Engine!",
-			32);
+			Thank you for using the Port!";
+		}
+
+		warnText = new FlxText(0, 0, FlxG.width, guh, 32);
 		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
 		add(warnText);
+
+		addTouchPad('NONE', 'A_B');
 	}
 
 	override function update(elapsed:Float)
@@ -30,7 +43,7 @@ class OutdatedState extends MusicBeatState
 		if(!leftState) {
 			if (controls.ACCEPT) {
 				leftState = true;
-				CoolUtil.browserLoad("https://github.com/mikolka9144/P-Slice/releases");
+				CoolUtil.browserLoad("https://github.com/MobilePorting/P-Slice-Mobile/releases");
 			}
 			else if(controls.BACK) {
 				leftState = true;

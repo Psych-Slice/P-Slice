@@ -59,6 +59,9 @@ class GameOverSubstate extends MusicBeatSubstate
 	{
 		instance = this;
 
+		if (ClientPrefs.data.vibrating)
+			lime.ui.Haptic.vibrate(0, 500);
+
 		Conductor.songPosition = 0;
 
 		if(boyfriend == null)
@@ -128,6 +131,9 @@ class GameOverSubstate extends MusicBeatSubstate
 				neneKnife.animation.play('anim', true);
 			}
 		}
+
+		addTouchPad('NONE', 'A_B');
+		addTouchPadCamera();
 
 		super.create();
 	}
@@ -235,6 +241,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			FlxG.sound.play(Paths.music(endSoundName));
 			new FlxTimer().start(0.7, function(tmr:FlxTimer)
 			{
+				FlxTween.tween(touchPad, {alpha: 0}, 2.7, {ease: FlxEase.smootherStepOut});
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function()
 				{
 					MusicBeatState.resetState();

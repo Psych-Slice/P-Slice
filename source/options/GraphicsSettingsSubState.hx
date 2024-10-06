@@ -34,7 +34,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		antialiasingOption = optionsArray.length-1;
 
 		var option:Option = new Option('Shaders', //Name
-			"If unchecked, disables shaders.\nIt's used for some visual effects, and also CPU intensive for weaker PCs.", //Description
+			"If unchecked, disables shaders.\nIt's used for some visual effects, and also CPU intensive for weaker " + Main.platform + ").", //Description
 			'shaders',
 			BOOL);
 		addOption(option);

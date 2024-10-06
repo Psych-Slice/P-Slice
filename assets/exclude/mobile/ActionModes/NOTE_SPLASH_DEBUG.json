@@ -1,0 +1,76 @@
+{
+  "buttons": [
+    {
+      "button": "buttonB",
+      "graphic": "b",
+      "x": 1022,
+      "y": 587,
+      "width": 132,
+      "height": 125,
+      "color": "0xFFCB00"
+    },
+    {
+      "button": "buttonE",
+      "graphic": "e",
+      "x": 1148,
+      "y": 2,
+      "width": 132,
+      "height": 125,
+      "color": "0xFF7D00"
+    },
+    {
+      "button": "buttonX",
+      "graphic": "x",
+      "x": 1022,
+      "y": 2,
+      "width": 132,
+      "height": 125,
+      "color": "0x99062D"
+    },
+    {
+      "button": "buttonY",
+      "graphic": "y",
+      "x": 1148,
+      "y": 252,
+      "width": 132,
+      "height": 125,
+      "color": "0x4A35B9"
+    },
+    {
+      "button": "buttonZ",
+      "graphic": "z",
+      "x": 1022,
+      "y": 252,
+      "width": 132,
+      "height": 125,
+      "color": "0xCCB98E"
+    },
+    {
+      "button": "buttonA",
+      "graphic": "a",
+      "x": 1148,
+      "y": 587,
+      "width": 132,
+      "height": 125,
+      "color": "0xFF0000"
+    },
+    {
+      "button": "buttonC",
+      "graphic": "c",
+      "x": 1148,
+      "y": 127,
+      "width": 132,
+      "height": 125,
+      "color": "0x44FF00"
+    },
+    {
+      "button": "buttonV",
+      "graphic": "v",
+      "x": 1022,
+      "y": 127,
+      "width": 132,
+      "height": 125,
+      "color": "0x49A9B2"
+    }
+  ]
+}

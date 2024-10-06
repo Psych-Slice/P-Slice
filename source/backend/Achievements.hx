@@ -228,9 +228,7 @@ class Achievements {
 						{
 							var errorTitle = 'Mod name: ' + Mods.currentModDirectory != null ? Mods.currentModDirectory : "None";
 							var errorMsg = 'Achievement #${i+1} is invalid.';
-							#if windows
-							lime.app.Application.current.window.alert(errorMsg, errorTitle);
-							#end
+							CoolUtil.showPopUp(errorMsg, errorTitle);
 							trace('$errorTitle - $errorMsg');
 							continue;
 						}
@@ -240,9 +238,7 @@ class Achievements {
 						{
 							var errorTitle = 'Error on Achievement: ' + (achieve.name != null ? achieve.name : achieve.save);
 							var errorMsg = 'Missing valid "save" value.';
-							#if windows
-							lime.app.Application.current.window.alert(errorMsg, errorTitle);
-							#end
+							CoolUtil.showPopUp(errorMsg, errorTitle);
 							trace('$errorTitle - $errorMsg');
 							continue;
 						}
@@ -255,9 +251,7 @@ class Achievements {
 			} catch(e:Dynamic) {
 				var errorTitle = 'Mod name: ' + Mods.currentModDirectory != null ? Mods.currentModDirectory : "None";
 				var errorMsg = 'Error loading achievements.json: $e';
-				#if windows
-				lime.app.Application.current.window.alert(errorMsg, errorTitle);
-				#end
+				CoolUtil.showPopUp(errorMsg, errorTitle);
 				trace('$errorTitle - $errorMsg');
 			}
 		}
