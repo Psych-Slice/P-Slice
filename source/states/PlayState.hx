@@ -50,6 +50,7 @@ import objects.VideoSprite;
 import objects.Note.EventNote;
 import objects.*;
 import states.stages.*;
+import states.stages.erect.*;
 import states.stages.objects.*;
 
 #if LUA_ALLOWED
@@ -390,6 +391,7 @@ class PlayState extends MusicBeatState
 			case 'tank': new Tank();					//Week 7 - Ugh, Guns, Stress
 			case 'phillyStreets': new PhillyStreets(); 	//Weekend 1 - Darnell, Lit Up, 2Hot
 			case 'phillyBlazin': new PhillyBlazin();	//Weekend 1 - Blazin
+			case 'limoRideErect': new LimoRideErect();  //Week 4 Special 
 		}
 		if(isPixelStage) introSoundsSuffix = '-pixel';
 

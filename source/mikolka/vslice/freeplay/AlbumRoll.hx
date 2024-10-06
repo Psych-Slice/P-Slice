@@ -86,10 +86,15 @@ class AlbumRoll extends FlxSpriteGroup
 
     albumData = AlbumRegistry.instance.fetchEntry(albumId);
 
-    if (albumData == null)
+    if (albumData == null || !Paths.exists("images/"+albumData.getAlbumArtAssetKey()+".png")) //? changed this section
     {
-      FlxG.log.warn('Could not find album data for album ID: ${albumId}');
+      if(albumId != ''){
+        FlxG.log.warn('Could not find album data for album ID: ${albumId}');
+        trace('Could not find album data for album ID: ${albumId}');
+      }
 
+      this.visible = false;
+      difficultyStars.stars.visible = false;
       return;
     };
 

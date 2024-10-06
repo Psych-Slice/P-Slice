@@ -286,6 +286,14 @@ class StickerSubState extends MusicBeatSubstate
 
             FlxTransitionableState.skipNextTransIn = true;
             FlxTransitionableState.skipNextTransOut = true;
+            // FlxG.signals.preStateCreate.addOnce((state) ->{
+            //   Paths.clearStoredMemory();//? dump everything 
+            //   Paths.clearUnusedMemory();//? dump everything
+            //   for(i => sticker in grpStickers.members){
+            //     sticker.loadSticker(); //? load the sticker after we dumped everything
+            //   }
+            // });
+
 
             // I think this grabs the screen and puts it under the stickers?
             // Leaving this commented out rather than stripping it out because it's cool...
@@ -300,7 +308,6 @@ class StickerSubState extends MusicBeatSubstate
               dipshit.addChild(bitmap);
               // FlxG.addChildBelowMouse(dipshit);
              */
-
             FlxG.switchState(targetState(this)
             );
           }
@@ -351,14 +358,19 @@ class StickerSubState extends MusicBeatSubstate
 class StickerSprite extends FlxSprite
 {
   public var timing:Float = 0;
+  var stickerPath:String;
+  public function loadSticker() {
+    loadGraphic(Paths.image(stickerPath));
+    updateHitbox();
+    scrollFactor.set();
+  }
 
   public function new(x:Float, y:Float, stickerSet:String, stickerName:String):Void
   {
     super(x, y);
-    var path = stickerSet == null ? stickerName : 'transitionSwag/$stickerSet/$stickerName';
-    loadGraphic(Paths.image(path));
-    updateHitbox();
-    scrollFactor.set();
+    stickerPath = stickerSet == null ? stickerName : 'transitionSwag/$stickerSet/$stickerName';
+    loadSticker();
+    
   }
 }
 

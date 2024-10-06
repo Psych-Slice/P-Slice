@@ -12,7 +12,7 @@ class ModsHelper {
 		Mods.currentModDirectory = directory;
 	}
 	public static function getModsWithPlayersRegistry():Array<String> {
-		return Mods.parseList().enabled.filter(s ->FileSystem.exists(Paths.mods(s)+'/registry/playableChars'));
+		return Mods.parseList().enabled.filter(s ->FileSystem.exists(Paths.mods(s)+'/registry/players'));
 	}
 	public inline static function loadabsoluteGraphic(path:String):FlxGraphic {
 		if(!Paths.currentTrackedAssets.exists(path)) {
