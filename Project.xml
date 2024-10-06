@@ -67,6 +67,10 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- Turn on Crash Handler -->
 	<define name="CRASH_HANDLER" if="desktop release" />
 
+	<!--FNF is changing openAL config, because the default one is broken. lol. -->
+	<assets path="assets/alsoft.cfg" unless="windows" />
+	<assets path="assets/alsoft.cfg" rename="assets/alsoft.ini" if="windows" />
+
 	<!-- Assets -->
 	<assets path="assets/fonts" />
 	<assets path="assets/shared"        exclude="*.ogg" if="web"/>
@@ -94,8 +98,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 		<haxelib name="grig.audio" if="BASE_GAME_FILES"/>
 		<haxelib name="funkin.vis" if="BASE_GAME_FILES"/>
 	</section>
-
-	<!-- TODO:re-enable this once PE 1.0 is complete <define name="CHECK_FOR_UPDATES" if="desktop officialBuild"/> -->
+	<define name="CHECK_FOR_UPDATES" if="desktop officialBuild"/>
 
 	<section if="MODS_ALLOWED">
 		<assets path='example_mods' rename='mods' embed='false' type='template'/>

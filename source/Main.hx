@@ -19,6 +19,10 @@ import openfl.display.StageScaleMode;
 import lime.app.Application;
 import states.TitleState;
 
+#if desktop
+import mikolka.vslice.components.ALSoftConfig; // Just to make sure DCE doesn't remove this, since it's not directly referenced anywhere else.
+#end
+
 #if linux
 import lime.graphics.Image;
 #end
