@@ -16,7 +16,6 @@ import states.StoryMenuState;
 import states.OutdatedState;
 import states.MainMenuState;
 import funkin.components.ScreenshotPlugin;
-import mobile.backend.SwipeUtil;
 
 typedef TitleData =
 {
@@ -364,7 +363,6 @@ class TitleState extends MusicBeatState
 	var newTitle:Bool = false;
 	var titleTimer:Float = 0;
 
-	var touchJustReleased:Bool = false;
 	override function update(elapsed:Float)
 	{
 		#if debug
@@ -378,15 +376,7 @@ class TitleState extends MusicBeatState
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
 
-		for (touch in FlxG.touches.list)
-		{
-			if (touch.justReleased)
-				touchJustReleased = true;
-			else
-				touchJustReleased = false;
-		}
-
-		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT || (touchJustReleased && !SwipeUtil.swipeAny);
+		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT || (TouchFunctions.touchJustReleased && !SwipeUtil.swipeAny);
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 

@@ -150,7 +150,7 @@ class DialogueBox extends FlxSpriteGroup
 			dialogueStarted = true;
 		}
 
-		if(Controls.instance.BACK)
+		if(#if android FlxG.android.justReleased.BACK || #end Controls.instance.BACK)
 		{
 			if (dialogueStarted && !isEnding)
 			{
@@ -158,7 +158,7 @@ class DialogueBox extends FlxSpriteGroup
 				FlxG.sound.play(Paths.sound('clickText'), 0.8);
 			}
 		}
-		else if(Controls.instance.ACCEPT)
+		else if(TouchFunctions.touchJustPressed || Controls.instance.ACCEPT)
 		{
 			if (dialogueEnded)
 			{

@@ -1,5 +1,3 @@
-//MTODO
-
 package states.freeplay;
 
 import openfl.utils.AssetCache;
@@ -31,7 +29,6 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
-import flixel.input.touch.FlxTouch;
 import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
 import openfl.display.BlendMode;
@@ -177,6 +174,9 @@ class FreeplayState extends MusicBeatSubstate
 
 	var letterSort:LetterSort;
 	var exitMovers:ExitMoverData = new Map();
+
+	var diffSelLeft:DifficultySelector;
+	var diffSelRight:DifficultySelector;
 
 	var stickerSubState:StickerSubState;
 
@@ -628,8 +628,8 @@ class FreeplayState extends MusicBeatSubstate
 			speed: 0.3
 		});
 
-		var diffSelLeft:DifficultySelector = new DifficultySelector(20, grpDifficulties.y - 10, false, controls);
-		var diffSelRight:DifficultySelector = new DifficultySelector(325, grpDifficulties.y - 10, true, controls);
+		diffSelLeft = new DifficultySelector(20, grpDifficulties.y - 10, false, controls);
+		diffSelRight = new DifficultySelector(325, grpDifficulties.y - 10, true, controls);
 		diffSelLeft.visible = false;
 		diffSelRight.visible = false;
 		add(diffSelLeft);
@@ -724,6 +724,22 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			rankCamera.fade(0xFF000000, 0, false, null, true);
 		}
+
+		addTouchPad('UP_DOWN', 'A_B_F');
+		addTouchPadCamera();
+		touchPad.forEachAlive(function(button:TouchButton)
+		{
+			if (button.tag == 'UP' || button.tag == 'DOWN')
+			{
+				button.x -= 350;
+				FlxTween.tween(button, {x: button.x + 350}, 0.6, {ease: FlxEase.backInOut});
+			}
+			else
+			{
+				button.x += 450;
+				FlxTween.tween(button, {x: button.x - 450}, 0.6, {ease: FlxEase.backInOut});
+			}
+		});
 	}
 
 	var currentFilter:SongFilter = null;
@@ -1209,17 +1225,6 @@ class FreeplayState extends MusicBeatSubstate
 		});
 	}
 
-	var touchY:Float = 0;
-	var touchX:Float = 0;
-	var dxTouch:Float = 0;
-	var dyTouch:Float = 0;
-	var velTouch:Float = 0;
-
-	var veloctiyLoopShit:Float = 0;
-	var touchTimer:Float = 0;
-
-	var initTouchPos:FlxPoint = new FlxPoint();
-
 	var spamTimer:Float = 0;
 	var spamming:Bool = false;
 
@@ -1251,7 +1256,7 @@ class FreeplayState extends MusicBeatSubstate
 		// }
 		#end
 
-		if (controls.FAVORITE && !busy)
+		if (touchPad.buttonF.justPressed || controls.FAVORITE && !busy)
 		{
 			var targetSong = grpCapsules.members[curSelected]?.songData;
 			if (targetSong != null)
@@ -1352,81 +1357,6 @@ class FreeplayState extends MusicBeatSubstate
 		var downP:Bool = controls.UI_DOWN_P && !FlxG.keys.pressed.CONTROL;
 		var accepted:Bool = controls.ACCEPT && !FlxG.keys.pressed.CONTROL;
 
-		if (FlxG.onMobile)
-		{
-			for (touch in FlxG.touches.list)
-			{
-				if (touch.justPressed)
-				{
-					initTouchPos.set(touch.screenX, touch.screenY);
-				}
-				if (touch.pressed)
-				{
-					var dx:Float = initTouchPos.x - touch.screenX;
-					var dy:Float = initTouchPos.y - touch.screenY;
-
-					var angle:Float = Math.atan2(dy, dx);
-					var length:Float = Math.sqrt(dx * dx + dy * dy);
-
-					FlxG.watch.addQuick('LENGTH', length);
-					FlxG.watch.addQuick('ANGLE', Math.round(FlxAngle.asDegrees(angle)));
-				}
-			}
-
-			if (FlxG.touches.getFirst() != null)
-			{
-				if (touchTimer >= 1.5)
-					accepted = true;
-
-				touchTimer += elapsed;
-				var touch:FlxTouch = FlxG.touches.getFirst();
-
-				velTouch = Math.abs((touch.screenY - dyTouch)) / 50;
-
-				dyTouch = touch.screenY - touchY;
-				dxTouch = touch.screenX - touchX;
-
-				if (touch.justPressed)
-				{
-					touchY = touch.screenY;
-					dyTouch = 0;
-					velTouch = 0;
-
-					touchX = touch.screenX;
-					dxTouch = 0;
-				}
-
-				if (Math.abs(dxTouch) >= 100)
-				{
-					touchX = touch.screenX;
-					if (dxTouch != 0)
-						dxTouch < 0 ? changeDiff(1) : changeDiff(-1);
-				}
-
-				if (Math.abs(dyTouch) >= 100)
-				{
-					touchY = touch.screenY;
-
-					if (dyTouch != 0)
-						dyTouch < 0 ? changeSelection(1) : changeSelection(-1);
-				}
-			}
-			else
-			{
-				touchTimer = 0;
-			}
-		}
-
-		#if mobile
-		for (touch in FlxG.touches.list)
-		{
-			if (touch.justPressed)
-			{
-				// accepted = true;
-			}
-		}
-		#end
-
 		if (!FlxG.keys.pressed.CONTROL && (controls.UI_UP || controls.UI_DOWN))
 		{
 			if (spamming)
@@ -1489,19 +1419,29 @@ class FreeplayState extends MusicBeatSubstate
 		}
 		#end
 
-		if (controls.UI_LEFT_P && !FlxG.keys.pressed.CONTROL)
+		if (controls.UI_LEFT_P || (diffSelLeft != null && TouchFunctions.touchOverlapObjectComplex(diffSelLeft) && TouchFunctions.touchJustPressed) && !FlxG.keys.pressed.CONTROL)
 		{
 			trace("Left");
 			dj.resetAFKTimer();
 			changeDiff(-1);
 			generateSongList(currentFilter, true);
+			if (diffSelLeft != null)
+				diffSelLeft.setPress(true);
 		}
-		if (controls.UI_RIGHT_P && !FlxG.keys.pressed.CONTROL)
+		if (controls.UI_RIGHT_P || (diffSelRight != null && TouchFunctions.touchOverlapObjectComplex(diffSelRight) && TouchFunctions.touchJustPressed) && !FlxG.keys.pressed.CONTROL)
 		{
 			trace("Right");
 			dj.resetAFKTimer();
 			changeDiff(1);
 			generateSongList(currentFilter, true);
+			if (diffSelRight != null)
+				diffSelRight.setPress(true);
+		}
+
+		if ((diffSelLeft != null && diffSelRight != null && TouchFunctions.touchJustReleased) && !FlxG.keys.pressed.CONTROL)
+		{
+			diffSelRight.setPress(false);
+			diffSelLeft.setPress(false);
 		}
 
 		if (controls.BACK)
@@ -1530,6 +1470,14 @@ class FreeplayState extends MusicBeatSubstate
 			cardGlow.alpha = 1;
 			cardGlow.scale.set(1, 1);
 			FlxTween.tween(cardGlow, {alpha: 0, "scale.x": 1.2, "scale.y": 1.2}, 0.25, {ease: FlxEase.sineOut});
+
+			touchPad.forEachAlive(function(button:TouchButton)
+			{
+				if (button.tag == 'UP' || button.tag == 'DOWN')
+					FlxTween.tween(button, {x: button.x - 350}, 1.2, {ease: FlxEase.backOut});
+				else
+					FlxTween.tween(button, {x: button.x + 450}, 1.2, {ease: FlxEase.backOut});
+			});
 
 			orangeBackShit.visible = false;
 			alsoOrangeLOL.visible = false;
@@ -1616,8 +1564,6 @@ class FreeplayState extends MusicBeatSubstate
 
 	function changeDiff(change:Int = 0, force:Bool = false):Void
 	{
-		touchTimer = 0;
-
 		var currentDifficultyIndex:Int = diffIdsCurrent.indexOf(currentDifficulty);
 
 		if (currentDifficultyIndex == -1)
@@ -2101,6 +2047,22 @@ class DifficultySelector extends FlxSprite
 			moveShitDown();
 
 		super.update(elapsed);
+	}
+
+	public function setPress(press:Bool):Void
+	{
+		if (!press)
+		{
+			scale.x = scale.y = 1;
+			whiteShader.colorSet = false;
+			updateHitbox();
+		}
+		else
+		{
+			offset.y -= 5;
+			whiteShader.colorSet = true;
+			scale.x = scale.y = 0.5;
+		}
 	}
 
 	function moveShitDown():Void

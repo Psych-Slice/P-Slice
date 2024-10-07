@@ -1,6 +1,6 @@
 package mobile.backend;
 
-import flixel.FlxBasic;
+import flixel.FlxObject;
 import flixel.input.touch.FlxTouch;
 
 /**
@@ -12,12 +12,31 @@ class TouchFunctions
 	public static var touchPressed(get, never):Bool;
 	public static var touchJustPressed(get, never):Bool;
 	public static var touchJustReleased(get, never):Bool;
-	public static var touch(get, never):Null<FlxTouch>;
+	public static var touchReleased(get, never):Bool;
+	public static var touch(get, never):FlxTouch;
 
-	public static function touchOverlapObject(object:FlxBasic):Bool
+	public static function touchOverlapObject(object:FlxObject, ?camera:FlxCamera):Bool
 	{
 		for (touch in FlxG.touches.list)
-			return touch.overlaps(object);
+			if (touch.overlaps(object, camera ?? object.camera))
+				return true;
+
+		return false;
+	}
+
+	public static function touchOverlapObjectComplex(object:FlxObject, ?camera:FlxCamera):Bool
+	{
+		if (camera == null)
+			for (camera in object.cameras)
+				for (touch in FlxG.touches.list)
+					@:privateAccess
+					if (object.overlapsPoint(touch.getWorldPosition(camera, object._point), true, camera))
+						return true;
+		else
+			@:privateAccess
+			if (object.overlapsPoint(touch.getWorldPosition(camera, object._point), true, camera))
+				return true;
+
 		return false;
 	}
 
@@ -25,7 +44,9 @@ class TouchFunctions
 	private static function get_touchPressed():Bool
 	{
 		for (touch in FlxG.touches.list)
-			return touch.pressed;
+			if (touch.pressed)
+				return true;
+
 		return false;
 	}
 
@@ -33,7 +54,9 @@ class TouchFunctions
 	private static function get_touchJustPressed():Bool
 	{
 		for (touch in FlxG.touches.list)
-			return touch.justPressed;
+			if (touch.justPressed)
+				return true;
+
 		return false;
 	}
 
@@ -41,15 +64,29 @@ class TouchFunctions
 	private static function get_touchJustReleased():Bool
 	{
 		for (touch in FlxG.touches.list)
-			return touch.justReleased;
+			if (touch.justReleased)
+				return true;
+
 		return false;
 	}
 
 	@:noCompletion
-	private static function get_touch():Null<FlxTouch>
+	private static function get_touchReleased():Bool
 	{
 		for (touch in FlxG.touches.list)
-			return touch;
-		return FlxG.touches.list[0];
+			if (touch.released)
+				return true;
+
+		return false;
+	}
+
+	@:noCompletion
+	private static function get_touch():FlxTouch
+	{
+		for (touch in FlxG.touches.list)
+			if (touch != null)
+				return touch;
+
+		return FlxG.touches.getFirst();
 	}
 }
