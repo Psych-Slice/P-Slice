@@ -3,6 +3,7 @@ package mobile.objects;
 import openfl.display.BitmapData;
 import openfl.display.Shape;
 import flixel.graphics.FlxGraphic;
+import openfl.geom.Matrix;
 
 /**
  * A zone with 4 hint's (A hitbox).
@@ -142,7 +143,22 @@ class Hitbox extends MobileInputManager implements IMobileControls
 		var shape:Shape = new Shape();
 		shape.graphics.beginFill(0xFFFFFF);
 
-		if (ClientPrefs.data.hitboxType == 'Gradient')
+		if (ClientPrefs.data.hitboxType == "No Gradient")
+		{
+			var matrix:Matrix = new Matrix();
+			matrix.createGradientBox(Width, Height, 0, 0, 0);
+
+			shape.graphics.beginGradientFill(RADIAL, [0xFFFFFF, 0xFFFFFF], [0, 1], [60, 255], matrix, PAD, RGB, 0);
+			shape.graphics.drawRect(0, 0, Width, Height);
+			shape.graphics.endFill();
+		}
+		else if (ClientPrefs.data.hitboxType == "No Gradient (Old)")
+		{
+			shape.graphics.lineStyle(10, 0xFFFFFF, 1);
+			shape.graphics.drawRect(0, 0, Width, Height);
+			shape.graphics.endFill();
+		}
+		else // if (ClientPrefs.data.hitboxType == 'Gradient')
 		{
 			shape.graphics.lineStyle(3, 0xFFFFFF, 1);
 			shape.graphics.drawRect(0, 0, Width, Height);
@@ -151,12 +167,6 @@ class Hitbox extends MobileInputManager implements IMobileControls
 			shape.graphics.endFill();
 			shape.graphics.beginGradientFill(RADIAL, [0xFFFFFF, FlxColor.TRANSPARENT], [1, 0], [0, 255], null, null, null, 0.5);
 			shape.graphics.drawRect(3, 3, Width - 6, Height - 6);
-			shape.graphics.endFill();
-		}
-		else
-		{
-			shape.graphics.lineStyle(10, 0xFFFFFF, 1);
-			shape.graphics.drawRect(0, 0, Width, Height);
 			shape.graphics.endFill();
 		}
 

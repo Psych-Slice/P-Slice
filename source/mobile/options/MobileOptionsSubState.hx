@@ -13,7 +13,7 @@ class MobileOptionsSubState extends BaseOptionsMenu
 	final lastStorageType:String = ClientPrefs.data.storageType;
 	#end
 	final exControlTypes:Array<String> = ["NONE", "SINGLE", "DOUBLE"];
-	final hintOptions:Array<String> = ["Gradient", "No Gradient", "Hidden"];
+	final hintOptions:Array<String> = ["No Gradient", "No Gradient (Old)", "Gradient", "Hidden"];
 	var option:Option;
 
 	public function new()
