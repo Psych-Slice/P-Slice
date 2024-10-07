@@ -1157,6 +1157,7 @@ class FreeplayState extends MusicBeatSubstate
 
 						capsule.doLerp = false;
 						capsule.setPosition(originalPos.x, originalPos.y);
+						IntervalShake.shake(touchPad, 0.6, 1 / 24, 0.24, 0, FlxEase.quadOut);
 						IntervalShake.shake(capsule, 0.6, 1 / 24, 0.12, 0, FlxEase.quadOut, function(_)
 						{
 							capsule.doLerp = true;
