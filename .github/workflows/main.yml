@@ -134,7 +134,7 @@ jobs:
           cd export/release/ios/build/*-iphoneos
           mkdir Payload
           mv *.app Payload
-          zip -r PsychEngine.ipa Payload
+          zip -r PSliceEngine.ipa Payload
 
       - name: Upload Artifact (Android)
         if: startsWith(matrix.os, 'ubuntu')
