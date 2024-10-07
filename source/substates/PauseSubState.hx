@@ -33,6 +33,7 @@ class PauseSubState extends MusicBeatSubstate
 
 	override function create()
 	{
+		controls.isInSubstate = true;
 		if(Difficulty.list.length < 2) menuItemsOG.remove('Change Difficulty'); //No need to change difficulty if there is only one!
 
 		if(PlayState.chartingMode)
@@ -374,6 +375,7 @@ class PauseSubState extends MusicBeatSubstate
 
 	override function destroy()
 	{
+		controls.isInSubstate = false;
 		pauseMusic.destroy();
 		super.destroy();
 	}
