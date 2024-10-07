@@ -724,13 +724,13 @@ class TitleState extends MusicBeatState
 	{
 		if (SwipeUtil.swipeAny || FlxG.keys.justPressed.ANY)
 		{
-			if (controls.NOTE_DOWN_P || controls.UI_DOWN_P || SwipeUtil.swipeDown)
+			if (controls.NOTE_DOWN_P || controls.UI_DOWN_P || SwipeUtil.swipeUp)
 				codePress(FlxDirectionFlags.DOWN);
-			if (controls.NOTE_UP_P || controls.UI_UP_P  || SwipeUtil.swipeUp)
+			if (controls.NOTE_UP_P || controls.UI_UP_P  || SwipeUtil.swipeDown)
 				codePress(FlxDirectionFlags.UP);
-			if (controls.NOTE_LEFT_P || controls.UI_LEFT_P || SwipeUtil.swipeLeft)
+			if (controls.NOTE_LEFT_P || controls.UI_LEFT_P || SwipeUtil.swipeRight)
 				codePress(FlxDirectionFlags.LEFT);
-			if (controls.NOTE_RIGHT_P || controls.UI_RIGHT_P || SwipeUtil.swipeRight)
+			if (controls.NOTE_RIGHT_P || controls.UI_RIGHT_P || SwipeUtil.swipeLeft)
 				codePress(FlxDirectionFlags.RIGHT);
 		}
 	}
