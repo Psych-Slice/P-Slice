@@ -86,8 +86,8 @@ class LetterSort extends FlxTypedSpriteGroup<FlxSprite>
 
     if (inputEnabled)
     {
-      if (controls.BAR_LEFT || (TouchFunctions.touchOverlapObject(swipeBounds) && SwipeUtil.swipeLeft)) changeSelection(-1);
-      if (controls.BAR_RIGHT || (TouchFunctions.touchOverlapObject(swipeBounds) && SwipeUtil.swipeRight)) changeSelection(1);
+      if (controls.BAR_LEFT || (TouchUtil.overlaps(swipeBounds) && SwipeUtil.swipeLeft)) changeSelection(-1);
+      if (controls.BAR_RIGHT || (TouchUtil.overlaps(swipeBounds) && SwipeUtil.swipeRight)) changeSelection(1);
     }
   }
 

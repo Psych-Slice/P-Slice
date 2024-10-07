@@ -4,7 +4,8 @@ import psychlua.CustomSubstate;
 #if LUA_ALLOWED
 import lime.ui.Haptic;
 import psychlua.FunkinLua;
-import mobile.backend.TouchFunctions;
+import psychlua.LuaUtils;
+import mobile.backend.TouchUtil;
 #if android import mobile.backend.PsychJNI; #end
 
 /**
@@ -74,10 +75,6 @@ class MobileFunctions
 				return FunkinLua.luaTrace('vibrate: No duration specified.');
 			else if (period == null)
 				period = 0;
-
-			if (!ClientPrefs.data.vibrating)
-				return;
-
 			return Haptic.vibrate(period, duration);
 		});
 
@@ -135,51 +132,128 @@ class MobileFunctions
 			return PlayState.instance.luaTouchPadJustReleased(button);
 		});
 
-		Lua_helper.add_callback(lua, "touchJustPressed", TouchFunctions.touchJustPressed);
-		Lua_helper.add_callback(lua, "touchPressed", TouchFunctions.touchPressed);
-		Lua_helper.add_callback(lua, "touchJustReleased", TouchFunctions.touchJustReleased);
-		Lua_helper.add_callback(lua, "touchPressedObject", function(object:String):Bool
+		Lua_helper.add_callback(lua, "touchJustPressed", TouchUtil.justPressed);
+		Lua_helper.add_callback(lua, "touchPressed", TouchUtil.pressed);
+		Lua_helper.add_callback(lua, "touchJustReleased", TouchUtil.justReleased);
+		Lua_helper.add_callback(lua, "touchReleased", TouchUtil.released);
+		Lua_helper.add_callback(lua, "touchPressedObject", function(object:String, ?camera:String):Bool
 		{
 			var obj = PlayState.instance.getLuaObject(object);
+			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
 				FunkinLua.luaTrace('touchPressedObject: $object does not exist.');
 				return false;
 			}
-			return TouchFunctions.touchOverlapObject(obj) && TouchFunctions.touchPressed;
+			return TouchUtil.overlaps(obj, cam) && TouchUtil.pressed;
 		});
 
-		Lua_helper.add_callback(lua, "touchJustPressedObject", function(object:String):Bool
+		Lua_helper.add_callback(lua, "touchJustPressedObject", function(object:String, ?camera:String):Bool
 		{
 			var obj = PlayState.instance.getLuaObject(object);
+			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
 				FunkinLua.luaTrace('touchJustPressedObject: $object does not exist.');
 				return false;
 			}
-			return TouchFunctions.touchOverlapObject(obj) && TouchFunctions.touchJustPressed;
+			return TouchUtil.overlaps(obj, cam) && TouchUtil.justPressed;
 		});
 
-		Lua_helper.add_callback(lua, "touchJustReleasedObject", function(object:String):Bool
+		Lua_helper.add_callback(lua, "touchJustReleasedObject", function(object:String, ?camera:String):Bool
 		{
 			var obj = PlayState.instance.getLuaObject(object);
+			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
-				FunkinLua.luaTrace('touchJustPressedObject: $object does not exist.');
+				FunkinLua.luaTrace('touchJustReleasedObject: $object does not exist.');
 				return false;
 			}
-			return TouchFunctions.touchOverlapObject(obj) && TouchFunctions.touchJustReleased;
+			return TouchUtil.overlaps(obj, cam) && TouchUtil.justReleased;
 		});
 
-		Lua_helper.add_callback(lua, "touchOverlapsObject", function(object:String):Bool
+		Lua_helper.add_callback(lua, "touchReleasedObject", function(object:String, ?camera:String):Bool
 		{
 			var obj = PlayState.instance.getLuaObject(object);
+			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
+			if (obj == null)
+			{
+				FunkinLua.luaTrace('touchReleasedObject: $object does not exist.');
+				return false;
+			}
+			return TouchUtil.overlaps(obj, cam) && TouchUtil.released;
+		});
+
+		Lua_helper.add_callback(lua, "touchPressedObjectComplex", function(object:String, ?camera:String):Bool
+		{
+			var obj = PlayState.instance.getLuaObject(object);
+			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
+			if (obj == null)
+			{
+				FunkinLua.luaTrace('touchPressedObjectComplex: $object does not exist.');
+				return false;
+			}
+			return TouchUtil.overlapsComplex(obj, cam) && TouchUtil.pressed;
+		});
+
+		Lua_helper.add_callback(lua, "touchJustPressedObjectComplex", function(object:String, ?camera:String):Bool
+		{
+			var obj = PlayState.instance.getLuaObject(object);
+			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
+			if (obj == null)
+			{
+				FunkinLua.luaTrace('touchJustPressedObjectComplex: $object does not exist.');
+				return false;
+			}
+			return TouchUtil.overlapsComplex(obj, cam) && TouchUtil.justPressed;
+		});
+
+		Lua_helper.add_callback(lua, "touchJustReleasedObjectComplex", function(object:String, ?camera:String):Bool
+		{
+			var obj = PlayState.instance.getLuaObject(object);
+			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
+			if (obj == null)
+			{
+				FunkinLua.luaTrace('touchJustReleasedObjectComplex: $object does not exist.');
+				return false;
+			}
+			return TouchUtil.overlapsComplex(obj, cam) && TouchUtil.justReleased;
+		});
+
+		Lua_helper.add_callback(lua, "touchReleasedObjectComplex", function(object:String, ?camera:String):Bool
+		{
+			var obj = PlayState.instance.getLuaObject(object);
+			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
+			if (obj == null)
+			{
+				FunkinLua.luaTrace('touchReleasedObjectComplex: $object does not exist.');
+				return false;
+			}
+			return TouchUtil.overlapsComplex(obj, cam) && TouchUtil.released;
+		});
+
+		Lua_helper.add_callback(lua, "touchOverlapsObject", function(object:String, ?camera:String):Bool
+		{
+			var obj = PlayState.instance.getLuaObject(object);
+			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
 				FunkinLua.luaTrace('touchOverlapsObject: $object does not exist.');
 				return false;
 			}
-			return TouchFunctions.touchOverlapObject(obj);
+			return TouchUtil.overlaps(obj, cam);
+		});
+
+		Lua_helper.add_callback(lua, "touchOverlapsObjectComplex", function(object:String, ?camera:String):Bool
+		{
+			var obj = PlayState.instance.getLuaObject(object);
+			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
+			if (obj == null)
+			{
+				FunkinLua.luaTrace('touchOverlapsObjectComplex: $object does not exist.');
+				return false;
+			}
+			return TouchUtil.overlapsComplex(obj, cam);
 		});
 	}
 
@@ -207,7 +281,6 @@ class AndroidFunctions
 	// static var spicyPillow:AndroidBatteryManager = new AndroidBatteryManager();
 	public static function implement(funk:FunkinLua)
 	{
-		var lua:State = funk.lua;
 		Lua_helper.add_callback(lua, "isRooted", AndroidTools.isRooted());
 		Lua_helper.add_callback(lua, "isDolbyAtmos", AndroidTools.isDolbyAtmos());
 		Lua_helper.add_callback(lua, "isAndroidTV", AndroidTools.isAndroidTV());

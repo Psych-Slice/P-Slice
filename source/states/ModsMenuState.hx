@@ -14,7 +14,6 @@ import options.ModSettingsSubState;
 
 import openfl.display.BitmapData;
 import lime.utils.Assets;
-import mobile.backend.TouchFunctions;
 
 class ModsMenuState extends MusicBeatState
 {
@@ -981,17 +980,17 @@ class MenuButton extends FlxSpriteGroup
 
 		if (Controls.instance.mobileC) {
 			if(!ignoreCheck)
-				onFocus = TouchFunctions.touchOverlapObject(this);
+				onFocus = TouchUtil.overlaps(this);
 
-			if(onFocus && TouchFunctions.touchJustReleased)
+			if(onFocus && TouchUtil.justReleased)
 				onFocus = false;
 
-			if(onFocus && onClick != null && TouchFunctions.touchJustPressed)
+			if(onFocus && onClick != null && TouchUtil.justPressed)
 				onClick();
 
 			if(_needACheck) {
 				_needACheck = false;
-				setButtonVisibility(TouchFunctions.touchOverlapObject(this));
+				setButtonVisibility(TouchUtil.overlaps(this));
 			}
 		} else {
 			if(!ignoreCheck && !Controls.instance.controllerMode && FlxG.mouse.justMoved && FlxG.mouse.visible)

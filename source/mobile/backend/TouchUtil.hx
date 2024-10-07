@@ -7,15 +7,15 @@ import flixel.input.touch.FlxTouch;
  * ...
  * @author: Karim Akra
  */
-class TouchFunctions
+class TouchUtil
 {
-	public static var touchPressed(get, never):Bool;
-	public static var touchJustPressed(get, never):Bool;
-	public static var touchJustReleased(get, never):Bool;
-	public static var touchReleased(get, never):Bool;
+	public static var pressed(get, never):Bool;
+	public static var justPressed(get, never):Bool;
+	public static var justReleased(get, never):Bool;
+	public static var released(get, never):Bool;
 	public static var touch(get, never):FlxTouch;
 
-	public static function touchOverlapObject(object:FlxObject, ?camera:FlxCamera):Bool
+	public static function overlaps(object:FlxObject, ?camera:FlxCamera):Bool
 	{
 		for (touch in FlxG.touches.list)
 			if (touch.overlaps(object, camera ?? object.camera))
@@ -24,7 +24,7 @@ class TouchFunctions
 		return false;
 	}
 
-	public static function touchOverlapObjectComplex(object:FlxObject, ?camera:FlxCamera):Bool
+	public static function overlapsComplex(object:FlxObject, ?camera:FlxCamera):Bool
 	{
 		if (camera == null)
 			for (camera in object.cameras)
@@ -41,7 +41,7 @@ class TouchFunctions
 	}
 
 	@:noCompletion
-	private static function get_touchPressed():Bool
+	private static function get_pressed():Bool
 	{
 		for (touch in FlxG.touches.list)
 			if (touch.pressed)
@@ -51,7 +51,7 @@ class TouchFunctions
 	}
 
 	@:noCompletion
-	private static function get_touchJustPressed():Bool
+	private static function get_justPressed():Bool
 	{
 		for (touch in FlxG.touches.list)
 			if (touch.justPressed)
@@ -61,7 +61,7 @@ class TouchFunctions
 	}
 
 	@:noCompletion
-	private static function get_touchJustReleased():Bool
+	private static function get_justReleased():Bool
 	{
 		for (touch in FlxG.touches.list)
 			if (touch.justReleased)
@@ -71,7 +71,7 @@ class TouchFunctions
 	}
 
 	@:noCompletion
-	private static function get_touchReleased():Bool
+	private static function get_released():Bool
 	{
 		for (touch in FlxG.touches.list)
 			if (touch.released)

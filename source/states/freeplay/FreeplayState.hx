@@ -1419,7 +1419,7 @@ class FreeplayState extends MusicBeatSubstate
 		}
 		#end
 
-		if (controls.UI_LEFT_P || (diffSelLeft != null && TouchFunctions.touchOverlapObjectComplex(diffSelLeft) && TouchFunctions.touchJustPressed) && !FlxG.keys.pressed.CONTROL)
+		if (controls.UI_LEFT_P || (diffSelLeft != null && TouchUtil.overlapsComplex(diffSelLeft) && TouchUtil.justPressed) && !FlxG.keys.pressed.CONTROL)
 		{
 			trace("Left");
 			dj.resetAFKTimer();
@@ -1428,7 +1428,7 @@ class FreeplayState extends MusicBeatSubstate
 			if (diffSelLeft != null)
 				diffSelLeft.setPress(true);
 		}
-		if (controls.UI_RIGHT_P || (diffSelRight != null && TouchFunctions.touchOverlapObjectComplex(diffSelRight) && TouchFunctions.touchJustPressed) && !FlxG.keys.pressed.CONTROL)
+		if (controls.UI_RIGHT_P || (diffSelRight != null && TouchUtil.overlapsComplex(diffSelRight) && TouchUtil.justPressed) && !FlxG.keys.pressed.CONTROL)
 		{
 			trace("Right");
 			dj.resetAFKTimer();
@@ -1438,7 +1438,7 @@ class FreeplayState extends MusicBeatSubstate
 				diffSelRight.setPress(true);
 		}
 
-		if ((diffSelLeft != null && diffSelRight != null && TouchFunctions.touchJustReleased) && !FlxG.keys.pressed.CONTROL)
+		if ((diffSelLeft != null && diffSelRight != null && TouchUtil.justReleased) && !FlxG.keys.pressed.CONTROL)
 		{
 			diffSelRight.setPress(false);
 			diffSelLeft.setPress(false);

@@ -4,7 +4,7 @@ import flixel.FlxObject;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.util.FlxGradient;
-import mobile.backend.TouchFunctions;
+import mobile.backend.TouchUtil;
 import flixel.input.touch.FlxTouch;
 import flixel.ui.FlxButton as UIButton;
 
@@ -161,20 +161,20 @@ class MobileControlSelectSubState extends MusicBeatSubstate
 		{
 			if (buttonBinded)
 			{
-				if (TouchFunctions.touchJustReleased)
+				if (TouchUtil.justReleased)
 				{
 					bindButton = null;
 					buttonBinded = false;
 				}
 				else
-					moveButton(TouchFunctions.touch, bindButton);
+					moveButton(TouchUtil.touch, bindButton);
 			}
 			else
 			{
 				control.touchPad.forEachAlive((button:TouchButton) ->
 				{
 					if (button.justPressed)
-						moveButton(TouchFunctions.touch, button);
+						moveButton(TouchUtil.touch, button);
 				});
 			}
 			control.touchPad.forEachAlive((button:TouchButton) ->
@@ -299,18 +299,18 @@ class MobileControlSelectSubState extends MusicBeatSubstate
 
 	function checkArrowButton(button:FlxSprite, func:Void->Void)
 	{
-		if (TouchFunctions.touchOverlapObject(button))
+		if (TouchUtil.overlaps(button))
 		{
-			if (TouchFunctions.touchPressed)
+			if (TouchUtil.pressed)
 				button.animation.play('press');
-			if (TouchFunctions.touchJustPressed)
+			if (TouchUtil.justPressed)
 			{
 				if (options[curOption] == "Pad-Extra" && control.touchPad != null)
 					control.touchPad.setExtrasDefaultPos();
 				func();
 			}
 		}
-		if (TouchFunctions.touchJustReleased && button.animation.curAnim.name == 'press')
+		if (TouchUtil.justReleased && button.animation.curAnim.name == 'press')
 			button.animation.play('idle');
 		if (FlxG.keys.justPressed.LEFT && button == leftArrow || FlxG.keys.justPressed.RIGHT && button == rightArrow)
 			func();

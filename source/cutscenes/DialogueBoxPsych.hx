@@ -167,7 +167,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			if(bgFade.alpha > 0.5) bgFade.alpha = 0.5;
 
 			var back:Bool = #if android FlxG.android.justReleased.BACK || #end Controls.instance.BACK;
-			if((TouchFunctions.touchJustPressed || Controls.instance.ACCEPT )|| back) {
+			if((TouchUtil.justPressed || Controls.instance.ACCEPT )|| back) {
 				if(!daText.finishedText && !back)
 				{
 					daText.finishText();

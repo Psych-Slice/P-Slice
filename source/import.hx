@@ -24,7 +24,7 @@ import mobile.input.MobileInputID;
 import mobile.backend.MobileData;
 import mobile.input.MobileInputManager;
 import mobile.backend.SwipeUtil;
-import mobile.backend.TouchFunctions;
+import mobile.backend.TouchUtil;
 
 // Android
 #if android
