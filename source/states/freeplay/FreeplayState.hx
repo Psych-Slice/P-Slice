@@ -212,6 +212,7 @@ class FreeplayState extends MusicBeatSubstate
 
 	public function new(?params:FreeplayStateParams, ?stickers:StickerSubState)
 	{
+		controls.isInSubstate = true;
 		super();
 		currentCharacter = params?.character ?? "bf";
 
@@ -1226,6 +1227,15 @@ class FreeplayState extends MusicBeatSubstate
 		});
 	}
 
+	override function closeSubState()
+	{
+		super.closeSubState();
+		controls.isInSubstate = true;
+		removeTouchPad();
+		addTouchPad('UP_DOWN', 'A_B_F');
+		addTouchPadCamera();
+	}
+
 	var spamTimer:Float = 0;
 	var spamming:Bool = false;
 
@@ -1549,10 +1559,14 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			grpCapsules.members[curSelected].onConfirm();
 		}
+
+		if (!busy)
+			controls.isInSubstate = true;
 	}
 
 	public override function destroy():Void
 	{
+		controls.isInSubstate = false;
 		super.destroy();
 		var daSong:Null<FreeplaySongData> = currentFilteredSongs[curSelected];
 		if (daSong != null)
