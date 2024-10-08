@@ -21,7 +21,7 @@ class PlayerData
 	 * The character IDs this character is associated with.
 	 * Only songs that use these characters will show up in Freeplay.
 	 */
-	public var ownedChars:Array<String> = [];
+	public var ownedChars:Array<String> = ["bf"];
 
 	/**
 	 * Whether to show songs with character IDs that aren't associated with any specific character.

@@ -232,6 +232,7 @@ class FreeplayState extends MusicBeatSubstate
 		currentCharacter = result;
 
 		styleData = FreeplayStyleRegistry.instance.fetchEntry(currentCharacter.getFreeplayStyleID());
+		if (styleData == null) styleData = FreeplayStyleRegistry.instance.fetchEntry("bf");
 
 		fromCharSelect = params?.fromCharSelect;
 
@@ -365,7 +366,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		if (currentCharacter?.getFreeplayDJData() != null)
 		{
-			dj = new FreeplayDJ(640, 366, currentCharacterId);
+			dj = new FreeplayDJ(640, 366, currentCharacter);
 			exitMovers.set([dj], {
 				x: -dj.width * 1.6,
 				speed: 0.5

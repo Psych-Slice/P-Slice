@@ -29,14 +29,12 @@ class FreeplayDJ extends FlxAtlasSprite
   // Time since last special idle animation you.
   var timeIdling:Float = 0;
 
-  final characterId:String = Constants.DEFAULT_CHARACTER;
   final playableCharData:PlayerFreeplayDJData;
 
-  public function new(x:Float, y:Float, characterId:String)
+  public function new(x:Float, y:Float, character:PlayableCharacter)//? don't pull 2 time here. Use result from above instead!
   {
-    this.characterId = characterId;
 
-    var playableChar = PlayerRegistry.instance.fetchEntry(characterId);
+    var playableChar = character;
     playableCharData = playableChar.getFreeplayDJData();
 
     super(x, y, playableCharData.getAtlasPath());

@@ -138,7 +138,7 @@ class BackingCard extends FlxSpriteGroup
 
     add(alsoOrangeLOL);
 
-    FlxSpriteUtil.alphaMaskFlxSprite(orangeBackShit, pinkBack, orangeBackShit);
+    //FlxSpriteUtil.alphaMaskFlxSprite(orangeBackShit, pinkBack, orangeBackShit);
     orangeBackShit.visible = false;
     alsoOrangeLOL.visible = false;
 

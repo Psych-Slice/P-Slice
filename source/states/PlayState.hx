@@ -392,6 +392,7 @@ class PlayState extends MusicBeatState
 			case 'phillyStreets': new PhillyStreets(); 	//Weekend 1 - Darnell, Lit Up, 2Hot
 			case 'phillyBlazin': new PhillyBlazin();	//Weekend 1 - Blazin
 			case 'limoRideErect': new LimoRideErect();  //Week 4 Special 
+			case 'mainStageErect': new MainStageErect();  //Week 4 Special 
 		}
 		if(isPixelStage) introSoundsSuffix = '-pixel';
 

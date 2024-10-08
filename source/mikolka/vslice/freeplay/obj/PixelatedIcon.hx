@@ -63,11 +63,11 @@ class PixelatedIcon extends FlxFilteredSprite
         animation.add("idle",[0]);
         animation.add("confirm",[0]);
       }
-      animation.play("idle");
       this.scale.x = this.scale.y = 2;
       this.updateHitbox();
       this.origin.x = 25;
       if(char == "parents") this.origin.x = 55;
+      animation.play("idle");
     }
 
     // if (isAnimated)
