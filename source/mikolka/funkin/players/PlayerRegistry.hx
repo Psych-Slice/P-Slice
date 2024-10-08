@@ -12,12 +12,7 @@ class PlayerRegistry extends PsliceRegistry{
     public function new() {
         super('players');
     }
-    // Based on a character ID from a stage obtain it's playable character ID
-    public function getCharacterOwnerId(charId:String) {
-        var binds = new Map<String,String>();
-        binds.set("pico-playable","pico");
-        return binds.get(charId) ?? "bf";
-    }
+
     public function isCharacterOwned(id:String):Bool {
         return true;
     }

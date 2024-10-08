@@ -1,5 +1,7 @@
 package mikolka.vslice.results;
 
+import mikolka.compatibility.ModsHelper;
+import mikolka.compatibility.VsliceOptions;
 import mikolka.funkin.FlxAtlasSprite;
 import mikolka.funkin.FunkinSprite;
 import mikolka.funkin.players.PlayerData;
@@ -130,7 +132,16 @@ class ResultState extends MusicBeatSubState
 
     rankBg = new FunkinSprite(0, 0);
 
-    playerCharacterId = PlayerRegistry.instance.getCharacterOwnerId(params.characterId); 
+    var sngMeta = FreeplayMeta.getMeta(params.songId);
+    
+    if(sngMeta.freeplayCharacter != '' ){
+      playerCharacterId = sngMeta.freeplayCharacter;
+    }
+    else{
+      var mod_char = VsliceOptions.LAST_MOD;
+      playerCharacterId = mod_char.char_name;
+      ModsHelper.loadModDir(mod_char.mod_dir);
+    }
     //? moved this line so we can edit it in debug options
   }
 

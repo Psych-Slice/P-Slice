@@ -662,8 +662,8 @@ class SongMenuItem extends FlxSpriteGroup
 
     if (doLerp)
     {
-      x = MathUtil.coolLerp(x, targetPos.x, 0.3);
-      y = MathUtil.coolLerp(y, targetPos.y, 0.4);
+      x = MathUtil.smoothLerp(x, targetPos.x,elapsed, 0.3); //? update lerping for lower FPS
+      y = MathUtil.smoothLerp(y, targetPos.y,elapsed, 0.4); //? kinda cool tbh
     }
 
     super.update(elapsed);
