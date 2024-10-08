@@ -276,7 +276,11 @@ class PlayState extends MusicBeatState
 		this.variables = new JoinedLuaVariables();
 		//trace('Playback Rate: ' + playbackRate);
 		Paths.clearStoredMemory();
-		if(nextReloadAll) Paths.clearUnusedMemory();
+		if(nextReloadAll)
+		{
+			Paths.clearUnusedMemory();
+			Language.reloadPhrases();
+		}
 		nextReloadAll = false;
 
 		startCallback = startCountdown;
@@ -1152,6 +1156,15 @@ class PlayState extends MusicBeatState
 		if (ret == LuaUtils.Function_Stop)
 			return;
 
+		updateScoreText();
+		if (!miss && !cpuControlled)
+			doScoreBop();
+
+		callOnScripts('onUpdateScore', [miss]);
+	}
+
+	public dynamic function updateScoreText()
+	{
 		var str:String = Language.getPhrase('rating_$ratingName', ratingName);
 		if(totalPlayed != 0)
 		{
@@ -1163,11 +1176,6 @@ class PlayState extends MusicBeatState
 		if(!instakillOnMiss) tempScore = Language.getPhrase('score_text', 'Score: {1} | Misses: {2} | Rating: {3}', [songScore, songMisses, str]);
 		else tempScore = Language.getPhrase('score_text_instakill', 'Score: {1} | Rating: {2}', [songScore, str]);
 		scoreTxt.text = tempScore;
-
-		if (!miss && !cpuControlled)
-			doScoreBop();
-
-		callOnScripts('onUpdateScore', [miss]);
 	}
 
 	public dynamic function fullComboFunction()
@@ -1571,7 +1579,7 @@ class PlayState extends MusicBeatState
 			}
 
 			strumLineNotes.add(babyArrow);
-			babyArrow.postAddedToGroup();
+			babyArrow.playerPosition();
 		}
 	}
 
@@ -1862,8 +1870,6 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
-		setOnScripts('cameraX', camFollow.x);
-		setOnScripts('cameraY', camFollow.y);
 		setOnScripts('botPlay', cpuControlled);
 		callOnScripts('onUpdatePost', [elapsed]);
 
@@ -2359,10 +2365,7 @@ class PlayState extends MusicBeatState
 
 		if (gf != null && SONG.notes[sec].gfSection)
 		{
-			camFollow.setPosition(gf.getMidpoint().x, gf.getMidpoint().y);
-			camFollow.x += gf.cameraPosition[0] + girlfriendCameraOffset[0];
-			camFollow.y += gf.cameraPosition[1] + girlfriendCameraOffset[1];
-			tweenCamIn();
+			moveCameraToGirlfriend();
 			callOnScripts('onMoveCamera', ['gf']);
 			return;
 		}
@@ -2373,6 +2376,14 @@ class PlayState extends MusicBeatState
 			callOnScripts('onMoveCamera', ['dad']);
 		else
 			callOnScripts('onMoveCamera', ['boyfriend']);
+	}
+	
+	public function moveCameraToGirlfriend()
+	{
+		camFollow.setPosition(gf.getMidpoint().x, gf.getMidpoint().y);
+		camFollow.x += gf.cameraPosition[0] + girlfriendCameraOffset[0];
+		camFollow.y += gf.cameraPosition[1] + girlfriendCameraOffset[1];
+		tweenCamIn();
 	}
 
 	var cameraTwn:FlxTween;
@@ -3631,7 +3642,7 @@ class PlayState extends MusicBeatState
 			try
 			{
 				var callValue = script.call(funcToCall, args);
-				var myValue:Dynamic = callValue.signature;
+				var myValue:Dynamic = callValue.returnValue;
 
 				if((myValue == LuaUtils.Function_StopHScript || myValue == LuaUtils.Function_StopAll) && !excludeValues.contains(myValue) && !ignoreStops)
 				{
