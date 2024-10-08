@@ -67,6 +67,10 @@ class MusicBeatState extends FlxUIState
 
 		if(FlxG.save.data != null) FlxG.save.data.fullscreen = FlxG.fullscreen;
 
+		stagesFunc(function(stage:BaseStage) {
+			stage.update(elapsed);
+		});
+		
 		super.update(elapsed);
 	}
 
@@ -153,6 +157,12 @@ class MusicBeatState extends FlxUIState
 
 	public function stepHit():Void
 	{
+		stagesFunc(function(stage:BaseStage) {
+			stage.curStep = curStep;
+			stage.curDecStep = curDecStep;
+			stage.stepHit();
+		});
+
 		if (curStep % 4 == 0)
 			beatHit();
 	}
@@ -160,11 +170,20 @@ class MusicBeatState extends FlxUIState
 	public function beatHit():Void
 	{
 		//trace('Beat: ' + curBeat);
+		stagesFunc(function(stage:BaseStage) {
+			stage.curBeat = curBeat;
+			stage.curDecBeat = curDecBeat;
+			stage.beatHit();
+		});
 	}
 
 	public function sectionHit():Void
 	{
 		//trace('Section: ' + curSection + ', Beat: ' + curBeat + ', Step: ' + curStep);
+		stagesFunc(function(stage:BaseStage) {
+			stage.curSection = curSection;
+			stage.sectionHit();
+		});
 	}
 
 	function getBeatsOnSection()
@@ -173,4 +192,11 @@ class MusicBeatState extends FlxUIState
 		if(PlayState.SONG != null && PlayState.SONG.notes[curSection] != null) val = PlayState.SONG.notes[curSection].sectionBeats;
 		return val == null ? 4 : val;
 	}
+	public var stages:Array<BaseStage> = [];
+	function stagesFunc(func:BaseStage->Void)
+		{
+			for (stage in stages)
+				if(stage != null && stage.exists && stage.active)
+					func(stage);
+		}
 }

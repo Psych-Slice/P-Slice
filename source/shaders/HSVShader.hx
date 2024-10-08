@@ -2,7 +2,6 @@ package shaders;
 
 import flixel.system.debug.watch.Tracker.TrackerProfile;
 import flixel.addons.display.FlxRuntimeShader;
-import flixel.FlxG;
 import openfl.utils.Assets;
 
 class HSVShader extends FlxRuntimeShader
@@ -13,7 +12,7 @@ class HSVShader extends FlxRuntimeShader
 
   public function new()
   {
-    super(Assets.getText(Paths.shaderFragment('hsv')));
+    super(Assets.getText(Paths.getPath('shaders/hsv.frag', TEXT, null)));
     FlxG.debugger.addTrackerProfile(new TrackerProfile(HSVShader, ['hue', 'saturation', 'value']));
     hue = 1;
     saturation = 1;
