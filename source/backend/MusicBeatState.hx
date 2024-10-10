@@ -20,7 +20,7 @@ class MusicBeatState extends FlxState
 	}
 
 	public var touchPad:TouchPad;
-	public var mobileControls:IMobileControls;
+	public var hitbox:Hitbox;
 	public var camControls:FlxCamera;
 	public var tpadCam:FlxCamera;
 
@@ -45,39 +45,29 @@ class MusicBeatState extends FlxState
 		}
 	}
 
-	public function addMobileControls(defaultDrawTarget:Bool = false):Void
+	public function addHitbox(defaultDrawTarget:Bool = false):Void
 	{
-		var extraMode = MobileData.extraActions.get(ClientPrefs.data.extraButtons);
+		var extraMode = MobileData.extraActions.get(ClientPrefs.data.extraHints);
 
-		switch (MobileData.mode)
-		{
-			case 0: // RIGHT_FULL
-				mobileControls = new TouchPad('RIGHT_FULL', 'NONE', extraMode);
-			case 1: // LEFT_FULL
-				mobileControls = new TouchPad('LEFT_FULL', 'NONE', extraMode);
-			case 2: // CUSTOM
-				mobileControls = MobileData.getTouchPadCustom(new TouchPad('RIGHT_FULL', 'NONE', extraMode));
-			case 3: // HITBOX
-				mobileControls = new Hitbox(extraMode);
-		}
+		hitbox = new Hitbox(extraMode);
+		hitbox = MobileData.setButtonsColors(hitbox);
 
-		mobileControls.instance = MobileData.setButtonsColors(mobileControls.instance);
 		camControls = new FlxCamera();
 		camControls.bgColor.alpha = 0;
 		FlxG.cameras.add(camControls, defaultDrawTarget);
 
-		mobileControls.instance.cameras = [camControls];
-		mobileControls.instance.visible = false;
-		add(mobileControls.instance);
+		hitbox.cameras = [camControls];
+		hitbox.visible = false;
+		add(hitbox);
 	}
 
-	public function removeMobileControls()
+	public function removeHitbox()
 	{
-		if (mobileControls != null)
+		if (hitbox != null)
 		{
-			remove(mobileControls.instance);
-			mobileControls.instance = FlxDestroyUtil.destroy(mobileControls.instance);
-			mobileControls = null;
+			remove(hitbox);
+			hitbox = FlxDestroyUtil.destroy(hitbox);
+			hitbox = null;
 		}
 
 		if(camControls != null)
@@ -101,7 +91,7 @@ class MusicBeatState extends FlxState
 	override function destroy()
 	{
 		removeTouchPad();
-		removeMobileControls();
+		removeHitbox();
 		
 		super.destroy();
 	}

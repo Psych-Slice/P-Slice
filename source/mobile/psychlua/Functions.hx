@@ -21,49 +21,65 @@ class MobileFunctions
 
 		Lua_helper.add_callback(lua, 'mobileControlsMode', getMobileControlsAsString());
 
-		Lua_helper.add_callback(lua, "extraButtonPressed", (button:String) ->
+		Lua_helper.add_callback(lua, "extraHintPressed", (button:String) ->
 		{
 			button = button.toLowerCase();
-			if (MusicBeatState.getState().mobileControls != null)
+			if (MusicBeatState.getState().hitbox != null)
 			{
 				switch (button)
 				{
 					case 'second':
-						return MusicBeatState.getState().mobileControls.buttonExtra2.pressed;
+						return MusicBeatState.getState().hitbox.buttonExtra2.pressed;
 					default:
-						return MusicBeatState.getState().mobileControls.buttonExtra.pressed;
+						return MusicBeatState.getState().hitbox.buttonExtra.pressed;
 				}
 			}
 			return false;
 		});
 
-		Lua_helper.add_callback(lua, "extraButtonJustPressed", (button:String) ->
+		Lua_helper.add_callback(lua, "extraHintJustPressed", (button:String) ->
 		{
 			button = button.toLowerCase();
-			if (MusicBeatState.getState().mobileControls != null)
+			if (MusicBeatState.getState().hitbox != null)
 			{
 				switch (button)
 				{
 					case 'second':
-						return MusicBeatState.getState().mobileControls.buttonExtra2.justPressed;
+						return MusicBeatState.getState().hitbox.buttonExtra2.justPressed;
 					default:
-						return MusicBeatState.getState().mobileControls.buttonExtra.justPressed;
+						return MusicBeatState.getState().hitbox.buttonExtra.justPressed;
 				}
 			}
 			return false;
 		});
 
-		Lua_helper.add_callback(lua, "extraButtonJustReleased", (button:String) ->
+		Lua_helper.add_callback(lua, "extraHintJustReleased", (button:String) ->
 		{
 			button = button.toLowerCase();
-			if (MusicBeatState.getState().mobileControls != null)
+			if (MusicBeatState.getState().hitbox != null)
 			{
 				switch (button)
 				{
 					case 'second':
-						return MusicBeatState.getState().mobileControls.buttonExtra2.justReleased;
+						return MusicBeatState.getState().hitbox.buttonExtra2.justReleased;
 					default:
-						return MusicBeatState.getState().mobileControls.buttonExtra.justReleased;
+						return MusicBeatState.getState().hitbox.buttonExtra.justReleased;
+				}
+			}
+			return false;
+		});
+
+		Lua_helper.add_callback(lua, "extraHintReleased", (button:String) ->
+		{
+			button = button.toLowerCase();
+			if (MusicBeatState.getState().hitbox != null)
+			{
+				switch (button)
+				{
+					case 'second':
+						return MusicBeatState.getState().hitbox.buttonExtra2.released;
+					default:
+						return MusicBeatState.getState().hitbox.buttonExtra.released;
 				}
 			}
 			return false;
@@ -99,7 +115,7 @@ class MobileFunctions
 		{
 			if (PlayState.instance.luaTouchPad == null)
 			{
-				FunkinLua.luaTrace('addTouchPadCamera: Virtual Pad does not exist.');
+				FunkinLua.luaTrace('addTouchPadCamera: Touch Pad does not exist.');
 				return;
 			}
 			PlayState.instance.addLuaTouchPadCamera();
@@ -130,6 +146,15 @@ class MobileFunctions
 				return false;
 			}
 			return PlayState.instance.luaTouchPadJustReleased(button);
+		});
+
+		Lua_helper.add_callback(lua, "touchPadReleased", function(button:Dynamic):Bool
+		{
+			if (PlayState.instance.luaTouchPad == null)
+			{
+				return false;
+			}
+			return PlayState.instance.luaTouchPadReleased(button);
 		});
 
 		Lua_helper.add_callback(lua, "touchJustPressed", TouchUtil.justPressed);
@@ -258,20 +283,81 @@ class MobileFunctions
 	}
 
 	public static function getMobileControlsAsString():String
+		return 'hitbox';
+}
+
+class MobileDeprecatedFunctions
+{
+	public static function implement(funk:FunkinLua)
 	{
-		switch (MobileData.mode)
+		var lua:State = funk.lua;
+		Lua_helper.add_callback(lua, "extraButtonPressed", (button:String) ->
 		{
-			case 0:
-				return 'left';
-			case 1:
-				return 'right';
-			case 2:
-				return 'custom';
-			case 3:
-				return 'hitbox';
-			default:
-				return 'none';
-		}
+			FunkinLua.luaTrace("extraButtonPressed is deprecated! Use extraHintPressed instead", false, true);
+			button = button.toLowerCase();
+			if (MusicBeatState.getState().hitbox != null)
+			{
+				switch (button)
+				{
+					case 'second':
+						return MusicBeatState.getState().hitbox.buttonExtra2.pressed;
+					default:
+						return MusicBeatState.getState().hitbox.buttonExtra.pressed;
+				}
+			}
+			return false;
+		});
+
+		Lua_helper.add_callback(lua, "extraButtonJustPressed", (button:String) ->
+		{
+			FunkinLua.luaTrace("extraButtonJustPressed is deprecated! Use extraHintJustPressed instead", false, true);
+			button = button.toLowerCase();
+			if (MusicBeatState.getState().hitbox != null)
+			{
+				switch (button)
+				{
+					case 'second':
+						return MusicBeatState.getState().hitbox.buttonExtra2.justPressed;
+					default:
+						return MusicBeatState.getState().hitbox.buttonExtra.justPressed;
+				}
+			}
+			return false;
+		});
+
+		Lua_helper.add_callback(lua, "extraButtonJustReleased", (button:String) ->
+		{
+			FunkinLua.luaTrace("extraButtonJustReleased is deprecated! Use extraHintJustReleased instead", false, true);
+			button = button.toLowerCase();
+			if (MusicBeatState.getState().hitbox != null)
+			{
+				switch (button)
+				{
+					case 'second':
+						return MusicBeatState.getState().hitbox.buttonExtra2.justReleased;
+					default:
+						return MusicBeatState.getState().hitbox.buttonExtra.justReleased;
+				}
+			}
+			return false;
+		});
+
+		Lua_helper.add_callback(lua, "extraButtonReleased", (button:String) ->
+		{
+			FunkinLua.luaTrace("extraButtonReleased is deprecated! Use extraHintReleased instead", false, true);
+			button = button.toLowerCase();
+			if (MusicBeatState.getState().hitbox != null)
+			{
+				switch (button)
+				{
+					case 'second':
+						return MusicBeatState.getState().hitbox.buttonExtra2.released;
+					default:
+						return MusicBeatState.getState().hitbox.buttonExtra.released;
+				}
+			}
+			return false;
+		});
 	}
 }
 

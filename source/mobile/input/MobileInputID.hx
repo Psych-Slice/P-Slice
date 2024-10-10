@@ -15,52 +15,47 @@ enum abstract MobileInputID(Int) from Int to Int
 	// Nothing & Anything
 	var ANY = -2;
 	var NONE = -1;
-	// Notes
-	var NOTE_LEFT = 0;
-	var NOTE_DOWN = 1;
-	var NOTE_UP = 2;
-	var NOTE_RIGHT = 3;
 	// Touch Pad Buttons
-	var A = 4;
-	var B = 5;
-	var C = 6;
-	var D = 7;
-	var E = 8;
-	var F = 9;
-	var G = 10;
-	var H = 11;
-	var I = 12;
-	var J = 13;
-	var K = 14;
-	var L = 15;
-	var M = 16;
-	var N = 17;
-	var O = 18;
-	var P = 19;
-	var Q = 20;
-	var R = 21;
-	var S = 22;
-	var T = 23;
-	var U = 24;
-	var V = 25;
-	var W = 26;
-	var X = 27;
-	var Y = 28;
-	var Z = 29;
-	// Touch Pad Directional Buttons Buttons
-	var UP = 30;
-	var UP2 = 31;
-	var DOWN = 32;
-	var DOWN2 = 33;
-	var LEFT = 34;
-	var LEFT2 = 35;
-	var RIGHT = 36;
-	var RIGHT2 = 37;
-	// Hitbox Buttons
-	var HITBOX_UP = 38;
-	var HITBOX_DOWN = 39;
-	var HITBOX_LEFT = 40;
-	var HITBOX_RIGHT = 41;
+	var A = 0;
+	var B = 1;
+	var C = 2;
+	var D = 3;
+	var E = 4;
+	var F = 5;
+	var G = 6;
+	var H = 7;
+	var I = 8;
+	var J = 9;
+	var K = 10;
+	var L = 11;
+	var M = 12;
+	var N = 13;
+	var O = 14;
+	var P = 15;
+	var Q = 16;
+	var R = 17;
+	var S = 18;
+	var T = 19;
+	var U = 20;
+	var V = 21;
+	var W = 22;
+	var X = 23;
+	var Y = 24;
+	var Z = 25;
+	// Touch Pad Directional Buttons
+	var UP = 26;
+	var UP2 = 27;
+	var DOWN = 28;
+	var DOWN2 = 29;
+	var LEFT = 30;
+	var LEFT2 = 31;
+	var RIGHT = 32;
+	var RIGHT2 = 33;
+	// Hitbox Hints
+	var HITBOX_UP = 34;
+	var HITBOX_DOWN = 35;
+	var HITBOX_LEFT = 36;
+	var HITBOX_RIGHT = 37;
 
 	@:from
 	public static inline function fromString(s:String)
