@@ -1646,6 +1646,11 @@ class FunkinLua {
 			return;
 		}
 
+		if (Reflect.isFunction(data)) {
+			Lua_helper.add_callback(lua, variable, data);
+			return;
+		}
+
 		Convert.toLua(lua, data);
 		Lua.setglobal(lua, variable);
 	}
