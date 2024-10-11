@@ -28,7 +28,7 @@ class OptionsState extends MusicBeatState
 	#if (target.threaded) var mutex:Mutex = new Mutex(); #end
 
 	private var mainCam:FlxCamera;
-	private var funnyCam:FlxCamera;
+	public static var funnyCam:FlxCamera;
 	private var camFollow:FlxObject;
 	private var camFollowPos:FlxObject;
 

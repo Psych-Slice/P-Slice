@@ -9,6 +9,7 @@ import objects.CheckboxThingie;
 import objects.AttachedText;
 import options.Option;
 import backend.InputFormatter;
+import mobile.options.MobileOptionsSubState;
 
 class BaseOptionsMenu extends MusicBeatSubstate
 {
@@ -144,6 +145,16 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		}
 
 		if (controls.BACK) {
+			#if android
+			// P-Slice moment
+			if (ClientPrefs.data.storageType != MobileOptionsSubState.lastStorageType)
+			{
+				FlxG.sound.play(Paths.sound('cancelMenu'));
+				MobileOptionsSubState.onStorageChange();
+				CoolUtil.showPopUp('Storage Type has been changed and you needed restart the game!!\nPress OK to close the game.', 'Notice!');
+				lime.system.System.exit(0);
+			}
+			#end
 			close();
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 		}
