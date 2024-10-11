@@ -90,7 +90,8 @@ class CrashHandler
 	#if (cpp || hl)
 	private static function onError(message:Dynamic):Void
 	{
-		throw Std.string(message);
+		CoolUtil.showPopUp(message, "Error!");
+		lime.system.System.exit(1);
 	}
 	#end
 }
