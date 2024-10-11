@@ -90,7 +90,7 @@ class CrashHandler
 	#if (cpp || hl)
 	private static function onError(message:Dynamic):Void
 	{
-		CoolUtil.showPopUp(message, "Error!");
+		CoolUtil.showPopUp(message, "Critical Error!");
 		lime.system.System.exit(1);
 	}
 	#end
