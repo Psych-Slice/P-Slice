@@ -222,7 +222,7 @@ class Controls
 	{
 		if (keys != null && requestedHitbox != null)
 		{
-			if (requestedHitbox.instance.anyPressed(keys))
+			if (requestedHitbox.anyPressed(keys))
 			{
 				controllerMode = true;
 				return true;
@@ -235,7 +235,7 @@ class Controls
 	{
 		if (keys != null && requestedHitbox != null)
 		{
-			if (requestedHitbox.instance.anyJustPressed(keys))
+			if (requestedHitbox.anyJustPressed(keys))
 			{
 				controllerMode = true;
 				return true;
@@ -248,7 +248,7 @@ class Controls
 	{
 		if (keys != null && requestedHitbox != null)
 		{
-			if (requestedHitbox.instance.anyJustReleased(keys))
+			if (requestedHitbox.anyJustReleased(keys))
 			{
 				controllerMode = true;
 				return true;
