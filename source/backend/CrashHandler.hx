@@ -34,22 +34,30 @@ class CrashHandler
 		e.stopImmediatePropagation();
 
 		var m:String = e.error;
-		if (Std.isOfType(e.error, Error)) {
+		if (Std.isOfType(e.error, Error))
+		{
 			var err = cast(e.error, Error);
 			m = '${err.message}';
-		} else if (Std.isOfType(e.error, ErrorEvent)) {
+		}
+		else if (Std.isOfType(e.error, ErrorEvent))
+		{
 			var err = cast(e.error, ErrorEvent);
 			m = '${err.text}';
 		}
 		var stack = haxe.CallStack.exceptionStack();
 		var stackLabelArr:Array<String> = [];
 		var stackLabel:String = "";
-		for(e in stack) {
-			switch(e) {
-				case CFunction: stackLabelArr.push("Non-Haxe (C) Function");
-				case Module(c): stackLabelArr.push('Module ${c}');
+		for (e in stack)
+		{
+			switch (e)
+			{
+				case CFunction:
+					stackLabelArr.push("Non-Haxe (C) Function");
+				case Module(c):
+					stackLabelArr.push('Module ${c}');
 				case FilePos(parent, file, line, col):
-					switch(parent) {
+					switch (parent)
+					{
 						case Method(cla, func):
 							stackLabelArr.push('${file.replace('.hx', '')}.$func() [line $line]');
 						case _:
@@ -62,36 +70,50 @@ class CrashHandler
 			}
 		}
 		stackLabel = stackLabelArr.join('\r\n');
-		#if sys
-		try
-		{
-			if (!FileSystem.exists('logs'))
-				FileSystem.createDirectory('logs');
 
-			File.saveContent('logs/' + 'Crash - ' + Date.now().toString().replace(' ', '-').replace(':', "'") + '.txt', '$m\n$stackLabel');
-		}
-		catch (e:haxe.Exception)
-			trace('Couldn\'t save error message. (${e.message})');
+		#if sys
+		saveErrorMessage('$m\n$stackLabel');
 		#end
 
 		CoolUtil.showPopUp('$m\n$stackLabel', "Error!");
-
-		#if html5
-		if (flixel.FlxG.sound.music != null)
-			flixel.FlxG.sound.music.stop();
-
-		js.Browser.window.location.reload(true);
-		#else
 		#if DISCORD_ALLOWED DiscordClient.shutdown(); #end
 		lime.system.System.exit(1);
-		#end
 	}
 
 	#if (cpp || hl)
 	private static function onError(message:Dynamic):Void
 	{
-		CoolUtil.showPopUp(message, "Critical Error!");
+		final log:Array<String> = [];
+
+		if (message != null && message.length > 0)
+			log.push(message);
+
+		log.push(haxe.CallStack.toString(haxe.CallStack.exceptionStack(true)));
+
+		#if sys
+		saveErrorMessage(log.join('\n'));
+		#end
+
+		CoolUtil.showPopUp(log.join('\n'), "Critical Error!");
+		#if DISCORD_ALLOWED DiscordClient.shutdown(); #end
 		lime.system.System.exit(1);
+	}
+	#end
+
+	#if sys
+	private static function saveErrorMessage(message:String):Void
+	{
+		try
+		{
+			if (!FileSystem.exists('logs'))
+				FileSystem.createDirectory('logs');
+
+			File.saveContent('logs/'
+				+ Date.now().toString().replace(' ', '-').replace(':', "'")
+				+ '.txt', message);
+		}
+		catch (e:haxe.Exception)
+			trace('Couldn\'t save error message. (${e.message})');
 	}
 	#end
 }
