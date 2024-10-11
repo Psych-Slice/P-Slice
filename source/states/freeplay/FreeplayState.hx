@@ -728,19 +728,28 @@ class FreeplayState extends MusicBeatSubstate
 
 		addTouchPad('UP_DOWN', 'A_B_F');
 		addTouchPadCamera();
-		touchPad.forEachAlive(function(button:TouchButton)
+		if (prepForNewRank)
 		{
-			if (button.tag == 'UP' || button.tag == 'DOWN')
+			final lastAlpha:Float = touchPad.alpha;
+			touchPad.alpha = 0;
+			FlxTween.tween(touchPad, {alpha: lastAlpha}, 1.6, {ease: FlxEase.circOut});
+		}
+		else
+		{
+			touchPad.forEachAlive(function(button:TouchButton)
 			{
-				button.x -= 350;
-				FlxTween.tween(button, {x: button.x + 350}, 0.6, {ease: FlxEase.backInOut});
-			}
-			else
-			{
-				button.x += 450;
-				FlxTween.tween(button, {x: button.x - 450}, 0.6, {ease: FlxEase.backInOut});
-			}
-		});
+				if (button.tag == 'UP' || button.tag == 'DOWN')
+				{
+					button.x -= 350;
+					FlxTween.tween(button, {x: button.x + 350}, 0.6, {ease: FlxEase.backInOut});
+				}
+				else
+				{
+					button.x += 450;
+					FlxTween.tween(button, {x: button.x - 450}, 0.6, {ease: FlxEase.backInOut});
+				}
+			});
+		}
 	}
 
 	var currentFilter:SongFilter = null;
