@@ -54,15 +54,15 @@
 			"fps": 24,
 			"anim": "idleKnife",
 			"loop": false,
-			"name": "KnifeIdle0"
+			"name": "knife high held xmas0"
 		},
 		{
-			"offsets": [134, 52],
+			"offsets": [135, 52],
 			"indices": [],
 			"fps": 24,
 			"anim": "lowerKnife",
 			"loop": false,
-			"name": "KnifeLower0"
+			"name": "knife lower xmas0"
 		}
 	],
 	"vocals_file": "",

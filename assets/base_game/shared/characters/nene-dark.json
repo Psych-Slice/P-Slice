@@ -62,7 +62,7 @@
 			"fps": 24,
 			"anim": "lowerKnife",
 			"loop": false,
-			"name": "knife lowe"
+			"name": "knife lower"
 		}
 	],
 	"vocals_file": "",

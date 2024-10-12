@@ -1,7 +1,7 @@
 {
-	"songRating": 3,
+	"songRating": 4,
 	"albumId": "volume3",
-	"freeplayCharacter": "",
+	"freeplayCharacter": "pico",
 	"freeplaySongLength": 114.545458,
 	"freeplayPrevEnd": 15,
 	"freeplayPrevStart": 0

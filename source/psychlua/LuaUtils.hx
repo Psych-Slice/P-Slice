@@ -1,5 +1,6 @@
 package psychlua;
 
+import flixel.FlxState;
 import backend.WeekData;
 import objects.Character;
 
@@ -197,8 +198,8 @@ class LuaUtils
 				return false;
 		}*/
 
-		//trace(variable);
-		if(variable.exists != null && variable.keyValueIterator != null) return true;
+		//trace(variable);//! FlxState implements iterator for Playstate, but we can't use them like MAPs
+		if(variable.exists != null && variable.keyValueIterator != null && !Std.isOfType(variable,FlxState)) return true;
 		return false;
 	}
 

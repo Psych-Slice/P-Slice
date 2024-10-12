@@ -1,5 +1,6 @@
 package backend;
 
+import haxe.io.Path;
 import haxe.Json;
 
 typedef ModsList = {
@@ -122,6 +123,16 @@ class Mods
 			{
 				var folder:String = Paths.mods(Mods.currentModDirectory + '/' + fileToFind);
 				if(FileSystem.exists(folder) && !foldersToCheck.contains(folder)) foldersToCheck.push(folder);
+				#if linux
+				else{
+					@:privateAccess
+					folder = Paths.findFile(fileToFind);
+					if(folder != null){
+						if(FileSystem.isDirectory(folder)) folder += '/';
+						if(!foldersToCheck.contains(folder)) foldersToCheck.push(folder);
+					}
+				}
+				#end
 			}
 		}
 		#end

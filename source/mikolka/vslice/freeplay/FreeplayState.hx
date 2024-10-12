@@ -927,7 +927,7 @@ class FreeplayState extends MusicBeatSubstate
 		rankCamera.fade(0xFF000000, 0.5, true, null, true);
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.volume = 0;
-		rankBg.alpha = 1;
+		rankBg.alpha = 0.6;
 
 		if (fromResults.oldRank != null)
 		{

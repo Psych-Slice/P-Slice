@@ -1,5 +1,6 @@
 package substates;
 
+import states.stages.objects.PicoCapableStage;
 import mikolka.vslice.freeplay.FreeplayState;
 import backend.WeekData;
 
@@ -87,48 +88,8 @@ class GameOverSubstate extends MusicBeatSubstate
 		PlayState.instance.callOnScripts('onGameOverStart', []);
 		FlxG.sound.music.loadEmbedded(Paths.music(loopSoundName), true);
 
-		if(characterName == 'pico-dead')
-		{
-			overlay = new FlxSprite(boyfriend.x + 205, boyfriend.y - 80);
-			overlay.frames = Paths.getSparrowAtlas('Pico_Death_Retry');
-			overlay.animation.addByPrefix('deathLoop', 'Retry Text Loop', 24, true);
-			overlay.animation.addByPrefix('deathConfirm', 'Retry Text Confirm', 24, false);
-			overlay.antialiasing = ClientPrefs.data.antialiasing;
-			overlayConfirmOffsets.set(250, 200);
-			overlay.visible = false;
-			add(overlay);
-
-			boyfriend.animation.callback = function(name:String, frameNumber:Int, frameIndex:Int)
-			{
-				switch(name)
-				{
-					case 'firstDeath':
-						if(frameNumber >= 36 - 1)
-						{
-							overlay.visible = true;
-							overlay.animation.play('deathLoop');
-							boyfriend.animation.callback = null;
-						}
-					default:
-						boyfriend.animation.callback = null;
-				}
-			}
-
-			if(PlayState.instance.gf != null && PlayState.instance.gf.curCharacter == 'nene')
-			{
-				var neneKnife:FlxSprite = new FlxSprite(boyfriend.x - 450, boyfriend.y - 250);
-				neneKnife.frames = Paths.getSparrowAtlas('NeneKnifeToss');
-				neneKnife.animation.addByPrefix('anim', 'knife toss', 24, false);
-				neneKnife.antialiasing = ClientPrefs.data.antialiasing;
-				neneKnife.animation.finishCallback = function(_)
-				{
-					remove(neneKnife);
-					neneKnife.destroy();
-				}
-				insert(0, neneKnife);
-				neneKnife.animation.play('anim', true);
-			}
-		}
+		//? pico code
+		PicoCapableStage.playPicoDeath(this);
 
 		super.create();
 	}

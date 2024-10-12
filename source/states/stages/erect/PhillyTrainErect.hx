@@ -1,10 +1,11 @@
 package states.stages.erect;
 
+import states.stages.objects.PicoCapableStage;
 import states.stages.objects.PhillyGlowParticle;
 import states.stages.objects.PhillyGlowGradient;
 import states.stages.objects.PhillyTrain;
 
-class PhillyTrainErect extends BaseStage
+class PhillyTrainErect extends PicoCapableStage
 {
 	var phillyLightsColors:Array<FlxColor>;
 	var phillyWindow:BGSprite;
@@ -87,6 +88,7 @@ class PhillyTrainErect extends BaseStage
 					particle.kill();
 			});
 		}
+		super.update(elapsed);
 	}
 
 	override function beatHit()

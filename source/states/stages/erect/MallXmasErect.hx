@@ -1,8 +1,9 @@
 package states.stages.erect;
 
+import substates.GameOverSubstate;
 import states.stages.objects.*;
 
-class MallXmasErect extends BaseStage
+class MallXmasErect extends PicoCapableStage
 {
 	var upperBoppers:BGSprite;
 	var bottomBoppers:MallCrowd;
@@ -10,13 +11,15 @@ class MallXmasErect extends BaseStage
 
 	override function create()
 	{
+		var _song = PlayState.SONG;
+		
 		var bg:BGSprite = new BGSprite('christmas/bgWalls', -1000, -500, 0.2, 0.2);
 		bg.setGraphicSize(Std.int(bg.width * 0.8));
 		bg.updateHitbox();
 		add(bg);
 
 		if(!ClientPrefs.data.lowQuality) {
-			upperBoppers = new BGSprite('christmas/erect/upperBop', -240, -90, 0.33, 0.33, ['upperBob']);
+			upperBoppers = new BGSprite('christmas/erect/upperBop', -240, -90, 0.33, 0.33, ['upperBop']);
 			upperBoppers.setGraphicSize(Std.int(upperBoppers.width * 0.85));
 			upperBoppers.updateHitbox();
 			add(upperBoppers);
@@ -43,9 +46,16 @@ class MallXmasErect extends BaseStage
 		if(isStoryMode && !seenCutscene)
 			setEndCallback(eggnogEndCutscene);
 	}
-
+	override function createPost() {
+		super.createPost();
+		@:privateAccess
+		if(PicoCapableStage.NENE_LIST.contains(PlayState.SONG.gfVersion)) GameOverSubstate.characterName = 'pico-christmas-dead';
+	}
 	override function countdownTick(count:Countdown, num:Int) everyoneDance();
-	override function beatHit() everyoneDance();
+	override function beatHit() {
+		super.beatHit();
+		everyoneDance();
+	}
 
 	override function eventCalled(eventName:String, value1:String, value2:String, flValue1:Null<Float>, flValue2:Null<Float>, strumTime:Float)
 	{

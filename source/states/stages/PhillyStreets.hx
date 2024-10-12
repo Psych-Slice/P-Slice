@@ -13,21 +13,8 @@ import objects.Note;
 
 import cutscenes.CutsceneHandler;
 
-enum NeneState
+class PhillyStreets extends PicoCapableStage
 {
-	STATE_DEFAULT;
-	STATE_PRE_RAISE;
-	STATE_RAISE;
-	STATE_READY;
-	STATE_LOWER;
-}
-
-class PhillyStreets extends BaseStage
-{
-	final MIN_BLINK_DELAY:Int = 3;
-	final MAX_BLINK_DELAY:Int = 7;
-	final VULTURE_THRESHOLD:Float = 0.5;
-	var blinkCountdown:Int = 3;
 
 	var rainShader:RainShader;
 	var rainShaderStartIntensity:Float = 0;
@@ -44,7 +31,6 @@ class PhillyStreets extends BaseStage
 	var spraycanPile:BGSprite;
 
 	var darkenable:Array<FlxSprite> = [];
-	var abot:ABotSpeaker;
 	override function create()
 	{
 		if(!ClientPrefs.data.lowQuality)
@@ -130,10 +116,6 @@ class PhillyStreets extends BaseStage
 			add(picoFade);
 			darkenable.push(picoFade);
 		}
-
-		abot = new ABotSpeaker(gfGroup.x, gfGroup.y + 550);
-		updateABotEye(true);
-		add(abot);
 		
 		if(ClientPrefs.data.shaders)
 			setupRainShader();
@@ -143,8 +125,10 @@ class PhillyStreets extends BaseStage
 		if(_song.gameOverLoop == null || _song.gameOverLoop.trim().length < 1) GameOverSubstate.loopSoundName = 'gameOver-pico';
 		if(_song.gameOverEnd == null || _song.gameOverEnd.trim().length < 1) GameOverSubstate.endSoundName = 'gameOverEnd-pico';
 		if(_song.gameOverChar == null || _song.gameOverChar.trim().length < 1) GameOverSubstate.characterName = 'pico-dead';
-		setDefaultGF('nene');
-		
+		setDefaultGF('nene');	
+		gfGroup.y += 200;
+		gfGroup.x += 50;
+
 		if (isStoryMode)
 		{
 			switch (songName)
@@ -188,23 +172,7 @@ class PhillyStreets extends BaseStage
 		add(spraycanPile);
 		darkenable.push(spraycanPile);
 
-		if(gf != null)
-		{
-			gf.animation.callback = function(name:String, frameNumber:Int, frameIndex:Int)
-			{
-				switch(currentNeneState)
-				{
-					case STATE_PRE_RAISE:
-						if (name == 'danceLeft' && frameNumber >= 14)
-						{
-							animationFinished = true;
-							transitionState();
-						}
-					default:
-						// Ignore.
-				}
-			}
-		}
+		super.createPost();
 	}
 
 	#if VIDEOS_ALLOWED
@@ -384,19 +352,9 @@ class PhillyStreets extends BaseStage
 		FlxG.camera.fade(FlxColor.BLACK, 2, true, null, true);
 	}
 
-	function updateABotEye(finishInstantly:Bool = false)
-	{
-		if(PlayState.SONG.notes[Std.int(FlxMath.bound(curSection, 0, PlayState.SONG.notes.length - 1))].mustHitSection == true)
-			abot.lookRight();
-		else
-			abot.lookLeft();
-
-		if(finishInstantly) abot.eyes.anim.curFrame = abot.eyes.anim.length - 1;
-	}
-
 	override function startSong()
 	{
-		abot.snd = FlxG.sound.music;
+		super.startSong();
 		gf.animation.finishCallback = onNeneAnimationFinished;
 	}
 	
@@ -514,8 +472,7 @@ class PhillyStreets extends BaseStage
 		FlxG.camera.setFilters([new ShaderFilter(rainShader)]);
 	}
 	
-	var currentNeneState:NeneState = STATE_DEFAULT;
-	var animationFinished:Bool = false;
+	
 	override function update(elapsed:Float)
 	{
 		if(scrollingSky != null) scrollingSky.scrollX -= elapsed * 22;
@@ -528,66 +485,10 @@ class PhillyStreets extends BaseStage
 			rainShader.update(elapsed);
 		}
 		
-		if(gf == null || !game.startedCountdown) return;
-
-		animationFinished = gf.isAnimationFinished();
-		transitionState();
+		super.update(elapsed);
 	}
 
-	function transitionState()
-	{
-		switch (currentNeneState)
-		{
-			case STATE_DEFAULT:
-				if (game.health <= VULTURE_THRESHOLD)
-				{
-					currentNeneState = STATE_PRE_RAISE;
-					gf.skipDance = true;
-				}
-
-			case STATE_PRE_RAISE:
-				if (game.health > VULTURE_THRESHOLD)
-				{
-					currentNeneState = STATE_DEFAULT;
-					gf.skipDance = false;
-				}
-				else if (animationFinished)
-				{
-					currentNeneState = STATE_RAISE;
-					gf.playAnim('raiseKnife');
-					gf.skipDance = true;
-					gf.danced = true;
-					animationFinished = false;
-				}
-
-			case STATE_RAISE:
-				if (animationFinished)
-				{
-					currentNeneState = STATE_READY;
-					animationFinished = false;
-				}
-
-			case STATE_READY:
-				if (game.health > VULTURE_THRESHOLD)
-				{
-					currentNeneState = STATE_LOWER;
-					gf.playAnim('lowerKnife');
-				}
-
-			case STATE_LOWER:
-				if (animationFinished)
-				{
-					currentNeneState = STATE_DEFAULT;
-					animationFinished = false;
-					gf.skipDance = false;
-				}
-		}
-	}
-
-	override function sectionHit()
-	{
-		updateABotEye();
-	}
+	
 
 	var lightsStop:Bool = false;
 	var lastChange:Int = 0;
@@ -600,18 +501,7 @@ class PhillyStreets extends BaseStage
 	override function beatHit()
 	{
 		//if(curBeat % 2 == 0) abot.beatHit();
-		switch(currentNeneState) {
-			case STATE_READY:
-				if (blinkCountdown == 0)
-				{
-					gf.playAnim('idleKnife', false);
-					blinkCountdown = FlxG.random.int(MIN_BLINK_DELAY, MAX_BLINK_DELAY);
-				}
-				else blinkCountdown--;
-
-			default:
-				// In other states, don't interrupt the existing animation.
-		}
+		super.beatHit();
 
 		if(ClientPrefs.data.lowQuality) return;
 
@@ -785,20 +675,7 @@ class PhillyStreets extends BaseStage
 
 	override function goodNoteHit(note:Note)
 	{
-		// 10% chance of playing combo50/combo100 animations for Nene
-		if(FlxG.random.bool(10))
-		{
-			switch(game.combo)
-			{
-				case 50, 100:
-					var animToPlay:String = 'combo${game.combo}';
-					if(gf.animation.exists(animToPlay))
-					{
-						gf.playAnim(animToPlay);
-						gf.specialAnim = true;
-					}
-			}
-		}
+		super.goodNoteHit(note);
 
 		switch(note.noteType)
 		{

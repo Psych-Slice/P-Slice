@@ -1,6 +1,5 @@
 package states;
 
-import mikolka.ABotManager;
 import mikolka.JoinedLuaVariables;
 import substates.StickerSubState;
 import mikolka.vslice.freeplay.FreeplayState;
@@ -228,6 +227,7 @@ class PlayState extends MusicBeatState
 	public var defaultCamZoom:Float = 1.05;
 	public var defaultStageZoom:Float = 1.05;
 	private static var zoomTween:FlxTween;
+	private static var cameraTween:FlxTween;
 
 	// how big to stretch the pixel art assets
 	public static var daPixelZoom:Float = 6;
@@ -384,20 +384,22 @@ class PlayState extends MusicBeatState
 
 		switch (curStage)
 		{
-			case 'stage': new StageWeek1(); 			//Week 1
-			case 'spooky': new Spooky();				//Week 2
-			case 'philly': new Philly();				//Week 3
-			case 'limo': new Limo();					//Week 4
-			case 'mall': new Mall();					//Week 5 - Cocoa, Eggnog
-			case 'mallEvil': new MallEvil();			//Week 5 - Winter Horrorland
-			case 'school': new School();				//Week 6 - Senpai, Roses
-			case 'schoolEvil': new SchoolEvil();		//Week 6 - Thorns
-			case 'tank': new Tank();					//Week 7 - Ugh, Guns, Stress
-			case 'phillyStreets': new PhillyStreets(); 	//Weekend 1 - Darnell, Lit Up, 2Hot
-			case 'phillyBlazin': new PhillyBlazin();	//Weekend 1 - Blazin
-			case 'mainStageErect': new MainStageErect();//Week 1 Special 
-			case 'limoRideErect': new LimoRideErect();  //Week 4 Special 
-			case 'mallXmasErect': new MallXmasErect(); //Week 5 Special 
+			case 'stage': new StageWeek1(); 						//Week 1
+			case 'spooky': new Spooky();							//Week 2
+			case 'philly': new Philly();							//Week 3
+			case 'limo': new Limo();								//Week 4
+			case 'mall': new Mall();								//Week 5 - Cocoa, Eggnog
+			case 'mallEvil': new MallEvil();						//Week 5 - Winter Horrorland
+			case 'school': new School();							//Week 6 - Senpai, Roses
+			case 'schoolEvil': new SchoolEvil();					//Week 6 - Thorns
+			case 'tank': new Tank();								//Week 7 - Ugh, Guns, Stress
+			case 'phillyStreets': new PhillyStreets(); 				//Weekend 1 - Darnell, Lit Up, 2Hot
+			case 'phillyBlazin': new PhillyBlazin();				//Weekend 1 - Blazin
+			case 'mainStageErect': new MainStageErect();			//Week 1 Special 
+			case 'spookyMansionErect': new SpookyMansionErect();	//Week 2 Special 
+			case 'phillyTrainErect': new PhillyTrainErect();  		//Week 3 Special 
+			case 'limoRideErect': new LimoRideErect();  			//Week 4 Special 
+			case 'mallXmasErect': new MallXmasErect(); 				//Week 5 Special 
 		}
 		if(isPixelStage) introSoundsSuffix = '-pixel';
 
@@ -653,7 +655,6 @@ class PlayState extends MusicBeatState
 		stagesFunc(function(stage:BaseStage) stage.createPost());
 
 		callOnScripts('onCreatePost');
-		ABotManager.ABot_onCreatePost(); // Simulate a Script call
 		
 		var splash:NoteSplash = new NoteSplash();
 		grpNoteSplashes.add(splash);
@@ -1285,7 +1286,6 @@ class PlayState extends MusicBeatState
 		#end
 		setOnScripts('songLength', songLength);
 		callOnScripts('onSongStart');
-		ABotManager.ABot_songStart();// emulate a script call
 	}
 
 	private var noteTypes:Array<String> = [];
@@ -2351,6 +2351,31 @@ class PlayState extends MusicBeatState
 						zoomTween = null;
 					}
 				});
+			case 'Center Camera':
+				var keyValues = value1.split(",");
+				if(keyValues.length != 2) {
+					trace("INVALID EVENT VALUE");
+					return;
+				}
+				keyValues.push(value2);
+
+				var floaties = keyValues.map(s -> Std.parseFloat(s));
+				if(mikolka.funkin.utils.ArrayTools.findIndex(floaties,s -> Math.isNaN(s)) != -1) {
+					trace("INVALID FLOATIES");
+					return;
+				}
+				// floaties = [x,y,duration]
+				if(gf != null) {
+					var gfTargetX = gf.getMidpoint().x + 150 + gf.cameraPosition[0] + girlfriendCameraOffset[0] + floaties[0];
+					var gfTargetY = gf.getMidpoint().y - 100 + gf.cameraPosition[1] + girlfriendCameraOffset[1] + floaties[1];
+					cameraTween?.cancel();
+					cameraTween = FlxTween.tween(camFollow,{ x:gfTargetX, y:gfTargetY},(Conductor.stepCrochet/1000)*floaties[2],{
+						ease: FlxEase.expoOut,
+						onComplete: (x) ->{
+							cameraTween = null;
+						}
+					});
+				}
 		}
 
 		stagesFunc(function(stage:BaseStage) stage.eventCalled(eventName, value1, value2, flValue1, flValue2, strumTime));
@@ -2389,6 +2414,8 @@ class PlayState extends MusicBeatState
 	var cameraTwn:FlxTween;
 	public function moveCamera(isDad:Bool)
 	{
+		cameraTween?.cancel();
+		cameraTween = null;
 		if(isDad)
 		{
 			if(dad == null) return;
@@ -3503,7 +3530,6 @@ class PlayState extends MusicBeatState
 
 		setOnScripts('curSection', curSection);
 		callOnScripts('onSectionHit');
-		ABotManager.ABot_sectionHit(); // Simulate a Script call
 	}
 
 	#if LUA_ALLOWED

@@ -1,5 +1,6 @@
 package states.stages.erect;
 
+import states.stages.objects.PicoCapableStage;
 import openfl.display.BlendMode;
 import shaders.AdjustColorShader;
 import flixel.addons.display.FlxBackdrop;
