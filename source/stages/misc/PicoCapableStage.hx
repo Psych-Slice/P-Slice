@@ -26,10 +26,10 @@ class PicoCapableStage extends BaseStage {
         if(!NENE_LIST.contains(PlayState.SONG.gfVersion)) return;
         
         var _song = PlayState.SONG;
-        if(_song.gameOverSound == null || _song.gameOverSound.trim().length < 1) GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pico';
-		if(_song.gameOverLoop == null || _song.gameOverLoop.trim().length < 1) GameOverSubstate.loopSoundName = 'gameOver-pico';
-		if(_song.gameOverEnd == null || _song.gameOverEnd.trim().length < 1) GameOverSubstate.endSoundName = 'gameOverEnd-pico';
-		if(_song.gameOverChar == null || _song.gameOverChar.trim().length < 1) GameOverSubstate.characterName = 'pico-dead';
+        GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pico';
+		 GameOverSubstate.loopSoundName = 'gameOver-pico';
+		 GameOverSubstate.endSoundName = 'gameOverEnd-pico';
+		 GameOverSubstate.characterName = 'pico-dead';
 
         game.gfGroup.y -= 200;
         abot = new ABotSpeaker(game.gfGroup.x-50, game.gfGroup.y+550-30,PlayState.SONG.gfVersion == "nene-dark");
@@ -184,6 +184,8 @@ class PicoCapableStage extends BaseStage {
         if(GameOverSubstate.characterName == 'pico-dead')
             {
                 var overlay = new FlxSprite(state.boyfriend.x + 205, state.boyfriend.y - 80);
+                @:privateAccess
+                state.overlay = overlay;
                 overlay.frames = Paths.getSparrowAtlas('Pico_Death_Retry');
                 overlay.animation.addByPrefix('deathLoop', 'Retry Text Loop', 24, true);
                 overlay.animation.addByPrefix('deathConfirm', 'Retry Text Confirm', 24, false);

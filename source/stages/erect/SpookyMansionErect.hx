@@ -3,6 +3,8 @@ package stages.erect;
 import shaders.RainShader;
 import stages.misc.PicoCapableStage;
 
+using stages.misc.CharUtills;
+
 class SpookyMansionErect extends PicoCapableStage
 {
 	var halloweenBG:BGSprite;

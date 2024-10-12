@@ -35,7 +35,8 @@ class GameOverSubstate extends MusicBeatSubstate
 		endSoundName = 'gameOverEnd';
 	}
 
-	var overlayConfirmOffsets: FlxPoint = FlxPoint.get(); //? backported
+	var overlay:FlxSprite;
+	var overlayConfirmOffsets:FlxPoint = FlxPoint.get();
 	override function create()
 	{
 		instance = this;
@@ -160,6 +161,11 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	function coolStartDeath(?volume:Float = 1):Void
 	{
+		if(overlay != null && overlay.animation.exists('deathLoop'))
+			{
+				overlay.visible = true;
+				overlay.animation.play('deathLoop');
+			}
 		FlxG.sound.playMusic(Paths.music(loopSoundName), volume);
 	}
 
@@ -170,7 +176,12 @@ class GameOverSubstate extends MusicBeatSubstate
 			isEnding = true;
 			boyfriend.playAnim('deathConfirm', true);
 
-			
+			if(overlay != null && overlay.animation.exists('deathConfirm'))
+				{
+					overlay.visible = true;
+					overlay.animation.play('deathConfirm');
+					overlay.offset.set(overlayConfirmOffsets.x, overlayConfirmOffsets.y);
+				}
 
 			FlxG.sound.music.stop();
 			FlxG.sound.play(Paths.music(endSoundName));

@@ -82,11 +82,11 @@ class ABotSpeaker extends FlxSpriteGroup
 	}
 	function abotLol(useDark:Bool) {
 		var temp = new FlxAnimate(-65, -10);
-		Paths.loadAnimateAtlas(temp, '${useDark? "abot/dark" : "abot"}/abotSystem');
+		AtlasLoader.loadAnimateAtlas(temp, '${useDark? "abot/dark" : "abot"}/abotSystem');
 		temp.anim.addBySymbol('anim', 'Abot System', 24, false);
 		temp.anim.play('anim', true);
 		temp.anim.curFrame = temp.anim.length - 1;
-		temp.antialiasing = ClientPrefs.data.antialiasing;
+		temp.antialiasing = ClientPrefs.globalAntialiasing;
 		add(temp);
 		return temp;
 	}
