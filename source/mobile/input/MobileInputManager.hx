@@ -54,17 +54,6 @@ class MobileInputManager extends FlxTypedSpriteGroup<TouchButton>
 	}
 
 	/**
-	 * Check to see if the button is released.
-	 *
-	 * @param	button 	A button ID
-	 * @return	Whether at least one of the buttons passed is released.
-	 */
-	public inline function buttonReleased(button:MobileInputID):Bool
-	{
-		return anyReleased([button]);
-	}
-
-	/**
 	 * Check to see if at least one button from an array of buttons is pressed.
 	 *
 	 * @param	buttonsArray 	An array of buttos names
@@ -95,17 +84,6 @@ class MobileInputManager extends FlxTypedSpriteGroup<TouchButton>
 	public inline function anyJustReleased(buttonsArray:Array<MobileInputID>):Bool
 	{
 		return checkButtonArrayState(buttonsArray, JUST_RELEASED);
-	}
-
-	/**
-	 * Check to see if at least one button from an array of buttons is released.
-	 *
-	 * @param	buttonsArray 	An array of button names
-	 * @return	Whether at least one of the buttons passed is released.
-	 */
-	public inline function anyReleased(buttonsArray:Array<MobileInputID>):Bool
-	{
-		return checkButtonArrayState(buttonsArray, RELEASED);
 	}
 
 	/**
@@ -157,7 +135,6 @@ class MobileInputManager extends FlxTypedSpriteGroup<TouchButton>
 	{
 		return switch (state)
 		{
-			case RELEASED: trackedButtons.get(button).released;
 			case JUST_RELEASED: trackedButtons.get(button).justReleased;
 			case PRESSED: trackedButtons.get(button).pressed;
 			case JUST_PRESSED: trackedButtons.get(button).justPressed;
@@ -187,6 +164,5 @@ enum ButtonsStates
 {
 	PRESSED;
 	JUST_PRESSED;
-	RELEASED;
 	JUST_RELEASED;
 }

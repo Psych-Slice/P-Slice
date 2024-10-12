@@ -23,12 +23,12 @@ class MobileOptionsSubState extends BaseOptionsMenu
 		title = 'Mobile Options';
 		rpcTitle = 'Mobile Options Menu'; // for Discord Rich Presence, fuck it
 
-		option = new Option('Extra Hints', 'Select how many extra hints you prefer to have on hitbox?\nThey can be used for mechanics with LUA or HScript.',
-			'extraHints', STRING, exControlTypes);
+		option = new Option('Extra Controls', 'Select how many extra buttons you prefere to have\nThey can be used for mechanics with LUA or HScript.',
+			'extraButtons', STRING, exControlTypes);
 		addOption(option);
 
 		option = new Option('Mobile Controls Opacity',
-			'Selects the opacity for the mobile buttons (careful not to put it at 0 and lose track of your buttons).', 'controlsAlpha', PERCENT);
+			'Selects the opacity for the mobile buttons (carefull not to put it at 0 and loose track of your buttons).', 'controlsAlpha', PERCENT);
 		option.scrollSpeed = 1;
 		option.minValue = 0.001;
 		option.maxValue = 1;
@@ -54,12 +54,15 @@ class MobileOptionsSubState extends BaseOptionsMenu
 		addOption(option);
 		#end
 
-		option = new Option('Hitbox Design', 'Choose how your hitbox should look like.', 'hitboxType', STRING, hintOptions);
-		addOption(option);
+		if (MobileData.mode == 3)
+		{
+			option = new Option('Hitbox Design', 'Choose how your hitbox should look like.', 'hitboxType', STRING, hintOptions);
+			addOption(option);
 
-		option = new Option('Hitbox Position', 'If checked, the hitbox will be put at the bottom of the screen, otherwise will stay at the top.',
-			'hitbox2', BOOL);
-		addOption(option);
+			option = new Option('Hitbox Position', 'If checked, the hitbox will be put at the bottom of the screen, otherwise will stay at the top.',
+				'hitbox2', BOOL);
+			addOption(option);
+		}
 
 		option = new Option('Dynamic Controls Color',
 			'If checked, the mobile controls color will be set to the notes color in your settings.\n(have effect during gameplay only)', 'dynamicColors',

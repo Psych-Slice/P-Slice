@@ -1558,7 +1558,6 @@ class FunkinLua {
 		ShaderFunctions.implement(this);
 		DeprecatedFunctions.implement(this);
 		MobileFunctions.implement(this);
-		MobileDeprecatedFunctions.implement(this);
 		#if android AndroidFunctions.implement(this); #end
 
 		for (name => func in customFunctions)

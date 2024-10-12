@@ -626,8 +626,8 @@ class PlayState extends MusicBeatState
 			}
 		#end
 
-		addHitbox();
-		hitbox.visible = true;
+		addMobileControls();
+		mobileControls.instance.visible = true;
 
 		startCallback();
 		RecalculateRating();
@@ -2422,7 +2422,7 @@ class PlayState extends MusicBeatState
 	public var transitioning = false;
 	public function endSong()
 	{
-		hitbox.visible = #if !android touchPad.visible = #end false;
+		mobileControls.instance.visible = #if !android touchPad.visible = #end false;
 		//Should kill you if you tried to cheat
 		if(!startingSong)
 		{
@@ -3851,7 +3851,7 @@ class PlayState extends MusicBeatState
 		if(!variables.exists("luaTouchPad"))
 			variables.set("luaTouchPad", luaTouchPad);
 
-		luaTouchPad = new TouchPad(DPadMode, ActionMode);
+		luaTouchPad = new TouchPad(DPadMode, ActionMode, NONE);
 		luaTouchPad.alpha = ClientPrefs.data.controlsAlpha;
 	}
 	
@@ -3918,22 +3918,6 @@ class PlayState extends MusicBeatState
 				for(strId in FUCK)
 					idArray.push(MobileInputID.fromString(strId));
 				return luaTouchPad.anyJustReleased(idArray);
-			} else
-				return false;
-		}
-		return false;
-	}
-
-	public function luaTouchPadReleased(button:Dynamic):Bool {
-		if(luaTouchPad != null) {
-			if(Std.isOfType(button, String))
-				return luaTouchPad.buttonJustReleased(MobileInputID.fromString(button));
-			else if(Std.isOfType(button, Array)){
-				var FUCK:Array<String> = button;
-				var idArray:Array<MobileInputID> = [];
-				for(strId in FUCK)
-					idArray.push(MobileInputID.fromString(strId));
-				return luaTouchPad.anyReleased(idArray);
 			} else
 				return false;
 		}

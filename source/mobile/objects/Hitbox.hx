@@ -11,15 +11,15 @@ import openfl.geom.Matrix;
  *
  * @author: Mihai Alexandru and Karim Akra
  */
-class Hitbox extends MobileInputManager
+class Hitbox extends MobileInputManager implements IMobileControls
 {
 	final offsetFir:Int = (ClientPrefs.data.hitbox2 ? Std.int(FlxG.height / 4) * 3 : 0);
 	final offsetSec:Int = (ClientPrefs.data.hitbox2 ? 0 : Std.int(FlxG.height / 4));
 
-	public var buttonLeft:TouchButton = new TouchButton(0, 0, [MobileInputID.HITBOX_LEFT]);
-	public var buttonDown:TouchButton = new TouchButton(0, 0, [MobileInputID.HITBOX_DOWN]);
-	public var buttonUp:TouchButton = new TouchButton(0, 0, [MobileInputID.HITBOX_UP]);
-	public var buttonRight:TouchButton = new TouchButton(0, 0, [MobileInputID.HITBOX_RIGHT]);
+	public var buttonLeft:TouchButton = new TouchButton(0, 0, [MobileInputID.HITBOX_LEFT, MobileInputID.NOTE_LEFT]);
+	public var buttonDown:TouchButton = new TouchButton(0, 0, [MobileInputID.HITBOX_DOWN, MobileInputID.NOTE_DOWN]);
+	public var buttonUp:TouchButton = new TouchButton(0, 0, [MobileInputID.HITBOX_UP, MobileInputID.NOTE_UP]);
+	public var buttonRight:TouchButton = new TouchButton(0, 0, [MobileInputID.HITBOX_RIGHT, MobileInputID.NOTE_RIGHT]);
 	public var buttonExtra:TouchButton = new TouchButton(0, 0);
 	public var buttonExtra2:TouchButton = new TouchButton(0, 0);
 

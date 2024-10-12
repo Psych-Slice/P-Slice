@@ -5,16 +5,16 @@ package mobile.objects;
  * @author: Karim Akra and Lily Ross (mcagabe19)
  */
 @:access(mobile.objects.TouchButton)
-class TouchPad extends MobileInputManager
+class TouchPad extends MobileInputManager implements IMobileControls
 {
-	public var buttonLeft:TouchButton = new TouchButton(0, 0, [MobileInputID.LEFT]);
-	public var buttonUp:TouchButton = new TouchButton(0, 0, [MobileInputID.UP]);
-	public var buttonRight:TouchButton = new TouchButton(0, 0, [MobileInputID.RIGHT]);
-	public var buttonDown:TouchButton = new TouchButton(0, 0, [MobileInputID.DOWN]);
-	public var buttonLeft2:TouchButton = new TouchButton(0, 0, [MobileInputID.LEFT2]);
-	public var buttonUp2:TouchButton = new TouchButton(0, 0, [MobileInputID.UP2]);
-	public var buttonRight2:TouchButton = new TouchButton(0, 0, [MobileInputID.RIGHT2]);
-	public var buttonDown2:TouchButton = new TouchButton(0, 0, [MobileInputID.DOWN2]);
+	public var buttonLeft:TouchButton = new TouchButton(0, 0, [MobileInputID.LEFT, MobileInputID.NOTE_LEFT]);
+	public var buttonUp:TouchButton = new TouchButton(0, 0, [MobileInputID.UP, MobileInputID.NOTE_UP]);
+	public var buttonRight:TouchButton = new TouchButton(0, 0, [MobileInputID.RIGHT, MobileInputID.NOTE_RIGHT]);
+	public var buttonDown:TouchButton = new TouchButton(0, 0, [MobileInputID.DOWN, MobileInputID.NOTE_DOWN]);
+	public var buttonLeft2:TouchButton = new TouchButton(0, 0, [MobileInputID.LEFT2, MobileInputID.NOTE_LEFT]);
+	public var buttonUp2:TouchButton = new TouchButton(0, 0, [MobileInputID.UP2, MobileInputID.NOTE_UP]);
+	public var buttonRight2:TouchButton = new TouchButton(0, 0, [MobileInputID.RIGHT2, MobileInputID.NOTE_RIGHT]);
+	public var buttonDown2:TouchButton = new TouchButton(0, 0, [MobileInputID.DOWN2, MobileInputID.NOTE_DOWN]);
 	public var buttonA:TouchButton = new TouchButton(0, 0, [MobileInputID.A]);
 	public var buttonB:TouchButton = new TouchButton(0, 0, [MobileInputID.B]);
 	public var buttonC:TouchButton = new TouchButton(0, 0, [MobileInputID.C]);
@@ -41,6 +41,8 @@ class TouchPad extends MobileInputManager
 	public var buttonX:TouchButton = new TouchButton(0, 0, [MobileInputID.X]);
 	public var buttonY:TouchButton = new TouchButton(0, 0, [MobileInputID.Y]);
 	public var buttonZ:TouchButton = new TouchButton(0, 0, [MobileInputID.Z]);
+	public var buttonExtra:TouchButton = new TouchButton(0, 0);
+	public var buttonExtra2:TouchButton = new TouchButton(0, 0);
 
 	public var instance:MobileInputManager;
 
@@ -50,7 +52,7 @@ class TouchPad extends MobileInputManager
 	 * @param   DPadMode     The D-Pad mode. `LEFT_FULL` for example.
 	 * @param   ActionMode   The action buttons mode. `A_B_C` for example.
 	 */
-	public function new(DPad:String, Action:String)
+	public function new(DPad:String, Action:String, ?Extra:ExtraActions = NONE)
 	{
 		super();
 
@@ -82,6 +84,18 @@ class TouchPad extends MobileInputManager
 			}
 		}
 
+		switch (Extra)
+		{
+			case SINGLE:
+				add(buttonExtra = createButton(0, FlxG.height - 137, 's', 0xFF0066FF));
+				setExtrasPos();
+			case DOUBLE:
+				add(buttonExtra = createButton(0, FlxG.height - 137, 's', 0xFF0066FF));
+				add(buttonExtra2 = createButton(FlxG.width - 132, FlxG.height - 137, 'g', 0xA6FF00));
+				setExtrasPos();
+			case NONE: // nothing
+		}
+
 		alpha = ClientPrefs.data.controlsAlpha;
 		scrollFactor.set();
 		updateTrackedButtons();
@@ -98,6 +112,49 @@ class TouchPad extends MobileInputManager
 			var field = Reflect.field(this, fieldName);
 			if (Std.isOfType(field, TouchButton))
 				Reflect.setField(this, fieldName, FlxDestroyUtil.destroy(field));
+		}
+	}
+
+	public function setExtrasDefaultPos()
+	{
+		var int:Int = 0;
+
+		if (MobileData.save.data.extraData == null)
+			MobileData.save.data.extraData = new Array();
+
+		for (button in Reflect.fields(this))
+		{
+			var field = Reflect.field(this, button);
+			if (button.toLowerCase().contains('extra') && Std.isOfType(field, TouchButton))
+			{
+				// if (MobileData.save.data.extraData[int] == null)
+				// 	MobileData.save.data.extraData.push(FlxPoint.get(field.x, field.y));
+				// else
+				MobileData.save.data.extraData[int] = FlxPoint.get(field.x, field.y);
+				++int;
+			}
+		}
+		MobileData.save.flush();
+	}
+
+	public function setExtrasPos()
+	{
+		var int:Int = 0;
+		if (MobileData.save.data.extraData == null)
+			setExtrasDefaultPos();
+
+		for (button in Reflect.fields(this))
+		{
+			var field = Reflect.field(this, button);
+			if (button.toLowerCase().contains('extra') && Std.isOfType(field, TouchButton))
+			{
+				if (MobileData.save.data.extraData.length > int)
+					setExtrasDefaultPos();
+				var point = MobileData.save.data.extraData[int];
+				field.x = point.x;
+				field.y = point.y;
+				int++;
+			}
 		}
 	}
 

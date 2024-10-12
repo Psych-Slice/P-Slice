@@ -20,7 +20,7 @@ class MusicBeatState extends FlxState
 	}
 
 	public var touchPad:TouchPad;
-	public var hitbox:Hitbox;
+	public var mobileControls:IMobileControls;
 	public var camControls:FlxCamera;
 	public var tpadCam:FlxCamera;
 
@@ -45,29 +45,39 @@ class MusicBeatState extends FlxState
 		}
 	}
 
-	public function addHitbox(defaultDrawTarget:Bool = false):Void
+	public function addMobileControls(defaultDrawTarget:Bool = false):Void
 	{
-		var extraMode = MobileData.extraActions.get(ClientPrefs.data.extraHints);
+		var extraMode = MobileData.extraActions.get(ClientPrefs.data.extraButtons);
 
-		hitbox = new Hitbox(extraMode);
-		hitbox = MobileData.setButtonsColors(hitbox);
+		switch (MobileData.mode)
+		{
+			case 0: // RIGHT_FULL
+				mobileControls = new TouchPad('RIGHT_FULL', 'NONE', extraMode);
+			case 1: // LEFT_FULL
+				mobileControls = new TouchPad('LEFT_FULL', 'NONE', extraMode);
+			case 2: // CUSTOM
+				mobileControls = MobileData.getTouchPadCustom(new TouchPad('RIGHT_FULL', 'NONE', extraMode));
+			case 3: // HITBOX
+				mobileControls = new Hitbox(extraMode);
+		}
 
+		mobileControls.instance = MobileData.setButtonsColors(mobileControls.instance);
 		camControls = new FlxCamera();
 		camControls.bgColor.alpha = 0;
 		FlxG.cameras.add(camControls, defaultDrawTarget);
 
-		hitbox.cameras = [camControls];
-		hitbox.visible = false;
-		add(hitbox);
+		mobileControls.instance.cameras = [camControls];
+		mobileControls.instance.visible = false;
+		add(mobileControls.instance);
 	}
 
-	public function removeHitbox()
+	public function removeMobileControls()
 	{
-		if (hitbox != null)
+		if (mobileControls != null)
 		{
-			remove(hitbox);
-			hitbox = FlxDestroyUtil.destroy(hitbox);
-			hitbox = null;
+			remove(mobileControls.instance);
+			mobileControls.instance = FlxDestroyUtil.destroy(mobileControls.instance);
+			mobileControls = null;
 		}
 
 		if(camControls != null)
@@ -91,7 +101,7 @@ class MusicBeatState extends FlxState
 	override function destroy()
 	{
 		removeTouchPad();
-		removeHitbox();
+		removeMobileControls();
 		
 		super.destroy();
 	}

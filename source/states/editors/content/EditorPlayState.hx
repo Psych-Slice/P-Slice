@@ -162,8 +162,8 @@ class EditorPlayState extends MusicBeatSubstate
 		addTouchPadCamera(false);
 		#end
 
-		addHitbox();
-		hitbox.visible = true;
+		addMobileControls(false);
+		mobileControls.instance.visible = true;
 
 		super.create();
 
@@ -174,7 +174,7 @@ class EditorPlayState extends MusicBeatSubstate
 	{
 		if(#if android FlxG.android.justReleased.BACK #else touchPad.buttonP.justPressed #end || controls.BACK || FlxG.keys.justPressed.ESCAPE || FlxG.keys.justPressed.F12)
 		{
-			hitbox.visible = false;
+			mobileControls.instance.visible = false;
 			endSong();
 			super.update(elapsed);
 			return;

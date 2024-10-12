@@ -41,13 +41,13 @@ class OptionsState extends MusicBeatState
 			case 'Note Colors':
 				openSubState(new options.NotesSubState());
 			case 'Controls':
-				if (controls.mobileC)
+				switch (controls.mobileC)
 				{
-					funnyCam.visible = persistentUpdate = true;
-					FlxG.sound.play(Paths.sound('cancelMenu'));
+					case true:
+						removeTouchPad();
+						openSubState(new mobile.substates.MobileControlSelectSubState());
+					default: openSubState(new options.ControlsSubState());
 				}
-				else
-					openSubState(new options.ControlsSubState());
 			case 'Graphics':
 				openSubState(new options.GraphicsSettingsSubState());
 			case 'Visuals':
