@@ -35,6 +35,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		endSoundName = 'gameOverEnd';
 	}
 
+	var overlayConfirmOffsets: FlxPoint = FlxPoint.get(); //? backported
 	override function create()
 	{
 		instance = this;
@@ -168,6 +169,9 @@ class GameOverSubstate extends MusicBeatSubstate
 		{
 			isEnding = true;
 			boyfriend.playAnim('deathConfirm', true);
+
+			
+
 			FlxG.sound.music.stop();
 			FlxG.sound.play(Paths.music(endSoundName));
 			new FlxTimer().start(0.7, function(tmr:FlxTimer)

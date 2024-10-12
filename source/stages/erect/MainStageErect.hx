@@ -1,20 +1,23 @@
 package stages.erect;
 
+import stages.misc.PicoCapableStage;
 import openfl.display.BlendMode;
 import shaders.AdjustColorShader;
 
-class MainStageErect extends BaseStage {
+class MainStageErect extends PicoCapableStage {
     var dadbattleBlack:BGSprite;
 	var dadbattleLight:BGSprite;
+	var peeps:BGSprite;
 	override function create()
 	{
 		var bg:BGSprite = new BGSprite('erect/backDark', 729, -170);
 		add(bg);
 
-        var peeps:BGSprite = new BGSprite(null, 560, 290,0.8,0.8);
+        peeps = new BGSprite(null, 560, 290,0.8,0.8);
         peeps.frames = Paths.getSparrowAtlas('erect/crowd');
         peeps.animation.addByPrefix("idle","Symbol 2 instance 1",12);
         add(peeps);
+        
 
         if(!ClientPrefs.lowQuality) {
             var lightSmol = new BGSprite('erect/brightLightSmall',967, -103,1.2,1.2);
@@ -56,6 +59,7 @@ class MainStageErect extends BaseStage {
         gf.shader = makeCoolShader(-9,0,-30,-4);
         dad.shader = makeCoolShader(-32,0,-33,-23);
         boyfriend.shader = makeCoolShader(12,0,-23,7);
+        peeps.animation.play("idle");
     }
     function makeCoolShader(hue:Float,sat:Float,bright:Float,contrast:Float) {
         var coolShader = new AdjustColorShader();

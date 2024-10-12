@@ -66,6 +66,7 @@ class ClientPrefs {
 	public static var vsliceFreeplayColors:Bool = true;
 	public static var vsliceResults:Bool = true;
 	public static var vsliceSmoothBar:Bool = true;
+	public static var lastFreeplayMod:String = "";
 
 	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [

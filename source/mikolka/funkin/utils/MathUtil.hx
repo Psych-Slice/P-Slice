@@ -16,17 +16,21 @@ class MathUtil
    * @param base The starting value, when `progress <= 0`.
    * @param target The ending value, when `progress >= 1`.
    * @param ratio Value used to interpolate between `base` and `target`.
+   * @param wobble If enabled, the value will wobble past the `target` value
    *
    * @return The interpolated value.
    */
-  @:deprecated('Use smoothLerp instead')
-  public static function coolLerp(base:Float, target:Float, ratio:Float):Float
+  @:deprecated('Use smoothLerp instead.')
+  public static function coolLerp(base:Float, target:Float, ratio:Float,wobble:Bool = true):Float
   {
-    return base + cameraLerp(ratio) * (target - base);
+    var lerp = cameraLerp(ratio);
+    if(!wobble) lerp = FlxMath.bound(lerp,0,1);
+    return base + lerp * (target - base);
   }
 
   /**
    * Perform linear interpolation based on the current framerate.
+   * It makes sure to return a value between 0 and 1
    * @param lerp Value used to interpolate between `base` and `target`.
    *
    * @return The interpolated value.

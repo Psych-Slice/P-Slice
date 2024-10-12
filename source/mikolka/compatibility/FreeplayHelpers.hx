@@ -6,6 +6,15 @@ import mikolka.vslice.freeplay.FreeplayState;
 
 class FreeplayHelpers
 {
+	public static var BPM(get,set):Float;
+	public static function set_BPM(value:Float) {
+		Conductor.changeBPM(value);
+		return value;
+	}
+	public static function get_BPM() {
+		return Conductor.bpm;
+	}
+
 	public static function loadSongs()
 	{
 		var songs = [];
@@ -44,7 +53,7 @@ class FreeplayHelpers
 
 		// Paths.setCurrentLevel(cap.songData.levelId);
 		state.persistentUpdate = false;
-		loadModDir(cap.folder);
+		ModsHelper.loadModDir(cap.folder);
 
 		var diffId = cap.loadAndGetDiffId();
 		if (diffId == -1)
@@ -101,19 +110,12 @@ class FreeplayHelpers
 			&& (!StoryMenuState.weekCompleted.exists(leWeek.weekBefore) || !StoryMenuState.weekCompleted.get(leWeek.weekBefore)));
 	}
 
-	public static function loadModDir(directory:String)
-	{
-		Paths.currentModDirectory = directory;
-	}
-
 	public static function exitFreeplay()
 	{
 		BPMCache.instance.clearCache();
 		WeekData.loadTheFirstEnabledMod();
 		FlxG.signals.postStateSwitch.dispatch(); // ? for the screenshot plugin to clean itself
 
-		// While exiting make sure that we aren't tweeneng a color rn
-		FreeplayColorTweener.cancelTween();
 	}
 
 	public static function loadDiffsFromWeek(songData:FreeplaySongData)

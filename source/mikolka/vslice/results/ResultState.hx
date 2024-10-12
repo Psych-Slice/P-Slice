@@ -1,5 +1,7 @@
 package mikolka.vslice.results;
 
+import mikolka.compatibility.ModsHelper;
+import mikolka.compatibility.VsliceOptions;
 import mikolka.funkin.FlxAtlasSprite;
 import mikolka.funkin.FunkinSprite;
 import mikolka.funkin.players.PlayerData;
@@ -129,6 +131,18 @@ class ResultState extends MusicBeatSubState
     score = new ResultScore(35, 305, 10, params.scoreData.score);
 
     rankBg = new FunkinSprite(0, 0);
+
+    var sngMeta = FreeplayMeta.getMeta(params.songId);
+    
+    if(sngMeta.freeplayCharacter != '' ){
+      playerCharacterId = sngMeta.freeplayCharacter;
+    }
+    else{
+      var mod_char = VsliceOptions.LAST_MOD;
+      playerCharacterId = mod_char.char_name;
+      ModsHelper.loadModDir(mod_char.mod_dir);
+    }
+    //? moved this line so we can edit it in debug options
   }
 
   override function create():Void
@@ -178,7 +192,7 @@ class ResultState extends MusicBeatSubState
     // Fetch playable character data. Default to BF on the results screen if we can't find it.
     //? changed a little code here
 
-    playerCharacterId = PlayerRegistry.instance.getCharacterOwnerId(params.characterId);
+    
     var playerCharacter:Null<PlayableCharacter> = PlayerRegistry.instance.fetchEntry(playerCharacterId ?? 'bf');
 
     //trace('Got playable character: ${playerCharacter?.getName()}');
@@ -193,50 +207,53 @@ class ResultState extends MusicBeatSubState
       var animLibrary:String = "";//Paths.getLibrary(animData.assetPath); Libraries aren't used in P-Slice
       var offsets = animData.offsets ?? [0, 0];
 
-      //? Scaling offsets because Pico decided to be annoying (sorry, FlxAnimate is)
-      offsets[0] = offsets[0]* (animData.scale ?? 1.0);
-      offsets[1] = offsets[1]* (animData.scale ?? 1.0);
+      
       
       switch (animData.renderType)
       {
         case 'animateatlas':
+          //? Scaling offsets because Pico decided to be annoying
+          var xDiff = offsets[0] - (offsets[0]* (animData.scale ?? 1.0));
+          var yDiff = offsets[1] - (offsets[1]* (animData.scale ?? 1.0));
+          offsets[0] -= xDiff*1.8;
+          offsets[1] -= yDiff*1.8;
+
           var animation:FlxAtlasSprite = new FlxAtlasSprite(offsets[0], offsets[1], Paths.animateAtlas(animPath, animLibrary));
           animation.zIndex = animData.zIndex ?? 500;
-
           animation.scale.set(animData.scale ?? 1.0, animData.scale ?? 1.0);
 
           if (!(animData.looped ?? true))
-          {
-            // Animation is not looped.
-            animation.onComplete = () -> {
-              trace("AHAHAH 2");
-              if (animation != null)
-              {
-                animation.anim.pause();
-              }
-            };
-          }
-          else if (animData.loopFrameLabel != null)
-          {
-            animation.onComplete = () -> {
-              trace("AHAHAH 2");
-              if (animation != null)
-              {
-                animation.playAnimation(animData.loopFrameLabel ?? '', true, false, true); // unpauses this anim, since it's on PlayOnce!
-              }
-            };
-          }
-          else if (animData.loopFrame != null)
-          {
-            animation.onComplete = () -> {
-              if (animation != null)
-              {
-                trace("AHAHAH");
-                animation.anim.curFrame = animData.loopFrame ?? 0;
-                animation.anim.play(); // unpauses this anim, since it's on PlayOnce!
-              }
-            };
-          }
+            {
+              // Animation is not looped.
+              animation.onAnimationComplete.add((_name:String) -> {
+                trace("AHAHAH 2");
+                if (animation != null)
+                {
+                  animation.anim.pause();
+                }
+              });
+            }
+            else if (animData.loopFrameLabel != null)
+            {
+              animation.onAnimationComplete.add((_name:String) -> {
+                trace("AHAHAH 2");
+                if (animation != null)
+                {
+                  animation.playAnimation(animData.loopFrameLabel ?? '', true, false, true); // unpauses this anim, since it's on PlayOnce!
+                }
+              });
+            }
+            else if (animData.loopFrame != null)
+            {
+              animation.onAnimationComplete.add((_name:String) -> {
+                if (animation != null)
+                {
+                  trace("AHAHAH");
+                  animation.anim.curFrame = animData.loopFrame ?? 0;
+                  animation.anim.play(); // unpauses this anim, since it's on PlayOnce!
+                }
+              });
+            }
 
           // Hide until ready to play.
           animation.visible = false;
@@ -718,12 +735,13 @@ class ResultState extends MusicBeatSubState
 
     if (movingSongStuff)
     {
-      songName.x += speedOfTween.x;
-      difficulty.x += speedOfTween.x;
-      clearPercentSmall.x += speedOfTween.x;
-      songName.y += speedOfTween.y;
-      difficulty.y += speedOfTween.y;
-      clearPercentSmall.y += speedOfTween.y;
+      var deltaScale = elapsed*190; //? fix framerate
+      songName.x += speedOfTween.x*deltaScale;
+      difficulty.x += speedOfTween.x*deltaScale;
+      clearPercentSmall.x += speedOfTween.x*deltaScale;
+      songName.y += speedOfTween.y*deltaScale;
+      difficulty.y += speedOfTween.y*deltaScale;
+      clearPercentSmall.y += speedOfTween.y*deltaScale;
 
       if (songName.x + songName.width < 100)
       {
@@ -794,7 +812,6 @@ class ResultState extends MusicBeatSubState
           targetState = FreeplayState.build(
             {
               {
-                character: playerCharacterId ?? "bf",
                 fromResults:
                   {
                     oldRank: params.prevScoreRank,
@@ -827,6 +844,7 @@ class ResultState extends MusicBeatSubState
               }
               else
               {
+                FlxG.sound.pause(); //? fix sound
                 FlxG.switchState(targetState);
               }
             }

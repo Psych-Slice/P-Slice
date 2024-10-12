@@ -14,28 +14,30 @@ using mikolka.funkin.utils.ArrayTools;
      /**
       * Whether or not the song has been favorited.
       */
-     public var isFav:Bool = false;
+      public var isFav:Bool = false;
  
-     public var isNew:Bool = false;
-     public var folder:String = "";
-     public var color:Int = -7179779;
- 
-     public var levelId(default, null):Int = 0;
-     public var levelName(default, null):String = "";
-     public var songId(default, null):String = '';
- 
-     public var songDifficulties(default, null):Array<String> = [];
- 
-     public var songName(default, null):String = '';
-     public var songCharacter(default, null):String = '';
-     public var songStartingBpm(default, null):Float = 0;
-     public var difficultyRating(default, null):Int = 0;
- 
-     public var freeplayPrevStart(default, null):Float = 0;
-     public var freeplayPrevEnd(default, null):Float = 0;
-     public var currentDifficulty(default, set):String = "normal";
- 
-     public var scoringRank:Null<ScoringRank> = null;
+      public var isNew:Bool = false;
+      public var folder:String = "";
+      public var color:Int = -7179779;
+  
+      public var levelId(default, null):Int = 0;
+      public var levelName(default, null):String = "";
+      public var songId(default, null):String = '';
+  
+      public var songDifficulties(default, null):Array<String> = [];
+  
+      public var songName(default, null):String = '';
+      public var songCharacter(default, null):String = '';
+      public var songStartingBpm(default, null):Float = 0;
+      public var difficultyRating(default, null):Int = 0;
+      public var albumId(default, null):Null<String> = null;
+      public var songPlayer(default, null):String = '';
+  
+      public var freeplayPrevStart(default, null):Float = 0;
+      public var freeplayPrevEnd(default, null):Float = 0;
+      public var currentDifficulty(default, set):String = "normal";
+  
+      public var scoringRank:Null<ScoringRank> = null;
  
      function set_currentDifficulty(value:String):String
      {
@@ -45,22 +47,24 @@ using mikolka.funkin.utils.ArrayTools;
      }
  
      public function new(levelId:Int, songId:String, songCharacter:String, color:FlxColor)
-     {
-         this.levelId = levelId;
-         this.songName = songId.replace("-", " ");
-         this.songCharacter = songCharacter;
-         this.color = color;
-         this.songId = songId;
- 
-         var meta = FreeplayMeta.getMeta(songId);
-         difficultyRating = meta.songRating;
-         freeplayPrevStart = meta.freeplayPrevStart;
-         freeplayPrevEnd = meta.freeplayPrevEnd;
- 
-         updateValues();
- 
-         this.isFav = ClientPrefs.favSongIds.contains(songId+this.levelName);//Save.instance.isSongFavorited(songId);
-     }
+        {
+            this.levelId = levelId;
+            this.songName = songId.replace("-", " ");
+            this.songCharacter = songCharacter;
+            this.color = color;
+            this.songId = songId;
+    
+            var meta = FreeplayMeta.getMeta(songId);
+            difficultyRating = meta.songRating;
+            freeplayPrevStart = meta.freeplayPrevStart/meta.freeplaySongLength;
+            freeplayPrevEnd = meta.freeplayPrevEnd/meta.freeplaySongLength;
+            albumId = meta.albumId;
+            songPlayer = meta.freeplayCharacter;
+    
+            updateValues();
+    
+            this.isFav = ClientPrefs.data.favSongIds.contains(songId+this.levelName);//Save.instance.isSongFavorited(songId);
+        }
  
      /**
       * Toggle whether or not the song is favorited, then flush to save data.

@@ -1,5 +1,6 @@
 package stages.erect;
 
+import stages.misc.PicoCapableStage;
 import openfl.display.BlendMode;
 import shaders.AdjustColorShader;
 import flixel.addons.display.FlxBackdrop;
@@ -46,9 +47,10 @@ class LimoRideErect extends BaseStage{
         
 		var skyBG:BGSprite = new BGSprite('limo/erect/limoSunset', -120, -50, 0.1, 0.1);
         skyBG.scale.set(0.9,0.9);
+		skyBG.updateHitbox();
 		add(skyBG);
 
-        star = new BGSprite('limo/erect/shooting star',200,0,1,1,['background limo blue']);
+        star = new BGSprite('limo/erect/shooting star',200,0,1,1,['shooting star']);
         star.blend = BlendMode.ADD;
         add(star);
 
@@ -65,7 +67,7 @@ class LimoRideErect extends BaseStage{
 			limoMetalPole = new BGSprite('gore/metalPole', -500, 220, 0.4, 0.4);
 			add(limoMetalPole);
 
-			bgLimo = new BGSprite('limo/erect/bgLimo', -150, 480, 0.4, 0.4, ['background limo pink'], true);
+			bgLimo = new BGSprite('limo/erect/bgLimo', -150, 480, 0.4, 0.4, ['background limo blue'], true);
 			add(bgLimo);
 
 			limoCorpse = new BGSprite('gore/noooooo', -500, limoMetalPole.y - 130, 0.4, 0.4, ['Henchmen on rail'], true);
@@ -108,24 +110,26 @@ class LimoRideErect extends BaseStage{
 	}
 
 function makeMists() {
-    // mist1 = new FlxBackdrop(Paths.image('limo/erect/mistMid'), 0x01);
-	// 	mist1.setPosition(-650, -200);
-	// 	mist1.scrollFactor.set(1.1, 1.1);
-	// 	mist1.zIndex = 400;
-    // mist1.blend = BlendMode.ADD;
-	// 	mist1.color = 0xFFc6bfde;
-	// 	mist1.alpha = 0.4;
-	// 	mist1.velocity.x = 1700;
+    mist1 = new FlxBackdrop(Paths.image('limo/erect/mistMid'), 0x01);
+		mist1.setPosition(-650, -200);
+		mist1.scrollFactor.set(1.1, 1.1);
+		mist1.zIndex = 400;
+    	mist1.blend = BlendMode.ADD;
+		mist1.color = 0xFFc6bfde;
+		mist1.alpha = 0.4;
+		mist1.velocity.x = 1700;
+		mist1.updateHitbox();
 
-	// 	mist2 = new FlxBackdrop(Paths.image('limo/erect/mistBack'), 0x01);
-	// 	mist2.setPosition(-650, -100);
-	// 	mist2.scrollFactor.set(1.2, 1.2);
-	// 	mist2.zIndex = 401;
-    // mist2.blend = BlendMode.ADD;
-	// 	mist2.color = 0xFF6a4da1;
-	// 	mist2.alpha = 1;
-	// 	mist2.velocity.x = 2100;
-		//mist1.scale.set(1.3, 1.3);
+		mist2 = new FlxBackdrop(Paths.image('limo/erect/mistBack'), 0x01);
+		mist2.setPosition(-650, -100);
+		mist2.scrollFactor.set(1.2, 1.2);
+		mist2.zIndex = 401;
+    	mist2.blend = BlendMode.ADD;
+		mist2.color = 0xFF6a4da1;
+		mist2.alpha = 1;
+		mist2.velocity.x = 2100;
+		mist2.scale.set(1.3, 1.3);
+		mist2.updateHitbox();
 
 		mist3 = new FlxBackdrop(Paths.image('limo/erect/mistMid'), 0x01);
 		mist3.setPosition(-650, -100);
@@ -136,6 +140,7 @@ function makeMists() {
 		mist3.alpha = 0.5;
 		mist3.velocity.x = 900;
 		mist3.scale.set(1.5, 1.5);
+		mist3.updateHitbox();
 
 		mist4 = new FlxBackdrop(Paths.image('limo/erect/mistBack'), 0x01);
 		mist4.setPosition(-650, -380);
@@ -146,6 +151,7 @@ function makeMists() {
 		mist4.alpha = 1;
 		mist4.velocity.x = 700;
 		mist4.scale.set(1.5, 1.5);
+		mist4.updateHitbox();
 
 		mist5 = new FlxBackdrop(Paths.image('limo/erect/mistMid'), 0x01);
 		mist5.setPosition(-650, -400);
@@ -156,6 +162,7 @@ function makeMists() {
 		mist5.alpha = 1;
 		mist5.velocity.x = 100;
 		mist5.scale.set(1.5, 1.5);
+		mist5.updateHitbox();
 }
 	override function createPost()
 	{
@@ -182,11 +189,12 @@ function makeMists() {
 	{
 		if(!ClientPrefs.lowQuality) {
             _timer += elapsed;
-            // mist1.y = 100 + (Math.sin(_timer)*200);
-            // mist2.y = 0 + (Math.sin(_timer*0.8)*100);
-            mist3.y = -20 + (Math.sin(_timer*0.5)*200);
-            mist4.y = -180 + (Math.sin(_timer*0.4)*300);
-            mist5.y = -450 + (Math.sin(_timer*0.2)*150);
+			var globalCorrection = -300;
+            mist1.y = globalCorrection + 100 + (Math.sin(_timer)*200);
+            mist2.y = globalCorrection + 0 + (Math.sin(_timer*0.8)*100);
+            mist3.y = globalCorrection -20 + (Math.sin(_timer*0.5)*200);
+            mist4.y = globalCorrection -180 + (Math.sin(_timer*0.4)*300);
+            mist5.y = globalCorrection -450 + (Math.sin(_timer*0.2)*150);
 
         
 			grpLimoParticles.forEach(function(spr:BGSprite) {
