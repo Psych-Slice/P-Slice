@@ -223,10 +223,14 @@ class Controls
 		if (keys != null && requestedMobileC != null)
 		{
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if (requestedHitbox.anyPressed(keys))
 =======
 			if (requestedMobileC.instance.anyPressed(keys))
 >>>>>>> parent of a7e9caa (murder MobileControls, make hitbox only at Playstate and apply patches from our psych port)
+=======
+			if (requestedHitbox.instance.anyPressed(keys))
+>>>>>>> parent of dbfb4fc (remove instance on requestedHitbox calls)
 			{
 				controllerMode = true;
 				return true;
@@ -240,10 +244,14 @@ class Controls
 		if (keys != null && requestedMobileC != null)
 		{
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if (requestedHitbox.anyJustPressed(keys))
 =======
 			if (requestedMobileC.instance.anyJustPressed(keys))
 >>>>>>> parent of a7e9caa (murder MobileControls, make hitbox only at Playstate and apply patches from our psych port)
+=======
+			if (requestedHitbox.instance.anyJustPressed(keys))
+>>>>>>> parent of dbfb4fc (remove instance on requestedHitbox calls)
 			{
 				controllerMode = true;
 				return true;
@@ -257,10 +265,14 @@ class Controls
 		if (keys != null && requestedMobileC != null)
 		{
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if (requestedHitbox.anyJustReleased(keys))
 =======
 			if (requestedMobileC.instance.anyJustReleased(keys))
 >>>>>>> parent of a7e9caa (murder MobileControls, make hitbox only at Playstate and apply patches from our psych port)
+=======
+			if (requestedHitbox.instance.anyJustReleased(keys))
+>>>>>>> parent of dbfb4fc (remove instance on requestedHitbox calls)
 			{
 				controllerMode = true;
 				return true;
