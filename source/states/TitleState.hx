@@ -16,6 +16,7 @@ import states.StoryMenuState;
 import states.OutdatedState;
 import states.MainMenuState;
 import mikolka.vslice.components.ScreenshotPlugin;
+import mikolka.vslice.AttractState;
 
 typedef TitleData =
 {

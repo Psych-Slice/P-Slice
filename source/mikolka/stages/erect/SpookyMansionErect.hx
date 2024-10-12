@@ -1,7 +1,8 @@
-package states.stages.erect;
+package mikolka.stages.erect;
 
+import states.editors.content.VSlice;
+import mikolka.compatibility.VsliceOptions;
 import shaders.RainShader;
-import states.stages.objects.PicoCapableStage;
 import objects.Note;
 import objects.Character;
 
@@ -53,7 +54,7 @@ class SpookyMansionErect extends PicoCapableStage
 		halloweenWindow.shader = shader;
 
 		halloweenWindow.animation.play("bgtrees0");
-        if (!ClientPrefs.data.lowQuality) makeChars();
+        if (!VsliceOptions.LOW_QUALITY) makeChars();
 		add(stairsDark);
 		add(stairsLight);
 	}
@@ -122,7 +123,7 @@ class SpookyMansionErect extends PicoCapableStage
 	function lightningStrikeShit():Void
 	{
 		FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2));
-		if (!ClientPrefs.data.lowQuality)
+		if (!VsliceOptions.LOW_QUALITY)
 		{
 			FlxTimer.wait(0.06, () ->
 			{
@@ -146,7 +147,7 @@ class SpookyMansionErect extends PicoCapableStage
 
 				if (gf != null && gf.hasAnimation('scared'))
 					gf.playAnim('scared', true);
-				if (ClientPrefs.data.flashing)
+				if (VsliceOptions.FLASHBANG)
 				{
 					ABot_plink();
 					boyfriend.alpha = 0;
@@ -175,7 +176,7 @@ class SpookyMansionErect extends PicoCapableStage
 		lightningStrikeBeat = curBeat;
 		lightningOffset = FlxG.random.int(8, 24);
 
-		if (ClientPrefs.data.camZooms)
+		if (VsliceOptions.CAM_ZOOMING)
 		{
 			FlxG.camera.zoom += 0.015;
 			camHUD.zoom += 0.03;

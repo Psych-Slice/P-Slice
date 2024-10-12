@@ -1,9 +1,10 @@
-package states;
+package mikolka.vslice;
 
 #if html5
 import funkin.graphics.video.FlxVideo;
 #else
-import objects.VideoSprite;
+import mikolka.compatibility.ModsHelper;
+import hxcodec.flixel.FlxVideoSprite;
 
 using mikolka.funkin.utils.ArrayTools;
 #end
@@ -24,25 +25,6 @@ class AttractState extends MusicBeatSubstate
     'erectSamplers'
   ]));
   #else
-  private static function collectVideos():String{
-    var dirsToList = new Array<String>();
-    dirsToList.push('assets/videos/commercials/');
-    if(FileSystem.exists('mods/videos/commercials'))dirsToList.push('mods/videos/commercials/');
-    Mods.loadTopMod();
-    var modsToSearch = Mods.getGlobalMods();
-    modsToSearch.pushUnique(Mods.currentModDirectory);
-    modsToSearch = modsToSearch.filter(s -> FileSystem.exists('mods/$s/videos/commercials')).map(s -> 'mods/$s/videos/commercials');
-    
-    dirsToList = dirsToList.concat(modsToSearch);
-    var commercialsToSelect = new Array<String>();
-    for(potencialComercials in dirsToList){
-      for (file in FileSystem.readDirectory(potencialComercials).filter(s -> s.endsWith(".mp4"))) {
-        commercialsToSelect.push(potencialComercials + '/'+file);
-      }
-    }
-    return FlxG.random.getObject(commercialsToSelect);
-  }
-
    var ATTRACT_VIDEO_PATH:String = '';
   #end
 
@@ -65,7 +47,7 @@ class AttractState extends MusicBeatSubstate
     #end
 
     #if (hxvlc || hxCodec)
-    if (ATTRACT_VIDEO_PATH == '') ATTRACT_VIDEO_PATH = collectVideos();
+    if (ATTRACT_VIDEO_PATH == '') ATTRACT_VIDEO_PATH = ModsHelper.collectVideos();
     trace('Playing native video ${ATTRACT_VIDEO_PATH}');
     playVideoNative(ATTRACT_VIDEO_PATH);
     #end
@@ -94,21 +76,26 @@ class AttractState extends MusicBeatSubstate
   #end
 
   #if VIDEOS_ALLOWED
-  var vid:VideoSprite;
+  var vid:FlxVideoSprite;
 
   function playVideoNative(filePath:String):Void
   {
     // Video displays OVER the FlxState.
-    vid = new VideoSprite(filePath,false);
+    vid = new FlxVideoSprite(0, 0);
 
     if (vid != null)
     {
       //vid.zIndex = 0;
-      vid.finishCallback = onAttractEnd.bind();
+      vid.bitmap.onEndReached.add(onAttractEnd);
+      vid.bitmap.onTextureSetup.add(function()
+        {
+          vid.setGraphicSize(FlxG.width);
+          vid.updateHitbox();
+          vid.screenCenter();
+        });
 
       add(vid);
-      
-      vid.play();
+      vid.play(filePath, false);
     }
     else
     {
@@ -143,12 +130,10 @@ class AttractState extends MusicBeatSubstate
 
     #if (hxvlc || hxCodec)
     if (vid != null)
-    {
-      vid.pause();
-      remove(vid);
-      @:privateAccess
-      vid.alreadyDestroyed = true;
-    }
+      {
+        vid.stop();
+        remove(vid);
+      }
     #end
 
     #if (html5 || hxCodec)
@@ -160,7 +145,11 @@ class AttractState extends MusicBeatSubstate
     }
     else{
       FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.7);
+      #if LEGACY_PSYCH
       FlxG.switchState(() -> new TitleState());
+      #else
+      FlxG.switchState(() -> new states.TitleState());
+      #end
     }
   }
 }

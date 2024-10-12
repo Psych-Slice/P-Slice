@@ -1,5 +1,6 @@
-package states.stages.objects;
+package mikolka.stages;
 
+import states.stages.objects.ABotSpeaker;
 import objects.Note;
 import substates.GameOverSubstate;
 
@@ -190,8 +191,10 @@ class PicoCapableStage extends BaseStage {
                 overlay.animation.addByPrefix('deathLoop', 'Retry Text Loop', 24, true);
                 overlay.animation.addByPrefix('deathConfirm', 'Retry Text Confirm', 24, false);
                 overlay.antialiasing = ClientPrefs.data.antialiasing;
-                @:privateAccess
-                state.overlayConfirmOffsets.set(250, 200);
+                @:privateAccess{
+                    state.overlay = overlay;
+                    state.overlayConfirmOffsets.set(250, 200);
+                }
                 overlay.visible = false;
                 state.add(overlay);
     

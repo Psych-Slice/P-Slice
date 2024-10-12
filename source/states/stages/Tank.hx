@@ -1,5 +1,6 @@
 package states.stages;
 
+import mikolka.stages.PicoCapableStage;
 import states.stages.objects.*;
 import cutscenes.CutsceneHandler;
 import substates.GameOverSubstate;

@@ -1,9 +1,7 @@
-package states.stages.erect;
+package mikolka.stages.erect;
 
-import states.stages.objects.PicoCapableStage;
-import states.stages.objects.PhillyGlowParticle;
-import states.stages.objects.PhillyGlowGradient;
-import states.stages.objects.PhillyTrain;
+import mikolka.compatibility.VsliceOptions;
+import states.stages.objects.*;
 
 class PhillyTrainErect extends PicoCapableStage
 {
@@ -22,7 +20,7 @@ class PhillyTrainErect extends PicoCapableStage
 
 	override function create()
 	{
-		if(!ClientPrefs.data.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
 			var bg:BGSprite = new BGSprite('philly/erect/sky', -100, 0, 0.1, 0.1);
 			add(bg);
 		}
@@ -39,7 +37,7 @@ class PhillyTrainErect extends PicoCapableStage
 		add(phillyWindow);
 		phillyWindow.alpha = 0;
 
-		if(!ClientPrefs.data.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
 			var streetBehind:BGSprite = new BGSprite('philly/behindTrain', -40, 50);
 			add(streetBehind);
 		}
@@ -68,7 +66,7 @@ class PhillyTrainErect extends PicoCapableStage
 				phillyGlowGradient = new PhillyGlowGradient(-400, 225); //This shit was refusing to properly load FlxGradient so fuck it
 				phillyGlowGradient.visible = false;
 				insert(members.indexOf(blammedLightsBlack) + 1, phillyGlowGradient);
-				if(!ClientPrefs.data.flashing) phillyGlowGradient.intendedAlpha = 0.7;
+				if(!VsliceOptions.FLASHBANG) phillyGlowGradient.intendedAlpha = 0.7;
 
 				Paths.image('philly/particle'); //precache philly glow particle image
 				phillyGlowParticles = new FlxTypedGroup<PhillyGlowParticle>();
@@ -105,7 +103,7 @@ class PhillyTrainErect extends PicoCapableStage
 	function doFlash()
 	{
 		var color:FlxColor = FlxColor.WHITE;
-		if(!ClientPrefs.data.flashing) color.alphaFloat = 0.5;
+		if(!VsliceOptions.FLASHBANG) color.alphaFloat = 0.5;
 
 		FlxG.camera.flash(color, 0.15, null, true);
 	}

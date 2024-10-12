@@ -1,5 +1,6 @@
-package states.stages.erect;
+package mikolka.stages.erect;
 
+import mikolka.compatibility.VsliceOptions;
 import substates.GameOverSubstate;
 import states.stages.objects.*;
 
@@ -18,7 +19,7 @@ class MallXmasErect extends PicoCapableStage
 		bg.updateHitbox();
 		add(bg);
 
-		if(!ClientPrefs.data.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
 			upperBoppers = new BGSprite('christmas/erect/upperBop', -240, -90, 0.33, 0.33, ['upperBop']);
 			upperBoppers.setGraphicSize(Std.int(upperBoppers.width * 0.85));
 			upperBoppers.updateHitbox();
@@ -73,7 +74,7 @@ class MallXmasErect extends PicoCapableStage
 
 	function everyoneDance()
 	{
-		if(!ClientPrefs.data.lowQuality)
+		if(!VsliceOptions.LOW_QUALITY)
 			upperBoppers.dance(true);
 
 		bottomBoppers.dance(true);

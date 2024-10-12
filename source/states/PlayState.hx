@@ -49,7 +49,7 @@ import objects.VideoSprite;
 import objects.Note.EventNote;
 import objects.*;
 import states.stages.*;
-import states.stages.erect.*;
+import mikolka.stages.erect.*;
 import states.stages.objects.*;
 
 #if LUA_ALLOWED

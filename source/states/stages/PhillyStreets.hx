@@ -1,5 +1,6 @@
 package states.stages;
 
+import mikolka.stages.PicoCapableStage;
 import openfl.filters.ShaderFilter;
 import shaders.RainShader;
 

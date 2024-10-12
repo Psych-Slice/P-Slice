@@ -1,10 +1,10 @@
-package states.stages.erect;
+package mikolka.stages.erect;
 
-import states.stages.objects.PicoCapableStage;
+import mikolka.compatibility.VsliceOptions;
 import openfl.display.BlendMode;
 import shaders.AdjustColorShader;
+import states.stages.objects.*;
 import flixel.addons.display.FlxBackdrop;
-import states.stages.objects.BackgroundDancer;
 
 enum HenchmenKillState
 {
@@ -60,7 +60,7 @@ class LimoRideErect extends BaseStage{
 		  colorShader.contrast = 0;
 		  colorShader.brightness = -30;
         
-		if(!ClientPrefs.data.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
             makeMists();
             add(mist5);
 
@@ -187,7 +187,7 @@ function makeMists() {
     var _timer:Float = 0;
 	override function update(elapsed:Float)
 	{
-		if(!ClientPrefs.data.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
             _timer += elapsed;
 			var globalCorrection = -300;
             mist1.y = globalCorrection + 100 + (Math.sin(_timer)*200);
@@ -280,7 +280,7 @@ function makeMists() {
 
 	override function beatHit()
 	{
-		if(!ClientPrefs.data.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
 			grpLimoDancers.forEach(function(dancer:BackgroundDancer)
 			{
 				dancer.dance();
@@ -377,7 +377,7 @@ function makeMists() {
 
 	function killHenchmen():Void
 	{
-		if(!ClientPrefs.data.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
 			if(limoKillingState == WAIT) {
 				limoMetalPole.x = -400;
 				limoMetalPole.visible = true;

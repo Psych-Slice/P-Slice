@@ -1,7 +1,8 @@
-package states.stages.erect;
+package mikolka.stages.erect;
 
-import states.stages.objects.PicoCapableStage;
+import mikolka.compatibility.VsliceOptions;
 import openfl.display.BlendMode;
+import states.stages.objects.*;
 import shaders.AdjustColorShader;
 
 class MainStageErect extends PicoCapableStage {
@@ -19,7 +20,7 @@ class MainStageErect extends PicoCapableStage {
         add(peeps);
         
 
-        if(!ClientPrefs.data.lowQuality) {
+        if(!VsliceOptions.LOW_QUALITY) {
             var lightSmol = new BGSprite('erect/brightLightSmall',967, -103,1.2,1.2);
             lightSmol.blend = BlendMode.ADD;
             add(lightSmol);
@@ -31,7 +32,7 @@ class MainStageErect extends PicoCapableStage {
         var server:BGSprite = new BGSprite('erect/server', -361, 205);
 		add(server);
 
-		if(!ClientPrefs.data.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
 			var greenLight:BGSprite = new BGSprite('erect/lightgreen', -171, 242);
             greenLight.blend = BlendMode.ADD;
 			add(greenLight);
@@ -48,7 +49,7 @@ class MainStageErect extends PicoCapableStage {
         var beamLol:BGSprite = new BGSprite('erect/lights', -601, -147,1.2,1.2);
 		add(beamLol);
 
-        if(!ClientPrefs.data.lowQuality) {
+        if(!VsliceOptions.LOW_QUALITY) {
 			var TheOneAbove:BGSprite = new BGSprite('erect/lightAbove', 804, -117);
             TheOneAbove.blend = BlendMode.ADD;
 			add(TheOneAbove);

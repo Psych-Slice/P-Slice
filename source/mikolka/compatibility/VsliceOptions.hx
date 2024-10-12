@@ -13,6 +13,14 @@ class VsliceOptions {
     public static function get_ANTIALIASING():Bool {
         return ClientPrefs.data.antialiasing;
     }
+    public static var LOW_QUALITY(get,never):Bool;    
+    public static function get_LOW_QUALITY():Bool {
+        return ClientPrefs.data.lowQuality;
+    }
+    public static var CAM_ZOOMING(get,never):Bool;    
+    public static function get_CAM_ZOOMING():Bool {
+        return ClientPrefs.data.camZooms;
+    }
     public static var LAST_MOD(get,set):CharSave; //format: "mod_dir||char_name"
     public static function get_LAST_MOD():CharSave {
         var shards = ClientPrefs.data.lastFreeplayMod.split('||');
