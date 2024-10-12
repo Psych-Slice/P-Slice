@@ -68,8 +68,8 @@ import StageData;
 import FunkinLua;
 import DialogueBoxPsych;
 import Conductor.Rating;
-import stages.*;
-import stages.erect.*;
+import mikolka.stages.standard.*;
+import mikolka.stages.erect.*;
 #if !flash
 import flixel.addons.display.FlxRuntimeShader;
 import openfl.filters.ShaderFilter;

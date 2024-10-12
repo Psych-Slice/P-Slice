@@ -18,7 +18,7 @@ import mikolka.funkin.*;
 import mikolka.funkin.utils.*;
 import mikolka.funkin.players.*;
 import mikolka.funkin.custom.*;
-import stages.misc.BaseStage;
+import mikolka.stages.misc.BaseStage;
 import flxanimate.PsychFlxAnimate as FlxAnimate;
 
 #if flxanimate

@@ -30,7 +30,7 @@ class ModSelector extends FlxTypedSpriteGroup<FlxSprite> {
 			directories.push(folder);
 		}
 
-		var found:Int = directories.indexOf(Mods.currentModDirectory);
+		var found:Int = directories.indexOf(Paths.currentModDirectory);
 		if (found > -1)
 			curDirectory = found;
 		changeDirectory();

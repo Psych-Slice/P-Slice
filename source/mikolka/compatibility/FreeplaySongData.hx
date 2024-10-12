@@ -63,7 +63,7 @@ using mikolka.funkin.utils.ArrayTools;
     
             updateValues();
     
-            this.isFav = ClientPrefs.data.favSongIds.contains(songId+this.levelName);//Save.instance.isSongFavorited(songId);
+            this.isFav = ClientPrefs.favSongIds.contains(songId+this.levelName);//Save.instance.isSongFavorited(songId);
         }
  
      /**

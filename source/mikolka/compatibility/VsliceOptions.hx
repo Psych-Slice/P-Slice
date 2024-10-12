@@ -14,6 +14,14 @@ class VsliceOptions {
     public static function get_FLASHBANG():Bool {
         return ClientPrefs.flashing;
     }
+    public static var LOW_QUALITY(get,never):Bool;    
+    public static function get_LOW_QUALITY():Bool {
+        return ClientPrefs.lowQuality;
+    }
+    public static var CAM_ZOOMING(get,never):Bool;    
+    public static function get_CAM_ZOOMING():Bool {
+        return ClientPrefs.camZooms;
+    }
     public static var LAST_MOD(get,set):CharSave; //format: "mod_dir||char_name"
     public static function get_LAST_MOD():CharSave {
         var shards = ClientPrefs.lastFreeplayMod.split('||');

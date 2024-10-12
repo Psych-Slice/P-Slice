@@ -4,7 +4,7 @@ import mikolka.compatibility.ModsHelper;
 import mikolka.vslice.charSelect.pslice.ModSelector;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.compatibility.FreeplayHelpers;
-import states.AttractState;
+import mikolka.vslice.AttractState;
 import mikolka.vslice.freeplay.FreeplayState;
 import openfl.filters.BitmapFilter;
 import flixel.FlxObject;
@@ -376,7 +376,7 @@ class CharSelectSubState extends MusicBeatSubState
     FlxG.camera.follow(camFollow, LOCKON);
 
     var fadeShaderFilter:ShaderFilter = new ShaderFilter(fadeShader);
-    FlxG.camera.filters = [fadeShaderFilter];
+    FlxG.camera.setFilters([fadeShaderFilter]);
 
     // var temp:FlxSprite = new FlxSprite(); //? why was this a thing?
     // temp.loadGraphic(Paths.image('charSelect/placement'));
@@ -452,7 +452,7 @@ class CharSelectSubState extends MusicBeatSubState
             allowInput = true;
 
             @:privateAccess
-            gfChill.analyzer = new SpectralAnalyzer(FlxG.sound.music._channel.__audioSource, 7, 0.1);
+            gfChill.analyzer = new SpectralAnalyzer(ModsHelper.getSoundChannel(FlxG.sound.music), 7, 0.1);
             #if desktop
             // On desktop it uses FFT stuff that isn't as optimized as the direct browser stuff we use on HTML5
             // So we want to manually change it!
@@ -597,7 +597,7 @@ class CharSelectSubState extends MusicBeatSubState
                 allowInput = true;
 
                 @:privateAccess
-                gfChill.analyzer = new SpectralAnalyzer(FlxG.sound.music._channel.__audioSource, 7, 0.1);
+                gfChill.analyzer = new SpectralAnalyzer(ModsHelper.getSoundChannel(FlxG.sound.music), 7, 0.1);
                 #if desktop
                 // On desktop it uses FFT stuff that isn't as optimized as the direct browser stuff we use on HTML5
                 // So we want to manually change it!

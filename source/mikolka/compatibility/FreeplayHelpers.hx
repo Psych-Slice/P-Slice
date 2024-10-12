@@ -128,4 +128,7 @@ class FreeplayHelpers
 		//Difficulty.list[PlayState.storyDifficulty].toUpperCase()
 		return CoolUtil.difficultyString();
 	}
+	public static function updateConductorSongTime(time:Float) {
+		Conductor.songPosition = time;
+	}
 }

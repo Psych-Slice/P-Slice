@@ -882,6 +882,6 @@ class TitleState extends MusicBeatState
 	{
 		if (!Std.isOfType(FlxG.state, TitleState))
 			return;
-		FlxG.switchState(new AttractState());
+		FlxG.switchState(new mikolka.vslice.AttractState());
 	}
 }

@@ -29,8 +29,14 @@ class FunkinPath {
     public static function getSparrowAtlas(s:String):FlxAtlasFrames {
         return Paths.getSparrowAtlas(s);
     }
-    public static function getPath(path:String){
-        return Paths.getPreloadPath(path);
+    public static function getPath(path:String,forceNative:Bool = false){
+        if(forceNative) return Paths.getPreloadPath(path);
+        
+        var curMod = Paths.currentModDirectory;
+        if(curMod != null && curMod != '' && FileSystem.exists('mods/$curMod/$path'))
+            return 'mods/$curMod/$path';
+        else if (FileSystem.exists('mods/$path')) return 'mods/$path';
+        else return Paths.getPreloadPath(path);
     }
     public static function exists(s:String):Bool {
         // Check if a file exists somethere
@@ -42,4 +48,8 @@ class FunkinPath {
           if (parts.length < 2) return path;
           return parts[1];
         }
+    //! used by FileSystem
+    public static function file(s:String) { // this returns a full path to the file
+        return getPath(s);
+    }
 }

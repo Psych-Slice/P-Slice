@@ -4,6 +4,8 @@ import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
 import haxe.io.Path;
 
+using mikolka.funkin.utils.ArrayTools;
+
 class ModsHelper {
 	public inline static function isModDirEnabled(directory:String) {
 		return getEnabledMods().contains(directory);
@@ -16,7 +18,7 @@ class ModsHelper {
 	}
 	public inline static function loadabsoluteGraphic(path:String):FlxGraphic {
 		if(!Paths.currentTrackedAssets.exists(path)) {
-			Paths.cacheBitmap(path,null,BitmapData.fromFile(path));
+			Paths.currentTrackedAssets.set(path,FlxGraphic.fromBitmapData(BitmapData.fromFile(path)));
 		}
 		return Paths.currentTrackedAssets.get(path);
 	}
@@ -37,4 +39,28 @@ class ModsHelper {
 		}
 		return folders;
 	}
+	public inline static function getSoundChannel(sound:FlxSound){
+		@:privateAccess
+		return sound._channel.__source;
+	}
+	#if sys
+	public inline static function collectVideos():String{
+		var dirsToList = new Array<String>();
+		dirsToList.push('assets/videos/commercials/');
+		if(FileSystem.exists('mods/videos/commercials'))dirsToList.push('mods/videos/commercials/');
+		WeekData.loadTheFirstEnabledMod();
+		var modsToSearch = Paths.getGlobalMods();
+		modsToSearch.pushUnique(Paths.currentModDirectory);
+		modsToSearch = modsToSearch.filter(s -> FileSystem.exists('mods/$s/videos/commercials')).map(s -> 'mods/$s/videos/commercials');
+		
+		dirsToList = dirsToList.concat(modsToSearch);
+		var commercialsToSelect = new Array<String>();
+		for(potencialComercials in dirsToList){
+		  for (file in FileSystem.readDirectory(potencialComercials).filter(s -> s.endsWith(".mp4"))) {
+			commercialsToSelect.push(potencialComercials + '/'+file);
+		  }
+		}
+		return FlxG.random.getObject(commercialsToSelect);
+	  }
+	#end
 }
