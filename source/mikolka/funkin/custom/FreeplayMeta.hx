@@ -15,7 +15,11 @@ class FreeplayMetaJSON {
 
 class FreeplayMeta {
     public static function getMeta(songId:String):FreeplayMetaJSON {
-        var meta_file = Paths.getTextFromFile('data/${Paths.formatToSongPath(songId)}/metadata.json');
+        var meta_file:String = null;
+        try{
+            meta_file = Paths.getTextFromFile('data/${Paths.formatToSongPath(songId)}/metadata.json');
+        }
+        catch(_){}
         if(meta_file != null){
             return getMetaFile(meta_file);
         }

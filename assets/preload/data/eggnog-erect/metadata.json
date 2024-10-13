@@ -1,5 +1,8 @@
 {
-	"freeplayPrevEnd": 0.25,
 	"songRating": 7,
-	"freeplayPrevStart": 0.05
+	"albumId": "expansion1",
+	"freeplayCharacter": "",
+	"freeplaySongLength": 130.282381,
+	"freeplayPrevEnd": 15,
+	"freeplayPrevStart": 0
 }

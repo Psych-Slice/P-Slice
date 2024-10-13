@@ -66,7 +66,7 @@ class ClientPrefs {
 	public static var vsliceFreeplayColors:Bool = true;
 	public static var vsliceResults:Bool = true;
 	public static var vsliceSmoothBar:Bool = true;
-	public static var lastFreeplayMod:String = "";
+	public static var lastFreeplayMod:String = "||bf";
 
 	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
@@ -147,6 +147,7 @@ class ClientPrefs {
 		FlxG.save.data.vsliceResults = vsliceResults;
 		FlxG.save.data.vsliceSmoothBar = vsliceSmoothBar;
 		FlxG.save.data.favSongIds = favSongIds;
+		FlxG.save.data.lastFreeplayMod = lastFreeplayMod;
 	
 		FlxG.save.flush();
 

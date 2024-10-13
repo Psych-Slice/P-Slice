@@ -1,5 +1,6 @@
 {
 	"songs": [
+		["Cocoa Erect", "parents", [160, 209, 255]],
 		["Eggnog Erect", "parents", [160, 209, 255]]
 	],
 
@@ -14,7 +15,7 @@
 	"weekBefore": "week4",
 	"weekName": "Week 5",
 	"startUnlocked": true,
-
+	"directory": "week5",
 	"hideStoryMode": true,
 	"hideFreeplay": false
 }

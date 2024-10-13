@@ -1,6 +1,7 @@
 {
 	"songs": [
-		["Satin Panties Erect", "mom", [252, 150, 215]]
+		["Satin Panties Erect", "mom", [252, 150, 215]],
+		["High Erect", "mom", [252, 150, 215]]
 	],
 	
 	"weekCharacters": [
@@ -14,7 +15,7 @@
 	"weekBefore": "week3",
 	"weekName": "Week 4",
 	"startUnlocked": true,
-
+	"directory": "week4",
 	"hideStoryMode": true,
 	"hideFreeplay": false
 }

@@ -16,7 +16,7 @@
 	"weekName": "Week 2",
 	"difficulties": "Erect,Nightmare",
 	"startUnlocked": true,
-
+	"directory": "week2",
 	"hideStoryMode": true,
 	"hideFreeplay": false
 }
