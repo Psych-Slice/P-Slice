@@ -4,8 +4,11 @@ package mikolka.vslice;
 import funkin.graphics.video.FlxVideo;
 #else
 import mikolka.compatibility.ModsHelper;
+#if hxCodec
 import hxcodec.flixel.FlxVideoSprite;
-
+#else
+import hxvlc.flixel.FlxVideoSprite;
+#end
 using mikolka.funkin.utils.ArrayTools;
 #end
 
@@ -87,7 +90,12 @@ class AttractState extends MusicBeatSubstate
     {
       //vid.zIndex = 0;
       vid.bitmap.onEndReached.add(onAttractEnd);
+
+      #if hxvlc
+      vid.bitmap.onFormatSetup.add(function()
+      #else
       vid.bitmap.onTextureSetup.add(function()
+      #end
         {
           vid.setGraphicSize(FlxG.width);
           vid.updateHitbox();
@@ -95,7 +103,12 @@ class AttractState extends MusicBeatSubstate
         });
 
       add(vid);
+      #if hxvlc
+      vid.load(filePath, null);
+      vid.play();
+      #else
       vid.play(filePath, false);
+      #end
     }
     else
     {
@@ -109,7 +122,14 @@ class AttractState extends MusicBeatSubstate
     super.update(elapsed);
 
     // If the user presses any button, skip the video.
+    #if LEGACY_PSYCH
+    if (FlxG.keys.justPressed.ANY && 
+      !FlxG.keys.anyJustPressed(TitleState.muteKeys) && 
+      !FlxG.keys.anyJustPressed(TitleState.volumeDownKeys) && 
+      !FlxG.keys.anyJustPressed(TitleState.volumeUpKeys))
+    #else
     if (FlxG.keys.justPressed.ANY && !controls.justPressed("volume_up") && !controls.justPressed("volume_down") && !controls.justPressed("volume_mute"))
+    #end
     {
       onAttractEnd();
     }
