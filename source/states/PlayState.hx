@@ -227,7 +227,6 @@ class PlayState extends MusicBeatState
 	public var defaultCamZoom:Float = 1.05;
 	public var defaultStageZoom:Float = 1.05;
 	private static var zoomTween:FlxTween;
-	private static var cameraTween:FlxTween;
 
 	// how big to stretch the pixel art assets
 	public static var daPixelZoom:Float = 6;
@@ -2351,31 +2350,6 @@ class PlayState extends MusicBeatState
 						zoomTween = null;
 					}
 				});
-			case 'Center Camera':
-				var keyValues = value1.split(",");
-				if(keyValues.length != 2) {
-					trace("INVALID EVENT VALUE");
-					return;
-				}
-				keyValues.push(value2);
-
-				var floaties = keyValues.map(s -> Std.parseFloat(s));
-				if(mikolka.funkin.utils.ArrayTools.findIndex(floaties,s -> Math.isNaN(s)) != -1) {
-					trace("INVALID FLOATIES");
-					return;
-				}
-				// floaties = [x,y,duration]
-				if(gf != null) {
-					var gfTargetX = gf.getMidpoint().x + 150 + gf.cameraPosition[0] + girlfriendCameraOffset[0] + floaties[0];
-					var gfTargetY = gf.getMidpoint().y - 100 + gf.cameraPosition[1] + girlfriendCameraOffset[1] + floaties[1];
-					cameraTween?.cancel();
-					cameraTween = FlxTween.tween(camFollow,{ x:gfTargetX, y:gfTargetY},(Conductor.stepCrochet/1000)*floaties[2],{
-						ease: FlxEase.expoOut,
-						onComplete: (x) ->{
-							cameraTween = null;
-						}
-					});
-				}
 		}
 
 		stagesFunc(function(stage:BaseStage) stage.eventCalled(eventName, value1, value2, flValue1, flValue2, strumTime));
@@ -2414,8 +2388,6 @@ class PlayState extends MusicBeatState
 	var cameraTwn:FlxTween;
 	public function moveCamera(isDad:Bool)
 	{
-		cameraTween?.cancel();
-		cameraTween = null;
 		if(isDad)
 		{
 			if(dad == null) return;

@@ -1,5 +1,6 @@
 package states;
 
+import mikolka.compatibility.ModsHelper;
 import backend.WeekData;
 import backend.Highscore;
 import backend.Song;
@@ -65,6 +66,7 @@ class StoryMenuState extends MusicBeatState
 			  //this.persistentDraw = true;
 		
 			  openSubState(stickerSubState);
+			  ModsHelper.clearStoredWithoutStickers();
 			  stickerSubState.degenStickers();
 			  FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}

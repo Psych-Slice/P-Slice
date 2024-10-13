@@ -286,14 +286,6 @@ class StickerSubState extends MusicBeatSubstate
 
             FlxTransitionableState.skipNextTransIn = true;
             FlxTransitionableState.skipNextTransOut = true;
-            // FlxG.signals.preStateCreate.addOnce((state) ->{
-            //   Paths.clearStoredMemory();//? dump everything 
-            //   Paths.clearUnusedMemory();//? dump everything
-            //   for(i => sticker in grpStickers.members){
-            //     sticker.loadSticker(); //? load the sticker after we dumped everything
-            //   }
-            // });
-
 
             // I think this grabs the screen and puts it under the stickers?
             // Leaving this commented out rather than stripping it out because it's cool...

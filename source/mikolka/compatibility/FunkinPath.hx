@@ -54,4 +54,7 @@ class FunkinPath {
     public static function file(s:String) { // this returns a full path to the file
         return getPath(s);
     }
+    public static function clearUnusedMemory() { 
+        Paths.clearUnusedMemory();
+    }
 }

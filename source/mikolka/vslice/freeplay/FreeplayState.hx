@@ -2184,6 +2184,10 @@ class FreeplayState extends MusicBeatSubstate
 		else
 			result = new MainMenuState(false);
 
+		if(stickers != null){ //? add a cleanup from stickers
+			Paths.clearUnusedMemory();
+			ModsHelper.clearStoredWithoutStickers();
+		}
 		result.openSubState(new FreeplayState(params, stickers));
 		result.persistentUpdate = false;
 		result.persistentDraw = true;

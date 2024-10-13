@@ -28,6 +28,14 @@ class ModsHelper {
 		@:privateAccess
 		return sound._channel.__audioSource;
 	}
+	public static function clearStoredWithoutStickers() {
+		@:privateAccess
+		var cache = FlxG.bitmap._cache;
+		for (key => val in cache){
+		if(key.toLowerCase().contains("transitionswag") || key.contains("bg_graphic_")) Paths.currentTrackedAssets.set(key,val);
+		}
+		Paths.clearStoredMemory();
+	}
 	#if sys
 	public inline static function collectVideos():String{
 		var dirsToList = new Array<String>();
