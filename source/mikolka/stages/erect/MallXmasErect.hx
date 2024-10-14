@@ -1,7 +1,9 @@
 package mikolka.stages.erect;
 
 import mikolka.compatibility.VsliceOptions;
-import mikolka.stages.objects.*;
+#if !LEGACY_PSYCH
+import substates.GameOverSubstate;
+#end
 
 class MallXmasErect extends PicoCapableStage
 {

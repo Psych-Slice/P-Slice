@@ -281,6 +281,9 @@ class ClientPrefs {
 		if(FlxG.save.data.favSongIds != null) {
 			favSongIds = FlxG.save.data.favSongIds;
 		}
+		if(FlxG.save.data.lastFreeplayMod != null) {
+			lastFreeplayMod = FlxG.save.data.lastFreeplayMod;
+		}
 		
 		// flixel automatically saves your volume!
 		if(FlxG.save.data.volume != null)

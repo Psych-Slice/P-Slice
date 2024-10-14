@@ -3,7 +3,6 @@ package mikolka.stages.erect;
 import mikolka.compatibility.VsliceOptions;
 import openfl.display.BlendMode;
 import shaders.AdjustColorShader;
-import mikolka.stages.objects.*;
 import flixel.addons.display.FlxBackdrop;
 
 enum HenchmenKillState
@@ -385,6 +384,11 @@ function makeMists() {
 				limoCorpse.visible = false;
 				limoCorpseTwo.visible = false;
 				limoKillingState = KILLING;
+
+				#if (ACHIEVEMENTS_ALLOWED && !LEGACY_PSYCH)
+				var kills = Achievements.addScore("roadkill_enthusiast");
+				FlxG.log.add('Henchmen kills: $kills');
+				#end
 			}
 		}
 	}

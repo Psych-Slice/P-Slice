@@ -1,7 +1,9 @@
 package mikolka.stages.erect;
 
 import mikolka.compatibility.VsliceOptions;
-import mikolka.stages.objects.*;
+#if !LEGACY_PSYCH
+import objects.Note;
+#end
 
 class PhillyTrainErect extends PicoCapableStage
 {

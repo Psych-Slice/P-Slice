@@ -1,7 +1,14 @@
 package mikolka.compatibility;
 
+import openfl.filters.BitmapFilter;
+
 class FunkinCamera extends FlxCamera {
     var camName:String;
+    public var filters(never,set):Array<BitmapFilter>;
+    public function set_filters(value:Array<BitmapFilter>) {
+        this.setFilters(value);
+        return value;
+    }
     public function new(name:String,X:Int = 0, Y:Int = 0, Width:Int = 0, Height:Int = 0, Zoom:Float = 0) {
         camName = name;
         super(X,Y,Width,Height,Zoom);

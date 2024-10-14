@@ -21,6 +21,9 @@ import mikolka.funkin.custom.*;
 import mikolka.stages.misc.BaseStage;
 import flxanimate.PsychFlxAnimate as FlxAnimate;
 
+//P-Slice stage system
+import mikolka.stages.objects.*;
+
 #if flxanimate
 import flxanimate.*;
 #end
