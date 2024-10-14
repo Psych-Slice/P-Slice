@@ -264,7 +264,8 @@ class Paths
 				return File.getContent(levelPath);
 		}
 		#end
-		return Assets.getText(getPath(key, TEXT));
+		var path = getPath(key, TEXT);
+		return Assets.exists(path)? Assets.getText(path):null;
 	}
 
 	inline static public function font(key:String)
