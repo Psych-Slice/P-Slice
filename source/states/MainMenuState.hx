@@ -1,5 +1,6 @@
 package states;
 
+import mikolka.compatibility.ModsHelper;
 import mikolka.vslice.freeplay.FreeplayState;
 import flixel.FlxObject;
 import flixel.addons.transition.FlxTransitionableState;
@@ -36,6 +37,9 @@ class MainMenuState extends MusicBeatState
 	}
 	override function create()
 	{
+		Paths.clearUnusedMemory();
+		ModsHelper.clearStoredWithoutStickers();
+		
 		#if MODS_ALLOWED
 		Mods.pushGlobalMods();
 		#end

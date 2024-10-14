@@ -250,6 +250,19 @@ class FreeplayState extends MusicBeatSubstate
 			stickerSubState = stickers;
 		}
 
+		
+
+		
+	}
+
+	var fadeShader:BlueFade = new BlueFade();
+
+	public var angleMaskShader:AngleMask = new AngleMask();
+
+	override function create():Void
+	{
+		// We build a bunch of sprites BEFORE create() so we can guarantee they aren't null later on.
+		//? but doing it here, because psych 0.6.3 can destroy graphics created in the constructor
 		switch (currentCharacterId)
 		{
 			case(PlayerRegistry.instance.hasNewCharacter()) => true:
@@ -262,7 +275,6 @@ class FreeplayState extends MusicBeatSubstate
 				backingCard = new BackingCard(currentCharacter);
 		}
 
-		// We build a bunch of sprites BEFORE create() so we can guarantee they aren't null later on.
 		albumRoll = new AlbumRoll();
 		fp = new FreeplayScore(460, 60, 7, 100, styleData);
 		rankCamera = new FunkinCamera('rankCamera', 0, 0, FlxG.width, FlxG.height);
@@ -281,15 +293,9 @@ class FreeplayState extends MusicBeatSubstate
 		charSelectHint = new FlxText(-40, 18, FlxG.width - 8 - 8, 'Press [ LOL ] to change characters', 32);
 
 		bgDad = new FlxSprite(backingCard.pinkBack.width * 0.74, 0).loadGraphic(styleData == null ? 'freeplay/freeplayBGdad' : styleData.getBgAssetGraphic());
-	}
 
-	var fadeShader:BlueFade = new BlueFade();
-
-	public var angleMaskShader:AngleMask = new AngleMask();
-
-	override function create():Void
-	{
 		BPMCache.instance.clearCache(); // for good measure
+		//? end of init
 
 		super.create();
 		var diffIdsTotalModBinds:Map<String, String> = ["easy" => "", "normal" => "", "hard" => ""];
@@ -2183,11 +2189,6 @@ class FreeplayState extends MusicBeatSubstate
 			result = new MainMenuState(true);
 		else
 			result = new MainMenuState(false);
-
-		if(stickers != null){ //? add a cleanup from stickers
-			Paths.clearUnusedMemory();
-			ModsHelper.clearStoredWithoutStickers();
-		}
 		result.openSubState(new FreeplayState(params, stickers));
 		result.persistentUpdate = false;
 		result.persistentDraw = true;

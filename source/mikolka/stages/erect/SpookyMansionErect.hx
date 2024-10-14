@@ -3,9 +3,10 @@ package mikolka.stages.erect;
 import states.editors.content.VSlice;
 import mikolka.compatibility.VsliceOptions;
 import shaders.RainShader;
+#if !LEGACY_PSYCH
 import objects.Note;
 import objects.Character;
-
+#end
 class SpookyMansionErect extends PicoCapableStage
 {
 	var halloweenBG:BGSprite;

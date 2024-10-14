@@ -3,7 +3,6 @@ package mikolka.stages.erect;
 import mikolka.compatibility.VsliceOptions;
 import openfl.display.BlendMode;
 import shaders.AdjustColorShader;
-import states.stages.objects.*;
 import flixel.addons.display.FlxBackdrop;
 
 enum HenchmenKillState

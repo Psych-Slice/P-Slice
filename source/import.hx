@@ -27,6 +27,9 @@ import mikolka.funkin.utils.*;
 import mikolka.funkin.custom.*;
 import mikolka.funkin.players.*;
 
+// Stage imports (for compatibility)
+import states.stages.objects.*;
+
 import backend.Paths;
 import backend.Controls;
 import backend.CoolUtil;

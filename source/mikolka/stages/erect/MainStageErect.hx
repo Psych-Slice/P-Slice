@@ -2,7 +2,6 @@ package mikolka.stages.erect;
 
 import mikolka.compatibility.VsliceOptions;
 import openfl.display.BlendMode;
-import states.stages.objects.*;
 import shaders.AdjustColorShader;
 
 class MainStageErect extends PicoCapableStage {

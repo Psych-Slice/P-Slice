@@ -1,8 +1,9 @@
 package mikolka.stages;
 
-import states.stages.objects.ABotSpeaker;
+#if !LEGACY_PSYCH 
 import objects.Note;
 import substates.GameOverSubstate;
+#end
 
 enum NeneState
 {
@@ -29,10 +30,14 @@ class PicoCapableStage extends BaseStage {
         if(!NENE_LIST.contains(PlayState.SONG.gfVersion)) return;
         
         var _song = PlayState.SONG;
-        if(_song.gameOverSound == null || _song.gameOverSound.trim().length < 1) GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pico';
-		if(_song.gameOverLoop == null || _song.gameOverLoop.trim().length < 1) GameOverSubstate.loopSoundName = 'gameOver-pico';
-		if(_song.gameOverEnd == null || _song.gameOverEnd.trim().length < 1) GameOverSubstate.endSoundName = 'gameOverEnd-pico';
-		if(_song.gameOverChar == null || _song.gameOverChar.trim().length < 1) GameOverSubstate.characterName = 'pico-dead';
+        #if !LEGACY_PSYCH if(_song.gameOverSound == null || _song.gameOverSound.trim().length < 1)#end 
+            GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pico';
+		#if !LEGACY_PSYCH if(_song.gameOverLoop == null || _song.gameOverLoop.trim().length < 1)#end
+            GameOverSubstate.loopSoundName = 'gameOver-pico';
+		#if !LEGACY_PSYCH if(_song.gameOverEnd == null || _song.gameOverEnd.trim().length < 1)#end
+            GameOverSubstate.endSoundName = 'gameOverEnd-pico';
+		#if !LEGACY_PSYCH if(_song.gameOverChar == null || _song.gameOverChar.trim().length < 1)#end 
+            GameOverSubstate.characterName = 'pico-dead';
 
         game.gfGroup.y -= 200;
         abot = new ABotSpeaker(game.gfGroup.x-50, game.gfGroup.y+550-30,PlayState.SONG.gfVersion == "nene-dark");
