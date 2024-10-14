@@ -1,6 +1,9 @@
 package mikolka.stages.erect;
 
 import mikolka.compatibility.VsliceOptions;
+#if !LEGACY_PSYCH
+import objects.Note;
+#end
 
 class PhillyTrainErect extends PicoCapableStage
 {
@@ -47,7 +50,7 @@ class PhillyTrainErect extends PicoCapableStage
 		phillyStreet = new BGSprite('philly/erect/street', -40, 50);
 		add(phillyStreet);
 	}
-	override function eventPushed(event:objects.Note.EventNote)
+	override function eventPushed(event:Note.EventNote)
 	{
 		switch(event.event)
 		{
