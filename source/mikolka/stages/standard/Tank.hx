@@ -3,7 +3,7 @@ package mikolka.stages.standard;
 import mikolka.stages.misc.AtlasLoader;
 import mikolka.stages.objects.*;
 
-class Tank extends BaseStage
+class Tank extends PicoCapableStage
 {
 	var tankWatchtower:BGSprite;
 	var tankGround:BackgroundTank;
@@ -84,9 +84,11 @@ class Tank extends BaseStage
 					setStartCallback(stressIntro);
 			}
 		}
+		super.create();
 	}
 	override function createPost()
 	{
+		super.createPost();
 		add(foregroundSprites);
 
 		if(!ClientPrefs.lowQuality)
@@ -118,7 +120,10 @@ class Tank extends BaseStage
 	}
 
 	override function countdownTick(count:Countdown, num:Int) if(num % 2 == 0) everyoneDance();
-	override function beatHit() everyoneDance();
+	override function beatHit() {
+		everyoneDance();
+		super.beatHit();
+	}
 	function everyoneDance()
 	{
 		if(!ClientPrefs.lowQuality) tankWatchtower.dance();

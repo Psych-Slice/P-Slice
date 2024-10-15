@@ -989,6 +989,11 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "getPropertyFromGroup", function(obj:String, index:Int, variable:Dynamic) {
 			var shitMyPants:Array<String> = obj.split('.');
 			var realObject:Dynamic = Reflect.getProperty(getInstance(), obj);
+			if(realObject == null){
+				luaTrace("getPropertyFromGroup: Object "+ obj +" doesn't exist!", false, false, FlxColor.RED);
+				Lua.pushnil(lua);
+				return null;
+			}
 			if(shitMyPants.length>1)
 				realObject = getPropertyLoopThingWhatever(shitMyPants, true, false);
 

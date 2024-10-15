@@ -76,11 +76,12 @@ class SpookyMansionErect extends PicoCapableStage
 		{
 			lightningStrikeShit(); 
 		}
-        if (curBeat % game.boyfriend.danceEveryNumBeats == 0 && !StringTools.startsWith(game.boyfriend.getAnimationName(),'sing') && !game.boyfriend.stunned)
+
+        if (curBeat % game.boyfriend.danceEveryNumBeats == 0 && !StringTools.startsWith(boyfriend.getAnimationName(),'sing') && !game.boyfriend.stunned)
 			boyfriendGhost.dance();
-		if (curBeat % game.dad.danceEveryNumBeats == 0 && !StringTools.startsWith(game.dad.getAnimationName(),'sing') && !game.dad.stunned)
+		if (curBeat % game.dad.danceEveryNumBeats == 0 && !StringTools.startsWith(dad.getAnimationName(),'sing') && !game.dad.stunned)
 			dadGhost.dance();
-		if (curBeat % game.gf.danceEveryNumBeats == 0 && !StringTools.startsWith(game.gf.getAnimationName(),'sing') && !game.gf.stunned)
+		if (curBeat % game.gf.danceEveryNumBeats == 0 && !StringTools.startsWith(gf.getAnimationName(),'sing') && !game.gf.stunned)
 			gfGhost.dance();
 	}
     override function goodNoteHit(note:Note) {
@@ -193,7 +194,7 @@ class SpookyMansionErect extends PicoCapableStage
 
 	function makeChars()
 	{
-		var bfName = PlayState.instance.boyfriend.curCharacter == 'pico-dark' ? "pico-playable" : "boyfriend";
+		var bfName = PlayState.instance.boyfriend.curCharacter == 'pico-dark' ? "pico-playable" : "bf";
 
 		boyfriendGhost = new Character(game.boyfriend.x, game.boyfriend.y, bfName, true);
 		game.add(boyfriendGhost);
@@ -206,8 +207,8 @@ class SpookyMansionErect extends PicoCapableStage
 
 		var gfMode = PlayState.instance.gf.curCharacter == 'nene-dark' ? "nene" : "gf";
 		gfGhost = new Character(game.gf.x, game.gf.y, gfMode);
-		if (gfMode == 'nene')
-			gfGhost.y -= 190;
+		//if (gfMode == 'nene')
+			//gfGhost.y -= 190;
 		game.add(gfGhost);
 		gfGhost.dance();
 

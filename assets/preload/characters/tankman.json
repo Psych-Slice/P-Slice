@@ -68,6 +68,17 @@
 		},
 		{
 			"offsets": [
+				-15,
+				-8
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "ugh",
+			"loop": false,
+			"name": "TANKMAN UGH"
+		},
+		{
+			"offsets": [
 				1,
 				16
 			],
@@ -120,6 +131,27 @@
 			"anim": "singRIGHTmiss",
 			"loop": false,
 			"name": "Tankman Note Left MISS"
+		},
+		{
+			"offsets": [-18, 10],
+			"fps": 24,
+			"name": "tankman laugh",
+			"loop": false,
+			"anim": "laugh"
+		},
+		{
+			"offsets": [90, -9],
+			"fps": 24,
+			"name": "tankman beat it",
+			"loop": false,
+			"anim": "beat it"
+		},
+		{
+			"offsets": [52, -6],
+			"fps": 24,
+			"name": "tankman ARGH",
+			"loop": false,
+			"anim": "augh"
 		}
 	],
 	"no_antialiasing": false,
