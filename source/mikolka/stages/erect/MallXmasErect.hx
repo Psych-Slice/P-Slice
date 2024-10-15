@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import shaders.AdjustColorShader;
 import mikolka.compatibility.VsliceOptions;
 #if !LEGACY_PSYCH
 import substates.GameOverSubstate;
@@ -15,7 +16,7 @@ class MallXmasErect extends PicoCapableStage
 	{
 		var _song = PlayState.SONG;
 		
-		var bg:BGSprite = new BGSprite('christmas/bgWalls', -1000, -500, 0.2, 0.2);
+		var bg:BGSprite = new BGSprite('christmas/erect/bgWalls', -1000, -500, 0.2, 0.2);
 		bg.setGraphicSize(Std.int(bg.width * 0.8));
 		bg.updateHitbox();
 		add(bg);
@@ -35,7 +36,11 @@ class MallXmasErect extends PicoCapableStage
 		var tree:BGSprite = new BGSprite('christmas/erect/christmasTree', 370, -250, 0.40, 0.40);
 		add(tree);
 
-		bottomBoppers = new MallCrowd(-300, 140);
+		var fog = new BGSprite("christmas/erect/white",-1000,100,0.85,0.85);
+		fog.scale.set(0.9,0.9);
+		add(fog);
+
+		bottomBoppers = new MallCrowd(-300, 140,'christmas/erect/bottomBop',"bottomBop");
 		add(bottomBoppers);
 
 		var fgSnow:BGSprite = new BGSprite('christmas/erect/fgSnow', -880, 700);
@@ -50,6 +55,15 @@ class MallXmasErect extends PicoCapableStage
 	}
 	override function createPost() {
 		super.createPost();
+		var colorShader = new AdjustColorShader();
+		colorShader.hue = 5;
+		colorShader.saturation = 20;
+
+		boyfriend.shader = colorShader;
+		gf.shader = colorShader;
+		dad.shader = colorShader;
+		santa.shader = colorShader;
+
 		@:privateAccess
 		if(PicoCapableStage.NENE_LIST.contains(PlayState.SONG.gfVersion)) GameOverSubstate.characterName = 'pico-christmas-dead';
 	}

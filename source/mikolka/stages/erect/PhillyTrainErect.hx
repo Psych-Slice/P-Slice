@@ -1,9 +1,6 @@
 package mikolka.stages.erect;
 
 import mikolka.compatibility.VsliceOptions;
-#if !LEGACY_PSYCH
-import objects.Note;
-#end
 
 class PhillyTrainErect extends PicoCapableStage
 {
@@ -49,32 +46,6 @@ class PhillyTrainErect extends PicoCapableStage
 
 		phillyStreet = new BGSprite('philly/erect/street', -40, 50);
 		add(phillyStreet);
-	}
-	override function eventPushed(event:Note.EventNote)
-	{
-		switch(event.event)
-		{
-			case "Philly Glow":
-				blammedLightsBlack = new FlxSprite(FlxG.width * -0.5, FlxG.height * -0.5).makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
-				blammedLightsBlack.visible = false;
-				insert(members.indexOf(phillyStreet), blammedLightsBlack);
-
-				phillyWindowEvent = new BGSprite('philly/window', phillyWindow.x, phillyWindow.y, 0.3, 0.3);
-				phillyWindowEvent.setGraphicSize(Std.int(phillyWindowEvent.width * 0.85));
-				phillyWindowEvent.updateHitbox();
-				phillyWindowEvent.visible = false;
-				insert(members.indexOf(blammedLightsBlack) + 1, phillyWindowEvent);
-
-				phillyGlowGradient = new PhillyGlowGradient(-400, 225); //This shit was refusing to properly load FlxGradient so fuck it
-				phillyGlowGradient.visible = false;
-				insert(members.indexOf(blammedLightsBlack) + 1, phillyGlowGradient);
-				if(!VsliceOptions.FLASHBANG) phillyGlowGradient.intendedAlpha = 0.7;
-
-				Paths.image('philly/particle'); //precache philly glow particle image
-				phillyGlowParticles = new FlxTypedGroup<PhillyGlowParticle>();
-				phillyGlowParticles.visible = false;
-				insert(members.indexOf(phillyGlowGradient) + 1, phillyGlowParticles);
-		}
 	}
 
 	override function update(elapsed:Float)
