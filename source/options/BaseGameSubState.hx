@@ -20,6 +20,11 @@ class BaseGameSubState extends BaseOptionsMenu {
 			'vsliceSmoothBar',
 			'bool');
 		addOption(option);
+		var option:Option = new Option('Special freeplay cards',
+			'If disabled will force every character to use BF\'s card (including pico)',
+			'vsliceSpecialCards',
+			'bool');
+		addOption(option);
         super();
     }
 }

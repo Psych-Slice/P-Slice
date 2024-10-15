@@ -29,6 +29,7 @@ import states.TitleState;
 	public var hideHud:Bool = false;
 	public var vsliceFreeplayColors:Bool = true;
 	public var vsliceResults:Bool = true;
+	public var vsliceSpecialCards:Bool = true;
 	public var vsliceSmoothBar:Bool = true;
 	public var noteOffset:Int = 0;
 	public var arrowRGB:Array<Array<FlxColor>> = [
@@ -105,6 +106,7 @@ class ClientPrefs {
 		'favorite'		=> [F],
 		'bar_left'		=> [Q],
 		'bar_right'		=> [E],
+		'char_select'	=> [TAB],
 
 		'accept'		=> [SPACE, ENTER],
 		'back'			=> [BACKSPACE, ESCAPE],
@@ -133,6 +135,7 @@ class ClientPrefs {
 		'favorite'		=> [],
 		'bar_left'		=> [],
 		'bar_right'		=> [],
+		'char_select'		=> [],
 
 		'accept'		=> [A, START],
 		'back'			=> [B],

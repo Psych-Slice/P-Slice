@@ -1,5 +1,6 @@
 package mikolka.vslice.freeplay;
 
+import mikolka.compatibility.FunkinControls;
 import mikolka.vslice.charSelect.CharSelectSubState;
 import openfl.filters.ShaderFilter;
 import mikolka.vslice.freeplay.backcards.PicoCard;
@@ -263,7 +264,8 @@ class FreeplayState extends MusicBeatSubstate
 	{
 		// We build a bunch of sprites BEFORE create() so we can guarantee they aren't null later on.
 		//? but doing it here, because psych 0.6.3 can destroy graphics created in the constructor
-		switch (currentCharacterId)
+		if(VsliceOptions.FP_CARDS){
+			switch (currentCharacterId)
 		{
 			case(PlayerRegistry.instance.hasNewCharacter()) => true:
 				backingCard = new NewCharacterCard(currentCharacter);
@@ -274,6 +276,8 @@ class FreeplayState extends MusicBeatSubstate
 			default:
 				backingCard = new BackingCard(currentCharacter);
 		}
+		}
+		else backingCard = new BoyfriendCard(currentCharacter);
 
 		albumRoll = new AlbumRoll();
 		fp = new FreeplayScore(460, 60, 7, 100, styleData);
@@ -1435,7 +1439,7 @@ class FreeplayState extends MusicBeatSubstate
 		}
 		#end // ^<-- FEATURE_DEBUG_FUNCTIONS
 
-		if (FlxG.keys.justPressed.TAB && !busy) // ! placer a proper key here (controls.FREEPLAY_CHAR_SELECT)
+		if (FunkinControls.FREEPLAY_CHAR && !busy) 
 		{
 			tryOpenCharSelect();
 		}

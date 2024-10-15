@@ -13,4 +13,8 @@ class FunkinControls {
     public static function get_SCREENSHOT():Bool {
         return Controls.instance.SCREENSHOT;
     }
+    public static var FREEPLAY_CHAR(get,never):Bool;    
+    public static function get_FREEPLAY_CHAR():Bool {
+        return Controls.instance.CHAR_SELECT;
+    }
 }

@@ -81,6 +81,7 @@ class Controls
 	public var PAUSE(get, never):Bool;
 	public var SCREENSHOT(get, never):Bool;
 	public var RESET(get, never):Bool;
+	public var CHAR_SELECT(get, never):Bool;
 	private function get_ACCEPT() return justPressed('accept');
 	private function get_FAVORITE() return justPressed('favorite');
 	private function get_BAR_LEFT() return justPressed('bar_left');
@@ -89,6 +90,7 @@ class Controls
 	private function get_PAUSE() return justPressed('pause');
 	private function get_SCREENSHOT() return justPressed('screenshot');
 	private function get_RESET() return justPressed('reset');
+	private function get_CHAR_SELECT() return justPressed('char_select');
 
 	//Gamepad & Keyboard stuff
 	public var keyboardBinds:Map<String, Array<FlxKey>>;
