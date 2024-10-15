@@ -1,6 +1,6 @@
 package backend;
 
-import haxe.io.Path;
+import openfl.utils.Assets;
 import haxe.Json;
 
 typedef ModsList = {
