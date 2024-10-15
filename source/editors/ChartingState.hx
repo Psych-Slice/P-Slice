@@ -1,6 +1,6 @@
 package editors;
 
-import FreeplayMeta.FreeplayMetaJSON;
+import mikolka.funkin.custom.FreeplayMeta.FreeplayMetaJSON;
 import flixel.addons.ui.FlxUIButton;
 #if desktop
 import Discord.DiscordClient;
@@ -434,7 +434,6 @@ class ChartingState extends MusicBeatState
 		{
 			currentSongName = Paths.formatToSongPath(UI_songTitle.text);
 			loadSong();
-			loadMetadata();// freeplay metadata is VERY sensitive to song audio length!!
 			updateWaveform();
 		});
 
@@ -930,13 +929,17 @@ function loadMetadata() {
 	prevStartInput.max = maxTime/1000;
 
 	ratingInput.value = songMetadata.songRating;
-	prevStartInput.value = (songMetadata.freeplayPrevStart*maxTime)/1000;
-	prevEndInput.value = (songMetadata.freeplayPrevEnd*maxTime)/1000;
+	prevStartInput.value = (songMetadata.freeplayPrevStart);
+	prevEndInput.value = (songMetadata.freeplayPrevEnd);
+	characterName.text = songMetadata.freeplayCharacter;
+	albumName.text = songMetadata.albumId;
 }
 
 var ratingInput:FlxUINumericStepper;
 	var prevStartInput:FlxUINumericStepper;
 	var prevEndInput:FlxUINumericStepper;
+	var characterName:FlxUIInputText;
+	var albumName:FlxUIInputText;
 	var exportMetadataBtn:FlxButton;
 	var maxTime:Float = 0.0;
 	function addMetadataTab()
@@ -947,24 +950,39 @@ var ratingInput:FlxUINumericStepper;
 		prevStartInput = new FlxUINumericStepper(20, 100,1,0,0,999,1); 
 		prevEndInput = new FlxUINumericStepper(20, 150,1,0,0,999,1);
 		exportMetadataBtn = new FlxButton(20,200,"Export",onMetadataSaveClick.bind());
+		characterName = new FlxUIInputText(160,100,100,"",8);
+		albumName = new FlxUIInputText(160,150,100,"",8);
 
 		tab_group.add(new FlxText(ratingInput.x, ratingInput.y - 15, 80, 'Rating:'));
-		tab_group.add(new FlxText(prevStartInput.x, prevStartInput.y - 15, 150, 'Freeplay preview start sec:'));
-		tab_group.add(new FlxText(prevEndInput.x, prevEndInput.y - 15, 150, 'Freeplay preview end sec:'));
 		tab_group.add(ratingInput);
+
+		tab_group.add(new FlxText(prevStartInput.x, prevStartInput.y - 15, 150, 'Song preview start:'));
 		tab_group.add(prevStartInput);
+
+		tab_group.add(new FlxText(prevEndInput.x, prevEndInput.y - 15, 150, 'Song preview end:'));
 		tab_group.add(prevEndInput);
+
+		tab_group.add(new FlxText(characterName.x, characterName.y - 15, 150, 'Player character:'));
+		tab_group.add(characterName);
+
+		tab_group.add(new FlxText(albumName.x, albumName.y - 15, 150, 'Song album:'));
+		tab_group.add(albumName);
+
 		tab_group.add(exportMetadataBtn);
 
 		UI_box.addGroup(tab_group);
 	}
 
 	function onMetadataSaveClick() {
-		var meta:FreeplayMetaJSON = {
-			songRating: Std.int(ratingInput.value),
-			freeplayPrevStart: (prevStartInput.value*1000)/maxTime,
-			freeplayPrevEnd: (prevEndInput.value*1000)/maxTime
-		};
+		var meta:FreeplayMetaJSON = new FreeplayMetaJSON();
+
+		meta.songRating = Std.int(ratingInput.value);
+		meta.freeplayPrevStart = prevStartInput.value;
+		meta.freeplayPrevEnd = prevEndInput.value;
+		meta.albumId = albumName.text;
+		meta.freeplayCharacter = characterName.text;
+		meta.freeplaySongLength = FlxG.sound.music.length/1000;
+
 		var data:String = haxe.Json.stringify(meta, "\t");
 		if (data.length > 0)
 		{

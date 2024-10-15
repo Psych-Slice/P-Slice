@@ -25,6 +25,7 @@ class MasterEditorMenu extends MusicBeatState
 		'Chart Editor',
 		'Character Editor',
 		'Week Editor',
+		'Test stickers', 
 		'Menu Character Editor',
 		'Dialogue Editor',
 		'Dialogue Portrait Editor',
@@ -132,6 +133,8 @@ class MasterEditorMenu extends MusicBeatState
 					LoadingState.loadAndSwitchState(new DialogueEditorState(), false);
 				case 'Chart Editor'://felt it would be cool maybe
 					LoadingState.loadAndSwitchState(new ChartingState(), false);
+				case 'Test stickers':
+					MusicBeatState.switchState(new StickerTest());
 				case 'Preview results (perfect)':
 					runResults(200);
 				case 'Preview results (excellent)':
