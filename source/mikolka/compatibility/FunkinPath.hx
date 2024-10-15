@@ -5,7 +5,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 
 class FunkinPath {
     public static function animateAtlas(path:String,lib:String = "preload"):String {
-        return Paths.getPreloadPath("images/"+path);
+        return getPath("images/"+path);
     }
 
     public static function sound(key:String):String {
