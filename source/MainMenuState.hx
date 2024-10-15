@@ -1,5 +1,6 @@
 package;
 
+import mikolka.compatibility.ModsHelper;
 import flixel.FlxCamera;
 import Achievements.AchievementObject;
 import mikolka.compatibility.FunkinCamera;
@@ -42,12 +43,14 @@ class MainMenuState extends MusicBeatState
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 	public function new(isDisplayingRank:Bool = false) {
-
 		//TODO
 		super();
 	}
 	override function create()
 	{
+		Paths.clearUnusedMemory();
+		ModsHelper.clearStoredWithoutStickers();
+		
 		camAchievement = new FlxCamera();
 		camAchievement.bgColor.alpha = 0;
 		FlxG.cameras.reset(new FunkinCamera("lol"));
