@@ -53,7 +53,7 @@ class ReflectionFunctions
 			var myClass:Dynamic = Type.resolveClass(classVar);
 			if(myClass == null)
 			{
-				FunkinLua.luaTrace('getPropertyFromClass: Class $classVar not found', false, false, FlxColor.RED);
+				FunkinLua.luaTrace('setPropertyFromClass: Class $classVar not found', false, false, FlxColor.RED);
 				return null;
 			}
 
@@ -102,7 +102,7 @@ class ReflectionFunctions
 			FunkinLua.luaTrace('getPropertyFromGroup: Group/Array $group doesn\'t exist!', false, false, FlxColor.RED);
 			return null;
 		});
-		Lua_helper.add_callback(lua, "setPropertyFromGroup", function(group:String, index:Int, variable:Dynamic, value:Dynamic, ?allowMaps:Bool = false) {
+		Lua_helper.add_callback(lua, "setPropertyFromGroup", function(group:String, index:Int, variable:Dynamic, value:Dynamic, ?allowMaps:Bool = false, ?allowInstances:Bool = false) {
 			var split:Array<String> = group.split('.');
 			var realObject:Dynamic = null;
 			if(split.length > 1)
@@ -120,14 +120,14 @@ class ReflectionFunctions
 						{
 							if(Type.typeof(variable) == ValueType.TInt)
 							{
-								leArray[variable] = value;
+								leArray[variable] = allowInstances ? parseSingleInstance(value) : value;
 								return value;
 							}
-							LuaUtils.setGroupStuff(leArray, variable, value, allowMaps);
+							LuaUtils.setGroupStuff(leArray, variable, allowInstances ? parseSingleInstance(value) : value, allowMaps);
 						}
 
 					default: //Is Group
-						LuaUtils.setGroupStuff(realObject.members[index], variable, value, allowMaps);
+						LuaUtils.setGroupStuff(realObject.members[index], variable, allowInstances ? parseSingleInstance(value) : value, allowMaps);
 				}
 			}
 			else FunkinLua.luaTrace('setPropertyFromGroup: Group/Array $group doesn\'t exist!', false, false, FlxColor.RED);
@@ -183,17 +183,17 @@ class ReflectionFunctions
 			switch(Type.typeof(groupOrArray))
 			{
 				case TClass(Array): //Is Array
-					if(obj == null) obj = groupOrArray.members[index];
-					groupOrArray.remove(obj, true);
-					if(destroy) obj.destroy();
-
-				default: //Is Group
 					if(obj != null)
 					{
 						groupOrArray.remove(obj);
 						if(destroy) obj.destroy();
 					}
 					else groupOrArray.remove(groupOrArray[index]);
+
+				default: //Is Group
+					if(obj == null) obj = groupOrArray.members[index];
+					groupOrArray.remove(obj, true);
+					if(destroy) obj.destroy();
 			}
 		});
 		
@@ -227,7 +227,7 @@ class ReflectionFunctions
 		
 				if(myType == null)
 				{
-					FunkinLua.luaTrace('createInstance: Variable $variableToSave is already being used and cannot be replaced!', false, false, FlxColor.RED);
+					FunkinLua.luaTrace('createInstance: Class $className not found', false, false, FlxColor.RED);
 					return false;
 				}
 
@@ -289,8 +289,8 @@ class ReflectionFunctions
 				//trace('Op1: $argStr');
 				var lastIndex:Int = argStr.lastIndexOf('::');
 
-				var split:Array<String> = argStr.split('.');
-				arg = (lastIndex > -1) ? Type.resolveClass(arg.substring(0, lastIndex)) : PlayState.instance;
+				var split:Array<String> = (lastIndex > -1) ? argStr.substring(0, lastIndex).split('.') : argStr.split('.');
+				arg = (lastIndex > -1) ? Type.resolveClass(argStr.substring(lastIndex+2)) : PlayState.instance;
 				for (j in 0...split.length)
 				{
 					//trace('Op2: ${Type.getClass(args[i])}, ${split[j]}');

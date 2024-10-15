@@ -38,11 +38,11 @@ class HScript extends Iris
 		}
 		else
 		{
-			hs.varsToBring = varsToBring;
 			try
 			{
 				if(hs.scriptCode != code) hs.expr = null; //? Force regenerate expression if the code changes
 				hs.scriptCode = code;
+				hs.varsToBring = varsToBring;
 				hs.execute();
 			}
 			catch(e:Dynamic)
@@ -93,8 +93,9 @@ class HScript extends Iris
 		this.scriptCode = scriptThing;
 
 		preset();
-		execute();
 		this.varsToBring = varsToBring;
+
+		execute();
 	}
 
 	var varsToBring(default, set):Any = null;
@@ -265,7 +266,7 @@ class HScript extends Iris
 		{
 			if(funk == null) funk = parentLua;
 			
-			if(parentLua != null) funk.addLocalCallback(name, func);
+			if(funk != null) funk.addLocalCallback(name, func);
 			else FunkinLua.luaTrace('createCallback ($name): 3rd argument is null', false, false, FlxColor.RED);
 		});
 		#end
