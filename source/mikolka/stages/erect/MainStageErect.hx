@@ -13,13 +13,11 @@ class MainStageErect extends PicoCapableStage {
 		var bg:BGSprite = new BGSprite('erect/backDark', 729, -170);
 		add(bg);
 
-        peeps = new BGSprite(null, 560, 290,0.8,0.8);
-        peeps.frames = Paths.getSparrowAtlas('erect/crowd');
-        peeps.animation.addByPrefix("idle","Symbol 2 instance 1",12);
-        add(peeps);
-        
-
         if(!VsliceOptions.LOW_QUALITY) {
+            peeps = new BGSprite('erect/crowd', 560, 290,0.8,0.8,["Symbol 2 instance 10"],true);
+            peeps.animation.curAnim.frameRate = 12;
+            add(peeps);
+
             var lightSmol = new BGSprite('erect/brightLightSmall',967, -103,1.2,1.2);
             lightSmol.blend = BlendMode.ADD;
             add(lightSmol);
@@ -56,10 +54,14 @@ class MainStageErect extends PicoCapableStage {
 	}
     override function createPost() {
         super.createPost();
-        gf.shader = makeCoolShader(-9,0,-30,-4);
-        dad.shader = makeCoolShader(-32,0,-33,-23);
-        boyfriend.shader = makeCoolShader(12,0,-23,7);
-        peeps.animation.play("idle");
+        if(VsliceOptions.SHADERS){
+            gf.shader = makeCoolShader(-9,0,-30,-4);
+            dad.shader = makeCoolShader(-32,0,-33,-23);
+            boyfriend.shader = makeCoolShader(12,0,-23,7);
+        }
+    }
+    override function startCountdown():Bool {
+        return super.startCountdown();
     }
     function makeCoolShader(hue:Float,sat:Float,bright:Float,contrast:Float) {
         var coolShader = new AdjustColorShader();

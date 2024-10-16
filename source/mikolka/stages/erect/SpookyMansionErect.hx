@@ -33,7 +33,7 @@ class SpookyMansionErect extends PicoCapableStage
 		stairsLight = new BGSprite('erect/stairsLight', 966, -225);
 		stairsLight.alpha = 0;
 
-		halloweenWindow = new BGSprite('erect/bgtrees', 200, 50, 0.8, 0.8, ["bgtrees0"]);
+		halloweenWindow = new BGSprite('erect/bgtrees', 200, 50, 0.8, 0.8, ["bgtrees0"],true);
 		
 
 		add(halloweenWindow);
@@ -48,12 +48,14 @@ class SpookyMansionErect extends PicoCapableStage
 	override function createPost()
 	{
 		super.createPost();
-		shader = new shaders.RainShader();
-		shader.scale = FlxG.height / 200 * 2;
-		shader.intensity = 0.4;
-		shader.spriteMode = true;
+		if(VsliceOptions.SHADERS){
+			shader = new shaders.RainShader();
+			shader.scale = FlxG.height / 200 * 2;
+			shader.intensity = 0.4;
+			shader.spriteMode = true;
+			halloweenWindow.shader = shader;
+		}
 
-		halloweenWindow.shader = shader;
 
 		halloweenWindow.animation.play("bgtrees0");
         if (!VsliceOptions.LOW_QUALITY) makeChars();
@@ -62,8 +64,10 @@ class SpookyMansionErect extends PicoCapableStage
 	}
 
 	override function update(elapsed:Float) {
+		if(VsliceOptions.SHADERS){
 		shader?.updateFrameInfo(halloweenWindow.frame);
 		shader?.update(elapsed);
+		}
 		super.update(elapsed);
 	}
 	var lightningStrikeBeat:Int = 0;
@@ -72,6 +76,7 @@ class SpookyMansionErect extends PicoCapableStage
 	override function beatHit()
 	{
 		super.beatHit();
+		if(VsliceOptions.LOW_QUALITY) return;
 		if (FlxG.random.bool(10) && curBeat > lightningStrikeBeat + lightningOffset)
 		{
 			lightningStrikeShit(); 
@@ -86,17 +91,17 @@ class SpookyMansionErect extends PicoCapableStage
 	}
     override function goodNoteHit(note:Note) {
         var anims = [ "singLEFT","singDOWN","singUP","singRIGHT"];
-	    boyfriendGhost.playAnim(anims[note.noteData],true);
+	    boyfriendGhost?.playAnim(anims[note.noteData],true);
 		super.goodNoteHit(note);
     }
     override function noteMiss(note:Note) {
         var anims = [ "singLEFT","singDOWN","singUP","singRIGHT"];
-	    boyfriendGhost.playAnim(anims[note.noteData]+"miss",true);
+	    boyfriendGhost?.playAnim(anims[note.noteData]+"miss",true);
 		super.noteMiss(note);
     }
     override function opponentNoteHit(note:Note) {
         var anims = [ "singLEFT","singDOWN","singUP","singRIGHT"];
-	    dadGhost.playAnim(anims[note.noteData],true);
+	    dadGhost?.playAnim(anims[note.noteData],true);
     }
 	override function eventCalled(eventName:String, value1:String, value2:String, flValue1:Null<Float>, flValue2:Null<Float>, strumTime:Float) {		
 		switch (eventName){
@@ -126,8 +131,6 @@ class SpookyMansionErect extends PicoCapableStage
 	function lightningStrikeShit():Void
 	{
 		FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2));
-		if (!VsliceOptions.LOW_QUALITY)
-		{
 			FlxTimer.wait(0.06, () ->
 			{
 				halloweenBGLight.alpha = 0;
@@ -174,7 +177,6 @@ class SpookyMansionErect extends PicoCapableStage
 					FlxTween.tween(dad, {alpha: 1}, 1.5);
 				}
 			});
-		}
 
 		lightningStrikeBeat = curBeat;
 		lightningOffset = FlxG.random.int(8, 24);

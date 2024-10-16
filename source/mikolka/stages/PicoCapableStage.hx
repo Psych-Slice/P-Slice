@@ -189,7 +189,7 @@ class PicoCapableStage extends BaseStage {
 
 
     public static function playPicoDeath(state:GameOverSubstate) {
-        if(GameOverSubstate.characterName == 'pico-dead')
+        if(['pico-dead','pico-christmas-dead'].contains(GameOverSubstate.characterName))
             {
                 var overlay = new FlxSprite(state.boyfriend.x + 205, state.boyfriend.y - 80);
                 overlay.frames = Paths.getSparrowAtlas('Pico_Death_Retry');

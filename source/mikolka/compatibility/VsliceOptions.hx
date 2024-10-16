@@ -25,6 +25,10 @@ class VsliceOptions {
     public static function get_FP_CARDS():Bool {
         return ClientPrefs.data.vsliceSpecialCards;
     }
+    public static var SHADERS(get,never):Bool;    
+    public static function get_SHADERS():Bool {
+        return ClientPrefs.data.shaders;
+    }
     public static var LAST_MOD(get,set):CharSave; //format: "mod_dir||char_name"
     public static function get_LAST_MOD():CharSave {
         var shards = ClientPrefs.data.lastFreeplayMod.split('||');
