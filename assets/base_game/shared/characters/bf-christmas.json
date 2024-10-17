@@ -109,7 +109,21 @@
 			"anim": "hey",
 			"indices": [],
 			"name": "BF HEY"
-		}
+		},
+		{
+			"anim": "singDOWN-alt",
+			"name": "bf swear down",
+			"loop": false,
+			"fps": 24,
+			"offsets": [-10, -50]
+		  },
+		  {
+			"anim": "singRIGHT-alt",
+			"name": "bf swear right",
+			"loop": false,
+			"fps": 24,
+			"offsets": [-38, -7]
+		  }
 	],
 	"no_antialiasing": false,
 	"image": "characters/bfChristmas",
