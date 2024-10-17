@@ -55,15 +55,17 @@ class MallXmasErect extends PicoCapableStage
 	}
 	override function createPost() {
 		super.createPost();
-		var colorShader = new AdjustColorShader();
-		colorShader.hue = 5;
-		colorShader.saturation = 20;
+		if(VsliceOptions.SHADERS){
+			var colorShader = new AdjustColorShader();
+			colorShader.hue = 5;
+			colorShader.saturation = 20;
 
-		boyfriend.shader = colorShader;
-		gf.shader = colorShader;
-		dad.shader = colorShader;
-		santa.shader = colorShader;
-
+			boyfriend.shader = colorShader;
+			gf.shader = colorShader;
+			dad.shader = colorShader;
+			santa.shader = colorShader;
+		}
+		
 		@:privateAccess
 		if(PicoCapableStage.NENE_LIST.contains(PlayState.SONG.gfVersion)) GameOverSubstate.characterName = 'pico-christmas-dead';
 	}

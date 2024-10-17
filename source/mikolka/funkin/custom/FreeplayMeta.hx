@@ -7,19 +7,15 @@ class FreeplayMetaJSON {
     public function new() {}
     public var songRating:Int = 0;
     public var freeplayPrevStart:Float = 0; // those are in seconds btw
-    public var freeplayPrevEnd:Float = 0.25;// and this too
-    public var freeplaySongLength:Float = 1;// and this too
+    public var freeplayPrevEnd:Float = 20;// and this too
+    public var freeplaySongLength:Float = 100;// and this too
     public var freeplayCharacter:String = "";
     public var albumId:String = "";
 }
 
 class FreeplayMeta {
     public static function getMeta(songId:String):FreeplayMetaJSON {
-        var meta_file:String = null;
-        try{
-            meta_file = Paths.getTextFromFile('data/${Paths.formatToSongPath(songId)}/metadata.json');
-        }
-        catch(_){}
+        var meta_file = Paths.getTextFromFile('data/${Paths.formatToSongPath(songId)}/metadata.json');
         if(meta_file != null){
             return getMetaFile(meta_file);
         }

@@ -1324,6 +1324,7 @@ class FreeplayState extends MusicBeatSubstate
 			wait: 0.1
 		});
 		add(transitionGradient);
+		changeDiff(0, true);
 		// FlxTween.tween(transitionGradient, {alpha: 0}, 1, {ease: FlxEase.circIn});
 		// for (index => capsule in grpCapsules.members)
 		// {

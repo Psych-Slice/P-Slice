@@ -52,12 +52,13 @@ class LimoRideErect extends BaseStage{
         star = new BGSprite('limo/erect/shooting star',200,0,1,1,['shooting star']);
         star.blend = BlendMode.ADD;
         add(star);
-
+		if(VsliceOptions.SHADERS) {
         colorShader = new AdjustColorShader();
         colorShader.hue = -30;
 		  colorShader.saturation = -20;
 		  colorShader.contrast = 0;
 		  colorShader.brightness = -30;
+		}
         
 		if(!VsliceOptions.LOW_QUALITY) {
             makeMists();
@@ -176,10 +177,12 @@ function makeMists() {
 		
         //add(mist2);
         //add(mist1);
+		if(VsliceOptions.SHADERS) {
 		grpLimoDancers.forEach(s -> s.shader = colorShader);
         gf.shader = colorShader;
         dad.shader = colorShader;
         boyfriend.shader = colorShader;
+		}
 	}
 
 	var limoSpeed:Float = 0;
