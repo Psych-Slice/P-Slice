@@ -1031,6 +1031,10 @@ class FunkinLua {
 				setGroupStuff(realObject.members[index], variable, value);
 				return;
 			}
+			else if(realObject == null){
+				luaTrace("setPropertyFromGroup: Object "+ obj +" doesn't exist!", false, false, FlxColor.RED);
+				return;
+			}
 
 			var leArray:Dynamic = realObject[index];
 			if(leArray != null) {

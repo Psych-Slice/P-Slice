@@ -14,6 +14,7 @@ import openfl.events.Event;
 import openfl.display.StageScaleMode;
 
 import mikolka.vslice.components.ALSoftConfig; // Make sure to include this on compile!
+import vlc.MP4Handler;
 //crash handler stuff
 #if CRASH_HANDLER
 import lime.app.Application;
