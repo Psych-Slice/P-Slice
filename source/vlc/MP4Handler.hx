@@ -1,7 +1,6 @@
 package vlc;
 
 import hxcodec.flixel.FlxVideoSprite;
-import hxcodec.vlc.LibVLC;
 
 class MP4Handler extends FlxVideoSprite {
     public function new() {
@@ -15,7 +14,7 @@ class MP4Handler extends FlxVideoSprite {
     }
     var finishCallback(never,set):Void->Void;
     function set_finishCallback(value:Void->Void) {
-        
+        bitmap.onEndReached.add(value);
         return value;
     }
 }

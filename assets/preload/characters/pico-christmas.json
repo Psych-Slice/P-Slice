@@ -25,6 +25,22 @@
 			"name": "Pico Down Note xmas0"
 		},
 		{
+			"offsets": [21, 27],
+			"loop": false,
+			"fps": 24,
+			"anim": "singUP-alt",
+			"indices": [],
+			"name": "pico Up note xmas0"
+		},
+		{
+			"offsets": [84, -80],
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWN-alt",
+			"indices": [],
+			"name": "Pico Down Note xmas0"
+		},
+		{
 			"offsets": [80, -38],
 			"loop": false,
 			"fps": 24,

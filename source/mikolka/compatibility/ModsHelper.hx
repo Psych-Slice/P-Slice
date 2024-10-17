@@ -46,6 +46,7 @@ class ModsHelper {
 	public static function clearStoredWithoutStickers() {
 		@:privateAccess
 		var cache = FlxG.bitmap._cache;
+		Paths.currentTrackedAssets.clear();
 		for (key => val in cache){
 		if(key.toLowerCase().contains("transitionswag") || key.contains("bg_graphic_")) Paths.currentTrackedAssets.set(key,val);
 		}

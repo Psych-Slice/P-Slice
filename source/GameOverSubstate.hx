@@ -1,5 +1,6 @@
 package;
 
+import mikolka.stages.PicoCapableStage;
 import substates.StickerSubState;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -42,6 +43,9 @@ class GameOverSubstate extends MusicBeatSubstate
 		instance = this;
 		PlayState.instance.callOnLuas('onGameOverStart', []);
 
+		//? pico code
+		PicoCapableStage.playPicoDeath(this);
+		
 		super.create();
 	}
 
