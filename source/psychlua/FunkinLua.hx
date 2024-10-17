@@ -980,6 +980,10 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "playAnim", function(obj:String, name:String, ?forced:Bool = false, ?reverse:Bool = false, ?startFrame:Int = 0)
 		{
 			var obj:Dynamic = LuaUtils.getObjectDirectly(obj);
+			if(obj == null) {
+				luaTrace('playAnim: Target not found! Are you sure that "$obj" exists?: ' + obj, false, false, FlxColor.RED);
+				return false;
+			}
 			if(obj.playAnim != null)
 			{
 				obj.playAnim(name, forced, reverse, startFrame);

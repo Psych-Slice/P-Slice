@@ -21,10 +21,9 @@ import mikolka.compatibility.FunkinPath as Paths;
  
          difficultyId = diffId;
          var tex:FlxGraphic = null;
-         if(["easy", "normal", "hard", "erect", "nightmare"].contains(difficultyId)){
-             tex = Paths.noGpuImage('freeplay/freeplay' + diffId);
-         }
-         else{
+         tex = Paths.noGpuImage('freeplay/freeplayDifficulties/freeplay' + diffId);
+
+         if(tex == null){
              tex = Paths.noGpuImage('menudifficulties/' + diffId);
          }
          hasValidTexture = (tex != null);

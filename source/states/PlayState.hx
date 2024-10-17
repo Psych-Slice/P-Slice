@@ -274,6 +274,7 @@ class PlayState extends MusicBeatState
 	{
 		this.variables = new JoinedLuaVariables();
 		//trace('Playback Rate: ' + playbackRate);
+		Paths.clearUnusedMemory();
 		Paths.clearStoredMemory();
 		if(nextReloadAll)
 		{

@@ -99,8 +99,8 @@ class FunkinSound extends FlxSound
 				future.future.onComplete(function(sound:Sound)
 					{
 						@:privateAccess{
+							if(!Std.isOfType(FlxG.state.subState,FreeplayState)) return;
 							var fp = cast (FlxG.state.subState,FreeplayState);
-							if(fp == null) return;
 
 							var cap = fp.grpCapsules.members[fp.curSelected];
 							if(cap.songData == null || cap.songData.songId != key || fp.busy) return;
