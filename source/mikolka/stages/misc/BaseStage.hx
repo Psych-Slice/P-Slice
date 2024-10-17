@@ -45,7 +45,7 @@ class BaseStage extends FlxBasic
 	public var camOther(get, never):FlxCamera;
 
 	public var defaultCamZoom(get, set):Float;
-	public var camFollow(get, never):FlxObject;
+	public var camFollow(get, never):FlxPoint;
 
 	public function new()
 	{
@@ -133,7 +133,7 @@ class BaseStage extends FlxBasic
 	//function moveCameraSection() if(onPlayState) PlayState.instance.moveCameraSection();
 	function moveCamera(isDad:Bool) if(onPlayState) PlayState.instance.moveCamera(isDad);
 	inline private function get_paused() return game.paused;
-	inline private function get_songName() return game.songName;
+	inline private function get_songName() return Paths.formatToSongPath(PlayState.SONG.song);
 	inline private function get_isStoryMode() return PlayState.isStoryMode;
 	inline private function get_seenCutscene() return PlayState.seenCutscene;
 	inline private function get_inCutscene() return game.inCutscene;
@@ -142,6 +142,7 @@ class BaseStage extends FlxBasic
 		game.inCutscene = value;
 		return value;
 	}
+	
 	inline private function get_canPause() return game.canPause;
 	inline private function set_canPause(value:Bool)
 	{
@@ -176,5 +177,5 @@ class BaseStage extends FlxBasic
 		game.defaultCamZoom = value;
 		return game.defaultCamZoom;
 	}
-	inline private function get_camFollow():FlxObject return game.camFollow;
+	inline private function get_camFollow():FlxPoint return PlayState.instance.camFollow;
 }

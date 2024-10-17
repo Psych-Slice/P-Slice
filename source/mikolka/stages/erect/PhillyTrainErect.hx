@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import shaders.AdjustColorShader;
 import mikolka.compatibility.VsliceOptions;
 
 class PhillyTrainErect extends PicoCapableStage
@@ -47,7 +48,21 @@ class PhillyTrainErect extends PicoCapableStage
 		phillyStreet = new BGSprite('philly/erect/street', -40, 50);
 		add(phillyStreet);
 	}
+	override function createPost() {
+		super.createPost();
+		if(VsliceOptions.SHADERS){
+			var colorShader = new AdjustColorShader();
+			colorShader.hue = -26;
+			colorShader.saturation = -16;
+			colorShader.contrast = 0;
+			colorShader.brightness = -5;
 
+			boyfriend.shader = colorShader;
+			dad.shader = colorShader;
+			gf.shader = colorShader;
+			phillyTrain.shader = colorShader;
+		}
+	}
 	override function update(elapsed:Float)
 	{
 		phillyWindow.alpha -= (Conductor.crochet / 1000) * FlxG.elapsed * 1.5;
