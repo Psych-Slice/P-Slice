@@ -1,8 +1,11 @@
 package mikolka.stages;
 
+import mikolka.compatibility.VsliceOptions;
 #if !LEGACY_PSYCH 
 import objects.Note;
 import substates.GameOverSubstate;
+#else
+using mikolka.stages.misc.CharUtills;
 #end
 
 enum NeneState
@@ -195,7 +198,7 @@ class PicoCapableStage extends BaseStage {
                 overlay.frames = Paths.getSparrowAtlas('Pico_Death_Retry');
                 overlay.animation.addByPrefix('deathLoop', 'Retry Text Loop', 24, true);
                 overlay.animation.addByPrefix('deathConfirm', 'Retry Text Confirm', 24, false);
-                overlay.antialiasing = ClientPrefs.data.antialiasing;
+                overlay.antialiasing = VsliceOptions.ANTIALIASING;
                 @:privateAccess{
                     state.overlay = overlay;
                     state.overlayConfirmOffsets.set(250, 200);
@@ -224,7 +227,7 @@ class PicoCapableStage extends BaseStage {
                     var neneKnife:FlxSprite = new FlxSprite(state.boyfriend.x - 450, state.boyfriend.y - 250);
                     neneKnife.frames = Paths.getSparrowAtlas('NeneKnifeToss');
                     neneKnife.animation.addByPrefix('anim', 'knife toss', 24, false);
-                    neneKnife.antialiasing = ClientPrefs.data.antialiasing;
+                    neneKnife.antialiasing = VsliceOptions.ANTIALIASING;
                     neneKnife.animation.finishCallback = function(_)
                     {
                         state.remove(neneKnife);
