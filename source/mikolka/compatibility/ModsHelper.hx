@@ -17,10 +17,7 @@ class ModsHelper {
 		return getEnabledMods().filter(s ->FileSystem.exists(Paths.mods(s)+'/registry/players'));
 	}
 	public inline static function loadabsoluteGraphic(path:String):FlxGraphic {
-		if(!Paths.currentTrackedAssets.exists(path)) {
-			Paths.currentTrackedAssets.set(path,FlxGraphic.fromBitmapData(BitmapData.fromFile(path)));
-		}
-		return Paths.currentTrackedAssets.get(path);
+		return FlxGraphic.fromBitmapData(BitmapData.fromFile(path)); //! I hate this, but at least it doesn't crash
 	}
 	private static function getEnabledMods(){
 		var folders = [];
