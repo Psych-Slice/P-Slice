@@ -309,7 +309,7 @@ class FreeplayState extends MusicBeatSubstate
 		FlxTransitionableState.skipNextTransIn = true;
 
 		var fadeShaderFilter:ShaderFilter = new ShaderFilter(fadeShader);
-		funnyCam.filters = [fadeShaderFilter];
+		funnyCam.setFilters([fadeShaderFilter]);
 
 		if (stickerSubState != null)
 		{
