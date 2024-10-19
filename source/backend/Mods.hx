@@ -129,7 +129,7 @@ class Mods
 					folder = Paths.findFile(fileToFind);
 					if(folder != null){
 						if(FileSystem.isDirectory(folder)) folder += '/';
-						if(!foldersToCheck.contains(folder)) foldersToCheck.push(folder);
+						if(FileSystem.exists(folder) &&!foldersToCheck.contains(folder)) foldersToCheck.push(folder);
 					}
 				}
 				#end

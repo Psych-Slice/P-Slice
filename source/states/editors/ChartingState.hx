@@ -1757,8 +1757,12 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	function loadMetadata() {
 		var songMetadata = FreeplayMeta.getMeta(PlayState.SONG.song);
 		ratingInput.value = songMetadata.songRating;
-		prevStartInput.value = songMetadata.freeplayPrevStart;
-		prevEndInput.value = songMetadata.freeplayPrevEnd;
+		prevStartInput.value = FlxMath.remapToRange(songMetadata.freeplayPrevStart,
+			0,songMetadata.freeplaySongLength,
+			0,FlxG.sound.music.length/1000);
+		prevEndInput.value = FlxMath.remapToRange(songMetadata.freeplayPrevEnd,
+			0,songMetadata.freeplaySongLength,
+			0,FlxG.sound.music.length/1000);
 		characterName.text = songMetadata.freeplayCharacter;
 		albumName.text = songMetadata.albumId;
 	}

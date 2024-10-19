@@ -309,7 +309,7 @@ class FreeplayState extends MusicBeatSubstate
 		FlxTransitionableState.skipNextTransIn = true;
 
 		var fadeShaderFilter:ShaderFilter = new ShaderFilter(fadeShader);
-		funnyCam.filters = [fadeShaderFilter];
+		ModsHelper.setFiltersOnCam(funnyCam,[fadeShaderFilter]);
 
 		if (stickerSubState != null)
 		{
@@ -376,6 +376,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		if (currentCharacter?.getFreeplayDJData() != null)
 		{
+			ModsHelper.loadModDir(VsliceOptions.LAST_MOD.mod_dir); //? make sure to load a mod dir of this character!
 			dj = new FreeplayDJ(640, 366, currentCharacter);
 			exitMovers.set([dj], {
 				x: -dj.width * 1.6,
@@ -455,6 +456,7 @@ class FreeplayState extends MusicBeatSubstate
 			diffSprite.difficultyId = diffId;
 			grpDifficulties.add(diffSprite);
 		}
+		ModsHelper.loadModDir(VsliceOptions.LAST_MOD.mod_dir); //? load stuff for this Char's mod
 
 		grpDifficulties.group.forEach(function(spr)
 		{
