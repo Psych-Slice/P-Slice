@@ -309,7 +309,7 @@ class FreeplayState extends MusicBeatSubstate
 		FlxTransitionableState.skipNextTransIn = true;
 
 		var fadeShaderFilter:ShaderFilter = new ShaderFilter(fadeShader);
-		funnyCam.setFilters([fadeShaderFilter]);
+		ModsHelper.setFiltersOnCam(funnyCam,[fadeShaderFilter]);
 
 		if (stickerSubState != null)
 		{
@@ -376,6 +376,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		if (currentCharacter?.getFreeplayDJData() != null)
 		{
+			ModsHelper.loadModDir(VsliceOptions.LAST_MOD.mod_dir); //? make sure to load a mod dir of this character!
 			dj = new FreeplayDJ(640, 366, currentCharacter);
 			exitMovers.set([dj], {
 				x: -dj.width * 1.6,
@@ -417,7 +418,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		add(bgDad);
 		// ? changed offset
-		FlxTween.tween(blackOverlayBullshitLOLXD, {x: (backingCard.pinkBack.width * 0.74) - 37}, 0.7, {ease: FlxEase.quintOut});
+		FlxTween.tween(blackOverlayBullshitLOLXD, {x: (backingCard.pinkBack.width * 0.74)}, 0.7, {ease: FlxEase.quintOut});
 
 		blackOverlayBullshitLOLXD.shader = bgDad.shader;
 
@@ -455,6 +456,7 @@ class FreeplayState extends MusicBeatSubstate
 			diffSprite.difficultyId = diffId;
 			grpDifficulties.add(diffSprite);
 		}
+		ModsHelper.loadModDir(VsliceOptions.LAST_MOD.mod_dir); //? load stuff for this Char's mod
 
 		grpDifficulties.group.forEach(function(spr)
 		{
@@ -475,9 +477,11 @@ class FreeplayState extends MusicBeatSubstate
 		var overhangStuff:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 164, FlxColor.BLACK);
 		overhangStuff.y -= overhangStuff.height;
 
+		var black_X = 387.76;
+		// ? changed offsets
 		if (fromCharSelect == true)
 		{
-			blackOverlayBullshitLOLXD.x = 387.76;
+			blackOverlayBullshitLOLXD.x = black_X+220;
 			overhangStuff.y = -100;
 			backingCard?.skipIntroTween();
 		}
@@ -485,7 +489,8 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			albumRoll.applyExitMovers(exitMovers, exitMoversCharSel);
 			FlxTween.tween(overhangStuff, {y: -100}, 0.3, {ease: FlxEase.quartOut});
-			FlxTween.tween(blackOverlayBullshitLOLXD, {x: 387.76}, 0.7, {ease: FlxEase.quintOut});
+			var target = black_X-30;
+			FlxTween.tween(blackOverlayBullshitLOLXD, {x: target}, 0.7, {ease: FlxEase.quintOut});
 		}
 
 		var fnfFreeplay:FlxText = new FlxText(8, 8, 0, 'FREEPLAY', 48);

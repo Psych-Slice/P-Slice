@@ -929,8 +929,12 @@ function loadMetadata() {
 	prevStartInput.max = maxTime/1000;
 
 	ratingInput.value = songMetadata.songRating;
-	prevStartInput.value = (songMetadata.freeplayPrevStart);
-	prevEndInput.value = (songMetadata.freeplayPrevEnd);
+	prevStartInput.value = FlxMath.remapToRange(songMetadata.freeplayPrevStart,
+		0,songMetadata.freeplaySongLength,
+		0,FlxG.sound.music.length/1000);
+	prevEndInput.value = FlxMath.remapToRange(songMetadata.freeplayPrevEnd,
+		0,songMetadata.freeplaySongLength,
+		0,FlxG.sound.music.length/1000);
 	characterName.text = songMetadata.freeplayCharacter;
 	albumName.text = songMetadata.albumId;
 }
@@ -955,18 +959,23 @@ var ratingInput:FlxUINumericStepper;
 
 		tab_group.add(new FlxText(ratingInput.x, ratingInput.y - 15, 80, 'Rating:'));
 		tab_group.add(ratingInput);
-
+		blockPressWhileTypingOnStepper.push(ratingInput);
+		
 		tab_group.add(new FlxText(prevStartInput.x, prevStartInput.y - 15, 150, 'Song preview start:'));
 		tab_group.add(prevStartInput);
-
+		blockPressWhileTypingOnStepper.push(prevStartInput);
+		
 		tab_group.add(new FlxText(prevEndInput.x, prevEndInput.y - 15, 150, 'Song preview end:'));
 		tab_group.add(prevEndInput);
-
+		blockPressWhileTypingOnStepper.push(prevEndInput);
+		
 		tab_group.add(new FlxText(characterName.x, characterName.y - 15, 150, 'Player character:'));
 		tab_group.add(characterName);
-
+		blockPressWhileTypingOn.push(characterName);
+		
 		tab_group.add(new FlxText(albumName.x, albumName.y - 15, 150, 'Song album:'));
 		tab_group.add(albumName);
+		blockPressWhileTypingOn.push(albumName);
 
 		tab_group.add(exportMetadataBtn);
 

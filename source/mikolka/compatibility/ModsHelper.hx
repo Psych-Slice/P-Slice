@@ -1,5 +1,6 @@
 package mikolka.compatibility;
 
+import openfl.filters.BitmapFilter;
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
 import haxe.io.Path;
@@ -12,6 +13,9 @@ class ModsHelper {
 	}
     public inline static function loadModDir(directory:String) {
 		Paths.currentModDirectory = directory;
+	}
+	public inline static function getActiveMod():String {
+		return Paths.currentModDirectory;
 	}
 	public static function getModsWithPlayersRegistry():Array<String> {
 		return getEnabledMods().filter(s ->FileSystem.exists(Paths.mods(s)+'/registry/players'));
@@ -39,6 +43,10 @@ class ModsHelper {
 	public inline static function getSoundChannel(sound:FlxSound){
 		@:privateAccess
 		return sound._channel.__source;
+	}
+	public inline static function setFiltersOnCam(camera:FlxCamera,value:Array<BitmapFilter>){
+		camera.setFilters(value);
+		camera.filtersEnabled = true;
 	}
 	public static function clearStoredWithoutStickers() {
 		@:privateAccess

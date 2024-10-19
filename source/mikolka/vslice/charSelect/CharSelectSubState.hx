@@ -376,7 +376,7 @@ class CharSelectSubState extends MusicBeatSubState
     FlxG.camera.follow(camFollow, LOCKON);
 
     var fadeShaderFilter:ShaderFilter = new ShaderFilter(fadeShader);
-    FlxG.camera.setFilters([fadeShaderFilter]);
+    ModsHelper.setFiltersOnCam(FlxG.camera,[fadeShaderFilter]);
 
     // var temp:FlxSprite = new FlxSprite(); //? why was this a thing?
     // temp.loadGraphic(Paths.image('charSelect/placement'));
