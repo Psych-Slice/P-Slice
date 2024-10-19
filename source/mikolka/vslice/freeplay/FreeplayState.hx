@@ -418,7 +418,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		add(bgDad);
 		// ? changed offset
-		FlxTween.tween(blackOverlayBullshitLOLXD, {x: (backingCard.pinkBack.width * 0.74) - 37}, 0.7, {ease: FlxEase.quintOut});
+		FlxTween.tween(blackOverlayBullshitLOLXD, {x: (backingCard.pinkBack.width * 0.74)}, 0.7, {ease: FlxEase.quintOut});
 
 		blackOverlayBullshitLOLXD.shader = bgDad.shader;
 
@@ -477,9 +477,11 @@ class FreeplayState extends MusicBeatSubstate
 		var overhangStuff:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 164, FlxColor.BLACK);
 		overhangStuff.y -= overhangStuff.height;
 
+		var black_X = 387.76;
+		// ? changed offsets
 		if (fromCharSelect == true)
 		{
-			blackOverlayBullshitLOLXD.x = 387.76;
+			blackOverlayBullshitLOLXD.x = black_X+220;
 			overhangStuff.y = -100;
 			backingCard?.skipIntroTween();
 		}
@@ -487,7 +489,8 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			albumRoll.applyExitMovers(exitMovers, exitMoversCharSel);
 			FlxTween.tween(overhangStuff, {y: -100}, 0.3, {ease: FlxEase.quartOut});
-			FlxTween.tween(blackOverlayBullshitLOLXD, {x: 387.76}, 0.7, {ease: FlxEase.quintOut});
+			var target = black_X-30;
+			FlxTween.tween(blackOverlayBullshitLOLXD, {x: target}, 0.7, {ease: FlxEase.quintOut});
 		}
 
 		var fnfFreeplay:FlxText = new FlxText(8, 8, 0, 'FREEPLAY', 48);
