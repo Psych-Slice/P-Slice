@@ -100,16 +100,33 @@ class Hitbox extends MobileInputManager implements IMobileControls
 		hint.statusIndicatorType = NONE;
 		hint.loadGraphic(createHintGraphic(Width, Height));
 
+		hint.label = new FlxSprite();
+		hint.labelStatusDiff = (ClientPrefs.data.hitboxType != "Hidden") ? ClientPrefs.data.controlsAlpha : 0.00001;
+		hint.label.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035), true));
+		if (ClientPrefs.data.hitbox2)
+			hint.label.offset.y -= (hint.height - hint.label.height) / 2;
+		else
+			hint.label.offset.y += (hint.height - hint.label.height) / 2;
+
 		if (ClientPrefs.data.hitboxType != "Hidden")
 		{
 			var hintTween:FlxTween = null;
+			var hintLaneTween:FlxTween = null;
 
 			hint.onDown.callback = function()
 			{
 				if (hintTween != null)
 					hintTween.cancel();
 
+				if (hintLaneTween != null)
+					hintLaneTween.cancel();
+
 				hintTween = FlxTween.tween(hint, {alpha: ClientPrefs.data.controlsAlpha}, ClientPrefs.data.controlsAlpha / 100, {
+					ease: FlxEase.circInOut,
+					onComplete: (twn:FlxTween) -> hintTween = null
+				});
+
+				hintLaneTween = FlxTween.tween(hint.label, {alpha: 0.00001}, ClientPrefs.data.controlsAlpha / 10, {
 					ease: FlxEase.circInOut,
 					onComplete: (twn:FlxTween) -> hintTween = null
 				});
@@ -120,7 +137,15 @@ class Hitbox extends MobileInputManager implements IMobileControls
 				if (hintTween != null)
 					hintTween.cancel();
 
+				if (hintLaneTween != null)
+					hintLaneTween.cancel();
+
 				hintTween = FlxTween.tween(hint, {alpha: 0.00001}, ClientPrefs.data.controlsAlpha / 10, {
+					ease: FlxEase.circInOut,
+					onComplete: (twn:FlxTween) -> hintTween = null
+				});
+
+				hintLaneTween = FlxTween.tween(hint.label, {alpha: ClientPrefs.data.controlsAlpha}, ClientPrefs.data.controlsAlpha / 100, {
 					ease: FlxEase.circInOut,
 					onComplete: (twn:FlxTween) -> hintTween = null
 				});
@@ -130,7 +155,9 @@ class Hitbox extends MobileInputManager implements IMobileControls
 		hint.immovable = hint.multiTouch = true;
 		hint.solid = hint.moves = false;
 		hint.alpha = 0.00001;
-		hint.antialiasing = ClientPrefs.data.antialiasing;
+		hint.label.alpha = (ClientPrefs.data.hitboxType != "Hidden") ? ClientPrefs.data.controlsAlpha : 0.00001;
+		hint.canChangeLabelAlpha = false;
+		hint.label.antialiasing = hint.antialiasing = ClientPrefs.data.antialiasing;
 		hint.color = Color;
 		#if FLX_DEBUG
 		hint.ignoreDrawDebug = true;
@@ -138,7 +165,7 @@ class Hitbox extends MobileInputManager implements IMobileControls
 		return hint;
 	}
 
-	function createHintGraphic(Width:Int, Height:Int):FlxGraphic
+	function createHintGraphic(Width:Int, Height:Int, ?isLane:Bool = false):FlxGraphic
 	{
 		var shape:Shape = new Shape();
 		shape.graphics.beginFill(0xFFFFFF);
@@ -148,7 +175,10 @@ class Hitbox extends MobileInputManager implements IMobileControls
 			var matrix:Matrix = new Matrix();
 			matrix.createGradientBox(Width, Height, 0, 0, 0);
 
-			shape.graphics.beginGradientFill(RADIAL, [0xFFFFFF, 0xFFFFFF], [0, 1], [60, 255], matrix, PAD, RGB, 0);
+			if (isLane)
+				shape.graphics.beginFill(0xFFFFFF);
+			else
+				shape.graphics.beginGradientFill(RADIAL, [0xFFFFFF, 0xFFFFFF], [0, 1], [60, 255], matrix, PAD, RGB, 0);
 			shape.graphics.drawRect(0, 0, Width, Height);
 			shape.graphics.endFill();
 		}
@@ -165,7 +195,10 @@ class Hitbox extends MobileInputManager implements IMobileControls
 			shape.graphics.lineStyle(0, 0, 0);
 			shape.graphics.drawRect(3, 3, Width - 6, Height - 6);
 			shape.graphics.endFill();
-			shape.graphics.beginGradientFill(RADIAL, [0xFFFFFF, FlxColor.TRANSPARENT], [1, 0], [0, 255], null, null, null, 0.5);
+			if (isLane)
+				shape.graphics.beginFill(0xFFFFFF);
+			else
+				shape.graphics.beginGradientFill(RADIAL, [0xFFFFFF, FlxColor.TRANSPARENT], [1, 0], [0, 255], null, null, null, 0.5);
 			shape.graphics.drawRect(3, 3, Width - 6, Height - 6);
 			shape.graphics.endFill();
 		}

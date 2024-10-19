@@ -42,7 +42,7 @@ class CopyState extends MusicBeatState
 			return;
 		}
 
-		#if (!ios || !iphoneos || !iphonesim)
+		#if android
 		CoolUtil.showPopUp("Seems like you have some missing files that are necessary to run the game\nPress OK to begin the copy process", "Notice!");
 		#end
 
@@ -83,7 +83,7 @@ class CopyState extends MusicBeatState
 			{
 				if (failedFiles.length > 0)
 				{
-					#if (!ios || !iphoneos || !iphonesim)
+					#if android
 					CoolUtil.showPopUp(failedFiles.join('\n'), 'Failed To Copy ${failedFiles.length} File.');
 					#end
 					if (!FileSystem.exists('logs'))

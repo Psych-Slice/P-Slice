@@ -171,6 +171,8 @@ class TypedTouchButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 	 */
 	var currentInput:IFlxInput;
 
+	public var canChangeLabelAlpha:Bool = true;
+
 	/**
 	 * Creates a new `FlxTypedButton` object with a gray background.
 	 *
@@ -430,7 +432,7 @@ class TypedTouchButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 	override function set_alpha(Value:Float):Float
 	{
 		super.set_alpha(Value);
-		if (_spriteLabel != null)
+		if (_spriteLabel != null && canChangeLabelAlpha)
 			_spriteLabel.alpha = alpha == 0 ? 0 : alpha + labelStatusDiff;
 		return Value;
 	}
