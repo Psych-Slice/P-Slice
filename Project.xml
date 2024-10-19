@@ -65,7 +65,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- __________________________ Game Assets & Etc. __________________________ -->
 	
 	<!-- Turn on Crash Handler -->
-	<define name="CRASH_HANDLER" if="desktop release" />
+	<define name="CRASH_HANDLER" if="desktop" unless="debug" />
 
 	<!--FNF is changing openAL config, because the default one is broken. lol. -->
 	<assets path="assets/alsoft.conf" unless="windows" />
