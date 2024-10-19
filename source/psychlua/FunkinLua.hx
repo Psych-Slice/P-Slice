@@ -46,6 +46,8 @@ import mobile.psychlua.Functions;
 
 import mikolka.vslice.freeplay.FreeplayState;
 
+import mikolka.vslice.freeplay.FreeplayState;
+
 class FunkinLua {
 	public var lua:State = null;
 	public var camTarget:FlxCamera;
