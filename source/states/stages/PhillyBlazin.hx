@@ -1,5 +1,6 @@
 package states.stages;
 
+import mikolka.stages.PicoCapableStage;
 import openfl.filters.ShaderFilter;
 import shaders.RainShader;
 
@@ -10,7 +11,7 @@ import substates.GameOverSubstate;
 import states.stages.objects.*;
 import objects.Note;
 
-class PhillyBlazin extends BaseStage
+class PhillyBlazin extends PicoCapableStage
 {
 	var rainShader:RainShader;
 	var rainTimeScale:Float = 1;
@@ -22,8 +23,6 @@ class PhillyBlazin extends BaseStage
 	var additionalLighten:FlxSprite;
 	
 	var lightningTimer:Float = 3.0;
-
-	var abot:ABotSpeaker;
 
 	override function create()
 	{
@@ -74,9 +73,6 @@ class PhillyBlazin extends BaseStage
 			additionalLighten.visible = false;
 			add(additionalLighten);
 		}
-
-		abot = new ABotSpeaker(gfGroup.x, gfGroup.y + 550);
-		add(abot);
 		
 		if(ClientPrefs.data.shaders)
 			setupRainShader();
@@ -89,6 +85,8 @@ class PhillyBlazin extends BaseStage
 		GameOverSubstate.deathDelay = 0.15;
 
 		setDefaultGF('nene');
+		gfGroup.y += 200;
+		gfGroup.x += 50;
 		precache();
 		
 		if (isStoryMode)
@@ -112,6 +110,7 @@ class PhillyBlazin extends BaseStage
 	
 	override function createPost()
 	{
+		super.createPost();
 		FlxG.camera.focusOn(camFollow.getPosition());
 		FlxG.camera.fade(FlxColor.BLACK, 1.5, true, null, true);
 
@@ -148,11 +147,6 @@ class PhillyBlazin extends BaseStage
 	override function beatHit()
 	{
 		//if(curBeat % 2 == 0) abot.beatHit();
-	}
-	
-	override function startSong()
-	{
-		abot.snd = FlxG.sound.music;
 	}
 
 	function setupRainShader()

@@ -1,0 +1,23 @@
+{
+	"songs": [
+		["Bopeebo (Pico mix)", "dad", [146, 113, 253]],
+		["Fresh (Pico mix)", "dad", [146, 113, 253]],
+		["Dadbattle (Pico mix)", "dad", [146, 113, 253]]
+	],
+
+	"weekCharacters": [
+		"dad",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "stage",
+
+	"storyName": "Daddy Dearest",
+	"weekBefore": "tutorial",
+	"difficulties": "Easy,Normal,Hard",
+	"weekName": "Week 1",
+	"startUnlocked": true,
+
+	"hideStoryMode": true,
+	"hideFreeplay": false
+}

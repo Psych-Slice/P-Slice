@@ -24,6 +24,8 @@ import states.TitleState;
 	public var vibrating:Bool = false;
 
 	public var favSongIds:Array<String> = [];
+	public var lastFreeplayMod:String = '||bf';
+
 	public var downScroll:Bool = false;
 	public var middleScroll:Bool = false;
 	public var opponentStrums:Bool = true;
@@ -42,6 +44,7 @@ import states.TitleState;
 	public var hideHud:Bool = false;
 	public var vsliceFreeplayColors:Bool = true;
 	public var vsliceResults:Bool = true;
+	public var vsliceSpecialCards:Bool = true;
 	public var vsliceSmoothBar:Bool = true;
 	public var noteOffset:Int = 0;
 	public var arrowRGB:Array<Array<FlxColor>> = [
@@ -118,6 +121,7 @@ class ClientPrefs {
 		'favorite'		=> [F],
 		'bar_left'		=> [Q],
 		'bar_right'		=> [E],
+		'char_select'	=> [TAB],
 
 		'accept'		=> [SPACE, ENTER],
 		'back'			=> [BACKSPACE, ESCAPE],
@@ -146,6 +150,7 @@ class ClientPrefs {
 		'favorite'		=> [],
 		'bar_left'		=> [],
 		'bar_right'		=> [],
+		'char_select'		=> [],
 
 		'accept'		=> [A, START],
 		'back'			=> [B],
@@ -164,7 +169,7 @@ class ClientPrefs {
 		'ui_down'		=> [DOWN],
 		'ui_right'		=> [RIGHT],
 
-		'favorite'		=> [NONE],
+		'favorite'		=> [F],
 		'bar_left'		=> [NONE],
 		'bar_right'		=> [NONE],
 

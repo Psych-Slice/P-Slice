@@ -13,3 +13,11 @@ week3-erect
 week4-erect
 week5-erect
 week6-erect
+week7-erect
+week1-pico
+week2-pico
+week3-pico
+week4-pico
+week5-pico
+week6-pico
+week7-pico

@@ -39,7 +39,7 @@ class OptionsState extends MusicBeatState
 		switch(label)
 		{
 			case 'Note Colors':
-				openSubState(new options.NotesSubState());
+				openSubState(new options.NotesColorSubState());
 			case 'Controls':
 				if (controls.mobileC)
 				{

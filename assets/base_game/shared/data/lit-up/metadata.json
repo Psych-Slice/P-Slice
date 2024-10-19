@@ -1,5 +1,8 @@
 {
-	"freeplayPrevEnd": 0.25,
 	"songRating": 4,
-	"freeplayPrevStart": 0.05
+	"albumId": "volume3",
+	"freeplayCharacter": "pico",
+	"freeplaySongLength": 114.545458,
+	"freeplayPrevEnd": 20,
+	"freeplayPrevStart": 0
 }

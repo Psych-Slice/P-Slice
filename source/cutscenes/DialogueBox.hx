@@ -1,5 +1,6 @@
 package cutscenes;
 
+import substates.PauseSubState;
 import flixel.addons.text.FlxTypeText;
 import backend.Song;
 
@@ -23,9 +24,12 @@ class DialogueBox extends FlxSpriteGroup
 
 	var handSelect:FlxSprite;
 	var bgFade:FlxSprite;
-	var skipText:FlxText;
 
 	var songName:String = Paths.formatToSongPath(Song.loadedSongName);
+
+	var pauseJustClosed:Bool = false;
+	var staticDialList:Array<String> = [];
+
 	public function new(talkingRight:Bool = true, ?dialogueList:Array<String>)
 	{
 		super();
@@ -43,7 +47,7 @@ class DialogueBox extends FlxSpriteGroup
 		}, 5);
 
 		box = new FlxSprite(-20, 45);
-		
+
 		var hasDialog = true;
 		switch (songName)
 		{
@@ -68,10 +72,11 @@ class DialogueBox extends FlxSpriteGroup
 		}
 
 		this.dialogueList = dialogueList;
-		
+		this.staticDialList = dialogueList.copy();
+
 		if (!hasDialog)
 			return;
-		
+
 		portraitLeft = new FlxSprite(-20, 40);
 		portraitLeft.frames = Paths.getSparrowAtlas('weeb/senpaiPortrait');
 		portraitLeft.animation.addByPrefix('enter', 'Senpai Portrait Enter', 24, false);
@@ -89,7 +94,7 @@ class DialogueBox extends FlxSpriteGroup
 		portraitRight.scrollFactor.set();
 		add(portraitRight);
 		portraitRight.visible = false;
-		
+
 		box.animation.play('normalOpen');
 		box.setGraphicSize(Std.int(box.width * PlayState.daPixelZoom * 0.9));
 		box.updateHitbox();
@@ -112,11 +117,6 @@ class DialogueBox extends FlxSpriteGroup
 		swagDialogue.borderColor = 0xFFD89494;
 		swagDialogue.shadowOffset.set(2, 2);
 		add(swagDialogue);
-
-		skipText = new FlxText(FlxG.width - 320, FlxG.height - 30, 300, Language.getPhrase('dialogue_skip', 'Press BACK to Skip'), 16);
-		skipText.setFormat(null, 16, FlxColor.WHITE, RIGHT, OUTLINE_FAST, FlxColor.BLACK);
-		skipText.borderSize = 2;
-		add(skipText);
 	}
 
 	var dialogueOpened:Bool = false;
@@ -128,7 +128,7 @@ class DialogueBox extends FlxSpriteGroup
 		// HARD CODING CUZ IM STUPDI
 		super.update(elapsed);
 
-		switch(songName)
+		switch (songName)
 		{
 			case 'roses':
 				portraitLeft.visible = false;
@@ -150,15 +150,46 @@ class DialogueBox extends FlxSpriteGroup
 			dialogueStarted = true;
 		}
 
-		if(#if android FlxG.android.justReleased.BACK || #end Controls.instance.BACK)
+		if (#if android FlxG.android.justReleased.BACK || #end Controls.instance.BACK && !pauseJustClosed && !isEnding)
 		{
-			if (dialogueStarted && !isEnding)
-			{
-				dialogueCompleted();
-				FlxG.sound.play(Paths.sound('clickText'), 0.8);
-			}
+			var game = PlayState.instance;
+			FlxG.camera.followLerp = 0;
+			FlxG.state.persistentUpdate = false;
+			FlxG.state.persistentDraw = true;
+			FlxG.sound.music.pause();
+
+			var pauseState = new PauseSubState(true,DIALOGUE);
+			pauseState.cutscene_allowSkipping = dialogueStarted;
+			pauseState.cutscene_hardReset = false;
+			game.openSubState(pauseState);
+
+			game.subStateClosed.addOnce(s ->
+			{ // TODO
+				pauseJustClosed = true;
+				FlxTimer.wait(0.1, () -> pauseJustClosed = false);
+				switch (pauseState.specialAction)
+				{
+					case SKIP: {
+							trace('skipped cutscene');
+							dialogueCompleted();
+							FlxG.sound.play(Paths.sound('clickText'), 0.8);
+						}
+					case RESUME: {
+						FlxG.sound.music.resume();
+					}
+					case NOTHING: {}
+					case RESTART: {
+						dialogueList = staticDialList.copy();
+						startDialogue();
+						if(songName != 'roses'){
+							FlxG.sound.music.play(true);
+							FlxG.sound.music.fadeIn(1, 0, 0.8);
+						}
+					}
+				}
+			});
 		}
-		else if(TouchUtil.justPressed || Controls.instance.ACCEPT)
+		else if (TouchUtil.justPressed || Controls.instance.ACCEPT)
 		{
 			if (dialogueEnded)
 			{
@@ -178,8 +209,9 @@ class DialogueBox extends FlxSpriteGroup
 			{
 				FlxG.sound.play(Paths.sound('clickText'), 0.8);
 				swagDialogue.skip();
-				
-				if(skipDialogueThing != null) {
+
+				if (skipDialogueThing != null)
+				{
 					skipDialogueThing();
 				}
 			}
@@ -187,10 +219,11 @@ class DialogueBox extends FlxSpriteGroup
 	}
 
 	var isEnding:Bool = false;
+
 	function dialogueCompleted()
 	{
 		isEnding = true;
-		FlxG.sound.play(Paths.sound('clickText'), 0.8);	
+		FlxG.sound.play(Paths.sound('clickText'), 0.8);
 
 		if (songName == 'senpai' || songName == 'thorns')
 			FlxG.sound.music.fadeOut(1.5, 0, (_) -> FlxG.sound.music.stop());
@@ -206,7 +239,6 @@ class DialogueBox extends FlxSpriteGroup
 		}, 5);
 
 		swagDialogue.skip();
-		skipText.visible = false;
 		new FlxTimer().start(1.5, function(tmr:FlxTimer)
 		{
 			finishThing();
@@ -224,7 +256,8 @@ class DialogueBox extends FlxSpriteGroup
 		// swagDialogue.text = ;
 		swagDialogue.resetText(dialogueList[0]);
 		swagDialogue.start(0.04, true);
-		swagDialogue.completeCallback = function() {
+		swagDialogue.completeCallback = function()
+		{
 			handSelect.visible = true;
 			dialogueEnded = true;
 		};
@@ -237,7 +270,8 @@ class DialogueBox extends FlxSpriteGroup
 				portraitRight.visible = false;
 				if (!portraitLeft.visible)
 				{
-					if (songName == 'senpai') portraitLeft.visible = true;
+					if (songName == 'senpai')
+						portraitLeft.visible = true;
 					portraitLeft.animation.play('enter');
 				}
 			case 'bf':
@@ -248,7 +282,7 @@ class DialogueBox extends FlxSpriteGroup
 					portraitRight.animation.play('enter');
 				}
 		}
-		if(nextDialogueThing != null)
+		if (nextDialogueThing != null)
 			nextDialogueThing();
 	}
 
