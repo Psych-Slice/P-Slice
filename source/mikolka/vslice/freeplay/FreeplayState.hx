@@ -1114,7 +1114,6 @@ class FreeplayState extends MusicBeatSubstate
 			FlxTween.tween(grpCapsules.members[curSelected].capsule, {angle: 0}, 0.5, {ease: FlxEase.backOut});
 
 			IntervalShake.shake(grpCapsules.members[curSelected].capsule, 0.3, 1 / 30, 0.1, 0, FlxEase.quadOut);
-			IntervalShake.shake(touchPad, 0.6, 1 / 24, 0.24, 0, FlxEase.quadOut);
 		});
 
 		new FlxTimer().start(0.4, _ ->
@@ -1173,6 +1172,7 @@ class FreeplayState extends MusicBeatSubstate
 
 			rankCamera.zoom = 0.8;
 			funnyCam.zoom = 0.8;
+			IntervalShake.shake(touchPad, 0.6, 1 / 24, 0.24, 0, FlxEase.quadOut);
 			FlxTween.tween(rankCamera, {"zoom": 1}, 1, {ease: FlxEase.elasticOut});
 			FlxTween.tween(funnyCam, {"zoom": 1}, 0.8, {ease: FlxEase.elasticOut});
 
