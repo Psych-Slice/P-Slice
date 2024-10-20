@@ -18,9 +18,9 @@ import openfl.display.Bitmap;
 import flixel.FlxState;
 
 using Lambda;
-using funkin.IteratorTools;
+using mikolka.funkin.IteratorTools;
 using StringTools;
-using funkin.ArrayTools;
+using mikolka.funkin.utils.ArrayTools;
 
 class StickerSubState extends MusicBeatSubstate
 {
@@ -142,6 +142,7 @@ class StickerSubState extends MusicBeatSubstate
         if (grpStickers == null || ind == grpStickers.members.length - 1)
         {
           switchingState = false;
+          FlxTransitionableState.skipNextTransIn = false;
           close();
         }
       });
@@ -301,7 +302,6 @@ class StickerSubState extends MusicBeatSubstate
               dipshit.addChild(bitmap);
               // FlxG.addChildBelowMouse(dipshit);
              */
-
             FlxG.switchState(targetState(this)
             );
           }
@@ -353,14 +353,19 @@ class StickerSubState extends MusicBeatSubstate
 class StickerSprite extends FlxSprite
 {
   public var timing:Float = 0;
+  var stickerPath:String;
+  public function loadSticker() {
+    loadGraphic(Paths.image(stickerPath));
+    updateHitbox();
+    scrollFactor.set();
+  }
 
   public function new(x:Float, y:Float, stickerSet:String, stickerName:String):Void
   {
     super(x, y);
-    var path = stickerSet == null ? stickerName : 'transitionSwag/$stickerSet/$stickerName';
-    loadGraphic(Paths.image(path));
-    updateHitbox();
-    scrollFactor.set();
+    stickerPath = stickerSet == null ? stickerName : 'transitionSwag/$stickerSet/$stickerName';
+    loadSticker();
+    
   }
 }
 

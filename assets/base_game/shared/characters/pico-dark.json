@@ -1,0 +1,104 @@
+{
+	"animations": [
+	{
+      "anim": "idle",
+      "loop": false,
+	  "fps": 24,
+      "name": "Pico Idle Dance",
+      "offsets": [0, 0]
+    },
+    {
+      "anim": "singRIGHT",
+      "loop": false,
+	  "fps": 24,
+      "name": "Pico Note Right0",
+      "offsets": [-50, 1]
+    },
+    {
+      "anim": "singDOWN",
+      "loop": false,
+	  "fps": 24,
+      "name": "Pico Down Note0",
+      "offsets": [84, -77]
+    },
+    {
+      "anim": "singUP",
+      "loop": false,
+	  "fps": 24,
+      "name": "pico Up note0",
+      "offsets": [21, 28]
+    },
+    {
+      "anim": "singLEFT",
+      "loop": false,
+	  "fps": 24,
+      "name": "Pico NOTE LEFT0",
+      "offsets": [84, -11]
+    },
+    {
+      "anim": "singLEFTmiss",
+      "loop": false,
+	  "fps": 24,
+      "name": "Pico NOTE LEFT miss",
+      "offsets": [68, 20]
+    },
+    {
+      "anim": "singDOWNmiss",
+      "loop": false,
+	  "fps": 24,
+      "name": "Pico Down Note MISS",
+      "offsets": [80, -40]
+    },
+    {
+      "anim": "singUPmiss",
+      "loop": false,
+	  "fps": 24,
+      "name": "pico Up note miss",
+      "offsets": [29, 70]
+    },
+    {
+      "anim": "singRIGHTmiss",
+      "loop": false,
+	  "fps": 24,
+      "name": "Pico Note Right Miss",
+      "offsets": [-55, 45]
+    },
+    {
+      "anim": "burpShit",
+      "loop": false,
+	  "fps": 24,
+      "name": "burpshit",
+      "offsets": [33, -3]
+    },
+    {
+      "anim": "burpSmile",
+      "loop": false,
+	  "fps": 24,
+      "name": "burpsmile",
+      "offsets": [33, -3]
+    },
+    {
+      "anim": "shit",
+      "loop": false,
+	  "fps": 24,
+      "name": "shit",
+      "offsets": [33, -3]
+    }
+	],
+	"no_antialiasing": false,
+	"image": "characters/dark/pico_dark",
+	"position": [
+		0,
+		300
+	],
+	"healthicon": "pico",
+	"flip_x": true,
+	"camera_position": [200, 40],
+	"healthbar_colors": [
+		183,
+		216,
+		85
+	],
+	"sing_duration": 4,
+	"scale": 1
+}

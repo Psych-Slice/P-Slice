@@ -119,11 +119,59 @@
 			"anim": "intro2",
 			"loop": false,
 			"name": "shoot and return0"
-		}
+		},
+		{
+		"anim": "burpSmile",
+		"loop": false,
+		"indices": [],
+		"fps": 24,
+		"name": "burpsmile",
+		"offsets": [33, -3]
+		},
+		{
+		"anim": "shit",
+		"loop": false,
+		"indices": [],
+		"fps": 24,
+		"name": "shit",
+		"offsets": [0, -3]
+		},
+		{
+      "anim": "singRIGHT-alt",
+      "loop": false,
+		"indices": [],
+		"fps": 24,
+      "name": "pico swear right",
+      "offsets": [-50, 1]
+    },
+    {
+      "anim": "singDOWN-alt",
+      "loop": false,
+		"indices": [],
+		"fps": 24,
+      "name": "pico swear down",
+      "offsets": [84, -77]
+    },
+    {
+      "anim": "singUP-alt",
+      "loop": false,
+		"indices": [],
+		"fps": 24,
+      "name": "pico swear up",
+      "offsets": [21, 28]
+    },
+    {
+      "anim": "singLEFT-alt",
+      "loop": false,
+		"indices": [],
+		"fps": 24,
+      "name": "pico swear left",
+      "offsets": [84, -11]
+    }
 	],
 	"vocals_file": "",
 	"no_antialiasing": false,
-	"image": "characters/Pico_FNF_assetss, characters/picoAnims/Pico_Intro, characters/picoAnims/Pico_Shooting",
+	"image": "characters/pico-erect, characters/picoAnims/Pico_Intro, characters/picoAnims/Pico_Shooting",
 	"position": [0, 300],
 	"healthicon": "pico",
 	"flip_x": true,

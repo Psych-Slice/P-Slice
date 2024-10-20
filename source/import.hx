@@ -46,6 +46,15 @@ import sys.io.*;
 import js.html.*;
 #end
 
+//P-Slice
+import mikolka.funkin.*;
+import mikolka.funkin.utils.*;
+import mikolka.funkin.custom.*;
+import mikolka.funkin.players.*;
+
+// Stage imports (for compatibility)
+import states.stages.objects.*;
+
 import backend.Paths;
 import backend.Controls;
 import backend.CoolUtil;
@@ -57,6 +66,7 @@ import backend.Conductor;
 import backend.BaseStage;
 import backend.Difficulty;
 import backend.Mods;
+import backend.Highscore;
 import backend.Language;
 import mobile.backend.StorageUtil;
 
@@ -66,6 +76,8 @@ import objects.Alphabet;
 import objects.BGSprite;
 
 import states.PlayState;
+import states.MainMenuState;
+import states.StoryMenuState;
 import states.LoadingState;
 
 #if flxanimate

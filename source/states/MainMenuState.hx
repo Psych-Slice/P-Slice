@@ -1,5 +1,7 @@
 package states;
 
+import mikolka.compatibility.ModsHelper;
+import mikolka.vslice.freeplay.FreeplayState;
 import flixel.FlxObject;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
@@ -9,9 +11,9 @@ import options.OptionsState;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psychEngineVersion:String = '1.0-prerelease'; // This is also used for Discord RPC
-	public static var pSliceVersion:String = '1.2'; 
-	public static var funkinVersion:String = '0.4.1'; // Version of funkin' we are emulationg
+	public static var psychEngineVersion:String = '1.0'; // This is also used for Discord RPC
+	public static var pSliceVersion:String = '2.0'; 
+	public static var funkinVersion:String = '0.5.1'; // Version of funkin' we are emulationg
 	public static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
@@ -35,6 +37,9 @@ class MainMenuState extends MusicBeatState
 	}
 	override function create()
 	{
+		Paths.clearUnusedMemory();
+		ModsHelper.clearStoredWithoutStickers();
+		
 		#if MODS_ALLOWED
 		Mods.pushGlobalMods();
 		#end
@@ -94,8 +99,8 @@ class MainMenuState extends MusicBeatState
 		var psychVer:FlxText = new FlxText(0, FlxG.height - 18, FlxG.width, "Psych Engine " + psychEngineVersion, 12);
 		var fnfVer:FlxText = new FlxText(0, FlxG.height - 18, FlxG.width, 'v${funkinVersion} (P-slice ${pSliceVersion})', 12);
 
-		psychVer.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		fnfVer.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		psychVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		fnfVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		
 		psychVer.scrollFactor.set();
 		fnfVer.scrollFactor.set();
@@ -178,7 +183,7 @@ class MainMenuState extends MusicBeatState
 								FlxTransitionableState.skipNextTransIn = true;
 								FlxTransitionableState.skipNextTransOut = true;
 
-								openSubState(new states.freeplay.FreeplayState());
+								openSubState(new FreeplayState());
 								subStateOpened.addOnce(state -> {
 									for (i in 0...menuItems.members.length) {
 										menuItems.members[i].revive();

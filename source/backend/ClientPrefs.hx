@@ -24,6 +24,8 @@ import states.TitleState;
 	public var vibrating:Bool = false;
 
 	public var favSongIds:Array<String> = [];
+	public var lastFreeplayMod:String = '||bf';
+
 	public var downScroll:Bool = false;
 	public var middleScroll:Bool = false;
 	public var opponentStrums:Bool = true;
@@ -33,7 +35,9 @@ import states.TitleState;
 	public var antialiasing:Bool = true;
 	public var noteSkin:String = 'Default';
 	public var splashSkin:String = 'Psych';
+	public var holdSkin:String = 'Vanilla';
 	public var splashAlpha:Float = 0.6;
+	public var holdSplashAlpha:Float = 0.6;
 	public var lowQuality:Bool = false;
 	public var shaders:Bool = true;
 	public var cacheOnGPU:Bool = #if !switch false #else true #end; //From Stilic
@@ -42,6 +46,7 @@ import states.TitleState;
 	public var hideHud:Bool = false;
 	public var vsliceFreeplayColors:Bool = true;
 	public var vsliceResults:Bool = true;
+	public var vsliceSpecialCards:Bool = true;
 	public var vsliceSmoothBar:Bool = true;
 	public var noteOffset:Int = 0;
 	public var arrowRGB:Array<Array<FlxColor>> = [
@@ -118,6 +123,7 @@ class ClientPrefs {
 		'favorite'		=> [F],
 		'bar_left'		=> [Q],
 		'bar_right'		=> [E],
+		'char_select'	=> [TAB],
 
 		'accept'		=> [SPACE, ENTER],
 		'back'			=> [BACKSPACE, ESCAPE],
@@ -146,6 +152,7 @@ class ClientPrefs {
 		'favorite'		=> [],
 		'bar_left'		=> [],
 		'bar_right'		=> [],
+		'char_select'		=> [],
 
 		'accept'		=> [A, START],
 		'back'			=> [B],
@@ -164,7 +171,7 @@ class ClientPrefs {
 		'ui_down'		=> [DOWN, NOTE_DOWN],
 		'ui_right'		=> [RIGHT, NOTE_RIGHT],
 
-		'favorite'		=> [NONE],
+		'favorite'		=> [F],
 		'bar_left'		=> [NONE],
 		'bar_right'		=> [NONE],
 

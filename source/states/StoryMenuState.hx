@@ -1,5 +1,6 @@
 package states;
 
+import mikolka.compatibility.ModsHelper;
 import backend.WeekData;
 import backend.Highscore;
 import backend.Song;
@@ -65,6 +66,7 @@ class StoryMenuState extends MusicBeatState
 			  //this.persistentDraw = true;
 		
 			  openSubState(stickerSubState);
+			  ModsHelper.clearStoredWithoutStickers();
 			  stickerSubState.degenStickers();
 			  FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}
@@ -95,10 +97,10 @@ class StoryMenuState extends MusicBeatState
 		if(curWeek >= WeekData.weeksList.length) curWeek = 0;
 
 		scoreText = new FlxText(10, 10, 0, Language.getPhrase('week_score', 'LEVEL SCORE: {1}', [lerpScore]), 36);
-		scoreText.setFormat("VCR OSD Mono", 32);
+		scoreText.setFormat(Paths.font("vcr.ttf"), 32);
 
 		txtWeekTitle = new FlxText(FlxG.width * 0.7, 10, 0, "", 32);
-		txtWeekTitle.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, RIGHT);
+		txtWeekTitle.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 		txtWeekTitle.alpha = 0.7;
 
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
@@ -225,7 +227,7 @@ class StoryMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		if(grpWeekText.length < 1)
+		if(WeekData.weeksList.length < 1)
 		{
 			if (controls.BACK && !movedBack && !selectedWeek)
 			{
@@ -237,13 +239,13 @@ class StoryMenuState extends MusicBeatState
 			return;
 		}
 
-		// scoreText.setFormat('VCR OSD Mono', 32);
+		// scoreText.setFormat(Paths.font("vcr.ttf"), 32);
 		if(intendedScore != lerpScore)
 		{
 			lerpScore = Math.floor(FlxMath.lerp(intendedScore, lerpScore, Math.exp(-elapsed * 30)));
 			if(Math.abs(intendedScore - lerpScore) < 10) lerpScore = intendedScore;
 	
-			scoreText.text = Language.getPhrase('week_score', 'WEEK SCORE: {1}', [lerpScore]);
+			scoreText.text = Language.getPhrase('week_score', 'LEVEL SCORE: {1}', [lerpScore]);
 		}
 
 		// FlxG.watch.addQuick('font', scoreText.font);
@@ -343,6 +345,9 @@ class StoryMenuState extends MusicBeatState
 			{
 				PlayState.storyPlaylist = songArray;
 				PlayState.isStoryMode = true;
+				PlayState.storyDifficultyColor = sprDifficulty.color;
+				PlayState.storyCampaignTitle = txtWeekTitle.text;
+				if(PlayState.storyCampaignTitle == "") PlayState.storyCampaignTitle = "Unnamed week";
 				selectedWeek = true;
 	
 				var diffic = Difficulty.getFilePath(curDifficulty);

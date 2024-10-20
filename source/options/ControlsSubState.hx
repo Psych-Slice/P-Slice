@@ -34,6 +34,12 @@ class ControlsSubState extends MusicBeatSubstate
 		[true, 'Back', 'back', 'Back'],
 		[true, 'Pause', 'pause', 'Pause'],
 		[false],
+		[false, 'P-SLICE'],
+		[true,"Chr menu","char_select","Character Menu"],
+		[true,"FP left","bar_left","Freeplay left"],
+		[true,"FP right","bar_right","Freeplay right"],
+		[true,"Favorite","favorite","Freeplay favorite"],
+		[false],
 		[false, 'VOLUME'],
 		[false, 'Mute', 'volume_mute', 'Volume Mute'],
 		[false, 'Up', 'volume_up', 'Volume Up'],
@@ -142,20 +148,22 @@ class ControlsSubState extends MusicBeatSubstate
 					var str:String = option[1];
 					var keyStr:String = option[2];
 					if(isDefaultKey) str = Language.getPhrase(str);
-					var text:Alphabet = new Alphabet(200, 300, !isDisplayKey ? Language.getPhrase('key_$keyStr', str) : Language.getPhrase('keygroup_$str', str), !isDisplayKey);
+					var text:Alphabet = new Alphabet(475, 300, !isDisplayKey ? Language.getPhrase('key_$keyStr', str) : Language.getPhrase('keygroup_$str', str), !isDisplayKey);
 					text.isMenuItem = true;
 					text.changeX = false;
 					text.distancePerItem.y = 60;
 					text.targetY = myID;
-					if(isDisplayKey)
-						grpDisplay.add(text);
-					else {
+					text.ID = myID;
+					lastID = myID;
+
+					if(!isDisplayKey)
+					{
+						text.alignment = RIGHT;
 						grpOptions.add(text);
 						curOptions.push(i);
 						curOptionsValid.push(myID);
 					}
-					text.ID = myID;
-					lastID = myID;
+					else grpDisplay.add(text);
 
 					if(isCentered) addCenteredText(text, option, myID);
 					else addKeyText(text, option, myID);
@@ -171,6 +179,7 @@ class ControlsSubState extends MusicBeatSubstate
 
 	function addCenteredText(text:Alphabet, option:Array<Dynamic>, id:Int)
 	{
+		text.alignment = LEFT;
 		text.screenCenter(X);
 		text.y -= 55;
 		text.startPosition.y -= 55;
@@ -187,15 +196,13 @@ class ControlsSubState extends MusicBeatSubstate
 
 		for (n in 0...2)
 		{
-			var textX:Float = 350 + n * 300;
-
 			var key:String = null;
 			if(onKeyboardMode)
 				key = InputFormatter.getKeyName((keys[n] != null) ? keys[n] : NONE);
 			else
 				key = InputFormatter.getGamepadName((gmpds[n] != null) ? gmpds[n] : NONE);
 
-			var attach:Alphabet = new Alphabet(textX + 210, 248, key, false);
+			var attach:Alphabet = new Alphabet(560 + n * 300, 248, key, false);
 			attach.isMenuItem = true;
 			attach.changeX = false;
 			attach.distancePerItem.y = 60;
@@ -215,7 +222,7 @@ class ControlsSubState extends MusicBeatSubstate
 			black.alphaMult = 0.4;
 			black.sprTracker = text;
 			black.yAdd = -6;
-			black.xAdd = textX;
+			black.xAdd = 75 + n * 300;
 			grpBlacks.add(black);
 		}
 	}

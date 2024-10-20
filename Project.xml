@@ -16,7 +16,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
 	<!-- <app preloader="Preloader" resizable="true" /> -->
-	<app preloader="flixel.system.FlxPreloader" />
+	<app preloader="mikolka.vslice.FunkinPreloader" />
 
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
 	<set name="SWF_VERSION" value="11.8" />
@@ -31,6 +31,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<define name="TRANSLATIONS_ALLOWED" />
 	<define name="SHOW_LOADING_SCREEN" />
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN -->
+	<define name="TOUCH_HERE_TO_PLAY" if="mobile || web"/>
 	<define name="TITLE_SCREEN_EASTER_EGG"/>
 	<define name="BASE_GAME_FILES" />
 	<define name="VIDEOS_ALLOWED" if="desktop || mobile" unless="32bits"/> <!-- IF YOU WANT TO USE VIDEOS ON YOUR SOURCE MOD, GET THIS LINE OUTSIDE OF THE SECTION -->
@@ -62,6 +63,12 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<!-- __________________________ Game Assets & Etc. __________________________ -->
 
+	<!--FNF is changing openAL config, because the default one is broken. lol. -->
+	<section unless="mobile">
+		<assets path="assets/alsoft.conf" unless="windows" />
+		<assets path="assets/alsoft.conf" rename="assets/alsoft.ini" if="windows" />
+	</section>
+
 	<!-- Assets -->
 	<assets path="assets/fonts" />
 	<assets path="assets/shared"        exclude="*.ogg" if="web"/>
@@ -89,8 +96,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 		<haxelib name="grig.audio" if="BASE_GAME_FILES"/>
 		<haxelib name="funkin.vis" if="BASE_GAME_FILES"/>
 	</section>
-
-	<!-- TODO:re-enable this once PE 1.0 is complete <define name="CHECK_FOR_UPDATES" if="desktop officialBuild"/> -->
+	<define name="CHECK_FOR_UPDATES" if="desktop officialBuild"/>
 
 	<section if="MODS_ALLOWED">
 		<assets path='example_mods' rename='mods' embed='false' />
@@ -106,9 +112,10 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<!--Psych stuff needed-->
 	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
-	<haxelib name="hscript-iris" if="HSCRIPT_ALLOWED" version="1.0.2"/>
+	<haxelib name="hscript-iris" if="HSCRIPT_ALLOWED" version="1.1.0"/>
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED"/>
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
+
 	<haxelib name="flxanimate"/>
 
 	<!-- Android Specific-->
@@ -124,6 +131,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 		<haxedef name="HXVLC_VERBOSE" value="2" />
 		<haxedef name="HXVLC_LOGGING" />
 	</section>
+	
+	<define name="x86_BUILD" if="32bits" />
 	
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
@@ -178,6 +187,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!--Macro fixes-->
 	<haxeflag name="--macro" value="allowPackage('flash')" />
 	<haxeflag name="--macro" value="include('my.pack')" />
+	<!-- This macro allows addition of new functionality to existing Flixel. -->
+	<haxeflag name="--macro" value="addMetadata('@:build(mikolka.FlxMacro.buildFlxBasic())', 'flixel.FlxBasic')" />
 
 	<!-- more verbose HScript-->
 	<define name="IRIS_DEBUG" if="debug"/>

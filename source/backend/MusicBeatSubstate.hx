@@ -9,7 +9,7 @@ class MusicBeatSubstate extends FlxSubState
 	public function new()
 	{
 		instance = this;
-		controls.isInSubstate = true;
+		//controls.isInSubstate = true;
 		super();
 	}
 
@@ -110,7 +110,7 @@ class MusicBeatSubstate extends FlxSubState
 
 	override function destroy()
 	{
-		controls.isInSubstate = false;
+		//controls.isInSubstate = false;
 		removeTouchPad();
 		removeMobileControls();
 		

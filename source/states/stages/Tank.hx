@@ -1,11 +1,12 @@
 package states.stages;
 
+import mikolka.stages.PicoCapableStage;
 import states.stages.objects.*;
 import cutscenes.CutsceneHandler;
 import substates.GameOverSubstate;
 import objects.Character;
 
-class Tank extends BaseStage
+class Tank extends PicoCapableStage
 {
 	var tankWatchtower:BGSprite;
 	var tankGround:BackgroundTank;
@@ -117,10 +118,14 @@ class Tank extends BaseStage
 				}
 			}
 		}
+		super.createPost();
 	}
 
 	override function countdownTick(count:Countdown, num:Int) if(num % 2 == 0) everyoneDance();
-	override function beatHit() everyoneDance();
+	override function beatHit() {
+		everyoneDance();
+		super.beatHit();
+	}
 	function everyoneDance()
 	{
 		if(!ClientPrefs.data.lowQuality) tankWatchtower.dance();
