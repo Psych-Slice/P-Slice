@@ -75,6 +75,20 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 			option.onChange = onChangeSplashSkin;
 		}
 
+		var holdSkins:Array<String> = Mods.mergeAllTextsNamed('images/holdCovers/list.txt');
+		if(holdSkins.length > 0)
+		{
+			if(!holdSkins.contains(ClientPrefs.data.holdSkin))
+				ClientPrefs.data.holdSkin = ClientPrefs.defaultData.holdSkin; //Reset to default if saved splashskin couldnt be found
+			holdSkins.insert(0, ClientPrefs.defaultData.holdSkin); //Default skin always comes first
+			var option:Option = new Option('Hold Splashes:',
+				"Select your prefered Hold Splash variation or turn it off.",
+				'holdSkin',
+				STRING,
+				holdSkins);
+			addOption(option);
+		}
+
 		var option:Option = new Option('Note Splash Opacity',
 			'How much transparent should the Note Splashes be.',
 			'splashAlpha',
@@ -86,6 +100,17 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 		option.decimals = 1;
 		addOption(option);
 		option.onChange = playNoteSplashes;
+
+		var option:Option = new Option('Note Hold Splash Opacity',
+			'How much transparent should the Note Hold Splash be.\n0% disables it.',
+			'holdSplashAlpha',
+			PERCENT);
+		option.scrollSpeed = 1.6;
+		option.minValue = 0.0;
+		option.maxValue = 1;
+		option.changeValue = 0.1;
+		option.decimals = 1;
+		addOption(option);
 
 		var option:Option = new Option('Hide HUD',
 			'If checked, hides most HUD elements.',
