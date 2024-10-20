@@ -1769,7 +1769,6 @@ class FreeplayState extends MusicBeatSubstate
 						restartTrack: false
 					});
 					FlxG.sound.music.fadeIn(4.0, 0.0, 1.0);
-					controls.isInSubstate = false;
 					close();
 				}
 				else
@@ -1793,6 +1792,7 @@ class FreeplayState extends MusicBeatSubstate
 
 	public override function destroy():Void
 	{
+		controls.isInSubstate = false;
 		super.destroy();
 		var daSong:Null<FreeplaySongData> = currentFilteredSongs[curSelected];
 		if (daSong != null)
