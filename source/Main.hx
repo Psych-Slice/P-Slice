@@ -18,9 +18,11 @@ import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.app.Application;
 import states.TitleState;
+#if COPYSTATE_ALLOWED
+import states.CopyState;
+#end
 #if mobile
 import mobile.backend.MobileScaleMode;
-import mobile.states.CopyState;
 #end
 
 #if desktop
@@ -133,7 +135,7 @@ class Main extends Sprite
 		ClientPrefs.loadDefaultKeys();
 		#if ACHIEVEMENTS_ALLOWED Achievements.load(); #end
 		
-		var gameObject = new FlxGame(game.width, game.height, #if (mobile && MODS_ALLOWED) CopyState.checkExistingFiles() ? game.initialState : CopyState #else game.initialState #end, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen);
+		var gameObject = new FlxGame(game.width, game.height, #if COPYSTATE_ALLOWED !CopyState.checkExistingFiles() ? CopyState : #end game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen);
 		// FlxG.game._customSoundTray wants just the class, it calls new from
     	// create() in there, which gets called when it's added to stage
     	// which is why it needs to be added before addChild(game) here
