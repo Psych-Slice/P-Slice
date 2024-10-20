@@ -13,7 +13,7 @@
 
 <!-- PROJECT SHIELDS -->
 [![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][https://github.com/MobilePorting/P-Slice-Mobile/forks]
+[![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
@@ -117,6 +117,7 @@ Distributed under the Apache License 2.0. See [Licence](https://github.com/Psych
 [contributors-shield]: https://img.shields.io/github/contributors/Psych-Slice/P-Slice.svg?style=for-the-badge
 [contributors-url]: https://github.com/MobilePorting/P-Slice-Mobile/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/MobilePorting/P-Slice-Mobile.svg?style=for-the-badge
+[forks-url]: https://github.com/MobilePorting/P-Slice-Mobile/forks
 [https://github.com/Psych-Slice/P-Slice/forks]: https://github.com/MobilePorting/P-Slice-Mobile/network/members
 [stars-shield]: https://img.shields.io/github/stars/MobilePorting/P-Slice-Mobile.svg?style=for-the-badge
 [stars-url]: https://github.com/MobilePorting/P-Slice-Mobile/stargazers
