@@ -114,14 +114,14 @@ Distributed under the Apache License 2.0. See [Licence](https://github.com/Psych
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/Psych-Slice/P-Slice.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/MobilePorting/P-Slice-Mobile.svg?style=for-the-badge
 [contributors-url]: https://github.com/MobilePorting/P-Slice-Mobile/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/MobilePorting/P-Slice-Mobile.svg?style=for-the-badge
 [forks-url]: https://github.com/MobilePorting/P-Slice-Mobile/forks
 [https://github.com/Psych-Slice/P-Slice/forks]: https://github.com/MobilePorting/P-Slice-Mobile/network/members
 [stars-shield]: https://img.shields.io/github/stars/MobilePorting/P-Slice-Mobile.svg?style=for-the-badge
 [stars-url]: https://github.com/MobilePorting/P-Slice-Mobile/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Psych-Slice/P-Slice.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/MobilePorting/P-Slice-Mobile.svg?style=for-the-badge
 [issues-url]: https://github.com/MobilePorting/P-Slice-Mobile/issues
 [license-shield]: https://img.shields.io/github/license/MobilePorting/P-Slice-Mobile.svg?style=for-the-badge
 [license-url]: https://github.com/MobilePorting/P-Slice-Mobile/blob/master/LICENSE.txt!
