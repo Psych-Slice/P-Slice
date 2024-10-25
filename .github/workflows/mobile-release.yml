@@ -1,13 +1,31 @@
 name: Mobile + Release
 on: workflow_dispatch
+
 permissions:
   contents: write
+  discussions: write
+
+env:
+  PROJECT_NAME: PSliceEngine
+  REPO_PATH: MobilePorting/P-Slice-Mobile
+
 jobs:
   get-commit-hash:
     runs-on: ubuntu-latest
     outputs:
       commit_hash: ${{ steps.get_commit_hash.outputs.COMMIT_HASH }}
     steps:
+      - name: Check Repository
+        run: |
+          echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
+          echo "REPO_PATH: ${{ env.REPO_PATH }}"
+          if [[ "$GITHUB_REPOSITORY" != "${{ env.REPO_PATH }}" ]]; then
+            echo "Doesn't seem to be correct, returning SIGABRT..."
+            exit 6
+          else
+            echo "Seems to be correct..."
+          fi
+
       - name: Get latest commit hash
         id: get_commit_hash
         run: |
@@ -15,81 +33,32 @@ jobs:
           echo "Latest commit hash is $commit_hash"
           echo "::set-output name=COMMIT_HASH::$commit_hash"
 
-  Mobile:
-    runs-on: ${{matrix.os}}
+  build:
+    name: ${{ matrix.name }}
+    needs: get-commit-hash
     strategy:
-      fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-15]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@main
+        include:
+          - name: Android
+            os: macos-14
+            buildArgs: "android -final -D officialBuild"
+            artifactName: androidBuild
+            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
+          - name: iOS
+            os: macos-15
+            buildArgs: "ios -final -nosign -D officialBuild"
+            artifactName: iOSBuild
+            artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
+    uses: ./.github/workflows/build.yml
+    with:
+        name: ${{ matrix.name }}
+        os: ${{ matrix.os }}
+        buildArgs: ${{ matrix.buildArgs }}
+        artifactName: ${{ matrix.artifactName }}
+        artifactPath: ${{ matrix.artifactPath }}
 
-      - name: Setup Haxe
-        uses: krdlab/setup-haxe@master
-        with:
-          haxe-version: 4.3.6
-
-      - name: Install Libraries
-        run: |
-          haxelib git hxcpp https://github.com/mcagabe19-stuff/hxcpp --quiet
-          haxelib git lime https://github.com/mcagabe19-stuff/lime --quiet
-          haxelib install openfl 9.3.3 --quiet
-          haxelib git flixel https://github.com/mikolka9144/flixel-funkin.git 901df3b291e422e6ac1ea6a838fbc32baf163197 --quiet
-          haxelib install flixel-addons 3.2.2 --quiet
-          haxelib install flixel-tools 1.5.1 --quiet
-          haxelib install hscript-iris 1.1.0 --quiet
-          haxelib install tjson 1.4.0 --quiet
-          haxelib git flxanimate https://github.com/Psych-Slice/FlxAnimate.git 18091dfeb629ba2805a5f3e10f5de80433080359 --quiet
-          haxelib git linc_luajit https://github.com/mcagabe19-stuff/linc_luajit-rewriten --quiet
-          haxelib install hxvlc 1.8.2 --quiet --skip-dependencies
-          haxelib git funkin.vis https://github.com/FunkinCrew/funkVis 22b1ce089dd924f15cdc4632397ef3504d464e90 --quiet --skip-dependencies
-          haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio.git cbf91e2180fd2e374924fe74844086aab7891666 --quiet
-          haxelib git FlxPartialSound https://github.com/FunkinDroidTeam/FlxPartialSound 3d1da83cca3863174ca6a56827cd95c2020754bc --quiet
-          haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools df9dfd0cda74e5460ae3afcfff1081c50959ed4a --quiet --skip-dependencies
-
-      - name: Configure Android
-        if: startsWith(matrix.os, 'ubuntu')
-        run: |
-          haxelib run lime config ANDROID_SDK $ANDROID_HOME
-          haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_LATEST_HOME
-          haxelib run lime config JAVA_HOME $JAVA_HOME_17_X64
-          haxelib run lime config ANDROID_SETUP true
-
-      - name: Compile (Android)
-        if: startsWith(matrix.os, 'ubuntu')
-        run: haxelib run lime build android -final -D officialBuild
-
-      - name: Compile (iOS)
-        if: startsWith(matrix.os, 'macos')
-        run: haxelib run lime build ios -final -nosign -D officialBuild
-
-      - name: Make Ipa And Zip For Release
-        if: startsWith(matrix.os, 'macos')
-        run: |
-          cd export/release/ios/build/*-iphoneos
-          mkdir Payload
-          mv *.app Payload
-          zip -r PSliceEngine.ipa Payload
-          zip PSliceEngine-iOS.zip PSliceEngine.ipa
-
-      - name: Upload Artifact (Android)
-        if: startsWith(matrix.os, 'ubuntu')
-        uses: actions/upload-artifact@main
-        with:
-          name: androidBuild
-          path: export/release/android/bin/app/build/outputs/apk/release/*.apk
-          if-no-files-found: error
-
-      - name: Upload Artifact (iOS)
-        if: startsWith(matrix.os, 'macos')
-        uses: actions/upload-artifact@main
-        with:
-          name: iOSBuild
-          path: export/release/ios/build/Release-iphoneos/*.zip
-          if-no-files-found: error
   Releaser:
-    needs: [get-commit-hash, Mobile]
+    needs: [get-commit-hash, build]
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
@@ -100,21 +69,23 @@ jobs:
            path: /home/runner
 
       - name: Move Android File
-        run: mv /home/runner/PSliceEngine-release.apk /home/runner/PSliceEngine-Android.apk
+        run: mv /home/runner/${{ env.PROJECT_NAME }}-release.apk /home/runner/${{ env.PROJECT_NAME }}-Android.apk
 
       - name: Download iOS Build
         uses: actions/download-artifact@main
         with:
            name: iOSBuild
-           path: /home/runner
+           path: ${{ github.workspace }}
+
+      - name: Zip iOS Build For Release
+        run: zip -r /home/runner/${{ env.PROJECT_NAME }}-iOS.zip ${{ github.workspace }}/${{ env.PROJECT_NAME }}.ipa
 
       - name: Publish The Release
-        uses: marvinpinto/action-automatic-releases@latest
+        uses: softprops/action-gh-release@master
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          name: "DevBuild ${{ needs.get-commit-hash.outputs.commit_hash }}"
+          tag_name: "devbuild-${{ needs.get-commit-hash.outputs.commit_hash }}"
           prerelease: true
-          automatic_release_tag: "devbuild-${{ needs.get-commit-hash.outputs.commit_hash }}"
-          title: "DevBuild ${{ needs.get-commit-hash.outputs.commit_hash }}"
           files: |
             /home/runner/*.apk
             /home/runner/*.zip
