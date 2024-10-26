@@ -1,0 +1,86 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        required: true
+        type: string
+      os:
+        required: true
+        type: string
+      buildArgs:
+        required: true
+        type: string
+      artifactName:
+        required: true
+        type: string
+      artifactPath:
+        required: true
+        type: string
+
+env:
+  HAXE_VERSION: 4.3.6
+  PROJECT_NAME: PSliceEngine
+
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ inputs.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: ${{ env.HAXE_VERSION }}
+
+      - name: Install libVLC
+        if: inputs.name == 'Linux'
+        run: sudo apt install libvlc-dev libvlccore-dev
+
+      - name: Install Libraries
+        run: |
+          haxelib git hxcpp https://github.com/mcagabe19-stuff/hxcpp --quiet
+          haxelib git lime https://github.com/mcagabe19-stuff/lime --quiet
+          haxelib install openfl 9.3.3 --quiet
+          haxelib git flixel https://github.com/MobilePorting/flixel.git p-slice --quiet
+          haxelib install flixel-addons 3.2.2 --quiet
+          haxelib install flixel-tools 1.5.1 --quiet
+          haxelib install hscript-iris 1.1.0 --quiet
+          haxelib install tjson 1.4.0 --quiet
+          haxelib git flxanimate https://github.com/Psych-Slice/FlxAnimate.git 18091dfeb629ba2805a5f3e10f5de80433080359 --quiet
+          haxelib git linc_luajit https://github.com/mcagabe19-stuff/linc_luajit-rewriten --quiet
+          haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc f9353b9edce10f4605d125dd1bda24ac36898bfb --quiet --skip-dependencies
+          haxelib install hxvlc 1.8.2 --quiet --skip-dependencies
+          haxelib git funkin.vis https://github.com/FunkinCrew/funkVis 22b1ce089dd924f15cdc4632397ef3504d464e90 --quiet --skip-dependencies
+          haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio.git cbf91e2180fd2e374924fe74844086aab7891666 --quiet
+          haxelib git FlxPartialSound https://github.com/FunkinDroidTeam/FlxPartialSound 3d1da83cca3863174ca6a56827cd95c2020754bc --quiet
+          haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools --quiet --skip-dependencies
+
+      - name: Configure Android
+        if: inputs.name == 'Android'
+        run: |
+          haxelib run lime config ANDROID_SDK $ANDROID_HOME
+          haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_LATEST_HOME
+          haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
+          haxelib run lime config ANDROID_SETUP true
+
+      - name: Compile
+        run: haxelib run lime build ${{ inputs.buildArgs }}
+
+      - name: Make IPA
+        if: inputs.name == 'iOS'
+        run: |
+          cd export/release/ios/build/Release-iphoneos
+          mkdir Payload
+          mv *.app Payload
+          zip -r ${{ env.PROJECT_NAME }}.ipa Payload
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{ inputs.artifactName }}
+          path: ${{ inputs.artifactPath }}
+          if-no-files-found: error
