@@ -41,7 +41,10 @@ class ModsHelper {
 		var cache = FlxG.bitmap._cache;
 		Paths.currentTrackedAssets.clear();
 		for (key => val in cache){
-		if(key.toLowerCase().contains("transitionswag") || key.contains("bg_graphic_")) Paths.currentTrackedAssets.set(key,val);
+		if(	key.toLowerCase().contains("transitionswag") || 
+			key.contains("bg_graphic_") ||
+			key == "images/justBf.png"
+		) Paths.currentTrackedAssets.set(key,val);
 		}
 		Paths.clearStoredMemory();
 	}

@@ -221,9 +221,10 @@ class FreeplayState extends MusicBeatSubstate
 		super();
 		var saveBox = VsliceOptions.LAST_MOD;
 		currentCharacterId = saveBox.char_name;
-
+		// switch to the character's mod to load her registry
 		if (ModsHelper.isModDirEnabled(saveBox.mod_dir))
 			ModsHelper.loadModDir(saveBox.mod_dir);
+
 		var result = PlayerRegistry.instance.fetchEntry(currentCharacterId);
 		if (result == null)
 		{
@@ -262,6 +263,10 @@ class FreeplayState extends MusicBeatSubstate
 
 	override function create():Void
 	{
+		//? Psych might've reloaded the mod list. Make sure we select current character's mod for the style
+		var saveBox = VsliceOptions.LAST_MOD;
+		if (ModsHelper.isModDirEnabled(saveBox.mod_dir))
+			ModsHelper.loadModDir(saveBox.mod_dir);
 		// We build a bunch of sprites BEFORE create() so we can guarantee they aren't null later on.
 		//? but doing it here, because psych 0.6.3 can destroy graphics created in the constructor
 		if(VsliceOptions.FP_CARDS){

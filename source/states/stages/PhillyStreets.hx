@@ -201,7 +201,7 @@ class PhillyStreets extends PicoCapableStage
 			return;
 		}
 		
-		if (isStoryMode)
+		if (isStoryMode && PlayState.instance != null)
 		{
 			switch (songName)
 			{
