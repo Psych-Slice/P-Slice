@@ -1,5 +1,6 @@
 package substates;
 
+import mikolka.compatibility.VsliceOptions;
 import states.MainMenuState;
 import flixel.FlxSprite;
 import haxe.Json;
@@ -362,6 +363,7 @@ class StickerSprite extends FlxSprite
   {
     super(x, y);
     stickerPath = stickerSet == null ? stickerName : 'transitionSwag/$stickerSet/$stickerName';
+    antialiasing = VsliceOptions.ANTIALIASING;
     loadSticker();
     
   }

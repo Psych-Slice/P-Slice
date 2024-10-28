@@ -28,11 +28,9 @@ import lime.graphics.Image;
 #end
 
 //crash handler stuff
-#if CRASH_HANDLER
 import openfl.events.UncaughtErrorEvent;
 import haxe.CallStack;
 import haxe.io.Path;
-#end
 
 import backend.Highscore;
 
@@ -200,8 +198,7 @@ class Main extends Sprite
 
 	// Code was entirely made by sqirra-rng for their fnf engine named "Izzy Engine", big props to them!!!
 	// very cool person for real they don't get enough credit for their work
-	#if CRASH_HANDLER
-	function onCrash(e:UncaughtErrorEvent):Void
+	static function onCrash(e:UncaughtErrorEvent):Void
 	{
 		var errMsg:String = "";
 		var path:String;
@@ -252,5 +249,4 @@ class Main extends Sprite
 		#end
 		Sys.exit(1);
 	}
-	#end
 }

@@ -1,5 +1,6 @@
 package states.editors;
 
+import openfl.events.UncaughtErrorEvent;
 import mikolka.compatibility.VsliceOptions;
 import flixel.math.FlxRandom;
 import backend.WeekData;
@@ -18,6 +19,9 @@ class MasterEditorMenu extends MusicBeatState
 		'Menu Character Editor', 
 		'Dialogue Editor', 
 		'Dialogue Portrait Editor',
+		#if debug
+		'Crash the game',
+		#end
 		'Note Splash Editor', 
 		'Preview results (perfect)', 
 		'Preview results (excellent)', 
@@ -130,7 +134,17 @@ class MasterEditorMenu extends MusicBeatState
 				case 'Note Splash Editor':
 					MusicBeatState.switchState(new NoteSplashEditorState());
 				case 'Test stickers':
-						MusicBeatState.switchState(new StickerTest());
+					MusicBeatState.switchState(new StickerTest());
+				#if debug
+				case 'Crash the game':{
+					@:privateAccess
+					openfl.Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(openfl.events.UncaughtErrorEvent.UNCAUGHT_ERROR, Main.onCrash);
+					openfl.Lib.current.loaderInfo.uncaughtErrorEvents.dispatchEvent(
+						new UncaughtErrorEvent(
+							openfl.events.UncaughtErrorEvent.UNCAUGHT_ERROR,
+							true,true,new openfl.errors.Error("The devs are too stupid")));
+				}
+				#end
 				case 'Preview results (perfect)':
 					runResults(200);
 				case 'Preview results (excellent)':
