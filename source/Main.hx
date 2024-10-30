@@ -1,5 +1,9 @@
 package;
 
+import haxe.CallStack;
+import haxe.Exception;
+import flixel.FlxBasic;
+import crowplexus.iris.Iris;
 import openfl.events.UncaughtErrorEvent;
 import mikolka.vslice.CrashState;
 import openfl.display.FPS;
@@ -166,6 +170,7 @@ class Main extends Sprite
 		
 		#if CRASH_HANDLER
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
+		trace("Adding crash Handler!");
 		#end
 
 		#if DISCORD_ALLOWED
@@ -197,7 +202,8 @@ class Main extends Sprite
 	// very cool person for real they don't get enough credit for their work
 	static function onCrash(e:UncaughtErrorEvent):Void
 	{
-		var crashState = new CrashState(e);
+		var crashState = new CrashState(e.error,CallStack.exceptionStack(true));
+		e.preventDefault();
 		FlxG.switchState(crashState);
 	}
 }

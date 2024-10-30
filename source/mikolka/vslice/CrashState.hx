@@ -1,5 +1,6 @@
 package mikolka.vslice;
 
+import mikolka.compatibility.ModsHelper;
 import flixel.FlxState;
 import states.TitleState;
 import openfl.events.ErrorEvent;
@@ -16,12 +17,13 @@ class CrashState extends FlxState
 	var screenBelow:BitmapData = BitmapData.fromImage(FlxG.stage.window.readPixels());
 	var textBg:FlxSprite;
 
-	var e:UncaughtErrorEvent;
-	var errorMessage:String = '';
+	var EMessage:String;
+	var callstack:Array<StackItem>;
 
-	public function new(error:UncaughtErrorEvent)
+	public function new(EMessage:String,callstack:Array<StackItem>)
 	{
-		e = error;
+		this.EMessage = EMessage;
+		this.callstack = callstack;
 		super();
 	}
 
@@ -33,6 +35,8 @@ class CrashState extends FlxState
 			Main.memoryCounter.visible = false;
 		super.create();
 		var previousScreen = new FlxSprite(0, 0, screenBelow);
+		previousScreen.setGraphicSize(FlxG.width,FlxG.height);
+		
 		textBg = new FlxSprite();
 		FunkinTools.makeSolidColor(textBg, Math.floor(FlxG.width * 0.73), FlxG.height, 0x86000000);
 		textBg.screenCenter();
@@ -49,18 +53,9 @@ class CrashState extends FlxState
 
 	function collectErrorData():CrashData
 	{
-		var errorMessage = "Unknown error";
-		if (Std.isOfType(e.error, openfl.errors.Error))
-		{
-			var error = cast(e.error, openfl.errors.Error);
-			errorMessage = error.message;
-		}
-		else if (Std.isOfType(e.error, ErrorEvent))
-		{
-			var error = cast(e.error, ErrorEvent);
-			errorMessage = error.text;
-		}
-		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
+		var errorMessage = EMessage;
+
+		var callStack:Array<StackItem> = callstack;
 		var errMsg = new Array<Array<String>>();
 		var errExtended = new Array<String>();
 		for (stackItem in callStack)
@@ -92,7 +87,10 @@ class CrashState extends FlxState
 		return {
 			message: errorMessage,
 			trace: errMsg,
-			extendedTrace: errExtended
+			extendedTrace: errExtended,
+			date: Date.now().toString(),
+			systemName: Sys.systemName(),
+			activeMod: ModsHelper.getActiveMod()
 		}
 	}
 
@@ -114,8 +112,8 @@ class CrashState extends FlxState
 
 	function printError(error:CrashData)
 	{
-		printToTrace('P-SLICE ${MainMenuState.pSliceVersion}  (${error.message.toUpperCase()})');
-		printToTrace('PSYCH ${MainMenuState.psychEngineVersion.rpad(" ", 6)}   ' + 'SYS:${Sys.systemName().toUpperCase()}');
+		printToTrace('P-SLICE ${MainMenuState.pSliceVersion}  (${error.message})');
+		textNextY += 35;
 		FlxTimer.wait(1 / 24, () ->
 		{
 			printSpaceToTrace();
@@ -124,15 +122,15 @@ class CrashState extends FlxState
 				switch (line.length)
 				{
 					case 1:
-						printToTrace(line[0].toUpperCase());
+						printToTrace(line[0]);
 					case 2:
-						var first_line = line[0].toUpperCase().rpad(" ", 33);
-						printToTrace('${first_line}${line[1].toUpperCase()}');
+						var first_line = line[0].rpad(" ", 33).replace("_","");
+						printToTrace('${first_line}${line[1]}');
 					default:
 						printToTrace(" ");
 				}
 			}
-			var remainingLines = 10 - error.trace.length;
+			var remainingLines = 12 - error.trace.length;
 			if (remainingLines > 0)
 			{
 				for (x in 0...remainingLines)
@@ -142,21 +140,21 @@ class CrashState extends FlxState
 			}
 			// printToTrace('S8:00000000H   RA:80286034H   MM:86A20290H');
 			printSpaceToTrace();
-			printToTrace('MACHINE');
-			printSpaceToTrace();
-			printToTrace('TIME:${Date.now().toString().toUpperCase()}');
-			printToTrace('F06:---------  F08:+1.000E+00 F10:+6.856E-01');
+			printToTrace('RUNTIME INFORMATION');
+			var date_split = error.date.split(" ");
+			printToTrace('TIME:${date_split[1].rpad(" ",9)} DATE:${date_split[0]}');
+			printToTrace('MOD:${error.activeMod.rpad(" ",10)} PE:${MainMenuState.psychEngineVersion.rpad(" ", 5)} SYS:${error.systemName}');
 			printSpaceToTrace();
 			printToTrace('REPORT TO GITHUB.COM/MIKOLKA9144/P-SLICE');
 			printToTrace('PRESS ENTER TO RESTART');
 		});
 	}
 
-	function saveError(error:CrashData)
+	static function saveError(error:CrashData)
 	{
 		var path:String;
 		var errMsg = "";
-		var dateNow:String = Date.now().toString();
+		var dateNow:String = error.date;
 
 		dateNow = dateNow.replace(' ', '_');
 		dateNow = dateNow.replace(':', "'");
@@ -168,11 +166,10 @@ class CrashState extends FlxState
 		{
 			errMsg += x + "\n";
 		}
-		/*
-		 * remove if you're modding and want the crash log message to contain the link
-		 * please remember to actually modify the link for the github page to report the issues to.
-		 */
-		//
+		errMsg += '----------\n';
+		errMsg += 'Active mod: ${error.activeMod}\n';
+		errMsg += 'Platform: ${error.systemName}\n';
+		errMsg += '\n';
 		errMsg += '\nPlease report this error to the GitHub page: https://github.com/mikolka9144/P-Slice\n\n> Crash Handler written by: sqirra-rng';
 
 		if (!FileSystem.exists('./crash/'))
@@ -186,13 +183,14 @@ class CrashState extends FlxState
 
 	var textNextY = 5;
 
-	function printToTrace(text:String)
+	function printToTrace(text:String):FlxText
 	{
-		var test_text = new FlxText(180, textNextY, 1500, text);
+		var test_text = new FlxText(180, textNextY, 920, text.toUpperCase());
 		test_text.setFormat(Paths.font('vcr.ttf'), 35, FlxColor.WHITE, LEFT);
 		test_text.updateHitbox();
 		add(test_text);
 		textNextY += 35;
+		return test_text;
 	}
 
 	function printSpaceToTrace()
@@ -232,5 +230,8 @@ typedef CrashData =
 {
 	message:String,
 	trace:Array<Array<String>>,
-	extendedTrace:Array<String>
+	extendedTrace:Array<String>,
+	date:String,
+	systemName:String,
+	activeMod:String
 }
