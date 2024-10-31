@@ -39,6 +39,7 @@ class CrashState extends FlxState
 		super.create();
 		var previousScreen = new FlxSprite(0, 0, screenBelow);
 		previousScreen.setGraphicSize(FlxG.width,FlxG.height);
+		previousScreen.updateHitbox();
 
 		textBg = new FlxSprite();
 		FunkinTools.makeSolidColor(textBg, Math.floor(FlxG.width * 0.73), FlxG.height, 0x86000000);
@@ -111,7 +112,8 @@ class CrashState extends FlxState
 			if (Main.fpsVar != null) Main.fpsVar.visible = ClientPrefs.data.showFPS;
 			if (Main.memoryCounter != null) Main.memoryCounter.visible = ClientPrefs.data.showFPS;
 			#end
-			FlxG.sound.music = null;
+			FlxG.sound.pause();
+			FlxTween.globalManager.clear();
 			FlxG.resetGame();
 		}
 	}
