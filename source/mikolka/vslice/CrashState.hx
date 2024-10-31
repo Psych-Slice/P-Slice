@@ -1,8 +1,11 @@
 package mikolka.vslice;
 
+import mikolka.compatibility.VsliceOptions;
 import mikolka.compatibility.ModsHelper;
 import flixel.FlxState;
+#if !LEGACY_PSYCH
 import states.TitleState;
+#end
 import openfl.events.ErrorEvent;
 import openfl.display.BitmapData;
 // crash handler stuff
@@ -36,7 +39,8 @@ class CrashState extends FlxState
 		super.create();
 		var previousScreen = new FlxSprite(0, 0, screenBelow);
 		previousScreen.setGraphicSize(FlxG.width,FlxG.height);
-		
+		previousScreen.updateHitbox();
+
 		textBg = new FlxSprite();
 		FunkinTools.makeSolidColor(textBg, Math.floor(FlxG.width * 0.73), FlxG.height, 0x86000000);
 		textBg.screenCenter();
@@ -101,11 +105,15 @@ class CrashState extends FlxState
 		{
 			TitleState.initialized = false;
 			TitleState.closedState = false;
-			if (Main.fpsVar != null)
-				Main.fpsVar.visible = ClientPrefs.data.showFPS;
-			if (Main.memoryCounter != null)
-				Main.memoryCounter.visible = ClientPrefs.data.showFPS;
-			FlxG.sound.music = null;
+			#if LEGACY_PSYCH
+			if (Main.fpsVar != null) Main.fpsVar.visible = ClientPrefs.showFPS;
+			if (Main.memoryCounter != null) Main.memoryCounter.visible = ClientPrefs.showFPS;
+			#else
+			if (Main.fpsVar != null) Main.fpsVar.visible = ClientPrefs.data.showFPS;
+			if (Main.memoryCounter != null) Main.memoryCounter.visible = ClientPrefs.data.showFPS;
+			#end
+			FlxG.sound.pause();
+			FlxTween.globalManager.clear();
 			FlxG.resetGame();
 		}
 	}
