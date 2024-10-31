@@ -1,5 +1,6 @@
 package;
 
+import mikolka.vslice.CrashState;
 import mikolka.vslice.components.MemoryCounter;
 import lime.graphics.Image;
 import flixel.graphics.FlxGraphic;
@@ -143,45 +144,9 @@ class Main extends Sprite
 	#if CRASH_HANDLER
 	function onCrash(e:UncaughtErrorEvent):Void
 	{
-		var errMsg:String = "";
-		var path:String;
-		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
-		var dateNow:String = Date.now().toString();
-
-		dateNow = dateNow.replace(" ", "_");
-		dateNow = dateNow.replace(":", "'");
-
-		path = "./crash/" + "PsychEngine_" + dateNow + ".txt";
-
-		for (stackItem in callStack)
-		{
-			switch (stackItem)
-			{
-				case FilePos(s, file, line, column):
-					errMsg += file + " (line " + line + ")\n";
-				default:
-					Sys.println(stackItem);
-			}
-		}
-
-		errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/mikolka9144/P-Slice\n\n> Crash Handler written by: sqirra-rng";
-
-		if (!FileSystem.exists("./crash/"))
-			FileSystem.createDirectory("./crash/");
-
-		File.saveContent(path, errMsg + "\n");
-
-		Sys.println(errMsg);
-		Sys.println("Crash dump saved in " + Path.normalize(path));
-		#if windows
-		Application.current.window.alert(errMsg, "Error!");
-		#elseif linux
-		Sys.command("notify-send",["Error!",errMsg]);
-		#end
-		#if DISCORD_ALLOWED
-		DiscordClient.shutdown();
-		#end
-		Sys.exit(1);
+		var crashState = new CrashState(e.error,CallStack.exceptionStack(true));
+		e.preventDefault();
+		FlxG.switchState(crashState);
 	}
 	#end
 }

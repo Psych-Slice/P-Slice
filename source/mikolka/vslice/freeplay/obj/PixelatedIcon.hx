@@ -69,9 +69,9 @@ class PixelatedIcon extends FlxFilteredSprite
         this.active = true;
         this.scale.x = this.scale.y = 2;
         this.updateHitbox();
-        this.animation.addByPrefix('idle', 'idle', 10, true);
-        this.animation.addByPrefix('confirm', 'confirm', 10, false);
-        this.animation.addByPrefix('confirm-hold', 'confirm-hold', 10, true);
+        this.animation.addByPrefix('idle', 'idle0', 10, true);
+        this.animation.addByPrefix('confirm', 'confirm0', 10, false);
+        this.animation.addByPrefix('confirm-hold', 'confirm-hold0', 10, true);
 
         this.animation.finishCallback = function(name:String):Void {
           trace('Finish pixel animation: ${name}');
