@@ -54,5 +54,6 @@ jobs:
       name: ${{ matrix.name }}
       os: ${{ matrix.os }}
       buildArgs: ${{ matrix.buildArgs }}
+      setupScript: ${{ matrix.setupScript }}
       artifactName: ${{ matrix.artifactName }}
       artifactPath: ${{ matrix.artifactPath }}
