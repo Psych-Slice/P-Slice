@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Build:
+  BuildDesktop:
     name: ${{ matrix.name }}
     strategy:
       matrix:
@@ -28,9 +28,22 @@ jobs:
           - name: macOS x86_64
             os: macos-13
             buildArgs: mac
-            setupScript: sh ./setup/unix.sh
+            setupScript: sh ./setup/mobile.sh
             artifactName: P-Slice.1.0.macosx64
             artifactPath: export/release/macos/bin/*
+    uses: ./.github/workflows/build.yml
+    with:
+      name: ${{ matrix.name }}
+      os: ${{ matrix.os }}
+      buildArgs: ${{ matrix.buildArgs }}
+      setupScript: ${{ matrix.setupScript }}
+      artifactName: ${{ matrix.artifactName }}
+      artifactPath: ${{ matrix.artifactPath }}
+  BuildMobile:
+    name: ${{ matrix.name }}
+    strategy:
+      matrix:
+        include:
           - name: macOS AArch64
             os: macos-15
             buildArgs: mac
