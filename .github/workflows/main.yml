@@ -52,7 +52,7 @@ jobs:
             artifactPath: export/release/macos/bin/*
           - name: Android
             os: macos-14
-            buildArgs: "android -ONLY_ARMV7"
+            buildArgs: "android"
             setupScript: sh ./setup/mobile.sh
             artifactName: P-Slice.1.0.android
             artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
