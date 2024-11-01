@@ -115,8 +115,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
 	<haxelib name="hscript-iris" if="HSCRIPT_ALLOWED" version="1.1.0"/>
 	<section if="VIDEOS_ALLOWED">
-		<haxelib name="hxCodec" unless="windows || mobile"/>
-		<haxelib name="hxvlc" if="windows || mobile"/>
+		<haxelib name="hxCodec" if="linux"/>
+		<haxelib name="hxvlc" unless="linux"/>
 	</section>
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
 
