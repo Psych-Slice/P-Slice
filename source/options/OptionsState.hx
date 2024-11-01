@@ -19,7 +19,7 @@ class OptionsState extends MusicBeatState
 		'Gameplay',
 		'V-Slice Options'
 		#if TRANSLATIONS_ALLOWED , 'Language' #end
-		,'Mobile Options'
+		#if mobile ,'Mobile Options' #end
 	];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;

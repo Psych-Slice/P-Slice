@@ -171,7 +171,7 @@ class CoolUtil
 	inline public static function getSavePath():String {
 		final company:String = FlxG.stage.application.meta.get('company');
 		// #if (flixel < "5.0.0") return company; #else
-		return '${company}/${flixel.util.FlxSave.validate(FlxG.stage.application.meta.get('file'))}';
+		return '${company}/${flixel.util.FlxSave.validate("PsychEngine")}'; //! hardcoding for backwards compatibility
 		// #end
 	}
 

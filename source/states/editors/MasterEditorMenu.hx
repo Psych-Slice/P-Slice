@@ -141,7 +141,6 @@ class MasterEditorMenu extends MusicBeatState
 				#if debug
 				case 'Crash the game':{
 					@:privateAccess
-					openfl.Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(openfl.events.UncaughtErrorEvent.UNCAUGHT_ERROR, Main.onCrash);
 					openfl.Lib.current.loaderInfo.uncaughtErrorEvents.dispatchEvent(
 						new UncaughtErrorEvent(
 							openfl.events.UncaughtErrorEvent.UNCAUGHT_ERROR,
