@@ -7,9 +7,9 @@ name: BuildLegacy
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [  pe-0.6.3 ]
+    branches: [  pe-0.6.3, pe-0.6.3-dev ]
   pull_request:
-    branches: [ pe-0.6.3  ]
+    branches: [ pe-0.6.3, pe-0.6.3-dev  ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -47,7 +47,7 @@ jobs:
       - name: Publish Artifact
         uses: actions/upload-artifact@v4.3.4
         with:
-          name: linuxBuild
+          name: P-Slice.0.6.3_linux
           path: 'export/PE0.6.3/release/linux/bin'
   buildWindows:
     runs-on: windows-latest
@@ -76,7 +76,7 @@ jobs:
       - name: Publish Artifact
         uses: actions/upload-artifact@v4.3.4
         with:
-          name: windowsBuild
+          name: P-Slice.0.6.3_windows
           path: export/PE0.6.3/release/windows/bin
   buildMac:
     runs-on: macos-12
@@ -104,5 +104,5 @@ jobs:
       - name: Publish Artifact
         uses: actions/upload-artifact@v4.3.4
         with:
-          name: macBuild
+          name: P-Slice.0.6.3_mac
           path: export/PE0.6.3/release/macos/bin
