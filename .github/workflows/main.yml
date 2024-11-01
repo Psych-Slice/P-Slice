@@ -34,7 +34,7 @@ jobs:
           - name: macOS AArch64
             os: macos-15
             buildArgs: mac
-            setupScript: sh ./setup/unix.sh
+            setupScript: sh ./setup/mobile.sh
             artifactName: P-Slice.1.0.macosarm64
             artifactPath: export/release/macos/bin/*
           - name: Android
