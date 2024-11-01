@@ -55,7 +55,7 @@ class ModsHelper {
 		for (key => val in cache){
 		if(	key.toLowerCase().contains("transitionswag") ||
 			key.contains("bg_graphic_") ||
-			key == "images/justBf.png"
+			key == "assets/images/justBf.png"
 		) Paths.currentTrackedAssets.set(key,val);
 		}
 		Paths.clearStoredMemory();

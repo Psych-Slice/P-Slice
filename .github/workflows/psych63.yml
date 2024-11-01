@@ -47,7 +47,7 @@ jobs:
       - name: Publish Artifact
         uses: actions/upload-artifact@v4.3.4
         with:
-          name: P-Slice.0.6.3_linux
+          name: P-Slice.0.6.3.linux
           path: 'export/PE0.6.3/release/linux/bin'
   buildWindows:
     runs-on: windows-latest
@@ -76,7 +76,7 @@ jobs:
       - name: Publish Artifact
         uses: actions/upload-artifact@v4.3.4
         with:
-          name: P-Slice.0.6.3_windows
+          name: P-Slice.0.6.3.windows
           path: export/PE0.6.3/release/windows/bin
   buildMac:
     runs-on: macos-12
@@ -104,5 +104,5 @@ jobs:
       - name: Publish Artifact
         uses: actions/upload-artifact@v4.3.4
         with:
-          name: P-Slice.0.6.3_mac
+          name: P-Slice.0.6.3.mac
           path: export/PE0.6.3/release/macos/bin
