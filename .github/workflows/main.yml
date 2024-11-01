@@ -2,9 +2,9 @@ name: Main
 
 on:
   push:
-    branches: [ master, master-dev ]
+    branches: [master, master-dev]
   pull_request:
-    branches: [ master, master-dev ]
+    branches: [master, master-dev]
   workflow_dispatch:
 
 jobs:
@@ -45,8 +45,8 @@ jobs:
             artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
     uses: ./.github/workflows/build.yml
     with:
-        name: ${{ matrix.name }}
-        os: ${{ matrix.os }}
-        buildArgs: ${{ matrix.buildArgs }}
-        artifactName: ${{ matrix.artifactName }}
-        artifactPath: ${{ matrix.artifactPath }}
+      name: ${{ matrix.name }}
+      os: ${{ matrix.os }}
+      buildArgs: ${{ matrix.buildArgs }}
+      artifactName: ${{ matrix.artifactName }}
+      artifactPath: ${{ matrix.artifactPath }}
