@@ -72,7 +72,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<!-- Assets -->
 	<assets path="assets/fonts" />
-	<assets path="assets/mobile" 		rename="assets/shared/mobile" if="mobile" />
+	<assets path="assets/mobile" 		rename="assets/shared/mobile" />
 	<assets path="assets/shared"        exclude="*.ogg" if="web"/>
 	<assets path="assets/shared"        exclude="*.mp3" unless="web"/>
 	<assets path="assets/embed"         exclude="*.ogg" if="web" embed="true"/>
