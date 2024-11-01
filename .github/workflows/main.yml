@@ -15,32 +15,32 @@ jobs:
         include:
           - name: Windows
             os: windows-2022
-            buildArgs: windows
+            buildArgs: "windows -D officialBuild"
             artifactName: P-Slice.1.0.windows
             artifactPath: export\release\windows\bin\*
           - name: Linux
             os: ubuntu-22.04
-            buildArgs: linux
+            buildArgs: "linux -D officialBuild"
             artifactName: P-Slice.1.0.linux
             artifactPath: export/release/linux/bin/*
           - name: macOS x86_64
             os: macos-13
-            buildArgs: mac
+            buildArgs: "mac -D officialBuild"
             artifactName: P-Slice.1.0.macosx64
             artifactPath: export/release/macos/bin/*
           - name: macOS AArch64
             os: macos-15
-            buildArgs: mac
+            buildArgs: "mac -D officialBuild"
             artifactName: P-Slice.1.0.macosarm64
             artifactPath: export/release/macos/bin/*
           - name: Android
             os: macos-14
-            buildArgs: "android -ONLY_ARMV7"
+            buildArgs: "android -D officialBuild"
             artifactName: P-Slice.1.0.android
             artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
           - name: iOS
             os: macos-15
-            buildArgs: "ios -nosign"
+            buildArgs: "ios -nosign -D officialBuild"
             artifactName: P-Slice.1.0.ios
             artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
     uses: ./.github/workflows/build.yml
