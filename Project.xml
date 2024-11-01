@@ -65,9 +65,9 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- __________________________ Game Assets & Etc. __________________________ -->
 
 	<!--FNF is changing openAL config, because the default one is broken. lol. -->
-	<section unless="mobile">
-		<assets path="assets/alsoft.conf" unless="windows" />
-		<assets path="assets/alsoft.conf" rename="assets/alsoft.ini" if="windows" />
+	<section if="desktop">
+		<assets path="alsoft.txt" rename="plugins/alsoft.ini" type="text" if="windows"/>
+		<assets path="alsoft.txt" rename="plugins/alsoft.conf" type="text" unless="windows"/>
 	</section>
 
 	<!-- Assets -->
