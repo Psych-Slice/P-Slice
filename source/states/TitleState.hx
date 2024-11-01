@@ -120,6 +120,7 @@ class TitleState extends MusicBeatState
 			}
 			persistentUpdate = true;
 			persistentDraw = true;
+			MobileData.init();
 		}
 
 		if (FlxG.save.data.weekCompleted != null)
@@ -135,6 +136,7 @@ class TitleState extends MusicBeatState
 		#else
 		if (FlxG.save.data.flashing == null && !FlashingState.leftState)
 		{
+			controls.isInSubstate = false;
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
 			MusicBeatState.switchState(new FlashingState());
@@ -407,17 +409,7 @@ class TitleState extends MusicBeatState
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
 
-		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
-
-		#if mobile
-		for (touch in FlxG.touches.list)
-		{
-			if (touch.justPressed)
-			{
-				pressedEnter = true;
-			}
-		}
-		#end
+		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT || (TouchUtil.justReleased && !SwipeUtil.swipeAny);
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
@@ -556,7 +548,7 @@ class TitleState extends MusicBeatState
 
 		if (swagShader != null)
 		{
-			if (controls.UI_LEFT)
+			if (cheatActive && TouchUtil.pressed || controls.UI_LEFT)
 				swagShader.hue -= elapsed * 0.1;
 			if (controls.UI_RIGHT)
 				swagShader.hue += elapsed * 0.1;
@@ -569,7 +561,8 @@ class TitleState extends MusicBeatState
 	{
 		for (i in 0...textArray.length)
 		{
-			lime.ui.Haptic.vibrate(100, 100);
+			if (ClientPrefs.data.vibrating)
+				lime.ui.Haptic.vibrate(100, 100);
 
 			var money:Alphabet = new Alphabet(0, 0, textArray[i], true);
 			money.screenCenter(X);
@@ -774,15 +767,15 @@ class TitleState extends MusicBeatState
 
 	function cheatCodeShit():Void
 	{
-		if (FlxG.keys.justPressed.ANY)
+		if (SwipeUtil.swipeAny || FlxG.keys.justPressed.ANY)
 		{
-			if (controls.NOTE_DOWN_P || controls.UI_DOWN_P)
+			if (controls.NOTE_DOWN_P || controls.UI_DOWN_P || SwipeUtil.swipeUp)
 				codePress(FlxDirectionFlags.DOWN);
-			if (controls.NOTE_UP_P || controls.UI_UP_P)
+			if (controls.NOTE_UP_P || controls.UI_UP_P  || SwipeUtil.swipeDown)
 				codePress(FlxDirectionFlags.UP);
-			if (controls.NOTE_LEFT_P || controls.UI_LEFT_P)
+			if (controls.NOTE_LEFT_P || controls.UI_LEFT_P || SwipeUtil.swipeRight)
 				codePress(FlxDirectionFlags.LEFT);
-			if (controls.NOTE_RIGHT_P || controls.UI_RIGHT_P)
+			if (controls.NOTE_RIGHT_P || controls.UI_RIGHT_P || SwipeUtil.swipeLeft)
 				codePress(FlxDirectionFlags.RIGHT);
 		}
 	}

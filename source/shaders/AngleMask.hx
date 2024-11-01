@@ -1,7 +1,5 @@
 package shaders;
 
-import flixel.system.FlxAssets.FlxShader;
-
 class AngleMask extends FlxShader
 {
   public var extraColor(default, set):FlxColor = 0xFFFFFFFF;

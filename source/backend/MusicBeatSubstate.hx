@@ -4,8 +4,12 @@ import flixel.FlxSubState;
 
 class MusicBeatSubstate extends FlxSubState
 {
+	public static var instance:MusicBeatSubstate;
+
 	public function new()
 	{
+		instance = this;
+		//controls.isInSubstate = true;
 		super();
 	}
 
@@ -24,6 +28,84 @@ class MusicBeatSubstate extends FlxSubState
 
 	inline function get_controls():Controls
 		return Controls.instance;
+
+	public var touchPad:TouchPad;
+	public var hitbox:Hitbox;
+	public var camControls:FlxCamera;
+	public var tpadCam:FlxCamera;
+
+	public function addTouchPad(DPad:String, Action:String)
+	{
+		touchPad = new TouchPad(DPad, Action);
+		add(touchPad);
+	}
+
+	public function removeTouchPad()
+	{
+		if (touchPad != null)
+		{
+			remove(touchPad);
+			touchPad = FlxDestroyUtil.destroy(touchPad);
+		}
+
+		if(tpadCam != null)
+		{
+			FlxG.cameras.remove(tpadCam);
+			tpadCam = FlxDestroyUtil.destroy(tpadCam);
+		}
+	}
+
+	public function addHitbox(defaultDrawTarget:Bool = false):Void
+	{
+		var extraMode = MobileData.extraActions.get(ClientPrefs.data.extraHints);
+
+		hitbox = new Hitbox(extraMode);
+		hitbox = MobileData.setButtonsColors(hitbox);
+
+		camControls = new FlxCamera();
+		camControls.bgColor.alpha = 0;
+		FlxG.cameras.add(camControls, defaultDrawTarget);
+
+		hitbox.cameras = [camControls];
+		hitbox.visible = false;
+		add(hitbox);
+	}
+
+	public function removeHitbox()
+	{
+		if (hitbox != null)
+		{
+			remove(hitbox);
+			hitbox = FlxDestroyUtil.destroy(hitbox);
+			hitbox = null;
+		}
+
+		if(camControls != null)
+		{
+			FlxG.cameras.remove(camControls);
+			camControls = FlxDestroyUtil.destroy(camControls);
+		}
+	}
+
+	public function addTouchPadCamera(defaultDrawTarget:Bool = false):Void
+	{
+		if (touchPad != null)
+		{
+			tpadCam = new FlxCamera();
+			tpadCam.bgColor.alpha = 0;
+			FlxG.cameras.add(tpadCam, defaultDrawTarget);
+			touchPad.cameras = [tpadCam];
+		}
+	}
+
+	override function destroy()
+	{
+		//controls.isInSubstate = false;
+		removeTouchPad();
+		removeHitbox();
+		
+		super.destroy();
+	}
 
 	override function update(elapsed:Float)
 	{

@@ -150,7 +150,7 @@ class DialogueBox extends FlxSpriteGroup
 			dialogueStarted = true;
 		}
 
-		if (Controls.instance.BACK && !pauseJustClosed && !isEnding)
+		if (#if android FlxG.android.justReleased.BACK || #end Controls.instance.BACK && !pauseJustClosed && !isEnding)
 		{
 			var game = PlayState.instance;
 			FlxG.camera.followLerp = 0;
@@ -189,7 +189,7 @@ class DialogueBox extends FlxSpriteGroup
 				}
 			});
 		}
-		else if (Controls.instance.ACCEPT)
+		else if (TouchUtil.justPressed || Controls.instance.ACCEPT)
 		{
 			if (dialogueEnded)
 			{

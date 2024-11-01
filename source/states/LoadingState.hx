@@ -486,7 +486,7 @@ class LoadingState extends MusicBeatState
 			{
 				for (subfolder in Mods.directoriesWithFile(Paths.getSharedPath(), '$prefix/$nam'))
 				{
-					for (file in FileSystem.readDirectory(subfolder))
+					for (file in Paths.readDirectory(subfolder))
 					{
 						if(file.endsWith(ext))
 						{

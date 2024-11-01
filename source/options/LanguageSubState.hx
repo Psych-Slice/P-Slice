@@ -11,6 +11,7 @@ class LanguageSubState extends MusicBeatSubstate
 	var curSelected:Int = 0;
 	public function new()
 	{
+		controls.isInSubstate = true;
 		super();
 
 		var bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
@@ -92,6 +93,8 @@ class LanguageSubState extends MusicBeatSubstate
 			grpLanguages.add(text);
 		}
 		changeSelected();
+
+        addTouchPad('LEFT_FULL', 'A_B');
 	}
 
 	var changedLanguage:Bool = false;
@@ -116,6 +119,7 @@ class LanguageSubState extends MusicBeatSubstate
 				MusicBeatState.resetState();
 			}
 			else close();
+			controls.isInSubstate = false;
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 		}
 

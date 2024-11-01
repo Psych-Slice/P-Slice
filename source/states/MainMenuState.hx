@@ -121,6 +121,8 @@ class MainMenuState extends MusicBeatState
 		#end
 		#end
 
+		addTouchPad('LEFT_FULL', 'A_B_E');
+
 		super.create();
 
 		FlxG.camera.follow(camFollow, null, 0.06);
@@ -232,15 +234,13 @@ class MainMenuState extends MusicBeatState
 					}
 				}
 			}
-			#if desktop
-			if (controls.justPressed('debug_1'))
+			if (touchPad.buttonE.justPressed || controls.justPressed('debug_1'))
 			{
 				selectedSomethin = true;
 				FlxTransitionableState.skipNextTransIn = false;
 				FlxTransitionableState.skipNextTransOut = false;
 				MusicBeatState.switchState(new MasterEditorMenu());
 			}
-			#end
 		}
 
 		super.update(elapsed);

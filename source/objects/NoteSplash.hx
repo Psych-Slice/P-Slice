@@ -6,8 +6,6 @@ import shaders.RGBPalette;
 
 import states.editors.NoteSplashEditorState;
 
-import flixel.system.FlxAssets.FlxShader;
-
 private typedef RGB = {
 	r:Null<Int>,
 	g:Null<Int>,

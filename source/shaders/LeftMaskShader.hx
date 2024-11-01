@@ -1,8 +1,6 @@
 package shaders;
 
 import flixel.math.FlxRect;
-import flixel.system.FlxAssets.FlxShader;
-
 class LeftMaskShader extends FlxShader
 {
   public var swagMaskX(default, set):Float = 0;

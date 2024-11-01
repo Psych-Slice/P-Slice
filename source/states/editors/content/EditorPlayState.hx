@@ -104,7 +104,7 @@ class EditorPlayState extends MusicBeatSubstate
 		add(comboGroup);
 		strumLineNotes = new FlxTypedGroup<StrumNote>();
 		add(strumLineNotes);
-		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
+		grpNoteSplashes = new FlxTypedGroup<NoteSplash>(8);
 		add(grpNoteSplashes);
 		
 		var splash:NoteSplash = new NoteSplash();
@@ -131,7 +131,13 @@ class EditorPlayState extends MusicBeatSubstate
 		dataTxt.borderSize = 1.25;
 		add(dataTxt);
 
-		var tipText:FlxText = new FlxText(10, FlxG.height - 24, 0, 'Press ESC to Go Back to Chart Editor', 16);
+        var daButton:String;
+	if (controls.mobileC)
+		daButton = #if android "BACK" #else "X" #end;
+        else
+		daButton = "ESC";
+
+    	var tipText:FlxText = new FlxText(10, FlxG.height - 24, 0, 'Press ' + daButton + ' to Go Back to Chart Editor', 16);
 		tipText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		tipText.borderSize = 2;
 		tipText.scrollFactor.set();
@@ -151,6 +157,14 @@ class EditorPlayState extends MusicBeatSubstate
 		updateScore();
 		cachePopUpScore();
 
+		#if !android
+		addTouchPad('NONE', 'P');
+		addTouchPadCamera(false);
+		#end
+
+		addHitbox();
+		hitbox.visible = true;
+
 		super.create();
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
@@ -158,8 +172,9 @@ class EditorPlayState extends MusicBeatSubstate
 
 	override function update(elapsed:Float)
 	{
-		if(controls.BACK || FlxG.keys.justPressed.ESCAPE || FlxG.keys.justPressed.F12)
+		if(#if android FlxG.android.justReleased.BACK #else touchPad.buttonP.justPressed #end || controls.BACK || FlxG.keys.justPressed.ESCAPE || FlxG.keys.justPressed.F12)
 		{
+			hitbox.visible = false;
 			endSong();
 			super.update(elapsed);
 			return;
@@ -873,7 +888,6 @@ class EditorPlayState extends MusicBeatSubstate
 	}
 
 	public function invalidateNote(note:Note):Void {
-		note.kill();
 		notes.remove(note, true);
 		note.destroy();
 	}

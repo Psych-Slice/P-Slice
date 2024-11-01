@@ -92,15 +92,19 @@ class Controls
 	private function get_RESET() return justPressed('reset');
 	private function get_CHAR_SELECT() return justPressed('char_select');
 
-	//Gamepad & Keyboard stuff
+	//Gamepad, Keyboard & Mobile stuff
 	public var keyboardBinds:Map<String, Array<FlxKey>>;
 	public var gamepadBinds:Map<String, Array<FlxGamepadInputID>>;
+	public var mobileBinds:Map<String, Array<MobileInputID>>;
 	public function justPressed(key:String)
 	{
 		var result:Bool = (FlxG.keys.anyJustPressed(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadJustPressed(gamepadBinds[key]) == true;
+		return result
+			|| _myGamepadJustPressed(gamepadBinds[key]) == true
+			|| hitboxJustPressed(mobileBinds[key]) == true
+			|| touchPadJustPressed(mobileBinds[key]) == true;
 	}
 
 	public function pressed(key:String)
@@ -108,7 +112,10 @@ class Controls
 		var result:Bool = (FlxG.keys.anyPressed(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadPressed(gamepadBinds[key]) == true;
+		return result
+			|| _myGamepadPressed(gamepadBinds[key]) == true
+			|| hitboxPressed(mobileBinds[key]) == true
+			|| touchPadPressed(mobileBinds[key]) == true;
 	}
 
 	public function justReleased(key:String)
@@ -116,7 +123,10 @@ class Controls
 		var result:Bool = (FlxG.keys.anyJustReleased(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadJustReleased(gamepadBinds[key]) == true;
+		return result
+			|| _myGamepadJustReleased(gamepadBinds[key]) == true
+			|| hitboxJustReleased(mobileBinds[key]) == true
+			|| touchPadJustReleased(mobileBinds[key]) == true;
 	}
 
 	public var controllerMode:Bool = false;
@@ -166,11 +176,119 @@ class Controls
 		return false;
 	}
 
-	// IGNORE THESE
+	public var isInSubstate:Bool = false; // don't worry about this it becomes true and false on it's own in MusicBeatSubstate
+	public var requestedInstance(get, default):Dynamic; // is set to MusicBeatState or MusicBeatSubstate when the constructor is called
+	public var requestedHitbox(get, default):Hitbox; // for PlayState and EditorPlayState
+	public var mobileC(get, never):Bool;
+
+	private function touchPadPressed(keys:Array<MobileInputID>):Bool
+	{
+		if (keys != null && requestedInstance.touchPad != null)
+		{
+			if (requestedInstance.touchPad.anyPressed(keys) == true)
+			{
+				controllerMode = true; // !!DO NOT DISABLE THIS IF YOU DONT WANT TO KILL THE INPUT FOR MOBILE!!
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private function touchPadJustPressed(keys:Array<MobileInputID>):Bool
+	{
+		if (keys != null && requestedInstance.touchPad != null)
+		{
+			if (requestedInstance.touchPad.anyJustPressed(keys) == true)
+			{
+				controllerMode = true;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private function touchPadJustReleased(keys:Array<MobileInputID>):Bool
+	{
+		if (keys != null && requestedInstance.touchPad != null)
+		{
+			if (requestedInstance.touchPad.anyJustReleased(keys) == true)
+			{
+				controllerMode = true;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private function hitboxPressed(keys:Array<MobileInputID>):Bool
+	{
+		if (keys != null && requestedHitbox != null)
+		{
+			if (requestedHitbox.anyPressed(keys))
+			{
+				controllerMode = true;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private function hitboxJustPressed(keys:Array<MobileInputID>):Bool
+	{
+		if (keys != null && requestedHitbox != null)
+		{
+			if (requestedHitbox.anyJustPressed(keys))
+			{
+				controllerMode = true;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private function hitboxJustReleased(keys:Array<MobileInputID>):Bool
+	{
+		if (keys != null && requestedHitbox != null)
+		{
+			if (requestedHitbox.anyJustReleased(keys))
+			{
+				controllerMode = true;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@:noCompletion
+	private function get_requestedInstance():Dynamic
+	{
+		if (isInSubstate)
+			return MusicBeatSubstate.instance;
+		else
+			return MusicBeatState.getState();
+	}
+
+	@:noCompletion
+	private function get_requestedHitbox():Hitbox
+	{
+		return requestedInstance.hitbox;
+	}
+
+	@:noCompletion
+	private function get_mobileC():Bool
+	{
+		if (ClientPrefs.data.controlsAlpha >= 0.1)
+			return true;
+		else
+			return false;
+	}
+
+	// IGNORE THESE/ karim: no.
 	public static var instance:Controls;
 	public function new()
 	{
 		keyboardBinds = ClientPrefs.keyBinds;
 		gamepadBinds = ClientPrefs.gamepadBinds;
+		mobileBinds = ClientPrefs.mobileBinds;
 	}
 }

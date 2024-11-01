@@ -3,7 +3,7 @@ package states.editors;
 import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
-import flash.net.FileFilter;
+import openfl.net.FileFilter;
 import haxe.Json;
 import lime.system.Clipboard;
 
@@ -19,21 +19,8 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 	var box:FlxSprite;
 	var daText:TypedAlphabet = null;
 
-	private static var TIP_TEXT_MAIN:String =
-	'JKLI - Move camera (Hold Shift to move 4x faster)
-	\nQ/E - Zoom out/in
-	\nR - Reset Camera
-	\nH - Toggle Speech Bubble
-	\nSpace - Reset text';
-
-	private static var TIP_TEXT_OFFSET:String =
-	'JKLI - Move camera (Hold Shift to move 4x faster)
-	\nQ/E - Zoom out/in
-	\nR - Reset Camera
-	\nH - Toggle Ghosts
-	\nWASD - Move Looping animation offset (Red)
-	\nArrow Keys - Move Idle/Finished animation offset (Blue)
-	\nHold Shift to move offsets 10x faster';
+	private static var TIP_TEXT_MAIN:String;
+	private static var TIP_TEXT_OFFSET:String;
 
 	var tipText:FlxText;
 	var offsetLoopText:FlxText;
@@ -99,6 +86,36 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 		box.updateHitbox();
 		hudGroup.add(box);
 
+		if (controls.mobileC) {
+		TIP_TEXT_MAIN =
+	'\nX - Reset Camera
+	\nY - Toggle Speech Bubble
+	\nA - Reset text';
+	
+	     TIP_TEXT_OFFSET =
+	'\nX - Reset Camera
+	\nY - Toggle Ghosts
+	\nTop Arrow Keys - Move Looping animation offset (Red)
+	\nBottom Arrow Keys - Move Idle/Finished animation offset (Blue)
+	\nHold Z to move offsets 10x faster';
+	} else {
+	    TIP_TEXT_MAIN =
+	'JKLI - Move camera (Hold Shift to move 4x faster)
+	\nQ/E - Zoom out/in
+	\nR - Reset Camera
+	\nH - Toggle Speech Bubble
+	\nSpace - Reset text';
+	
+	     TIP_TEXT_OFFSET =
+	'JKLI - Move camera (Hold Shift to move 4x faster)
+	\nQ/E - Zoom out/in
+	\nR - Reset Camera
+	\nH - Toggle Ghosts
+	\nWASD - Move Looping animation offset (Red)
+	\nArrow Keys - Move Idle/Finished animation offset (Blue)
+	\nHold Shift to move offsets 10x faster';
+	     }
+
 		tipText = new FlxText(10, 10, FlxG.width - 20, TIP_TEXT_MAIN, 8);
 		tipText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		tipText.cameras = [camHUD];
@@ -136,6 +153,9 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 		addEditorBox();
 		FlxG.mouse.visible = true;
 		updateCharTypeBox();
+		
+		addTouchPad('DIALOGUE_PORTRAIT', 'DIALOGUE_PORTRAIT');
+		addTouchPadCamera();
 		
 		super.create();
 	}
@@ -330,14 +350,16 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 			reloadCharacter();
 		});
 		
+		#if !mobile
 		var loadButton:PsychUIButton = new PsychUIButton(reloadImageButton.x + 100, reloadImageButton.y, "Load Character", function() {
 			loadCharacter();
 		});
-		var saveButton:PsychUIButton = new PsychUIButton(loadButton.x, reloadImageButton.y - 25, "Save Character", function() {
+		#end
+		var saveButton:PsychUIButton = new PsychUIButton(#if !mobile loadButton.x #else reloadImageButton.x + 100 #end, reloadImageButton.y - 25, "Save Character", function() {
 			saveCharacter();
 		});
 		tab_group.add(reloadImageButton);
-		tab_group.add(loadButton);
+		#if !mobile tab_group.add(loadButton); #end
 		tab_group.add(saveButton);
 	}
 	
@@ -456,7 +478,7 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 		if(PsychUIInputText.focusOn == null)
 		{
 			ClientPrefs.toggleVolumeKeys(true);
-			if(FlxG.keys.justPressed.SPACE && UI_mainbox.selectedName == 'Character') {
+			if((FlxG.keys.justPressed.SPACE || touchPad.buttonA.justPressed) && UI_mainbox.selectedName == 'Character') {
 				character.playAnim(character.jsonFile.animations[curAnim].anim);
 				daText.resetDialogue();
 				updateTextBox();
@@ -465,7 +487,7 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 			//lots of Ifs lol get trolled
 			var offsetAdd:Int = 1;
 			var speed:Float = 300;
-			if(FlxG.keys.pressed.SHIFT) {
+			if(FlxG.keys.pressed.SHIFT || touchPad.buttonZ.pressed) {
 				speed = 1200;
 				offsetAdd = 10;
 			}
@@ -485,8 +507,8 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 			if(UI_mainbox.selectedName == 'Animations' && curSelectedAnim != null && character.dialogueAnimations.exists(curSelectedAnim)) {
 				var moved:Bool = false;
 				var animShit:DialogueAnimArray = character.dialogueAnimations.get(curSelectedAnim);
-				var controlArrayLoop:Array<Bool> = [FlxG.keys.justPressed.A, FlxG.keys.justPressed.W, FlxG.keys.justPressed.D, FlxG.keys.justPressed.S];
-				var controlArrayIdle:Array<Bool> = [FlxG.keys.justPressed.LEFT, FlxG.keys.justPressed.UP, FlxG.keys.justPressed.RIGHT, FlxG.keys.justPressed.DOWN];
+				var controlArrayLoop:Array<Bool> = [FlxG.keys.justPressed.A || touchPad.buttonLeft2.justPressed, FlxG.keys.justPressed.W || touchPad.buttonUp2.justPressed, FlxG.keys.justPressed.D || touchPad.buttonRight2.justPressed, FlxG.keys.justPressed.S || touchPad.buttonDown2.justPressed];
+				var controlArrayIdle:Array<Bool> = [FlxG.keys.justPressed.LEFT || touchPad.buttonLeft.justPressed, FlxG.keys.justPressed.UP || touchPad.buttonUp.justPressed, FlxG.keys.justPressed.RIGHT || touchPad.buttonRight.justPressed, FlxG.keys.justPressed.DOWN || touchPad.buttonDown.justPressed];
 				for (i in 0...controlArrayLoop.length) {
 					if(controlArrayLoop[i]) {
 						if(i % 2 == 1) {
@@ -524,7 +546,7 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 				camGame.zoom += elapsed * camGame.zoom;
 				if(camGame.zoom > 1) camGame.zoom = 1;
 			}
-			if(FlxG.keys.justPressed.H) {
+			if(FlxG.keys.justPressed.H || touchPad.buttonY.justPressed) {
 				if(UI_mainbox.selectedName == 'Animations') {
 					currentGhosts++;
 					if(currentGhosts > 2) currentGhosts = 0;
@@ -537,7 +559,7 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 					hudGroup.visible = !hudGroup.visible;
 				}
 			}
-			if(FlxG.keys.justPressed.R) {
+			if(FlxG.keys.justPressed.R || touchPad.buttonX.justPressed) {
 				camGame.zoom = 1;
 				mainGroup.setPosition(0, 0);
 				hudGroup.visible = true;
@@ -599,7 +621,7 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 				}
 			}
 
-			if(FlxG.keys.justPressed.ESCAPE) {
+			if(FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justPressed.BACK #end || touchPad.buttonB.justPressed) {
 				if(!unsavedProgress)
 				{
 					MusicBeatState.switchState(new states.editors.MasterEditorMenu());
@@ -698,11 +720,16 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 			var splittedImage:Array<String> = imageInputText.text.trim().split('_');
 			var characterName:String = splittedImage[0].toLowerCase().replace(' ', '');
 
+			#if mobile
+			unsavedProgress = false;
+			StorageUtil.saveContent('$characterName.json', data);
+			#else
 			_file = new FileReference();
 			_file.addEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data, characterName + ".json");
+			#end
 		}
 	}
 

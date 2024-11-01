@@ -24,6 +24,8 @@ class LetterSort extends FlxTypedSpriteGroup<FlxSprite>
 
   public var inputEnabled:Bool = true;
 
+  var swipeBounds:FlxSprite;
+
   public function new(x, y)
   {
     super(x, y);
@@ -65,6 +67,10 @@ class LetterSort extends FlxTypedSpriteGroup<FlxSprite>
     // rightArrow.animation.play("arrow");
     add(rightArrow);
 
+    swipeBounds = new FlxSprite(-20, -20).makeGraphic(420, 95, FlxColor.TRANSPARENT);
+    swipeBounds.active = false;
+    add(swipeBounds);
+
     changeSelection(0);
   }
 
@@ -75,8 +81,8 @@ class LetterSort extends FlxTypedSpriteGroup<FlxSprite>
 
     if (inputEnabled)
     { //? changed controls mapping
-      if (Controls.FREEPLAY_LEFT) changeSelection(-1);
-      if (Controls.FREEPLAY_RIGHT) changeSelection(1);
+      if (Controls.FREEPLAY_LEFT || (TouchUtil.overlaps(swipeBounds) && SwipeUtil.swipeLeft)) changeSelection(-1);
+      if (Controls.FREEPLAY_RIGHT || (TouchUtil.overlaps(swipeBounds) && SwipeUtil.swipeRight)) changeSelection(1);
     }
   }
 

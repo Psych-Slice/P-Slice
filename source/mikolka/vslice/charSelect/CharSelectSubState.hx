@@ -9,6 +9,8 @@ import mikolka.vslice.freeplay.FreeplayState;
 import openfl.filters.BitmapFilter;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.FlxBasic;
+import flixel.util.FlxSort;
 import flixel.group.FlxGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup;
@@ -38,7 +40,7 @@ import mikolka.funkin.FramesJSFLParser.FramesJSFLFrame;
 import mikolka.funkin.custom.VsliceSubState as MusicBeatSubState;
 import mikolka.compatibility.FunkinPath as Paths;
 
-class CharSelectSubState extends MusicBeatSubState
+class CharSelectSubState extends MusicBeatState //MusicBeatSubState
 {
   var cursor:FlxSprite;
   var modSelector:ModSelector;
@@ -434,6 +436,9 @@ class CharSelectSubState extends MusicBeatSubState
 
       Save.instance.oldChar = true;
     });
+
+    addTouchPad('LEFT_FULL', 'A_B');
+    addTouchPadCamera();
   }
 
   function checkNewChar():Void
@@ -704,6 +709,7 @@ class CharSelectSubState extends MusicBeatSubState
             ));
         }
       });
+    FlxTween.tween(touchPad, {alpha: 0}, 0.8, {ease: FlxEase.expoOut});
   }
 
   var holdTmrUp:Float = 0;
@@ -715,9 +721,15 @@ class CharSelectSubState extends MusicBeatSubState
   var spamLeft:Bool = false;
   var spamRight:Bool = false;
 
+	public function refresh()
+	{
+		sort(SortUtil.byZIndex, FlxSort.ASCENDING);
+	}
+
   override public function update(elapsed:Float):Void
   {
-    
+    if(FlxG.sound.music != null)  FreeplayHelpers.updateConductorSongTime(FlxG.sound.music.time);
+
     super.update(elapsed);
 
     if (controls.UI_UP_R || controls.UI_DOWN_R || controls.UI_LEFT_R || controls.UI_RIGHT_R) selectSound.pitch = 1;
