@@ -44,7 +44,7 @@ jobs:
         run: sudo apt install libvlc-dev libvlccore-dev
 
       - name: Install Libraries
-        run: ${{setupScript}}
+        run: ${{inputs.setupScript}}
 
       - name: Configure Android
         if: inputs.name == 'Android'
