@@ -40,7 +40,7 @@ class CreditsState extends MusicBeatState
 		var defaultList:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
 			['P-Slice Engine Team'],
 			['Mikolka9144',			'mikolka',			'Did everything for P-slice',								 'https://gamebanana.com/members/3329541',									'2ebcfa'],
-			['mcagabe19',			'lily',             'Porter of P-slice and author of linc_luajit-rewriten',                       'https://youtube.com/@mcagabe19',		'FFE7C0'],
+			['mcagabe19',			'lily',             'Porter of P-slice for mobile devices',                       'https://youtube.com/@mcagabe19',		'FFE7C0'],
 			[""],
 			["Psych Engine Team"],
 			["Shadow Mario",		"shadowmario",		"Main Programmer and Head of Psych Engine",					"https://ko-fi.com/shadowmario",	"444444"],
