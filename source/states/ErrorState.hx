@@ -32,8 +32,11 @@ class ErrorState extends MusicBeatState
 		errorText.screenCenter();
 		add(errorText);
 		super.create();
+		
+		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad('NONE', 'A_B');
 		addTouchPadCamera();
+		#end
 	}
 
 	override function update(elapsed:Float)

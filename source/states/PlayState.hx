@@ -643,8 +643,10 @@ class PlayState extends MusicBeatState
 			}
 		#end
 
+		#if TOUCH_CONTROLS_ALLOWED
 		addHitbox();
 		hitbox.visible = true;
+		#end
 
 		startCallback();
 		RecalculateRating();
@@ -677,7 +679,7 @@ class PlayState extends MusicBeatState
 		var splash:SustainSplash = new SustainSplash();
 		splash.alpha = 0.0001;
 
-		#if !android
+		#if (!android && TOUCH_CONTROLS_ALLOWED)
 		addTouchPad('NONE', 'P');
 		addTouchPadCamera();
 		#end
@@ -2476,7 +2478,9 @@ class PlayState extends MusicBeatState
 	public var transitioning = false;
 	public function endSong()
 	{
+		#if TOUCH_CONTROLS_ALLOWED
 		hitbox.visible = #if !android touchPad.visible = #end false;
+		#end
 		//Should kill you if you tried to cheat
 		if(!startingSong)
 		{

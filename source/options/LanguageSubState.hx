@@ -94,7 +94,9 @@ class LanguageSubState extends MusicBeatSubstate
 		}
 		changeSelected();
 
+		#if TOUCH_CONTROLS_ALLOWED
         addTouchPad('LEFT_FULL', 'A_B');
+		#end
 	}
 
 	var changedLanguage:Bool = false;

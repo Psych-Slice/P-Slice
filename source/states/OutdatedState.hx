@@ -34,8 +34,9 @@ class OutdatedState extends MusicBeatState
 		warnText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
 		add(warnText);
-
+		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad('NONE', 'A_B');
+		#end
 	}
 
 	override function update(elapsed:Float)

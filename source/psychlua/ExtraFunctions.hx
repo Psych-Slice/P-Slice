@@ -21,9 +21,11 @@ class ExtraFunctions
 				case 'SPACE':
 					var space = Reflect.getProperty(FlxG.keys.justPressed, 'SPACE');
 					var mobileShit:Bool = false;
+					#if TOUCH_CONTROLS_ALLOWED
 					if (Controls.instance.mobileC)
 						if (MusicBeatState.getState().hitbox != null)
 							mobileShit = MusicBeatState.getState().hitbox.buttonExtra.justPressed;
+					#end
 					return space || mobileShit;
 
 				default:
@@ -37,9 +39,11 @@ class ExtraFunctions
 				case 'SPACE':
 					var space = Reflect.getProperty(FlxG.keys.pressed, 'SPACE');
 					var mobileShit:Bool = false;
+					#if TOUCH_CONTROLS_ALLOWED
 					if (Controls.instance.mobileC)
 						if (MusicBeatState.getState().hitbox != null)
 							mobileShit = MusicBeatState.getState().hitbox.buttonExtra.pressed;
+					#end
 					return space || mobileShit;
 
 				default:
@@ -53,9 +57,11 @@ class ExtraFunctions
 				case 'SPACE':
 					var space = Reflect.getProperty(FlxG.keys.justReleased, 'SPACE');
 					var mobileShit:Bool = false;
+					#if TOUCH_CONTROLS_ALLOWED
 					if (Controls.instance.mobileC)
 						if (MusicBeatState.getState().hitbox != null)
 							mobileShit = MusicBeatState.getState().hitbox.buttonExtra.justReleased;
+					#end
 					return space || mobileShit;
 
 				default:

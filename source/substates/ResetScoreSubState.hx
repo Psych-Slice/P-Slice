@@ -74,7 +74,9 @@ class ResetScoreSubState extends MusicBeatSubstate
 		for(letter in yesText.letters) letter.color = FlxColor.RED;
 		updateOptions();
 
+		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad('LEFT_RIGHT', 'A_B');
+		#end
 	}
 
 	override function update(elapsed:Float)

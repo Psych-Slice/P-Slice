@@ -277,10 +277,14 @@ class Controls
 	@:noCompletion
 	private function get_mobileC():Bool
 	{
+		#if TOUCH_CONTROLS_ALLOWED
 		if (ClientPrefs.data.controlsAlpha >= 0.1)
 			return true;
 		else
 			return false;
+		#else
+		return false;
+		#end
 	}
 
 	// IGNORE THESE/ karim: no.

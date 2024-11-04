@@ -19,7 +19,7 @@ class OptionsState extends MusicBeatState
 		'Gameplay',
 		'V-Slice Options',
 		#if TRANSLATIONS_ALLOWED  'Language', #end
-		'Mobile Options'
+		#if (TOUCH_CONTROLS_ALLOWED || mobile)'Mobile Options' #end
 	];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
@@ -58,8 +58,10 @@ class OptionsState extends MusicBeatState
 				MusicBeatState.switchState(new options.NoteOffsetState());
 			case 'V-Slice Options':
 				openSubState(new BaseGameSubState());
+			#if (TOUCH_CONTROLS_ALLOWED || mobile)
 			case 'Mobile Options':
 				openSubState(new mobile.options.MobileOptionsSubState());
+			#end
 			case 'Language':
 				openSubState(new options.LanguageSubState());
 		}
@@ -119,8 +121,10 @@ class OptionsState extends MusicBeatState
 		});
 		#end
 
+		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad('UP_DOWN', 'A_B');
-
+		#end
+		
 		super.create();
 	}
 
@@ -133,8 +137,11 @@ class OptionsState extends MusicBeatState
 		#end
 		controls.isInSubstate = false;
 		persistentUpdate = funnyCam.visible = true;
+		
+		#if TOUCH_CONTROLS_ALLOWED
 		removeTouchPad();
 		addTouchPad('UP_DOWN', 'A_B');
+		#end
 	}
 
 	override function update(elapsed:Float) {

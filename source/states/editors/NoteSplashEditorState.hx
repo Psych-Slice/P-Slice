@@ -118,7 +118,9 @@ class NoteSplashEditorState extends MusicBeatState
         curText.x += 5;
         add(curText);
 
+        #if TOUCH_CONTROLS_ALLOWED
         addTouchPad('LEFT_FULL', 'NOTE_SPLASH_EDITOR');
+        #end
 
         super.create();
     }
@@ -510,6 +512,37 @@ class NoteSplashEditorState extends MusicBeatState
     override function update(elapsed:Float)
     { 
         super.update(elapsed);
+        //? pulling key presses
+				var justPressed_C = FlxG.keys.justPressed.C;
+				var justPressed_V = FlxG.keys.justPressed.V;
+
+				var justPressed_LEFT = FlxG.keys.justPressed.LEFT;
+				var justPressed_RIGHT = FlxG.keys.justPressed.RIGHT;
+				var justPressed_UP = FlxG.keys.justPressed.UP;
+				var justPressed_DOWN = FlxG.keys.justPressed.DOWN;
+
+                var pressed_LEFT = FlxG.keys.pressed.LEFT;
+				var pressed_UP = FlxG.keys.pressed.UP;
+				var pressed_DOWN = FlxG.keys.pressed.DOWN;
+				var pressed_RIGHT = FlxG.keys.pressed.RIGHT;
+
+				var pressed_SHIFT = FlxG.keys.pressed.SHIFT;
+				#if TOUCH_CONTROLS_ALLOWED
+				justPressed_C = justPressed_C || touchPad.buttonC.justPressed;
+				justPressed_V = justPressed_V || touchPad.buttonV.justPressed;
+
+				justPressed_LEFT = justPressed_LEFT || touchPad.buttonLeft.justPressed;
+				justPressed_RIGHT = justPressed_RIGHT || touchPad.buttonRight.justPressed;
+				justPressed_UP = justPressed_UP || touchPad.buttonUp.justPressed;
+				justPressed_DOWN = justPressed_DOWN || touchPad.buttonDown.justPressed;
+
+                pressed_LEFT = pressed_LEFT || touchPad.buttonLeft.pressed;
+				pressed_RIGHT = pressed_RIGHT || touchPad.buttonRight.pressed;
+				pressed_UP = pressed_UP || touchPad.buttonUp.pressed;
+				pressed_DOWN = pressed_DOWN || touchPad.buttonDown.pressed;
+
+				pressed_SHIFT = pressed_SHIFT || touchPad.buttonZ.pressed;
+				#end
 
         errorText.x = FlxG.width - errorText.width - 5;
 
@@ -549,11 +582,11 @@ class NoteSplashEditorState extends MusicBeatState
             var changedOffset = false;
             if (controls.mobileC || FlxG.keys.pressed.CONTROL && config.animations.get(curAnim) != null)
             {
-                if (touchPad.buttonC.justPressed || FlxG.keys.justPressed.C)
+                if (justPressed_C)
                 {
                     copiedOffset = config.animations.get(curAnim).offsets.copy();
                 }
-                else if (touchPad.buttonV.justPressed || FlxG.keys.justPressed.V)
+                else if (justPressed_V)
                 {
                     var conf = config.animations.get(curAnim);
                     conf.offsets = copiedOffset.copy(); 
@@ -569,9 +602,9 @@ class NoteSplashEditorState extends MusicBeatState
                 }
             }
 
-            var multiplier:Int = (touchPad.buttonZ.pressed || FlxG.keys.pressed.SHIFT || FlxG.gamepads.anyPressed(LEFT_SHOULDER)) ? 10 : 1;
+            var multiplier:Int = (pressed_SHIFT || FlxG.gamepads.anyPressed(LEFT_SHOULDER)) ? 10 : 1;
 
-            var moveKeysP = [touchPad.buttonLeft.justPressed || FlxG.keys.justPressed.LEFT,touchPad.buttonRight.justPressed || FlxG.keys.justPressed.RIGHT, touchPad.buttonUp.justPressed || FlxG.keys.justPressed.UP, touchPad.buttonDown.justPressed || FlxG.keys.justPressed.DOWN];
+            var moveKeysP = [justPressed_LEFT,justPressed_RIGHT, justPressed_UP,justPressed_DOWN];
             if(moveKeysP.contains(true))
             {
                 config.animations[curAnim].offsets[0] += ((moveKeysP[0] ? 1 : 0) - (moveKeysP[1] ? 1 : 0)) * multiplier;
@@ -579,7 +612,7 @@ class NoteSplashEditorState extends MusicBeatState
                 changedOffset = true;
             }
     
-            var moveKeys = [touchPad.buttonLeft.pressed || FlxG.keys.pressed.LEFT, touchPad.buttonRight.pressed || FlxG.keys.pressed.RIGHT, touchPad.buttonUp.pressed || FlxG.keys.pressed.UP, touchPad.buttonDown.pressed || FlxG.keys.pressed.DOWN];
+            var moveKeys = [pressed_LEFT, pressed_RIGHT, pressed_UP, pressed_DOWN];
             if(moveKeys.contains(true))
             {
                 holdingArrowsTime += elapsed;
@@ -604,11 +637,15 @@ class NoteSplashEditorState extends MusicBeatState
         {
             if (controls.BACK)
                 MusicBeatState.switchState(new MasterEditorMenu());
+            #if TOUCH_CONTROLS_ALLOWED
             if (touchPad.buttonF.justPressed || FlxG.keys.justPressed.F1)
             {
                 removeTouchPad();
                 openSubState(new NoteSplashEditorHelpSubState());
             }
+            #else
+            if (FlxG.keys.justPressed.F1) openSubState(new NoteSplashEditorHelpSubState());     
+            #end
         }
 
         if (FlxG.mouse.overlaps(strums))
@@ -682,7 +719,9 @@ class NoteSplashEditorState extends MusicBeatState
     override function closeSubState()
 	{
 		super.closeSubState();
+        #if TOUCH_CONTROLS_ALLOWED
 		addTouchPad('LEFT_FULL', 'NOTE_SPLASH_EDITOR');
+        #end
 	}
 
     function playStrumAnim(?name:String, noteData:Int)
@@ -1068,8 +1107,10 @@ class NoteSplashEditorHelpSubState extends MusicBeatSubstate
 
         add(noteDataText);
 
+        #if TOUCH_CONTROLS_ALLOWED
         addTouchPad('NONE', 'B');
         touchPad.y -= 205;
+        #end
     }
 
     override function update(elapsed:Float)
@@ -1078,7 +1119,9 @@ class NoteSplashEditorHelpSubState extends MusicBeatSubstate
 
         if (controls.BACK || FlxG.keys.justPressed.F1)
         {
+            #if TOUCH_CONTROLS_ALLOWED
             removeTouchPad();
+            #end
             close();
         }
     }
