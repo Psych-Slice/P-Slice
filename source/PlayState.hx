@@ -5,7 +5,6 @@ import mikolka.vslice.results.ResultState;
 import mikolka.funkin.Scoring;
 import mikolka.funkin.custom.FunkinTools;
 import mikolka.vslice.results.Tallies.SaveScoreData;
-import ModsMenuState.ModMetadata;
 import mikolka.funkin.Scoring.ScoringRank;
 import flixel.graphics.FlxGraphic;
 #if desktop
@@ -3384,7 +3383,7 @@ class PlayState extends MusicBeatState
 	{
 		persistentUpdate = false;
 
-		var modManifest = new ModMetadata(Paths.currentModDirectory);
+		var modManifest = Mods.getPack(Paths.currentModDirectory);
 		var modName = modManifest.name == "" ? modManifest.name : "unknown mod";
 		// Mods.loadTopMod();
 

@@ -61,6 +61,20 @@ class Alphabet extends FlxSpriteGroup
 				alignment = LEFT;
 		}
 	}
+	public function setScale(newX:Float, newY:Null<Float> = null)
+		{
+			var lastX:Float = scale.x;
+			var lastY:Float = scale.y;
+			if(newY == null) newY = newX;
+			@:bypassAccessor
+				scaleX = newX;
+			@:bypassAccessor
+				scaleY = newY;
+	
+			scale.x = newX;
+			scale.y = newY;
+			set_text(text);
+		}
 
 	private function set_alignment(align:Alignment)
 	{
@@ -111,7 +125,7 @@ class Alphabet extends FlxSpriteGroup
 			{
 				letter.kill();
 				letters.remove(letter);
-				letter.destroy();
+				//letter.destroy();
 			}
 		}
 		letters = [];
