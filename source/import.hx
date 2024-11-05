@@ -15,14 +15,16 @@ import backend.Achievements;
 #end
 
 // Mobile Controls
+import mobile.input.MobileInputID;
+import mobile.backend.SwipeUtil;
+import mobile.backend.TouchUtil;
+#if TOUCH_CONTROLS_ALLOWED
 import mobile.objects.Hitbox;
 import mobile.objects.TouchPad;
 import mobile.objects.TouchButton;
-import mobile.input.MobileInputID;
 import mobile.backend.MobileData;
 import mobile.input.MobileInputManager;
-import mobile.backend.SwipeUtil;
-import mobile.backend.TouchUtil;
+#end
 
 // Android
 #if android

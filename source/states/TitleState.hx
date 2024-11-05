@@ -120,7 +120,9 @@ class TitleState extends MusicBeatState
 			}
 			persistentUpdate = true;
 			persistentDraw = true;
+			#if TOUCH_CONTROLS_ALLOWED
 			MobileData.init();
+			#end
 		}
 
 		if (FlxG.save.data.weekCompleted != null)

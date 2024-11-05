@@ -273,7 +273,9 @@ class PlayState extends MusicBeatState
 
 	public static var nextReloadAll:Bool = false;
 
+	#if TOUCH_CONTROLS_ALLOWED
 	public var luaTouchPad:TouchPad;
+	#end
 
 	override public function create()
 	{
@@ -3940,6 +3942,7 @@ class PlayState extends MusicBeatState
 	}
 	#end
 
+	#if TOUCH_CONTROLS_ALLOWED
 	public function makeLuaTouchPad(DPadMode:String, ActionMode:String) {
 		if(members.contains(luaTouchPad)) return;
 
@@ -4034,4 +4037,5 @@ class PlayState extends MusicBeatState
 		}
 		return false;
 	}
+	#end
 }
