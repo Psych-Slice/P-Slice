@@ -26,8 +26,8 @@ jobs:
             artifactName: P-Slice.1.0.linux
             artifactPath: export/release/linux/bin/*
           - name: macOS x86_64
-            os: macos-13
-            buildArgs: mac
+            os: macos-14
+            buildArgs: "mac -64 -D HXCPP_M64"
             setupScript: sh ./setup/mobile.sh
             artifactName: P-Slice.1.0.macosx64
             artifactPath: export/release/macos/bin/*
