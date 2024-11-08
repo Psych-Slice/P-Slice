@@ -167,6 +167,10 @@ class Main extends Sprite
 		Lib.current.stage.window.setIcon(icon);
 		#end
 
+		#if debug
+		flixel.addons.studio.FlxStudio.create();
+		#end
+
 		#if html5
 		FlxG.autoPause = false;
 		FlxG.mouse.visible = false;
