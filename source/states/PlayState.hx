@@ -679,8 +679,8 @@ class PlayState extends MusicBeatState
 
 		SustainSplash.startCrochet = Conductor.stepCrochet;
 		SustainSplash.frameRate = Math.floor(24 / 100 * SONG.bpm);
-		var splash:SustainSplash = new SustainSplash();
-		splash.alpha = 0.0001;
+		var holdSplash:SustainSplash = new SustainSplash();
+		holdSplash.alpha = 0.0001;
 
 		#if (!android && TOUCH_CONTROLS_ALLOWED)
 		addTouchPad('NONE', 'P');

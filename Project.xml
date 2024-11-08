@@ -131,11 +131,10 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc" />
 	<haxedef name="NO_PRECOMPILED_HEADERS" if="linux" />
 
-	<!-- Enables a terminal log prompt on debug builds -->
-	<haxelib name="hxcpp-debug-server" if="debug"/>
-	<haxelib name="flixel-studio" if="debug"/>
 	<section if="debug">
 		<!--These defines are mostly for testing (aren't required to be used)-->
+		<haxelib name="hxcpp-debug-server" />
+		<haxelib name="flixel-studio" />
 		<haxedef name="HXVLC_VERBOSE" value="2" />
 		<haxedef name="HXVLC_LOGGING" />
 	</section>

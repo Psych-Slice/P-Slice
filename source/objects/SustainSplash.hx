@@ -46,7 +46,6 @@ class SustainSplash extends FlxSprite
 		final timeThingy:Float = (startCrochet * lengthToGet + (timeToGet - Conductor.songPosition + ClientPrefs.data.ratingOffset)) / playbackRate * .001;
 
 		var tailEnd:Note = !daNote.isSustainNote ? daNote.tail[daNote.tail.length - 1] : daNote.parent.tail[daNote.parent.tail.length - 1];
-        tailEnd.mustPress = daNote.mustPress;
 
 		animation.play('hold', true, false, 0);
 		animation.curAnim.frameRate = frameRate;
@@ -70,7 +69,7 @@ class SustainSplash extends FlxSprite
 		if (timer != null)
 			timer.cancel();
 
-		if ((!PlayState.instance.cpuControlled && tailEnd.mustPress) && ClientPrefs.data.holdSplashAlpha != 0)
+		if (!daNote.hitByOpponent && ClientPrefs.data.holdSplashAlpha != 0)
 			timer = new FlxTimer().start(timeThingy, (idk:FlxTimer) ->
 			{
 				if (!(daNote.isSustainNote ? daNote.parent.noteSplashData.disabled : daNote.noteSplashData.disabled))
