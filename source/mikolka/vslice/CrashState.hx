@@ -93,7 +93,7 @@ class CrashState extends FlxState
 			trace: errMsg,
 			extendedTrace: errExtended,
 			date: Date.now().toString(),
-			systemName: Sys.systemName(),
+			systemName: #if android 'Android' #elseif linux 'Linux' #elseif mac 'macOS' #elseif windows 'Windows' #else 'iOS' #end,
 			activeMod: ModsHelper.getActiveMod()
 		}
 	}
@@ -101,7 +101,7 @@ class CrashState extends FlxState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		if (FlxG.keys.justPressed.ENTER)
+		if (TouchUtil.justReleased || FlxG.keys.justPressed.ENTER)
 		{
 			TitleState.initialized = false;
 			TitleState.closedState = false;
@@ -160,14 +160,11 @@ class CrashState extends FlxState
 
 	static function saveError(error:CrashData)
 	{
-		var path:String;
 		var errMsg = "";
 		var dateNow:String = error.date;
 
 		dateNow = dateNow.replace(' ', '_');
 		dateNow = dateNow.replace(':', "'");
-
-		path = './crash/' + 'PSlice_' + dateNow + '.txt';
 
 		errMsg += '\nUncaught Error: ' + error.message + "\n";
 		for (x in error.extendedTrace)
@@ -178,15 +175,18 @@ class CrashState extends FlxState
 		errMsg += 'Active mod: ${error.activeMod}\n';
 		errMsg += 'Platform: ${error.systemName}\n';
 		errMsg += '\n';
-		errMsg += '\nPlease report this error to the GitHub page: https://github.com/mikolka9144/P-Slice\n\n> Crash Handler written by: sqirra-rng';
+		errMsg += '\nPlease report this error to the GitHub page: https://github.com/Psych-Slice/P-Slice\n\n> Crash Handler written by: sqirra-rng';
 
-		if (!FileSystem.exists('./crash/'))
-			FileSystem.createDirectory('./crash/');
-
+		#if !LEGACY_PSYCH
+		@:privateAccess // lazy
+        backend.CrashHandler.saveErrorMessage(errMsg + '\n');
+		#else
+		var path = './crash/' + 'PSlice_' + dateNow + '.txt';
 		File.saveContent(path, errMsg + '\n');
-
 		Sys.println(errMsg);
 		Sys.println('Crash dump saved in ' + Path.normalize(path));
+		#end
+		Sys.println(errMsg);
 	}
 
 	var textNextY = 5;

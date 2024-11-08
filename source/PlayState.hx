@@ -521,6 +521,7 @@ class PlayState extends MusicBeatState
 			case 'phillyTrainErect': new PhillyTrainErect();  		//Week 3 Special 
 			case 'limoRideErect': new LimoRideErect();  			//Week 4 Special 
 			case 'mallXmasErect': new MallXmasErect(); 				//Week 5 Special
+			case 'phillyStreetsErect': new PhillyStreetsErect(); 	//Weekend 1 Special 
 		}
 
 		if (isPixelStage)

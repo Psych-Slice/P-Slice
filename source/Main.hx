@@ -123,11 +123,6 @@ class Main extends Sprite
 			memoryCounter.visible = ClientPrefs.showFPS;
 		}
 		#end
-
-		#if linux
-		var icon = Image.fromFile("icon.png");
-		Lib.current.stage.window.setIcon(icon);
-		#end
 		
 		#if html5
 		FlxG.autoPause = false;

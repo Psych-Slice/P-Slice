@@ -1,6 +1,7 @@
 package mikolka.stages.erect;
 
 import shaders.AdjustColorShader;
+import flxanimate.motion.AdjustColor;
 import mikolka.compatibility.VsliceOptions;
 
 class PhillyTrainErect extends PicoCapableStage
@@ -48,6 +49,7 @@ class PhillyTrainErect extends PicoCapableStage
 		phillyStreet = new BGSprite('philly/erect/street', -40, 50);
 		add(phillyStreet);
 	}
+
 	override function createPost() {
 		super.createPost();
 		if(VsliceOptions.SHADERS){

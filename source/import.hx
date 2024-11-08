@@ -23,6 +23,7 @@ import flxanimate.PsychFlxAnimate as FlxAnimate;
 
 //P-Slice stage system
 import mikolka.stages.objects.*;
+import mobile.*;
 
 #if flxanimate
 import flxanimate.*;

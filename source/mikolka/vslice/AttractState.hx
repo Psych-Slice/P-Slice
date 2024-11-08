@@ -123,12 +123,12 @@ class AttractState extends MusicBeatSubstate
 
     // If the user presses any button, skip the video.
     #if LEGACY_PSYCH
-    if (FlxG.keys.justPressed.ANY && 
+    if (TouchUtil.justPressed || FlxG.keys.justPressed.ANY && 
       !FlxG.keys.anyJustPressed(TitleState.muteKeys) && 
       !FlxG.keys.anyJustPressed(TitleState.volumeDownKeys) && 
       !FlxG.keys.anyJustPressed(TitleState.volumeUpKeys))
     #else
-    if (FlxG.keys.justPressed.ANY && !controls.justPressed("volume_up") && !controls.justPressed("volume_down") && !controls.justPressed("volume_mute"))
+    if (TouchUtil.justPressed || FlxG.keys.justPressed.ANY && !controls.justPressed("volume_up") && !controls.justPressed("volume_down") && !controls.justPressed("volume_mute"))
     #end
     {
       onAttractEnd();

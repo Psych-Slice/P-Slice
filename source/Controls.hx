@@ -351,6 +351,9 @@ class Controls extends FlxActionSet
 	{
 		super.update();
 	}
+	//? Solely for mocking mobile shit
+	public var isInSubstate:Bool = false;
+	public var mobileC:Bool = false;
 
 	// inline
 	public function checkByName(name:Action):Bool
