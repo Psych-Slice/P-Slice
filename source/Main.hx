@@ -162,14 +162,11 @@ class Main extends Sprite
 		}
 		#end
 
-		#if linux
-		var icon = Image.fromFile("icon.png");
-		Lib.current.stage.window.setIcon(icon);
-		#end
+		
 
-		#if debug
-		flixel.addons.studio.FlxStudio.create();
-		#end
+		// #if debug
+		// flixel.addons.studio.FlxStudio.create();
+		// #end
 
 		#if html5
 		FlxG.autoPause = false;
