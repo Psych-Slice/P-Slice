@@ -50,7 +50,7 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 
 			noteSkins.insert(0, ClientPrefs.defaultData.noteSkin); //Default skin always comes first
 			var option:Option = new Option('Note Skins:',
-				"Select your prefered Note skin.",
+				"Select your preferred Note skin.",
 				'noteSkin',
 				STRING,
 				noteSkins);
@@ -67,7 +67,7 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 
 			noteSplashes.insert(0, ClientPrefs.defaultData.splashSkin); //Default skin always comes first
 			var option:Option = new Option('Note Splashes:',
-				"Select your prefered Note Splash variation or turn it off.",
+				"Select your preferred Note Splash variation or turn it off.",
 				'splashSkin',
 				STRING,
 				noteSplashes);
@@ -80,9 +80,10 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 		{
 			if(!holdSkins.contains(ClientPrefs.data.holdSkin))
 				ClientPrefs.data.holdSkin = ClientPrefs.defaultData.holdSkin; //Reset to default if saved splashskin couldnt be found
+			holdSkins.remove(ClientPrefs.defaultData.holdSkin);
 			holdSkins.insert(0, ClientPrefs.defaultData.holdSkin); //Default skin always comes first
 			var option:Option = new Option('Hold Splashes:',
-				"Select your prefered Hold Splash variation or turn it off.",
+				"Select your preferred Hold Splash variation or turn it off.",
 				'holdSkin',
 				STRING,
 				holdSkins);
