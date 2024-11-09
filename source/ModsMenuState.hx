@@ -920,7 +920,7 @@ class MenuButton extends FlxSpriteGroup
 			textOn.alpha = 0.6;
 			textOn.visible = false;
 			centerOnBg(textOn);
-			textOn.y -= 30;
+			textOn.y -= 70;
 			add(textOn);
 			
 			textOff = new Alphabet(0, 0, "", true);
