@@ -24,7 +24,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- ______________________ PSYCH ENGINE CUSTOMIZATION ______________________ -->
 
 	<!-- Compiles mod support for P-Slice. Feel free to disable if you're making a source mod -->
-	<!-- <define name="MODS_ALLOWED" if="desktop || mobile" /> -->
+	<define name="MODS_ALLOWED" if="desktop || mobile" />
 
 	<!-- Adds support for Psuch's lua/HScript files-->
 	<define name="HSCRIPT_ALLOWED" if="desktop || mobile" />

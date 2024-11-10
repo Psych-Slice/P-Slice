@@ -677,7 +677,7 @@ class CharSelectSubState extends MusicBeatState //MusicBeatSubState
     allowInput = false;
     autoFollow = false; //! Add mod support
     //? P-Slice mods
-    VsliceOptions.LAST_MOD = {mod_dir: modSelector.curMod,char_name: curChar}; //? save selected character
+    VsliceOptions.LAST_MOD = {mod_dir: modSelector?.curMod ?? "",char_name: curChar}; //? save selected character
     #if MODS_ALLOWED
     FlxTween.tween(modSelector, {y: modSelector.y + 80}, 0.8, {ease: FlxEase.backIn});
     #end

@@ -17,8 +17,8 @@ class SustainSplash extends FlxSprite
 
 		frames = Paths.getSparrowAtlas('holdCovers/holdCover-' + ClientPrefs.data.holdSkin);
 
-		animation.addByPrefix('hold', 'hold', 24, true);
-		animation.addByPrefix('end', 'end', 24, false);
+		animation.addByPrefix('hold', 'holdCover0', 24, true);
+		animation.addByPrefix('end', 'holdCoverEnd0', 24, false);
 	}
 
 	override function update(elapsed)
