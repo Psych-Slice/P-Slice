@@ -295,6 +295,7 @@ class CharSelectSubState extends MusicBeatSubState
     grpCursors.add(cursor);
 
     //? P-Slice mods
+    #if MODS_ALLOWED
     var UICam = new FunkinCamera("special",0,0,FlxG.width,FlxG.height);
     UICam.bgColor = 0x00FFFFFF;
     FlxG.cameras.add(UICam,false);
@@ -304,6 +305,7 @@ class CharSelectSubState extends MusicBeatSubState
 
     modSelector.y +=80;
     FlxTween.tween(modSelector, {y: modSelector.y - 80}, 1.3, {ease: FlxEase.expoOut});
+    #end
     //?
 
     selectSound = FunkinSound.load(Paths.sound('CS_select'),0.7); //? fix loaders
@@ -668,9 +670,11 @@ class CharSelectSubState extends MusicBeatSubState
     allowInput = false;
     autoFollow = false; //! Add mod support
     //? P-Slice mods
+    #if MODS_ALLOWED
     VsliceOptions.LAST_MOD = {mod_dir: modSelector.curMod,char_name: curChar}; //? save selected character
 
     FlxTween.tween(modSelector, {y: modSelector.y + 80}, 0.8, {ease: FlxEase.backIn});
+    #end
     //?
     FlxTween.tween(cursor, {alpha: 0}, 0.8, {ease: FlxEase.expoOut});
     FlxTween.tween(cursorBlue, {alpha: 0}, 0.8, {ease: FlxEase.expoOut});
