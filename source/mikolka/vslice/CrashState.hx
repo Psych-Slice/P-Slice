@@ -184,7 +184,6 @@ class CrashState extends FlxState
 		var path = './crash/' + 'PSlice_' + dateNow + '.txt';
 		File.saveContent(path, errMsg + '\n');
 		Sys.println(errMsg);
-		Sys.println('Crash dump saved in ' + Path.normalize(path));
 		#end
 		Sys.println(errMsg);
 	}

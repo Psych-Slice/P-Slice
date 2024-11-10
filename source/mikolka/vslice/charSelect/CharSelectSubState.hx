@@ -281,14 +281,14 @@ class CharSelectSubState extends MusicBeatState //MusicBeatSubState
     cursorConfirmed = new FlxSprite(0, 0);
     cursorConfirmed.scrollFactor.set();
     cursorConfirmed.frames = Paths.getSparrowAtlas("charSelect/charSelectorConfirm");
-    cursorConfirmed.animation.addByPrefix("idle", "chrSelectCursor ACCEPTED instance 1", 24, true);
+    cursorConfirmed.animation.addByPrefix("idle", "cursor ACCEPTED instance 1", 24, true);
     cursorConfirmed.visible = false;
     add(cursorConfirmed);
 
     cursorDenied = new FlxSprite(0, 0);
     cursorDenied.scrollFactor.set();
     cursorDenied.frames = Paths.getSparrowAtlas("charSelect/charSelectorDenied");
-    cursorDenied.animation.addByPrefix("idle", "chrSelectCursor DENIED instance 1", 24, false);
+    cursorDenied.animation.addByPrefix("idle", "cursor DENIED instance 1", 24, false);
     cursorDenied.visible = false;
     add(cursorDenied);
 
@@ -677,9 +677,8 @@ class CharSelectSubState extends MusicBeatState //MusicBeatSubState
     allowInput = false;
     autoFollow = false; //! Add mod support
     //? P-Slice mods
+    VsliceOptions.LAST_MOD = {mod_dir: modSelector?.curMod ?? "",char_name: curChar}; //? save selected character
     #if MODS_ALLOWED
-    VsliceOptions.LAST_MOD = {mod_dir: modSelector.curMod,char_name: curChar}; //? save selected character
-
     FlxTween.tween(modSelector, {y: modSelector.y + 80}, 0.8, {ease: FlxEase.backIn});
     #end
     //?
@@ -817,12 +816,12 @@ class CharSelectSubState extends MusicBeatState //MusicBeatSubState
     if (cursorX < -1)
     {
       cursorX = 1;
-      modSelector.changeDirectory(-1);
+      modSelector?.changeDirectory(-1);
     }
     if (cursorX > 1)
     {
       cursorX = -1;
-      modSelector.changeDirectory(1);
+      modSelector?.changeDirectory(1);
     }
     if (cursorY < -1)
     {

@@ -1,6 +1,5 @@
 package mikolka.vslice;
 
-import lime.graphics.Image;
 import openfl.filters.GlowFilter;
 import openfl.display.SpreadMethod;
 import openfl.display.GradientType;
@@ -135,7 +134,6 @@ class FunkinPreloader extends FlxBasePreloader
 
     // We can't even call trace() yet, until Flixel loads.
     trace('Initializing custom preloader...');
-    
 
     this.siteLockTitleText = "You Loser!";
     this.siteLockBodyText = "This isn't Newgrounds!\nGo play Friday Night Funkin' on Newgrounds:";
@@ -150,14 +148,15 @@ class FunkinPreloader extends FlxBasePreloader
     Lib.current.stage.color = 0xFF000000;
     Lib.current.stage.frameRate = 30;
 
-    #if linux
-		var icon = Image.fromFile("icon.png");
-		Lib.current.stage.window.setIcon(icon);
-		#end
-
     // Width and height of the preloader.
     this._width = Lib.current.stage.stageWidth;
     this._height = Lib.current.stage.stageHeight;
+
+    // Tux icon!!!
+    #if linux
+		var icon = lime.graphics.Image.fromFile("icon.png");
+		Lib.current.stage.window.setIcon(icon);
+		#end
 
     // Scale assets to the screen size.
     ratio = this._width / BASE_WIDTH / 2.0;
@@ -322,7 +321,6 @@ class FunkinPreloader extends FlxBasePreloader
     // trace('Time since last frame: ' + (lastElapsed - elapsed));
 
     downloadingAssetsPercent = percent;
-
     var loadPercent:Float = updateState(percent, elapsed);
     updateGraphics(loadPercent, elapsed);
 
