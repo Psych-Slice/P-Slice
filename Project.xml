@@ -23,20 +23,38 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	
 	<!-- ______________________ PSYCH ENGINE CUSTOMIZATION ______________________ -->
 
-	<define name="MODS_ALLOWED" if="desktop || mobile" />
+	<!-- Compiles mod support for P-Slice. Feel free to disable if you're making a source mod -->
+	<!-- <define name="MODS_ALLOWED" if="desktop || mobile" /> -->
+
+	<!-- Adds support for Psuch's lua/HScript files-->
 	<define name="HSCRIPT_ALLOWED" if="desktop || mobile" />
-	<define name="TOUCH_CONTROLS_ALLOWED" if="mobile || web" />
 	<define name="LUA_ALLOWED" if="cpp" />
-	<define name="ACHIEVEMENTS_ALLOWED" />
+
+	<!-- Enables Discord's Rich Presence integration-->
 	<define name="DISCORD_ALLOWED" if="desktop" unless="hl"/>
+	
+	<!-- Adds a Base game content to your build. Feel free to disable if you're making a source mod. -->
+	<define name="BASE_GAME_FILES" />
+
+	<!-- Adds support for touchscreen devices (like mobiles)-->
+	<define name="TOUCH_CONTROLS_ALLOWED" if="mobile || web" />
+
+	<!-- Do you want to check for P-Slice updates?-->
+	<define name="CHECK_FOR_UPDATES" if="officialBuild"/>
+
+	<!-- Do you want to support playing videos in your build?-->
+	<define name="VIDEOS_ALLOWED" if="desktop || mobile" unless="32bits"/> 
+	
+	<!-- Displays a "Touch here to play" screen-->
+	<define name="TOUCH_HERE_TO_PLAY" if="TOUCH_CONTROLS_ALLOWED"/>
+
+	<!-- Other stuff -->
+	<define name="ACHIEVEMENTS_ALLOWED" />
 	<define name="TRANSLATIONS_ALLOWED" />
 	<define name="SHOW_LOADING_SCREEN" />
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN -->
-	<define name="TOUCH_HERE_TO_PLAY" if="TOUCH_CONTROLS_ALLOWED"/>
-	<define name="COPYSTATE_ALLOWED" if="MODS_ALLOWED mobile"/>
 	<define name="TITLE_SCREEN_EASTER_EGG"/>
-	<define name="BASE_GAME_FILES" />
-	<define name="VIDEOS_ALLOWED" if="desktop || mobile" unless="32bits"/> <!-- IF YOU WANT TO USE VIDEOS ON YOUR SOURCE MOD, GET THIS LINE OUTSIDE OF THE SECTION -->
+	<define name="COPYSTATE_ALLOWED" if="MODS_ALLOWED mobile"/>
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
@@ -96,10 +114,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<section if="BASE_GAME_FILES">
 		<assets path="assets/base_game" rename="assets" exclude="*.ogg" if="web"/>
 		<assets path="assets/base_game" rename="assets" exclude="*.mp3"  unless="web"/>
-		<haxelib name="grig.audio" if="BASE_GAME_FILES"/>
-		<haxelib name="funkin.vis" if="BASE_GAME_FILES"/>
 	</section>
-	<define name="CHECK_FOR_UPDATES" if="officialBuild"/>
 
 	<section if="MODS_ALLOWED">
 		<assets path='example_mods' rename='mods' embed='false' />
@@ -112,6 +127,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<haxelib name="flixel-addons" version="3.2.2"/>
 	<haxelib name="tjson" version="1.4.0"/>
 	<haxelib name="FlxPartialSound" version="git"/>
+	<haxelib name="grig.audio" />
+	<haxelib name="funkin.vis" />
 
 	<!--Psych stuff needed-->
 	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
