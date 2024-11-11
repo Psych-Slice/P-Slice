@@ -8,22 +8,14 @@ import mikolka.vslice.results.ResultState;
 import objects.Character;
 import states.MainMenuState;
 
-class MasterEditorMenu extends MusicBeatState
+class ResultPreviewMenu extends MusicBeatState
 {
 	var options:Array<String> = [
-		'Chart Editor', 
-		'Character Editor', 
-		'Stage Editor', 
-		'Week Editor', 
-		'Test stickers', 
-		'Menu Character Editor', 
-		'Dialogue Editor', 
-		'Dialogue Portrait Editor',
-		#if debug
-		'Crash the game',
-		#end
-		'Note Splash Editor', 
-		'Result Preview Menu'
+		'Preview results (perfect)', 
+		'Preview results (excellent)', 
+		'Preview results (great)', 
+		'Preview results (good)', 
+		'Preview results (shit)'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
 	private var directories:Array<String> = [null];
@@ -55,35 +47,10 @@ class MasterEditorMenu extends MusicBeatState
 			leText.targetY = i;
 			grpTexts.add(leText);
 			leText.snapToPosition();
+			leText.screenCenter();
 		}
-
-		#if MODS_ALLOWED
-		var textBG:FlxSprite = new FlxSprite(0, FlxG.height - 42).makeGraphic(FlxG.width, 42, 0xFF000000);
-		textBG.alpha = 0.6;
-		add(textBG);
-
-		directoryTxt = new FlxText(textBG.x, textBG.y + 4, FlxG.width, '', 32);
-		directoryTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
-		directoryTxt.scrollFactor.set();
-		add(directoryTxt);
-
-		for (folder in Mods.getModDirectories())
-		{
-			directories.push(folder);
-		}
-
-		var found:Int = directories.indexOf(Mods.currentModDirectory);
-		if (found > -1)
-			curDirectory = found;
-		changeDirectory();
-		#end
-		changeSelection();
 
 		FlxG.mouse.visible = false;
-
-		#if TOUCH_CONTROLS_ALLOWED
-		addTouchPad(#if MODS_ALLOWED 'LEFT_FULL' #else 'UP_DOWN' #end, 'A_B');
-		#end
 		
 		super.create();
 	}
@@ -118,35 +85,16 @@ class MasterEditorMenu extends MusicBeatState
 		{
 			switch (options[curSelected])
 			{
-				case 'Chart Editor': // felt it would be cool maybe
-					LoadingState.loadAndSwitchState(new ChartingState(), false);
-				case 'Character Editor':
-					LoadingState.loadAndSwitchState(new CharacterEditorState(Character.DEFAULT_CHARACTER, false));
-				case 'Stage Editor':
-					LoadingState.loadAndSwitchState(new StageEditorState());
-				case 'Week Editor':
-					MusicBeatState.switchState(new WeekEditorState());
-				case 'Menu Character Editor':
-					MusicBeatState.switchState(new MenuCharacterEditorState());
-				case 'Dialogue Editor':
-					LoadingState.loadAndSwitchState(new DialogueEditorState(), false);
-				case 'Dialogue Portrait Editor':
-					LoadingState.loadAndSwitchState(new DialogueCharacterEditorState(), false);
-				case 'Note Splash Editor':
-					MusicBeatState.switchState(new NoteSplashEditorState());
-				case 'Test stickers':
-					MusicBeatState.switchState(new StickerTest());
-				#if debug
-				case 'Crash the game':{
-					@:privateAccess
-					openfl.Lib.current.loaderInfo.uncaughtErrorEvents.dispatchEvent(
-						new UncaughtErrorEvent(
-							openfl.events.UncaughtErrorEvent.UNCAUGHT_ERROR,
-							true,true,new openfl.errors.Error("The devs are too stupid and they write way too long errors")));
-				}
-				#end
-				case 'Result Preview Menu':
-					MusicBeatState.switchState(new ResultPreviewMenu());
+				case 'Preview results (perfect)':
+					runResults(200);
+				case 'Preview results (excellent)':
+					runResults(190);
+				case 'Preview results (great)':
+					runResults(160);
+				case 'Preview results (good)':
+					runResults(110);
+				case 'Preview results (shit)':
+					runResults(30);
 			}
 			FlxG.sound.music.volume = 0;
 		}
