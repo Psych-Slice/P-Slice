@@ -576,11 +576,7 @@ class Paths
 	public static function readDirectory(directory:String):Array<String>
 		{
 			#if MODS_ALLOWED
-		var dirs:Array<String> = [];
-		for(dir in FileSystem.readDirectory(directory)){
-			dirs.push(directory+"/"+dir);
-		}
-		return dirs;
+		return FileSystem.readDirectory(directory);
 		#else
 		var dirs:Array<String> = [];
 		for(dir in Assets.list().filter(folder -> folder.startsWith(directory)))
