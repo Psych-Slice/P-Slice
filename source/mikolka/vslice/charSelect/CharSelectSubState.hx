@@ -40,7 +40,7 @@ import mikolka.funkin.FramesJSFLParser.FramesJSFLFrame;
 import mikolka.funkin.custom.VsliceSubState as MusicBeatSubState;
 import mikolka.compatibility.FunkinPath as Paths;
 
-class CharSelectSubState extends MusicBeatState //MusicBeatSubState
+class CharSelectSubState extends MusicBeatSubState
 {
   var chrSelectCursor:FlxSprite;
   var modSelector:ModSelector;
@@ -728,14 +728,9 @@ class CharSelectSubState extends MusicBeatState //MusicBeatSubState
   var spamLeft:Bool = false;
   var spamRight:Bool = false;
 
-	public function refresh()
-	{
-		sort(SortUtil.byZIndex, FlxSort.ASCENDING);
-	}
-
   override public function update(elapsed:Float):Void
   {
-    if(FlxG.sound.music != null)  FreeplayHelpers.updateConductorSongTime(FlxG.sound.music.time);
+    controls.isInSubstate = true;
 
     super.update(elapsed);
 
