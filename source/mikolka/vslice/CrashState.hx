@@ -177,9 +177,14 @@ class CrashState extends FlxState
 		errMsg += '\n';
 		errMsg += '\nPlease report this error to the GitHub page: https://github.com/Psych-Slice/P-Slice\n\n> Crash Handler written by: sqirra-rng';
 
+		#if !LEGACY_PSYCH
 		@:privateAccess // lazy
         backend.CrashHandler.saveErrorMessage(errMsg + '\n');
-
+		#else
+		var path = './crash/' + 'PSlice_' + dateNow + '.txt';
+		File.saveContent(path, errMsg + '\n');
+		Sys.println(errMsg);
+		#end
 		Sys.println(errMsg);
 	}
 

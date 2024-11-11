@@ -146,6 +146,7 @@ class FunkinPreloader extends FlxBasePreloader
 
     // Background color.
     Lib.current.stage.color = 0xFF000000;
+    Lib.current.stage.frameRate = 30;
 
     // Width and height of the preloader.
     this._width = Lib.current.stage.stageWidth;

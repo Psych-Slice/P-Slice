@@ -72,7 +72,7 @@ class SustainSplash extends FlxSprite
 		if (!daNote.hitByOpponent && ClientPrefs.data.holdSplashAlpha != 0)
 			timer = new FlxTimer().start(timeThingy, (idk:FlxTimer) ->
 			{
-				if (!(daNote.isSustainNote ? daNote.parent.noteSplashData.disabled : daNote.noteSplashData.disabled))
+				if (!(daNote.isSustainNote ? daNote.parent.noteSplashData.disabled : daNote.noteSplashData.disabled) && animation != null)
 				{
 					alpha = ClientPrefs.data.holdSplashAlpha - (1 - strumNote.alpha);
 					animation.play('end', true, false, 0);

@@ -27,7 +27,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<define name="MODS_ALLOWED" if="desktop || mobile" />
 
 	<!-- Adds support for Psuch's lua/HScript files-->
-	<define name="HSCRIPT_ALLOWED" if="desktop || mobile" />
+	<define name="HSCRIPT_ALLOWED" if="desktop || mobile"/>
 	<define name="LUA_ALLOWED" if="cpp" />
 
 	<!-- Enables Discord's Rich Presence integration-->

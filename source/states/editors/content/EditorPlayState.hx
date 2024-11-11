@@ -858,6 +858,7 @@ class EditorPlayState extends MusicBeatSubstate
 
 		if (!note.isSustainNote)
 			invalidateNote(note);
+		updateScore();
 	}
 	
 	function noteMiss(daNote:Note):Void { //You didn't hit the key and let it go offscreen, also used by Hurt Notes
