@@ -18,18 +18,20 @@ class ResultPreviewMenu extends MusicBeatState
 		'Preview results (shit)'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
-	private var directories:Array<String> = [null];
 
 	private var curSelected = 0;
-	private var curDirectory = 0;
-	private var directoryTxt:FlxText;
 
 	override function create()
 	{
+		FlxG.sound.play(Paths.sound('breakfast'));
+
+
+
+
 		FlxG.camera.bgColor = FlxColor.BLACK;
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("Editors Main Menu", null);
+		DiscordClient.changePresence("Result Preview Menu", null);
 		#end
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
@@ -65,16 +67,6 @@ class ResultPreviewMenu extends MusicBeatState
 		{
 			changeSelection(1);
 		}
-		#if MODS_ALLOWED
-		if (controls.UI_LEFT_P)
-		{
-			changeDirectory(-1);
-		}
-		if (controls.UI_RIGHT_P)
-		{
-			changeDirectory(1);
-		}
-		#end
 
 		if (controls.BACK)
 		{
@@ -146,28 +138,4 @@ class ResultPreviewMenu extends MusicBeatState
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		curSelected = FlxMath.wrap(curSelected + change, 0, options.length - 1);
 	}
-
-	#if MODS_ALLOWED
-	function changeDirectory(change:Int = 0)
-	{
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-
-		curDirectory += change;
-
-		if (curDirectory < 0)
-			curDirectory = directories.length - 1;
-		if (curDirectory >= directories.length)
-			curDirectory = 0;
-
-		WeekData.setDirectoryFromWeek();
-		if (directories[curDirectory] == null || directories[curDirectory].length < 1)
-			directoryTxt.text = '< No Mod Directory Loaded >';
-		else
-		{
-			Mods.currentModDirectory = directories[curDirectory];
-			directoryTxt.text = '< Loaded Mod Directory: ' + Mods.currentModDirectory + ' >';
-		}
-		directoryTxt.text = directoryTxt.text.toUpperCase();
-	}
-	#end
 }
