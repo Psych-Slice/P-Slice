@@ -34,9 +34,8 @@ class ResultPreviewMenu extends MusicBeatState
 		DiscordClient.changePresence("Result Preview Menu", null);
 		#end
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
 		bg.scrollFactor.set();
-		bg.color = 0xFF4CAF50;
 		add(bg);
 
 		grpTexts = new FlxTypedGroup<Alphabet>();
