@@ -23,11 +23,7 @@ class MasterEditorMenu extends MusicBeatState
 		'Crash the game',
 		#end
 		'Note Splash Editor', 
-		'Preview results (perfect)', 
-		'Preview results (excellent)', 
-		'Preview results (great)', 
-		'Preview results (good)', 
-		'Preview results (shit)'
+		'Result Preview Menu'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
 	private var directories:Array<String> = [null];
@@ -149,16 +145,8 @@ class MasterEditorMenu extends MusicBeatState
 							true,true,new openfl.errors.Error("The devs are too stupid and they write way too long errors")));
 				}
 				#end
-				case 'Preview results (perfect)':
-					runResults(200);
-				case 'Preview results (excellent)':
-					runResults(190);
-				case 'Preview results (great)':
-					runResults(160);
-				case 'Preview results (good)':
-					runResults(110);
-				case 'Preview results (shit)':
-					runResults(30);
+				case 'Result Preview Menu':
+					MusicBeatState.switchState(new ResultPreviewMenu());
 			}
 			FlxG.sound.music.volume = 0;
 		}
