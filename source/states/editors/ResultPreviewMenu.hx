@@ -23,7 +23,7 @@ class ResultPreviewMenu extends MusicBeatState
 
 	override function create()
 	{
-		FlxG.sound.play(Paths.sound('breakfast'));
+		FlxG.sound.play(Paths.music('breakfast'));
 
 
 
@@ -69,7 +69,7 @@ class ResultPreviewMenu extends MusicBeatState
 
 		if (controls.BACK)
 		{
-			MusicBeatState.switchState(new MainMenuState());
+			MusicBeatState.switchState(new MasterEditorMenu());
 		}
 
 		if (controls.ACCEPT)
