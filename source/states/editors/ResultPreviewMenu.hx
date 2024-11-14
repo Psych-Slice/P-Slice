@@ -23,10 +23,7 @@ class ResultPreviewMenu extends MusicBeatState
 
 	override function create()
 	{
-		FlxG.sound.play(Paths.music('breakfast'));
-
-
-
+		FlxG.sound.playMusic(Paths.music('breakfast'));
 
 		FlxG.camera.bgColor = FlxColor.BLACK;
 		#if DISCORD_ALLOWED
@@ -69,6 +66,7 @@ class ResultPreviewMenu extends MusicBeatState
 
 		if (controls.BACK)
 		{
+			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			MusicBeatState.switchState(new MasterEditorMenu());
 		}
 
