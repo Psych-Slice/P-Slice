@@ -46,8 +46,6 @@ import mobile.psychlua.Functions;
 
 import mikolka.vslice.freeplay.FreeplayState;
 
-import mikolka.vslice.freeplay.FreeplayState;
-
 class FunkinLua {
 	public var lua:State = null;
 	public var camTarget:FlxCamera;
@@ -90,6 +88,7 @@ class FunkinLua {
 		set('luaDebugMode', false);
 		set('luaDeprecatedWarnings', true);
 		set('version', MainMenuState.psychEngineVersion.trim());
+		set('versionPS', MainMenuState.pSliceVersion.trim());
 		set('modFolder', this.modFolder);
 
 		// Song/Week shit
