@@ -134,8 +134,8 @@ class StorageUtil
 enum abstract StorageType(String) from String to String
 {
 	final forcedPath = '/storage/emulated/0/';
-	final packageNameLocal = 'com.shadowmario.psychengine';
-	final fileLocal = 'PsychEngine';
+	final packageNameLocal = 'com.mikolka9144.pslice';
+	final fileLocal = 'PSliceEngine';
 
 	var EXTERNAL_DATA = "EXTERNAL_DATA";
 	var EXTERNAL_OBB = "EXTERNAL_OBB";
