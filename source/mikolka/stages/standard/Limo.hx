@@ -1,6 +1,6 @@
 package mikolka.stages.standard;
 
-import mikolka.stages.objects.*;
+import mikolka.compatibility.VsliceOptions;
 
 enum HenchmenKillState
 {
@@ -32,7 +32,7 @@ class Limo extends BaseStage
 		var skyBG:BGSprite = new BGSprite('limo/limoSunset', -120, -50, 0.1, 0.1);
 		add(skyBG);
 
-		if(!ClientPrefs.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
 			limoMetalPole = new BGSprite('gore/metalPole', -500, 220, 0.4, 0.4);
 			add(limoMetalPole);
 
@@ -87,7 +87,7 @@ class Limo extends BaseStage
 	var limoSpeed:Float = 0;
 	override function update(elapsed:Float)
 	{
-		if(!ClientPrefs.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
 			grpLimoParticles.forEach(function(spr:BGSprite) {
 				if(spr.animation.curAnim.finished) {
 					spr.kill();
@@ -171,7 +171,7 @@ class Limo extends BaseStage
 
 	override function beatHit()
 	{
-		if(!ClientPrefs.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
 			grpLimoDancers.forEach(function(dancer:BackgroundDancer)
 			{
 				dancer.dance();
@@ -253,7 +253,7 @@ class Limo extends BaseStage
 
 	function killHenchmen():Void
 	{
-		if(!ClientPrefs.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
 			if(limoKillingState == WAIT) {
 				limoMetalPole.x = -400;
 				limoMetalPole.visible = true;
@@ -262,9 +262,9 @@ class Limo extends BaseStage
 				limoCorpseTwo.visible = false;
 				limoKillingState = KILLING;
 
-				#if ACHIEVEMENTS_ALLOWED
-				//var kills = Achievements.addScore("roadkill_enthusiast");
-				//FlxG.log.add('Henchmen kills: $kills');
+				#if (ACHIEVEMENTS_ALLOWED && !LEGACY_PSYCH)
+				var kills = Achievements.addScore("roadkill_enthusiast");
+				FlxG.log.add('Henchmen kills: $kills');
 				#end
 			}
 		}

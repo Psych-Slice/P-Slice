@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import openfl.filters.BlurFilter;
 import mikolka.compatibility.VsliceOptions;
 import shaders.AdjustColorShader;
 import flixel.addons.display.FlxBackdrop;
@@ -15,7 +16,7 @@ class PhillyStreetsErect extends BaseStage
     {
         var rainShader:RainShader;
         var rainShaderStartIntensity:Float = 0;
-        var rainShaderEndIntensity:Float = 0;
+        var rainShaderEndIntensity:Float = 0.01;
     
         var rainSndAmbience:FlxSound;
         var carSndAmbience:FlxSound;
@@ -167,7 +168,7 @@ class PhillyStreetsErect extends BaseStage
 	function buildMist() // Probable will be really broken 😞
 	{
 
-		colorShader = new AdjustColorShader();
+		
 
 		mist0 = makeMist('mistMid',1.2,0.6,172); //1000
 
@@ -222,6 +223,15 @@ class PhillyStreetsErect extends BaseStage
                 rainSndAmbience = new FlxSound().loadEmbedded(Paths.sound("ambience/rain"), true);
                 rainSndAmbience.volume = 0.01;
                 rainSndAmbience.play(false, FlxG.random.float(0, rainSndAmbience.length));
+
+                colorShader = new AdjustColorShader();
+                colorShader.hue = -5;
+                colorShader.saturation = -40;
+                colorShader.contrast = -25;
+                colorShader.brightness = -20;
+                boyfriend.shader = colorShader;
+                dad.shader = colorShader;
+                gf.shader = colorShader;
             }
     
             super.createPost();
@@ -492,11 +502,7 @@ class PhillyStreetsErect extends BaseStage
             FlxTween.angle(sprite, rotations[0], rotations[1], duration);
             FlxTween.quadPath(sprite, path, duration, true, {onComplete: function(_) car2Interruptable = true});
         }
-    
-    
 
-
-    
 
         function showPicoFade()
         {

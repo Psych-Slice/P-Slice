@@ -1,6 +1,6 @@
 package mikolka.stages.standard;
 
-import mikolka.stages.objects.*;
+
 
 class MallEvil extends BaseStage
 {

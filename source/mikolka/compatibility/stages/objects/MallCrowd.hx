@@ -1,4 +1,4 @@
-package mikolka.stages.objects;
+package mikolka.compatibility.stages.objects;
 
 class MallCrowd extends BGSprite
 {

@@ -18,11 +18,12 @@ import mikolka.funkin.*;
 import mikolka.funkin.utils.*;
 import mikolka.funkin.players.*;
 import mikolka.funkin.custom.*;
-import mikolka.stages.misc.BaseStage;
+import mikolka.compatibility.stages.misc.BaseStage;
 import flxanimate.PsychFlxAnimate as FlxAnimate;
 
 //P-Slice stage system
-import mikolka.stages.objects.*;
+import mikolka.compatibility.stages.objects.*;
+import mikolka.compatibility.stages.misc.*;
 import mobile.*;
 
 #if flxanimate

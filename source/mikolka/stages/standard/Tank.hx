@@ -1,7 +1,13 @@
 package mikolka.stages.standard;
 
-import mikolka.stages.misc.AtlasLoader;
-import mikolka.stages.objects.*;
+#if !LEGACY_PSYCH
+import cutscenes.CutsceneHandler;
+import substates.GameOverSubstate;
+import objects.Character;
+#end
+import mikolka.compatibility.VsliceOptions;
+import mikolka.stages.PicoCapableStage;
+
 
 class Tank extends PicoCapableStage
 {
@@ -15,7 +21,7 @@ class Tank extends PicoCapableStage
 		var sky:BGSprite = new BGSprite('tankSky', -400, -400, 0, 0);
 		add(sky);
 
-		if(!ClientPrefs.lowQuality)
+		if(!VsliceOptions.LOW_QUALITY)
 		{
 			var clouds:BGSprite = new BGSprite('tankClouds', FlxG.random.int(-700, -100), FlxG.random.int(-20, 20), 0.1, 0.1);
 			clouds.active = true;
@@ -38,7 +44,7 @@ class Tank extends PicoCapableStage
 		ruins.updateHitbox();
 		add(ruins);
 
-		if(!ClientPrefs.lowQuality)
+		if(!VsliceOptions.LOW_QUALITY)
 		{
 			var smokeLeft:BGSprite = new BGSprite('smokeLeft', -200, -100, 0.4, 0.4, ['SmokeBlurLeft'], true);
 			add(smokeLeft);
@@ -62,11 +68,11 @@ class Tank extends PicoCapableStage
 
 		foregroundSprites = new FlxTypedGroup<BGSprite>();
 		foregroundSprites.add(new BGSprite('tank0', -500, 650, 1.7, 1.5, ['fg']));
-		if(!ClientPrefs.lowQuality) foregroundSprites.add(new BGSprite('tank1', -300, 750, 2, 0.2, ['fg']));
+		if(!VsliceOptions.LOW_QUALITY) foregroundSprites.add(new BGSprite('tank1', -300, 750, 2, 0.2, ['fg']));
 		foregroundSprites.add(new BGSprite('tank2', 450, 940, 1.5, 1.5, ['foreground']));
-		if(!ClientPrefs.lowQuality) foregroundSprites.add(new BGSprite('tank4', 1300, 900, 1.5, 1.5, ['fg']));
+		if(!VsliceOptions.LOW_QUALITY) foregroundSprites.add(new BGSprite('tank4', 1300, 900, 1.5, 1.5, ['fg']));
 		foregroundSprites.add(new BGSprite('tank5', 1620, 700, 1.5, 1.5, ['fg']));
-		if(!ClientPrefs.lowQuality) foregroundSprites.add(new BGSprite('tank3', 1300, 1200, 3.5, 2.5, ['fg']));
+		if(!VsliceOptions.LOW_QUALITY) foregroundSprites.add(new BGSprite('tank3', 1300, 1200, 3.5, 2.5, ['fg']));
 
 		// Default GFs
 		if(songName == 'stress') setDefaultGF('pico-speaker');
@@ -91,7 +97,7 @@ class Tank extends PicoCapableStage
 		super.createPost();
 		add(foregroundSprites);
 
-		if(!ClientPrefs.lowQuality)
+		if(!VsliceOptions.LOW_QUALITY)
 		{
 			for (daGf in gfGroup)
 			{
@@ -126,7 +132,7 @@ class Tank extends PicoCapableStage
 	}
 	function everyoneDance()
 	{
-		if(!ClientPrefs.lowQuality) tankWatchtower.dance();
+		if(!VsliceOptions.LOW_QUALITY) tankWatchtower.dance();
 		foregroundSprites.forEach(function(spr:BGSprite)
 		{
 			spr.dance();
@@ -149,8 +155,8 @@ class Tank extends PicoCapableStage
 
 		tankman = new FlxAnimate(dad.x + 419, dad.y + 225);
 		tankman.showPivot = false;
-		AtlasLoader.loadAnimateAtlas(tankman, 'cutscenes/tankman');
-		tankman.antialiasing = ClientPrefs.globalAntialiasing;
+		Paths.loadAnimateAtlas(tankman, 'cutscenes/tankman');
+		tankman.antialiasing = VsliceOptions.ANTIALIASING;
 		addBehindDad(tankman);
 		cutsceneHandler.push(tankman);
 
@@ -167,8 +173,11 @@ class Tank extends PicoCapableStage
 			gf.animation.finishCallback = null;
 			gf.dance();
 		};
-
+		#if LEGACY_PSYCH
 		cutsceneHandler.finishCallback2 = function()
+		#else
+		cutsceneHandler.skipCallback = function()
+		#end
 		{
 			dadGroup.alpha = 1;
 			gfGroup.alpha = 1;
@@ -186,12 +195,13 @@ class Tank extends PicoCapableStage
 
 			FlxTween.cancelTweensOf(FlxG.camera);
 			FlxTween.cancelTweensOf(camFollow);
+			@:privateAccess
 			game.moveCameraSection();
 			FlxG.camera.scroll.set(camFollow.x - FlxG.width/2, camFollow.y - FlxG.height/2);
 			FlxG.camera.zoom = defaultCamZoom;
 			startCountdown();
 		};
-		camFollow.set(dad.x + 280, dad.y + 170);
+		camFollow_set(dad.x + 280, dad.y + 170);
 	}
 
 	function ughIntro()
@@ -287,7 +297,7 @@ class Tank extends PicoCapableStage
 		cutsceneHandler.endTime = 35.5;
 		gfGroup.alpha = 0.00001;
 		boyfriendGroup.alpha = 0.00001;
-		camFollow.set(dad.x + 400, dad.y + 170);
+		camFollow_set(dad.x + 400, dad.y + 170);
 		FlxTween.tween(FlxG.camera, {zoom: 0.9 * 1.2}, 1, {ease: FlxEase.quadInOut});
 		foregroundSprites.forEach(function(spr:BGSprite)
 		{
@@ -297,8 +307,8 @@ class Tank extends PicoCapableStage
 
 		pico = new FlxAnimate(gf.x + 150, gf.y + 450);
 		pico.showPivot = false;
-		AtlasLoader.loadAnimateAtlas(pico, 'cutscenes/picoAppears');
-		pico.antialiasing = ClientPrefs.globalAntialiasing;
+		Paths.loadAnimateAtlas(pico, 'cutscenes/picoAppears');
+		pico.antialiasing = VsliceOptions.ANTIALIASING;
 		pico.anim.addBySymbol('dance', 'GF Dancing at Gunpoint', 24, true);
 		pico.anim.addBySymbol('dieBitch', 'GF Time to Die sequence', 24, false);
 		pico.anim.addBySymbol('picoAppears', 'Pico Saves them sequence', 24, false);
@@ -335,7 +345,7 @@ class Tank extends PicoCapableStage
 		pico.anim.onComplete.add(picoStressCycle);
 
 		boyfriendCutscene = new FlxSprite(boyfriend.x + 5, boyfriend.y + 20);
-		boyfriendCutscene.antialiasing = ClientPrefs.globalAntialiasing;
+		boyfriendCutscene.antialiasing = VsliceOptions.ANTIALIASING;
 		boyfriendCutscene.frames = Paths.getSparrowAtlas('characters/BOYFRIEND');
 		boyfriendCutscene.animation.addByPrefix('idle', 'BF idle dance', 24, false);
 		boyfriendCutscene.animation.play('idle', true);
@@ -375,7 +385,7 @@ class Tank extends PicoCapableStage
 
 		cutsceneHandler.timer(20, function()
 		{
-			camFollow.set(dad.x + 500, dad.y + 170);
+			camFollow_set(dad.x + 500, dad.y + 170);
 		});
 
 		cutsceneHandler.timer(31.2, function()
@@ -390,7 +400,7 @@ class Tank extends PicoCapableStage
 				}
 			};
 
-			camFollow.set(boyfriend.x + 280, boyfriend.y + 200);
+			camFollow_set(boyfriend.x + 280, boyfriend.y + 200);
 			FlxG.camera.snapToTarget();
 			game.cameraSpeed = 12;
 			FlxTween.tween(FlxG.camera, {zoom: 0.9 * 1.2 * 1.2}, 0.25, {ease: FlxEase.elasticOut});
@@ -405,7 +415,7 @@ class Tank extends PicoCapableStage
 	function zoomBack()
 	{
 		var calledTimes:Int = 0;
-		camFollow.set(630, 425);
+		camFollow_set(630, 425);
 		FlxG.camera.snapToTarget();
 		FlxG.camera.zoom = 0.8;
 		game.cameraSpeed = 1;

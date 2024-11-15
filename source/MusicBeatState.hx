@@ -34,6 +34,12 @@ class MusicBeatState extends FlxUIState
 
 	override function create() {
 		camBeat = FlxG.camera;
+		
+		if(FlxG.width != 1280 || FlxG.height != 720){
+			trace("Something is wrong with the scale. Rescaling to 1280x720!");
+			FlxG.resizeGame(1280,720);
+		}
+
 		var skip:Bool = FlxTransitionableState.skipNextTransOut;
 		super.create();
 

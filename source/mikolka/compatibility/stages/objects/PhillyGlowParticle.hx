@@ -1,4 +1,4 @@
-package mikolka.stages.objects;
+package mikolka.compatibility.stages.objects;
 
 class PhillyGlowParticle extends FlxSprite
 {

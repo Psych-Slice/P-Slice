@@ -6,7 +6,7 @@ import shaders.RainShader;
 import objects.Note;
 import objects.Character;
 #else
-using mikolka.stages.misc.CharUtills;
+using mikolka.compatibility.stages.misc.CharUtills;
 #end
 class SpookyMansionErect extends PicoCapableStage
 {

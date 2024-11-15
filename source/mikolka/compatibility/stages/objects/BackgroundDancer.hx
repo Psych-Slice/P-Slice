@@ -1,4 +1,4 @@
-package mikolka.stages.objects;
+package mikolka.compatibility.stages.objects;
 
 import flixel.graphics.frames.FlxAtlasFrames;
 

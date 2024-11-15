@@ -1,4 +1,4 @@
-package mikolka.stages.misc;
+package mikolka.compatibility.stages.misc;
 
 class CharUtills
 {

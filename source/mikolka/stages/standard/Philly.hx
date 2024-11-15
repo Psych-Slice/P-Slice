@@ -1,9 +1,11 @@
 package mikolka.stages.standard;
 
-import PhillyGlow.PhillyGlowParticle;
-import PhillyGlow.PhillyGlowGradient;
-import mikolka.stages.objects.*;
-import Character;
+import mikolka.compatibility.VsliceOptions;
+
+#if !LEGACY_PSYCH
+import objects.Character;
+import objects.Note;
+#end
 
 class Philly extends BaseStage
 {
@@ -22,7 +24,7 @@ class Philly extends BaseStage
 
 	override function create()
 	{
-		if(!ClientPrefs.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
 			var bg:BGSprite = new BGSprite('philly/sky', -100, 0, 0.1, 0.1);
 			add(bg);
 		}
@@ -39,7 +41,7 @@ class Philly extends BaseStage
 		add(phillyWindow);
 		phillyWindow.alpha = 0;
 
-		if(!ClientPrefs.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
 			var streetBehind:BGSprite = new BGSprite('philly/behindTrain', -40, 50);
 			add(streetBehind);
 		}
@@ -68,7 +70,7 @@ class Philly extends BaseStage
 				phillyGlowGradient = new PhillyGlowGradient(-400, 225); //This shit was refusing to properly load FlxGradient so fuck it
 				phillyGlowGradient.visible = false;
 				insert(members.indexOf(blammedLightsBlack) + 1, phillyGlowGradient);
-				if(!ClientPrefs.flashing) phillyGlowGradient.intendedAlpha = 0.7;
+				if(!VsliceOptions.FLASHBANG) phillyGlowGradient.intendedAlpha = 0.7;
 
 				Paths.image('philly/particle'); //precache philly glow particle image
 				phillyGlowParticles = new FlxTypedGroup<PhillyGlowParticle>();
@@ -116,7 +118,7 @@ class Philly extends BaseStage
 						if(phillyGlowGradient.visible)
 						{
 							doFlash();
-							if(ClientPrefs.camZooms)
+							if(VsliceOptions.CAM_ZOOMING)
 							{
 								FlxG.camera.zoom += 0.5;
 								camHUD.zoom += 0.1;
@@ -142,7 +144,7 @@ class Philly extends BaseStage
 						if(!phillyGlowGradient.visible)
 						{
 							doFlash();
-							if(ClientPrefs.camZooms)
+							if(VsliceOptions.CAM_ZOOMING)
 							{
 								FlxG.camera.zoom += 0.5;
 								camHUD.zoom += 0.1;
@@ -154,7 +156,7 @@ class Philly extends BaseStage
 							phillyGlowGradient.visible = true;
 							phillyGlowParticles.visible = true;
 						}
-						else if(ClientPrefs.flashing)
+						else if(VsliceOptions.FLASHBANG)
 						{
 							var colorButLower:FlxColor = color;
 							colorButLower.alphaFloat = 0.25;
@@ -162,7 +164,7 @@ class Philly extends BaseStage
 						}
 
 						var charColor:FlxColor = color;
-						if(!ClientPrefs.flashing) charColor.saturation *= 0.5;
+						if(!VsliceOptions.FLASHBANG) charColor.saturation *= 0.5;
 						else charColor.saturation *= 0.75;
 
 						for (who in chars)
@@ -180,7 +182,7 @@ class Philly extends BaseStage
 						phillyStreet.color = color;
 
 					case 2: // spawn particles
-						if(!ClientPrefs.lowQuality)
+						if(!VsliceOptions.LOW_QUALITY)
 						{
 							var particlesNum:Int = FlxG.random.int(8, 12);
 							var width:Float = (2000 / particlesNum);
@@ -205,7 +207,7 @@ class Philly extends BaseStage
 	function doFlash()
 	{
 		var color:FlxColor = FlxColor.WHITE;
-		if(!ClientPrefs.flashing) color.alphaFloat = 0.5;
+		if(!VsliceOptions.FLASHBANG) color.alphaFloat = 0.5;
 
 		FlxG.camera.flash(color, 0.15, null, true);
 	}

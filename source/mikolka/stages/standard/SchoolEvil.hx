@@ -1,7 +1,14 @@
 package mikolka.stages.standard;
 
 import flixel.addons.effects.FlxTrail;
-import mikolka.stages.objects.*;
+import mikolka.compatibility.VsliceOptions;
+
+#if !LEGACY_PSYCH
+import substates.GameOverSubstate;
+import cutscenes.DialogueBox;
+import objects.Note;
+#end
+
 import openfl.utils.Assets as OpenFlAssets;
 
 class SchoolEvil extends BaseStage
@@ -9,16 +16,23 @@ class SchoolEvil extends BaseStage
 	override function create()
 	{
 		var _song = PlayState.SONG;
-		 GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pixel';
+		#if LEGACY_PSYCH
+		GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pixel';
 		 GameOverSubstate.loopSoundName = 'gameOver-pixel';
 		 GameOverSubstate.endSoundName = 'gameOverEnd-pixel';
 		 GameOverSubstate.characterName = 'bf-pixel-dead';
+		#else
+		if(_song.gameOverSound == null || _song.gameOverSound.trim().length < 1) GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pixel';
+		if(_song.gameOverLoop == null || _song.gameOverLoop.trim().length < 1) GameOverSubstate.loopSoundName = 'gameOver-pixel';
+		if(_song.gameOverEnd == null || _song.gameOverEnd.trim().length < 1) GameOverSubstate.endSoundName = 'gameOverEnd-pixel';
+		if(_song.gameOverChar == null || _song.gameOverChar.trim().length < 1) GameOverSubstate.characterName = 'bf-pixel-dead';
+		#end
 		
 		var posX = 400;
 		var posY = 200;
 
 		var bg:BGSprite;
-		if(!ClientPrefs.lowQuality)
+		if(!VsliceOptions.LOW_QUALITY)
 			bg = new BGSprite('weeb/animatedEvilSchool', posX, posY, 0.8, 0.9, ['background 2'], true);
 		else
 			bg = new BGSprite('weeb/animatedEvilSchool_low', posX, posY, 0.8, 0.9);
@@ -49,7 +63,7 @@ class SchoolEvil extends BaseStage
 		switch(eventName)
 		{
 			case "Trigger BG Ghouls":
-				if(!ClientPrefs.lowQuality)
+				if(!VsliceOptions.LOW_QUALITY)
 				{
 					bgGhouls.dance(true);
 					bgGhouls.visible = true;
@@ -62,7 +76,7 @@ class SchoolEvil extends BaseStage
 		switch(event.event)
 		{
 			case "Trigger BG Ghouls":
-				if(!ClientPrefs.lowQuality)
+				if(!VsliceOptions.LOW_QUALITY)
 				{
 					bgGhouls = new BGSprite('weeb/bgGhouls', -100, 190, 0.9, 0.9, ['BG freaks glitch instance'], false);
 					bgGhouls.setGraphicSize(Std.int(bgGhouls.width * PlayState.daPixelZoom));
@@ -82,7 +96,11 @@ class SchoolEvil extends BaseStage
 	var doof:DialogueBox = null;
 	function initDoof()
 	{
+		#if LEGACY_PSYCH
 		var file:String = Paths.txt('$songName/${songName}Dialogue'); //Checks for vanilla/Senpai dialogue
+		#else
+		var file:String = Paths.txt('$songName/${songName}Dialogue_${ClientPrefs.data.language}'); //Checks for vanilla/Senpai dialogue
+		#end
 		#if MODS_ALLOWED
 		if (!FileSystem.exists(file))
 		#else
@@ -107,8 +125,8 @@ class SchoolEvil extends BaseStage
 		doof.scrollFactor.set();
 		doof.finishThing = startCountdown;
 		@:privateAccess{
-			doof.nextDialogueThing = PlayState.instance.startNextDialogue;
-			doof.skipDialogueThing = PlayState.instance.skipDialogue;
+			doof.nextDialogueThing = game.startNextDialogue;
+			doof.skipDialogueThing = game.skipDialogue;
 		}
 	}
 	

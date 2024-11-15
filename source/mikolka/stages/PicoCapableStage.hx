@@ -5,7 +5,7 @@ import mikolka.compatibility.VsliceOptions;
 import objects.Note;
 import substates.GameOverSubstate;
 #else
-using mikolka.stages.misc.CharUtills;
+using mikolka.compatibility.stages.misc.CharUtills;
 #end
 
 enum NeneState
@@ -95,6 +95,7 @@ class PicoCapableStage extends BaseStage {
 	var animationFinished:Bool = false;
     override function update(elapsed:Float) {
         super.update(elapsed);
+        @:privateAccess
         if(gf == null || !game.startedCountdown) return;
 
 		animationFinished = gf.isAnimationFinished();

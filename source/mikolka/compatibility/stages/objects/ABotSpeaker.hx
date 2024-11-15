@@ -1,10 +1,12 @@
-package mikolka.stages.misc;
+package mikolka.compatibility.stages.objects;
 
+import flixel.FlxSprite;
+import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 #if funkin.vis
 import funkin.vis.dsp.SpectralAnalyzer;
 #end
 
-class ABotSpeaker extends FlxSpriteGroup
+class ABotSpeaker extends FlxTypedSpriteGroup<FlxSprite>
 {
 	final VIZ_MAX = 7; //ranges from viz1 to viz7
 	final VIZ_POS_X:Array<Float> = [0, 59, 56, 66, 54, 52, 51];
@@ -36,7 +38,7 @@ class ABotSpeaker extends FlxSpriteGroup
 	{
 		super(x, y);
 
-		var antialias = ClientPrefs.data.antialiasing;
+		var antialias = ClientPrefs.globalAntialiasing;
 		bg = new FlxSprite(90, 20).loadGraphic(Paths.image('abot/stereoBG'));
 		bg.antialiasing = antialias;
 		add(bg);
@@ -82,7 +84,7 @@ class ABotSpeaker extends FlxSpriteGroup
 	}
 	function abotLol(useDark:Bool) {
 		var temp = new FlxAnimate(-65, -10);
-		AtlasLoader.loadAnimateAtlas(temp, '${useDark? "abot/dark" : "abot"}/abotSystem');
+		Paths.loadAnimateAtlas(temp, '${useDark? "abot/dark" : "abot"}/abotSystem');
 		temp.anim.addBySymbol('anim', 'Abot System', 24, false);
 		temp.anim.play('anim', true);
 		temp.anim.curFrame = temp.anim.length - 1;
@@ -129,7 +131,7 @@ class ABotSpeaker extends FlxSpriteGroup
 	public function initAnalyzer()
 	{
 		@:privateAccess
-		analyzer = new SpectralAnalyzer(snd._channel.__audioSource, 7, 0.1, 40);
+		analyzer = new SpectralAnalyzer(snd._channel.__source, 7, 0.1, 40);
 	
 		#if desktop
 		// On desktop it uses FFT stuff that isn't as optimized as the direct browser stuff we use on HTML5

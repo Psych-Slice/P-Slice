@@ -1,4 +1,4 @@
-package mikolka.stages.misc;
+package mikolka.compatibility.stages.misc;
 
 import flixel.FlxBasic;
 import flixel.FlxObject;
@@ -19,7 +19,7 @@ enum Countdown
 
 class BaseStage extends FlxBasic
 {
-	private var game(get, never):Dynamic;
+	private var game(get, never):PlayState;
 	public var onPlayState(get, never):Bool;
 
 	// some variables for convenience
@@ -142,10 +142,14 @@ class BaseStage extends FlxBasic
 		game.inCutscene = value;
 		return value;
 	}
-	
-	inline private function get_canPause() return game.canPause;
+	inline private function get_canPause() {
+		@:privateAccess
+		return game.canPause;
+	}
+		
 	inline private function set_canPause(value:Bool)
 	{
+		@:privateAccess
 		game.canPause = value;
 		return value;
 	}
@@ -178,4 +182,7 @@ class BaseStage extends FlxBasic
 		return game.defaultCamZoom;
 	}
 	inline private function get_camFollow():FlxPoint return PlayState.instance.camFollow;
+	inline private function camFollow_set(x:Float,y:Float){
+		camFollow.set(x,y);
+	}
 }

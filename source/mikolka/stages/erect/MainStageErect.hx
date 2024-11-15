@@ -60,6 +60,7 @@ class MainStageErect extends PicoCapableStage {
             boyfriend.shader = makeCoolShader(12,0,-23,7);
         }
     }
+
     function makeCoolShader(hue:Float,sat:Float,bright:Float,contrast:Float) {
         var coolShader = new AdjustColorShader();
         coolShader.hue = hue;
