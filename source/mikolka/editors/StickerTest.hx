@@ -1,4 +1,4 @@
-package states.editors;
+package mikolka.editors;
 
 import mikolka.compatibility.ModsHelper;
 import substates.StickerSubState;
@@ -87,7 +87,7 @@ class StickerTest extends MusicBeatState {
                 b_tapped = touchPad.buttonB.justPressed;
                 #end
 
-                if(FlxG.keys.justPressed.ESCAPE || b_tapped){
+                if(controls.BACK || b_tapped){
                     FlxG.sound.playMusic(Paths.music('freakyMenu'));
                     FlxG.mouse.visible = false;
                     MusicBeatState.startTransition(new MasterEditorMenu());

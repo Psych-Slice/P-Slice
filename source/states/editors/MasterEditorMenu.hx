@@ -1,5 +1,7 @@
 package states.editors;
 
+import mikolka.editors.CharSelectEditor;
+import mikolka.editors.StickerTest;
 import openfl.events.UncaughtErrorEvent;
 import mikolka.compatibility.VsliceOptions;
 import flixel.math.FlxRandom;
@@ -19,6 +21,7 @@ class MasterEditorMenu extends MusicBeatState
 		'Menu Character Editor', 
 		'Dialogue Editor', 
 		'Dialogue Portrait Editor',
+		'Player editor',
 		#if debug
 		'Crash the game',
 		#end
@@ -136,6 +139,8 @@ class MasterEditorMenu extends MusicBeatState
 					MusicBeatState.switchState(new NoteSplashEditorState());
 				case 'Test stickers':
 					MusicBeatState.switchState(new StickerTest());
+				case 'Player editor':
+					MusicBeatState.switchState(new CharSelectEditor());
 				#if debug
 				case 'Crash the game':{
 					@:privateAccess
