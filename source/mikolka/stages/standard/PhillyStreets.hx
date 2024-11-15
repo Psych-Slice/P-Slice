@@ -1,16 +1,19 @@
-package states.stages;
+package mikolka.stages.standard;
 
-import substates.PauseSubState;
 import flixel.FlxSubState;
 import mikolka.stages.PicoCapableStage;
 import openfl.filters.ShaderFilter;
 import shaders.RainShader;
 import flixel.addons.display.FlxTiledSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
+import mikolka.compatibility.VsliceOptions;
+
+#if !LEGACY_PSYCH
+import substates.PauseSubState;
 import substates.GameOverSubstate;
-import states.stages.objects.*;
 import objects.Note;
 import cutscenes.CutsceneHandler;
+#end
 
 class PhillyStreets extends PicoCapableStage
 {
@@ -35,11 +38,11 @@ class PhillyStreets extends PicoCapableStage
 
 	override function create()
 	{
-		if (!ClientPrefs.data.lowQuality)
+		if (!VsliceOptions.LOW_QUALITY)
 		{
 			var skyImage = Paths.image('phillyStreets/phillySkybox');
 			scrollingSky = new FlxTiledSprite(skyImage, skyImage.width + 400, skyImage.height, true, false);
-			scrollingSky.antialiasing = ClientPrefs.data.antialiasing;
+			scrollingSky.antialiasing = VsliceOptions.ANTIALIASING;
 			scrollingSky.setPosition(-650, -375);
 			scrollingSky.scrollFactor.set(0.1, 0.1);
 			scrollingSky.scale.set(0.65, 0.65);
@@ -63,7 +66,7 @@ class PhillyStreets extends PicoCapableStage
 		add(phillyHighwayLights);
 		darkenable.push(phillyHighwayLights);
 
-		if (!ClientPrefs.data.lowQuality)
+		if (!VsliceOptions.LOW_QUALITY)
 		{
 			var phillyHighwayLightsLightmap:BGSprite = new BGSprite('phillyStreets/phillyHighwayLights_lightmap', 284, 305, 1, 1);
 			phillyHighwayLightsLightmap.blend = ADD;
@@ -76,7 +79,7 @@ class PhillyStreets extends PicoCapableStage
 		add(phillyHighway);
 		darkenable.push(phillyHighway);
 
-		if (!ClientPrefs.data.lowQuality)
+		if (!VsliceOptions.LOW_QUALITY)
 		{
 			var phillySmog:BGSprite = new BGSprite('phillyStreets/phillySmog', -6, 245, 0.8, 1);
 			add(phillySmog);
@@ -112,16 +115,16 @@ class PhillyStreets extends PicoCapableStage
 		add(phillyForeground);
 		darkenable.push(phillyForeground);
 
-		if (!ClientPrefs.data.lowQuality)
+		if (!VsliceOptions.LOW_QUALITY)
 		{
 			picoFade = new FlxSprite();
-			picoFade.antialiasing = ClientPrefs.data.antialiasing;
+			picoFade.antialiasing = VsliceOptions.ANTIALIASING;
 			picoFade.alpha = 0;
 			add(picoFade);
 			darkenable.push(picoFade);
 		}
 
-		if (ClientPrefs.data.shaders)
+		if (VsliceOptions.SHADERS)
 			setupRainShader();
 
 
@@ -189,7 +192,7 @@ class PhillyStreets extends PicoCapableStage
 		carSndAmbience.volume = 0.01;
 		carSndAmbience.play(false, FlxG.random.float(0, carSndAmbience.length));
 
-		if (ClientPrefs.data.shaders)
+		if (VsliceOptions.SHADERS)
 		{
 			// ? ambience
 			rainSndAmbience = new FlxSound().loadEmbedded(Paths.sound("ambience/rain"), true);
@@ -408,6 +411,7 @@ class PhillyStreets extends PicoCapableStage
 	}
 	function onNeneAnimationFinished(name:String)
 	{
+		@:privateAccess
 		if (!game.startedCountdown)
 			return;
 
@@ -462,7 +466,7 @@ class PhillyStreets extends PicoCapableStage
 		{
 			if (didCreateCasing)
 				return;
-			if (!ClientPrefs.data.lowQuality)
+			if (!VsliceOptions.LOW_QUALITY)
 			{
 				casingFrames = Paths.getSparrowAtlas('PicoBullet'); // precache
 				casingGroup = new FlxSpriteGroup();
@@ -559,7 +563,7 @@ class PhillyStreets extends PicoCapableStage
 		// if(curBeat % 2 == 0) abot.beatHit();
 		super.beatHit();
 
-		if (ClientPrefs.data.lowQuality)
+		if (VsliceOptions.LOW_QUALITY)
 			return;
 
 		if (FlxG.random.bool(10) && curBeat != (lastChange + changeInterval) && carInterruptable == true)
@@ -786,7 +790,7 @@ class PhillyStreets extends PicoCapableStage
 
 	function createCasing()
 	{
-		if (ClientPrefs.data.lowQuality)
+		if (VsliceOptions.LOW_QUALITY)
 			return;
 
 		var casing:FlxSprite = new FlxSprite(boyfriend.x + 250, boyfriend.y + 100);
@@ -832,7 +836,7 @@ class PhillyStreets extends PicoCapableStage
 				dad.playAnim('lightCan', true);
 				dad.specialAnim = true;
 				lightCanSnd.play(true, sndTime - 65);
-
+				@:privateAccess
 				game.isCameraOnForcedPos = true;
 				game.defaultCamZoom += 0.1;
 				game.moveCamera(true);
@@ -850,6 +854,7 @@ class PhillyStreets extends PicoCapableStage
 
 				new FlxTimer().start(1.1, function(_)
 				{
+					@:privateAccess
 					game.isCameraOnForcedPos = false;
 					game.moveCameraSection();
 					game.cameraSpeed = 1;
@@ -919,7 +924,7 @@ class PhillyStreets extends PicoCapableStage
 
 	function showPicoFade()
 	{
-		if (ClientPrefs.data.lowQuality)
+		if (VsliceOptions.LOW_QUALITY)
 			return;
 
 		picoFade.setPosition(boyfriend.x, boyfriend.y);

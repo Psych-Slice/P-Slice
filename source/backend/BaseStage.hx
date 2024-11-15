@@ -19,7 +19,7 @@ enum Countdown
 
 class BaseStage extends FlxBasic
 {
-	private var game(get, never):Dynamic;
+	private var game(get, never):PlayState;
 	public var onPlayState(get, never):Bool;
 
 	// some variables for convenience
@@ -45,6 +45,9 @@ class BaseStage extends FlxBasic
 	public var camOther(get, never):FlxCamera;
 
 	public var defaultCamZoom(get, set):Float;
+	/**
+	 * This is FlxPoint on 0.6.3!
+	 */
 	public var camFollow(get, never):FlxObject;
 
 	public function new()
@@ -142,9 +145,13 @@ class BaseStage extends FlxBasic
 		game.inCutscene = value;
 		return value;
 	}
-	inline private function get_canPause() return game.canPause;
+	inline private function get_canPause() {
+		@:privateAccess
+		return game.canPause;
+	}
 	inline private function set_canPause(value:Bool)
 	{
+		@:privateAccess
 		game.canPause = value;
 		return value;
 	}
@@ -177,4 +184,7 @@ class BaseStage extends FlxBasic
 		return game.defaultCamZoom;
 	}
 	inline private function get_camFollow():FlxObject return game.camFollow;
+	inline private function camFollow_set(x:Float,y:Float) {
+		camFollow.setPosition(x,y);
+	}
 }

@@ -95,6 +95,7 @@ class PicoCapableStage extends BaseStage {
 	var animationFinished:Bool = false;
     override function update(elapsed:Float) {
         super.update(elapsed);
+        @:privateAccess
         if(gf == null || !game.startedCountdown) return;
 
 		animationFinished = gf.isAnimationFinished();

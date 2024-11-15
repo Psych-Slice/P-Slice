@@ -1,5 +1,6 @@
-package states.stages;
+package mikolka.stages.standard;
 
+import mikolka.compatibility.VsliceOptions;
 import mikolka.stages.PicoCapableStage;
 import openfl.filters.ShaderFilter;
 import shaders.RainShader;
@@ -7,9 +8,11 @@ import shaders.RainShader;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.display.FlxTiledSprite;
 
+#if !LEGACY_PSYCH
 import substates.GameOverSubstate;
-import states.stages.objects.*;
+
 import objects.Note;
+#end
 
 class PhillyBlazin extends PicoCapableStage
 {
@@ -33,11 +36,11 @@ class PhillyBlazin extends PicoCapableStage
 			spr.updateHitbox();
 		}
 
-		if(!ClientPrefs.data.lowQuality)
+		if(!VsliceOptions.LOW_QUALITY)
 		{
 			var skyImage = Paths.image('phillyBlazin/skyBlur');
 			scrollingSky = new FlxTiledSprite(skyImage, Std.int(skyImage.width * 1.1) + 475, Std.int(skyImage.height / 1.1), true, false);
-			scrollingSky.antialiasing = ClientPrefs.data.antialiasing;
+			scrollingSky.antialiasing = VsliceOptions.ANTIALIASING;
 			scrollingSky.setPosition(-500, -120);
 			scrollingSky.scrollFactor.set();
 			add(scrollingSky);
@@ -57,7 +60,7 @@ class PhillyBlazin extends PicoCapableStage
 		setupScale(phillyForegroundCity);
 		add(phillyForegroundCity);
 		
-		if(!ClientPrefs.data.lowQuality)
+		if(!VsliceOptions.LOW_QUALITY)
 		{
 			foregroundMultiply = new BGSprite('phillyBlazin/streetBlur', -600, -175, 0.0, 0.0);
 			setupScale(foregroundMultiply);
@@ -74,7 +77,7 @@ class PhillyBlazin extends PicoCapableStage
 			add(additionalLighten);
 		}
 		
-		if(ClientPrefs.data.shaders)
+		if(VsliceOptions.SHADERS)
 			setupRainShader();
 
 		var _song = PlayState.SONG;
@@ -186,7 +189,7 @@ class PhillyBlazin extends PicoCapableStage
 	
 	function applyLightning():Void
 	{
-		if(ClientPrefs.data.lowQuality || game.endingSong) return;
+		if(VsliceOptions.LOW_QUALITY || game.endingSong) return;
 
 		final LIGHTNING_FULL_DURATION = 1.5;
 		final LIGHTNING_FADE_DURATION = 0.3;

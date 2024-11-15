@@ -1,9 +1,11 @@
-package states.stages;
+package mikolka.stages.standard;
 
-import states.stages.objects.*;
+import mikolka.compatibility.VsliceOptions;
+
+#if !LEGACY_PSYCH
 import substates.GameOverSubstate;
 import cutscenes.DialogueBox;
-
+#end
 import openfl.utils.Assets as OpenFlAssets;
 
 class School extends BaseStage
@@ -32,7 +34,7 @@ class School extends BaseStage
 		bgStreet.antialiasing = false;
 
 		var widShit = Std.int(bgSky.width * PlayState.daPixelZoom);
-		if(!ClientPrefs.data.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
 			var fgTrees:BGSprite = new BGSprite('weeb/weebTreesBack', repositionShit + 170, 130, 0.9, 0.9);
 			fgTrees.setGraphicSize(Std.int(widShit * 0.8));
 			fgTrees.updateHitbox();
@@ -48,7 +50,7 @@ class School extends BaseStage
 		add(bgTrees);
 		bgTrees.antialiasing = false;
 
-		if(!ClientPrefs.data.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
 			var treeLeaves:BGSprite = new BGSprite('weeb/petals', repositionShit, -40, 0.85, 0.85, ['PETALS ALL'], true);
 			treeLeaves.setGraphicSize(widShit);
 			treeLeaves.updateHitbox();
@@ -66,7 +68,7 @@ class School extends BaseStage
 		bgStreet.updateHitbox();
 		bgTrees.updateHitbox();
 
-		if(!ClientPrefs.data.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
 			bgGirls = new BackgroundGirls(-100, 190);
 			bgGirls.scrollFactor.set(0.9, 0.9);
 			add(bgGirls);
@@ -107,7 +109,11 @@ class School extends BaseStage
 	var doof:DialogueBox = null;
 	function initDoof()
 	{
+		#if LEGACY_PSYCH
+		var file:String = Paths.txt('$songName/${songName}Dialogue'); //Checks for vanilla/Senpai dialogue
+		#else
 		var file:String = Paths.txt('$songName/${songName}Dialogue_${ClientPrefs.data.language}'); //Checks for vanilla/Senpai dialogue
+		#end
 		#if MODS_ALLOWED
 		if (!FileSystem.exists(file))
 		#else

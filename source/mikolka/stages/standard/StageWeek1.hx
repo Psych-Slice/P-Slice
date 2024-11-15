@@ -1,7 +1,9 @@
-package states.stages;
+package mikolka.stages.standard;
 
-import states.stages.objects.*;
+import mikolka.compatibility.VsliceOptions;
+#if !LEGACY_PSYCH
 import objects.Character;
+#end
 
 class StageWeek1 extends BaseStage
 {
@@ -17,7 +19,7 @@ class StageWeek1 extends BaseStage
 		stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
 		stageFront.updateHitbox();
 		add(stageFront);
-		if(!ClientPrefs.data.lowQuality) {
+		if(!VsliceOptions.LOW_QUALITY) {
 			var stageLight:BGSprite = new BGSprite('stage_light', -125, -100, 0.9, 0.9);
 			stageLight.setGraphicSize(Std.int(stageLight.width * 1.1));
 			stageLight.updateHitbox();
