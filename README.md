@@ -63,36 +63,6 @@ It's meant to bring new visuals and features from newer versions of FNF and make
 |![](https://github.com/Psych-Slice/misc/blob/main/showcase/character.png?raw=true)|![](https://github.com/Psych-Slice/misc/blob/main/showcase/pause.png?raw=true)|
 |Pico|Player editor|
 |![](https://github.com/Psych-Slice/misc/blob/main/showcase/pico.png?raw=true)|![](https://github.com/Psych-Slice/misc/blob/main/showcase/playerEditor.png?raw=true)|
-
-## Modding capabilities 
-### custom stickers
-
-Mods made for P-Slice can select which sticker pack and set to use on the next sticker transition.
-
-``setPropertyFromClass("substates.StickerSubState", "STICKER_SET", "sticker-set-1")`` defines which sticker set to use (it's the name of one of the directories in `images/transitionSwag/`)
-
-``setPropertyFromClass("substates.StickerSubState", "STICKER_PACK", "all")`` defines a pack of stickers to use from the current set. If such pack doesn't exist all defined stickers in a ".json" file will be used.
-
-### custom freeplay icons
-
-Freeplay supports 3 types of icons:
-- FNF pre 0.3 (using character's head icon)
-- FNF 0.3+ (located in `images/freeplay/icons/{charId}pixel.png`)
-- FNF 0.5+ (sparrow sprite located in `images/freeplay/icons/{charId}pixel` with .PNG and .XML files)
->  {charId} is the name of the character icon.
-
-
-### registry folder
-Mods can contain a `registry` folder containing entries for P-Slice's registry system (structure is the same as in V-Slice)
-
-They're used to implement custom characters and custom Freeplay styles.
-
-### custom commercials
-
-If your mod is either is global or loaded as the first mod, you can add additional commercials in `videos/commercials` to be used an AttractState
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 <!-- GETTING STARTED -->
 ## Getting Started
 
