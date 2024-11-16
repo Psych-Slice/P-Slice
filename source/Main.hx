@@ -1,5 +1,6 @@
 package;
 
+import mikolka.GameBorder;
 import mikolka.vslice.CrashState;
 import mikolka.vslice.components.MemoryCounter;
 import lime.graphics.Image;
@@ -48,6 +49,7 @@ class Main extends Sprite
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
 	public static var fpsVar:FPS;
 	public static var memoryCounter:MemoryCounter;
+	public static var border:GameBorder;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
@@ -102,13 +104,15 @@ class Main extends Sprite
     	// which is why it needs to be added before addChild(game) here
     	@:privateAccess
     	game._customSoundTray = mikolka.vslice.components.FunkinSoundTray;
-
 		addChild(game);
-
+		
 		#if !mobile
+		border = new GameBorder();
+		addChild(border);
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsVar);
 		Lib.current.stage.align = "tl";
+		Lib.current.stage.window.onResize.add(border.updateGameSize);
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 		if(fpsVar != null) {
 			fpsVar.visible = ClientPrefs.showFPS;
