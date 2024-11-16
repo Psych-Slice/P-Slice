@@ -15,10 +15,17 @@ class SchoolEvil extends BaseStage
 	override function create()
 	{
 		var _song = PlayState.SONG;
+		#if LEGACY_PSYCH
+		GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pixel';
+		 GameOverSubstate.loopSoundName = 'gameOver-pixel';
+		 GameOverSubstate.endSoundName = 'gameOverEnd-pixel';
+		 GameOverSubstate.characterName = 'bf-pixel-dead';
+		#else
 		if(_song.gameOverSound == null || _song.gameOverSound.trim().length < 1) GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pixel';
 		if(_song.gameOverLoop == null || _song.gameOverLoop.trim().length < 1) GameOverSubstate.loopSoundName = 'gameOver-pixel';
 		if(_song.gameOverEnd == null || _song.gameOverEnd.trim().length < 1) GameOverSubstate.endSoundName = 'gameOverEnd-pixel';
 		if(_song.gameOverChar == null || _song.gameOverChar.trim().length < 1) GameOverSubstate.characterName = 'bf-pixel-dead';
+		#end
 		
 		var posX = 400;
 		var posY = 200;
@@ -62,7 +69,12 @@ class SchoolEvil extends BaseStage
 				}
 		}
 	}
+	
+	#if LEGACY_PSYCH
+	override function eventPushed(event:Note.EventNote)
+	#else
 	override function eventPushed(event:objects.Note.EventNote)
+	#end
 	{
 		// used for preloading assets used on events
 		switch(event.event)
@@ -116,8 +128,10 @@ class SchoolEvil extends BaseStage
 		doof.cameras = [camHUD];
 		doof.scrollFactor.set();
 		doof.finishThing = startCountdown;
-		doof.nextDialogueThing = PlayState.instance.startNextDialogue;
-		doof.skipDialogueThing = PlayState.instance.skipDialogue;
+		@:privateAccess{
+			doof.nextDialogueThing = game.startNextDialogue;
+			doof.skipDialogueThing = game.skipDialogue;
+		}
 	}
 	
 	function schoolIntro():Void

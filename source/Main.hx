@@ -2,6 +2,7 @@ package;
 
 import openfl.display.FPS;
 import mikolka.vslice.components.MemoryCounter;
+import mikolka.GameBorder;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxGame;
 import flixel.FlxState;
@@ -139,6 +140,9 @@ class Main extends Sprite
 		#if mobile
 		FlxG.game.addChild(fpsVar);
 	  	#else
+		var border = new GameBorder();
+		addChild(border);
+		Lib.current.stage.window.onResize.add(border.updateGameSize);
 		addChild(fpsVar);
 		#end
 		Lib.current.stage.align = "tl";

@@ -1,7 +1,9 @@
 package mikolka.stages.standard;
 
 import mikolka.compatibility.VsliceOptions;
-
+#if LEGACY_PSYCH
+using mikolka.compatibility.stages.misc.CharUtills;
+#end
 class Spooky extends BaseStage
 {
 	var halloweenBG:BGSprite;

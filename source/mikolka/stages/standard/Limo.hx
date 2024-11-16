@@ -262,7 +262,7 @@ class Limo extends BaseStage
 				limoCorpseTwo.visible = false;
 				limoKillingState = KILLING;
 
-				#if ACHIEVEMENTS_ALLOWED
+				#if (ACHIEVEMENTS_ALLOWED && !LEGACY_PSYCH)
 				var kills = Achievements.addScore("roadkill_enthusiast");
 				FlxG.log.add('Henchmen kills: $kills');
 				#end

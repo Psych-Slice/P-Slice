@@ -2,7 +2,9 @@ package mikolka.stages.standard;
 
 import mikolka.compatibility.VsliceOptions;
 
+#if !LEGACY_PSYCH
 import objects.Character;
+#end
 
 class Philly extends BaseStage
 {
@@ -49,7 +51,12 @@ class Philly extends BaseStage
 		phillyStreet = new BGSprite('philly/street', -40, 50);
 		add(phillyStreet);
 	}
+
+	#if LEGACY_PSYCH
+	override function eventPushed(event:Note.EventNote)
+	#else
 	override function eventPushed(event:objects.Note.EventNote)
+	#end
 	{
 		switch(event.event)
 		{

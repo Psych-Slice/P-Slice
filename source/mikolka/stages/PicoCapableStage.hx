@@ -5,7 +5,7 @@ import mikolka.compatibility.VsliceOptions;
 import objects.Note;
 import substates.GameOverSubstate;
 #else
-using mikolka.stages.misc.CharUtills;
+using mikolka.compatibility.stages.misc.CharUtills;
 #end
 
 enum NeneState

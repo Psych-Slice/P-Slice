@@ -1,8 +1,6 @@
 package mikolka.stages.standard;
 
-#if LEGACY_PSYCH
-import mikolka.stages.misc.AtlasLoader;
-#else
+#if !LEGACY_PSYCH
 import cutscenes.CutsceneHandler;
 import substates.GameOverSubstate;
 import objects.Character;
@@ -175,8 +173,11 @@ class Tank extends PicoCapableStage
 			gf.animation.finishCallback = null;
 			gf.dance();
 		};
-
+		#if LEGACY_PSYCH
+		cutsceneHandler.finishCallback2 = function()
+		#else
 		cutsceneHandler.skipCallback = function()
+		#end
 		{
 			dadGroup.alpha = 1;
 			gfGroup.alpha = 1;
@@ -194,6 +195,7 @@ class Tank extends PicoCapableStage
 
 			FlxTween.cancelTweensOf(FlxG.camera);
 			FlxTween.cancelTweensOf(camFollow);
+			@:privateAccess
 			game.moveCameraSection();
 			FlxG.camera.scroll.set(camFollow.x - FlxG.width/2, camFollow.y - FlxG.height/2);
 			FlxG.camera.zoom = defaultCamZoom;

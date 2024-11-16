@@ -26,7 +26,7 @@ class BaseStage extends FlxBasic
 	public var paused(get, never):Bool;
 	public var songName(get, never):String;
 	public var isStoryMode(get, never):Bool;
-	public var seenCutscene(get, never):Bool;
+	public var seenCutscene(get, set):Bool;
 	public var inCutscene(get, set):Bool;
 	public var canPause(get, set):Bool;
 	public var members(get, never):Array<FlxBasic>;
@@ -139,6 +139,10 @@ class BaseStage extends FlxBasic
 	inline private function get_songName() return game.songName;
 	inline private function get_isStoryMode() return PlayState.isStoryMode;
 	inline private function get_seenCutscene() return PlayState.seenCutscene;
+	inline private function set_seenCutscene(value:Bool) {
+		PlayState.seenCutscene = value;
+		return value;
+	}
 	inline private function get_inCutscene() return game.inCutscene;
 	inline private function set_inCutscene(value:Bool)
 	{

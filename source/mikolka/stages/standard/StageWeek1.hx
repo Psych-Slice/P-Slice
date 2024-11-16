@@ -3,6 +3,7 @@ package mikolka.stages.standard;
 import mikolka.compatibility.VsliceOptions;
 #if !LEGACY_PSYCH
 import objects.Character;
+import objects.Note;
 #end
 
 class StageWeek1 extends BaseStage
@@ -36,7 +37,12 @@ class StageWeek1 extends BaseStage
 			add(stageCurtains);
 		}
 	}
+	
+	#if LEGACY_PSYCH
+	override function eventPushed(event:Note.EventNote)
+	#else
 	override function eventPushed(event:objects.Note.EventNote)
+	#end
 	{
 		switch(event.event)
 		{

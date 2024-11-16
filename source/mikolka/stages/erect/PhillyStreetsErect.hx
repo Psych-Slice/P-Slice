@@ -1,5 +1,7 @@
 package mikolka.stages.erect;
 
+import openfl.filters.BlurFilter;
+import mikolka.compatibility.VsliceOptions;
 import shaders.AdjustColorShader;
 import flixel.addons.display.FlxBackdrop;
 import openfl.filters.ShaderFilter;
@@ -7,14 +9,16 @@ import flixel.addons.display.FlxTiledSprite;
 import shaders.RainShader;
 #if !LEGACY_PSYCH
 import substates.PauseSubState;
+import cutscenes.CutsceneHandler;
 #end
+
 import flixel.FlxSubState;
 
 class PhillyStreetsErect extends BaseStage
     {
         var rainShader:RainShader;
         var rainShaderStartIntensity:Float = 0;
-        var rainShaderEndIntensity:Float = 0;
+        var rainShaderEndIntensity:Float = 0.01;
     
         var rainSndAmbience:FlxSound;
         var carSndAmbience:FlxSound;
@@ -26,7 +30,6 @@ class PhillyStreetsErect extends BaseStage
         var phillyCars2:BGSprite;
     
         var picoFade:FlxSprite;
-        var spraycan:SpraycanAtlasSprite;
         var spraycanPile:BGSprite;
     
         var darkenable:Array<FlxSprite> = [];
@@ -35,11 +38,11 @@ class PhillyStreetsErect extends BaseStage
         override function create()
         {
             buildMist();
-            if (!ClientPrefs.data.lowQuality)
+            if (!VsliceOptions.LOW_QUALITY)
             {
                 var skyImage = Paths.image('phillyStreets/erect/phillySkybox');
                 scrollingSky = new FlxTiledSprite(skyImage, skyImage.width + 400, skyImage.height, true, false);
-                scrollingSky.antialiasing = ClientPrefs.data.antialiasing;
+                scrollingSky.antialiasing = VsliceOptions.ANTIALIASING;
                 scrollingSky.setPosition(-650, -375);
                 scrollingSky.scrollFactor.set(0.1, 0.1);
                 scrollingSky.scale.set(0.65, 0.65);
@@ -64,7 +67,7 @@ class PhillyStreetsErect extends BaseStage
             add(phillyHighwayLights);
             darkenable.push(phillyHighwayLights);
     
-            if (!ClientPrefs.data.lowQuality)
+            if (!VsliceOptions.LOW_QUALITY)
             {
                 var phillyHighwayLightsLightmap:BGSprite = new BGSprite('phillyStreets/phillyHighwayLights_lightmap', 284, 305, 1, 1);
                 phillyHighwayLightsLightmap.blend = ADD;
@@ -77,7 +80,7 @@ class PhillyStreetsErect extends BaseStage
             add(phillyHighway);
             darkenable.push(phillyHighway);
     
-            if (!ClientPrefs.data.lowQuality)
+            if (!VsliceOptions.LOW_QUALITY)
             {
                 var phillySmog:BGSprite = new BGSprite('phillyStreets/phillySmog', -6, 245, 0.8, 1);
                 add(phillySmog);
@@ -125,16 +128,16 @@ class PhillyStreetsErect extends BaseStage
             add(phillyForeground);
             darkenable.push(phillyForeground);
     
-            if (!ClientPrefs.data.lowQuality)
+            if (!VsliceOptions.LOW_QUALITY)
             {
                 picoFade = new FlxSprite();
-                picoFade.antialiasing = ClientPrefs.data.antialiasing;
+                picoFade.antialiasing = VsliceOptions.ANTIALIASING;
                 picoFade.alpha = 0;
                 add(picoFade);
                 darkenable.push(picoFade);
             }
     
-            if (ClientPrefs.data.shaders)
+            if (VsliceOptions.SHADERS)
                 setupRainShader();
     
             
@@ -167,7 +170,7 @@ class PhillyStreetsErect extends BaseStage
 	function buildMist() // Probable will be really broken 😞
 	{
 
-		colorShader = new AdjustColorShader();
+		
 
 		mist0 = makeMist('mistMid',1.2,0.6,172); //1000
 
@@ -216,12 +219,21 @@ class PhillyStreetsErect extends BaseStage
             carSndAmbience.volume = 0.01;
             carSndAmbience.play(false, FlxG.random.float(0, carSndAmbience.length));
     
-            if (ClientPrefs.data.shaders)
+            if (VsliceOptions.SHADERS)
             {
                 // ? ambience
                 rainSndAmbience = new FlxSound().loadEmbedded(Paths.sound("ambience/rain"), true);
                 rainSndAmbience.volume = 0.01;
                 rainSndAmbience.play(false, FlxG.random.float(0, rainSndAmbience.length));
+
+                colorShader = new AdjustColorShader();
+                colorShader.hue = -5;
+                colorShader.saturation = -40;
+                colorShader.contrast = -25;
+                colorShader.brightness = -20;
+                boyfriend.shader = colorShader;
+                dad.shader = colorShader;
+                gf.shader = colorShader;
             }
     
             super.createPost();
@@ -316,7 +328,7 @@ class PhillyStreetsErect extends BaseStage
             // if(curBeat % 2 == 0) abot.beatHit();
             super.beatHit();
     
-            if (ClientPrefs.data.lowQuality)
+            if (VsliceOptions.LOW_QUALITY)
                 return;
     
             if (FlxG.random.bool(10) && curBeat != (lastChange + changeInterval) && carInterruptable == true)
@@ -492,15 +504,11 @@ class PhillyStreetsErect extends BaseStage
             FlxTween.angle(sprite, rotations[0], rotations[1], duration);
             FlxTween.quadPath(sprite, path, duration, true, {onComplete: function(_) car2Interruptable = true});
         }
-    
-    
 
-
-    
 
         function showPicoFade()
         {
-            if (ClientPrefs.data.lowQuality)
+            if (VsliceOptions.LOW_QUALITY)
                 return;
     
             picoFade.setPosition(boyfriend.x, boyfriend.y);
