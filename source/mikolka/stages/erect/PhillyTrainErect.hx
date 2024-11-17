@@ -208,6 +208,15 @@ class PhillyTrainErect extends PicoCapableStage
 				if(seenOutcome && playerShoots){
 					game.camZooming = true;
 					#if LEGACY_PSYCH
+					game.vocals = new FlxSound();
+					switch(songName.toLowerCase()){
+						case "blammed-(pico-mix)":
+							game.vocals.loadEmbedded(Paths.sound("blammed_solo"));
+						case "pico-(pico-mix)":
+							game.vocals.loadEmbedded(Paths.sound("pico_solo"));
+						case "philly-nice-(pico-mix)":
+							game.vocals.loadEmbedded(Paths.sound("philly_solo"));
+					}
 					#else
 					game.opponentVocals = new FlxSound();
 					#end
