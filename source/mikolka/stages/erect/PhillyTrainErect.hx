@@ -4,6 +4,10 @@ import mikolka.stages.objects.PicoDopplegangerSprite;
 import shaders.AdjustColorShader;
 import flxanimate.motion.AdjustColor;
 import mikolka.compatibility.VsliceOptions;
+#if !LEGACY_PSYCH
+import cutscenes.CutsceneHandler;
+import objects.Character;
+#end
 
 class PhillyTrainErect extends PicoCapableStage
 {
@@ -54,7 +58,7 @@ class PhillyTrainErect extends PicoCapableStage
 		phillyStreet = new BGSprite('philly/erect/street', -40, 50);
 		add(phillyStreet);
 
-		setStartCallback(ughIntro);
+		if(!seenCutscene) setStartCallback(ughIntro);
 	}
 
 	override function createPost()
@@ -143,6 +147,7 @@ class PhillyTrainErect extends PicoCapableStage
 		bloodPool = new FlxAnimate(0, 0);
 		bloodPool.visible = false;
 		Paths.loadAnimateAtlas(bloodPool, "philly/erect/cutscenes/bloodPool");
+
 		cigarette = new FlxSprite();
 		cigarette.frames = Paths.getSparrowAtlas('philly/erect/cutscenes/cigarette');
 		cigarette.animation.addByPrefix('cigarette spit', 'cigarette spit', 24, false);
@@ -151,74 +156,32 @@ class PhillyTrainErect extends PicoCapableStage
 		cutsceneHandler.finishCallback = function()
 		{
 			seenCutscene = true;
+			//Restore camera
 			var timeForStuff:Float = Conductor.crochet / 1000 * 4.5;
 			FlxG.sound.music.fadeOut(timeForStuff);
 			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, timeForStuff, {ease: FlxEase.quadInOut});
 
-
-			if (!playerShoots && explode)
-			{
-				if(seenOutcome){
-					pico.playAnimation("loopPlayer", true, true, true);
-					endSong();
-				}
-				else{
-					pico.kill();
-					game.remove(pico);
-					pico.destroy();
-					boyfriend.visible = true;
-					startCountdown();
-				}
-			}
-			else{
-				if(seenOutcome && playerShoots && explode){
-					for (note in game.unspawnNotes){
-						if (!note.mustPress || note.eventName == "")
-							{
-								note.ignoreNote = true;
-							}
-					} 
-				}
-				startCountdown();
-			}
-
-			dadGroup.alpha = 1;
-			camHUD.visible = true;
-			boyfriend.animation.finishCallback = null;
-			gf.animation.finishCallback = null;
-			gf.dance();
-		};
-		#if LEGACY_PSYCH
-		cutsceneHandler.finishCallback2 = function()
-		#else
-		cutsceneHandler.skipCallback = function()
-		#end
-		{
-			seenCutscene = true;
+			//Show still alive chars
 			if (explode)
-			{
-				if (playerShoots)
-					boyfriend.visible = true;
-				else
-					dad.visible = true;
-			}
-			else
-				boyfriend.visible = dad.visible = true;
+				{
+					if (playerShoots) boyfriend.visible = true;
+					else dad.visible = true;
+				}
+			else boyfriend.visible = dad.visible = true;
+			
 			camHUD.visible = true;
 
-			if (audioPlaying != null)
-				audioPlaying.stop();
-
+			//Crear callbacks
 			boyfriend.animation.finishCallback = null;
 			gf.animation.finishCallback = null;
-
-			gf.dance();
-			dad.dance();
-			boyfriend.dance();
+	
+			if (audioPlaying != null) audioPlaying.stop();
 			pico.cancelSounds();
 			imposterPico.cancelSounds();
-			if (explode && playerShoots)
-				{
+			
+			if (explode)
+			{
+				if(playerShoots){
 					if (seenOutcome)
 						imposterPico.playAnimation("loopOpponent", true, true, true);
 					else
@@ -229,6 +192,46 @@ class PhillyTrainErect extends PicoCapableStage
 						dad.visible = true;
 					}
 				}
+				else{
+
+					if(seenOutcome){
+						pico.playAnimation("loopPlayer", true, true, true);
+						endSong();
+					}
+					else{
+						pico.kill();
+						game.remove(pico);
+						pico.destroy();
+						boyfriend.visible = true;
+					}
+				}
+				if(seenOutcome && playerShoots){
+					game.camZooming = true;
+					#if LEGACY_PSYCH
+					game.vocals = new FlxSound();
+					switch(songName.toLowerCase()){
+						case "blammed-(pico-mix)":
+							game.vocals.loadEmbedded(Paths.sound("blammed_solo"));
+						case "pico-(pico-mix)":
+							game.vocals.loadEmbedded(Paths.sound("pico_solo"));
+						case "philly-nice-(pico-mix)":
+							game.vocals.loadEmbedded(Paths.sound("philly_solo"));
+					}
+					#else
+					game.opponentVocals = new FlxSound();
+					#end
+					for (note in game.unspawnNotes){
+						if (!note.mustPress && note.eventName == "")
+							{
+								note.ignoreNote = true;
+							}
+					} 
+				}
+			}
+			//Dance!
+			dad.dance();
+			boyfriend.dance();
+			gf.dance();
 
 			FlxTween.cancelTweensOf(FlxG.camera);
 			FlxTween.cancelTweensOf(camFollow);
@@ -236,6 +239,15 @@ class PhillyTrainErect extends PicoCapableStage
 			game.moveCameraSection();
 			FlxG.camera.scroll.set(camFollow.x - FlxG.width / 2, camFollow.y - FlxG.height / 2);
 			FlxG.camera.zoom = defaultCamZoom;
+			if(!explode || playerShoots) startCountdown();
+		};
+		#if LEGACY_PSYCH
+		cutsceneHandler.finishCallback2 = function()
+		#else
+		cutsceneHandler.skipCallback = function()
+		#end
+		{
+			#if !LEGACY_PSYCH cutsceneHandler.finishCallback(); #end
 		};
 		camFollow_set(dad.x + 280, dad.y + 170);
 	}
