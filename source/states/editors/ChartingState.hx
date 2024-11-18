@@ -837,14 +837,14 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 				//? pulling key presses
 				var justPressed_A = FlxG.keys.justPressed.A;
 				var justPressed_D = FlxG.keys.justPressed.D;
-				var justPressed_W = FlxG.keys.justPressed.W;
-				var justPressed_S = FlxG.keys.justPressed.S;
+				var justPressed_W = FlxG.keys.pressed.W;
+				var justPressed_S = FlxG.keys.pressed.S;
 				var pressed_SHIFT = FlxG.keys.pressed.SHIFT;
 				#if TOUCH_CONTROLS_ALLOWED
 				justPressed_A = justPressed_A || touchPad.buttonLeft.justPressed;
 				justPressed_D = justPressed_D || touchPad.buttonRight.justPressed;
-				justPressed_W = justPressed_W || touchPad.buttonUp.justPressed;
-				justPressed_S = justPressed_S || touchPad.buttonDown.justPressed;
+				justPressed_W = justPressed_W || touchPad.buttonUp.pressed;
+				justPressed_S = justPressed_S || touchPad.buttonDown.pressed;
 				pressed_SHIFT = pressed_SHIFT || touchPad.buttonY.pressed;
 				#end
 
