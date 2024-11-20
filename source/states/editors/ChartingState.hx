@@ -2072,6 +2072,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			0,songMetadata.freeplaySongLength,
 			0,FlxG.sound.music.length/1000);
 		characterName.text = songMetadata.freeplayCharacter;
+
+		txt_altInstSong.text = songMetadata.altInstrumentalSongs;
 		albumName.text = songMetadata.albumId;
 	}
 
@@ -3564,6 +3566,10 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	var prevStartInput:PsychUINumericStepper;
 	var prevEndInput:PsychUINumericStepper;
 	var characterName:PsychUIInputText;
+
+	var txt_altVariantSong:PsychUIInputText;
+	var txt_altInstSong:PsychUIInputText;
+	
 	var albumName:PsychUIInputText;
 	var exportMetadataBtn:PsychUIButton;
 	var maxTime:Float = 0.0;
@@ -3571,29 +3577,37 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	{
 		var tab_group = mainBox.getTab('Metadata').menu;
 		ratingInput = new PsychUINumericStepper(20, 30,1,0,0,99,0,60);
-		prevStartInput = new PsychUINumericStepper(20, 100,1,0,0,999,2,80); 
-		prevEndInput = new PsychUINumericStepper(20, 150,1,0,0,999,2,80);
-		characterName = new PsychUIInputText(160,100,100,"",8);
-		albumName = new PsychUIInputText(160,150,100,"",8);
+
+		prevStartInput = new PsychUINumericStepper(20, 70,1,0,0,999,2,80); 
+		characterName = new PsychUIInputText(180,70,100,"",8);
+
+		prevEndInput = new PsychUINumericStepper(20, 120,1,0,0,999,2,80);
+		albumName = new PsychUIInputText(180,120,100,"",8);
+		
+		txt_altInstSong = new PsychUIInputText(20,160,250,"",8);
 
 		exportMetadataBtn = new PsychUIButton(20,200,"Export metadata",onMetadataSaveClick.bind(),110);
 
-		tab_group.add(new FlxText(ratingInput.x, ratingInput.y - 15, 80, 'Rating:'));
+		tab_group.add(meta_label(ratingInput, 'Rating:'));
 		tab_group.add(ratingInput);
 
-		tab_group.add(new FlxText(prevStartInput.x, prevStartInput.y - 15, 150, 'Freeplay preview start sec:'));
+		tab_group.add(meta_label(prevStartInput, 'Freeplay preview start sec:'));
+		tab_group.add(meta_label(prevEndInput, 'Freeplay preview end sec:'));
 		tab_group.add(prevStartInput);
-
-		tab_group.add(new FlxText(prevEndInput.x, prevEndInput.y - 15, 150, 'Freeplay preview end sec:'));
 		tab_group.add(prevEndInput);
 
-		tab_group.add(new FlxText(characterName.x, characterName.y - 15, 150, 'Player character:'));
+		tab_group.add(meta_label(characterName, 'Player character:'));
+		tab_group.add(meta_label(albumName,'Song album:'));
 		tab_group.add(characterName);
-
-		tab_group.add(new FlxText(albumName.x, albumName.y - 15, 150, 'Song album:'));
 		tab_group.add(albumName);
 
+		tab_group.add(meta_label(txt_altInstSong, 'Song alt vocals (separated with \',\'):'));
+		tab_group.add(txt_altInstSong);
+
 		tab_group.add(exportMetadataBtn);
+	}
+	function meta_label(spr:FlxSprite,txt:String){
+		return new FlxText(spr.x, spr.y - 15, 250, txt);
 	}
 
 	function onMetadataSaveClick() {
@@ -3602,6 +3616,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		meta.songRating = Std.int(ratingInput.value);
 		meta.freeplayPrevStart = prevStartInput.value;
 		meta.freeplayPrevEnd = prevEndInput.value;
+		meta.altInstrumentalSongs = txt_altInstSong.text;
 		meta.albumId = albumName.text;
 		meta.freeplayCharacter = characterName.text;
 		meta.freeplaySongLength = FlxG.sound.music.length/1000;
@@ -5033,6 +5048,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		setSongPlaying(false);
 		updateChartData();
 		StageData.loadDirectory(PlayState.SONG);
+		PlayState.altInstrumentals = null; // don't persist alt inst
 		LoadingState.loadAndSwitchState(new PlayState());
 		ClientPrefs.toggleVolumeKeys(true);
 	}

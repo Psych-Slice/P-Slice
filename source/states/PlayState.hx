@@ -141,6 +141,7 @@ class PlayState extends MusicBeatState
 
 	//! new shit
 	public static var storyCampaignTitle = "";
+	public static var altInstrumentals:String = null;
 	public static var storyDifficultyColor = FlxColor.GRAY;
 
 	public var spawnTime:Float = 2000;
@@ -1367,7 +1368,7 @@ class PlayState extends MusicBeatState
 		inst = new FlxSound();
 		try
 		{
-			inst.loadEmbedded(Paths.inst(songData.song));
+			inst.loadEmbedded(Paths.inst(altInstrumentals ?? songData.song));
 		}
 		catch (e:Dynamic) {}
 		FlxG.sound.list.add(inst);

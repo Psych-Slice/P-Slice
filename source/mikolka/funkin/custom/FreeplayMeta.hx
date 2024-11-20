@@ -11,6 +11,7 @@ class FreeplayMetaJSON {
     public var freeplaySongLength:Float = 1;// and this too
     public var freeplayCharacter:String = "";
     public var albumId:String = "";
+    public var altInstrumentalSongs:String = "";
 }
 
 class FreeplayMeta {
