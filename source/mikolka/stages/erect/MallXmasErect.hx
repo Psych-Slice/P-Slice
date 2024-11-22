@@ -1,5 +1,7 @@
 package mikolka.stages.erect;
 
+import flixel.system.debug.watch.Tracker;
+import mikolka.compatibility.FunkinPath;
 import shaders.AdjustColorShader;
 import mikolka.compatibility.VsliceOptions;
 #if !LEGACY_PSYCH
@@ -11,6 +13,9 @@ class MallXmasErect extends PicoCapableStage
 	var upperBoppers:BGSprite;
 	var bottomBoppers:MallCrowd;
 	var santa:BGSprite;
+	
+	var erectSanta:FlxAtlasSprite;
+	var erectParents:FlxAtlasSprite;
 
 	override function create()
 	{
@@ -50,8 +55,11 @@ class MallXmasErect extends PicoCapableStage
 		add(santa);
 		setDefaultGF('gf-christmas');
 
-		if(isStoryMode && !seenCutscene)
+		if(songName == "eggnog-erect" || songName == "eggnog-(pico-mix)"){
+			erectSanta = new FlxAtlasSprite(-840 +380, 150 +347,"assets/week5/images/christmas/santa_speaks_assets");
+			erectParents = new FlxAtlasSprite(100 -620, 100 + 401,"assets/week5/images/christmas/parents_shoot_assets");	
 			setEndCallback(eggnogEndCutscene);
+		}
 	}
 	override function createPost() {
 		super.createPost();
@@ -64,6 +72,10 @@ class MallXmasErect extends PicoCapableStage
 			gf.shader = colorShader;
 			dad.shader = colorShader;
 			santa.shader = colorShader;
+			if(erectSanta != null){
+				erectSanta.shader = santa.shader;
+				erectParents.shader = santa.shader;
+			}
 		}
 		
 		@:privateAccess
@@ -100,13 +112,55 @@ class MallXmasErect extends PicoCapableStage
 
 	function eggnogEndCutscene()
 	{
-		if(PlayState.storyPlaylist[1] == null)
-		{
-			endSong();
-			return;
-		}
+		
+		remove(santa);
+		dad.visible = false;
+		canPause = false;
+		game.endingSong = true;
+		add(erectParents);
+		add(erectSanta);
 
-		var nextSong:String = Paths.formatToSongPath(PlayState.storyPlaylist[1]);
-		endSong();
+		erectSanta.playAnimation("santa whole scene", false, false, false, 0);
+		erectParents.playAnimation("parents whole scene", false, false, false, 0);
+		FlxG.sound.play(Paths.sound("santa_emotion"));
+    	erectSanta.onAnimationComplete.add(s ->erectSanta.anim.pause());
+    	erectParents.onAnimationComplete.add(s ->erectParents.anim.pause());
+
+		new FlxTimer().start(2.8, function(tmr)
+			{
+				camFollow_set(erectSanta.x + 150, erectSanta.y);
+				FlxTween.tween(camGame,{zoom: 0.79}, 9,{
+					ease: FlxEase.quadInOut
+				});
+			});
+	
+	
+			new FlxTimer().start(11.3, function(tmr){
+				//PlayState.instance.tweenCameraZoom(0.73, 0.8, true, FlxEase.backOut);
+				//PlayState.instance.tweenCameraToPosition(santaDead.x + 220, santaDead.y, 0.8, FlxEase.expoOut);
+				//PlayState.instance.camGame.shake(0.007, 0.4);
+			});
+			new FlxTimer().start(11.375, function(tmr)
+			{
+				FlxG.sound.play(Paths.sound('santa_shot_n_falls'));
+			});
+	
+			new FlxTimer().start(12.83, function(tmr)
+			{
+				camGame.shake(0.005, 0.2);
+				camFollow_set(erectSanta.x + 160, erectSanta.y + 80);
+			});
+	
+	
+			new FlxTimer().start(15, function(tmr)
+			{
+				camHUD.fade(0xFF000000, 1, false, null, true);
+			});
+	
+			new FlxTimer().start(16, function(tmr)
+			{
+				camHUD.fade(0xFF000000, 0.5, true, null, true);
+				endSong();
+			});
 	}
 }
