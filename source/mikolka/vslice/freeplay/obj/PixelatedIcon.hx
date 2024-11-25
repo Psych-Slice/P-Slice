@@ -12,6 +12,7 @@ import mikolka.funkin.FlxFilteredSprite;
  */
 class PixelatedIcon extends FlxFilteredSprite
 {
+	public var type:IconType;
   public function new(x:Float, y:Float)
   {
     super(x, y);
@@ -26,7 +27,7 @@ class PixelatedIcon extends FlxFilteredSprite
     //60, 10
     //trace(char);
     if(char.startsWith("icon-")) char = char.replace("icon-","");
-    var type = IconType.LEGACY;
+    type = IconType.LEGACY;
     if(FunkinPath.exists('images/freeplay/icons/${char}pixel.png')){
       if(FunkinPath.exists('images/freeplay/icons/${char}pixel.xml')) type = ANIMATED;
       else type = PIXEL;

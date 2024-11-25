@@ -1,5 +1,8 @@
 package mikolka.editors;
 
+import mikolka.editors.editorProps.AnimPreview;
+import mikolka.editors.editorProps.CharIconGrid;
+import mikolka.vslice.charSelect.CharSelectPlayer;
 import mikolka.compatibility.FreeplayHelpers;
 import mikolka.compatibility.ModsHelper;
 import mikolka.funkin.players.PlayerData.PlayerCharSelectGFData;
@@ -10,15 +13,11 @@ import mikolka.vslice.charSelect.Nametag;
 import mikolka.vslice.charSelect.Lock;
 import mikolka.vslice.freeplay.obj.PixelatedIcon;
 
+using mikolka.funkin.custom.FunkinTools;
+
 class CharSelectEditor extends MusicBeatState
 {
 	var activePlayer:PlayableCharacter;
-
-	var grpIcons:FlxTypedSpriteGroup<FlxSprite>;
-	var charIcon:PixelatedIcon;
-	var prevIndex:Int = 0;
-	var grpXSpread:Float = 107;
-	var grpYSpread:Float = 127;
 
 	var playerId:String;
 
@@ -26,10 +25,19 @@ class CharSelectEditor extends MusicBeatState
 	var btn_reload:PsychUIButton;
 	var input_playerId:PsychUIInputText;
 	var step_charSlot:PsychUINumericStepper;
+	var input_gfAssetPath:PsychUIInputText;
+	var input_gfAnimInfoPath:PsychUIInputText;
+	var chkBox_visualiser:PsychUICheckBox;
 
 	var nametag:Nametag;
 	var gfChill:CharSelectGF;
 	var currentGFPath:String;
+	var playerChill:CharSelectPlayer;
+	var icons:CharIconGrid;
+	var animPreview:AnimPreview;
+
+	var validTag = true;
+	var validChar = true;
 
 	public function new(playerId:String = "bf")
 	{
@@ -62,14 +70,22 @@ class CharSelectEditor extends MusicBeatState
 		gfChill = new CharSelectGF();
 		switchEditorGF(activePlayer._data.charSelect.gf);
 		add(gfChill);
+		playerChill = new CharSelectPlayer(0, 0);
+		playerChill.switchChar(playerId); //? Set to current character
+		add(playerChill);
 
 		var curtains:FlxSprite = new FlxSprite(-47, -49);
 		curtains.loadGraphic(Paths.image('charSelect/curtains'));
 		curtains.scrollFactor.set(1.4, 1.4);
 		add(curtains);
 
-		initLocks(activePlayer._data.charSelect.position);
+		icons = new CharIconGrid();
+		icons.initLocks(activePlayer._data.charSelect.position,playerId);
+		add(icons);
 		addEditorBox();
+
+		animPreview = new AnimPreview(100,100);
+		add(animPreview);
 
 		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad('NONE', 'B');
@@ -80,61 +96,34 @@ class CharSelectEditor extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		if (controls.BACK)
-		{
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-			FlxG.mouse.visible = false;
-			MusicBeatState.startTransition(new MasterEditorMenu());
+		if(PsychUIInputText.focusOn == null)
+            {
+                ClientPrefs.toggleVolumeKeys(true);
+                var b_tapped = false;
+                
+                #if TOUCH_CONTROLS_ALLOWED
+                b_tapped = touchPad.buttonB.justPressed;
+                #end
+
+                if(controls.BACK || b_tapped){
+                    FlxG.sound.playMusic(Paths.music('freakyMenu'));
+                    FlxG.mouse.visible = false;
+                    MusicBeatState.startTransition(new MasterEditorMenu());
+                }
+            }
+        else ClientPrefs.toggleVolumeKeys(false);
+		
+		if(animPreview.activeSprite != null){
+			if(controls.UI_DOWN_P) animPreview.selectAnim(1);
+			if(controls.UI_UP_P) animPreview.selectAnim(-1);
+			if(FlxG.keys.justPressed.SPACE) animPreview.playAnim();
+			if(controls.UI_LEFT_P) animPreview.selectFrame(-1);
+			if(controls.UI_RIGHT_P) animPreview.selectFrame(1);
+			
 		}
 	}
 
-	function initLocks(index:Int):Void
-	{
-		grpIcons = new FlxSpriteGroup();
-		add(grpIcons);
-
-		charIcon = new PixelatedIcon(0, 0);
-		charIcon.setCharacter(playerId);
-		charIcon.setGraphicSize(128, 128);
-		charIcon.updateHitbox();
-		charIcon.ID = 0;
-
-		for (i in 0...9)
-		{
-			var temp:Lock = new Lock(0, 0, i);
-			temp.ID = 1;
-			grpIcons.add(temp);
-		}
-		grpIcons.add(charIcon);
-
-		grpIcons.x = 450;
-		grpIcons.y = 120;
-		for (index => member in grpIcons.members)
-		{
-			updateIconPosition(member, index);
-		}
-		updateCharHead(index);
-		grpIcons.scrollFactor.set();
-	}
-
-	function updateCharHead(index:Int) {
-		grpIcons.group.members[prevIndex].visible = true;
-		updateIconPosition(charIcon, index);
-		grpIcons.group.members[index].visible = false;
-		prevIndex = index;
-
-	}
-	function updateIconPosition(member:FlxSprite, index:Int)
-	{
-		var posX:Float = (index % 3);
-		var posY:Float = Math.floor(index / 3);
-
-		member.x = posX * grpXSpread;
-		member.y = posY * grpYSpread;
-
-		member.x += grpIcons.x;
-		member.y += grpIcons.y;
-	}
+	
 
 	public function switchEditorGF(gf:PlayerCharSelectGFData):Void
 	{
@@ -172,32 +161,92 @@ class CharSelectEditor extends MusicBeatState
 
 	function addEditorBox()
 	{
-		UI_box = new PsychUIBox(FlxG.width, FlxG.height, 250, 200, ['General', "Player", 'Girlfrend']);
+		UI_box = new PsychUIBox(FlxG.width, FlxG.height, 250, 200, ['General', "Player", 'Girlfriend']);
 		UI_box.x -= UI_box.width;
 		UI_box.y -= UI_box.height;
 		UI_box.scrollFactor.set();
 		add(UI_box);
 
+		// GENERAL
 		input_playerId = new PsychUIInputText(20, 20, 100, playerId);
+		input_playerId.onChange = (prev,cur)->{
+			playerId = cur;
+
+			icons.updateCharId(playerId);
+			var nametagName = playerId == "bf" ? "boyfriend" : playerId;
+			if(Paths.fileExists('images/charSelect/' + nametagName + "Nametag.png",TEXT)){
+				nametag.switchChar(playerId);
+				validTag = true;
+			}
+			else{
+				if (validTag) nametag.switchChar("locked");
+				validTag = false;
+			}
+			if(Paths.fileExists('images/charSelect/' + playerId + "Chill/Animation.json",TEXT)){
+				playerChill.switchChar(playerId);
+				validChar = true;
+			}
+			else{
+				if (validChar) {
+					playerChill.switchChar("locked");
+					if(playerChill == animPreview.activeSprite) animPreview.attachSprite(null);
+				}
+				validChar = false;
+			}
+		}
+
 		btn_reload = new PsychUIButton(150, 20, "Reload", () ->
 		{
 			MusicBeatState.startTransition(new CharSelectEditor(input_playerId.text));
 		});
 
 		input_playerName = new PsychUIInputText(20, 60, 100, activePlayer._data.name);
+		input_playerName.onChange = (prev,cur)->{
+			activePlayer._data.name = cur;
+		}
 		step_charSlot = new PsychUINumericStepper(20, 120, 1, 4, 0, 8);
 		step_charSlot.onValueChange = () ->
 		{
 			var index = Math.floor(step_charSlot.value);
-			updateCharHead(index);
+			icons.updateCharHead(index);
 			activePlayer._data.charSelect.position = index;
 		};
 
-		var btn_save:PsychUIButton = new PsychUIButton(20, 150, "Save", function()
+		var btn_save:PsychUIButton = new PsychUIButton(20, 150, "Save", ()->
 		{
 		});
+		//BF
+		
+		var btn_player_prev:PsychUIButton = new PsychUIButton(20, 20, "Anims preview", ()->
+			{
+				animPreview.attachSprite(playerChill); 
+				PsychUIInputText.focusOn = null;
+			});
+		//GF
+		var btn_gf_prev:PsychUIButton = new PsychUIButton(20, 20, "Anims preview", ()->
+			{
+				animPreview.attachSprite(gfChill); 
+				PsychUIInputText.focusOn = null;
+			});
+		var btn_gf_reload:PsychUIButton = new PsychUIButton(120, 20, "Reload", ()->
+			{
+				switchEditorGF(activePlayer._data.charSelect.gf);
+			});
+		input_gfAssetPath = new PsychUIInputText(20, 60, 100, activePlayer._data.charSelect.gf.assetPath);
+		input_gfAssetPath.onChange = (p,next) -> {
+			activePlayer._data.charSelect.gf.assetPath = next;
+		};
+		input_gfAnimInfoPath = new PsychUIInputText(20, 120, 100, activePlayer._data.charSelect.gf.animInfoPath);
+		input_gfAnimInfoPath.onChange = (prev,next) ->{
+			activePlayer._data.charSelect.gf.animInfoPath = next;
+		};
+		chkBox_visualiser = new PsychUICheckBox(20,150,"Use visualiser",100,() -> {
+			activePlayer._data.charSelect.gf.visualizer = chkBox_visualiser.checked;
+		});
+		chkBox_visualiser.checked = activePlayer._data.charSelect.gf.visualizer;
+		//?
 
-		///////////////
+		//GENERAL
 		UI_box.selectedName = 'General';
 		var tab = UI_box.getTab('General').menu;
 		add(UI_box);
@@ -213,6 +262,21 @@ class CharSelectEditor extends MusicBeatState
 		tab.add(step_charSlot);
 
 		tab.add(btn_save);
+		//BF
+
+		var tab = UI_box.getTab("Player").menu;
+		tab.add(btn_player_prev);
+
+		//GF
+		var tab = UI_box.getTab("Girlfriend").menu;
+		tab.add(btn_gf_prev);
+		tab.add(btn_gf_reload);
+		tab.add(newLabel(input_gfAssetPath, "Asset path:"));
+		tab.add(input_gfAssetPath);
+		tab.add(newLabel(input_gfAnimInfoPath, "JSFL anim folder:"));
+		tab.add(input_gfAnimInfoPath);
+		tab.add(chkBox_visualiser);
+		//
 	}
 
 	function newLabel(ref:FlxSprite, text:String)
