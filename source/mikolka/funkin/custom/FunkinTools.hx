@@ -77,6 +77,7 @@ class FunkinTools
 		if(ignoreFields == null) ignoreFields = [];
 		var fillInFields = Type.getInstanceFields(Type.getClass(target)).filter(s -> !ignoreFields.contains(s));
 
+		if(source == null) return target;
 		for (field in Reflect.fields(source)){
 			if(fillInFields.contains(field)) Reflect.setField(target,field,Reflect.field(source,field));
 			#if debug

@@ -14,7 +14,7 @@ import cutscenes.CutsceneHandler;
 
 import flixel.FlxSubState;
 
-class PhillyStreetsErect extends BaseStage
+class PhillyStreetsErect extends PicoCapableStage
     {
         var rainShader:RainShader;
         var rainShaderStartIntensity:Float = 0;
@@ -206,7 +206,7 @@ class PhillyStreetsErect extends BaseStage
     
         override function createPost()
         {
-    
+            super.createPost();
             spraycanPile = new BGSprite('SpraycanPile', 920, 1045, 1, 1);
 
             add(spraycanPile);
@@ -235,8 +235,6 @@ class PhillyStreetsErect extends BaseStage
                 dad.shader = colorShader;
                 gf.shader = colorShader;
             }
-    
-            super.createPost();
         }
     
     
