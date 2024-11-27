@@ -15,6 +15,9 @@ class CapsuleOptionsMenu extends FlxSpriteGroup
 
   var currentInstrumental:FlxText;
 
+  var leftArrow:InstrumentalSelector;
+  var rightArrow:InstrumentalSelector;
+
   public function new(parent:FreeplayState, x:Float = 0, y:Float = 0, instIds:Array<String>):Void
   {
     super(x, y);
@@ -32,8 +35,8 @@ class CapsuleOptionsMenu extends FlxSpriteGroup
     currentInstrumental.setFormat(Paths.font("vcr.ttf"), 40, FlxTextAlign.CENTER, true);
 
     final PAD = 4;
-    var leftArrow = new InstrumentalSelector(parent, PAD, 30, false, parent.getControls());
-    var rightArrow = new InstrumentalSelector(parent, capsuleMenuBG.width - leftArrow.width - PAD, 30, true, parent.getControls());
+    leftArrow = new InstrumentalSelector(parent, PAD, 30, false, parent.getControls());
+    rightArrow = new InstrumentalSelector(parent, capsuleMenuBG.width - leftArrow.width - PAD, 30, true, parent.getControls());
 
     var label:FlxText = new FlxText(0, 5, capsuleMenuBG.width, 'INSTRUMENTAL');
     label.setFormat(Paths.font("vcr.ttf"), 24, FlxTextAlign.CENTER, true);
@@ -67,16 +70,23 @@ class CapsuleOptionsMenu extends FlxSpriteGroup
     }
 
     var changedInst = false;
-    if (parent.getControls().UI_LEFT_P)
+    if (parent.getControls().UI_LEFT_P || (TouchUtil.overlapsComplex(leftArrow) && TouchUtil.justPressed))
     {
       currentInstrumentalIndex = (currentInstrumentalIndex + 1) % instrumentalIds.length;
       changedInst = true;
+      if (leftArrow != null) leftArrow.setPress(true);
     }
-    if (parent.getControls().UI_RIGHT_P)
+    if (parent.getControls().UI_RIGHT_P || (TouchUtil.overlapsComplex(rightArrow) && TouchUtil.justPressed))
     {
       currentInstrumentalIndex = (currentInstrumentalIndex - 1 + instrumentalIds.length) % instrumentalIds.length;
       changedInst = true;
+      if (rightArrow != null) rightArrow.setPress(true);
     }
+    if (leftArrow != null && rightArrow != null && TouchUtil.justReleased)
+		{
+			rightArrow.setPress(false);
+			leftArrow.setPress(false);
+		}
     if (!changedInst && currentInstrumental.text == '') changedInst = true;
 
     if (changedInst)
@@ -156,6 +166,22 @@ class InstrumentalSelector extends FunkinSprite
 
     super.update(elapsed);
   }
+
+  public function setPress(press:Bool):Void
+	{
+		if (!press)
+		{
+			scale.x = scale.y = 1;
+			whiteShader.colorSet = false;
+			updateHitbox();
+		}
+		else
+		{
+			offset.y -= 5;
+			whiteShader.colorSet = true;
+			scale.x = scale.y = 0.5;
+		}
+	}
 
   function moveShitDown():Void
   {
