@@ -78,7 +78,7 @@ class MobileOptionsSubState extends BaseOptionsMenu
 	}
 
 	#if android
-	public static function onStorageChange():Void
+	function onStorageChange():Void
 	{
 		File.saveContent(lime.system.System.applicationStorageDirectory + 'storagetype.txt', ClientPrefs.data.storageType);
 
@@ -92,4 +92,17 @@ class MobileOptionsSubState extends BaseOptionsMenu
 			trace('Failed to remove last directory. (${e.message})');
 	}
 	#end
+
+	override public function destroy()
+	{
+		super.destroy();
+		#if android
+		if (ClientPrefs.data.storageType != lastStorageType)
+		{
+			onStorageChange();
+			CoolUtil.showPopUp('Storage Type has been changed and you needed restart the game!!\nPress OK to close the game.', 'Notice!');
+			lime.system.System.exit(0);
+		}
+		#end
+	}
 }
