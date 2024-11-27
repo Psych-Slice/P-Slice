@@ -1,5 +1,6 @@
 package mikolka.editors;
 
+import mikolka.editors.editorProps.FreeplayEditSubstate;
 import mikolka.editors.editorProps.AnimPreview;
 import mikolka.editors.editorProps.CharIconGrid;
 import mikolka.vslice.charSelect.CharSelectPlayer;
@@ -222,6 +223,10 @@ class CharSelectEditor extends MusicBeatState
 				animPreview.attachSprite(playerChill); 
 				PsychUIInputText.focusOn = null;
 			});
+		var btn_dj:PsychUIButton = new PsychUIButton(20, 80, "Edit freeplay DJ", ()->
+			{
+				openSubState(new FreeplayEditSubstate(activePlayer));
+			});
 		//GF
 		var btn_gf_prev:PsychUIButton = new PsychUIButton(20, 20, "Anims preview", ()->
 			{
@@ -266,6 +271,7 @@ class CharSelectEditor extends MusicBeatState
 
 		var tab = UI_box.getTab("Player").menu;
 		tab.add(btn_player_prev);
+		tab.add(btn_dj);
 
 		//GF
 		var tab = UI_box.getTab("Girlfriend").menu;
