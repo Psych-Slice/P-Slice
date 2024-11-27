@@ -9,6 +9,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate {
     var data:PlayableCharacter;
     var anims:AnimPreview;
     var animsList:Array<AnimationData>;
+    var loaded:Bool = false;
 
     var dj:FlxAtlasSprite;
 	var backingCard:BoyfriendCard;
@@ -30,8 +31,30 @@ class FreeplayEditSubstate extends MusicBeatSubstate {
         backingCard.init();
         add(backingCard);
 
+        var blackOverlayBullshitLOLXD:FlxSprite = new FlxSprite(FlxG.width, 0, Paths.image("back"));
+		blackOverlayBullshitLOLXD.alpha = 1; // ? graphic because shareds are shit
+		add(blackOverlayBullshitLOLXD); // used to mask the text lol!
+
+		// this makes the texture sizes consistent, for the angle shader
+		//bgDad.setGraphicSize(0, FlxG.height);
+		blackOverlayBullshitLOLXD.setGraphicSize(0, FlxG.height);
+
+		//bgDad.updateHitbox();
+		blackOverlayBullshitLOLXD.updateHitbox();
+        FlxTween.tween(blackOverlayBullshitLOLXD,{x:350},0.75,{
+            ease: FlxEase.quadInOut
+        });
+        FlxTimer.wait(0.8,() ->{
+            add(UI_box);
+            loaded = true;
+            backingCard.introDone();
+        });
+
+        
+
         dj = new FlxAtlasSprite(640, 366,data.getFreeplayDJData().getAtlasPath());
         add(dj);
+        dj.playAnimation(data.getFreeplayDJData().getAnimationPrefix("idle"));
         
         @:privateAccess
         animsList = data.getFreeplayDJData().animations;
@@ -51,9 +74,9 @@ class FreeplayEditSubstate extends MusicBeatSubstate {
                 b_tapped = touchPad.buttonB.justPressed;
                 #end
 
-                if(controls.BACK || b_tapped){
-                    FlxG.sound.playMusic(Paths.music('freakyMenu'));
-                    closeSubState();
+                if((controls.BACK || b_tapped) && loaded){
+                    FlxG.sound.play(Paths.sound('cancelMenu'));
+                    close();
                 }
             }
         else ClientPrefs.toggleVolumeKeys(false);
@@ -73,13 +96,12 @@ class FreeplayEditSubstate extends MusicBeatSubstate {
             UI_box.x -= UI_box.width;
             UI_box.y -= UI_box.height;
             UI_box.scrollFactor.set();
-            add(UI_box);
     
             // GENERAL
             @:privateAccess
-            input_assetPath = new PsychUIInputText(20, 20, 100, data._data.freeplayDJ.assetPath);
+            input_assetPath = new PsychUIInputText(10, 20, 100, data._data.freeplayDJ.assetPath);
     
-            btn_reload = new PsychUIButton(20, 60, "Reload", () ->
+            btn_reload = new PsychUIButton(130, 20, "Reload", () ->
             {
                 remove(dj);
                 dj.destroy();
@@ -87,17 +109,13 @@ class FreeplayEditSubstate extends MusicBeatSubstate {
             });
             @:privateAccess
             steper_charSelectDelay = new PsychUINumericStepper(20, 60, 0.05, data._data.freeplayDJ.charSelect.transitionDelay,0,10,0,100);
-    
-            var btn_save:PsychUIButton = new PsychUIButton(20, 150, "Save", ()->
-            {
-            });
-            //BF
-
+            
             @:privateAccess{
-                input_text1 = new PsychUIInputText(20,50,150,data._data.freeplayDJ.text1);
-                input_text2 = new PsychUIInputText(20,90,150,data._data.freeplayDJ.text2);
-                input_text3 = new PsychUIInputText(20,130,150,data._data.freeplayDJ.text3);
+                input_text1 = new PsychUIInputText(10,50,150,data._data.freeplayDJ.text1);
+                input_text2 = new PsychUIInputText(10,90,150,data._data.freeplayDJ.text2);
+                input_text3 = new PsychUIInputText(10,130,150,data._data.freeplayDJ.text3);
             }
+            //BF
             //GF
 
             // var btn_gf_prev:PsychUIButton = new PsychUIButton(20, 20, "Anims preview", ()->
@@ -127,7 +145,6 @@ class FreeplayEditSubstate extends MusicBeatSubstate {
             //GENERAL
             UI_box.selectedName = 'General';
             var tab = UI_box.getTab('General').menu;
-            add(UI_box);
     
             tab.add(newLabel(input_assetPath, 'Asset path:'));
             tab.add(input_assetPath);
