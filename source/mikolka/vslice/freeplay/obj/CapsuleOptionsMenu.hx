@@ -171,7 +171,7 @@ class InstrumentalSelector extends FunkinSprite
 	{
 		if (!press)
 		{
-			scale.x = scale.y = 1;
+			scale.x = scale.y = 1 * baseScale;
 			whiteShader.colorSet = false;
 			updateHitbox();
 		}
@@ -179,7 +179,7 @@ class InstrumentalSelector extends FunkinSprite
 		{
 			offset.y -= 5;
 			whiteShader.colorSet = true;
-			scale.x = scale.y = 0.5;
+			scale.x = scale.y = 0.5 * baseScale;
 		}
 	}
 
