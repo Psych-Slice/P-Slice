@@ -1,5 +1,7 @@
 package mikolka.editors.editorProps;
 
+import flxanimate.animate.FlxSymbol;
+
 class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 {
 	public var activeSprite:FlxAtlasSprite;
@@ -32,19 +34,23 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 		frameTxt.setFormat(Paths.font("vcr.ttf"), 40, 0xFFFFFFFF, LEFT, OUTLINE, 0xFF000000);
 		add(frameTxt);
 
-		for (x in value.listAnimations())
-		{
-			addAnim({
-				anim: x,
-				readableName: x
-			});
-		}
+		
+		registerAnims(value);
 		value.onAnimationFrame.add(onFrameAdvance);
 		activeSprite?.onAnimationFrame.remove(onFrameAdvance);
 		activeSprite = value;
 		selectAnim(0);
 	}
 
+	private function registerAnims(value:FlxAtlasSprite) {
+		for (x in value.listAnimations())
+			{
+				addAnim({
+					anim: x,
+					readableName: x
+				});
+			}
+	}
 	public function selectAnim(diff:Int = 0)
 	{
 		labels[selectedIndex].color = 0xFFFFFFFF;
@@ -58,6 +64,7 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 
 	public function selectFrame(diff:Int = 0)
 	{
+		activeSprite.pauseAnimation();
         var newFrame = Std.int(FlxMath.bound(selectedFrame+diff,1,selectedAnimLength));
 		activeSprite.anim.curFrame = selectedAnimIndices[newFrame-1];
         selectedFrame = newFrame;
@@ -102,7 +109,6 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 		// 	labelFrame = indices.length;
         selectedFrame +=1;
 		frameTxt.text = 'Frame (${selectedFrame}/${selectedAnimLength})';
-        if(selectedFrame == selectedAnimLength+1) activeSprite.pauseAnimation();
 	}
 }
 

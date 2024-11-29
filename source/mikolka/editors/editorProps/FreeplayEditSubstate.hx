@@ -1,19 +1,26 @@
 package mikolka.editors.editorProps;
 
+import mikolka.funkin.freeplay.FreeplayStyle;
+import mikolka.funkin.freeplay.FreeplayStyleRegistry;
+import shaders.AngleMask;
 import mikolka.vslice.freeplay.backcards.BoyfriendCard;
 import mikolka.vslice.freeplay.DJBoyfriend.FreeplayDJ;
 
 class FreeplayEditSubstate extends MusicBeatSubstate {
     
-	var UI_box:PsychUIBox;
     var data:PlayableCharacter;
+	var style:Null<FreeplayStyle>;
     var anims:AnimPreview;
     var animsList:Array<AnimationData>;
     var loaded:Bool = false;
-
+    
     var dj:FlxAtlasSprite;
 	var backingCard:BoyfriendCard;
+    var angleMaskShader:AngleMask = new AngleMask();
+	var bgDad:FlxSprite;
+    
 
+    var UI_box:PsychUIBox;
     //GENERAL
 	var input_assetPath:PsychUIInputText;
 	var btn_reload:PsychUIButton;
@@ -25,6 +32,8 @@ class FreeplayEditSubstate extends MusicBeatSubstate {
     public function new(player:PlayableCharacter) {
         super();
         data = player;
+        style = FreeplayStyleRegistry.instance.fetchEntry(data.getFreeplayStyleID());
+        if(style == null) style = FreeplayStyleRegistry.instance.fetchEntry("bf");
     }
     override function create() {
         backingCard = new BoyfriendCard(data);
@@ -35,20 +44,22 @@ class FreeplayEditSubstate extends MusicBeatSubstate {
 		blackOverlayBullshitLOLXD.alpha = 1; // ? graphic because shareds are shit
 		add(blackOverlayBullshitLOLXD); // used to mask the text lol!
 
+        bgDad = new FlxSprite(backingCard.pinkBack.width * 0.74, 0);
+        setDadBG();
+        bgDad.shader = angleMaskShader;
+		bgDad.visible = false;
+        add(bgDad);
+
 		// this makes the texture sizes consistent, for the angle shader
-		//bgDad.setGraphicSize(0, FlxG.height);
+		bgDad.setGraphicSize(0, FlxG.height);
 		blackOverlayBullshitLOLXD.setGraphicSize(0, FlxG.height);
 
-		//bgDad.updateHitbox();
+		bgDad.updateHitbox();
 		blackOverlayBullshitLOLXD.updateHitbox();
         FlxTween.tween(blackOverlayBullshitLOLXD,{x:350},0.75,{
-            ease: FlxEase.quadInOut
+            ease: FlxEase.quintOut
         });
-        FlxTimer.wait(0.8,() ->{
-            add(UI_box);
-            loaded = true;
-            backingCard.introDone();
-        });
+        FlxTimer.wait(0.8,onLoadAnimDone);
 
         
 
@@ -62,6 +73,12 @@ class FreeplayEditSubstate extends MusicBeatSubstate {
         //anims.attachSprite(dj);
         addEditorBox();
         super.create();
+    }
+    function onLoadAnimDone() {
+        add(UI_box);
+        loaded = true;
+        bgDad.visible = true;
+        backingCard.introDone();
     }
     override function update(elapsed:Float) {
         super.update(elapsed);
@@ -91,7 +108,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate {
 		// }
     }
     function addEditorBox()
-        {
+    {
             UI_box = new PsychUIBox(FlxG.width, FlxG.height, 300, 250, ['General',"DJ Editor", "Animation", 'Style']);
             UI_box.x -= UI_box.width;
             UI_box.y -= UI_box.height;
@@ -105,7 +122,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate {
             {
                 remove(dj);
                 dj.destroy();
-                dj = dj = new FreeplayDJ(0,0,data);
+                dj = new FlxAtlasSprite(640, 366,data.getFreeplayDJData().getAtlasPath());
             });
             @:privateAccess
             steper_charSelectDelay = new PsychUINumericStepper(20, 60, 0.05, data._data.freeplayDJ.charSelect.transitionDelay,0,10,0,100);
@@ -171,8 +188,12 @@ class FreeplayEditSubstate extends MusicBeatSubstate {
             // tab.add(chkBox_visualiser);
             //
         }
-        function newLabel(ref:FlxSprite, text:String)
-            {
-                return new FlxText(ref.x, ref.y - 10, 100, text);
-            }
+    function newLabel(ref:FlxSprite, text:String)
+    {
+        return new FlxText(ref.x, ref.y - 10, 100, text);
+    }
+    function setDadBG() {
+        var graphic = style.getBgAssetGraphic();
+        bgDad.loadGraphic(graphic == null ? Paths.image('charEdit/freeplayBGmissing') : graphic);
+    }
 }
