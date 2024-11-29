@@ -9,9 +9,9 @@ class FramesJSFLParser
 {
   public static function parse(path:String):FramesJSFLInfo
   {
-    if(!FileSystem.exists(path)) throw 'Cannot load JSFL from $path'; //? no dirty crash here
-    var text:String = File.getContent(path);
-
+    if(!Paths.fileExists(path,TEXT)) throw 'Cannot load JSFL from $path'; //? no dirty crash here
+    var text:String = Paths.getTextFromFile(path);
+    
     // TODO: error handle if text is null
 
     var output:FramesJSFLInfo = {frames: []};

@@ -37,6 +37,9 @@ class CharSelectEditor extends MusicBeatState
 	var icons:CharIconGrid;
 	var animPreview:AnimPreview;
 
+	var errorTxt:FlxText;
+	var errorTwn:FlxTween;
+
 	var validTag = true;
 	var validChar = true;
 
@@ -73,6 +76,7 @@ class CharSelectEditor extends MusicBeatState
 		add(gfChill);
 		playerChill = new CharSelectPlayer(0, 0);
 		playerChill.switchChar(playerId); //? Set to current character
+		playerChill.onAnimationComplete.removeAll(); //? clear imposed triggers
 		add(playerChill);
 
 		var curtains:FlxSprite = new FlxSprite(-47, -49);
@@ -84,9 +88,15 @@ class CharSelectEditor extends MusicBeatState
 		icons.initLocks(activePlayer._data.charSelect.position,playerId);
 		add(icons);
 		addEditorBox();
-
+ 
 		animPreview = new AnimPreview(100,100);
 		add(animPreview);
+
+		errorTxt = new FlxText(100,600,0,"test");
+		errorTxt.alpha = 0;
+		errorTxt.setFormat(Paths.font("vcr.ttf"), 45, 0xFF991D1D, LEFT, OUTLINE, 0xFF000000);
+		errorTxt.borderSize = 2;
+		add(errorTxt);
 
 		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad('NONE', 'B');
@@ -133,8 +143,9 @@ class CharSelectEditor extends MusicBeatState
 
 		// We don't need to update any anims if we didn't change GF
 		trace('currentGFPath(${currentGFPath})');
-		if (currentGFPath == null)
+		if (currentGFPath == null || !FunkinPath.exists('images/${gfData?.assetPath}/Animation.json'))
 		{
+			displayError("Couldn't find GF's Atlas sprite!");
 			gfChill.visible = false;
 			return;
 		}
@@ -146,7 +157,11 @@ class CharSelectEditor extends MusicBeatState
 			@:privateAccess
 			gfChill.enableVisualizer = gfData?.visualizer ?? false;
 
-			var animInfoPath = FunkinPath.file('images/${gfData?.animInfoPath}');
+			var animInfoPath = 'images/${gfData?.animInfoPath}';
+			if(!FunkinPath.exists(animInfoPath + '/In.txt') || !FunkinPath.exists(animInfoPath + '/Out.txt')){
+				displayError("Couldn't find JSFL Data files!");
+				animInfoPath = 'images/charSelect/gfAnimInfo';
+			}
 			@:privateAccess {
 				gfChill.animInInfo = FramesJSFLParser.parse(animInfoPath + '/In.txt');
 				gfChill.animOutInfo = FramesJSFLParser.parse(animInfoPath + '/Out.txt');
@@ -288,5 +303,16 @@ class CharSelectEditor extends MusicBeatState
 	function newLabel(ref:FlxSprite, text:String)
 	{
 		return new FlxText(ref.x, ref.y - 10, 100, text);
+	}
+	function displayError(text:String) {
+		errorTwn?.cancel();
+		errorTxt.text = text;
+		errorTxt.alpha = 1;
+		FlxG.sound.play(Paths.soundRandom('missnote',1,3));
+		errorTwn = FlxTween.tween(errorTxt,{alpha:0},0.8,{
+			startDelay: 0.5,
+			ease: FlxEase.backOut
+		});
+
 	}
 }
