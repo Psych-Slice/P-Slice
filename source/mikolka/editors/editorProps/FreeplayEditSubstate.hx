@@ -10,11 +10,11 @@ class FreeplayEditSubstate extends MusicBeatSubstate {
     
     var data:PlayableCharacter;
 	var style:Null<FreeplayStyle>;
-    var anims:AnimPreview;
     var animsList:Array<AnimationData>;
     var loaded:Bool = false;
     
     var dj:FlxAtlasSprite;
+    var dj_anim:DJAnimPreview;
 	var backingCard:BoyfriendCard;
     var angleMaskShader:AngleMask = new AngleMask();
 	var bgDad:FlxSprite;
@@ -63,9 +63,13 @@ class FreeplayEditSubstate extends MusicBeatSubstate {
 
         
 
-        dj = new FlxAtlasSprite(640, 366,data.getFreeplayDJData().getAtlasPath());
+        dj = new FlxAtlasSprite(640, 366 -300,data.getFreeplayDJData().getAtlasPath());
         add(dj);
         dj.playAnimation(data.getFreeplayDJData().getAnimationPrefix("idle"));
+        dj_anim = new DJAnimPreview(100,100);
+        dj_anim.dj = data;
+        dj_anim.attachSprite(dj);
+        add(dj_anim);
         
         @:privateAccess
         animsList = data.getFreeplayDJData().animations;
@@ -98,14 +102,14 @@ class FreeplayEditSubstate extends MusicBeatSubstate {
             }
         else ClientPrefs.toggleVolumeKeys(false);
 		
-		// if(anims.activeSprite != null){
-		// 	if(controls.UI_DOWN_P) anims.selectAnim(1);
-		// 	if(controls.UI_UP_P) anims.selectAnim(-1);
-		// 	if(FlxG.keys.justPressed.SPACE) anims.playAnim();
-		// 	if(controls.UI_LEFT_P) anims.selectFrame(-1);
-		// 	if(controls.UI_RIGHT_P) anims.selectFrame(1);
+		if(dj_anim.activeSprite != null && loaded){
+			if(controls.UI_DOWN_P) dj_anim.selectAnim(1);
+			if(controls.UI_UP_P) dj_anim.selectAnim(-1);
+			if(FlxG.keys.justPressed.SPACE) dj_anim.playAnim();
+			if(controls.UI_LEFT_P) dj_anim.selectFrame(-1);
+			if(controls.UI_RIGHT_P) dj_anim.selectFrame(1);
 			
-		// }
+		}
     }
     function addEditorBox()
     {
