@@ -4,10 +4,14 @@ import flxanimate.animate.FlxKeyFrame;
 
 class DJAnimPreview extends AnimPreview {
     public var dj:PlayableCharacter;
+    public var offsets:Array<Array<Float>>;
     override function registerAnims(value:FlxAtlasSprite) {
+        offsets = new Array<Array<Float>>();
+        value.offset.set(0,0);
         @:privateAccess
         for (x in dj.getFreeplayDJData().animations)
 			{
+                offsets.push(x.offsets);
 				addAnim({
 					anim: x.prefix,
 					readableName: x.name
@@ -20,7 +24,8 @@ class DJAnimPreview extends AnimPreview {
                 selectedAnimLength = activeSprite.anim.length; // timeline.totalFrames;
             }
             selectedFrame +=1;
-            frameTxt.text = 'Frame (${selectedFrame}/${activeSprite.anim.length})';
+            var curOffset = offsets[selectedIndex];
+            frameTxt.text = 'Frame (${selectedFrame}/${activeSprite.anim.length}) [${curOffset[0]},${curOffset[1]}]';
         }
      override function selectFrame(diff:Int = 0)
         {
@@ -33,6 +38,8 @@ class DJAnimPreview extends AnimPreview {
         }
     override function playAnim() {
         super.playAnim();
+        var curOffset = offsets[selectedIndex];
+        activeSprite.offset.set(curOffset[0],curOffset[1]);
         selectedFrame = 1;
     }
     // private function findWhateverShitIsHoldingAnimrnRn(){
