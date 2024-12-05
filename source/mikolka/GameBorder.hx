@@ -19,7 +19,7 @@ class GameBorder extends Sprite {
 	{
 		var ratio:Float = FlxG.width / FlxG.height;
 		var realRatio:Float = Width / Height;
-		trace("REDRAWING!!!");
+		//trace("REDRAWING!!!");
 		var scaleY:Bool = realRatio < ratio;
 		if (fillScreen)
 		{
