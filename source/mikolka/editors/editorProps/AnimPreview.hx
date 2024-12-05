@@ -10,7 +10,7 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 	var selectedAnimIndices:Array<Int>;
 	var selectedAnimLength:Int = 0;
 
-	var selectedIndex:Int = 0;
+	public var selectedIndex:Int = 0;
 	var labels:Array<FlxText> = new Array();
 	var anims:Array<CharAnim> = new Array();
 	var frameTxt:FlxText;
@@ -39,7 +39,7 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 		value.onAnimationFrame.add(onFrameAdvance);
 		activeSprite?.onAnimationFrame.remove(onFrameAdvance);
 		activeSprite = value;
-		selectAnim(0);
+		input_selectAnim(0);
 	}
 
 	private function registerAnims(value:FlxAtlasSprite) {
@@ -51,18 +51,23 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 				});
 			}
 	}
-	public function selectAnim(diff:Int = 0)
+	public function input_selectAnim(diff:Int = 0)
 	{
-		labels[selectedIndex].color = 0xFFFFFFFF;
-		selectedIndex = (selectedIndex + diff) % labels.length;
-		if (selectedIndex == -1)
-			selectedIndex = labels.length - 1;
-		labels[selectedIndex].color = 0xFF09C729;
-
-		playAnim();
+		var newIndex = (selectedIndex + diff) % labels.length;
+		setAnimIndex(newIndex);
 	}
+	public function setAnimIndex(index:Int = 0)
+		{
+			labels[selectedIndex].color = 0xFFFFFFFF;
+			selectedIndex = index;
+			if (selectedIndex == -1)
+				selectedIndex = labels.length - 1;
+			labels[selectedIndex].color = 0xFF09C729;
+	
+			input_playAnim();
+		}
 
-	public function selectFrame(diff:Int = 0)
+	public function input_selectFrame(diff:Int = 0)
 	{
 		activeSprite.pauseAnimation();
         var newFrame = Std.int(FlxMath.bound(selectedFrame+diff,1,selectedAnimLength));
@@ -71,7 +76,7 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
         frameTxt.text = 'Frame (${selectedFrame}/${selectedAnimLength})';
 	}
 
-	public function playAnim()
+	public function input_playAnim()
 	{
 		var newAnim = anims[selectedIndex];
         selectedFrame = 0;

@@ -15,9 +15,11 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 
 	var dj:FlxAtlasSprite;
 	var dj_anim:DJAnimPreview;
+
 	var backingCard:BoyfriendCard;
 	var angleMaskShader:AngleMask = new AngleMask();
 	var bgDad:FlxSprite;
+	var ostName:FlxText;
 
 	var UI_box:PsychUIBox;
 	// GENERAL
@@ -81,10 +83,22 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		});
 		FlxTimer.wait(0.8, onLoadAnimDone);
 
+		var overhangStuff:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 164, FlxColor.BLACK);
+		overhangStuff.y -= overhangStuff.height;
+		FlxTween.tween(overhangStuff, {y: -100}, 0.3, {ease: FlxEase.quartOut});
+		add(overhangStuff);
+
+		ostName = new FlxText(8, 8, FlxG.width - 8 - 8, 'OFFICIAL OST', 48);
+		ostName.font = 'VCR OSD Mono';
+		ostName.alignment = RIGHT;
+		ostName.visible = false;
+		add(ostName);
+
 		dj = new FlxAtlasSprite(640, 366, data.getFreeplayDJData().getAtlasPath());
 		add(dj);
 		dj.playAnimation(data.getFreeplayDJData().getAnimationPrefix("idle"));
 		dj_anim = new DJAnimPreview(100, 100);
+		dj_anim.visible = false;
 		dj_anim.dj = data;
 		dj_anim.attachSprite(dj);
 		add(dj_anim);
@@ -102,6 +116,8 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		add(UI_box);
 		loaded = true;
 		bgDad.visible = true;
+		ostName.visible = true;
+		dj_anim.visible = true;
 		backingCard.introDone();
 	}
 
@@ -114,7 +130,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		{
 			ClientPrefs.toggleVolumeKeys(true);
 			var b_tapped = false;
-
+			var timeScale = Math.floor(elapsed * 100);
 			#if TOUCH_CONTROLS_ALLOWED
 			b_tapped = touchPad.buttonB.justPressed;
 			#end
@@ -122,25 +138,67 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 			if (dj_anim.activeSprite != null)
 			{
 				if (controls.UI_DOWN_P)
-					dj_anim.selectAnim(1);
-				if (controls.UI_UP_P)
-					dj_anim.selectAnim(-1);
-				if (FlxG.keys.justPressed.SPACE)
-					dj_anim.playAnim();
-				if (controls.UI_LEFT_P)
-					dj_anim.selectFrame(-1);
-				if (controls.UI_RIGHT_P)
-					dj_anim.selectFrame(1);
+					dj_selectAnim(1);
+				else if (controls.UI_UP_P)
+					dj_selectAnim(-1);
+				else if (FlxG.keys.justPressed.SPACE)
+					dj_anim.input_playAnim();
+				else if(FlxG.keys.pressed.SHIFT){
+					if (controls.UI_LEFT)
+						dj_anim.input_selectFrame(-1*timeScale);
+					else if (controls.UI_RIGHT)
+						dj_anim.input_selectFrame(1*timeScale);
+					else if (FlxG.keys.pressed.I)
+						dj_changeOffset(0,5*timeScale);
+					else if (FlxG.keys.pressed.J)
+						dj_changeOffset(5*timeScale,0);
+					else if (FlxG.keys.pressed.K)
+						dj_changeOffset(0,-5*timeScale);
+					else if (FlxG.keys.pressed.L)
+						dj_changeOffset(-5*timeScale,0);
+				}
+				else{
+					if (controls.UI_LEFT_P)
+						dj_anim.input_selectFrame(-1);
+					else if (controls.UI_RIGHT_P)
+						dj_anim.input_selectFrame(1);
+					else if (FlxG.keys.justPressed.I)
+						dj_changeOffset(0,1);
+					else if (FlxG.keys.justPressed.J)
+						dj_changeOffset(1,0);
+					else if (FlxG.keys.justPressed.K)
+						dj_changeOffset(0,-1);
+					else if (FlxG.keys.justPressed.L)
+						dj_changeOffset(-1,0);
+				}
+				
+				
 			}
 
 			if ((controls.BACK || b_tapped) && loaded)
 			{
+				dj_anim.saveAnimations();
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				close();
 			}
 		}
 		else
 			ClientPrefs.toggleVolumeKeys(false);
+	}
+
+	function dj_selectAnim(diff:Int) {
+		dj_anim.input_selectAnim(diff);
+		list_animations.selectedIndex = dj_anim.selectedIndex;
+		input_animName.text = dj_anim.curAnimName;
+		input_animPrefix.text = dj_anim.curAnimPrefix;
+		stepper_offset_x.value = dj_anim.curOffset[0];
+		stepper_offset_y.value = dj_anim.curOffset[1];
+	}
+
+	function dj_changeOffset(xOff:Int, yOff:Int) {
+		dj_anim.input_changeOffset(xOff,yOff);
+		stepper_offset_x.value = dj.offset.x;
+		stepper_offset_y.value = dj.offset.y;
 	}
 
 	function addEditorBox()
@@ -249,16 +307,39 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 			steper_loopBadEndFrame.onValueChange = () -> fist.loopBadEndFrame = Math.floor(steper_loopBadEndFrame.value);
 		}
 		// Animation
-		list_animations = new PsychUIDropDownMenu(10, 10, ["lol"], (index, name) ->
+		list_animations = new PsychUIDropDownMenu(10, 10, dj_anim.getAnimTitlesForSelector(), (index, name) ->
 		{
-			trace(name);
+			dj_anim.setAnimIndex(index);
+			input_animName.text = dj_anim.curAnimName;
+			input_animPrefix.text = dj_anim.curAnimPrefix;
+			stepper_offset_x.value = dj_anim.curOffset[0];
+			stepper_offset_y.value = dj_anim.curOffset[1];
 		});
 		btn_newAnim = new PsychUIButton(140, 10, "New", () -> {}, 50);
 		btn_trashAnim = new PsychUIButton(200, 10, "Delete", () -> {}, 50);
-		input_animName = new PsychUIInputText(10, 50, 150, "Name");
-		input_animPrefix = new PsychUIInputText(10, 90, 150, "Prefix");
-		stepper_offset_x = new PsychUINumericStepper(20, 130, 1, 0);
-		stepper_offset_y = new PsychUINumericStepper(85, 130, 1, 0);
+		
+		input_animName = new PsychUIInputText(10, 50, 150, dj_anim.curAnimName);
+		input_animPrefix = new PsychUIInputText(10, 90, 150, dj_anim.curAnimPrefix);
+		stepper_offset_x = new PsychUINumericStepper(20, 130, 1, dj_anim.curOffset[0],-9999,9999); // dirty lol
+		stepper_offset_y = new PsychUINumericStepper(85, 130, 1, dj_anim.curOffset[1],-9999,9999);
+		input_animName.onChange = (old,cur) ->{
+			dj_anim.curAnimName = cur;
+			list_animations.list[list_animations.selectedIndex] = cur;
+			@:privateAccess
+			list_animations._items[list_animations.selectedIndex].label = cur;
+			list_animations.text = cur;
+		}
+		input_animPrefix.onChange = (old,cur) ->{
+			dj_anim.curAnimPrefix = cur;
+		}
+		stepper_offset_x.onValueChange = ()->{
+			dj_anim.setOffset(stepper_offset_x.value,stepper_offset_y.value);
+		};
+		stepper_offset_y.onValueChange = ()->{
+			dj_anim.setOffset(stepper_offset_x.value,stepper_offset_y.value);
+		};
+
+
 		// ?
 
 		// GENERAL

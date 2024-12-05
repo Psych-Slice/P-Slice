@@ -1,5 +1,9 @@
 package mikolka.editors;
 
+import mikolka.editors.editorProps.CharJson;
+import haxe.Json;
+import states.editors.content.FileDialogHandler;
+import lime.ui.FileDialog;
 import mikolka.editors.editorProps.FreeplayEditSubstate;
 import mikolka.editors.editorProps.AnimPreview;
 import mikolka.editors.editorProps.CharIconGrid;
@@ -19,6 +23,7 @@ using mikolka.funkin.custom.FunkinTools;
 class CharSelectEditor extends MusicBeatState
 {
 	var activePlayer:PlayableCharacter;
+	var fileDialog = new FileDialogHandler();
 
 	var playerId:String;
 
@@ -75,8 +80,8 @@ class CharSelectEditor extends MusicBeatState
 		switchEditorGF(activePlayer._data.charSelect.gf);
 		add(gfChill);
 		playerChill = new CharSelectPlayer(0, 0);
-		playerChill.switchChar(playerId); //? Set to current character
-		playerChill.onAnimationComplete.removeAll(); //? clear imposed triggers
+		playerChill.switchChar(playerId); // ? Set to current character
+		playerChill.onAnimationComplete.removeAll(); // ? clear imposed triggers
 		add(playerChill);
 
 		var curtains:FlxSprite = new FlxSprite(-47, -49);
@@ -85,14 +90,14 @@ class CharSelectEditor extends MusicBeatState
 		add(curtains);
 
 		icons = new CharIconGrid();
-		icons.initLocks(activePlayer._data.charSelect.position,playerId);
+		icons.initLocks(activePlayer._data.charSelect.position, playerId);
 		add(icons);
 		addEditorBox();
- 
-		animPreview = new AnimPreview(100,100);
+
+		animPreview = new AnimPreview(100, 100);
 		add(animPreview);
 
-		errorTxt = new FlxText(100,600,0,"test");
+		errorTxt = new FlxText(100, 600, 0, "test");
 		errorTxt.alpha = 0;
 		errorTxt.setFormat(Paths.font("vcr.ttf"), 45, 0xFF991D1D, LEFT, OUTLINE, 0xFF000000);
 		errorTxt.borderSize = 2;
@@ -107,34 +112,48 @@ class CharSelectEditor extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		if(PsychUIInputText.focusOn == null)
-            {
-                ClientPrefs.toggleVolumeKeys(true);
-                var b_tapped = false;
-                
-                #if TOUCH_CONTROLS_ALLOWED
-                b_tapped = touchPad.buttonB.justPressed;
-                #end
+		if (PsychUIInputText.focusOn == null)
+		{
+			ClientPrefs.toggleVolumeKeys(true);
+			var b_tapped = false;
+			var timeScale = Math.floor(elapsed * 100);
+			#if TOUCH_CONTROLS_ALLOWED
+			b_tapped = touchPad.buttonB.justPressed;
+			#end
 
-                if(controls.BACK || b_tapped){
-                    FlxG.sound.playMusic(Paths.music('freakyMenu'));
-                    FlxG.mouse.visible = false;
-                    MusicBeatState.startTransition(new MasterEditorMenu());
-                }
-            }
-        else ClientPrefs.toggleVolumeKeys(false);
-		
-		if(animPreview.activeSprite != null){
-			if(controls.UI_DOWN_P) animPreview.selectAnim(1);
-			if(controls.UI_UP_P) animPreview.selectAnim(-1);
-			if(FlxG.keys.justPressed.SPACE) animPreview.playAnim();
-			if(controls.UI_LEFT_P) animPreview.selectFrame(-1);
-			if(controls.UI_RIGHT_P) animPreview.selectFrame(1);
-			
+			if (controls.BACK || b_tapped)
+			{
+				FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				FlxG.mouse.visible = false;
+				MusicBeatState.startTransition(new MasterEditorMenu());
+			}
+			if (animPreview.activeSprite != null)
+			{
+				if (controls.UI_DOWN_P)
+					animPreview.input_selectAnim(1);
+				if (controls.UI_UP_P)
+					animPreview.input_selectAnim(-1);
+				if (FlxG.keys.justPressed.SPACE)
+					animPreview.input_playAnim();
+				if (FlxG.keys.pressed.SHIFT)
+				{
+					if (controls.UI_LEFT)
+						animPreview.input_selectFrame(-1 * timeScale);
+					if (controls.UI_RIGHT)
+						animPreview.input_selectFrame(1 * timeScale);
+				}
+				else
+				{
+					if (controls.UI_LEFT_P)
+						animPreview.input_selectFrame(-1);
+					if (controls.UI_RIGHT_P)
+						animPreview.input_selectFrame(1);
+				}
+			}
 		}
+		else
+			ClientPrefs.toggleVolumeKeys(false);
 	}
-
-	
 
 	public function switchEditorGF(gf:PlayerCharSelectGFData):Void
 	{
@@ -158,7 +177,8 @@ class CharSelectEditor extends MusicBeatState
 			gfChill.enableVisualizer = gfData?.visualizer ?? false;
 
 			var animInfoPath = 'images/${gfData?.animInfoPath}';
-			if(!FunkinPath.exists(animInfoPath + '/In.txt') || !FunkinPath.exists(animInfoPath + '/Out.txt')){
+			if (!FunkinPath.exists(animInfoPath + '/In.txt') || !FunkinPath.exists(animInfoPath + '/Out.txt'))
+			{
 				displayError("Couldn't find JSFL Data files!");
 				animInfoPath = 'images/charSelect/gfAnimInfo';
 			}
@@ -185,27 +205,35 @@ class CharSelectEditor extends MusicBeatState
 
 		// GENERAL
 		input_playerId = new PsychUIInputText(20, 20, 100, playerId);
-		input_playerId.onChange = (prev,cur)->{
+		input_playerId.onChange = (prev, cur) ->
+		{
 			playerId = cur;
 
 			icons.updateCharId(playerId);
 			var nametagName = playerId == "bf" ? "boyfriend" : playerId;
-			if(Paths.fileExists('images/charSelect/' + nametagName + "Nametag.png",TEXT)){
+			if (Paths.fileExists('images/charSelect/' + nametagName + "Nametag.png", TEXT))
+			{
 				nametag.switchChar(playerId);
 				validTag = true;
 			}
-			else{
-				if (validTag) nametag.switchChar("locked");
+			else
+			{
+				if (validTag)
+					nametag.switchChar("locked");
 				validTag = false;
 			}
-			if(Paths.fileExists('images/charSelect/' + playerId + "Chill/Animation.json",TEXT)){
+			if (Paths.fileExists('images/charSelect/' + playerId + "Chill/Animation.json", TEXT))
+			{
 				playerChill.switchChar(playerId);
 				validChar = true;
 			}
-			else{
-				if (validChar) {
+			else
+			{
+				if (validChar)
+				{
 					playerChill.switchChar("locked");
-					if(playerChill == animPreview.activeSprite) animPreview.attachSprite(null);
+					if (playerChill == animPreview.activeSprite)
+						animPreview.attachSprite(null);
 				}
 				validChar = false;
 			}
@@ -217,7 +245,8 @@ class CharSelectEditor extends MusicBeatState
 		});
 
 		input_playerName = new PsychUIInputText(20, 60, 100, activePlayer._data.name);
-		input_playerName.onChange = (prev,cur)->{
+		input_playerName.onChange = (prev, cur) ->
+		{
 			activePlayer._data.name = cur;
 		}
 		step_charSlot = new PsychUINumericStepper(20, 120, 1, 4, 0, 8);
@@ -228,45 +257,48 @@ class CharSelectEditor extends MusicBeatState
 			activePlayer._data.charSelect.position = index;
 		};
 
-		var btn_save:PsychUIButton = new PsychUIButton(20, 150, "Save", ()->
+		var btn_save:PsychUIButton = new PsychUIButton(20, 150, "Save", saveCharacter);
+		// BF
+
+		var btn_player_prev:PsychUIButton = new PsychUIButton(20, 20, "Anims preview", () ->
 		{
+			animPreview.attachSprite(playerChill);
+			PsychUIInputText.focusOn = null;
 		});
-		//BF
-		
-		var btn_player_prev:PsychUIButton = new PsychUIButton(20, 20, "Anims preview", ()->
-			{
-				animPreview.attachSprite(playerChill); 
-				PsychUIInputText.focusOn = null;
-			});
-		var btn_dj:PsychUIButton = new PsychUIButton(20, 80, "Edit freeplay DJ", ()->
-			{
-				openSubState(new FreeplayEditSubstate(activePlayer));
-			});
-		//GF
-		var btn_gf_prev:PsychUIButton = new PsychUIButton(20, 20, "Anims preview", ()->
-			{
-				animPreview.attachSprite(gfChill); 
-				PsychUIInputText.focusOn = null;
-			});
-		var btn_gf_reload:PsychUIButton = new PsychUIButton(120, 20, "Reload", ()->
-			{
-				switchEditorGF(activePlayer._data.charSelect.gf);
-			});
+		var btn_dj:PsychUIButton = new PsychUIButton(20, 80, "Edit freeplay DJ", () ->
+		{
+			openSubState(new FreeplayEditSubstate(activePlayer));
+		});
+		// GF
+		var btn_gf_prev:PsychUIButton = new PsychUIButton(20, 20, "Anims preview", () ->
+		{
+			animPreview.attachSprite(gfChill);
+			PsychUIInputText.focusOn = null;
+		});
+		var btn_gf_reload:PsychUIButton = new PsychUIButton(120, 20, "Reload", () ->
+		{
+			switchEditorGF(activePlayer._data.charSelect.gf);
+			if (gfChill == animPreview.activeSprite)
+				animPreview.attachSprite(null);
+		});
 		input_gfAssetPath = new PsychUIInputText(20, 60, 100, activePlayer._data.charSelect.gf.assetPath);
-		input_gfAssetPath.onChange = (p,next) -> {
+		input_gfAssetPath.onChange = (p, next) ->
+		{
 			activePlayer._data.charSelect.gf.assetPath = next;
 		};
 		input_gfAnimInfoPath = new PsychUIInputText(20, 120, 100, activePlayer._data.charSelect.gf.animInfoPath);
-		input_gfAnimInfoPath.onChange = (prev,next) ->{
+		input_gfAnimInfoPath.onChange = (prev, next) ->
+		{
 			activePlayer._data.charSelect.gf.animInfoPath = next;
 		};
-		chkBox_visualiser = new PsychUICheckBox(20,150,"Use visualiser",100,() -> {
+		chkBox_visualiser = new PsychUICheckBox(20, 150, "Use visualiser", 100, () ->
+		{
 			activePlayer._data.charSelect.gf.visualizer = chkBox_visualiser.checked;
 		});
 		chkBox_visualiser.checked = activePlayer._data.charSelect.gf.visualizer;
-		//?
+		// ?
 
-		//GENERAL
+		// GENERAL
 		UI_box.selectedName = 'General';
 		var tab = UI_box.getTab('General').menu;
 		add(UI_box);
@@ -282,13 +314,13 @@ class CharSelectEditor extends MusicBeatState
 		tab.add(step_charSlot);
 
 		tab.add(btn_save);
-		//BF
+		// BF
 
 		var tab = UI_box.getTab("Player").menu;
 		tab.add(btn_player_prev);
 		tab.add(btn_dj);
 
-		//GF
+		// GF
 		var tab = UI_box.getTab("Girlfriend").menu;
 		tab.add(btn_gf_prev);
 		tab.add(btn_gf_reload);
@@ -304,15 +336,26 @@ class CharSelectEditor extends MusicBeatState
 	{
 		return new FlxText(ref.x, ref.y - 10, 100, text);
 	}
-	function displayError(text:String) {
+
+	function saveCharacter()
+	{
+		var charData = CharJson.saveCharacter(activePlayer);
+		#if mobile
+		StorageUtil.saveContent('${playerId}.json', charData);
+		#else
+		fileDialog.save('${playerId}.json', charData, null, () -> displayError("Saving canceled!"), function() displayError('Error on saving character!'));
+		#end
+	}
+
+	function displayError(text:String)
+	{
 		errorTwn?.cancel();
 		errorTxt.text = text;
 		errorTxt.alpha = 1;
-		FlxG.sound.play(Paths.soundRandom('missnote',1,3));
-		errorTwn = FlxTween.tween(errorTxt,{alpha:0},0.8,{
-			startDelay: 0.5,
+		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3));
+		errorTwn = FlxTween.tween(errorTxt, {alpha: 0}, 0.8, {
+			startDelay: 2,
 			ease: FlxEase.backOut
 		});
-
 	}
 }
