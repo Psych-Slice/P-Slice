@@ -171,8 +171,6 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 					else if (FlxG.keys.justPressed.L)
 						dj_changeOffset(-1,0);
 				}
-				
-				
 			}
 
 			if ((controls.BACK || b_tapped) && loaded)
@@ -217,6 +215,8 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 			remove(dj);
 			dj.destroy();
 			dj = new FlxAtlasSprite(640, 366, data.getFreeplayDJData().getAtlasPath());
+			dj_anim.attachSprite(dj);
+			add(dj);
 		});
 		@:privateAccess
 		steper_charSelectDelay = new PsychUINumericStepper(20, 60, 0.05, data._data.freeplayDJ.charSelect.transitionDelay, 0, 10, 0, 100);
