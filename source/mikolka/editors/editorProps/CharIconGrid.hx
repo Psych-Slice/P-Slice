@@ -15,9 +15,8 @@ class CharIconGrid extends FlxTypedSpriteGroup<FlxSprite>{
             clear();
     
             charIcon = new PixelatedIcon(0, 0);
-            charIcon.setCharacter(playerId); //.56
             charIcon.setGraphicSize(128, 128);
-            charIcon.updateHitbox();
+            updateCharId(playerId); //.56
             charIcon.ID = 0;
     
             for (i in 0...9)
@@ -47,7 +46,10 @@ class CharIconGrid extends FlxTypedSpriteGroup<FlxSprite>{
         }
         public function updateCharId(playerId:String) {
             charIcon.setCharacter(playerId);
-            charIcon.scale.add(0.5,0.5);
+            if(charIcon.type == LEGACY) charIcon.scale.add(0.4,0.4);
+            else{
+                charIcon.scale.add(0.8,0.8);
+            }
             charIcon.updateHitbox();
         }
         function updateIconPosition(member:FlxSprite, index:Int)
