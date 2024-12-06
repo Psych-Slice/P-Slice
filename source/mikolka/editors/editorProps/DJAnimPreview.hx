@@ -73,6 +73,7 @@ class DJAnimPreview extends AnimPreview {
     }
 
     //ANIMS EDITOR
+    
     public function set_curAnimPrefix(cur:String):String {
         anims[selectedIndex].anim = cur;
         input_playAnim();

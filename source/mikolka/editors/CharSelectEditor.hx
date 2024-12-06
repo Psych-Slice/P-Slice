@@ -53,6 +53,13 @@ class CharSelectEditor extends MusicBeatState
 		super();
 		this.playerId = playerId;
 		activePlayer = PlayerRegistry.instance.fetchEntry(playerId);
+		if(activePlayer._data.charSelect.gf == null){
+			activePlayer._data.charSelect.gf = {
+				"assetPath": "charSelect/gfChill",
+			"animInfoPath": "charSelect/gfAnimInfo",
+			"visualizer": false
+			}
+		}
 	}
 
 	override function create()
@@ -61,6 +68,11 @@ class CharSelectEditor extends MusicBeatState
 		FlxG.mouse.visible = true;
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
+
+		errorTxt = new FlxText(100, 600, 0, "test");
+		errorTxt.alpha = 0;
+		errorTxt.setFormat(Paths.font("vcr.ttf"), 45, 0xFF991D1D, LEFT, OUTLINE, 0xFF000000);
+		errorTxt.borderSize = 2;
 
 		var bg:FlxSprite = new FlxSprite(-153, -140);
 		bg.loadGraphic(Paths.image('charSelect/charSelectBG'));
@@ -97,10 +109,7 @@ class CharSelectEditor extends MusicBeatState
 		animPreview = new AnimPreview(100, 100);
 		add(animPreview);
 
-		errorTxt = new FlxText(100, 600, 0, "test");
-		errorTxt.alpha = 0;
-		errorTxt.setFormat(Paths.font("vcr.ttf"), 45, 0xFF991D1D, LEFT, OUTLINE, 0xFF000000);
-		errorTxt.borderSize = 2;
+		
 		add(errorTxt);
 
 		#if TOUCH_CONTROLS_ALLOWED
@@ -197,7 +206,7 @@ class CharSelectEditor extends MusicBeatState
 
 	function addEditorBox()
 	{
-		UI_box = new PsychUIBox(FlxG.width, FlxG.height, 250, 200, ['General', "Player", 'Girlfriend']);
+		UI_box = new PsychUIBox(FlxG.width, FlxG.height, 250, 200, ["Player", 'Girlfriend']);
 		UI_box.x -= UI_box.width;
 		UI_box.y -= UI_box.height;
 		UI_box.scrollFactor.set();
@@ -258,17 +267,18 @@ class CharSelectEditor extends MusicBeatState
 		};
 
 		var btn_save:PsychUIButton = new PsychUIButton(20, 150, "Save", saveCharacter);
-		// BF
 
-		var btn_player_prev:PsychUIButton = new PsychUIButton(20, 20, "Anims preview", () ->
+		var btn_player_prev:PsychUIButton = new PsychUIButton(150, 50, "Anims preview", () ->
 		{
 			animPreview.attachSprite(playerChill);
 			PsychUIInputText.focusOn = null;
 		});
-		var btn_dj:PsychUIButton = new PsychUIButton(20, 80, "Edit freeplay DJ", () ->
+		var btn_dj:PsychUIButton = new PsychUIButton(150, 120, "Edit Freeplay", () ->
 		{
 			openSubState(new FreeplayEditSubstate(activePlayer));
 		});
+
+
 		// GF
 		var btn_gf_prev:PsychUIButton = new PsychUIButton(20, 20, "Anims preview", () ->
 		{
@@ -299,8 +309,8 @@ class CharSelectEditor extends MusicBeatState
 		// ?
 
 		// GENERAL
-		UI_box.selectedName = 'General';
-		var tab = UI_box.getTab('General').menu;
+		UI_box.selectedName = 'Player';
+		var tab = UI_box.getTab('Player').menu;
 		add(UI_box);
 
 		tab.add(newLabel(input_playerId, 'Name:'));
@@ -313,12 +323,10 @@ class CharSelectEditor extends MusicBeatState
 		tab.add(newLabel(step_charSlot, "Position:"));
 		tab.add(step_charSlot);
 
-		tab.add(btn_save);
-		// BF
-
-		var tab = UI_box.getTab("Player").menu;
 		tab.add(btn_player_prev);
 		tab.add(btn_dj);
+		
+		tab.add(btn_save);
 
 		// GF
 		var tab = UI_box.getTab("Girlfriend").menu;
