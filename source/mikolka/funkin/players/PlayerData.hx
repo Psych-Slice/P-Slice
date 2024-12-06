@@ -43,12 +43,33 @@ class PlayerData
 	 * Data for displaying this character in the Character Select menu.
 	 * If null, exclude from Character Select.
 	 */
-	public var charSelect:Null<PlayerCharSelectData> = null;
+	public var charSelect:Null<PlayerCharSelectData> = {
+		"position": 5,
+		"gf": {
+			"assetPath": "charSelect/gfChill",
+			"animInfoPath": "charSelect/gfAnimInfo",
+			"visualizer": false
+		  }
+	};
 
 	/**
 	 * Data for displaying this character in the results screen.
 	 */
-	public var results:Null<PlayerResultsData> = null;
+	public var results:Null<PlayerResultsData> = {
+		"music": {
+			"PERFECT_GOLD": "resultsPERFECT",
+			"PERFECT": "resultsPERFECT",
+			"EXCELLENT": "resultsEXCELLENT",
+			"GREAT": "resultsNORMAL",
+			"GOOD": "resultsNORMAL",
+			"SHIT": "resultsSHIT"
+		  },
+		  "perfect": [],
+		  "excellent": [],
+		  "great": [],
+		  "good": [],
+		  "loss": [],
+	};
 
 	/**
 	 * Whether this character is unlocked by default.
@@ -60,7 +81,11 @@ class PlayerData
 class PlayerFreeplayDJData
 {
 	var assetPath:String;
-	var animations:Array<AnimationData>;
+	var animations:Array<AnimationData> = [{
+		name: "idle",
+		offsets: [0,0],
+		prefix: "idle"
+	}];
 
 
 	var text1:String = "BOYFRIEND";

@@ -88,7 +88,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		FlxTween.tween(overhangStuff, {y: -100}, 0.3, {ease: FlxEase.quartOut});
 		add(overhangStuff);
 
-		ostName = new FlxText(8, 8, FlxG.width - 8 - 8, 'OFFICIAL OST', 48);
+		ostName = new FlxText(8, 8, FlxG.width - 8 - 8, 'CHARACTER EDITOR', 48);
 		ostName.font = 'VCR OSD Mono';
 		ostName.alignment = RIGHT;
 		ostName.visible = false;
@@ -203,7 +203,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 
 	function addEditorBox()
 	{
-		UI_box = new PsychUIBox(FlxG.width, FlxG.height, 300, 250, ['General', "DJ Editor", "Animation", 'Style']);
+		UI_box = new PsychUIBox(FlxG.width, FlxG.height, 300, 250, ['General', "DJ Editor", "Animation"]);
 		UI_box.x -= UI_box.width;
 		UI_box.y -= UI_box.height;
 		UI_box.scrollFactor.set();
@@ -315,8 +315,37 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 			stepper_offset_x.value = dj_anim.curOffset[0];
 			stepper_offset_y.value = dj_anim.curOffset[1];
 		});
-		btn_newAnim = new PsychUIButton(140, 10, "New", () -> {}, 50);
-		btn_trashAnim = new PsychUIButton(200, 10, "Delete", () -> {}, 50);
+		btn_newAnim = new PsychUIButton(140, 10, "New", () -> {
+			@:privateAccess{
+				list_animations.addOption("newAnim");
+				dj_anim.addAnim({
+					readableName: "newAnim",
+					anim: "prefix"
+				});
+			}
+			dj_anim.offsets.push([0,0]);
+
+		}, 50);
+		btn_trashAnim = new PsychUIButton(200, 10, "Delete", () -> {
+			var index = list_animations.selectedIndex;
+			if(list_animations.list.length == 1){
+				FlxG.sound.play(Paths.sound('cancelMenu'));
+				return;
+			}
+			@:privateAccess{
+				list_animations._items.remove(list_animations._items[index]);
+				dj_anim.anims.remove(dj_anim.anims[index]);
+				var label = dj_anim.labels[index];
+				dj_anim.remove(label);
+				dj_anim.labels.remove(label);
+				for (x in index...dj_anim.labels.length){
+					dj_anim.labels[x].y -= 20; 
+				}
+			}
+			list_animations.list.remove(list_animations.list[index]);
+			dj_anim.offsets.remove(dj_anim.offsets[index]);
+			dj_selectAnim(index ==0 ? 0 : -1);
+		}, 50);
 		
 		input_animName = new PsychUIInputText(10, 50, 150, dj_anim.curAnimName);
 		input_animPrefix = new PsychUIInputText(10, 90, 150, dj_anim.curAnimPrefix);
@@ -373,7 +402,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		tab.add(steper_introEndFrame);
 		// tab.add(btn_player_prev);
 
-		// GF
+		// Animation
 		var tab = UI_box.getTab("Animation").menu;
 		tab.add(btn_newAnim);
 		tab.add(btn_trashAnim);
