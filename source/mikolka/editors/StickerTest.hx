@@ -81,13 +81,8 @@ class StickerTest extends MusicBeatState {
         if(PsychUIInputText.focusOn == null)
             {
                 ClientPrefs.toggleVolumeKeys(true);
-                var b_tapped = false;
-                
-                #if TOUCH_CONTROLS_ALLOWED
-                b_tapped = touchPad.buttonB.justPressed;
-                #end
 
-                if(controls.BACK || b_tapped){
+                if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonB.justPressed || #end controls.BACK){
                     FlxG.sound.playMusic(Paths.music('freakyMenu'));
                     FlxG.mouse.visible = false;
                     MusicBeatState.startTransition(new MasterEditorMenu());

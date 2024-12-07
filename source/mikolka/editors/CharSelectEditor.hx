@@ -56,8 +56,8 @@ class CharSelectEditor extends MusicBeatState
 		if(activePlayer._data.charSelect.gf == null){
 			activePlayer._data.charSelect.gf = {
 				"assetPath": "charSelect/gfChill",
-			"animInfoPath": "charSelect/gfAnimInfo",
-			"visualizer": false
+				"animInfoPath": "charSelect/gfAnimInfo",
+				"visualizer": false
 			}
 		}
 	}
@@ -108,13 +108,12 @@ class CharSelectEditor extends MusicBeatState
 
 		animPreview = new AnimPreview(100, 100);
 		add(animPreview);
-
-		
 		add(errorTxt);
 
 		#if TOUCH_CONTROLS_ALLOWED
-		addTouchPad('NONE', 'B');
+		addTouchPad('LEFT_FULL', 'B_C_X');
 		#end
+
 		super.create();
 	}
 
@@ -124,16 +123,13 @@ class CharSelectEditor extends MusicBeatState
 		if (PsychUIInputText.focusOn == null)
 		{
 			ClientPrefs.toggleVolumeKeys(true);
-			var b_tapped = false;
 			var timeScale = Math.floor(elapsed * 100);
-			#if TOUCH_CONTROLS_ALLOWED
-			b_tapped = touchPad.buttonB.justPressed;
-			#end
 
-			if (controls.BACK || b_tapped)
+			if (controls.BACK)
 			{
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				FlxG.mouse.visible = false;
+				persistentUpdate = false;
 				MusicBeatState.startTransition(new MasterEditorMenu());
 			}
 			if (animPreview.activeSprite != null)
@@ -144,7 +140,7 @@ class CharSelectEditor extends MusicBeatState
 					animPreview.input_selectAnim(-1);
 				if (FlxG.keys.justPressed.SPACE)
 					animPreview.input_playAnim();
-				if (FlxG.keys.pressed.SHIFT)
+				if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonC.pressed || #end FlxG.keys.pressed.SHIFT)
 				{
 					if (controls.UI_LEFT)
 						animPreview.input_selectFrame(-1 * timeScale);
@@ -162,6 +158,16 @@ class CharSelectEditor extends MusicBeatState
 		}
 		else
 			ClientPrefs.toggleVolumeKeys(false);
+	}
+
+	override function closeSubState() {
+		super.closeSubState();
+		controls.isInSubstate = false;
+		#if TOUCH_CONTROLS_ALLOWED
+		removeTouchPad();
+		addTouchPad('LEFT_FULL', 'B_C_X');
+		#end
+		persistentUpdate = true;
 	}
 
 	public function switchEditorGF(gf:PlayerCharSelectGFData):Void
@@ -206,7 +212,7 @@ class CharSelectEditor extends MusicBeatState
 
 	function addEditorBox()
 	{
-		UI_box = new PsychUIBox(FlxG.width, FlxG.height, 250, 200, ["Player", 'Girlfriend']);
+		UI_box = new PsychUIBox(FlxG.width - 450, FlxG.height, 250, 200, ["Player", 'Girlfriend']);
 		UI_box.x -= UI_box.width;
 		UI_box.y -= UI_box.height;
 		UI_box.scrollFactor.set();
@@ -275,6 +281,7 @@ class CharSelectEditor extends MusicBeatState
 		});
 		var btn_dj:PsychUIButton = new PsychUIButton(150, 120, "Edit Freeplay", () ->
 		{
+			persistentUpdate = false;
 			openSubState(new FreeplayEditSubstate(activePlayer));
 		});
 

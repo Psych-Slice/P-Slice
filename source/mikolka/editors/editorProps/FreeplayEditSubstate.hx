@@ -49,6 +49,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 
 	public function new(player:PlayableCharacter)
 	{
+		controls.isInSubstate = true;
 		super();
 		data = player;
 		style = FreeplayStyleRegistry.instance.fetchEntry(data.getFreeplayStyleID());
@@ -108,6 +109,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		// anims = new AnimPreview(200,200);
 		// anims.attachSprite(dj);
 		addEditorBox();
+		addTouchPad("LEFT_FULL", "A_B_X_Y");
 		super.create();
 	}
 
@@ -131,53 +133,51 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 			ClientPrefs.toggleVolumeKeys(true);
 			var b_tapped = false;
 			var timeScale = Math.floor(elapsed * 100);
-			#if TOUCH_CONTROLS_ALLOWED
-			b_tapped = touchPad.buttonB.justPressed;
-			#end
 
 			if (dj_anim.activeSprite != null)
 			{
-				if (controls.UI_DOWN_P)
+				if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end controls.UI_DOWN_P)
 					dj_selectAnim(1);
-				else if (controls.UI_UP_P)
+				else if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end controls.UI_UP_P)
 					dj_selectAnim(-1);
-				else if (FlxG.keys.justPressed.SPACE)
+				else if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonX.justPressed || #end FlxG.keys.justPressed.SPACE)
 					dj_anim.input_playAnim();
-				else if(FlxG.keys.pressed.SHIFT){
-					if (controls.UI_LEFT)
+				else if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonY.pressed || #end FlxG.keys.pressed.SHIFT){
+					if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end controls.UI_LEFT)
 						dj_anim.input_selectFrame(-1*timeScale);
-					else if (controls.UI_RIGHT)
+					else if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end controls.UI_RIGHT)
 						dj_anim.input_selectFrame(1*timeScale);
-					else if (FlxG.keys.pressed.I)
+					else if (#if TOUCH_CONTROLS_ALLOWED (touchPad.buttonA.pressed && touchPad.buttonUp.pressed) || #end FlxG.keys.pressed.I)
 						dj_changeOffset(0,5*timeScale);
-					else if (FlxG.keys.pressed.J)
+					else if (#if TOUCH_CONTROLS_ALLOWED (touchPad.buttonA.pressed && touchPad.buttonLeft.pressed) || #end FlxG.keys.pressed.J)
 						dj_changeOffset(5*timeScale,0);
-					else if (FlxG.keys.pressed.K)
+					else if (#if TOUCH_CONTROLS_ALLOWED (touchPad.buttonA.pressed && touchPad.buttonDown.pressed) || #end FlxG.keys.pressed.K)
 						dj_changeOffset(0,-5*timeScale);
-					else if (FlxG.keys.pressed.L)
+					else if (#if TOUCH_CONTROLS_ALLOWED (touchPad.buttonA.pressed && touchPad.buttonRight.pressed) || #end FlxG.keys.pressed.L)
 						dj_changeOffset(-5*timeScale,0);
 				}
 				else{
-					if (controls.UI_LEFT_P)
+					if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end controls.UI_LEFT_P)
 						dj_anim.input_selectFrame(-1);
-					else if (controls.UI_RIGHT_P)
+					else if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end controls.UI_RIGHT_P)
 						dj_anim.input_selectFrame(1);
-					else if (FlxG.keys.justPressed.I)
+					else if (#if TOUCH_CONTROLS_ALLOWED (touchPad.buttonA.pressed && touchPad.buttonUp.justPressed) || #end FlxG.keys.justPressed.I)
 						dj_changeOffset(0,1);
-					else if (FlxG.keys.justPressed.J)
+					else if (#if TOUCH_CONTROLS_ALLOWED (touchPad.buttonA.pressed && touchPad.buttonLeft.justPressed) || #end FlxG.keys.justPressed.J)
 						dj_changeOffset(1,0);
-					else if (FlxG.keys.justPressed.K)
+					else if (#if TOUCH_CONTROLS_ALLOWED (touchPad.buttonA.pressed && touchPad.buttonDown.justPressed) || #end FlxG.keys.justPressed.K)
 						dj_changeOffset(0,-1);
-					else if (FlxG.keys.justPressed.L)
+					else if (#if TOUCH_CONTROLS_ALLOWED (touchPad.buttonA.pressed && touchPad.buttonRight.justPressed) || #end FlxG.keys.justPressed.L)
 						dj_changeOffset(-1,0);
 				}
 			}
 
-			if ((controls.BACK || b_tapped) && loaded)
+			if (controls.BACK && loaded)
 			{
 				dj_anim.saveAnimations();
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				close();
+				controls.isInSubstate = false;
 			}
 		}
 		else
@@ -201,7 +201,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 
 	function addEditorBox()
 	{
-		UI_box = new PsychUIBox(FlxG.width, FlxG.height, 300, 250, ['General', "DJ Editor", "Animation"]);
+		UI_box = new PsychUIBox(FlxG.width - 500, FlxG.height, 300, 250, ['General', "DJ Editor", "Animation"]);
 		UI_box.x -= UI_box.width;
 		UI_box.y -= UI_box.height;
 		UI_box.scrollFactor.set();
