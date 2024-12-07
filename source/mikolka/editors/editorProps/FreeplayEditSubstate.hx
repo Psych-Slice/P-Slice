@@ -110,6 +110,19 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		// anims.attachSprite(dj);
 		addEditorBox();
 		addTouchPad("LEFT_FULL", "A_B_X_Y");
+		touchPad.forEachAlive(function(button:TouchButton)
+		{
+			if (button.tag == 'UP' || button.tag == 'DOWN' || button.tag == 'LEFT' || button.tag == 'RIGHT')
+			{
+				button.x -= 450;
+				FlxTween.tween(button, {x: button.x + 450}, 0.6, {ease: FlxEase.backInOut});
+			}
+			else
+			{
+				button.x += 550;
+				FlxTween.tween(button, {x: button.x - 550}, 0.6, {ease: FlxEase.backInOut});
+			}
+		});
 		super.create();
 	}
 
