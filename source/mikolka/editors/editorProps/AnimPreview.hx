@@ -78,10 +78,6 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 
 	public function input_playAnim()
 	{
-		if(activeSprite.anim?.isPlaying == 	false && !activeSprite.isLoopComplete()){
-			activeSprite.resumeAnimation();
-			return;
-		}
 		var newAnim = anims[selectedIndex];
         selectedFrame = 0;
         selectedAnimLength = 0;
