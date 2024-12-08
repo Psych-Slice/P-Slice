@@ -58,7 +58,7 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 	}
 	public function setAnimIndex(index:Int = 0)
 		{
-			labels[selectedIndex].color = 0xFFFFFFFF;
+			if (labels.length > selectedIndex) labels[selectedIndex].color = 0xFFFFFFFF;
 			selectedIndex = index;
 			if (selectedIndex == -1)
 				selectedIndex = labels.length - 1;
@@ -78,6 +78,10 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 
 	public function input_playAnim()
 	{
+		if(activeSprite.anim?.isPlaying == 	false && !activeSprite.isLoopComplete()){
+			activeSprite.resumeAnimation();
+			return;
+		}
 		var newAnim = anims[selectedIndex];
         selectedFrame = 0;
         selectedAnimLength = 0;
