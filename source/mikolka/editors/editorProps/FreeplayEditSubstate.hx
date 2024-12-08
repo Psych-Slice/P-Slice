@@ -1,5 +1,6 @@
 package mikolka.editors.editorProps;
 
+import mikolka.compatibility.FunkinControls;
 import mikolka.vslice.freeplay.BGScrollingText;
 import mikolka.funkin.freeplay.FreeplayStyle;
 import mikolka.funkin.freeplay.FreeplayStyleRegistry;
@@ -145,7 +146,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 			return;
 		if (PsychUIInputText.focusOn == null)
 		{
-			ClientPrefs.toggleVolumeKeys(true);
+			FunkinControls.enableVolume();
 			var b_tapped = false;
 			var timeScale = Math.floor(elapsed * 100);
 
@@ -196,7 +197,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 			}
 		}
 		else
-			ClientPrefs.toggleVolumeKeys(false);
+			FunkinControls.disableVolume();
 	}
 
 	function dj_selectAnim(diff:Int) {

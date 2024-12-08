@@ -1,8 +1,18 @@
 package mikolka.editors;
 
+#if LEGACY_PSYCH
+import openfl.events.Event;
+import openfl.events.IOErrorEvent;
+import openfl.net.FileReference;
+import editors.MasterEditorMenu;
+#else
+import states.editors.content.FileDialogHandler;
+import states.editors.MasterEditorMenu;
+#end
+
+import mikolka.compatibility.FunkinControls;
 import mikolka.editors.editorProps.CharJson;
 import haxe.Json;
-import states.editors.content.FileDialogHandler;
 import lime.ui.FileDialog;
 import mikolka.editors.editorProps.FreeplayEditSubstate;
 import mikolka.editors.editorProps.AnimPreview;
@@ -11,7 +21,6 @@ import mikolka.vslice.charSelect.CharSelectPlayer;
 import mikolka.compatibility.FreeplayHelpers;
 import mikolka.compatibility.ModsHelper;
 import mikolka.funkin.players.PlayerData.PlayerCharSelectGFData;
-import states.editors.MasterEditorMenu;
 import mikolka.compatibility.FunkinPath;
 import mikolka.vslice.charSelect.CharSelectGF;
 import mikolka.vslice.charSelect.Nametag;
@@ -23,8 +32,10 @@ using mikolka.funkin.custom.FunkinTools;
 class CharSelectEditor extends MusicBeatState
 {
 	var activePlayer:PlayableCharacter;
+	#if !LEGACY_PSYCH
 	var fileDialog = new FileDialogHandler();
-
+	#end
+	
 	var playerId:String;
 
 	var input_playerName:PsychUIInputText;
@@ -122,7 +133,7 @@ class CharSelectEditor extends MusicBeatState
 		super.update(elapsed);
 		if (PsychUIInputText.focusOn == null)
 		{
-			ClientPrefs.toggleVolumeKeys(true);
+			FunkinControls.enableVolume();
 			var timeScale = Math.floor(elapsed * 100);
 
 			if (controls.BACK)
@@ -130,7 +141,11 @@ class CharSelectEditor extends MusicBeatState
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				FlxG.mouse.visible = false;
 				persistentUpdate = false;
+				#if LEGACY_PSYCH
+				MusicBeatState.switchState(new MasterEditorMenu());
+				#else
 				MusicBeatState.startTransition(new MasterEditorMenu());
+				#end
 			}
 			if (animPreview.activeSprite != null)
 			{
@@ -157,7 +172,8 @@ class CharSelectEditor extends MusicBeatState
 			}
 		}
 		else
-			ClientPrefs.toggleVolumeKeys(false);
+			FunkinControls.disableVolume();
+
 	}
 
 	override function closeSubState() {
@@ -256,7 +272,11 @@ class CharSelectEditor extends MusicBeatState
 
 		btn_reload = new PsychUIButton(150, 20, "Reload", () ->
 		{
+			#if LEGACY_PSYCH
+			MusicBeatState.switchState(new CharSelectEditor(input_playerId.text));
+			#else
 			MusicBeatState.startTransition(new CharSelectEditor(input_playerId.text));
+			#end
 		});
 
 		input_playerName = new PsychUIInputText(20, 60, 100, activePlayer._data.name);
@@ -357,6 +377,11 @@ class CharSelectEditor extends MusicBeatState
 		var charData = CharJson.saveCharacter(activePlayer);
 		#if mobile
 		StorageUtil.saveContent('${playerId}.json', charData);
+		#elseif LEGACY_PSYCH
+			var file = new FileReference();
+			file.addEventListener(Event.CANCEL, (x) -> displayError("Saving canceled!"));
+			file.addEventListener(IOErrorEvent.IO_ERROR, function(x) displayError('Error on saving character!'));
+			file.save(charData, '${playerId}.json');
 		#else
 		fileDialog.save('${playerId}.json', charData, null, () -> displayError("Saving canceled!"), function() displayError('Error on saving character!'));
 		#end

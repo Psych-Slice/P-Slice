@@ -17,4 +17,10 @@ class FunkinControls {
     public static function get_FREEPLAY_CHAR():Bool {
         return Controls.instance.CHAR_SELECT;
     }
+    public static function enableVolume() {
+        ClientPrefs.toggleVolumeKeys(true);
+    }
+    public static function disableVolume() {
+        ClientPrefs.toggleVolumeKeys(false);
+    }
 }
