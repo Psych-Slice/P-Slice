@@ -17,4 +17,14 @@ class FunkinControls {
     public static function get_FREEPLAY_CHAR():Bool {
         return PlayerSettings.player1.controls.CHAR_SELECT;
     }
+    public static function enableVolume(){
+		FlxG.sound.muteKeys = TitleState.muteKeys;
+		FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
+		FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
+    }
+    public static function disableVolume(){
+        FlxG.sound.muteKeys = [];
+		FlxG.sound.volumeDownKeys = [];
+		FlxG.sound.volumeUpKeys = [];
+    }
 }

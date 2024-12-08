@@ -1,5 +1,7 @@
 package mikolka.editors;
+
 #if LEGACY_PSYCH
+import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileReference;
 import editors.MasterEditorMenu;
@@ -7,6 +9,8 @@ import editors.MasterEditorMenu;
 import states.editors.content.FileDialogHandler;
 import states.editors.MasterEditorMenu;
 #end
+
+import mikolka.compatibility.FunkinControls;
 import mikolka.editors.editorProps.CharJson;
 import haxe.Json;
 import lime.ui.FileDialog;
@@ -129,7 +133,7 @@ class CharSelectEditor extends MusicBeatState
 		super.update(elapsed);
 		if (PsychUIInputText.focusOn == null)
 		{
-			FunkinC.toggleVolumeKeys(true);
+			FunkinControls.enableVolume();
 			var timeScale = Math.floor(elapsed * 100);
 
 			if (controls.BACK)
@@ -168,7 +172,8 @@ class CharSelectEditor extends MusicBeatState
 			}
 		}
 		else
-			ClientPrefs.toggleVolumeKeys(false);
+			FunkinControls.disableVolume();
+
 	}
 
 	override function closeSubState() {
@@ -267,7 +272,11 @@ class CharSelectEditor extends MusicBeatState
 
 		btn_reload = new PsychUIButton(150, 20, "Reload", () ->
 		{
+			#if LEGACY_PSYCH
+			MusicBeatState.switchState(new CharSelectEditor(input_playerId.text));
+			#else
 			MusicBeatState.startTransition(new CharSelectEditor(input_playerId.text));
+			#end
 		});
 
 		input_playerName = new PsychUIInputText(20, 60, 100, activePlayer._data.name);
@@ -370,8 +379,8 @@ class CharSelectEditor extends MusicBeatState
 		StorageUtil.saveContent('${playerId}.json', charData);
 		#elseif LEGACY_PSYCH
 			var file = new FileReference();
-			file.addEventListener(Event.CANCEL, () -> displayError("Saving canceled!"));
-			file.addEventListener(IOErrorEvent.IO_ERROR, function() displayError('Error on saving character!'));
+			file.addEventListener(Event.CANCEL, (x) -> displayError("Saving canceled!"));
+			file.addEventListener(IOErrorEvent.IO_ERROR, function(x) displayError('Error on saving character!'));
 			file.save(charData, '${playerId}.json');
 		#else
 		fileDialog.save('${playerId}.json', charData, null, () -> displayError("Saving canceled!"), function() displayError('Error on saving character!'));

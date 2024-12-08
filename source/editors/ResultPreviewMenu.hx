@@ -1,5 +1,6 @@
 package editors;
 
+import mikolka.compatibility.FreeplayHelpers;
 import openfl.events.UncaughtErrorEvent;
 import mikolka.compatibility.VsliceOptions;
 import flixel.math.FlxRandom;
@@ -100,7 +101,7 @@ class ResultPreviewMenu extends MusicBeatState
 	function runResults(lol:Int)
 	{
 		PlayState.storyDifficultyColor = 0xFFFF0000;
-		Difficulty.resetList();
+		FreeplayHelpers.resetDiffs();
 		PlayState.storyDifficulty = 2;
 		var results = new ResultState({
 			storyMode: true,
