@@ -6,7 +6,6 @@ import mikolka.compatibility.VsliceOptions;
 #if !LEGACY_PSYCH
 import substates.GameOverSubstate;
 import cutscenes.DialogueBox;
-import objects.Note;
 #end
 
 import openfl.utils.Assets as OpenFlAssets;
@@ -70,7 +69,12 @@ class SchoolEvil extends BaseStage
 				}
 		}
 	}
+	
+	#if LEGACY_PSYCH
 	override function eventPushed(event:Note.EventNote)
+	#else
+	override function eventPushed(event:objects.Note.EventNote)
+	#end
 	{
 		// used for preloading assets used on events
 		switch(event.event)

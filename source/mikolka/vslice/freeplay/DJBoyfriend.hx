@@ -94,18 +94,8 @@ class FreeplayDJ extends FlxAtlasSprite
         {
           playFlashAnimation(animPrefix, true, false, true);
         }
-
-        if (getCurrentAnimation() == animPrefix && this.isLoopComplete())
-        {
-          if (timeIdling >= IDLE_EGG_PERIOD && !seenIdleEasterEgg)
-          {
-            currentState = IdleEasterEgg;
-          }
-          else if (timeIdling >= IDLE_CARTOON_PERIOD)
-          {
-            currentState = Cartoon;
-          }
-        }
+        //trace('frame:${anim.curFrame} len: ${anim.length}');
+        //? moved to onAnimComplete hook
         timeIdling += elapsed;
       case NewUnlock:
         var animPrefix = playableCharData.getAnimationPrefix('newUnlock');
@@ -245,8 +235,15 @@ class FreeplayDJ extends FlxAtlasSprite
       onIntroDone.dispatch();
     }
     else if (name == playableCharData.getAnimationPrefix('idle'))
-    {
-      // trace('Finished idle');
+    {    
+        if (timeIdling >= IDLE_EGG_PERIOD && !seenIdleEasterEgg) //? check this BEFORE we loop
+        {
+          currentState = IdleEasterEgg;
+        }
+        else if (timeIdling >= IDLE_CARTOON_PERIOD)
+        {
+          currentState = Cartoon;
+        }
     }
     else if (name == playableCharData.getAnimationPrefix('confirm'))
     {

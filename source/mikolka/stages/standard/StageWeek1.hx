@@ -37,7 +37,12 @@ class StageWeek1 extends BaseStage
 			add(stageCurtains);
 		}
 	}
+	
+	#if LEGACY_PSYCH
 	override function eventPushed(event:Note.EventNote)
+	#else
+	override function eventPushed(event:objects.Note.EventNote)
+	#end
 	{
 		switch(event.event)
 		{

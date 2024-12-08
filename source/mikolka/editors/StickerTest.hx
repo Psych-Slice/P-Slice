@@ -1,18 +1,19 @@
-package editors;
+package mikolka.editors;
 
-import flixel.addons.ui.FlxUI;
-import flixel.addons.ui.FlxUITabMenu;
-import flixel.addons.ui.FlxUIButton;
-import flixel.addons.ui.FlxUIInputText;
 import mikolka.compatibility.ModsHelper;
 import substates.StickerSubState;
+#if !LEGACY_PSYCH
+import states.editors.MasterEditorMenu;
+#else
+import editors.MasterEditorMenu;
+#end
 
 class StickerTest extends MusicBeatState {
     private var stickerSet:String;
     private var stickerPack:String;
     private var stickerSubState:StickerSubState;
-	var stickerSetInput:FlxUIInputText;
-	var stickerPackInput:FlxUIInputText;
+	var stickerSetInput:PsychUIInputText;
+	var stickerPackInput:PsychUIInputText;
 
 	public function new(?stickers:StickerSubState = null,set:String = "stickers-set-1",pack:String = "all"){
         stickerPack = pack;
@@ -41,22 +42,24 @@ class StickerTest extends MusicBeatState {
         BG.updateHitbox();
         add(BG);
         addEditorBox();
+        #if TOUCH_CONTROLS_ALLOWED
+        addTouchPad('NONE','B');
+        #end
         super.create();
     }
-    var UI_box:FlxUITabMenu;
+    var UI_box:PsychUIBox;
 	function addEditorBox() {
-		UI_box = new FlxUITabMenu(null,[{name: "Sticker", label: 'Sticker'}],true);
-        UI_box.resize(200,250);
-		UI_box.x = FlxG.width-200-50;
-		UI_box.y = FlxG.height-250-50;
+		UI_box = new PsychUIBox(FlxG.width, FlxG.height, 250, 200, ['Sticker']);
+		UI_box.x -= UI_box.width;
+		UI_box.y -= UI_box.height;
 		UI_box.scrollFactor.set();
 		add(UI_box);
 
-        stickerSetInput = new FlxUIInputText(20,50,100,stickerSet);
-        stickerPackInput = new FlxUIInputText(20,100,100,stickerPack);
+        stickerSetInput = new PsychUIInputText(20,50,100,stickerSet);
+        stickerPackInput = new PsychUIInputText(20,100,100,stickerPack);
 		
-        var tab = new FlxUI(null, UI_box);
-        tab.name = 'Sticker';
+		UI_box.selectedName = 'Sticker';
+        var tab = UI_box.getTab('Sticker').menu;
 		add(UI_box);
 
         tab.add(new FlxText(stickerSetInput.x, stickerSetInput.y - 15, 100, 'Sticker set:'));
@@ -66,35 +69,25 @@ class StickerTest extends MusicBeatState {
 		tab.add(stickerPackInput);
 
 
-		var loadWeekButton:FlxUIButton = new FlxUIButton(20, 150, "Play", function() {
+		var loadWeekButton:PsychUIButton = new PsychUIButton(20, 150, "Play", function() {
             StickerSubState.STICKER_PACK = stickerPackInput.text;
             StickerSubState.STICKER_SET = stickerSetInput.text;
             openSubState(new StickerSubState(null,s -> new StickerTest(s,stickerSetInput.text,stickerPackInput.text)));
         });
 		tab.add(loadWeekButton);
-        UI_box.addGroup(tab);
 	}
     override function update(elapsed:Float) {
         super.update(elapsed);
-        if(!stickerSetInput.hasFocus&&!stickerPackInput.hasFocus)
+        if(PsychUIInputText.focusOn == null)
             {
-                enableVolume();
-                if(FlxG.keys.justPressed.ESCAPE){
+                ClientPrefs.toggleVolumeKeys(true);
+
+                if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonB.justPressed || #end controls.BACK){
                     FlxG.sound.playMusic(Paths.music('freakyMenu'));
                     FlxG.mouse.visible = false;
-                    MusicBeatState.switchState(new MasterEditorMenu());
+                    MusicBeatState.startTransition(new MasterEditorMenu());
                 }
             }
-            else disableVolume();
-    }
-    private function enableVolume(){
-		FlxG.sound.muteKeys = TitleState.muteKeys;
-		FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
-		FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
-    }
-    private function disableVolume(){
-        FlxG.sound.muteKeys = [];
-		FlxG.sound.volumeDownKeys = [];
-		FlxG.sound.volumeUpKeys = [];
+            else ClientPrefs.toggleVolumeKeys(false);
     }
 }

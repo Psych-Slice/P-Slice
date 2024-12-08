@@ -1,5 +1,8 @@
 package editors;
 
+import mikolka.editors.StickerTest;
+import mikolka.editors.CharSelectEditor;
+import openfl.events.UncaughtErrorEvent;
 import mikolka.vslice.results.ResultState;
 #if desktop
 import Discord.DiscordClient;
@@ -29,11 +32,12 @@ class MasterEditorMenu extends MusicBeatState
 		'Menu Character Editor',
 		'Dialogue Editor',
 		'Dialogue Portrait Editor',
-		'Preview results (perfect)', 
-		'Preview results (excellent)', 
-		'Preview results (great)', 
-		'Preview results (good)', 
-		'Preview results (shit)'
+		'Player editor',
+		#if debug
+		'Crash the game',
+		#end
+		'Note Splash Editor', 
+		'Result Preview Menu'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
 	private var directories:Array<String> = [null];
@@ -133,18 +137,21 @@ class MasterEditorMenu extends MusicBeatState
 					LoadingState.loadAndSwitchState(new DialogueEditorState(), false);
 				case 'Chart Editor'://felt it would be cool maybe
 					LoadingState.loadAndSwitchState(new ChartingState(), false);
-				case 'Test stickers':
-					MusicBeatState.switchState(new StickerTest());
-				case 'Preview results (perfect)':
-					runResults(200);
-				case 'Preview results (excellent)':
-					runResults(190);
-				case 'Preview results (great)':
-					runResults(140);
-				case 'Preview results (good)':
-					runResults(80);
-				case 'Preview results (shit)':
-					runResults(30);
+					case 'Test stickers':
+						MusicBeatState.switchState(new StickerTest());
+					case 'Player editor':
+						MusicBeatState.switchState(new CharSelectEditor());
+					#if debug
+					case 'Crash the game':{
+						@:privateAccess
+						openfl.Lib.current.loaderInfo.uncaughtErrorEvents.dispatchEvent(
+							new UncaughtErrorEvent(
+								openfl.events.UncaughtErrorEvent.UNCAUGHT_ERROR,
+								true,true,new openfl.errors.Error("The devs are too stupid and they write way too long errors")));
+					}
+					#end
+					case 'Result Preview Menu':
+						MusicBeatState.switchState(new ResultPreviewMenu());
 			}
 			FlxG.sound.music.volume = 0;
 		}

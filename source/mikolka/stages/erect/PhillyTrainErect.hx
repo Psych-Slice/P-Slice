@@ -257,7 +257,7 @@ class PhillyTrainErect extends PicoCapableStage
 		prepareCutscene();
 		seenOutcome = false;
 		// 50/50 chance for who shoots
-		if (true)//FlxG.random.bool(50))
+		if (FlxG.random.bool(50))
 		{
 			playerShoots = true;
 		}
@@ -265,7 +265,7 @@ class PhillyTrainErect extends PicoCapableStage
 		{
 			playerShoots = false;
 		}
-		if (true) // FlxG.random.bool(8))
+		if (FlxG.random.bool(8))
 		{
 			explode = true;
 		}

@@ -15,6 +15,7 @@ import sys.io.*;
 
 //P-Slice
 import mikolka.funkin.*;
+import mikolka.compatibility.ui.*;
 import mikolka.funkin.utils.*;
 import mikolka.funkin.players.*;
 import mikolka.funkin.custom.*;

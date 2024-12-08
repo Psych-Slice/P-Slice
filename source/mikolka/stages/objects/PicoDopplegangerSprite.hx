@@ -1,6 +1,9 @@
 package mikolka.stages.objects;
 
 import mikolka.compatibility.FunkinPath;
+#if !LEGACY_PSYCH
+import cutscenes.CutsceneHandler;
+#end
 
 class PicoDopplegangerSprite extends FlxAtlasSprite
 {

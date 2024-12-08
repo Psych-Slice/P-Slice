@@ -47,7 +47,7 @@ class FreeplayHelpers
 		return songs;
 	}
 
-	public static function moveToPlaystate(state:FreeplayState, cap:FreeplaySongData, currentDifficulty:String)
+	public static function moveToPlaystate(state:FreeplayState, cap:FreeplaySongData, currentDifficulty:String,targetInstId:String)
 	{
 		// FunkinSound.emptyPartialQueue();
 
