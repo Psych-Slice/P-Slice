@@ -109,6 +109,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		// anims = new AnimPreview(200,200);
 		// anims.attachSprite(dj);
 		addEditorBox();
+		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad("LEFT_FULL", "A_B_X_Y");
 		touchPad.forEachAlive(function(button:TouchButton)
 		{
@@ -123,6 +124,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 				FlxTween.tween(button, {x: button.x - 550}, 0.6, {ease: FlxEase.backInOut});
 			}
 		});
+		#end
 		super.create();
 	}
 
