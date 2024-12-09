@@ -120,7 +120,8 @@ class CrashState extends FlxState
 
 	function printError(error:CrashData)
 	{
-		printToTrace('P-SLICE ${MainMenuState.pSliceVersion}  (${error.message})');
+		var star = #if CHECK_FOR_UPDATES "" #else "*" #end;
+		printToTrace('P-SLICE ${MainMenuState.pSliceVersion}$star  (${error.message})');
 		textNextY += 35;
 		FlxTimer.wait(1 / 24, () ->
 		{
@@ -162,10 +163,10 @@ class CrashState extends FlxState
 	{
 		var errMsg = "";
 		var dateNow:String = error.date;
-
+		var star = #if CHECK_FOR_UPDATES "" #else "*" #end;
 		dateNow = dateNow.replace(' ', '_');
 		dateNow = dateNow.replace(':', "'");
-
+		errMsg += 'P-Slice ${MainMenuState.pSliceVersion}$star\n';
 		errMsg += '\nUncaught Error: ' + error.message + "\n";
 		for (x in error.extendedTrace)
 		{
