@@ -1,5 +1,6 @@
 package mikolka.compatibility;
 
+import openfl.utils.AssetType;
 import mikolka.vslice.freeplay.pslice.FreeplayColorTweener;
 import mikolka.vslice.freeplay.pslice.BPMCache;
 import mikolka.vslice.freeplay.FreeplayState;
@@ -93,6 +94,18 @@ class FreeplayHelpers
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			return;
 		}
+		if(targetInstId != null && targetInstId != "default"){
+			var instPath = '${Paths.formatToSongPath(targetInstId)}/Inst.ogg';
+			if(Paths.fileExists(instPath,AssetType.BINARY,false,"songs")){
+				PlayState.altInstrumentals = targetInstId;
+			}
+			else{
+				trace('Inst in songs/${instPath} doesn\'t exist!!');
+				FlxG.sound.play(Paths.sound('cancelMenu'));
+				return;
+			}
+		}
+		else PlayState.altInstrumentals = null; //? P-Slice
 		LoadingState.loadAndSwitchState(new PlayState());
 
 		FlxG.sound.music.volume = 0;

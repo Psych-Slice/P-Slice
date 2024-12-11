@@ -152,6 +152,7 @@ class PlayState extends MusicBeatState
 	public static var isStoryMode:Bool = false;
 	// ! new shit
 	public static var storyCampaignTitle = "";
+	public static var altInstrumentals:String = null;
 	public static var storyDifficultyColor = FlxColor.GRAY;
 
 	public static var storyWeek:Int = 0;
@@ -1672,7 +1673,7 @@ class PlayState extends MusicBeatState
 		previousFrameTime = FlxG.game.ticks;
 		lastReportedPlayheadPosition = 0;
 
-		FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
+		FlxG.sound.playMusic(Paths.inst(altInstrumentals ?? PlayState.SONG.song), 1, false);
 		FlxG.sound.music.pitch = playbackRate;
 		FlxG.sound.music.onComplete = finishSong.bind();
 		vocals.play();

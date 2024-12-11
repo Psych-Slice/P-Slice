@@ -302,7 +302,7 @@ class Paths
 		}
 		#end
 
-		if (OpenFlAssets.exists(getPath(key, type)))
+		if (OpenFlAssets.exists(getPath(key, type,library)))
 		{
 			return true;
 		}
