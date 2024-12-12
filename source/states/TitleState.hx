@@ -555,6 +555,13 @@ class TitleState extends MusicBeatState
 			if (controls.UI_RIGHT)
 				swagShader.hue += elapsed * 0.1;
 		}
+		#if FLX_PITCH
+		if (controls.UI_UP) FlxG.sound.music.pitch += 0.5 * elapsed;
+		if (controls.UI_DOWN) FlxG.sound.music.pitch -= 0.5 * elapsed;
+		#end
+		#if desktop
+		if (controls.BACK) openfl.Lib.application.window.close();
+		#end
 
 		super.update(elapsed);
 	}
