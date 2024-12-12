@@ -1564,36 +1564,30 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "restartSong", function(?skipTransition:Bool = false) {
 			PlayState.instance.persistentUpdate = false;
+			FlxG.sound.pause();
 			PauseSubState.restartSong(skipTransition);
 			return true;
 		});
 		Lua_helper.add_callback(lua, "exitSong", function(?skipTransition:Bool = false) {
-			if(skipTransition)
-			{
-				FlxTransitionableState.skipNextTransIn = true;
-				FlxTransitionableState.skipNextTransOut = true;
-			}
 
 			PlayState.cancelMusicFadeTween();
 			CustomFadeTransition.nextCamera = PlayState.instance.camOther;
-			if(FlxTransitionableState.skipNextTransIn)
-				CustomFadeTransition.nextCamera = null;
-
-			if (PlayState.isStoryMode)
-				{
-					PlayState.storyPlaylist = [];
-					PlayState.instance.openSubState(new StickerSubState(null, (sticker) -> new StoryMenuState(sticker)));
-				}
-				else
-				{
-					PlayState.instance.openSubState(new StickerSubState(null, (sticker) -> mikolka.vslice.freeplay.FreeplayState.build(null, sticker)));
-				}
-
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			PlayState.changedDifficulty = false;
 			PlayState.chartingMode = false;
 			PlayState.instance.transitioning = true;
-			WeekData.loadTheFirstEnabledMod();
+			FlxG.sound.music.volume = 0;
+			var target = game.subState != null ? game.subState : game;
+			if (PlayState.isStoryMode)
+				{
+					PlayState.storyPlaylist = [];
+					if(skipTransition) FlxG.switchState(() -> new StoryMenuState())
+					else target.openSubState(new StickerSubState(null, (sticker) -> new StoryMenuState(sticker)));
+				}
+				else
+				{
+					if(skipTransition) FlxG.switchState(() -> FreeplayState.build(null, null))
+					else target.openSubState(new StickerSubState(null, (sticker) -> FreeplayState.build(null, sticker)));
+				}
 			return true;
 		});
 		Lua_helper.add_callback(lua, "getSongPosition", function() {

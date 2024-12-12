@@ -76,6 +76,7 @@ class StoryMenuState extends MusicBeatState
 		else Paths.clearStoredMemory();
 
 		PlayState.isStoryMode = true;
+		PlayState.altInstrumentals = null; //? P-Slice
 		WeekData.reloadWeekFiles(true);
 		if(curWeek >= WeekData.weeksList.length) curWeek = 0;
 		persistentUpdate = persistentDraw = true;
