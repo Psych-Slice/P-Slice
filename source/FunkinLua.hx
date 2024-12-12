@@ -1,5 +1,6 @@
 package;
 
+import mikolka.vslice.freeplay.FreeplayState;
 import substates.StickerSubState;
 import openfl.display.BitmapData;
 #if LUA_ALLOWED
@@ -1576,16 +1577,16 @@ class FunkinLua {
 			PlayState.chartingMode = false;
 			PlayState.instance.transitioning = true;
 			FlxG.sound.music.volume = 0;
-			var target = game.subState != null ? game.subState : game;
+			var target = PlayState.instance.subState != null ? PlayState.instance.subState : PlayState.instance;
 			if (PlayState.isStoryMode)
 				{
 					PlayState.storyPlaylist = [];
-					if(skipTransition) FlxG.switchState(() -> new StoryMenuState())
+					if(skipTransition) FlxG.switchState(new StoryMenuState())
 					else target.openSubState(new StickerSubState(null, (sticker) -> new StoryMenuState(sticker)));
 				}
 				else
 				{
-					if(skipTransition) FlxG.switchState(() -> FreeplayState.build(null, null))
+					if(skipTransition) FlxG.switchState(FreeplayState.build(null, null))
 					else target.openSubState(new StickerSubState(null, (sticker) -> FreeplayState.build(null, sticker)));
 				}
 			return true;
