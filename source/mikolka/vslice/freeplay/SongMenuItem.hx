@@ -412,6 +412,34 @@ class SongMenuItem extends FlxSpriteGroup
   {
     return evilTrail.color;
   }
+  public function refreshDisplay():Void
+    {
+      if (songData == null)
+      {
+        songText.text = 'Random';
+        pixelIcon.visible = false;
+        ranking.visible = false;
+        blurredRanking.visible = false;
+        favIcon.visible = false;
+        favIconBlurred.visible = false;
+        newText.visible = false;
+      }
+      else
+      {
+        
+        songText.text = songData.songName;
+        if (songData.songCharacter != null) pixelIcon.setCharacter(songData.songCharacter);
+        pixelIcon.visible = true;
+        updateBPM(Std.int(songData.songStartingBpm) ?? 0);
+        updateDifficultyRating(songData.difficultyRating ?? 0);
+        updateScoringRank(songData.scoringRank);
+        newText.visible = songData.isNew;
+        favIcon.visible = songData.isFav;
+        favIconBlurred.visible = songData.isFav;
+        checkClip();
+      }
+      updateSelected();
+    }
 
   function updateDifficultyRating(newRating:Int):Void
   {
@@ -514,19 +542,11 @@ class SongMenuItem extends FlxSpriteGroup
       //!
     }
 
-    // Update capsule text.
-    songText.text = songData?.songName ?? 'Random';
-    // Update capsule character.
-    if (songData?.songCharacter != null) pixelIcon.setCharacter(songData.songCharacter);
-    updateBPM(Std.int(songData?.songStartingBpm) ?? 0);
-    updateDifficultyRating(songData?.difficultyRating ?? 0);
     updateScoringRank(songData?.scoringRank);
-    newText.visible = songData?.isNew;
     favIcon.animation.curAnim.curFrame = favIcon.animation.curAnim.numFrames - 1;
     favIconBlurred.animation.curAnim.curFrame = favIconBlurred.animation.curAnim.numFrames - 1;
 
-    // Update opacity, offsets, etc.
-    updateSelected();
+    refreshDisplay();
 
     checkWeek(songData?.levelId);
   }

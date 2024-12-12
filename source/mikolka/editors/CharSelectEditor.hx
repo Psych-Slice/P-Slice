@@ -16,6 +16,7 @@ import haxe.Json;
 import lime.ui.FileDialog;
 import mikolka.editors.editorProps.FreeplayEditSubstate;
 import mikolka.editors.editorProps.AnimPreview;
+import mikolka.editors.editorProps.HelpSubstate;
 import mikolka.editors.editorProps.CharIconGrid;
 import mikolka.vslice.charSelect.CharSelectPlayer;
 import mikolka.compatibility.FreeplayHelpers;
@@ -64,6 +65,7 @@ class CharSelectEditor extends MusicBeatState
 		super();
 		this.playerId = playerId;
 		activePlayer = PlayerRegistry.instance.fetchEntry(playerId);
+		if(activePlayer == null) activePlayer = PlayerRegistry.instance.fetchEntry("bf");
 		if(activePlayer._data.charSelect.gf == null){
 			activePlayer._data.charSelect.gf = {
 				"assetPath": "charSelect/gfChill",
@@ -119,6 +121,8 @@ class CharSelectEditor extends MusicBeatState
 
 		animPreview = new AnimPreview(100, 100);
 		add(animPreview);
+
+		add(HelpSubstate.makeLabel(controls.mobileC));
 		add(errorTxt);
 
 		#if TOUCH_CONTROLS_ALLOWED
@@ -146,6 +150,10 @@ class CharSelectEditor extends MusicBeatState
 				#else
 				MusicBeatState.startTransition(new MasterEditorMenu());
 				#end
+			}
+			else if(FlxG.keys.justPressed.F1){
+				persistentUpdate = false;
+				openSubState(new HelpSubstate(controls.mobileC ? HelpSubstate.CHAR_EDIT_TEXT_MOBILE : HelpSubstate.CHAR_EDIT_TEXT));
 			}
 			if (animPreview.activeSprite != null)
 			{

@@ -126,6 +126,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 			}
 		});
 		#end
+		add(HelpSubstate.makeLabel(controls.mobileC));
 		super.create();
 	}
 
@@ -194,6 +195,10 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				close();
 				controls.isInSubstate = false;
+			}
+			else if(FlxG.keys.justPressed.F1){
+				persistentUpdate = false;
+				openSubState(new HelpSubstate(controls.mobileC ? HelpSubstate.FREEPLAY_EDIT_TEXT_MOBILE : HelpSubstate.FREEPLAY_EDIT_TEXT));
 			}
 		}
 		else
@@ -332,6 +337,10 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 			stepper_offset_y.value = dj_anim.curOffset[1];
 		});
 		btn_newAnim = new PsychUIButton(140, 10, "New", () -> {
+			if(list_animations.list.length >=20){
+				FlxG.sound.play(Paths.sound('cancelMenu'));
+				return;
+			}
 			@:privateAccess{
 				list_animations.addOption("newAnim");
 				dj_anim.addAnim({

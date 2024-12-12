@@ -1,5 +1,6 @@
 package mikolka.vslice.components;
 
+import mikolka.compatibility.VsliceOptions;
 import flixel.system.ui.FlxSoundTray;
 import flixel.tweens.FlxTween;
 import flixel.system.FlxAssets;
@@ -34,6 +35,7 @@ class FunkinSoundTray extends FlxSoundTray
     var bg:Bitmap = new Bitmap(Assets.getBitmapData(Paths.getPath("images/soundtray/volumebox.png", true)));
     bg.scaleX = graphicScale;
     bg.scaleY = graphicScale;
+    bg.smoothing = VsliceOptions.ANTIALIASING;
     addChild(bg);
 
     y = -height;
@@ -45,6 +47,7 @@ class FunkinSoundTray extends FlxSoundTray
     backingBar.y = 5;
     backingBar.scaleX = graphicScale;
     backingBar.scaleY = graphicScale;
+    backingBar.smoothing = VsliceOptions.ANTIALIASING;
     addChild(backingBar);
     backingBar.alpha = 0.4;
 
@@ -61,6 +64,7 @@ class FunkinSoundTray extends FlxSoundTray
       bar.y = 5;
       bar.scaleX = graphicScale;
       bar.scaleY = graphicScale;
+      bar.smoothing = VsliceOptions.ANTIALIASING;
       addChild(bar);
       _bars.push(bar);
     }
