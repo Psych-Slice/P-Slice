@@ -1,5 +1,6 @@
 package mikolka.compatibility;
 
+import mikolka.vslice.components.crash.UserErrorSubstate;
 import openfl.utils.AssetType;
 import mikolka.vslice.freeplay.pslice.FreeplayColorTweener;
 import mikolka.vslice.freeplay.pslice.BPMCache;
@@ -68,8 +69,9 @@ class FreeplayHelpers {
 					PlayState.altInstrumentals = targetInstId;
 				}
 				else{
-					trace('Inst in songs/${instPath} doesn\'t exist!!');
-					FlxG.sound.play(Paths.sound('cancelMenu'));
+					state.openSubState(new UserErrorSubstate("Missing instrumentals",
+					'Couldn\'t find Inst in \nsongs/${instPath}\nMake sure that there is a Inst.ogg file'
+					));
 					return;
 				}
 			}
@@ -99,11 +101,13 @@ class FreeplayHelpers {
 			catch (e:Dynamic)
 			{
 				trace('ERROR! $e');
+				state.openSubState(new UserErrorSubstate("Failed to load a song",
+					'$e'
+					));
                 @:privateAccess{
                     state.busy = false;
                     state.letterSort.inputEnabled = true;
                 }
-				FlxG.sound.play(Paths.sound('cancelMenu'));
 				return;
 			}
 			LoadingState.loadAndSwitchState(new PlayState());
