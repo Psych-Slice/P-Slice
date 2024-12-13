@@ -15,12 +15,17 @@ class UserErrorSubstate extends MusicBeatSubstate
         var callstack:OneOfTwo<Array<StackItem>,String>;
         var isCritical:Bool;
         var allowClosing:Bool = false;
+
+        var camOverlay:FlxCamera;
     
         public function new(EMessage:String,callstack:OneOfTwo<Array<StackItem>,String>)
         {
             this.EMessage = EMessage;
             this.callstack = callstack;
             isCritical = Std.isOfType(callstack,Array);
+            camOverlay = new FlxCamera();
+            camOverlay.bgColor = FlxColor.TRANSPARENT;
+            FlxG.cameras.add(camOverlay);
             super();
         }
     
@@ -31,7 +36,7 @@ class UserErrorSubstate extends MusicBeatSubstate
             textBg = new FlxSprite();
             FunkinTools.makeSolidColor(textBg, Math.floor(FlxG.width * 0.73), FlxG.height, 0x86000000);
             textBg.screenCenter();
-    
+            textBg.camera = camOverlay;
             add(textBg);
             var error:CrashData;
             if(Std.isOfType(callstack,Array)){
@@ -107,6 +112,7 @@ class UserErrorSubstate extends MusicBeatSubstate
             if(!allowClosing) return;
             if (TouchUtil.justReleased || FlxG.keys.justPressed.ENTER)
             {
+                FlxG.cameras.remove(camOverlay);
                 if(!isCritical) {
                     _parentState.persistentUpdate = true;
                     close();
@@ -219,6 +225,7 @@ class UserErrorSubstate extends MusicBeatSubstate
             var test_text = new FlxText(180, textNextY, 920, text.toUpperCase());
             test_text.setFormat(Paths.font('vcr.ttf'), 35, FlxColor.WHITE, LEFT);
             test_text.updateHitbox();
+            test_text.camera = camOverlay;
             add(test_text);
             textNextY += 35;
             return test_text;
