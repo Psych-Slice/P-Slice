@@ -237,7 +237,7 @@ class SongMenuItem extends FlxSpriteGroup
   function sparkleEffect(timer:FlxTimer):Void
   {
     sparkle.setPosition(FlxG.random.float(ranking.x - 20, ranking.x + 3), FlxG.random.float(ranking.y - 29, ranking.y + 4));
-    if(sparkle.alive){ //? don't play sparkle anim if it's destroyed
+    if(sparkle?.animation != null){ //? don't play sparkle anim if it's destroyed
       sparkle.animation.play('sparkle', true);
       sparkleTimer = new FlxTimer().start(FlxG.random.float(1.2, 4.5), sparkleEffect);
     }
