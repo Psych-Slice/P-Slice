@@ -1,7 +1,7 @@
 package;
 
 import mikolka.GameBorder;
-import mikolka.vslice.CrashState;
+import mikolka.vslice.components.crash.CrashState;
 import mikolka.vslice.components.MemoryCounter;
 import lime.graphics.Image;
 import flixel.graphics.FlxGraphic;
