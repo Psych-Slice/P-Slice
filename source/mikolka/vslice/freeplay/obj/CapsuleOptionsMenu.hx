@@ -9,6 +9,7 @@ class CapsuleOptionsMenu extends FlxSpriteGroup
   var parent:FreeplayState;
 
   var queueDestroy:Bool = false;
+  var busy:Bool = false;
 
   var instrumentalIds:Array<String> = [''];
   var currentInstrumentalIndex:Int = 0;
@@ -100,8 +101,9 @@ class CapsuleOptionsMenu extends FlxSpriteGroup
         if (currentInstrumental.text == '') currentInstrumental.text = 'Default';
     }
 
-    if (parent.getControls().ACCEPT)
+    if (parent.getControls().ACCEPT && !busy)
     {
+      busy = true;
       onConfirm(instrumentalIds[currentInstrumentalIndex] ?? '');
     }
   }

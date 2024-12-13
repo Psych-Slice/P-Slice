@@ -24,7 +24,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Psych-Slice/P-Slice">
-    <img src="art/iconOG.png" alt="Logo" width="80" height="80">
+    <img src="art/docs/banner.png" alt="Logo" width="300" height="200">
   </a>
 
 <h3 align="center">P-Slice Engine</h3>

@@ -139,7 +139,7 @@ class PlayState extends MusicBeatState
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
 
-	//! new shit
+	//! new shit P-Slice
 	public static var storyCampaignTitle = "";
 	public static var altInstrumentals:String = null;
 	public static var storyDifficultyColor = FlxColor.GRAY;
