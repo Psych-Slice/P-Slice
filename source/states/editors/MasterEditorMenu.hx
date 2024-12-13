@@ -1,5 +1,6 @@
 package states.editors;
 
+import mikolka.vslice.components.crash.UserErrorSubstate;
 import mikolka.editors.CharSelectEditor;
 import mikolka.editors.StickerTest;
 import openfl.events.UncaughtErrorEvent;
@@ -24,6 +25,7 @@ class MasterEditorMenu extends MusicBeatState
 		'Player editor',
 		#if debug
 		'Crash the game',
+		'Usermess the game',
 		#end
 		'Note Splash Editor', 
 		'Result Preview Menu'
@@ -148,6 +150,9 @@ class MasterEditorMenu extends MusicBeatState
 						new UncaughtErrorEvent(
 							openfl.events.UncaughtErrorEvent.UNCAUGHT_ERROR,
 							true,true,new openfl.errors.Error("The devs are too stupid and they write way too long errors")));
+				}
+				case 'Usermess the game':{
+					openSubState(new UserErrorSubstate("The devs are too stupid and they write way too long errors","Skill issue :/"));
 				}
 				#end
 				case 'Result Preview Menu':
