@@ -720,6 +720,7 @@ class NoteSplashEditorState extends MusicBeatState
 	{
 		super.closeSubState();
         #if TOUCH_CONTROLS_ALLOWED
+        removeTouchPad();
 		addTouchPad('LEFT_FULL', 'NOTE_SPLASH_EDITOR');
         #end
 	}
