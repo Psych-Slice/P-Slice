@@ -5,8 +5,6 @@
       "graphic": "up",
       "x": 1022,
       "y": 314,
-      "width": 132,
-      "height": 125,
       "color": "0xFF12FA05"
     },
     {
@@ -14,8 +12,6 @@
       "graphic": "left",
       "x": 896,
       "y": 413,
-      "width": 132,
-      "height": 125,
       "color": "0xFFC24B99"
     },
     {
@@ -23,8 +19,6 @@
       "graphic": "right",
       "x": 1148,
       "y": 413,
-      "width": 132,
-      "height": 125,
       "color": "0xFFF9393F"
     },
     {
@@ -32,8 +26,6 @@
       "graphic": "down",
       "x": 1022,
       "y": 521,
-      "width": 132,
-      "height": 125,
       "color": "0xFF00FFFF"
     }
   ]
