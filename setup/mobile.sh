@@ -13,7 +13,7 @@ haxelib install flixel-tools 1.5.1 --quiet
 haxelib install hscript-iris 1.1.0 --quiet
 haxelib install tjson 1.4.0 --quiet
 haxelib git flxanimate https://github.com/Psych-Slice/FlxAnimate.git 18091dfeb629ba2805a5f3e10f5de80433080359 --quiet
-haxelib git linc_luajit https://github.com/mcagabe19-stuff/linc_luajit-rewriten --quiet
+haxelib git linc_luajit https://github.com/MobilePorting/linc_luajit --quiet
 haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc f9353b9edce10f4605d125dd1bda24ac36898bfb --quiet --skip-dependencies
 haxelib install hxvlc 1.8.2 --quiet --skip-dependencies
 haxelib git funkin.vis https://github.com/FunkinCrew/funkVis 22b1ce089dd924f15cdc4632397ef3504d464e90 --quiet --skip-dependencies
