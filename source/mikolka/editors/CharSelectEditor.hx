@@ -1,5 +1,6 @@
 package mikolka.editors;
 
+import mikolka.vslice.components.crash.UserErrorSubstate;
 #if LEGACY_PSYCH
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
@@ -43,6 +44,8 @@ class CharSelectEditor extends MusicBeatState
 	var btn_reload:PsychUIButton;
 	var input_playerId:PsychUIInputText;
 	var step_charSlot:PsychUINumericStepper;
+	var chkBox_showUnownedChars:PsychUICheckBox;
+
 	var input_gfAssetPath:PsychUIInputText;
 	var input_gfAnimInfoPath:PsychUIInputText;
 	var chkBox_visualiser:PsychUICheckBox;
@@ -53,9 +56,6 @@ class CharSelectEditor extends MusicBeatState
 	var playerChill:CharSelectPlayer;
 	var icons:CharIconGrid;
 	var animPreview:AnimPreview;
-
-	var errorTxt:FlxText;
-	var errorTwn:FlxTween;
 
 	var validTag = true;
 	var validChar = true;
@@ -81,11 +81,6 @@ class CharSelectEditor extends MusicBeatState
 		FlxG.mouse.visible = true;
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
-
-		errorTxt = new FlxText(100, 600, 0, "test");
-		errorTxt.alpha = 0;
-		errorTxt.setFormat(Paths.font("vcr.ttf"), 45, 0xFF991D1D, LEFT, OUTLINE, 0xFF000000);
-		errorTxt.borderSize = 2;
 
 		var bg:FlxSprite = new FlxSprite(-153, -140);
 		bg.loadGraphic(Paths.image('charSelect/charSelectBG'));
@@ -123,7 +118,6 @@ class CharSelectEditor extends MusicBeatState
 		add(animPreview);
 
 		add(HelpSubstate.makeLabel(controls.mobileC));
-		add(errorTxt);
 
 		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad('LEFT_FULL', 'B_C_X');
@@ -203,7 +197,9 @@ class CharSelectEditor extends MusicBeatState
 		trace('currentGFPath(${currentGFPath})');
 		if (currentGFPath == null || !FunkinPath.exists('images/${gfData?.assetPath}/Animation.json'))
 		{
-			displayError("Couldn't find GF's Atlas sprite!");
+			openSubState(new UserErrorSubstate("Couldn't find GF's Atlas sprite!",
+			'Failed to read the following file:\n\nimages/${gfData?.assetPath}/Animation.json'
+			));
 			gfChill.visible = false;
 			return;
 		}
@@ -218,7 +214,9 @@ class CharSelectEditor extends MusicBeatState
 			var animInfoPath = 'images/${gfData?.animInfoPath}';
 			if (!FunkinPath.exists(animInfoPath + '/In.txt') || !FunkinPath.exists(animInfoPath + '/Out.txt'))
 			{
-				displayError("Couldn't find JSFL Data files!");
+				openSubState(new UserErrorSubstate("Couldn't find JSFL Data files!",
+				'Make sure that in:\n${animInfoPath}\n\nFollowing files are present:\nIn.txt\nOut.txt'
+				));
 				animInfoPath = 'images/charSelect/gfAnimInfo';
 			}
 			@:privateAccess {
@@ -292,6 +290,12 @@ class CharSelectEditor extends MusicBeatState
 		{
 			activePlayer._data.name = cur;
 		}
+
+		chkBox_showUnownedChars = new PsychUICheckBox(20, 85, "Show unasigned songs",100,() -> {
+			activePlayer._data.showUnownedChars = chkBox_showUnownedChars.checked;
+		});
+		chkBox_showUnownedChars.checked = activePlayer.shouldShowUnownedChars();
+
 		step_charSlot = new PsychUINumericStepper(20, 120, 1, 4, 0, 8);
 		step_charSlot.onValueChange = () ->
 		{
@@ -355,6 +359,8 @@ class CharSelectEditor extends MusicBeatState
 		tab.add(newLabel(input_playerName, "Readable name:"));
 		tab.add(input_playerName);
 
+		tab.add(chkBox_showUnownedChars);
+
 		tab.add(newLabel(step_charSlot, "Position:"));
 		tab.add(step_charSlot);
 
@@ -387,23 +393,11 @@ class CharSelectEditor extends MusicBeatState
 		StorageUtil.saveContent('${playerId}.json', charData);
 		#elseif LEGACY_PSYCH
 			var file = new FileReference();
-			file.addEventListener(Event.CANCEL, (x) -> displayError("Saving canceled!"));
-			file.addEventListener(IOErrorEvent.IO_ERROR, function(x) displayError('Error on saving character!'));
+			file.addEventListener(IOErrorEvent.IO_ERROR, function(x) openSubState(new UserErrorSubstate('Error on saving character!',"")));
 			file.save(charData, '${playerId}.json');
 		#else
-		fileDialog.save('${playerId}.json', charData, null, () -> displayError("Saving canceled!"), function() displayError('Error on saving character!'));
+		fileDialog.save('${playerId}.json', charData, null, null, function() openSubState(new UserErrorSubstate('Error on saving character!','')));
 		#end
 	}
 
-	function displayError(text:String)
-	{
-		errorTwn?.cancel();
-		errorTxt.text = text;
-		errorTxt.alpha = 1;
-		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3));
-		errorTwn = FlxTween.tween(errorTxt, {alpha: 0}, 0.8, {
-			startDelay: 2,
-			ease: FlxEase.backOut
-		});
-	}
 }
