@@ -9,6 +9,8 @@ import mikolka.vslice.freeplay.backcards.BoyfriendCard;
 
 class FreeplayEditSubstate extends MusicBeatSubstate
 {
+	public static var instance:FreeplayEditSubstate;
+
 	var data:PlayableCharacter;
 	var style:Null<FreeplayStyle>;
 	var animsList:Array<AnimationData>;
@@ -50,6 +52,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 
 	public function new(player:PlayableCharacter)
 	{
+		instance = this;
 		controls.isInSubstate = true;
 		super();
 		data = player;
@@ -111,7 +114,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		// anims.attachSprite(dj);
 		addEditorBox();
 		#if TOUCH_CONTROLS_ALLOWED
-		addTouchPad("LEFT_FULL", "A_B_X_Y");
+		addTouchPad("LEFT_FULL", "FREEPLAY_EDIT");
 		touchPad.forEachAlive(function(button:TouchButton)
 		{
 			if (button.tag == 'UP' || button.tag == 'DOWN' || button.tag == 'LEFT' || button.tag == 'RIGHT')
@@ -126,8 +129,14 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 			}
 		});
 		#end
-		add(HelpSubstate.makeLabel(controls.mobileC));
+		add(HelpSubstate.makeLabel());
 		super.create();
+	}
+
+	override function closeSubState() {
+		super.closeSubState();
+		addTouchPad("LEFT_FULL", "FREEPLAY_EDIT");
+		controls.isInSubstate = true;
 	}
 
 	function onLoadAnimDone()
@@ -142,27 +151,27 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 
 	override function update(elapsed:Float)
 	{
+		controls.isInSubstate = true;
 		super.update(elapsed);
 		if (!loaded)
 			return;
 		if (PsychUIInputText.focusOn == null)
 		{
 			FunkinControls.enableVolume();
-			var b_tapped = false;
 			var timeScale = Math.floor(elapsed * 100);
 
 			if (dj_anim.activeSprite != null)
 			{
-				if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end controls.UI_DOWN_P)
+				if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end #if TOUCH_CONTROLS_ALLOWED touchPad.buttonDown.justPressed || #end controls.UI_DOWN_P)
 					dj_selectAnim(1);
-				else if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end controls.UI_UP_P)
+				else if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end #if TOUCH_CONTROLS_ALLOWED touchPad.buttonUp.justPressed || #end controls.UI_UP_P)
 					dj_selectAnim(-1);
 				else if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonX.justPressed || #end FlxG.keys.justPressed.SPACE)
 					dj_anim.input_playAnim();
 				else if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonY.pressed || #end FlxG.keys.pressed.SHIFT){
-					if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end controls.UI_LEFT)
+					if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end #if TOUCH_CONTROLS_ALLOWED touchPad.buttonLeft.pressed || #end controls.UI_LEFT)
 						dj_anim.input_selectFrame(-1*timeScale);
-					else if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end controls.UI_RIGHT)
+					else if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end #if TOUCH_CONTROLS_ALLOWED touchPad.buttonRight.pressed || #end controls.UI_RIGHT)
 						dj_anim.input_selectFrame(1*timeScale);
 					else if (#if TOUCH_CONTROLS_ALLOWED (touchPad.buttonA.pressed && touchPad.buttonUp.pressed) || #end FlxG.keys.pressed.I)
 						dj_changeOffset(0,5*timeScale);
@@ -174,9 +183,9 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 						dj_changeOffset(-5*timeScale,0);
 				}
 				else{
-					if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end controls.UI_LEFT_P)
+					if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end #if TOUCH_CONTROLS_ALLOWED touchPad.buttonLeft.justPressed || #end controls.UI_LEFT_P)
 						dj_anim.input_selectFrame(-1);
-					else if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end controls.UI_RIGHT_P)
+					else if (#if TOUCH_CONTROLS_ALLOWED !touchPad.buttonA.pressed && #end #if TOUCH_CONTROLS_ALLOWED touchPad.buttonRight.justPressed || #end controls.UI_RIGHT_P)
 						dj_anim.input_selectFrame(1);
 					else if (#if TOUCH_CONTROLS_ALLOWED (touchPad.buttonA.pressed && touchPad.buttonUp.justPressed) || #end FlxG.keys.justPressed.I)
 						dj_changeOffset(0,1);
@@ -189,15 +198,16 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 				}
 			}
 
-			if (controls.BACK && loaded)
+			if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonB.justPressed || #end controls.BACK && loaded)
 			{
 				dj_anim.saveAnimations();
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				close();
 				controls.isInSubstate = false;
 			}
-			else if(FlxG.keys.justPressed.F1){
+			else if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonF.justPressed || #end FlxG.keys.justPressed.F1){
 				persistentUpdate = false;
+				#if TOUCH_CONTROLS_ALLOWED removeTouchPad(); #end
 				openSubState(new HelpSubstate(controls.mobileC ? HelpSubstate.FREEPLAY_EDIT_TEXT_MOBILE : HelpSubstate.FREEPLAY_EDIT_TEXT));
 			}
 		}
