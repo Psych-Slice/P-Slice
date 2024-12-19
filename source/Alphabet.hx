@@ -1,5 +1,6 @@
 package;
 
+import openfl.display.BitmapData;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -125,7 +126,9 @@ class Alphabet extends FlxSpriteGroup
 			{
 				letter.kill();
 				letters.remove(letter);
-				//letter.destroy();
+				var bak = FlxPoint.get(letter.scale.x,letter.scale.y); //! that's a leak here. Is there a better way???
+				letter.destroy(); 
+				letter.scale = bak;
 			}
 		}
 		letters = [];

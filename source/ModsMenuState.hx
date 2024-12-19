@@ -709,7 +709,7 @@ function parseModsList() {
 		modName.y = modNameInitialY - (modName.height / 2);
 		modRestartText.visible = curMod.mustRestart;
 		modDesc.text = curMod.desc;
-		trace(newScale);
+		//trace(newScale);
 
 		for (button in buttons) if(button.focusChangeCallback != null) button.focusChangeCallback(button.onFocus);
 		settingsButton.enabled = (curMod.settings != null && curMod.settings.length > 0);

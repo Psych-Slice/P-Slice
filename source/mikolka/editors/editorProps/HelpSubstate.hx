@@ -1,5 +1,7 @@
 package mikolka.editors.editorProps;
 
+import mikolka.compatibility.FunkinControls;
+
 class HelpSubstate extends MusicBeatSubstate {
     public static var CHAR_EDIT_TEXT:Array<String> = [
         	"Animation preview controls:",
@@ -8,25 +10,16 @@ class HelpSubstate extends MusicBeatSubstate {
 			"Space - Plays currently selected animation",
 			"Hold Shift to Increase/Decrease scrolling of frames",
 			"",
-			"BACK key - Exit this editor",
+			"ESCAPE - Exit this editor",
     ];
     public static var CHAR_EDIT_TEXT_MOBILE:Array<String> = [
-        "Up/Down - Move Conductor's Time",
-			"Left/Right - Change Sections",
-			"Up/Down (On The Right) - Decrease/Increase Note Sustain Length",
-			"Hold Y to Increase/Decrease move by 4x",
+        	"Animation preview controls:",
+        	"Up/Down - Change active animation",
+			"Left/Right - Change selected frame (will pause the animation)",
+			"X - Plays currently selected animation",
+			"Hold C to Increase/Decrease scrolling of frames",
 			"",
-			"C - Preview Chart",
-			"A - Playtest Chart",
-			"X - Stop/Resume Song",
-			"",
-			"Hold H and touch to Select Note(s)",
-			"Z - Hide Action TouchPad Buttons",
-			"V/D - Zoom in/out",
-			""
-			#if FLX_PITCH
-			,"G - Reset Song Playback Rate"
-			#end
+			"B - Exit this editor",
     ];
 	public static var FREEPLAY_EDIT_TEXT:Array<String> = [
         "Animation preview controls:",
@@ -36,25 +29,17 @@ class HelpSubstate extends MusicBeatSubstate {
 			"Space - Plays currently selected animation",
 			"Hold Shift to Increase/Decrease scrolling of frames and offset",
 			"",
-			"BACK key - Exit this substate",
+			"ESCAPE - Exit this substate",
     ];
     public static var FREEPLAY_EDIT_TEXT_MOBILE:Array<String> = [
-        "Up/Down - Move Conductor's Time",
-			"Left/Right - Change Sections",
-			"Up/Down (On The Right) - Decrease/Increase Note Sustain Length",
-			"Hold Y to Increase/Decrease move by 4x",
+       		"Animation preview controls:",
+        	"Up/Down - Change active animation",
+			"Left/Right - Change selected frame (will pause the animation)",
+			"Hold A and Touch Arrow Keys to Changes offset for selected animation",
+			"X - Plays currently selected animation",
+			"Hold Y to Increase/Decrease scrolling of frames and offset",
 			"",
-			"C - Preview Chart",
-			"A - Playtest Chart",
-			"X - Stop/Resume Song",
-			"",
-			"Hold H and touch to Select Note(s)",
-			"Z - Hide Action TouchPad Buttons",
-			"V/D - Zoom in/out",
-			""
-			#if FLX_PITCH
-			,"G - Reset Song Playback Rate"
-			#end
+			"B - Exit this substate",
     ];
 	private var text:Array<String>;
 	public function new(text:Array<String>) {
@@ -77,16 +62,36 @@ class HelpSubstate extends MusicBeatSubstate {
 		fullTipText.text = text.join('\n');
 		fullTipText.screenCenter();
 		add(fullTipText);
+		#if TOUCH_CONTROLS_ALLOWED
+		addTouchPad("NONE", "F");
+		touchPad.y -= 124;
+		#end
     }
     override function update(elapsed:Float) {
         super.update(elapsed);
-        if(controls.BACK){
+        if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonF.justPressed || #end FlxG.keys.justPressed.F1)
+		{
 			_parentState.persistentUpdate = true;
             close();
+			#if TOUCH_CONTROLS_ALLOWED
+			if (MusicBeatState?.getState() != null)
+				MusicBeatState.getState().touchPad.visible = true;
+			
+			// had to add instance cuz this is also a substate :sob:
+			if (FreeplayEditSubstate?.instance != null)
+				Controls.instance.isInSubstate = true;
+
+			removeTouchPad();
+			#end
         }
     }
-    public static function makeLabel(isMobile:Bool):FlxText {
-        var tipText:FlxText = new FlxText(FlxG.width - 210, FlxG.height - 30, 200, 'Press ${isMobile ? 'F' : 'F1'} for Help', 20);
+    public static function makeLabel():FlxText {
+		#if LEGACY_PSYCH
+		var mobile = false;
+		#else
+		var mobile = Controls.instance.mobileC;
+		#end
+        var tipText:FlxText = new FlxText(0, FlxG.height - 30, FlxG.width, 'Press ${mobile ? 'F' : 'F1'} for Help', 20);
 		tipText.setFormat(null, 16, FlxColor.WHITE, RIGHT);
 		tipText.borderColor = FlxColor.BLACK;
 		tipText.scrollFactor.set();
