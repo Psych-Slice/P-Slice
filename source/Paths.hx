@@ -129,6 +129,9 @@ class Paths
 
 	public static function getPath(file:String, type:AssetType, ?library:Null<String> = null)
 	{
+		if (library == "mobile")
+			return getPreloadPath('mobile/$file');
+
 		if (library != null)
 			return getLibraryPath(file, library);
 
@@ -365,7 +368,10 @@ class Paths
 			{
 				var newBitmap:BitmapData = BitmapData.fromFile(modKey);
 				var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(newBitmap, false, modKey);
-				newGraphic.persist = true;
+				if (newGraphic != null)
+					newGraphic.persist = true;
+				else
+					trace('smth up with the graphic ($key)');
 				currentTrackedAssets.set(modKey, newGraphic);
 			}
 			localTrackedAssets.push(modKey);
@@ -380,7 +386,10 @@ class Paths
 			if (!currentTrackedAssets.exists(path))
 			{
 				var newGraphic:FlxGraphic = FlxG.bitmap.add(path, false, path);
-				newGraphic.persist = true;
+				if (newGraphic != null)
+					newGraphic.persist = true;
+				else
+					trace('smth up with the graphic ($key)');
 				currentTrackedAssets.set(path, newGraphic);
 			}
 			localTrackedAssets.push(path);
@@ -412,7 +421,7 @@ class Paths
 		// trace(gottenPath);
 		if (!currentTrackedSounds.exists(gottenPath))
 			#if MODS_ALLOWED
-			currentTrackedSounds.set(gottenPath, Sound.fromFile('./' + gottenPath));
+			currentTrackedSounds.set(gottenPath, Sound.fromFile(gottenPath));
 			#else
 			{
 				var folder:String = '';
@@ -429,7 +438,7 @@ class Paths
 	#if MODS_ALLOWED
 	inline static public function mods(key:String = '')
 	{
-		return 'mods/' + key;
+		return #if mobile Sys.getCwd() + #end 'mods/' + key;
 	}
 
 	inline static public function modsFont(key:String)
@@ -511,7 +520,7 @@ class Paths
 			}
 			#end
 		}
-		return 'mods/' + key;
+		return #if mobile Sys.getCwd() + #end 'mods/' + key;
 	}
 
 	#if linux

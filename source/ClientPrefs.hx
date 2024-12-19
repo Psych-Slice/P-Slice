@@ -7,6 +7,20 @@ import flixel.graphics.FlxGraphic;
 import Controls;
 
 class ClientPrefs {
+	// Mobile and Mobile Controls Releated
+	public static var extraHints:String = "NONE"; // hitbox extra hint option
+	public static var hitbox2:Bool = true; // hitbox extra button position option
+	public static var controlsAlpha:Float = FlxG.onMobile ? 0.6 : 0;
+	public static var screensaver:Bool = false;
+	public static var wideScreen:Bool = false;
+	#if android
+	public static var storageType:String = "EXTERNAL_DATA";
+	#end
+	public static var hitboxType:String = "Gradient";
+	public static var popUpRating:Bool = true;
+	public static var vsync:Bool = false;
+	public static var vibrating:Bool = false;
+
 	public static var favSongIds:Array<String> = [];
 
 	public static var downScroll:Bool = false;
@@ -108,6 +122,19 @@ class ClientPrefs {
 	}
 
 	public static function saveSettings() {
+		FlxG.save.data.extraHints = extraHints;
+		FlxG.save.data.hitbox2 = hitbox2;
+		FlxG.save.data.controlsAlpha = controlsAlpha;
+		FlxG.save.data.screensaver = screensaver;
+		FlxG.save.data.wideScreen = wideScreen;
+		#if android
+		FlxG.save.data.storageType = storageType;
+		#end
+		FlxG.save.data.hitboxType = hitboxType;
+		FlxG.save.data.popUpRating = popUpRating;
+		FlxG.save.data.vsync = vsync;
+		FlxG.save.data.vibrating = vibrating;
+
 		FlxG.save.data.downScroll = downScroll;
 		FlxG.save.data.middleScroll = middleScroll;
 		FlxG.save.data.opponentStrums = opponentStrums;
@@ -162,6 +189,39 @@ class ClientPrefs {
 	}
 
 	public static function loadPrefs() {
+		if(FlxG.save.data.extraHints != null) {
+			extraHints = FlxG.save.data.extraHints;
+		}
+		if(FlxG.save.data.hitbox2 != null) {
+			hitbox2 = FlxG.save.data.hitbox2;
+		}
+		if(FlxG.save.data.controlsAlpha != null) {
+			controlsAlpha = FlxG.save.data.controlsAlpha;
+		}
+		if(FlxG.save.data.screensaver != null) {
+			screensaver = FlxG.save.data.screensaver;
+		}
+		if(FlxG.save.data.wideScreen != null) {
+			wideScreen = FlxG.save.data.wideScreen;
+		}
+		#if android
+		if(FlxG.save.data.storageType != null) {
+			storageType = FlxG.save.data.storageType;
+		}
+		#end
+		if(FlxG.save.data.hitboxType != null) {
+			hitboxType = FlxG.save.data.hitboxType;
+		}
+		if(FlxG.save.data.popUpRating != null) {
+			popUpRating = FlxG.save.data.popUpRating;
+		}
+		if(FlxG.save.data.vsync != null) {
+			vsync = FlxG.save.data.vsync;
+		}
+		if(FlxG.save.data.vibrating != null) {
+			vibrating = FlxG.save.data.vibrating;
+		}
+
 		if(FlxG.save.data.downScroll != null) {
 			downScroll = FlxG.save.data.downScroll;
 		}

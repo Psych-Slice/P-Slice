@@ -15,7 +15,6 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.display.StageScaleMode;
 
-import mikolka.vslice.components.ALSoftConfig; // Make sure to include this on compile!
 import vlc.MP4Handler;
 //crash handler stuff
 #if CRASH_HANDLER
@@ -23,10 +22,19 @@ import lime.app.Application;
 import openfl.events.UncaughtErrorEvent;
 import haxe.CallStack;
 import haxe.io.Path;
+#if desktop
 import Discord.DiscordClient;
+#end
 import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
+#end
+
+#if COPYSTATE_ALLOWED
+import mobile.states.CopyState;
+#end
+#if mobile
+import mobile.backend.MobileScaleMode;
 #end
 
 using StringTools;
@@ -61,6 +69,12 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
+		#if mobile
+		#if android
+		StorageUtil.requestPermissions();
+		#end
+		Sys.setCwd(StorageUtil.getStorageDirectory());
+		#end
 
 		if (stage != null)
 		{
@@ -84,9 +98,9 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
+		#if (openfl <= "9.2.0")
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
-
 		if (zoom == -1)
 		{
 			var ratioX:Float = stageWidth / gameWidth;
@@ -95,9 +109,13 @@ class Main extends Sprite
 			gameWidth = Math.ceil(stageWidth / zoom);
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
+		#else
+		if (zoom == -1)
+			zoom = 1;
+		#end
 	
 		ClientPrefs.loadDefaultKeys();
-		var game = new FlxGame(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash, startFullscreen);
+		var game = new FlxGame(gameWidth, gameHeight, #if COPYSTATE_ALLOWED !CopyState.checkExistingFiles() ? CopyState : #end initialState, framerate, framerate, skipSplash, startFullscreen);
 
 		// FlxG.game._customSoundTray wants just the class, it calls new from
     	// create() in there, which gets called when it's added to stage
@@ -106,24 +124,32 @@ class Main extends Sprite
     	game._customSoundTray = mikolka.vslice.components.FunkinSoundTray;
 		addChild(game);
 		
-		#if !mobile
-		border = new GameBorder();
-		addChild(border);
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
-		addChild(fpsVar);
-		Lib.current.stage.align = "tl";
+		#if mobile
+		FlxG.game.addChild(fpsVar);
+	  	#else
+		var border = new GameBorder();
+		addChild(border);
 		Lib.current.stage.window.onResize.add(border.updateGameSize);
+		addChild(fpsVar);
+		#end
+		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
-		if(fpsVar != null) {
+		if (fpsVar != null)
+		{
 			fpsVar.visible = ClientPrefs.showFPS;
 		}
-		#end
 
 		#if !html5
 		// TODO: disabled on HTML5 (todo: find another method that works?)
 		memoryCounter = new MemoryCounter(10, 13, 0xFFFFFF);
+		#if mobile
+		FlxG.game.addChild(memoryCounter);
+	  	#else
 		addChild(memoryCounter);
-		if(memoryCounter != null) {
+		#end
+		if (memoryCounter != null)
+		{
 			memoryCounter.visible = ClientPrefs.showFPS;
 		}
 		#end
@@ -131,6 +157,13 @@ class Main extends Sprite
 		#if html5
 		FlxG.autoPause = false;
 		FlxG.mouse.visible = false;
+		#end
+
+		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
+
+		#if mobile
+		lime.system.System.allowScreenTimeout = ClientPrefs.screensaver;
+		FlxG.scaleMode = new MobileScaleMode();
 		#end
 		
 		#if CRASH_HANDLER
