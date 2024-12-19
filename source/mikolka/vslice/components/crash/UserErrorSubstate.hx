@@ -110,7 +110,7 @@ class UserErrorSubstate extends MusicBeatSubstate
         {
             super.update(elapsed);
             if(!allowClosing) return;
-            if (TouchUtil.justReleased || FlxG.keys.justPressed.ENTER)
+            if (TouchUtil.justPressed || FlxG.keys.justPressed.ENTER)
             {
                 FlxG.cameras.remove(camOverlay);
                 if(!isCritical) {

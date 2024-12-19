@@ -133,12 +133,14 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		super.create();
 	}
 
+	#if TOUCH_CONTROLS_ALLOWED
 	override function closeSubState() {
 		super.closeSubState();
 		addTouchPad("LEFT_FULL", "FREEPLAY_EDIT");
 		controls.isInSubstate = true;
 	}
-
+	#end
+	
 	function onLoadAnimDone()
 	{
 		add(UI_box);
