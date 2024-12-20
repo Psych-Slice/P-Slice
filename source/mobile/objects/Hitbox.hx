@@ -24,6 +24,7 @@ package mobile.objects;
 
 import openfl.display.BitmapData;
 import openfl.display.Shape;
+import flixel.util.FlxSignal.FlxTypedSignal;
 import flixel.graphics.FlxGraphic;
 import openfl.geom.Matrix;
 
@@ -46,6 +47,9 @@ class Hitbox extends MobileInputManager
 	public var buttonExtra2:TouchButton = new TouchButton(0, 0);
 
 	public var instance:MobileInputManager;
+
+	public var onHintDown:FlxTypedSignal<TouchButton->Void> = new FlxTypedSignal<TouchButton->Void>();
+	public var onHintUp:FlxTypedSignal<TouchButton->Void> = new FlxTypedSignal<TouchButton->Void>();
 
 	var storedButtonsIDs:Map<String, Array<MobileInputID>> = new Map<String, Array<MobileInputID>>();
 
@@ -106,6 +110,8 @@ class Hitbox extends MobileInputManager
 	override function destroy()
 	{
 		super.destroy();
+		onHintUp.destroy();
+		onHintDown.destroy();
 
 		for (fieldName in Reflect.fields(this))
 		{
@@ -137,6 +143,7 @@ class Hitbox extends MobileInputManager
 
 			hint.onDown.callback = function()
 			{
+				onHintDown.dispatch(hint);
 				if (hintTween != null)
 					hintTween.cancel();
 
@@ -156,6 +163,7 @@ class Hitbox extends MobileInputManager
 
 			hint.onOut.callback = hint.onUp.callback = function()
 			{
+				onHintUp.dispatch(hint);
 				if (hintTween != null)
 					hintTween.cancel();
 
@@ -172,6 +180,11 @@ class Hitbox extends MobileInputManager
 					onComplete: (twn:FlxTween) -> hintTween = null
 				});
 			}
+		}
+		else
+		{
+			hint.onDown.callback = () -> onHintDown.dispatch(hint);
+			hint.onOut.callback = hint.onUp.callback = () -> onHintUp.dispatch(hint);
 		}
 
 		hint.immovable = hint.multiTouch = true;
