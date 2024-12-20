@@ -3846,7 +3846,11 @@ class PlayState extends MusicBeatState
 	{
 		var buttonCode:Int = (button.IDs[0].toString().startsWith('HITBOX')) ? button.IDs[0] : button.IDs[1];
 
-		if (!cpuControlled && startedCountdown && !paused && buttonCode > -1 && button.justPressed)
+		if (!cpuControlled
+			&& startedCountdown
+			&& !paused
+			&& buttonCode > -1
+			&& button.justPressed)
 		{
 			if (!boyfriend.stunned && generatedMusic && !endingSong)
 			{
