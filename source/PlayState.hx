@@ -743,6 +743,7 @@ class PlayState extends MusicBeatState
 
 		// startCountdown();
 
+		#if TOUCH_CONTROLS_ALLOWED
 		#if !android
 		addTouchPad("NONE", "P");
 		addTouchPadCamera();
@@ -751,6 +752,7 @@ class PlayState extends MusicBeatState
 		addHitbox();
 		hitbox.onHintDown.add(onHintPress);
 		hitbox.onHintUp.add(onHintRelease);
+		#end
 
 		generateSong(SONG.song);
 
@@ -1410,7 +1412,7 @@ class PlayState extends MusicBeatState
 				// if(ClientPrefs.middleScroll) opponentStrums.members[i].visible = false;
 			}
 
-			startedCountdown = hitbox.visible = true;
+			startedCountdown = #if TOUCH_CONTROLS_ALLOWED hitbox.visible = #end true;
 			Conductor.songPosition = -Conductor.crochet * 5;
 			setOnLuas('startedCountdown', true);
 			callOnLuas('onCountdownStarted', []);
@@ -3108,7 +3110,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		hitbox.visible = #if !android touchPad.visible = #end false;
+		#if TOUCH_CONTROLS_ALLOWED hitbox.visible = #if !android touchPad.visible = #end false; #end
 		timeBarBG.visible = false;
 		timeBar.visible = false;
 		timeTxt.visible = false;
@@ -3842,6 +3844,7 @@ class PlayState extends MusicBeatState
 		return -1;
 	}
 
+	#if TOUCH_CONTROLS_ALLOWED
 	private function onHintPress(button:TouchButton):Void
 	{
 		var buttonCode:Int = (button.IDs[0].toString().startsWith('HITBOX')) ? button.IDs[0] : button.IDs[1];
@@ -3957,6 +3960,7 @@ class PlayState extends MusicBeatState
 			callOnLuas('onHintRelease', [buttonCode]);
 		}
 	}
+	#end
 
 	// Hold notes
 	private function keyShit():Void

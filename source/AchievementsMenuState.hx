@@ -71,7 +71,9 @@ class AchievementsMenuState extends MusicBeatState
 		add(descText);
 		changeSelection();
 
+		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad("UP_DOWN", "B");
+		#end
 
 		super.create();
 	}

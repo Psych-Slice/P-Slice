@@ -1426,7 +1426,7 @@ class FunkinLua {
 		{
 			return switch (name.toUpperCase()) {
 			case "SPACE":
-				MusicBeatState.getState().hitbox.buttonExtra.justPressed || Reflect.getProperty(FlxG.keys.justPressed, "SPACE");
+				#if TOUCH_CONTROLS_ALLOWED MusicBeatState.getState().hitbox.buttonExtra.justPressed || #end Reflect.getProperty(FlxG.keys.justPressed, "SPACE");
 			default:
 				Reflect.getProperty(FlxG.keys.justPressed, name);
 			}
@@ -1435,7 +1435,7 @@ class FunkinLua {
 		{
 			return switch (name.toUpperCase()) {
 			case "SPACE":
-				MusicBeatState.getState().hitbox.buttonExtra.pressed || Reflect.getProperty(FlxG.keys.pressed, "SPACE");
+				#if TOUCH_CONTROLS_ALLOWED MusicBeatState.getState().hitbox.buttonExtra.pressed || #end Reflect.getProperty(FlxG.keys.pressed, "SPACE");
 			default:
 				Reflect.getProperty(FlxG.keys.pressed, name);
 			}
@@ -1444,7 +1444,7 @@ class FunkinLua {
 		{
 			return switch (name.toUpperCase()) {
 			case "SPACE":
-				MusicBeatState.getState().hitbox.buttonExtra.justReleased || Reflect.getProperty(FlxG.keys.justReleased, "SPACE");
+				#if TOUCH_CONTROLS_ALLOWED MusicBeatState.getState().hitbox.buttonExtra.justReleased || #end Reflect.getProperty(FlxG.keys.justReleased, "SPACE");
 			default:
 				Reflect.getProperty(FlxG.keys.justReleased, name);
 			}
@@ -1520,7 +1520,7 @@ class FunkinLua {
 				case 'back': key = PlayState.instance.getControl('BACK');
 				case 'pause': key = PlayState.instance.getControl('PAUSE');
 				case 'reset': key = PlayState.instance.getControl('RESET');
-				case 'space': key = MusicBeatState.getState().hitbox.buttonExtra.justPressed || FlxG.keys.justPressed.SPACE;//an extra key for convinience
+				case 'space': key = #if TOUCH_CONTROLS_ALLOWED MusicBeatState.getState().hitbox.buttonExtra.justPressed || #end FlxG.keys.justPressed.SPACE;//an extra key for convinience
 			}
 			return key;
 		});
@@ -1531,7 +1531,7 @@ class FunkinLua {
 				case 'down': key = PlayState.instance.getControl('NOTE_DOWN');
 				case 'up': key = PlayState.instance.getControl('NOTE_UP');
 				case 'right': key = PlayState.instance.getControl('NOTE_RIGHT');
-				case 'space': key = MusicBeatState.getState().hitbox.buttonExtra.pressed || FlxG.keys.pressed.SPACE;//an extra key for convinience
+				case 'space': key = #if TOUCH_CONTROLS_ALLOWED MusicBeatState.getState().hitbox.buttonExtra.pressed || #end FlxG.keys.pressed.SPACE;//an extra key for convinience
 			}
 			return key;
 		});
@@ -1542,7 +1542,7 @@ class FunkinLua {
 				case 'down': key = PlayState.instance.getControl('NOTE_DOWN_R');
 				case 'up': key = PlayState.instance.getControl('NOTE_UP_R');
 				case 'right': key = PlayState.instance.getControl('NOTE_RIGHT_R');
-				case 'space': key =  MusicBeatState.getState().hitbox.buttonExtra.justReleased || FlxG.keys.justReleased.SPACE;//an extra key for convinience
+				case 'space': key = #if TOUCH_CONTROLS_ALLOWED MusicBeatState.getState().hitbox.buttonExtra.justReleased || #end FlxG.keys.justReleased.SPACE;//an extra key for convinience
 			}
 			return key;
 		});

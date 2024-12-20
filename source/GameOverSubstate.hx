@@ -79,8 +79,10 @@ class GameOverSubstate extends MusicBeatSubstate
 		camFollowPos.setPosition(FlxG.camera.scroll.x + (FlxG.camera.width / 2), FlxG.camera.scroll.y + (FlxG.camera.height / 2));
 		add(camFollowPos);
 
+		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad("NONE", "A_B");
 		addTouchPadCamera();
+		#end
 	}
 
 	var isFollowingAlready:Bool = false;

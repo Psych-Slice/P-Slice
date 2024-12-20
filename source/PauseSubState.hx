@@ -170,8 +170,10 @@ class PauseSubState extends MusicBeatSubstate
 		regenMenu();
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
+		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad(PlayState.chartingMode ? "LEFT_FULL" : "UP_DOWN", "A");
 		addTouchPadCamera();
+		#end
 	}
 
 	var holdTime:Float = 0;

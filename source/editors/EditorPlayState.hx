@@ -111,6 +111,7 @@ class EditorPlayState extends MusicBeatState
 		else
 			vocals = new FlxSound();
 
+		#if TOUCH_CONTROLS_ALLOWED
 		#if !android
 		addTouchPad("NONE", "P");
 		addTouchPadCamera();
@@ -119,6 +120,7 @@ class EditorPlayState extends MusicBeatState
 		hitbox.visible = #if !android touchPad.visible = #end true;
 		hitbox.onHintDown.add(onHintPress);
 		hitbox.onHintUp.add(onHintRelease);
+		#end
 
 		generateSong(PlayState.SONG.song);
 		#if (LUA_ALLOWED && MODS_ALLOWED)
@@ -335,9 +337,9 @@ class EditorPlayState extends MusicBeatState
 	public var noteKillOffset:Float = 350;
 	public var spawnTime:Float = 2000;
 	override function update(elapsed:Float) {
-		if (#if android FlxG.android.justReleased.BACK #else touchPad.buttonP.justPressed #end || FlxG.keys.justPressed.ESCAPE)
+		if (#if android FlxG.android.justReleased.BACK || #elseif TOUCH_CONTROLS_ALLOWED touchPad.buttonP.justPressed || #end FlxG.keys.justPressed.ESCAPE)
 		{
-			hitbox.visible = #if !android touchPad.visible = #end false;
+			#if TOUCH_CONTROLS_ALLOWED hitbox.visible = #if !android touchPad.visible = #end false; #end
 			FlxG.sound.music.pause();
 			vocals.pause();
 			LoadingState.loadAndSwitchState(new editors.ChartingState());
@@ -679,6 +681,7 @@ class EditorPlayState extends MusicBeatState
 		return -1;
 	}
 
+	#if TOUCH_CONTROLS_ALLOWED
 	private function onHintPress(button:TouchButton):Void
 	{
 		var buttonCode:Int = (button.IDs[0].toString().startsWith('HITBOX')) ? button.IDs[0] : button.IDs[1];
@@ -765,6 +768,7 @@ class EditorPlayState extends MusicBeatState
 			}
 		}
 	}
+	#end
 
 	private function keyShit():Void
 	{

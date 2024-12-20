@@ -924,6 +924,7 @@ class Controls extends FlxActionSet
 
 	public function mobileControlsJustPressed(id:MobileInputID):Bool
 	{
+		#if TOUCH_CONTROLS_ALLOWED
 		final state:MusicBeatState = MusicBeatState.getState();
 		final substate:MusicBeatSubstate = MusicBeatSubstate.instance;
 		var bools:Array<Bool> = [false, false, false, false];
@@ -947,10 +948,14 @@ class Controls extends FlxActionSet
 		}	
 
 		return bools.contains(true);
+		#else
+		return false;
+		#end
 	}
 
 	public function mobileControlsJustReleased(id:MobileInputID):Bool
 	{
+		#if TOUCH_CONTROLS_ALLOWED
 		final state:MusicBeatState = MusicBeatState.getState();
 		final substate:MusicBeatSubstate = MusicBeatSubstate.instance;
 		var bools:Array<Bool> = [false, false, false, false];
@@ -974,10 +979,14 @@ class Controls extends FlxActionSet
 		}	
 
 		return bools.contains(true);
+		#else
+		return false;
+		#end
 	}
 
 	public function mobileControlsPressed(id:MobileInputID):Bool
 	{
+		#if TOUCH_CONTROLS_ALLOWED
 		final state:MusicBeatState = MusicBeatState.getState();
 		final substate:MusicBeatSubstate = MusicBeatSubstate.instance;
 		var bools:Array<Bool> = [false, false, false, false];
@@ -1001,11 +1010,15 @@ class Controls extends FlxActionSet
 		}	
 
 		return bools.contains(true);
+		#else
+		return false;
+		#end
 	}
 
 	// this one probably useless b
 	public function mobileControlsReleased(id:MobileInputID):Bool
 	{
+		#if TOUCH_CONTROLS_ALLOWED
 		final state:MusicBeatState = MusicBeatState.getState();
 		final substate:MusicBeatSubstate = MusicBeatSubstate.instance;
 		var bools:Array<Bool> = [false, false, false, false];
@@ -1029,5 +1042,8 @@ class Controls extends FlxActionSet
 		}	
 
 		return bools.contains(true);
+		#else
+		return false;
+		#end
 	}
 }

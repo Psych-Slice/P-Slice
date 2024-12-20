@@ -25,8 +25,8 @@ package mobile.objects;
 import openfl.display.BitmapData;
 import openfl.display.Shape;
 import flixel.graphics.FlxGraphic;
-import openfl.geom.Matrix;
 import flixel.util.FlxSignal.FlxTypedSignal;
+import openfl.geom.Matrix;
 
 /**
  * A zone with 4 hint's (A hitbox).

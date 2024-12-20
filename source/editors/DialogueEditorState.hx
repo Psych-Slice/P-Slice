@@ -108,7 +108,9 @@ class DialogueEditorState extends MusicBeatState
 		daText.scaleY = 0.7;
 		add(daText);
 		changeText();
+		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad("LEFT_FULL", "A_B_X_Y");
+		#end
 		super.create();
 	}
 
@@ -361,17 +363,17 @@ class DialogueEditorState extends MusicBeatState
 			FlxG.sound.muteKeys = TitleState.muteKeys;
 			FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
 			FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
-			if(touchPad.buttonY.justPressed || FlxG.keys.justPressed.SPACE) {
+			if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonY.justPressed || #end FlxG.keys.justPressed.SPACE) {
 				reloadText(false);
 			}
-			if(touchPad.buttonB.justPressed || FlxG.keys.justPressed.ESCAPE) {
+			if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonB.justPressed || #end FlxG.keys.justPressed.ESCAPE) {
 				MusicBeatState.switchState(new editors.MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 1);
 				transitioning = true;
 			}
 			var negaMult:Array<Int> = [1, -1];
-			var controlAnim:Array<Bool> = [FlxG.keys.justPressed.W || touchPad.buttonUp.justPressed, FlxG.keys.justPressed.S || touchPad.buttonDown.justPressed];
-			var controlText:Array<Bool> = [FlxG.keys.justPressed.D || touchPad.buttonRight.justPressed, FlxG.keys.justPressed.A || touchPad.buttonLeft.justPressed];
+			var controlAnim:Array<Bool> = [FlxG.keys.justPressed.W #if TOUCH_CONTROLS_ALLOWED || touchPad.buttonUp.justPressed #end, FlxG.keys.justPressed.S #if TOUCH_CONTROLS_ALLOWED || touchPad.buttonDown.justPressed #end];
+			var controlText:Array<Bool> = [FlxG.keys.justPressed.D #if TOUCH_CONTROLS_ALLOWED || touchPad.buttonRight.justPressed #end, FlxG.keys.justPressed.A #if TOUCH_CONTROLS_ALLOWED || touchPad.buttonLeft.justPressed #end];
 			for (i in 0...controlAnim.length) {
 				if(controlAnim[i] && character.jsonFile.animations.length > 0) {
 					curAnim -= negaMult[i];
@@ -392,7 +394,7 @@ class DialogueEditorState extends MusicBeatState
 				}
 			}
 
-			if(touchPad.buttonA.justPressed || FlxG.keys.justPressed.O) {
+			if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonA.justPressed || #end FlxG.keys.justPressed.O) {
 				dialogueFile.dialogue.remove(dialogueFile.dialogue[curSelected]);
 				if(dialogueFile.dialogue.length < 1) //You deleted everything, dumbo!
 				{
@@ -401,7 +403,7 @@ class DialogueEditorState extends MusicBeatState
 					];
 				}
 				changeText();
-			} else if(touchPad.buttonX.justPressed || FlxG.keys.justPressed.P) {
+			} else if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonX.justPressed || #end FlxG.keys.justPressed.P) {
 				dialogueFile.dialogue.insert(curSelected + 1, copyDefaultLine());
 				changeText(1);
 			}
