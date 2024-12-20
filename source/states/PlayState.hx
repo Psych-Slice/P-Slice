@@ -3117,7 +3117,7 @@ class PlayState extends MusicBeatState
 	#if TOUCH_CONTROLS_ALLOWED
 	private function onHintPress(button:TouchButton):Void
 	{
-		var buttonCode:Int = (button.IDs[0].toString().startsWith('NOTE')) ? button.IDs[0] : button.IDs[1];
+		var buttonCode:Int = (button.IDs[0].toString().startsWith('HITBOX')) ? button.IDs[0] : button.IDs[1];
 		callOnScripts('onHintPressPre', [buttonCode]);
 		if (button.justPressed) keyPressed(buttonCode);
 		callOnScripts('onHintPress', [buttonCode]);
@@ -3125,7 +3125,7 @@ class PlayState extends MusicBeatState
 
 	private function onHintRelease(button:TouchButton):Void
 	{
-		var buttonCode:Int = (button.IDs[0].toString().startsWith('NOTE')) ? button.IDs[0] : button.IDs[1];
+		var buttonCode:Int = (button.IDs[0].toString().startsWith('HITBOX')) ? button.IDs[0] : button.IDs[1];
 		callOnScripts('onHintReleasePre', [buttonCode]);
 		if(buttonCode > -1) keyReleased(buttonCode);
 		callOnScripts('onHintRelease', [buttonCode]);
