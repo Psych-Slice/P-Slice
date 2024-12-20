@@ -187,14 +187,12 @@ class Controls
 	#if TOUCH_CONTROLS_ALLOWED
 	public var requestedHitbox(get, default):Hitbox; // for PlayState and EditorPlayState
 	
-
 	private function touchPadPressed(keys:Array<MobileInputID>):Bool
 	{
 		if (keys != null && requestedInstance.touchPad != null)
 		{
 			if (requestedInstance.touchPad.anyPressed(keys) == true)
 			{
-				controllerMode = true; // !!DO NOT DISABLE THIS IF YOU DONT WANT TO KILL THE INPUT FOR MOBILE!!
 				return true;
 			}
 		}
@@ -207,7 +205,6 @@ class Controls
 		{
 			if (requestedInstance.touchPad.anyJustPressed(keys) == true)
 			{
-				controllerMode = true;
 				return true;
 			}
 		}
@@ -220,7 +217,6 @@ class Controls
 		{
 			if (requestedInstance.touchPad.anyJustReleased(keys) == true)
 			{
-				controllerMode = true;
 				return true;
 			}
 		}
@@ -233,7 +229,6 @@ class Controls
 		{
 			if (requestedHitbox.anyPressed(keys))
 			{
-				controllerMode = true;
 				return true;
 			}
 		}
@@ -246,7 +241,6 @@ class Controls
 		{
 			if (requestedHitbox.anyJustPressed(keys))
 			{
-				controllerMode = true;
 				return true;
 			}
 		}
@@ -259,7 +253,6 @@ class Controls
 		{
 			if (requestedHitbox.anyJustReleased(keys))
 			{
-				controllerMode = true;
 				return true;
 			}
 		}
@@ -282,8 +275,6 @@ class Controls
 		else
 			return MusicBeatState.getState();
 	}
-
-	
 
 	@:noCompletion
 	private function get_mobileC():Bool
