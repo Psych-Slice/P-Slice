@@ -109,8 +109,8 @@ class Hitbox extends MobileInputManager
 	override function destroy()
 	{
 		super.destroy();
-		onHintUp.destroy();
-		onHintDown.destroy();
+		FlxDestroyUtil.destroy(onHintUp);
+		FlxDestroyUtil.destroy(onHintDown);
 
 		for (fieldName in Reflect.fields(this))
 		{
