@@ -208,7 +208,7 @@ class CharacterEditorState extends MusicBeatState
 		FlxG.mouse.visible = true;
 		reloadCharacterOptions();
 
-		addTouchPad("LEFT_FULL", "A_B_C_D_V_X_Y_Z");
+		addTouchPad("LEFT_FULL", "CHARACTER_EDITOR");
 		addTouchPadCamera();
 		super.create();
 	}
