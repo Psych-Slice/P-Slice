@@ -111,6 +111,13 @@ class EditorPlayState extends MusicBeatState
 		else
 			vocals = new FlxSound();
 
+		#if !android
+		addTouchPad("NONE", "P");
+		addTouchPadCamera();
+		#end
+		addHitbox();
+		hitbox.visible = #if !android touchPad.visible = #end true;
+
 		generateSong(PlayState.SONG.song);
 		#if (LUA_ALLOWED && MODS_ALLOWED)
 		for (notetype in noteTypeMap.keys()) {
@@ -152,7 +159,9 @@ class EditorPlayState extends MusicBeatState
 		stepTxt.borderSize = 1.25;
 		add(stepTxt);
 
-		var tipText:FlxText = new FlxText(10, FlxG.height - 24, 0, 'Press ESC to Go Back to Chart Editor', 16);
+		final button:String = controls.mobileC ? #if !android 'P' #else 'BACK' #end : 'ESC';
+
+		var tipText:FlxText = new FlxText(10, FlxG.height - 24, 0, 'Press $button to Go Back to Chart Editor', 16);
 		tipText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		tipText.borderSize = 2;
 		tipText.scrollFactor.set();
@@ -324,8 +333,9 @@ class EditorPlayState extends MusicBeatState
 	public var noteKillOffset:Float = 350;
 	public var spawnTime:Float = 2000;
 	override function update(elapsed:Float) {
-		if (FlxG.keys.justPressed.ESCAPE)
+		if (#if android FlxG.android.justReleased.BACK #else touchPad.buttonP.justPressed #end || FlxG.keys.justPressed.ESCAPE)
 		{
+			hitbox.visible = #if !android touchPad.visible = #end false;
 			FlxG.sound.music.pause();
 			vocals.pause();
 			LoadingState.loadAndSwitchState(new editors.ChartingState());
@@ -461,7 +471,7 @@ class EditorPlayState extends MusicBeatState
 
 					if (!daNote.isSustainNote)
 					{
-						daNote.kill();
+						//daNote.kill();
 						notes.remove(daNote, true);
 						daNote.destroy();
 					}
@@ -476,7 +486,7 @@ class EditorPlayState extends MusicBeatState
 							//Dupe note remove
 							notes.forEachAlive(function(note:Note) {
 								if (daNote != note && daNote.mustPress && daNote.noteData == note.noteData && daNote.isSustainNote == note.isSustainNote && Math.abs(daNote.strumTime - note.strumTime) < 10) {
-									note.kill();
+									//note.kill();
 									notes.remove(note, true);
 									note.destroy();
 								}
@@ -492,7 +502,7 @@ class EditorPlayState extends MusicBeatState
 					daNote.active = false;
 					daNote.visible = false;
 
-					daNote.kill();
+					//daNote.kill();
 					notes.remove(daNote, true);
 					daNote.destroy();
 				}
@@ -591,7 +601,7 @@ class EditorPlayState extends MusicBeatState
 					{
 						for (doubleNote in pressNotes) {
 							if (Math.abs(doubleNote.strumTime - epicNote.strumTime) < 1) {
-								doubleNote.kill();
+								//doubleNote.kill();
 								notes.remove(doubleNote, true);
 								doubleNote.destroy();
 							} else
@@ -739,7 +749,7 @@ class EditorPlayState extends MusicBeatState
 
 					if (!note.isSustainNote)
 					{
-						note.kill();
+						//note.kill();
 						notes.remove(note, true);
 						note.destroy();
 					}
@@ -767,7 +777,7 @@ class EditorPlayState extends MusicBeatState
 
 			if (!note.isSustainNote)
 			{
-				note.kill();
+				//note.kill();
 				notes.remove(note, true);
 				note.destroy();
 			}

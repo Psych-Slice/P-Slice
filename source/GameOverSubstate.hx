@@ -41,6 +41,8 @@ class GameOverSubstate extends MusicBeatSubstate
 	override function create()
 	{
 		instance = this;
+		if (ClientPrefs.vibrating)
+			lime.ui.Haptic.vibrate(0, 500);
 		PlayState.instance.callOnLuas('onGameOverStart', []);
 
 		//? pico code
@@ -76,6 +78,9 @@ class GameOverSubstate extends MusicBeatSubstate
 		camFollowPos = new FlxObject(0, 0, 1, 1);
 		camFollowPos.setPosition(FlxG.camera.scroll.x + (FlxG.camera.width / 2), FlxG.camera.scroll.y + (FlxG.camera.height / 2));
 		add(camFollowPos);
+
+		addTouchPad("NONE", "A_B");
+		addTouchPadCamera();
 	}
 
 	var isFollowingAlready:Bool = false;

@@ -48,6 +48,7 @@ class StickerSubState extends MusicBeatSubstate
 
   public function new(?oldStickers:Array<StickerSprite>, ?targetState:StickerSubState->FlxState):Void
   {
+    //controls.isInSubstate = true;
     super();
 
     this.targetState = (targetState == null) ? ((sticker) -> new MainMenuState()) : targetState;
@@ -349,6 +350,7 @@ class StickerSubState extends MusicBeatSubstate
 
   override public function destroy():Void
   {
+    //controls.isInSubstate = false;
     if (switchingState) return;
     super.destroy();
   }

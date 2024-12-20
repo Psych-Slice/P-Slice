@@ -175,7 +175,7 @@ class FreeplayState extends MusicBeatSubstate
 	var curPlaying:Bool = false;
 
 	var dj:Null<FreeplayDJ> = null;
-	var djTouchHitbox:FlxSprite = new FlxSprite(108, 408);
+	var djTouchHitbox:FlxSprite = new FlxSprite(78, 308);
 
 	var ostName:FlxText;
 	var albumRoll:AlbumRoll;
@@ -1509,7 +1509,7 @@ class FreeplayState extends MusicBeatSubstate
 		}
 		#end // ^<-- FEATURE_DEBUG_FUNCTIONS
 
-		if ((FunkinControls.FREEPLAY_CHAR || (TouchUtil.overlaps(djTouchHitbox) && TouchUtil.justReleased && !SwipeUtil.swipeAny)) && !busy) 
+		if ((FunkinControls.FREEPLAY_CHAR || (TouchUtil.overlapsComplex(djTouchHitbox) && TouchUtil.justReleased && !SwipeUtil.swipeAny)) && !busy) 
 		{
 			tryOpenCharSelect();
 		}
