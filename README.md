@@ -24,7 +24,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Psych-Slice/P-Slice">
-    <img src="art/docs/banner.png" alt="Logo" width="300" height="200">
+    <img src="art/banner.png" alt="Logo" width="300" height="200">
   </a>
 
 <h3 align="center">P-Slice Engine</h3>
@@ -56,16 +56,13 @@ It's meant to bring new visuals and features from newer versions of FNF and make
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Features
-* V-Slice's freeplay menu (with support for freeplay colors)
-![Freeplay Menu With Color](art/docs/freeplay.png)
-* Results screen
-![alt text](art/docs/result.png)
-* Character selector
-![alt text](art/docs/character.png)
-* Pausable cutscenes
-![alt text](art/docs/pause.png)
-* Pico
-![alt text](art/docs/pico.png)
+| V-Slice's freeplay menu | Results screen|
+|-|-|
+|![](https://github.com/Psych-Slice/misc/blob/main/showcase/freeplay.png?raw=true) | ![](https://github.com/Psych-Slice/misc/blob/main/showcase/result.png?raw=true)|
+|Character selector|Pausable cutscenes|
+|![](https://github.com/Psych-Slice/misc/blob/main/showcase/character.png?raw=true)|![](https://github.com/Psych-Slice/misc/blob/main/showcase/pause.png?raw=true)|
+|Pico|Player editor|
+|![](https://github.com/Psych-Slice/misc/blob/main/showcase/pico.png?raw=true)|![](https://github.com/Psych-Slice/misc/blob/main/showcase/playerEditor.png?raw=true)|
 
 ## Modding capabilities 
 ### custom stickers
