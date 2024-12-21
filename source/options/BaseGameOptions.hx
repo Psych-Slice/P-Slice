@@ -4,7 +4,7 @@ class BaseGameOptions extends BaseOptionsMenu {
     public function new() {
         title = "V-Slice settings";
         rpcTitle = "V-Slice settings menu";
-        var option:Option = new Option('Freeplay Dynamic Coloring',
+        var option:Option = new Option('Freeplay dynamic coloring',
 			'Enables dynamic freeplay background color. Disable this if you prefer original V-slice freeplay menu colors',
 			'vsliceFreeplayColors',
 			'bool');
@@ -24,6 +24,11 @@ class BaseGameOptions extends BaseOptionsMenu {
 			'If disabled will force every character to use BF\'s card (including pico)',
 			'vsliceSpecialCards',
 			'bool');
+		addOption(option);
+		var option:Option = new Option('Force "New" tag',
+		'If enabled will force every uncompleted song to show "new" tag even if it\'s disabled',
+		'vsliceForceNewTag',
+		'bool');
 		addOption(option);
         super();
     }

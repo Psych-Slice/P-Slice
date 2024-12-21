@@ -938,6 +938,7 @@ function loadMetadata() {
 		0,FlxG.sound.music.length/1000);
 	characterName.text = songMetadata.freeplayCharacter;
 	txt_altInstSong.text = songMetadata.altInstrumentalSongs;
+	chk_allowNew.checked = songMetadata.allowNewTag;
 	albumName.text = songMetadata.albumId;
 }
 
@@ -945,8 +946,9 @@ var ratingInput:FlxUINumericStepper;
 	var prevStartInput:FlxUINumericStepper;
 	var prevEndInput:FlxUINumericStepper;
 	var characterName:FlxUIInputText;
-	var txt_altInstSong:FlxUIInputText;
 	var albumName:FlxUIInputText;
+	var txt_altInstSong:FlxUIInputText;
+	var chk_allowNew:FlxUICheckBox;
 	var exportMetadataBtn:FlxButton;
 	var maxTime:Float = 0.0;
 	function addMetadataTab()
@@ -959,6 +961,7 @@ var ratingInput:FlxUINumericStepper;
 		exportMetadataBtn = new FlxButton(20,200,"Export",onMetadataSaveClick.bind());
 		characterName = new FlxUIInputText(180,70,100,"",8);
 		albumName = new FlxUIInputText(180,120,100,"",8);
+		chk_allowNew = new FlxUICheckBox(180,30,null,false,"Show \"new\" tag");
 		txt_altInstSong = new FlxUIInputText(20,160,250,"",8);
 
 		tab_group.add(new FlxText(ratingInput.x, ratingInput.y - 15, 80, 'Rating:'));
@@ -984,7 +987,8 @@ var ratingInput:FlxUINumericStepper;
 		tab_group.add(new FlxText(txt_altInstSong.x, txt_altInstSong.y - 15, 300, 'Song alt vocals (separated with \',\'):'));
 		tab_group.add(txt_altInstSong);
 		blockPressWhileTypingOn.push(txt_altInstSong);
-
+		
+		tab_group.add(chk_allowNew);
 		tab_group.add(exportMetadataBtn);
 
 		UI_box.addGroup(tab_group);
@@ -999,6 +1003,7 @@ var ratingInput:FlxUINumericStepper;
 		meta.albumId = albumName.text;
 		meta.altInstrumentalSongs = txt_altInstSong.text;
 		meta.freeplayCharacter = characterName.text;
+		meta.allowNewTag = chk_allowNew.checked;
 		meta.freeplaySongLength = FlxG.sound.music.length/1000;
 
 		var data:String = haxe.Json.stringify(meta, "\t");
