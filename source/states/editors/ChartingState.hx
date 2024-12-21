@@ -2072,6 +2072,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			0,songMetadata.freeplaySongLength,
 			0,FlxG.sound.music.length/1000);
 		characterName.text = songMetadata.freeplayCharacter;
+		chk_allowNew.checked = songMetadata.allowNewTag;
 
 		txt_altInstSong.text = songMetadata.altInstrumentalSongs;
 		albumName.text = songMetadata.albumId;
@@ -3566,6 +3567,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	var prevStartInput:PsychUINumericStepper;
 	var prevEndInput:PsychUINumericStepper;
 	var characterName:PsychUIInputText;
+	var chk_allowNew:PsychUICheckBox;
 
 	var txt_altVariantSong:PsychUIInputText;
 	var txt_altInstSong:PsychUIInputText;
@@ -3583,6 +3585,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 		prevEndInput = new PsychUINumericStepper(20, 120,1,0,0,999,2,80);
 		albumName = new PsychUIInputText(180,120,100,"",8);
+		chk_allowNew = new PsychUICheckBox(180,30,"Show \"new\" tag");
 		
 		txt_altInstSong = new PsychUIInputText(20,160,250,"",8);
 
@@ -3600,6 +3603,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		tab_group.add(meta_label(albumName,'Song album:'));
 		tab_group.add(characterName);
 		tab_group.add(albumName);
+		tab_group.add(chk_allowNew);
 
 		tab_group.add(meta_label(txt_altInstSong, 'Song alt vocals (separated with \',\'):'));
 		tab_group.add(txt_altInstSong);
@@ -3619,6 +3623,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		meta.altInstrumentalSongs = txt_altInstSong.text;
 		meta.albumId = albumName.text;
 		meta.freeplayCharacter = characterName.text;
+		meta.allowNewTag = chk_allowNew.checked;
 		meta.freeplaySongLength = FlxG.sound.music.length/1000;
 		
 		var data:String = haxe.Json.stringify(meta, "\t");

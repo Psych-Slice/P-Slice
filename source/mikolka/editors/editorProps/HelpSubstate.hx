@@ -84,7 +84,7 @@ class HelpSubstate extends MusicBeatSubstate {
         }
     }
     public static function makeLabel():FlxText {
-        var tipText:FlxText = new FlxText(FlxG.width - 210, FlxG.height - 30, 200, 'Press ${Controls.instance.mobileC ? 'F' : 'F1'} for Help', 20);
+        var tipText:FlxText = new FlxText(0, FlxG.height - 30, FlxG.width, 'Press ${Controls.instance.mobileC ? 'F' : 'F1'} for Help', 20);
 		tipText.setFormat(null, 16, FlxColor.WHITE, RIGHT);
 		tipText.borderColor = FlxColor.BLACK;
 		tipText.scrollFactor.set();
