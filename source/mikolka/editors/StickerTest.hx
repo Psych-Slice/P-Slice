@@ -81,14 +81,9 @@ class StickerTest extends MusicBeatState {
         super.update(elapsed);
         if(PsychUIInputText.focusOn == null)
             {
-<<<<<<< HEAD:source/mikolka/editors/StickerTest.hx
                 FunkinControls.enableVolume();
 
                 if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonB.justPressed || #end controls.BACK){
-=======
-                enableVolume();
-                if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonB.justPressed || #end FlxG.keys.justPressed.ESCAPE){
->>>>>>> p-slice-global/pe-0.6.3-dev:source/editors/StickerTest.hx
                     FlxG.sound.playMusic(Paths.music('freakyMenu'));
                     FlxG.mouse.visible = false;
                     #if LEGACY_PSYCH
