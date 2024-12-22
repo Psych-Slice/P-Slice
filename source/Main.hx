@@ -1,7 +1,6 @@
 package;
 
 import mikolka.GameBorder;
-import mikolka.vslice.components.crash.CrashState;
 import mikolka.vslice.components.MemoryCounter;
 import lime.graphics.Image;
 import flixel.graphics.FlxGraphic;
@@ -16,19 +15,6 @@ import openfl.events.Event;
 import openfl.display.StageScaleMode;
 
 import vlc.MP4Handler;
-//crash handler stuff
-#if CRASH_HANDLER
-import lime.app.Application;
-import openfl.events.UncaughtErrorEvent;
-import haxe.CallStack;
-import haxe.io.Path;
-#if desktop
-import Discord.DiscordClient;
-#end
-import sys.FileSystem;
-import sys.io.File;
-import sys.io.Process;
-#end
 
 #if COPYSTATE_ALLOWED
 import mobile.states.CopyState;
@@ -75,6 +61,8 @@ class Main extends Sprite
 		#end
 		Sys.setCwd(StorageUtil.getStorageDirectory());
 		#end
+
+		CrashHandler.init();
 
 		if (stage != null)
 		{
@@ -165,20 +153,5 @@ class Main extends Sprite
 		lime.system.System.allowScreenTimeout = ClientPrefs.screensaver;
 		FlxG.scaleMode = new MobileScaleMode();
 		#end
-		
-		#if CRASH_HANDLER
-		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
-		#end
 	}
-
-	// Code was entirely made by sqirra-rng for their fnf engine named "Izzy Engine", big props to them!!!
-	// very cool person for real they don't get enough credit for their work
-	#if CRASH_HANDLER
-	function onCrash(e:UncaughtErrorEvent):Void
-	{
-		var crashState = new CrashState(e.error,CallStack.exceptionStack(true));
-		e.preventDefault();
-		FlxG.switchState(crashState);
-	}
-	#end
 }
