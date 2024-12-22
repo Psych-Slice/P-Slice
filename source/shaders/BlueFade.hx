@@ -1,6 +1,6 @@
 package shaders;
 
-import flixel.system.FlxAssets.FlxShader;
+import shaders.flixel.system.FlxShader;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 

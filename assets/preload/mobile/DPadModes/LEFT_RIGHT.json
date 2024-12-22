@@ -1,0 +1,22 @@
+{
+  "buttons": [
+    {
+      "button": "buttonLeft",
+      "graphic": "left",
+      "x": 0,
+      "y": 587,
+      "width": 132,
+      "height": 125,
+      "color": "0xFFC24B99"
+    },
+    {
+      "button": "buttonRight",
+      "graphic": "right",
+      "x": 127,
+      "y": 587,
+      "width": 132,
+      "height": 125,
+      "color": "0xFFF9393F"
+    }
+  ]
+}

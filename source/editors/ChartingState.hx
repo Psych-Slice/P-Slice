@@ -344,7 +344,18 @@ class ChartingState extends MusicBeatState
 		UI_box.y = 25;
 		UI_box.scrollFactor.set();
 
-		text =
+		text = (controls.mobileC) ? 
+		"Up/Down - Change Conductor's strum time
+		\nLeft/Right - Go to the previous/next section
+		\nG - Reset Song Playback Rate
+		\nHold Y to move 4x faster
+		\nHold F and touch on an arrow to select it
+		\nV/D - Zoom in/out
+		\n
+		\nC - Test your chart inside Chart Editor
+		\nA - Play your chart
+		\nUp/Down (Right Side) - Decrease/Increase Note Sustain Length
+		\nX - Stop/Resume song" :
 		"W/S or Mouse Wheel - Change Conductor's strum time
 		\nA/D - Go to the previous/next section
 		\nLeft/Right - Change Snap
@@ -399,6 +410,9 @@ class ChartingState extends MusicBeatState
 		add(zoomTxt);
 
 		updateGrid();
+		#if TOUCH_CONTROLS_ALLOWED
+		addTouchPad("LEFT_FULL", "CHART_EDITOR");
+		#end
 		super.create();
 	}
 
@@ -518,7 +532,7 @@ class ChartingState extends MusicBeatState
 		for (i in 0...directories.length) {
 			var directory:String = directories[i];
 			if(FileSystem.exists(directory)) {
-				for (file in FileSystem.readDirectory(directory)) {
+				for (file in Paths.readDirectory(directory)) {
 					var path = haxe.io.Path.join([directory, file]);
 					if (!FileSystem.isDirectory(path) && file.endsWith('.json')) {
 						var charToCheck:String = file.substr(0, file.length - 5);
@@ -578,7 +592,7 @@ class ChartingState extends MusicBeatState
 		for (i in 0...directories.length) {
 			var directory:String = directories[i];
 			if(FileSystem.exists(directory)) {
-				for (file in FileSystem.readDirectory(directory)) {
+				for (file in Paths.readDirectory(directory)) {
 					var path = haxe.io.Path.join([directory, file]);
 					if (!FileSystem.isDirectory(path) && file.endsWith('.json')) {
 						var stageToCheck:String = file.substr(0, file.length - 5);
@@ -1057,7 +1071,7 @@ var ratingInput:FlxUINumericStepper;
 		for (i in 0...directories.length) {
 			var directory:String =  directories[i];
 			if(FileSystem.exists(directory)) {
-				for (file in FileSystem.readDirectory(directory)) {
+				for (file in Paths.readDirectory(directory)) {
 					var path = haxe.io.Path.join([directory, file]);
 					if (!FileSystem.isDirectory(path) && file.endsWith('.lua')) {
 						var fileToCheck:String = file.substr(0, file.length - 4);
@@ -1119,7 +1133,7 @@ var ratingInput:FlxUINumericStepper;
 		for (i in 0...directories.length) {
 			var directory:String =  directories[i];
 			if(FileSystem.exists(directory)) {
-				for (file in FileSystem.readDirectory(directory)) {
+				for (file in Paths.readDirectory(directory)) {
 					var path = haxe.io.Path.join([directory, file]);
 					if (!FileSystem.isDirectory(path) && file != 'readme.txt' && file.endsWith('.txt')) {
 						var fileToCheck:String = file.substr(0, file.length - 4);
@@ -1280,7 +1294,7 @@ var ratingInput:FlxUINumericStepper;
 	var metronomeStepper:FlxUINumericStepper;
 	var metronomeOffsetStepper:FlxUINumericStepper;
 	var disableAutoScrolling:FlxUICheckBox;
-	#if desktop
+	#if (desktop || mobile)
 	var waveformUseInstrumental:FlxUICheckBox;
 	var waveformUseVoices:FlxUICheckBox;
 	#end
@@ -1290,7 +1304,7 @@ var ratingInput:FlxUINumericStepper;
 		var tab_group_chart = new FlxUI(null, UI_box);
 		tab_group_chart.name = 'Charting';
 
-		#if desktop
+		#if (desktop || mobile)
 		if (FlxG.save.data.chart_waveformInst == null) FlxG.save.data.chart_waveformInst = false;
 		if (FlxG.save.data.chart_waveformVoices == null) FlxG.save.data.chart_waveformVoices = false;
 
@@ -1432,7 +1446,7 @@ var ratingInput:FlxUINumericStepper;
 		tab_group_chart.add(disableAutoScrolling);
 		tab_group_chart.add(metronomeStepper);
 		tab_group_chart.add(metronomeOffsetStepper);
-		#if desktop
+		#if (desktop || mobile)
 		tab_group_chart.add(waveformUseInstrumental);
 		tab_group_chart.add(waveformUseVoices);
 		#end
@@ -1671,6 +1685,70 @@ var ratingInput:FlxUINumericStepper;
 		FlxG.watch.addQuick('daStep', curStep);
 
 
+		#if TOUCH_CONTROLS_ALLOWED
+		if (controls.mobileC) {
+		for (touch in FlxG.touches.list)
+		{
+			if (touch.x > gridBG.x
+				&& touch.x < gridBG.x + gridBG.width
+				&& touch.y > gridBG.y
+				&& FlxG.mouse.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom])
+			{
+				dummyArrow.visible = true;
+				dummyArrow.x = Math.floor(touch.x / GRID_SIZE) * GRID_SIZE;
+				if (touchPad.buttonY.pressed || FlxG.keys.pressed.SHIFT)
+					dummyArrow.y = touch.y;
+				else
+				{
+					var gridmult = GRID_SIZE / (quantization / 16);
+					dummyArrow.y = Math.floor(touch.y / gridmult) * gridmult;
+				}
+			} else {
+				dummyArrow.visible = false;
+			}
+
+			if (touch.justPressed)
+			{
+				if (touch.overlaps(curRenderedNotes))
+				{
+					curRenderedNotes.forEachAlive(function(note:Note)
+					{
+						if (touch.overlaps(note))
+							{
+								if (touchPad.buttonF.pressed)
+								{
+									selectNote(note);
+								}
+								else if (FlxG.keys.pressed.ALT)
+								{
+									selectNote(note);
+									curSelectedNote[3] = noteTypeIntMap.get(currentType);
+									updateGrid();
+								}
+								else
+								{
+									//trace('tryin to delete note...');
+									deleteNote(note);
+								}
+							}
+					});
+				}
+				else if (!touchPad.buttonF.pressed)
+				{
+					if (touch.x > gridBG.x
+						&& touch.x < gridBG.x + gridBG.width
+						&& touch.y > gridBG.y
+						&& touch.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom])
+					{
+						FlxG.log.add('added note');
+						addNote();
+					}
+				}
+			}
+		}
+		} else {
+		#end
+
 		if (FlxG.mouse.x > gridBG.x
 			&& FlxG.mouse.x < gridBG.x + gridBG.width
 			&& FlxG.mouse.y > gridBG.y
@@ -1727,6 +1805,9 @@ var ratingInput:FlxUINumericStepper;
 				}
 			}
 		}
+		#if TOUCH_CONTROLS_ALLOWED
+		}
+		#end
 
 		var blockInput:Bool = false;
 		for (inputText in blockPressWhileTypingOn) {
@@ -1768,12 +1849,12 @@ var ratingInput:FlxUINumericStepper;
 
 		if (!blockInput)
 		{
-			if (FlxG.keys.justPressed.ESCAPE)
+			if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonC.justPressed || #end FlxG.keys.justPressed.ESCAPE)
 			{
 				autosaveSong();
 				LoadingState.loadAndSwitchState(new editors.EditorPlayState(sectionStartTime()));
 			}
-			if (FlxG.keys.justPressed.ENTER)
+			if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonA.justPressed || #end FlxG.keys.justPressed.ENTER)
 			{
 				autosaveSong();
 				FlxG.mouse.visible = false;
@@ -1787,18 +1868,18 @@ var ratingInput:FlxUINumericStepper;
 			}
 
 			if(curSelectedNote != null && curSelectedNote[1] > -1) {
-				if (FlxG.keys.justPressed.E)
+				if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonDown2.justPressed || #end FlxG.keys.justPressed.E)
 				{
 					changeNoteSustain(Conductor.stepCrochet);
 				}
-				if (FlxG.keys.justPressed.Q)
+				if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonUp2.justPressed || #end FlxG.keys.justPressed.Q)
 				{
 					changeNoteSustain(-Conductor.stepCrochet);
 				}
 			}
 
 
-			if (FlxG.keys.justPressed.BACKSPACE) {
+			if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonB.justPressed || #end FlxG.keys.justPressed.BACKSPACE) {
 				PlayState.chartingMode = false;
 				MusicBeatState.switchState(new editors.MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
@@ -1806,17 +1887,17 @@ var ratingInput:FlxUINumericStepper;
 				return;
 			}
 
-			if(FlxG.keys.justPressed.Z && FlxG.keys.pressed.CONTROL) {
+			if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonZ.justPressed || #end (FlxG.keys.justPressed.Z && FlxG.keys.pressed.CONTROL)) {
 				undo();
 			}
 
 
 
-			if(FlxG.keys.justPressed.Z && curZoom > 0 && !FlxG.keys.pressed.CONTROL) {
+			if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonV.justPressed || #end FlxG.keys.justPressed.Z && curZoom > 0 && !FlxG.keys.pressed.CONTROL) {
 				--curZoom;
 				updateZoom();
 			}
-			if(FlxG.keys.justPressed.X && curZoom < zoomList.length-1) {
+			if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonD.justPressed || #end FlxG.keys.justPressed.X && curZoom < zoomList.length-1) {
 				curZoom++;
 				updateZoom();
 			}
@@ -1837,7 +1918,7 @@ var ratingInput:FlxUINumericStepper;
 				}
 			}
 
-			if (FlxG.keys.justPressed.SPACE)
+			if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonX.justPressed || #end FlxG.keys.justPressed.SPACE)
 			{
 				if (FlxG.sound.music.playing)
 				{
@@ -1894,17 +1975,17 @@ var ratingInput:FlxUINumericStepper;
 
 
 
-			if (FlxG.keys.pressed.W || FlxG.keys.pressed.S)
+			if ((FlxG.keys.pressed.W || FlxG.keys.pressed.S) #if TOUCH_CONTROLS_ALLOWED || (touchPad.buttonUp.pressed || touchPad.buttonDown.pressed) #end)
 			{
 				FlxG.sound.music.pause();
 
 				var holdingShift:Float = 1;
 				if (FlxG.keys.pressed.CONTROL) holdingShift = 0.25;
-				else if (FlxG.keys.pressed.SHIFT) holdingShift = 4;
+				else if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonY.pressed || #end FlxG.keys.pressed.SHIFT) holdingShift = 4;
 
 				var daTime:Float = 700 * FlxG.elapsed * holdingShift;
 
-				if (FlxG.keys.pressed.W)
+				if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonUp.pressed || #end FlxG.keys.pressed.W)
 				{
 					FlxG.sound.music.time -= daTime;
 				}
@@ -1939,7 +2020,7 @@ var ratingInput:FlxUINumericStepper;
 
 			var style = currentType;
 
-			if (FlxG.keys.pressed.SHIFT){
+			if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonY.pressed || #end FlxG.keys.pressed.SHIFT){
 				style = 3;
 			}
 
@@ -2034,12 +2115,12 @@ var ratingInput:FlxUINumericStepper;
 				}
 			}
 			var shiftThing:Int = 1;
-			if (FlxG.keys.pressed.SHIFT)
+			if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonY.pressed || #end FlxG.keys.pressed.SHIFT)
 				shiftThing = 4;
 
-			if (FlxG.keys.justPressed.D)
+			if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonRight.justPressed || #end FlxG.keys.justPressed.D)
 				changeSection(curSec + shiftThing);
-			if (FlxG.keys.justPressed.A) {
+			if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonLeft.justPressed || #end FlxG.keys.justPressed.A) {
 				if(curSec <= 0) {
 					changeSection(_song.notes.length-1);
 				} else {
@@ -2086,7 +2167,7 @@ var ratingInput:FlxUINumericStepper;
 			playbackSpeed -= 0.01;
 		if (!holdingShift && pressedRB || holdingShift && holdingRB)
 			playbackSpeed += 0.01;
-		if (FlxG.keys.pressed.ALT && (pressedLB || pressedRB || holdingLB || holdingRB))
+		if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonG.justPressed || #end (FlxG.keys.pressed.ALT && (pressedLB || pressedRB || holdingLB || holdingRB)))
 			playbackSpeed = 1;
 		//
 
@@ -2217,7 +2298,7 @@ var ratingInput:FlxUINumericStepper;
 		gridLayer.clear();
 		gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 9, Std.int(GRID_SIZE * getSectionBeats() * 4 * zoomList[curZoom]));
 
-		#if desktop
+		#if (desktop || mobile)
 		if(FlxG.save.data.chart_waveformInst || FlxG.save.data.chart_waveformVoices) {
 			updateWaveform();
 		}
@@ -2272,7 +2353,7 @@ var ratingInput:FlxUINumericStepper;
 	var waveformPrinted:Bool = true;
 	var wavData:Array<Array<Array<Float>>> = [[[0], [0]], [[0], [0]]];
 	function updateWaveform() {
-		#if desktop
+		#if (desktop || mobile)
 		if(waveformPrinted) {
 			waveformSprite.makeGraphic(Std.int(GRID_SIZE * 8), Std.int(gridBG.height), 0x00FFFFFF);
 			waveformSprite.pixels.fillRect(new Rectangle(0, 0, gridBG.width, gridBG.height), 0x00FFFFFF);
@@ -3087,11 +3168,15 @@ var ratingInput:FlxUINumericStepper;
 
 		if ((data != null) && (data.length > 0))
 		{
+			#if mobile
+			StorageUtil.saveContent(Paths.formatToSongPath(_song.song) + '.json', data.trim());
+			#else
 			_file = new FileReference();
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data.trim(), Paths.formatToSongPath(_song.song) + ".json");
+			#end
 		}
 	}
 
@@ -3114,11 +3199,15 @@ var ratingInput:FlxUINumericStepper;
 
 		if ((data != null) && (data.length > 0))
 		{
+			#if mobile
+			StorageUtil.saveContent('events.json', data.trim());
+			#else
 			_file = new FileReference();
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data.trim(), "events.json");
+			#end
 		}
 	}
 

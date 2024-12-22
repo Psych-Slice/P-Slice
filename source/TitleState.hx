@@ -190,6 +190,9 @@ class TitleState extends MusicBeatState
 			}
 			persistentUpdate = true;
 			persistentDraw = true;
+			#if TOUCH_CONTROLS_ALLOWED
+			MobileData.init();
+			#end
 		}
 
 		if (FlxG.save.data.weekCompleted != null)
@@ -628,7 +631,7 @@ class TitleState extends MusicBeatState
 
 		if (swagShader != null)
 		{
-			if (controls.UI_LEFT)
+			if (cheatActive && TouchUtil.pressed || controls.UI_LEFT)
 				swagShader.hue -= elapsed * 0.1;
 			if (controls.UI_RIGHT)
 				swagShader.hue += elapsed * 0.1;
@@ -648,6 +651,9 @@ class TitleState extends MusicBeatState
 	{
 		for (i in 0...textArray.length)
 		{
+			if (ClientPrefs.vibrating)
+				lime.ui.Haptic.vibrate(100, 100);
+
 			var money:Alphabet = new Alphabet(0, 0, textArray[i], true);
 			money.screenCenter(X);
 			money.y += (i * 60) + 200 + offset;
@@ -840,15 +846,15 @@ class TitleState extends MusicBeatState
 
 	function cheatCodeShit():Void
 	{
-		if (FlxG.keys.justPressed.ANY)
+		if (SwipeUtil.swipeAny || FlxG.keys.justPressed.ANY)
 		{
-			if (controls.NOTE_DOWN_P || controls.UI_DOWN_P)
+			if (controls.NOTE_DOWN_P || controls.UI_DOWN_P || SwipeUtil.swipeUp)
 				codePress(FlxDirectionFlags.DOWN);
-			if (controls.NOTE_UP_P || controls.UI_UP_P)
+			if (controls.NOTE_UP_P || controls.UI_UP_P  || SwipeUtil.swipeDown)
 				codePress(FlxDirectionFlags.UP);
-			if (controls.NOTE_LEFT_P || controls.UI_LEFT_P)
+			if (controls.NOTE_LEFT_P || controls.UI_LEFT_P || SwipeUtil.swipeRight)
 				codePress(FlxDirectionFlags.LEFT);
-			if (controls.NOTE_RIGHT_P || controls.UI_RIGHT_P)
+			if (controls.NOTE_RIGHT_P || controls.UI_RIGHT_P || SwipeUtil.swipeLeft)
 				codePress(FlxDirectionFlags.RIGHT);
 		}
 	}

@@ -69,6 +69,11 @@ class ResetScoreSubState extends MusicBeatSubstate
 		noText.x += 200;
 		add(noText);
 		updateOptions();
+
+		#if TOUCH_CONTROLS_ALLOWED
+		addTouchPad("LEFT_RIGHT", "A_B");
+		addTouchPadCamera();
+		#end
 	}
 
 	override function update(elapsed:Float)

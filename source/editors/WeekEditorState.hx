@@ -115,6 +115,10 @@ class WeekEditorState extends MusicBeatState
 
 		FlxG.mouse.visible = true;
 
+		#if TOUCH_CONTROLS_ALLOWED
+		addTouchPad("UP_DOWN", "B");
+		#end
+
 		super.create();
 	}
 
@@ -445,7 +449,7 @@ class WeekEditorState extends MusicBeatState
 			FlxG.sound.muteKeys = TitleState.muteKeys;
 			FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
 			FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
-			if(FlxG.keys.justPressed.ESCAPE) {
+			if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonB.justPressed || #end FlxG.keys.justPressed.ESCAPE) {
 				MusicBeatState.switchState(new editors.MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}
@@ -537,11 +541,15 @@ class WeekEditorState extends MusicBeatState
 		var data:String = Json.stringify(weekFile, "\t");
 		if (data.length > 0)
 		{
+			#if mobile
+			StorageUtil.saveContent('$weekFileName.json', data);
+			#else
 			_file = new FileReference();
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data, weekFileName + ".json");
+			#end
 		}
 	}
 	
@@ -626,6 +634,9 @@ class WeekEditorFreeplayState extends MusicBeatState
 
 		addEditorBox();
 		changeSelection();
+		#if TOUCH_CONTROLS_ALLOWED
+		addTouchPad("UP_DOWN", "B");
+		#end
 		super.create();
 	}
 	
@@ -808,7 +819,7 @@ class WeekEditorFreeplayState extends MusicBeatState
 			FlxG.sound.muteKeys = TitleState.muteKeys;
 			FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
 			FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
-			if(FlxG.keys.justPressed.ESCAPE) {
+			if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonB.justPressed || #end FlxG.keys.justPressed.ESCAPE) {
 				MusicBeatState.switchState(new editors.MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}

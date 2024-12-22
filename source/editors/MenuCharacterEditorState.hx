@@ -70,9 +70,12 @@ class MenuCharacterEditorState extends MusicBeatState
 		txtOffsets.alpha = 0.7;
 		add(txtOffsets);
 
+		final buttonSpace:String = controls.mobileC ? 'A' : 'Space';
+		final buttonShift:String = controls.mobileC ? 'C' : 'shift';
+
 		var tipText:FlxText = new FlxText(0, 540, FlxG.width,
-			"Arrow Keys - Change Offset (Hold shift for 10x speed)
-			\nSpace - Play \"Start Press\" animation (Boyfriend Character Type)", 16);
+			'Arrow Keys - Change Offset (Hold $buttonShift for 10x speed)
+			\n$buttonSpace - Play \"Start Press\" animation (Boyfriend Character Type)', 16);
 		tipText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER);
 		tipText.scrollFactor.set();
 		add(tipText);
@@ -80,6 +83,10 @@ class MenuCharacterEditorState extends MusicBeatState
 		addEditorBox();
 		FlxG.mouse.visible = true;
 		updateCharTypeBox();
+
+		#if TOUCH_CONTROLS_ALLOWED
+		addTouchPad("MENU_CHARACTER", "MENU_CHARACTER");
+		#end
 
 		super.create();
 	}
@@ -285,32 +292,32 @@ class MenuCharacterEditorState extends MusicBeatState
 			FlxG.sound.muteKeys = TitleState.muteKeys;
 			FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
 			FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
-			if(FlxG.keys.justPressed.ESCAPE) {
+			if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonB.justPressed || #end FlxG.keys.justPressed.ESCAPE) {
 				MusicBeatState.switchState(new editors.MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}
 
 			var shiftMult:Int = 1;
-			if(FlxG.keys.pressed.SHIFT) shiftMult = 10;
+			if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonC.pressed || #end FlxG.keys.pressed.SHIFT) shiftMult = 10;
 
-			if(FlxG.keys.justPressed.LEFT) {
+			if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonLeft.justPressed || #end FlxG.keys.justPressed.LEFT) {
 				characterFile.position[0] += shiftMult;
 				updateOffset();
 			}
-			if(FlxG.keys.justPressed.RIGHT) {
+			if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonRight.justPressed || #end FlxG.keys.justPressed.RIGHT) {
 				characterFile.position[0] -= shiftMult;
 				updateOffset();
 			}
-			if(FlxG.keys.justPressed.UP) {
+			if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonUp.justPressed || #end FlxG.keys.justPressed.UP) {
 				characterFile.position[1] += shiftMult;
 				updateOffset();
 			}
-			if(FlxG.keys.justPressed.DOWN) {
+			if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonDown.justPressed || #end FlxG.keys.justPressed.DOWN) {
 				characterFile.position[1] -= shiftMult;
 				updateOffset();
 			}
 
-			if(FlxG.keys.justPressed.SPACE && curTypeSelected == 1) {
+			if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonA.justPressed || #end FlxG.keys.justPressed.SPACE && curTypeSelected == 1) {
 				grpWeekCharacters.members[curTypeSelected].animation.play('confirm', true);
 			}
 		}
@@ -407,11 +414,15 @@ class MenuCharacterEditorState extends MusicBeatState
 			var splittedImage:Array<String> = imageInputText.text.trim().split('_');
 			var characterName:String = splittedImage[splittedImage.length-1].toLowerCase().replace(' ', '');
 
+			#if mobile
+			StorageUtil.saveContent(characterName /*GACHA HORROR REFERANCE!?!?!?!*/ + '.json', data);
+			#else
 			_file = new FileReference();
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data, characterName + ".json");
+			#end
 		}
 	}
 

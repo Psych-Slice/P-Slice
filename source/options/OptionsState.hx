@@ -29,27 +29,40 @@ using StringTools;
 
 class OptionsState extends MusicBeatState
 {
-	var options:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Graphics', 'Visuals', 'Gameplay', 'V-slice options'];
+	var options:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Graphics', 'Visuals', 'Gameplay', 'V-Slice Options', #if (TOUCH_CONTROLS_ALLOWED || mobile) 'Mobile Options' #end];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
 
 	function openSelectedSubstate(label:String) {
+		if (label != "Adjust Delay and Combo")
+			persistentUpdate = false;
+
 		switch(label) {
 			case 'Note Colors':
 				openSubState(new options.NotesSubState());
 			case 'Controls':
-				openSubState(new options.ControlsSubState());
+				if (controls.mobileC)
+				{
+					persistentUpdate = true;
+					FlxG.sound.play(Paths.sound('cancelMenu'));
+				}
+				else
+					openSubState(new options.ControlsSubState());
 			case 'Graphics':
 				openSubState(new options.GraphicsSettingsSubState());
 			case 'Visuals':
 				openSubState(new options.VisualsUISubState());
-			case 'V-slice options':
+			case 'V-Slice Options':
 				openSubState(new options.BaseGameOptions());
 			case 'Gameplay':
 				openSubState(new options.GameplaySettingsSubState());
 			case 'Adjust Delay and Combo':
 				LoadingState.loadAndSwitchState(new options.NoteOffsetState());
+			#if (TOUCH_CONTROLS_ALLOWED || mobile)
+			case 'Mobile Options':
+				openSubState(new mobile.options.MobileOptionsSubState());
+			#end
 		}
 	}
 
@@ -80,12 +93,23 @@ class OptionsState extends MusicBeatState
 		changeSelection();
 		ClientPrefs.saveSettings();
 
+		#if TOUCH_CONTROLS_ALLOWED
+		addTouchPad('UP_DOWN', 'A_B');
+		#end
+
 		super.create();
 	}
 
 	override function closeSubState() {
 		super.closeSubState();
 		ClientPrefs.saveSettings();
+		controls.isInSubstate = false;
+		persistentUpdate = true;
+		
+		#if TOUCH_CONTROLS_ALLOWED
+		removeTouchPad();
+		addTouchPad('UP_DOWN', 'A_B');
+		#end
 	}
 
 	override function update(elapsed:Float) {

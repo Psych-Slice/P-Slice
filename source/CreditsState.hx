@@ -166,6 +166,9 @@ class CreditsState extends MusicBeatState
 		bg.color = getCurrentBGColor();
 		intendedColor = bg.color;
 		changeSelection();
+		#if TOUCH_CONTROLS_ALLOWED
+		addTouchPad("UP_DOWN", "A_B");
+		#end
 		super.create();
 	}
 

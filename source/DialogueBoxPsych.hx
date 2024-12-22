@@ -350,7 +350,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			if (bgFade.alpha > 0.5)
 				bgFade.alpha = 0.5;
 
-			if (PlayerSettings.player1.controls.ACCEPT)
+			if (TouchUtil.justPressed || PlayerSettings.player1.controls.ACCEPT)
 			{
 				if (!daText.finishedText)
 				{
@@ -370,7 +370,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 				}
 				FlxG.sound.play(Paths.sound(closeSound), closeVolume);
 			}
-			else if (PlayerSettings.player1.controls.BACK)
+			else if (#if android FlxG.android.justReleased.BACK || #end PlayerSettings.player1.controls.BACK)
 			{
 				var game = PlayState.instance;
 				FlxG.camera.followLerp = 0;

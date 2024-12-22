@@ -70,12 +70,27 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
+		var option:Option = new Option('Pop Up Score',
+			"If unchecked, hitting notes won't make \"sick\", \"good\".. and combo popups.",
+			'popUpRating',
+			'bool',
+			true);
+		addOption(option);
+
 		var option:Option = new Option('Disable Reset Button',
 			"If checked, pressing Reset won't do anything.",
 			'noReset',
 			'bool',
 			false);
 		addOption(option);
+
+		var option:Option = new Option('Vibrations',
+			"If checked, your device will vibrate at some cases.",
+			'vibrating',
+			'bool',
+			false);
+		addOption(option);
+		option.onChange = onChangeVibration;
 
 		var option:Option = new Option('Hitsound Volume',
 			'Funny notes does \"Tick!\" when you hit them."',
@@ -151,5 +166,11 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 	function onChangeHitsoundVolume()
 	{
 		FlxG.sound.play(Paths.sound('hitsound'), ClientPrefs.hitsoundVolume);
+	}
+
+	function onChangeVibration()
+	{
+		if(ClientPrefs.vibrating)
+			lime.ui.Haptic.vibrate(0, 500);
 	}
 }

@@ -135,6 +135,10 @@ class MainMenuState extends MusicBeatState
 		#end
 		#end
 
+		#if TOUCH_CONTROLS_ALLOWED
+		addTouchPad("UP_DOWN", "A_B_E");
+		#end
+
 		super.create();
 
 		FlxG.camera.follow(camFollow, null, 0.06);
@@ -246,15 +250,13 @@ class MainMenuState extends MusicBeatState
 					}
 				}
 			}
-			#if desktop
-			if (FlxG.keys.anyJustPressed(debugKeys))
+			else if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonE.justPressed || #end FlxG.keys.anyJustPressed(debugKeys))
 			{
 				selectedSomethin = true;
 				FlxTransitionableState.skipNextTransIn = false;
 				FlxTransitionableState.skipNextTransOut = false;
-				MusicBeatState.switchState(new editors.MasterEditorMenu());
+				MusicBeatState.switchState(new MasterEditorMenu());
 			}
-			#end
 		}
 
 		super.update(elapsed);

@@ -106,3 +106,65 @@ jobs:
         with:
           name: P-Slice.0.6.3.mac
           path: export/PE0.6.3/release/macos/bin
+  buildAndroid:
+    # The type of runner that the job will run on
+    runs-on: macos-15
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4.1.7
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.4
+      # Runs a set of commands using the runners shell
+      - name: Install Haxelib
+        run: |
+          haxelib setup ~/haxelib
+          chmod +x ./setup/mobile.sh
+          sh ./setup/mobile.sh
+      - name: Skip SScript setup mode
+        run: echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
+      - name: Create Version Tag
+        run: echo "${{github.run_id}}" > VERSION
+      - name: Compile
+        run: haxelib run lime build Project.xml android --app-version="4.0.0-${{ github.run_id}}" -D officialBuild
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v4.3.4
+        with:
+          name: P-Slice.0.6.3.android
+          path: 'export/PE0.6.3/release/android/bin/app/build/outputs/apk/release/*.apk'
+  buildIOS:
+    # The type of runner that the job will run on
+    runs-on: macos-15
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4.1.7
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.4
+      # Runs a set of commands using the runners shell
+      - name: Install Haxelib
+        run: |
+          haxelib setup ~/haxelib
+          chmod +x ./setup/mobile.sh
+          sh ./setup/mobile.sh
+      - name: Skip SScript setup mode
+        run: echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
+      - name: Create Version Tag
+        run: echo "${{github.run_id}}" > VERSION
+      - name: Compile
+        run: haxelib run lime build Project.xml ios -nosign --app-version="4.0.0-${{ github.run_id}}" -D officialBuild
+      - name: Make IPA
+        run: |
+          cd export/release/ios/build/Release-iphoneos
+          mkdir Payload
+          mv *.app Payload
+          zip -r PSliceEngine.ipa Payload
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v4.3.4
+        with:
+          name: P-Slice.0.6.3.android
+          path: 'export/PE0.6.3/release/ios/build/Release-iphoneos/*.ipa'
