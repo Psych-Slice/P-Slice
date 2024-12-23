@@ -59,7 +59,9 @@ class NoteOffsetState extends MusicBeatState
 
 		// Stage
 		Paths.setCurrentLevel(stageDirectory);
-		new BackgroundStage();
+		var stage = new BackgroundStage();
+		stage.create();
+		add(stage);
 
 		// Characters
 		gf = new Character(400, 130, 'gf');
