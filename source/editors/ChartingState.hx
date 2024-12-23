@@ -975,7 +975,7 @@ var ratingInput:FlxUINumericStepper;
 		exportMetadataBtn = new FlxButton(20,200,"Export",onMetadataSaveClick.bind());
 		characterName = new FlxUIInputText(180,70,100,"",8);
 		albumName = new FlxUIInputText(180,120,100,"",8);
-		chk_allowNew = new FlxUICheckBox(180,30,null,false,"Show \"new\" tag");
+		chk_allowNew = new FlxUICheckBox(180,30,null,null,"Show \"new\" tag");
 		txt_altInstSong = new FlxUIInputText(20,160,250,"",8);
 
 		tab_group.add(new FlxText(ratingInput.x, ratingInput.y - 15, 80, 'Rating:'));
