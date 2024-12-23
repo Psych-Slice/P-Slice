@@ -45,8 +45,9 @@ class OutdatedState extends MusicBeatState
 		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
 		add(warnText);
-
+		#if ALLOW_MOBILE_CONTROLS
 		addTouchPad("NONE", "A_B");
+		#end
 	}
 
 	override function update(elapsed:Float)
