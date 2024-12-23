@@ -172,5 +172,5 @@ jobs:
       - name: Publish Artifact
         uses: actions/upload-artifact@v4.3.4
         with:
-          name: P-Slice.0.6.3.android
+          name: P-Slice.0.6.3.iOS
           path: 'export/PE0.6.3/release/ios/build/Release-iphoneos/*.ipa'
