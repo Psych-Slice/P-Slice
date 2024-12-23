@@ -34,7 +34,7 @@ class SpookyMansionErect extends PicoCapableStage
 		stairsLight.alpha = 0;
 
 		halloweenWindow = new BGSprite('erect/bgtrees', 200, 50, 0.8, 0.8, ["bgtrees0"],true);
-		
+		halloweenWindow.animation.curAnim.frameRate = 5;
 
 		add(halloweenWindow);
 		add(halloweenBG);
