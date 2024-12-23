@@ -305,7 +305,7 @@ class NativeWindow
 	{
 		if (handle != null)
 		{
-			#if (!macro && lime_cffi)
+			#if (!macro && lime_cffi && lime >= "8.1.0")
 			return NativeCFFI.lime_window_get_opacity(handle);
 			#end
 		}
@@ -467,7 +467,7 @@ class NativeWindow
 	{
 		if (handle != null)
 		{
-			#if (!macro && lime_cffi)
+			#if (!macro && lime_cffi && lime >= "8.1.0")
 			NativeCFFI.lime_window_set_minimum_size(handle, width, height);
 			#end
 		}
@@ -477,7 +477,7 @@ class NativeWindow
 	{
 		if (handle != null)
 		{
-			#if (!macro && lime_cffi)
+			#if (!macro && lime_cffi && lime >= "8.1.0")
 			NativeCFFI.lime_window_set_maximum_size(handle, width, height);
 			#end
 		}
@@ -666,7 +666,7 @@ class NativeWindow
 	{
 		if (handle != null)
 		{
-			#if (!macro && lime_cffi)
+			#if (!macro && lime_cffi && lime >= "8.1.0")
 			NativeCFFI.lime_window_set_opacity(handle, value);
 			#end
 		}
@@ -705,7 +705,7 @@ class NativeWindow
 	{
 		if (handle != null)
 		{
-			#if (!macro && lime_cffi)
+			#if (!macro && lime_cffi && lime >= "8.1.0")
 			NativeCFFI.lime_window_set_visible(handle, value);
 			#end
 		}
