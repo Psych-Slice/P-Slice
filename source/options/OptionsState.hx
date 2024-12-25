@@ -36,7 +36,12 @@ class OptionsState extends MusicBeatState
 
 	function openSelectedSubstate(label:String) {
 		if (label != "Adjust Delay and Combo")
+		{
+			#if TOUCH_CONTROLS_ALLOWED
+			removeTouchPad();
+			#end
 			persistentUpdate = false;
+		}
 
 		switch(label) {
 			case 'Note Colors':
@@ -107,7 +112,6 @@ class OptionsState extends MusicBeatState
 		persistentUpdate = true;
 		
 		#if TOUCH_CONTROLS_ALLOWED
-		removeTouchPad();
 		addTouchPad('UP_DOWN', 'A_B');
 		#end
 	}

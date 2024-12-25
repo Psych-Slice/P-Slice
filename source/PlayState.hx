@@ -2178,7 +2178,7 @@ class PlayState extends MusicBeatState
 		}
 		else
 			healthLerp = health;
-		if (video != null && (controls.ACCEPT || controls.PAUSE)) // ! Video handler
+		if (video != null && (controls.ACCEPT || controls.PAUSE #if android || FlxG.android.justReleased.BACK #elseif TOUCH_CONTROLS_ALLOWED || touchPad.buttonP.justPressed #end)) // ! Video handler
 		{
 			persistentUpdate = false;
 			persistentDraw = true;
@@ -2239,7 +2239,7 @@ class PlayState extends MusicBeatState
 			botplayTxt.alpha = 1 - Math.sin((Math.PI * botplaySine) / 180);
 		}
 
-		if (controls.PAUSE && startedCountdown && canPause)
+		if (controls.PAUSE #if android || FlxG.android.justReleased.BACK #elseif TOUCH_CONTROLS_ALLOWED || touchPad.buttonP.justPressed #end && startedCountdown && canPause)
 		{
 			var ret:Dynamic = callOnLuas('onPause', [], false);
 			if (ret != FunkinLua.Function_Stop)
