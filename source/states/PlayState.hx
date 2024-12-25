@@ -3461,8 +3461,7 @@ class PlayState extends MusicBeatState
 
 		if (note != null) {
 			var strum:StrumNote = (note.mustPress ? playerStrums : opponentStrums).members[note.noteData];
-
-			if(strum != null && note.tail.length != 0)
+			if(strum != null && note.tail.length > 1)
 				spawnHoldSplash(note);
 		}
 	}

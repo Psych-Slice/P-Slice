@@ -130,8 +130,10 @@ using mikolka.funkin.utils.ArrayTools;
              }
              
          }
-         if (!this.songDifficulties.contains(currentDifficulty))
+         if (!this.songDifficulties.contains(currentDifficulty)){
+             @:bypassAccessor
              currentDifficulty = songDifficulties[0]; // TODO
+         }
          
          songStartingBpm = BPMCache.instance.getBPM(sngDataPath,fileSngName);
          
