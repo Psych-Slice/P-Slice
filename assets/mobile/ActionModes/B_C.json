@@ -3,14 +3,14 @@
     {
       "button": "buttonC",
       "graphic": "c",
-      "x": 1156,
+      "x": 1032,
       "y": 596,
       "color": "0x44FF00"
     },
     {
       "button": "buttonB",
       "graphic": "b",
-      "x": 1032,
+      "x": 1156,
       "y": 596,
       "color": "0xFFCB00"
     }

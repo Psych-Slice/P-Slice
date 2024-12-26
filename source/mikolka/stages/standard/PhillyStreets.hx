@@ -325,7 +325,7 @@ class PhillyStreets extends PicoCapableStage
 		{
 			boyfriend.playAnim('intro2', true);
 
-			FlxG.sound.play(Paths.soundRandom('shot', 1, 4));
+			FlxG.sound.play(Paths.soundRandom('shots/shot', 1, 4));
 
 			FlxTween.tween(FlxG.camera.scroll, {x: camFollow.x + 100 - FlxG.width / 2}, 2.5, {ease: FlxEase.quadInOut});
 

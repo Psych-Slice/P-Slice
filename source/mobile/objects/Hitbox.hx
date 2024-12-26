@@ -1,7 +1,30 @@
+/*
+ * Copyright (C) 2024 Mobile Porting Team
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
 package mobile.objects;
 
 import openfl.display.BitmapData;
 import openfl.display.Shape;
+import flixel.util.FlxSignal.FlxTypedSignal;
 import flixel.graphics.FlxGraphic;
 import openfl.geom.Matrix;
 
@@ -9,7 +32,7 @@ import openfl.geom.Matrix;
  * A zone with 4 hint's (A hitbox).
  * It's really easy to customize the layout.
  *
- * @author: Mihai Alexandru and Karim Akra
+ * @author: Karim Akra and Lily Ross (mcagabe19)
  */
 class Hitbox extends MobileInputManager
 {
@@ -24,6 +47,9 @@ class Hitbox extends MobileInputManager
 	public var buttonExtra2:TouchButton = new TouchButton(0, 0);
 
 	public var instance:MobileInputManager;
+
+	public var onHintDown:FlxTypedSignal<TouchButton->Void> = new FlxTypedSignal<TouchButton->Void>();
+	public var onHintUp:FlxTypedSignal<TouchButton->Void> = new FlxTypedSignal<TouchButton->Void>();
 
 	var storedButtonsIDs:Map<String, Array<MobileInputID>> = new Map<String, Array<MobileInputID>>();
 
@@ -84,6 +110,8 @@ class Hitbox extends MobileInputManager
 	override function destroy()
 	{
 		super.destroy();
+		onHintUp.destroy();
+		onHintDown.destroy();
 
 		for (fieldName in Reflect.fields(this))
 		{
@@ -115,6 +143,7 @@ class Hitbox extends MobileInputManager
 
 			hint.onDown.callback = function()
 			{
+				onHintDown.dispatch(hint);
 				if (hintTween != null)
 					hintTween.cancel();
 
@@ -134,6 +163,7 @@ class Hitbox extends MobileInputManager
 
 			hint.onOut.callback = hint.onUp.callback = function()
 			{
+				onHintUp.dispatch(hint);
 				if (hintTween != null)
 					hintTween.cancel();
 
@@ -150,6 +180,11 @@ class Hitbox extends MobileInputManager
 					onComplete: (twn:FlxTween) -> hintTween = null
 				});
 			}
+		}
+		else
+		{
+			hint.onDown.callback = () -> onHintDown.dispatch(hint);
+			hint.onOut.callback = hint.onUp.callback = () -> onHintUp.dispatch(hint);
 		}
 
 		hint.immovable = hint.multiTouch = true;

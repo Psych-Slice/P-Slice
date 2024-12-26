@@ -1,5 +1,6 @@
-package states.editors;
+package mikolka.editors;
 
+import mikolka.compatibility.FunkinControls;
 import mikolka.compatibility.ModsHelper;
 import substates.StickerSubState;
 #if !LEGACY_PSYCH
@@ -80,19 +81,18 @@ class StickerTest extends MusicBeatState {
         super.update(elapsed);
         if(PsychUIInputText.focusOn == null)
             {
-                ClientPrefs.toggleVolumeKeys(true);
-                var b_tapped = false;
-                
-                #if TOUCH_CONTROLS_ALLOWED
-                b_tapped = touchPad.buttonB.justPressed;
-                #end
+                FunkinControls.enableVolume();
 
-                if(FlxG.keys.justPressed.ESCAPE || b_tapped){
+                if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonB.justPressed || #end controls.BACK){
                     FlxG.sound.playMusic(Paths.music('freakyMenu'));
                     FlxG.mouse.visible = false;
+                    #if LEGACY_PSYCH
+                    MusicBeatState.switchState(new MasterEditorMenu());
+                    #else
                     MusicBeatState.startTransition(new MasterEditorMenu());
+                    #end
                 }
             }
-            else ClientPrefs.toggleVolumeKeys(false);
+            else FunkinControls.disableVolume();
     }
 }

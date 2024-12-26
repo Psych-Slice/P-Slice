@@ -34,7 +34,7 @@ class SpookyMansionErect extends PicoCapableStage
 		stairsLight.alpha = 0;
 
 		halloweenWindow = new BGSprite('erect/bgtrees', 200, 50, 0.8, 0.8, ["bgtrees0"],true);
-		
+		halloweenWindow.animation.curAnim.frameRate = 5;
 
 		add(halloweenWindow);
 		add(halloweenBG);
@@ -196,7 +196,9 @@ class SpookyMansionErect extends PicoCapableStage
 
 	function makeChars()
 	{
-		var bfName = PlayState.instance.boyfriend.curCharacter == 'pico-dark' ? "pico-playable" : "bf";
+		
+		var bfName = PlayState.instance.boyfriend.curCharacter.split("-")[0]; 
+		if(bfName == "pico") bfName = "pico-playable";
 
 		boyfriendGhost = new Character(game.boyfriend.x, game.boyfriend.y, bfName, true);
 		game.add(boyfriendGhost);
@@ -207,7 +209,7 @@ class SpookyMansionErect extends PicoCapableStage
 		game.add(dadGhost);
 		dadGhost.dance();
 
-		var gfMode = PlayState.instance.gf.curCharacter == 'nene-dark' ? "nene" : "gf";
+		var gfMode = PlayState.instance.gf.curCharacter.split("-")[0];
 		gfGhost = new Character(game.gf.x, game.gf.y, gfMode);
 		//if (gfMode == 'nene')
 			//gfGhost.y -= 190;

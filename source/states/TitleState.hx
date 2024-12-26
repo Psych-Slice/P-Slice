@@ -555,6 +555,13 @@ class TitleState extends MusicBeatState
 			if (controls.UI_RIGHT)
 				swagShader.hue += elapsed * 0.1;
 		}
+		#if FLX_PITCH
+		if (controls.UI_UP) FlxG.sound.music.pitch += 0.5 * elapsed;
+		if (controls.UI_DOWN) FlxG.sound.music.pitch -= 0.5 * elapsed;
+		#end
+		#if desktop
+		if (controls.BACK) openfl.Lib.application.window.close();
+		#end
 
 		super.update(elapsed);
 	}
@@ -773,7 +780,7 @@ class TitleState extends MusicBeatState
 		{
 			if (controls.NOTE_DOWN_P || controls.UI_DOWN_P || SwipeUtil.swipeUp)
 				codePress(FlxDirectionFlags.DOWN);
-			if (controls.NOTE_UP_P || controls.UI_UP_P  || SwipeUtil.swipeDown)
+			if (controls.NOTE_UP_P || controls.UI_UP_P || SwipeUtil.swipeDown)
 				codePress(FlxDirectionFlags.UP);
 			if (controls.NOTE_LEFT_P || controls.UI_LEFT_P || SwipeUtil.swipeRight)
 				codePress(FlxDirectionFlags.LEFT);

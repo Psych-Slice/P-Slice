@@ -139,7 +139,7 @@ class PlayState extends MusicBeatState
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
 
-	//! new shit
+	//! new shit P-Slice
 	public static var storyCampaignTitle = "";
 	public static var altInstrumentals:String = null;
 	public static var storyDifficultyColor = FlxColor.GRAY;
@@ -650,6 +650,8 @@ class PlayState extends MusicBeatState
 		#if TOUCH_CONTROLS_ALLOWED
 		addHitbox();
 		hitbox.visible = true;
+		hitbox.onHintDown.add(onHintPress);
+		hitbox.onHintUp.add(onHintRelease);
 		#end
 
 		startCallback();
@@ -1344,15 +1346,23 @@ class PlayState extends MusicBeatState
 		{
 			if (songData.needsVoices)
 			{
+				var sng_name = Paths.formatToSongPath(songData.song); //!
+				var legacy_path = Paths.getPath('songs/${sng_name}/Voices.ogg');
+				var opponent_path = Paths.getPath('songs/${sng_name}/Voices-Opponent.ogg');
+				var is_base_legacy_path = legacy_path.startsWith("assets/shared/");
+				var is_base_opponent_path = opponent_path.startsWith("assets/shared/");
+
 				var legacyVoices = Paths.voices(songData.song);
 				if(legacyVoices == null){
 					var playerVocals = Paths.voices(songData.song, (boyfriend.vocalsFile == null || boyfriend.vocalsFile.length < 1) ? 'Player' : boyfriend.vocalsFile);
 					vocals.loadEmbedded(playerVocals);
-					
+				}
+				else vocals.loadEmbedded(legacyVoices);
+
+				if(legacyVoices == null || (is_base_legacy_path == is_base_opponent_path)){
 					var oppVocals = Paths.voices(songData.song, (dad.vocalsFile == null || dad.vocalsFile.length < 1) ? 'Opponent' : dad.vocalsFile);
 					if(oppVocals != null && oppVocals.length > 0) opponentVocals.loadEmbedded(oppVocals);
 				}
-				else vocals.loadEmbedded(legacyVoices);
 				
 			}
 		}
@@ -2598,6 +2608,15 @@ class PlayState extends MusicBeatState
 					Song.loadFromJson(PlayState.storyPlaylist[0] + difficulty, PlayState.storyPlaylist[0]);
 					FlxG.sound.music.stop();
 
+					#if !switch
+					//!! We have to save the score for current song BEFORE loading the next one
+					if(!ClientPrefs.getGameplaySetting('practice') && !ClientPrefs.getGameplaySetting('botplay')){
+						var percent:Float = ratingPercent;
+						if(Math.isNaN(percent)) percent = 0;
+						Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent,songMisses == 0);
+					}
+					#end
+
 					canResync = false;
 					LoadingState.prepareToSong();
 					LoadingState.loadAndSwitchState(new PlayState(), false, false);
@@ -2617,15 +2636,17 @@ class PlayState extends MusicBeatState
 				canResync = false;
 				zoomIntoResultsScreen(prevScore<tempActiveTallises.score,tempActiveTallises,prevRank);
 				changedDifficulty = false;
+
+				#if !switch
+				if(!ClientPrefs.getGameplaySetting('practice') && !ClientPrefs.getGameplaySetting('botplay')){
+					var percent:Float = ratingPercent;
+					if(Math.isNaN(percent)) percent = 0;
+					Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent,songMisses == 0);
+				}
+				#end
 			}
 
-			#if !switch
-			if(!ClientPrefs.getGameplaySetting('practice') && !ClientPrefs.getGameplaySetting('botplay')){
-				var percent:Float = ratingPercent;
-				if(Math.isNaN(percent)) percent = 0;
-				Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent,songMisses == 0);
-			}
-			#end
+			
 
 			transitioning = true;
 		}
@@ -3093,6 +3114,24 @@ class PlayState extends MusicBeatState
 		return -1;
 	}
 
+	#if TOUCH_CONTROLS_ALLOWED
+	private function onHintPress(button:TouchButton):Void
+	{
+		var buttonCode:Int = (button.IDs[0].toString().startsWith('HITBOX')) ? button.IDs[0] : button.IDs[1];
+		callOnScripts('onHintPressPre', [buttonCode]);
+		if (button.justPressed) keyPressed(buttonCode);
+		callOnScripts('onHintPress', [buttonCode]);
+	}
+
+	private function onHintRelease(button:TouchButton):Void
+	{
+		var buttonCode:Int = (button.IDs[0].toString().startsWith('HITBOX')) ? button.IDs[0] : button.IDs[1];
+		callOnScripts('onHintReleasePre', [buttonCode]);
+		if(buttonCode > -1) keyReleased(buttonCode);
+		callOnScripts('onHintRelease', [buttonCode]);
+	}
+	#end
+
 	// Hold notes
 	private function keysCheck():Void
 	{
@@ -3422,8 +3461,7 @@ class PlayState extends MusicBeatState
 
 		if (note != null) {
 			var strum:StrumNote = (note.mustPress ? playerStrums : opponentStrums).members[note.noteData];
-
-			if(strum != null && note.tail.length != 0)
+			if(strum != null && note.tail.length > 1)
 				spawnHoldSplash(note);
 		}
 	}

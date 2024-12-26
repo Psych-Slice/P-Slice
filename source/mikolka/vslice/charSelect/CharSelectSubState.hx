@@ -132,7 +132,7 @@ class CharSelectSubState extends MusicBeatSubState
   {
     super.create();
 
-    bopInfo = FramesJSFLParser.parse(Paths.file("images/charSelect/iconBopInfo/iconBopInfo.txt"));
+    bopInfo = FramesJSFLParser.parse("images/charSelect/iconBopInfo/iconBopInfo.txt");
 
     var bg:FlxSprite = new FlxSprite(-153, -140);
     bg.loadGraphic(Paths.image('charSelect/charSelectBG'));
@@ -462,8 +462,8 @@ class CharSelectSubState extends MusicBeatSubState
 
             @:privateAccess
             gfChill.analyzer = new SpectralAnalyzer(ModsHelper.getSoundChannel(FlxG.sound.music), 7, 0.1);
-            #if desktop
-            // On desktop it uses FFT stuff that isn't as optimized as the direct browser stuff we use on HTML5
+            #if (desktop || mobile)
+            // On native it uses FFT stuff that isn't as optimized as the direct browser stuff we use on HTML5
             // So we want to manually change it!
             @:privateAccess
             gfChill.analyzer.fftN = 512;
@@ -607,8 +607,8 @@ class CharSelectSubState extends MusicBeatSubState
 
                 @:privateAccess
                 gfChill.analyzer = new SpectralAnalyzer(ModsHelper.getSoundChannel(FlxG.sound.music), 7, 0.1);
-                #if desktop
-                // On desktop it uses FFT stuff that isn't as optimized as the direct browser stuff we use on HTML5
+                #if (desktop || mobile)
+                // On native it uses FFT stuff that isn't as optimized as the direct browser stuff we use on HTML5
                 // So we want to manually change it!
                 @:privateAccess
                 gfChill.analyzer.fftN = 512;

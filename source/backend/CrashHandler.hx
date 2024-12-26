@@ -1,6 +1,6 @@
 package backend;
 
-import mikolka.vslice.CrashState;
+import mikolka.vslice.components.crash.CrashState;
 import haxe.CallStack;
 import openfl.events.UncaughtErrorEvent;
 #if sys

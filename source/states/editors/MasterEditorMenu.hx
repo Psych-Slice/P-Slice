@@ -1,5 +1,8 @@
 package states.editors;
 
+import mikolka.vslice.components.crash.UserErrorSubstate;
+import mikolka.editors.CharSelectEditor;
+import mikolka.editors.StickerTest;
 import openfl.events.UncaughtErrorEvent;
 import mikolka.compatibility.VsliceOptions;
 import flixel.math.FlxRandom;
@@ -19,8 +22,10 @@ class MasterEditorMenu extends MusicBeatState
 		'Menu Character Editor', 
 		'Dialogue Editor', 
 		'Dialogue Portrait Editor',
+		'Player editor',
 		#if debug
 		'Crash the game',
+		'Usermess the game',
 		#end
 		'Note Splash Editor', 
 		'Result Preview Menu'
@@ -136,6 +141,8 @@ class MasterEditorMenu extends MusicBeatState
 					MusicBeatState.switchState(new NoteSplashEditorState());
 				case 'Test stickers':
 					MusicBeatState.switchState(new StickerTest());
+				case 'Player editor':
+					MusicBeatState.switchState(new CharSelectEditor());
 				#if debug
 				case 'Crash the game':{
 					@:privateAccess
@@ -143,6 +150,9 @@ class MasterEditorMenu extends MusicBeatState
 						new UncaughtErrorEvent(
 							openfl.events.UncaughtErrorEvent.UNCAUGHT_ERROR,
 							true,true,new openfl.errors.Error("The devs are too stupid and they write way too long errors")));
+				}
+				case 'Usermess the game':{
+					openSubState(new UserErrorSubstate("The devs are too stupid and they write way too long errors","Skill issue :/"));
 				}
 				#end
 				case 'Result Preview Menu':

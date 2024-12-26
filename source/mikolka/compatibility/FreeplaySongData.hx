@@ -59,6 +59,9 @@ using mikolka.funkin.utils.ArrayTools;
  
          var meta = FreeplayMeta.getMeta(songId);
          difficultyRating = meta.songRating;
+            
+
+         isNew = meta.allowNewTag;
          freeplayPrevStart = meta.freeplayPrevStart/meta.freeplaySongLength;
          freeplayPrevEnd = meta.freeplayPrevEnd/meta.freeplaySongLength;
          albumId = meta.albumId;
@@ -127,8 +130,10 @@ using mikolka.funkin.utils.ArrayTools;
              }
              
          }
-         if (!this.songDifficulties.contains(currentDifficulty))
+         if (!this.songDifficulties.contains(currentDifficulty)){
+             @:bypassAccessor
              currentDifficulty = songDifficulties[0]; // TODO
+         }
          
          songStartingBpm = BPMCache.instance.getBPM(sngDataPath,fileSngName);
          
@@ -137,7 +142,15 @@ using mikolka.funkin.utils.ArrayTools;
          // this.difficultyRating = songDifficulty.difficultyRating;
          this.scoringRank = Scoring.calculateRankForSong(Highscore.formatSong(songId, loadAndGetDiffId()));
  
-         this.isNew = false; // song.isSongNew(currentDifficulty);
+         var wasCompleted = false;
+         var saveSongName = Paths.formatToSongPath(songId);
+         for (x in Highscore.songScores.keys()){
+            if(x.startsWith(saveSongName) && Highscore.songScores[x] > 0){
+                wasCompleted = true;
+                break;
+            }
+         }
+         isNew = (( ClientPrefs.data.vsliceForceNewTag || isNew) && !wasCompleted); 
      }
      public function loadAndGetDiffId() {
          var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[levelId]);

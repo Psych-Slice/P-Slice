@@ -58,7 +58,9 @@ class PhillyTrainErect extends PicoCapableStage
 		phillyStreet = new BGSprite('philly/erect/street', -40, 50);
 		add(phillyStreet);
 
-		if(!seenCutscene) setStartCallback(ughIntro);
+		if(!seenCutscene 
+			&& PlayState.SONG.player1 == "pico-playable" 
+			&& PlayState.SONG.player2 == "pico") setStartCallback(ughIntro);
 	}
 
 	override function createPost()

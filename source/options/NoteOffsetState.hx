@@ -59,7 +59,9 @@ class NoteOffsetState extends MusicBeatState
 
 		// Stage
 		Paths.setCurrentLevel(stageDirectory);
-		new BackgroundStage();
+		var stage = new BackgroundStage();
+		stage.create();
+		add(stage);
 
 		// Characters
 		gf = new Character(400, 130, 'gf');
@@ -359,11 +361,13 @@ class NoteOffsetState extends MusicBeatState
 		{
 			if(controls.UI_LEFT_P)
 			{
+				holdTime = 0;
 				barPercent = Math.max(delayMin, Math.min(ClientPrefs.data.noteOffset - 1, delayMax));
 				updateNoteDelay();
 			}
 			else if(controls.UI_RIGHT_P)
 			{
+				holdTime = 0;
 				barPercent = Math.max(delayMin, Math.min(ClientPrefs.data.noteOffset + 1, delayMax));
 				updateNoteDelay();
 			}
@@ -374,8 +378,6 @@ class NoteOffsetState extends MusicBeatState
 				holdTime += elapsed;
 				if(controls.UI_LEFT) mult = -1;
 			}
-
-			if(controls.UI_LEFT_R || controls.UI_RIGHT_R) holdTime = 0;
 
 			if(holdTime > 0.5)
 			{
