@@ -240,21 +240,29 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		UI_box.scrollFactor.set();
 
 		// GENERAL
-		@:privateAccess
-		input_assetPath = new PsychUIInputText(10, 20, 150, data._data.freeplayDJ.assetPath);
+		@:privateAccess{
+			input_assetPath = new PsychUIInputText(10, 20, 150, data._data.freeplayDJ.assetPath);
+			input_assetPath.onChange = (prev, cur) -> {
+				data._data.freeplayDJ.assetPath = cur;
+			};
+		}
 
 		btn_reload = new PsychUIButton(180, 20, "Reload", () ->
 		{
+			dj_anim.saveAnimations();
 			remove(dj);
 			dj.destroy();
 			dj = new FlxAtlasSprite(640, 366, data.getFreeplayDJData().getAtlasPath());
 			dj_anim.attachSprite(dj);
 			add(dj);
 		});
-		@:privateAccess
-		steper_charSelectDelay = new PsychUINumericStepper(20, 60, 0.05, data._data.freeplayDJ.charSelect.transitionDelay, 0, 10, 0, 100);
-
+		
 		@:privateAccess {
+			steper_charSelectDelay = new PsychUINumericStepper(10, 130, 0.1, data._data.freeplayDJ.charSelect.transitionDelay, 0, 15, 1, 100);
+			steper_charSelectDelay.onValueChange = () -> {
+				data._data.freeplayDJ.charSelect.transitionDelay = steper_charSelectDelay.value;
+			};
+
 			input_text1 = new PsychUIInputText(10, 50, 150, data._data.freeplayDJ.text1);
 			input_text2 = new PsychUIInputText(10, 70, 150, data._data.freeplayDJ.text2);
 			input_text3 = new PsychUIInputText(10, 90, 150, data._data.freeplayDJ.text3);
@@ -420,6 +428,9 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		tab.add(input_text1);
 		tab.add(input_text2);
 		tab.add(input_text3);
+		
+		tab.add(newLabel(steper_charSelectDelay, "Transition delay:"));
+		tab.add(steper_charSelectDelay);
 
 		// DJ EDITOR
 		var tab = UI_box.getTab("DJ Editor").menu;
@@ -455,7 +466,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 
 	function newLabel(ref:FlxSprite, text:String)
 	{
-		return new FlxText(ref.x, ref.y - 10, 100, text);
+		return new FlxText(ref.x, ref.y - 13, 100, text);
 	}
 
 	function setDadBG()
