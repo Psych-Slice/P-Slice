@@ -3253,6 +3253,16 @@ class PlayState extends MusicBeatState
 					trace('LOADING NEXT SONG');
 					trace(Paths.formatToSongPath(PlayState.storyPlaylist[0]) + difficulty);
 
+					if (SONG.validScore)
+					{
+							#if !switch
+							var percent:Float = ratingPercent;
+							if (Math.isNaN(percent))
+								percent = 0;
+							Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent, songMisses == 0);
+							#end
+					}
+
 					var winterHorrorlandNext = (Paths.formatToSongPath(SONG.song) == "eggnog");
 					if (winterHorrorlandNext)
 					{
@@ -3271,15 +3281,7 @@ class PlayState extends MusicBeatState
 					prevCamFollow = camFollow;
 					prevCamFollowPos = camFollowPos;
 
-					if (SONG.validScore)
-					{
-						#if !switch
-						var percent:Float = ratingPercent;
-						if (Math.isNaN(percent))
-							percent = 0;
-						Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent, songMisses == 0);
-						#end
-					}
+					
 
 					PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0] + difficulty, PlayState.storyPlaylist[0]);
 					FlxG.sound.music.stop();

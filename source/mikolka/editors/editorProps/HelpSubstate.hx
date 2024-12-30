@@ -1,7 +1,5 @@
 package mikolka.editors.editorProps;
 
-import mikolka.compatibility.FunkinControls;
-
 class HelpSubstate extends MusicBeatSubstate {
     public static var CHAR_EDIT_TEXT:Array<String> = [
         	"Animation preview controls:",
@@ -86,12 +84,7 @@ class HelpSubstate extends MusicBeatSubstate {
         }
     }
     public static function makeLabel():FlxText {
-		#if LEGACY_PSYCH
-		var mobile = false;
-		#else
-		var mobile = Controls.instance.mobileC;
-		#end
-        var tipText:FlxText = new FlxText(0, FlxG.height - 30, FlxG.width, 'Press ${mobile ? 'F' : 'F1'} for Help', 20);
+        var tipText:FlxText = new FlxText(0, FlxG.height - 30, FlxG.width, 'Press ${Controls.instance.mobileC ? 'F' : 'F1'} for Help', 20);
 		tipText.setFormat(null, 16, FlxColor.WHITE, RIGHT);
 		tipText.borderColor = FlxColor.BLACK;
 		tipText.scrollFactor.set();

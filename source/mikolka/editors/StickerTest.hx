@@ -44,7 +44,7 @@ class StickerTest extends MusicBeatState {
         add(BG);
         addEditorBox();
         #if TOUCH_CONTROLS_ALLOWED
-        addTouchPad("NONE", "B");
+        addTouchPad('NONE','B');
         #end
         super.create();
     }

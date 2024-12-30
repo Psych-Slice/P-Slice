@@ -384,7 +384,7 @@ class CharSelectEditor extends MusicBeatState
 
 	function newLabel(ref:FlxSprite, text:String)
 	{
-		return new FlxText(ref.x, ref.y - 10, 100, text);
+		return new FlxText(ref.x, ref.y - 13, 100, text);
 	}
 
 	function saveCharacter()
