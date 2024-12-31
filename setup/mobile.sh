@@ -18,6 +18,6 @@ haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc f9353b9edc
 haxelib install hxvlc 1.8.2 --quiet --skip-dependencies
 haxelib git funkin.vis https://github.com/FunkinCrew/funkVis 22b1ce089dd924f15cdc4632397ef3504d464e90 --quiet --skip-dependencies
 haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio.git cbf91e2180fd2e374924fe74844086aab7891666 --quiet
-haxelib git FlxPartialSound https://github.com/FunkinDroidTeam/FlxPartialSound 3c9f63e3501c20c0b60442089dc05306f5a87968 --quiet
+haxelib git FlxPartialSound https://github.com/FunkinDroidTeam/FlxPartialSound.git 2b7943ba50eb41cf8f70e1f2089a5bd7ef242947 --quiet
 haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools --quiet --skip-dependencies
 echo Finished!

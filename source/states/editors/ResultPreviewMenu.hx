@@ -83,7 +83,7 @@ class ResultPreviewMenu extends MusicBeatState
 				case 'Preview results (great)':
 					runResults(160);
 				case 'Preview results (good)':
-					runResults(110);
+					runResults(120);
 				case 'Preview results (shit)':
 					runResults(30);
 			}
