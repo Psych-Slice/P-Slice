@@ -107,11 +107,11 @@ Run
 ### Branches
 `master` is the repository's main branch. It contains a PE 1.0 flavor of P-Slice and is the most maintained version.
 
-`master-dev` same as `master`, but it is used for development so might contain less stable builds.
+`master-dev` same as `master`, but it is used for development so it might contain less stable builds.
 
 `pe-0.6.3` works the same way, but built on Psych 0.6.3. Note that it may contain some bugs not present in the master version.
 
-`pe-0.6.3-dev` same as `pe-0.6.3`, but it is used for development so might contain less stable builds.
+`pe-0.6.3-dev` same as `pe-0.6.3`, but it is used for development so it might contain less stable builds.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
