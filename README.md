@@ -49,7 +49,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About
 
-P-Slice engine is a crossover between Psych engine and the newest Friday Night Funkin.
+P-Slice engine is a crossover between Psych Engine and the newest version of Friday Night Funkin.
 
 It's meant to bring new visuals and features from newer versions of FNF and make changes to the existing ones to make them feel closer to the ones in the V-Slice.
 
@@ -66,11 +66,11 @@ It's meant to bring new visuals and features from newer versions of FNF and make
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Pre-built Engine can be download from [GameBanana](https://gamebanana.com/mods/535203).
-Also, Nightly/Beta Build can be download from [Github Actions](https://github.com/Psych-Slice/P-Slice/actions/workflows/main.yml). (You needs to make a Github account.)
+Pre-built engine can be downloaded from [GameBanana](https://gamebanana.com/mods/535203).
+Also, Nightly/Beta builds can be downloaded from [Github Actions](https://github.com/Psych-Slice/P-Slice/actions/workflows/main.yml). (You need to make a Github account.)
 
 
-If you wanna compile this Engine, Please check out <a href="#build">Here</a>
+If you wanna compile this engine, Please check out <a href="#build">here!</a>
 
 <a id="build"></a>
 ## Building
@@ -107,11 +107,11 @@ Run
 ### Branches
 `master` is the repository's main branch. It contains a PE 1.0 flavor of P-Slice and is the most maintained version.
 
-`master-dev` same as `master`, but used for development so might contain less stable builds.
+`master-dev` same as `master`, but it is used for development so might contain less stable builds.
 
 `pe-0.6.3` works the same way, but built on Psych 0.6.3. Note that it may contain some bugs not present in the master version.
 
-`pe-0.6.3-dev` same as `pe-0.6.3`, but used for development so might contain less stable builds.
+`pe-0.6.3-dev` same as `pe-0.6.3`, but it is used for development so might contain less stable builds.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
