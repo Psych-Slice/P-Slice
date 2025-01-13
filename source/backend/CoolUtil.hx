@@ -70,7 +70,7 @@ class CoolUtil
 		var newValue:Float = Math.floor(value * tempMult);
 		return newValue / tempMult;
 	}
-
+	#if linux
 	public static function sortAlphabetically(list:Array<String>):Array<String> {
 		// This moster here fixes order of scrips to match the windows implementation
 		// Why? because some people use this quirk (like me)
@@ -90,6 +90,7 @@ class CoolUtil
 			  });
 		return list;
 	}
+	#end
 	
 	inline public static function dominantColor(sprite:flixel.FlxSprite):Int
 	{

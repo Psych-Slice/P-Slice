@@ -13,22 +13,15 @@ class OutdatedState extends MusicBeatState
 		add(bg);
 
 		var guh:String;
+		final bro:String = #if mobile 'kiddo' #else 'bro' #end;
+		final escape:String = (controls.mobileC) ? 'B' : 'ESCAPE';
 
-		if (controls.mobileC) {
-			guh = "Sup kiddo, looks like you're running an   \n
-			outdated version of P-Slice Engine (" + MainMenuState.pSliceVersion + "),\n
-			please update to " + TitleState.updateVersion + "!\n
-			Press B to proceed anyway.\n
-			\n
-			Thank you for using the Engine!";
-		} else {
-			guh = "Sup bro, looks like you're running an   \n
-			outdated version of P-Slice Engine (" + MainMenuState.pSliceVersion + "),\n
-			please update to " + TitleState.updateVersion + "!\n
-			Press ESCAPE to proceed anyway.\n
-			\n
-			Thank you for using the Engine!";
-		}
+		guh = "Sup "+bro+", looks like you're running an   \n
+		outdated version of P-Slice Engine (" + MainMenuState.pSliceVersion + "),\n
+		please update to " + TitleState.updateVersion + "!\n
+		Press "+escape+" to proceed anyway.\n
+		\n
+		Thank you for using the Engine!";
 
 		warnText = new FlxText(0, 0, FlxG.width, guh, 32);
 		warnText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);

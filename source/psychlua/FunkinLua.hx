@@ -1142,8 +1142,8 @@ class FunkinLua {
 		});
 
 		Lua_helper.add_callback(lua, "setObjectCamera", function(obj:String, camera:String = 'game') {
-			var real = game.getLuaObject(obj);
-			if(real!=null){
+			var real:FlxBasic = game.getLuaObject(obj);
+			if(real != null) {
 				real.cameras = [LuaUtils.cameraFromString(camera)];
 				return true;
 			}
@@ -1162,7 +1162,7 @@ class FunkinLua {
 			return false;
 		});
 		Lua_helper.add_callback(lua, "setBlendMode", function(obj:String, blend:String = '') {
-			var real = game.getLuaObject(obj);
+			var real:FlxSprite = game.getLuaObject(obj);
 			if(real != null) {
 				real.blend = LuaUtils.blendModeFromString(blend);
 				return true;
