@@ -37,8 +37,8 @@
   */
  class Hitbox extends MobileInputManager
  {
-	 final offsetFir:Int = (ClientPrefs.data.hitboxPos ? Std.int(FlxG.height / 4) * 3 : 0);
-	 final offsetSec:Int = (ClientPrefs.data.hitboxPos ? 0 : Std.int(FlxG.height / 4));
+	 final offsetFir:Int = (ClientPrefs.data.hitbox2 ? Std.int(FlxG.height / 4) * 3 : 0);
+	 final offsetSec:Int = (ClientPrefs.data.hitbox2 ? 0 : Std.int(FlxG.height / 4));
  
 	 public var buttonLeft:TouchButton = new TouchButton(0, 0, [MobileInputID.HITBOX_LEFT, MobileInputID.NOTE_LEFT]);
 	 public var buttonDown:TouchButton = new TouchButton(0, 0, [MobileInputID.HITBOX_DOWN, MobileInputID.NOTE_DOWN]);
@@ -134,7 +134,7 @@
 		 hint.label = new FlxSprite();
 		 hint.labelStatusDiff = (ClientPrefs.data.hitboxType != "Hidden") ? ClientPrefs.data.controlsAlpha : 0.00001;
 		 hint.label.loadGraphic(createHintGraphic(Width, Math.floor(Height * 0.035), true));
-		 if (ClientPrefs.data.hitboxPos)
+		 if (ClientPrefs.data.hitbox2)
 			 hint.label.offset.y -= (hint.height - hint.label.height) / 2;
 		 else
 			 hint.label.offset.y += (hint.height - hint.label.height) / 2;
