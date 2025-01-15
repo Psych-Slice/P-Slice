@@ -1,5 +1,7 @@
 package mikolka.compatibility;
 
+import options.GameplayChangersSubstate;
+import substates.ResetScoreSubState;
 import mikolka.vslice.components.crash.UserErrorSubstate;
 import openfl.utils.AssetType;
 import mikolka.vslice.freeplay.pslice.FreeplayColorTweener;
@@ -19,6 +21,7 @@ class FreeplayHelpers {
 	public static function get_BPM() {
 		return Conductor.bpm;
 	}
+
     public inline static function loadSongs(){
         var songs = [];
         WeekData.reloadWeekFiles(false);
@@ -50,6 +53,7 @@ class FreeplayHelpers {
 		}
         return songs;
     }
+
     public static function moveToPlaystate(state:FreeplayState,cap:FreeplaySongData,currentDifficulty:String,?targetInstId:String){
         // FunkinSound.emptyPartialQueue();
 
@@ -129,9 +133,14 @@ class FreeplayHelpers {
 	public static function exitFreeplay() {
 		BPMCache.instance.clearCache();	
 		Mods.loadTopMod();
-		FlxG.signals.postStateSwitch.dispatch(); //? for the screenshot plugin to clean itself
+		FlxG.signals.postStateSwitch.dispatch(); //? for the screenshot plugin to clean itself	
+	}
+	public inline static function openResetScoreState(state:FreeplayState,sng:FreeplaySongData,onScoreReset:() -> Void = null) {
 
-		
+		state.openSubState(new ResetScoreSubState(sng.songName, sng.loadAndGetDiffId(), sng.songCharacter,-1,onScoreReset));
+	}
+	public inline static function openGameplayChanges(state:FreeplayState) {
+		state.openSubState(new GameplayChangersSubstate());
 	}
 	public static function loadDiffsFromWeek(songData:FreeplaySongData){
 		Mods.currentModDirectory = songData.folder;

@@ -1,6 +1,5 @@
 package mikolka.vslice.freeplay;
 
-import substates.ResetScoreSubState;
 import options.GameplayChangersSubstate;
 import mikolka.vslice.freeplay.obj.CapsuleOptionsMenu;
 import mikolka.compatibility.FunkinControls;
@@ -1522,11 +1521,11 @@ class FreeplayState extends MusicBeatSubstate
 				|| (TouchUtil.overlapsComplex(djTouchHitbox) && TouchUtil.justReleased && !SwipeUtil.swipeAny)))
 			{
 				tryOpenCharSelect();
-			}
+			} //? Those are new too
 			else if (FlxG.keys.justPressed.CONTROL #if TOUCH_CONTROLS_ALLOWED || touchPad.buttonX.justPressed #end)
 			{
 				persistentUpdate = false;
-				openSubState(new GameplayChangersSubstate());
+				FreeplayHelpers.openGameplayChanges(this);
 				#if TOUCH_CONTROLS_ALLOWED
 				removeTouchPad();
 				#end
@@ -1534,18 +1533,19 @@ class FreeplayState extends MusicBeatSubstate
 			else if (controls.RESET && curSelected != 0)
 			{
 				persistentUpdate = false;
-				openSubState(new ResetScoreSubState(songs[curSelected].songName, songs[curSelected].loadAndGetDiffId(), songs[curSelected].songCharacter,-1,() -> {
-					songs[curSelected].scoringRank = null;
-					songs[curSelected].updateIsNewTag();
-					grpCapsules.members[curSelected].refreshDisplay();
+				var curSng = grpCapsules.members[curSelected];
+				FreeplayHelpers.openResetScoreState(this,curSng.songData,() -> {
+					curSng.songData.scoringRank = null;
 					intendedScore = 0;
 					intendedCompletion = 0;
-				}));
+					curSng.songData.updateIsNewTag();
+					curSng.refreshDisplay();
+				});
 				#if TOUCH_CONTROLS_ALLOWED
 				removeTouchPad();
 				#end
 				FunkinSound.playOnce(Paths.sound('scrollMenu'), 0.4);
-			}
+			} //? //!
 		}
 
 		if (controls.FAVORITE && !busy) // ? change control binding
