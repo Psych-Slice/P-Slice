@@ -8,7 +8,7 @@ import objects.Character;
 #else
 using mikolka.compatibility.stages.misc.CharUtills;
 #end
-class SpookyMansionErect extends PicoCapableStage
+class SpookyMansionErect extends BaseStage
 {
 	var halloweenBG:BGSprite;
 	var halloweenBGLight:BGSprite;

@@ -9,7 +9,7 @@ import cutscenes.CutsceneHandler;
 import objects.Character;
 #end
 
-class PhillyTrainErect extends PicoCapableStage
+class PhillyTrainErect extends BaseStage
 {
 	var phillyLightsColors:Array<FlxColor>;
 	var phillyWindow:BGSprite;

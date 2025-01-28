@@ -1,3 +1,4 @@
+import mikolka.stages.EventLoader;
 #if LUA_ALLOWED
 package psychlua;
 
@@ -1565,6 +1566,7 @@ class FunkinLua {
 		CustomSubstate.implement(this);
 		ShaderFunctions.implement(this);
 		DeprecatedFunctions.implement(this);
+		EventLoader.implement(this);
 		#if TOUCH_CONTROLS_ALLOWED
 		MobileFunctions.implement(this);
 		MobileDeprecatedFunctions.implement(this);

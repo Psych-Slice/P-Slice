@@ -3,13 +3,18 @@ package mikolka.stages.erect;
 import mikolka.compatibility.VsliceOptions;
 import openfl.display.BlendMode;
 import shaders.AdjustColorShader;
+import mikolka.stages.objects.StageSpotlight;
+#if !LEGACY_PSYCH
+import objects.Character;
+import objects.Note;
+#end
 
-class MainStageErect extends PicoCapableStage {
-    var dadbattleBlack:BGSprite;
-	var dadbattleLight:BGSprite;
+class MainStageErect extends BaseStage {
+   
 	var peeps:BGSprite;
 	override function create()
 	{
+        new StageSpotlight(200,-50);
 		var bg:BGSprite = new BGSprite('erect/backDark', 729, -170);
 		add(bg);
 
@@ -52,6 +57,7 @@ class MainStageErect extends PicoCapableStage {
 			add(TheOneAbove);
         }
 	}
+
     override function createPost() {
         super.createPost();
         if(VsliceOptions.SHADERS){

@@ -1,4 +1,4 @@
-package mikolka.stages;
+package mikolka.stages.objects;
 
 import mikolka.compatibility.VsliceOptions;
 #if !LEGACY_PSYCH 

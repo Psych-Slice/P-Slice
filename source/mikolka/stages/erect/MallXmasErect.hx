@@ -8,7 +8,7 @@ import mikolka.compatibility.VsliceOptions;
 import substates.GameOverSubstate;
 #end
 
-class MallXmasErect extends PicoCapableStage
+class MallXmasErect extends BaseStage
 {
 	var upperBoppers:BGSprite;
 	var bottomBoppers:MallCrowd;
