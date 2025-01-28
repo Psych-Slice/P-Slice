@@ -606,7 +606,7 @@
 				[65500, 5, 0],
 				[65750, 6, 0]
 			],
-			"mustHitSection": true
+			"mustHitSection": false
 		},
 		{
 			"sectionBeats": 4,

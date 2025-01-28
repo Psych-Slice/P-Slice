@@ -1,5 +1,9 @@
 package mikolka.stages.objects;
 
+#if !LEGACY_PSYCH
+import objects.Character;
+#end
+
 class StageSpotlight extends BaseStage{
     var dadbattleBlack:BGSprite;
 	var dadbattleLight:BGSprite;
@@ -7,6 +11,7 @@ class StageSpotlight extends BaseStage{
     var X:Int;
     var Y:Int;
     public function new(X:Int,Y:Int) {
+        super();
         this.X = X;
         this.Y = Y;
     }

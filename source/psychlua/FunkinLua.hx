@@ -1,4 +1,3 @@
-import mikolka.stages.EventLoader;
 #if LUA_ALLOWED
 package psychlua;
 
@@ -46,6 +45,7 @@ import haxe.Json;
 import mobile.psychlua.Functions;
 
 import mikolka.vslice.freeplay.FreeplayState;
+import mikolka.stages.EventLoader;
 
 class FunkinLua {
 	public var lua:State = null;

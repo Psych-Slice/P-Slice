@@ -21,9 +21,9 @@ class PicoCapableStage extends BaseStage {
     final MIN_BLINK_DELAY:Int = 3;
 	final MAX_BLINK_DELAY:Int = 7;
 	final VULTURE_THRESHOLD:Float = 0.5;
-    private static var NENE_LIST = ['nene','nene-christmas','nene-dark'];
+    public static var NENE_LIST = ['nene','nene-christmas','nene-dark'];
 
-    var abot:ABotSpeaker;
+    public var abot:ABotSpeaker;
     var blinkCountdown:Int = 3;
 
     override function createPost() {
@@ -67,14 +67,35 @@ class PicoCapableStage extends BaseStage {
     }
     override function startSong() {
         super.startSong();
-
+        gf.animation.finishCallback = onNeneAnimationFinished;
         if(abot == null) return;
         abot.snd = FlxG.sound.music;
     }
+
     override function sectionHit(){
         if(abot == null) return;
         updateABotEye(); // If this fails we probably need to dispose our ABot
     }
+
+    function onNeneAnimationFinished(name:String)
+        {
+            @:privateAccess
+            if (!game.startedCountdown)
+                return;
+    
+            switch (currentNeneState)
+            {
+                case STATE_RAISE, STATE_LOWER:
+                    if (name == 'raiseKnife' || name == 'lowerKnife')
+                    {
+                        animationFinished = true;
+                        transitionState();
+                    }
+    
+                default:
+                    // Ignore.
+            }
+        }
 
     override function beatHit() {
         super.beatHit();
@@ -169,7 +190,7 @@ class PicoCapableStage extends BaseStage {
             }
         }
 
-    function ABot_plink() { // silly daniel
+    public function ABot_plink() { // silly daniel
         if(abot == null || abot.speakerAlt == null) return;
         abot.speakerAlt.alpha = 1;
         abot.speaker.alpha = 0;

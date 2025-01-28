@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import mikolka.stages.objects.PhillyLights;
 import mikolka.stages.objects.PicoDopplegangerSprite;
 import shaders.AdjustColorShader;
 import flxanimate.motion.AdjustColor;
@@ -16,12 +17,6 @@ class PhillyTrainErect extends BaseStage
 	var phillyStreet:BGSprite;
 	var phillyTrain:PhillyTrain;
 	var curLight:Int = -1;
-
-	// For Philly Glow events
-	var blammedLightsBlack:FlxSprite;
-	var phillyGlowGradient:PhillyGlowGradient;
-	var phillyGlowParticles:FlxTypedGroup<PhillyGlowParticle>;
-	var phillyWindowEvent:BGSprite;
 
 	var curLightEvent:Int = -1;
 	var colorShader:AdjustColorShader;
@@ -61,6 +56,8 @@ class PhillyTrainErect extends BaseStage
 		if(!seenCutscene 
 			&& PlayState.SONG.player1 == "pico-playable" 
 			&& PlayState.SONG.player2 == "pico") setStartCallback(ughIntro);
+		
+		new PhillyLights(phillyStreet,phillyWindow.x,phillyWindow.y,phillyLightsColors);
 	}
 
 	override function createPost()
@@ -85,14 +82,6 @@ class PhillyTrainErect extends BaseStage
 	override function update(elapsed:Float)
 	{
 		phillyWindow.alpha -= (Conductor.crochet / 1000) * FlxG.elapsed * 1.5;
-		if (phillyGlowParticles != null)
-		{
-			phillyGlowParticles.forEachAlive(function(particle:PhillyGlowParticle)
-			{
-				if (particle.alpha <= 0)
-					particle.kill();
-			});
-		}
 		super.update(elapsed);
 	}
 
