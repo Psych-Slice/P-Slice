@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import flixel.FlxSubState;
 import mikolka.stages.objects.PhillyLights;
 import mikolka.stages.objects.PicoDopplegangerSprite;
 import shaders.AdjustColorShader;
@@ -52,6 +53,7 @@ class PhillyTrainErect extends BaseStage
 
 		phillyStreet = new BGSprite('philly/erect/street', -40, 50);
 		add(phillyStreet);
+		
 
 		if(!seenCutscene 
 			&& PlayState.SONG.player1 == "pico-playable" 
@@ -81,7 +83,7 @@ class PhillyTrainErect extends BaseStage
 
 	override function update(elapsed:Float)
 	{
-		phillyWindow.alpha -= (Conductor.crochet / 1000) * FlxG.elapsed * 1.5;
+		phillyWindow.alpha -= (Conductor.crochet / 1000) * FlxG.elapsed * 1.9;
 		super.update(elapsed);
 	}
 
@@ -96,6 +98,15 @@ class PhillyTrainErect extends BaseStage
 		}
 	}
 
+	override function openSubState(SubState:FlxSubState) {
+		if(phillyTrain.sound?.playing){
+			phillyTrain.sound.pause();
+			PlayState.instance.subStateClosed.addOnce((sub) ->{
+				if (phillyTrain.sound != null) phillyTrain.sound.resume();
+			});
+		}
+		super.openSubState(SubState);
+	}
 	function doFlash()
 	{
 		var color:FlxColor = FlxColor.WHITE;
