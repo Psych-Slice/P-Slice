@@ -187,6 +187,7 @@ class StoryMenuState extends MusicBeatState
 		rightArrow.antialiasing = ClientPrefs.globalAntialiasing;
 		difficultySelectors.add(rightArrow);
 
+		add(new FlxSprite(0, 0).makeGraphic(FlxG.width, 56, 0xFF000000));
 		add(bgYellow);
 		add(bgSprite);
 		add(grpWeekCharacters);
