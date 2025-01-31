@@ -193,6 +193,7 @@ class StoryMenuState extends MusicBeatState
 		rightArrow.animation.play('idle');
 		difficultySelectors.add(rightArrow);
 
+		add(new FlxSprite(0, 0).makeGraphic(FlxG.width, 56, 0xFF000000));
 		add(bgYellow);
 		add(bgSprite);
 		add(grpWeekCharacters);
