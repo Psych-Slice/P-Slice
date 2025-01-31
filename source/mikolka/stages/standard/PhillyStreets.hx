@@ -404,7 +404,7 @@ class PhillyStreets extends BaseStage
 		PlayState.instance.subStateClosed.addOnce((sub) ->{
 			carSndAmbience.volume = 0.1;
 			carSndAmbience.resume();
-			rainSndAmbience.resume();
+			if (rainSndAmbience != null) rainSndAmbience.resume();
 		});
 	}
 	
