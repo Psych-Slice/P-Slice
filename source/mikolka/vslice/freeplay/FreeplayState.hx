@@ -754,7 +754,7 @@ class FreeplayState extends MusicBeatSubstate
 		}
 
 		#if TOUCH_CONTROLS_ALLOWED
-		addTouchPad('UP_DOWN', 'A_B_F');
+		addTouchPad('UP_DOWN', 'A_B_F_X_Y');
 		addTouchPadCamera();
 		if (prepForNewRank)
 		{
@@ -1522,7 +1522,7 @@ class FreeplayState extends MusicBeatSubstate
 			{
 				tryOpenCharSelect();
 			} //? Those are new too
-			else if (FlxG.keys.justPressed.CONTROL #if TOUCH_CONTROLS_ALLOWED || touchPad.buttonX.justPressed #end)
+			else if (FlxG.keys.justPressed.CONTROL #if TOUCH_CONTROLS_ALLOWED || touchPad.buttonY.justPressed #end)
 			{
 				persistentUpdate = false;
 				FreeplayHelpers.openGameplayChanges(this);
@@ -1530,7 +1530,7 @@ class FreeplayState extends MusicBeatSubstate
 				removeTouchPad();
 				#end
 			}
-			else if (controls.RESET && curSelected != 0)
+			else if (controls.RESET #if TOUCH_CONTROLS_ALLOWED || touchPad.buttonX.justPressed #end && curSelected != 0)
 			{
 				persistentUpdate = false;
 				var curSng = grpCapsules.members[curSelected];

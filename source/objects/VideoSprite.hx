@@ -122,7 +122,7 @@ class VideoSprite extends FlxSpriteGroup {
 
 	override function update(elapsed:Float)
 	{
-		if (Controls.instance.pressed('pause') && !pauseJustClosed && PlayState.instance != null)
+		if (Controls.instance.pressed('pause') #if android || FlxG.android.justReleased.BACK #end && !pauseJustClosed && PlayState.instance != null)
 			{
 				var game = PlayState.instance;
 					FlxG.camera.followLerp = 0;
