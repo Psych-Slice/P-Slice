@@ -1,5 +1,7 @@
 package mikolka.stages.standard;
 
+import mikolka.compatibility.FreeplayHelpers;
+import objects.Note.EventNote;
 import mikolka.compatibility.VsliceOptions;
 
 enum HenchmenKillState
@@ -17,6 +19,9 @@ class Limo extends BaseStage
 	var fastCar:BGSprite;
 	var fastCarCanDrive:Bool = true;
 
+	var limoBgMetalPole:BGSprite;
+	var limoBglight:BGSprite;
+	var skipBgPoleOnBeats:Array<Int> = [];
 	// event
 	var limoKillingState:HenchmenKillState = WAIT;
 	var limoMetalPole:BGSprite;
@@ -35,6 +40,12 @@ class Limo extends BaseStage
 		if(!VsliceOptions.LOW_QUALITY) {
 			limoMetalPole = new BGSprite('gore/metalPole', -500, 220, 0.4, 0.4);
 			add(limoMetalPole);
+
+			limoBgMetalPole = new BGSprite('gore/metalPole', -500, 20, 0.4, 0.4);
+			add(limoBgMetalPole);
+
+			limoBglight = new BGSprite('gore/coldHeartKiller', limoBgMetalPole.x - 180, limoBgMetalPole.y - 80, 0.4, 0.4);
+			add(limoBglight);
 
 			bgLimo = new BGSprite('limo/bgLimo', -150, 480, 0.4, 0.4, ['background limo pink'], true);
 			add(bgLimo);
@@ -74,6 +85,12 @@ class Limo extends BaseStage
 
 		fastCar = new BGSprite('limo/fastCarLol', -300, 160);
 		fastCar.active = true;
+	}
+	override function eventPushedUnique(event:EventNote) {
+		if(event.event == ""){
+			skipBgPoleOnBeats.push(Conductor.getBeatRounded(event.strumTime));
+		}
+		super.eventPushedUnique(event);
 	}
 	override function createPost()
 	{
@@ -176,6 +193,22 @@ class Limo extends BaseStage
 			{
 				dancer.dance();
 			});
+			if(curBeat%4==0 && !skipBgPoleOnBeats.contains(curBeat)){
+				var endX = 1500;
+				var time = Math.min((60/FreeplayHelpers.BPM) *3,1);
+				FlxTween.tween(limoBgMetalPole,{ x:endX},time,{
+					ease: FlxEase.linear,
+					onComplete: (x) ->{
+						limoBgMetalPole.x = -500;
+					}
+				});
+				FlxTween.tween(limoBglight,{ x:endX-180},time,{
+					ease: FlxEase.linear,
+					onComplete: (x) ->{
+						limoBglight.x = -500 -180;
+					}
+				});
+			}
 		}
 
 		if (FlxG.random.bool(10) && fastCarCanDrive)
