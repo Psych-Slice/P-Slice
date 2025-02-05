@@ -26,7 +26,7 @@ import flixel.input.FlxInput;
 import flixel.input.FlxPointer;
 import flixel.input.IFlxInput;
 import flixel.util.FlxDestroyUtil.IFlxDestroyable;
-#if mac
+#if desktop
 import flixel.input.mouse.FlxMouseButton;
 #end
 
@@ -307,7 +307,7 @@ class TypedTouchButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 
 		for (camera in cameras)
 		{
-			#if mac
+			#if desktop
 			var button = FlxMouseButton.getByID(FlxMouseButtonID.LEFT);
 			if (checkInput(FlxG.mouse, button, button.justPressedPosition, camera))
 			#else

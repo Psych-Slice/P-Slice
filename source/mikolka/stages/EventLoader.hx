@@ -11,17 +11,8 @@ class EventLoader extends BaseStage {
     public static function implement(funk:FunkinLua)
         {
             var lua:State = funk.lua;
-            Lua_helper.add_callback(lua, "loadFeature", function(type:String,name:String) {
-                switch(type){
-                    case "feature":
-                        switch(name){
-                            case "ABot": {
-                                new PicoCapableStage();
-                            }
-                        }
-                    case "stage":
-                        addstage(name);
-                }
+            Lua_helper.add_callback(lua, "markAsPicoCapable", function() {
+                new PicoCapableStage();
             });
         }
     public static function addstage(name:String) {

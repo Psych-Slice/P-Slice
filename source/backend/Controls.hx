@@ -113,7 +113,7 @@ class Controls
 	public function pressed(key:String)
 	{
 		var result:Bool = (FlxG.keys.anyPressed(keyboardBinds[key]) == true);
-		if(result) controllerMode = false;
+		if(result) controllerMode = false; 
 
 		return result
 			|| _myGamepadPressed(gamepadBinds[key]) == true

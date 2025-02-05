@@ -86,6 +86,7 @@ class ResetScoreSubState extends MusicBeatSubstate
 
 		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad('LEFT_RIGHT', 'A_B');
+		addTouchPadCamera(false);
 		#end
 	}
 

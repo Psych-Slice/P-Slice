@@ -1,6 +1,5 @@
 package mikolka.vslice.freeplay;
 
-import options.GameplayChangersSubstate;
 import mikolka.vslice.freeplay.obj.CapsuleOptionsMenu;
 import mikolka.compatibility.FunkinControls;
 import mikolka.vslice.charSelect.CharSelectSubState;
@@ -1278,11 +1277,13 @@ class FreeplayState extends MusicBeatSubstate
 	override function closeSubState()
 	{
 		super.closeSubState();
+		
 		controls.isInSubstate = true;
-
 		#if TOUCH_CONTROLS_ALLOWED
+		backend.MusicBeatSubstate.instance = this;
+		persistentUpdate = true;
 		removeTouchPad();
-		addTouchPad('UP_DOWN', 'A_B_F');
+		addTouchPad('UP_DOWN', 'A_B_F_X_Y');
 		addTouchPadCamera();
 		#end
 	}
@@ -1522,18 +1523,22 @@ class FreeplayState extends MusicBeatSubstate
 			{
 				tryOpenCharSelect();
 			} //? Those are new too
-			else if (FlxG.keys.justPressed.CONTROL #if TOUCH_CONTROLS_ALLOWED || touchPad.buttonX.justPressed #end)
+			else if (FlxG.keys.justPressed.CONTROL #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonX.justPressed #end)
 			{
 				persistentUpdate = false;
-				FreeplayHelpers.openGameplayChanges(this);
 				#if TOUCH_CONTROLS_ALLOWED
 				removeTouchPad();
 				#end
+				FreeplayHelpers.openGameplayChanges(this);
 			}
-			else if (controls.RESET #if TOUCH_CONTROLS_ALLOWED || touchPad.buttonY.justPressed #end && curSelected != 0)
+			else if (controls.RESET #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonY.justPressed #end && curSelected != 0)
 			{
 				persistentUpdate = false;
 				var curSng = grpCapsules.members[curSelected];
+				#if TOUCH_CONTROLS_ALLOWED
+				removeTouchPad();
+				#end
+
 				FreeplayHelpers.openResetScoreState(this,curSng.songData,() -> {
 					curSng.songData.scoringRank = null;
 					intendedScore = 0;
@@ -1541,14 +1546,11 @@ class FreeplayState extends MusicBeatSubstate
 					curSng.songData.updateIsNewTag();
 					curSng.refreshDisplay();
 				});
-				#if TOUCH_CONTROLS_ALLOWED
-				removeTouchPad();
-				#end
 				FunkinSound.playOnce(Paths.sound('scrollMenu'), 0.4);
 			} //? //!
 		}
 
-		if (controls.FAVORITE && !busy) // ? change control binding
+		if (controls.FAVORITE #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonF.justPressed #end && !busy) // ? change control binding
 		{
 			var targetSong = grpCapsules.members[curSelected]?.songData;
 			if (targetSong != null)
@@ -1649,9 +1651,9 @@ class FreeplayState extends MusicBeatSubstate
 		if (busy)
 			return;
 
-		var upP:Bool = controls.UI_UP_P;
-		var downP:Bool = controls.UI_DOWN_P;
-		var accepted:Bool = controls.ACCEPT;
+		var upP:Bool = controls.UI_UP_P #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonUp.justPressed #end;
+		var downP:Bool = controls.UI_DOWN_P #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonDown.justPressed #end;
+		var accepted:Bool = controls.ACCEPT #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonA.justPressed #end;
 
 		if ((controls.UI_UP || controls.UI_DOWN))
 		{
@@ -1746,7 +1748,7 @@ class FreeplayState extends MusicBeatSubstate
 			diffSelLeft.setPress(false);
 		}
 
-		if (controls.BACK && !busy)
+		if (controls.BACK #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonB.justPressed #end && !busy)
 		{
 			busy = true;
 			FlxTween.globalManager.clear();

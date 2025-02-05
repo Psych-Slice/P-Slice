@@ -629,8 +629,8 @@ class PlayState extends MusicBeatState
 		#if TOUCH_CONTROLS_ALLOWED
 		addHitbox();
 		hitbox.visible = true;
-		hitbox.onHintDown.add(onHintPress);
-		hitbox.onHintUp.add(onHintRelease);
+		hitbox.onButtonDown.add(onHintPress);
+		hitbox.onButtonUp.add(onHintRelease);
 		#end
 
 		startCallback();
@@ -3100,7 +3100,7 @@ class PlayState extends MusicBeatState
 	#if TOUCH_CONTROLS_ALLOWED
 	private function onHintPress(button:TouchButton):Void
 	{
-		var buttonCode:Int = (button.IDs[0].toString().startsWith('HITBOX')) ? button.IDs[0] : button.IDs[1];
+		var buttonCode:Int = (button.IDs[0].toString().startsWith('HITBOX')) ? button.IDs[1] : button.IDs[0];
 		callOnScripts('onHintPressPre', [buttonCode]);
 		if (button.justPressed) keyPressed(buttonCode);
 		callOnScripts('onHintPress', [buttonCode]);
@@ -3108,7 +3108,7 @@ class PlayState extends MusicBeatState
 
 	private function onHintRelease(button:TouchButton):Void
 	{
-		var buttonCode:Int = (button.IDs[0].toString().startsWith('HITBOX')) ? button.IDs[0] : button.IDs[1];
+		var buttonCode:Int = (button.IDs[0].toString().startsWith('HITBOX')) ? button.IDs[1] : button.IDs[0];
 		callOnScripts('onHintReleasePre', [buttonCode]);
 		if(buttonCode > -1) keyReleased(buttonCode);
 		callOnScripts('onHintRelease', [buttonCode]);
@@ -3124,7 +3124,7 @@ class PlayState extends MusicBeatState
 		var releaseArray:Array<Bool> = [];
 		for (key in keysArray)
 		{
-			holdArray.push(controls.pressed(key));
+			holdArray.push(controls.pressed(key)); 
 			pressArray.push(controls.justPressed(key));
 			releaseArray.push(controls.justReleased(key));
 		}

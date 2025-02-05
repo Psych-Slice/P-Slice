@@ -1,7 +1,7 @@
 #!/bin/bash
 cd ..
 echo Making the haxelib and setuping folder in same time...
-haxelib newrepo
+#haxelib newrepo
 echo Installing dependencies...
 echo This might take a few moments depending on your internet speed.
 haxelib git hxcpp https://github.com/mcagabe19-stuff/hxcpp --quiet
