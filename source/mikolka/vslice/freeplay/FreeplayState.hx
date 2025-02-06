@@ -1654,8 +1654,10 @@ class FreeplayState extends MusicBeatSubstate
 		var upP:Bool = controls.UI_UP_P #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonUp.justPressed #end;
 		var downP:Bool = controls.UI_DOWN_P #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonDown.justPressed #end;
 		var accepted:Bool = controls.ACCEPT #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonA.justPressed #end;
-
-		if ((controls.UI_UP || controls.UI_DOWN))
+		//? new tags
+		var up = controls.UI_UP #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonUp.pressed #end;
+		var down = controls.UI_DOWN #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonDown.pressed #end;
+		if ((up || down))
 		{
 			if (spamming)
 			{
@@ -1663,7 +1665,7 @@ class FreeplayState extends MusicBeatSubstate
 				{
 					spamTimer = 0;
 
-					if (controls.UI_UP)
+					if (up)
 					{
 						changeSelection(-1);
 					}
@@ -1679,7 +1681,7 @@ class FreeplayState extends MusicBeatSubstate
 			}
 			else if (spamTimer <= 0)
 			{
-				if (controls.UI_UP)
+				if (up)
 				{
 					changeSelection(-1);
 				}
