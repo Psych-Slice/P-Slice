@@ -1,456 +1,348 @@
 {
 	"song": {
 		"events": [
+		[
+			39111.1111111111,
 			[
-				44444,
-				[
-					[
-						"ZoomCamera",
-						"6,1.1",
-						"quadOut"
-					]
-				]
-			],
+				["Kill Henchmen", "", ""]
+			]
+		],
+		[
+			39231,
 			[
-				45333,
-				[
-					[
-						"ZoomCamera",
-						"6,1.2",
-						"quadOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,0.95", "expoOut"]
+			]
+		],
+		[
+			39333.3333333333,
 			[
-				47999,
-				[
-					[
-						"ZoomCamera",
-						"32,1.1",
-						"expoOut"
-					]
-				]
-			],
+				["Camera Follow Pos", "610", "370"]
+			]
+		],
+		[
+			42666,
 			[
-				48888,
-				[
-					[
-						"ZoomCamera",
-						"32,1",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1", "smoothStepInOut"]
+			]
+		],
+		[
+			44333.3333333333,
 			[
-				51555,
-				[
-					[
-						"ZoomCamera",
-						"32,1.1",
-						"expoOut"
-					]
-				]
-			],
+				["Camera Follow Pos", "", ""]
+			]
+		],
+		[
+			44444,
 			[
-				52444,
-				[
-					[
-						"ZoomCamera",
-						"32,1",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "6,1.1", "quadOut"]
+			]
+		],
+		[
+			45333,
 			[
-				53453,
-				[
-					[
-						"ZoomCamera",
-						"32,0.95",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "6,1.2", "quadOut"]
+			]
+		],
+		[
+			46222,
 			[
-				55111,
-				[
-					[
-						"ZoomCamera",
-						"32,1.05",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "8,1", "quadOut"]
+			]
+		],
+		[
+			47999,
 			[
-				55999,
-				[
-					[
-						"ZoomCamera",
-						"32,0.95",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1.1", "expoOut"]
+			]
+		],
+		[
+			48888,
 			[
-				58666,
-				[
-					[
-						"ZoomCamera",
-						"32,1.05",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1", "expoOut"]
+			]
+		],
+		[
+			51555,
 			[
-				60444,
-				[
-					[
-						"ZoomCamera",
-						"32,1",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1.1", "expoOut"]
+			]
+		],
+		[
+			52444,
 			[
-				65777,
-				[
-					[
-						"ZoomCamera",
-						"32,1.1",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1", "expoOut"]
+			]
+		],
+		[
+			53333.3333333334,
 			[
-				66666,
-				[
-					[
-						"ZoomCamera",
-						"32,1",
-						"expoOut"
-					]
-				]
-			],
+				["Camera Follow Pos", "610", "370"]
+			]
+		],
+		[
+			53453,
 			[
-				67675,
-				[
-					[
-						"ZoomCamera",
-						"32,0.95",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,0.95", "expoOut"]
+			]
+		],
+		[
+			55111,
 			[
-				71110,
-				[
-					[
-						"ZoomCamera",
-						"32,1",
-						"smoothStepInOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1.05", "expoOut"]
+			]
+		],
+		[
+			55999,
 			[
-				72888,
-				[
-					[
-						"ZoomCamera",
-						"6,1.1",
-						"quadOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,0.95", "expoOut"]
+			]
+		],
+		[
+			58666,
 			[
-				73777,
-				[
-					[
-						"ZoomCamera",
-						"6,1.2",
-						"quadOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1.05", "expoOut"]
+			]
+		],
+		[
+			59554,
 			[
-				74666,
-				[
-					[
-						"ZoomCamera",
-						"8,1",
-						"quadOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,0.95", "expoOut"]
+			]
+		],
+		[
+			60333.3333333334,
 			[
-				76444,
-				[
-					[
-						"ZoomCamera",
-						"32,1.1",
-						"expoOut"
-					]
-				]
-			],
+				["Camera Follow Pos", "", ""]
+			]
+		],
+		[
+			60444,
 			[
-				78222,
-				[
-					[
-						"ZoomCamera",
-						"32,1",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1", "expoOut"]
+			]
+		],
+		[
+			65777,
 			[
-				79999,
-				[
-					[
-						"ZoomCamera",
-						"32,1.05",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1.1", "expoOut"]
+			]
+		],
+		[
+			66666,
 			[
-				80333,
-				[
-					[
-						"ZoomCamera",
-						"32,1.1",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1", "expoOut"]
+			]
+		],
+		[
+			67555.5555555556,
 			[
-				80888,
-				[
-					[
-						"ZoomCamera",
-						"32,1",
-						"expoOut"
-					]
-				]
-			],
+				["Kill Henchmen", "", ""]
+			]
+		],
+		[
+			67675,
 			[
-				81897,
-				[
-					[
-						"ZoomCamera",
-						"32,0.95",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,0.95", "expoOut"]
+			]
+		],
+		[
+			67777.7777777778,
 			[
-				83555,
-				[
-					[
-						"ZoomCamera",
-						"32,1.05",
-						"expoOut"
-					]
-				]
-			],
+				["Camera Follow Pos", "610", "370"]
+			]
+		],
+		[
+			71110,
 			[
-				85333,
-				[
-					[
-						"ZoomCamera",
-						"32,0.95",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1", "smoothStepInOut"]
+			]
+		],
+		[
+			72777.7777777778,
 			[
-				87111,
-				[
-					[
-						"ZoomCamera",
-						"32,1",
-						"expoOut"
-					]
-				]
-			],
+				["Camera Follow Pos", "", ""]
+			]
+		],
+		[
+			72888,
 			[
-				87444,
-				[
-					[
-						"ZoomCamera",
-						"32,1.05",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "6,1.1", "quadOut"]
+			]
+		],
+		[
+			73777,
 			[
-				87999,
-				[
-					[
-						"ZoomCamera",
-						"32,0.95",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "6,1.2", "quadOut"]
+			]
+		],
+		[
+			74666,
 			[
-				90666,
-				[
-					[
-						"ZoomCamera",
-						"32,1.05",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "8,1", "quadOut"]
+			]
+		],
+		[
+			76444,
 			[
-				91554,
-				[
-					[
-						"ZoomCamera",
-						"32,0.95",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1.1", "expoOut"]
+			]
+		],
+		[
+			78222,
 			[
-				92444,
-				[
-					[
-						"ZoomCamera",
-						"32,1",
-						"smoothStepInOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1", "expoOut"]
+			]
+		],
+		[
+			79999,
 			[
-				94222,
-				[
-					[
-						"ZoomCamera",
-						"6,1.1",
-						"quadOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1.05", "expoOut"]
+			]
+		],
+		[
+			80333,
 			[
-				94666,
-				[
-					[
-						"ZoomCamera",
-						"6,1.2",
-						"quadOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1.1", "expoOut"]
+			]
+		],
+		[
+			80888,
 			[
-				95111,
-				[
-					[
-						"ZoomCamera",
-						"6,1.3",
-						"quadOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1", "expoOut"]
+			]
+		],
+		[
+			81777.7777777779,
 			[
-				96119,
-				[
-					[
-						"ZoomCamera",
-						"32,0.95",
-						"expoOut"
-					]
-				]
-			],
+				["Camera Follow Pos", "610", "370"]
+			]
+		],
+		[
+			81897,
 			[
-				98665,
-				[
-					[
-						"ZoomCamera",
-						"32,0.95",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,0.95", "expoOut"]
+			]
+		],
+		[
+			83555,
 			[
-				101333,
-				[
-					[
-						"ZoomCamera",
-						"32,1.05",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1.05", "expoOut"]
+			]
+		],
+		[
+			85333,
 			[
-				102221,
-				[
-					[
-						"ZoomCamera",
-						"32,0.95",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,0.95", "expoOut"]
+			]
+		],
+		[
+			87111,
 			[
-				103166,
-				[
-					[
-						"ZoomCamera",
-						"32,1",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1", "expoOut"]
+			]
+		],
+		[
+			87444,
 			[
-				97777,
-				[
-					[
-						"ZoomCamera",
-						"32,1.05",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1.05", "expoOut"]
+			]
+		],
+		[
+			87999,
 			[
-				59554,
-				[
-					[
-						"ZoomCamera",
-						"32,0.95",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,0.95", "expoOut"]
+			]
+		],
+		[
+			90666,
 			[
-				46222,
-				[
-					[
-						"ZoomCamera",
-						"8,1",
-						"quadOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1.05", "expoOut"]
+			]
+		],
+		[
+			91554,
 			[
-				42666,
-				[
-					[
-						"ZoomCamera",
-						"32,1",
-						"smoothStepInOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,0.95", "expoOut"]
+			]
+		],
+		[
+			92444,
 			[
-				39231,
-				[
-					[
-						"ZoomCamera",
-						"32,0.95",
-						"expoOut"
-					]
-				]
+				["ZoomCamera", "32,1", "smoothStepInOut"]
+			]
+		],
+		[
+			94111.1111111112,
+			[
+				["Camera Follow Pos", "", ""]
+			]
+		],
+		[
+			94222,
+			[
+				["ZoomCamera", "6,1.1", "quadOut"]
+			]
+		],
+		[
+			94666,
+			[
+				["ZoomCamera", "6,1.2", "quadOut"]
+			]
+		],
+		[
+			95111,
+			[
+				["ZoomCamera", "6,1.3", "quadOut"]
+			]
+		],
+		[
+			96000.0000000001,
+			[
+				["Camera Follow Pos", "610", "370"]
+			]
+		],
+		[
+			96119,
+			[
+				["ZoomCamera", "32,0.95", "expoOut"]
+			]
+		],
+		[
+			97777,
+			[
+				["ZoomCamera", "32,1.05", "expoOut"]
+			]
+		],
+		[
+			98665,
+			[
+				["ZoomCamera", "32,0.95", "expoOut"]
+			]
+		],
+		[
+			101333,
+			[
+				["ZoomCamera", "32,1.05", "expoOut"]
+			]
+		],
+		[
+			102221,
+			[
+				["ZoomCamera", "32,0.95", "expoOut"]
+			]
+		],
+		[
+			103000,
+			[
+				["Camera Follow Pos", "", ""]
+			]
+		],
+		[
+			103166,
+			[
+				["ZoomCamera", "32,1", "expoOut"]
 			]
 		]
+	]
 	}
 }

@@ -1,146 +1,150 @@
 {
 	"song": {
 		"events": [
+		[
+			3840,
 			[
-				48960,
-				[
-					[
-						"ZoomCamera",
-						"6,1.1",
-						"quadOut"
-					]
-				]
-			],
+				["Kill Henchmen", "", ""]
+			]
+		],
+		[
+			19200,
 			[
-				49440,
-				[
-					[
-						"ZoomCamera",
-						"6,1.2",
-						"quadOut"
-					]
-				]
-			],
+				["Kill Henchmen", "", ""]
+			]
+		],
+		[
+			34560,
 			[
-				73080,
-				[
-					[
-						"ZoomCamera",
-						"32,0.95",
-						"expoOut"
-					]
-				]
-			],
+				["Kill Henchmen", "", ""]
+			]
+		],
+		[
+			42240,
 			[
-				76680,
-				[
-					[
-						"ZoomCamera",
-						"32,1",
-						"smoothStepInOut"
-					]
-				]
-			],
+				["Camera Follow Pos", "620", "390"]
+			]
+		],
+		[
+			42360,
 			[
-				79680,
-				[
-					[
-						"ZoomCamera",
-						"6,1.1",
-						"quadOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,0.95", "expoOut"]
+			]
+		],
+		[
+			45840,
 			[
-				80160,
-				[
-					[
-						"ZoomCamera",
-						"6,1.2",
-						"quadOut"
-					]
-				]
-			],
+				["Camera Follow Pos", "", ""]
+			]
+		],
+		[
+			45960,
 			[
-				80760,
-				[
-					[
-						"ZoomCamera",
-						"32,0.95",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,1", "smoothStepInOut"]
+			]
+		],
+		[
+			48960,
 			[
-				84600,
-				[
-					[
-						"ZoomCamera",
-						"32,1.1",
-						"sineOut"
-					]
-				]
-			],
+				["ZoomCamera", "6,1.1", "quadOut"]
+			]
+		],
+		[
+			49440,
 			[
-				88440,
-				[
-					[
-						"ZoomCamera",
-						"32,0.95",
-						"expoOut"
-					]
-				]
-			],
+				["ZoomCamera", "6,1.2", "quadOut"]
+			]
+		],
+		[
+			49920,
 			[
-				92280,
-				[
-					[
-						"ZoomCamera",
-						"32,1.1",
-						"sineOut"
-					]
-				]
-			],
+				["ZoomCamera", "8,1", "quadOut"]
+			]
+		],
+		[
+			65280,
 			[
-				96120,
-				[
-					[
-						"ZoomCamera",
-						"32,0.95",
-						"expoOut"
-					]
-				]
-			],
+				["Kill Henchmen", "", ""]
+			]
+		],
+		[
+			73080,
 			[
-				49920,
-				[
-					[
-						"ZoomCamera",
-						"8,1",
-						"quadOut"
-					]
-				]
-			],
+				["ZoomCamera", "32,0.95", "expoOut"]
+			]
+		],
+		[
+			76560,
 			[
-				45960,
-				[
-					[
-						"ZoomCamera",
-						"32,1",
-						"smoothStepInOut"
-					]
-				]
-			],
+				["Camera Follow Pos", "", ""]
+			]
+		],
+		[
+			76680,
 			[
-				42360,
-				[
-					[
-						"ZoomCamera",
-						"32,0.95",
-						"expoOut"
-					]
-				]
+				["ZoomCamera", "32,1", "smoothStepInOut"]
+			]
+		],
+		[
+			79680,
+			[
+				["ZoomCamera", "6,1.1", "quadOut"]
+			]
+		],
+		[
+			80160,
+			[
+				["ZoomCamera", "6,1.2", "quadOut"]
+			]
+		],
+		[
+			80640,
+			[
+				["Kill Henchmen", "", ""]
+			]
+		],
+		[
+			80760,
+			[
+				["ZoomCamera", "32,0.95", "expoOut"]
+			]
+		],
+		[
+			80880,
+			[
+				["Camera Follow Pos", "620", "390"]
+			]
+		],
+		[
+			84600,
+			[
+				["ZoomCamera", "32,1.1", "sineOut"]
+			]
+		],
+		[
+			88440,
+			[
+				["ZoomCamera", "32,0.95", "expoOut"]
+			]
+		],
+		[
+			92280,
+			[
+				["ZoomCamera", "32,1.1", "sineOut"]
+			]
+		],
+		[
+			96000,
+			[
+				["Kill Henchmen", "", ""]
+			]
+		],
+		[
+			96120,
+			[
+				["ZoomCamera", "32,0.95", "expoOut"]
 			]
 		]
+	]
 	}
 }
