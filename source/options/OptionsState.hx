@@ -25,6 +25,7 @@ class OptionsState extends MusicBeatState
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
 	public static var onPlayState:Bool = false;
+	var exiting:Bool = false;
 	#if (target.threaded) var mutex:Mutex = new Mutex(); #end
 
 	private var mainCam:FlxCamera;
@@ -146,6 +147,7 @@ class OptionsState extends MusicBeatState
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
+		if(exiting) return;
 
 		if (controls.UI_UP_P)
 			changeSelection(-1);
@@ -174,6 +176,7 @@ class OptionsState extends MusicBeatState
 		if (controls.BACK)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
+			exiting = false;
 			if(onPlayState)
 			{
 				StageData.loadDirectory(PlayState.SONG);
