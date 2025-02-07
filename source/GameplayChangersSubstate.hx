@@ -34,6 +34,7 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 	private var optionsArray:Array<Dynamic> = [];
 
 	private var grpOptions:FlxTypedGroup<Alphabet>;
+	private var optionsCam:FlxCamera = new FlxCamera();
 	private var checkboxGroup:FlxTypedGroup<CheckboxThingie>;
 	private var grpTexts:FlxTypedGroup<AttachedText>;
 
@@ -110,19 +111,25 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 	public function new()
 	{
 		super();
+		FlxG.cameras.add(optionsCam,false);
+		optionsCam.bgColor = FlxColor.TRANSPARENT;
 		
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		bg.alpha = 0.6;
+		bg.camera = optionsCam;
 		add(bg);
 
 		// avoids lagspikes while scrolling through menus!
 		grpOptions = new FlxTypedGroup<Alphabet>();
+		grpOptions.camera = optionsCam;
 		add(grpOptions);
 
 		grpTexts = new FlxTypedGroup<AttachedText>();
+		grpTexts.camera = optionsCam;
 		add(grpTexts);
 
 		checkboxGroup = new FlxTypedGroup<CheckboxThingie>();
+		checkboxGroup.camera = optionsCam;
 		add(checkboxGroup);
 		
 		getOptions();
@@ -184,6 +191,8 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 		if (controls.BACK) {
 			close();
 			ClientPrefs.saveSettings();
+			controls.isInSubstate = false;
+			FlxG.cameras.remove(optionsCam);
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 		}
 

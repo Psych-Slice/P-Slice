@@ -8,6 +8,8 @@ using StringTools;
 class ResetScoreSubState extends MusicBeatSubstate
 {
 	var bg:FlxSprite;
+	var optionsCam:FlxCamera = new FlxCamera();
+	var onReset:() -> Void;
 	var alphabetArray:Array<Alphabet> = [];
 	var icon:HealthIcon;
 	var onYes:Bool = false;
@@ -19,12 +21,15 @@ class ResetScoreSubState extends MusicBeatSubstate
 	var week:Int;
 
 	// Week -1 = Freeplay
-	public function new(song:String, difficulty:Int, character:String, week:Int = -1)
+	public function new(song:String, difficulty:Int, character:String, week:Int = -1,onScoreReset:() -> Void = null)
 	{
+		controls.isInSubstate = true;
+		onReset = onScoreReset;
 		this.song = song;
 		this.difficulty = difficulty;
 		this.week = week;
-
+		FlxG.cameras.add(optionsCam,false);
+		optionsCam.bgColor = FlxColor.TRANSPARENT;
 		super();
 
 		var name:String = song;
@@ -35,6 +40,7 @@ class ResetScoreSubState extends MusicBeatSubstate
 
 		bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		bg.alpha = 0;
+		bg.camera = optionsCam;
 		bg.scrollFactor.set();
 		add(bg);
 
@@ -43,9 +49,11 @@ class ResetScoreSubState extends MusicBeatSubstate
 		text.screenCenter(X);
 		alphabetArray.push(text);
 		text.alpha = 0;
+		text.camera = optionsCam;
 		add(text);
 		var text:Alphabet = new Alphabet(0, text.y + 90, name, true);
 		text.scaleX = tooLong;
+		text.camera = optionsCam;
 		text.screenCenter(X);
 		if(week == -1) text.x += 60 * tooLong;
 		alphabetArray.push(text);
@@ -55,6 +63,7 @@ class ResetScoreSubState extends MusicBeatSubstate
 			icon = new HealthIcon(character);
 			icon.setGraphicSize(Std.int(icon.width * tooLong));
 			icon.updateHitbox();
+			icon.camera = optionsCam;
 			icon.setPosition(text.x - icon.width + (10 * tooLong), text.y - 30);
 			icon.alpha = 0;
 			add(icon);
@@ -62,17 +71,19 @@ class ResetScoreSubState extends MusicBeatSubstate
 
 		yesText = new Alphabet(0, text.y + 150, 'Yes', true);
 		yesText.screenCenter(X);
+		yesText.camera = optionsCam;
 		yesText.x -= 200;
 		add(yesText);
 		noText = new Alphabet(0, text.y + 150, 'No', true);
 		noText.screenCenter(X);
+		noText.camera = optionsCam;
 		noText.x += 200;
 		add(noText);
 		updateOptions();
 
 		#if TOUCH_CONTROLS_ALLOWED
-		addTouchPad("LEFT_RIGHT", "A_B");
-		addTouchPadCamera();
+		addTouchPad('LEFT_RIGHT', 'A_B');
+		addTouchPadCamera(false);
 		#end
 	}
 
@@ -94,6 +105,8 @@ class ResetScoreSubState extends MusicBeatSubstate
 		}
 		if(controls.BACK) {
 			FlxG.sound.play(Paths.sound('cancelMenu'), 1);
+			controls.isInSubstate = false;
+			FlxG.cameras.remove(optionsCam);
 			close();
 		} else if(controls.ACCEPT) {
 			if(onYes) {
@@ -102,8 +115,11 @@ class ResetScoreSubState extends MusicBeatSubstate
 				} else {
 					Highscore.resetWeek(WeekData.weeksList[week], difficulty);
 				}
+				if(onReset != null) onReset();
 			}
 			FlxG.sound.play(Paths.sound('cancelMenu'), 1);
+			controls.isInSubstate = false;
+			FlxG.cameras.remove(optionsCam);
 			close();
 		}
 		super.update(elapsed);

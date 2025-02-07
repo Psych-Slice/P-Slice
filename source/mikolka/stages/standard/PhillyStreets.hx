@@ -1,7 +1,6 @@
 package mikolka.stages.standard;
 
 import flixel.FlxSubState;
-import mikolka.stages.PicoCapableStage;
 import openfl.filters.ShaderFilter;
 import shaders.RainShader;
 import flixel.addons.display.FlxTiledSprite;
@@ -15,7 +14,7 @@ import objects.Note;
 import cutscenes.CutsceneHandler;
 #end
 
-class PhillyStreets extends PicoCapableStage
+class PhillyStreets extends BaseStage
 {
 	var rainShader:RainShader;
 	var rainShaderStartIntensity:Float = 0;
@@ -389,7 +388,6 @@ class PhillyStreets extends PicoCapableStage
 	override function startSong()
 	{
 		super.startSong();
-		gf.animation.finishCallback = onNeneAnimationFinished;
 		carSndAmbience.volume = 0.1;
 	}
 
@@ -406,28 +404,10 @@ class PhillyStreets extends PicoCapableStage
 		PlayState.instance.subStateClosed.addOnce((sub) ->{
 			carSndAmbience.volume = 0.1;
 			carSndAmbience.resume();
-			rainSndAmbience.resume();
+			if (rainSndAmbience != null) rainSndAmbience.resume();
 		});
 	}
-	function onNeneAnimationFinished(name:String)
-	{
-		@:privateAccess
-		if (!game.startedCountdown)
-			return;
-
-		switch (currentNeneState)
-		{
-			case STATE_RAISE, STATE_LOWER:
-				if (name == 'raiseKnife' || name == 'lowerKnife')
-				{
-					animationFinished = true;
-					transitionState();
-				}
-
-			default:
-				// Ignore.
-		}
-	}
+	
 
 	var casingGroup:FlxSpriteGroup;
 	var casingFrames:FlxAtlasFrames;

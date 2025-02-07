@@ -14,7 +14,7 @@ import cutscenes.CutsceneHandler;
 
 import flixel.FlxSubState;
 
-class PhillyStreetsErect extends PicoCapableStage
+class PhillyStreetsErect extends BaseStage
     {
         var rainShader:RainShader;
         var rainShaderStartIntensity:Float = 0;
@@ -259,8 +259,8 @@ class PhillyStreetsErect extends PicoCapableStage
             }
             PlayState.instance.subStateClosed.addOnce((sub) ->{
                 carSndAmbience.volume = 0.1;
-                carSndAmbience.resume();
-                rainSndAmbience.resume();
+                if (carSndAmbience != null) carSndAmbience.resume();
+                if (rainSndAmbience != null) rainSndAmbience.resume();
             });
         }
 
