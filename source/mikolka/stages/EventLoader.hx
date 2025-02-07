@@ -6,6 +6,7 @@ import mikolka.stages.erect.*;
 import haxe.ds.List;
 #if !LEGACY_PSYCH
 import psychlua.FunkinLua;
+import states.MainMenuState;
 #end
 
 class EventLoader extends BaseStage {
@@ -13,6 +14,7 @@ class EventLoader extends BaseStage {
     public static function implement(funk:FunkinLua)
         {
             var lua:State = funk.lua;
+            funk.set('versionPS', MainMenuState.pSliceVersion.trim());
             Lua_helper.add_callback(lua, "markAsPicoCapable", function() {
                 new PicoCapableStage();
             });

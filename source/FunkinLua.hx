@@ -1,8 +1,10 @@
+
 package;
 
 import mikolka.vslice.freeplay.FreeplayState;
 import substates.StickerSubState;
 import openfl.display.BitmapData;
+import mikolka.stages.EventLoader;
 #if LUA_ALLOWED
 import llua.Lua;
 import llua.LuaL;
@@ -165,7 +167,6 @@ class FunkinLua {
 		set('ratingName', '');
 		set('ratingFC', '');
 		set('version', MainMenuState.psychEngineVersion.trim());
-		set('versionPS', MainMenuState.pSliceVersion.trim());
 
 		set('inGameOver', false);
 		set('mustHitSection', false);
@@ -218,6 +219,7 @@ class FunkinLua {
 		set('scriptName', scriptName);
 		set('currentModDirectory', Paths.currentModDirectory);
 
+		EventLoader.implement(this);
 		#if windows
 		set('buildTarget', 'windows');
 		#elseif linux
