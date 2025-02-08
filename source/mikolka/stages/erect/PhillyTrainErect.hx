@@ -1,5 +1,7 @@
 package mikolka.stages.erect;
 
+import flixel.FlxSubState;
+import mikolka.stages.objects.PhillyLights;
 import mikolka.stages.objects.PicoDopplegangerSprite;
 import shaders.AdjustColorShader;
 import flxanimate.motion.AdjustColor;
@@ -9,19 +11,13 @@ import cutscenes.CutsceneHandler;
 import objects.Character;
 #end
 
-class PhillyTrainErect extends PicoCapableStage
+class PhillyTrainErect extends BaseStage
 {
 	var phillyLightsColors:Array<FlxColor>;
 	var phillyWindow:BGSprite;
 	var phillyStreet:BGSprite;
 	var phillyTrain:PhillyTrain;
 	var curLight:Int = -1;
-
-	// For Philly Glow events
-	var blammedLightsBlack:FlxSprite;
-	var phillyGlowGradient:PhillyGlowGradient;
-	var phillyGlowParticles:FlxTypedGroup<PhillyGlowParticle>;
-	var phillyWindowEvent:BGSprite;
 
 	var curLightEvent:Int = -1;
 	var colorShader:AdjustColorShader;
@@ -57,10 +53,13 @@ class PhillyTrainErect extends PicoCapableStage
 
 		phillyStreet = new BGSprite('philly/erect/street', -40, 50);
 		add(phillyStreet);
+		
 
 		if(!seenCutscene 
 			&& PlayState.SONG.player1 == "pico-playable" 
 			&& PlayState.SONG.player2 == "pico") setStartCallback(ughIntro);
+		
+		new PhillyLights(phillyStreet,phillyWindow.x,phillyWindow.y,phillyLightsColors);
 	}
 
 	override function createPost()
@@ -84,15 +83,7 @@ class PhillyTrainErect extends PicoCapableStage
 
 	override function update(elapsed:Float)
 	{
-		phillyWindow.alpha -= (Conductor.crochet / 1000) * FlxG.elapsed * 1.5;
-		if (phillyGlowParticles != null)
-		{
-			phillyGlowParticles.forEachAlive(function(particle:PhillyGlowParticle)
-			{
-				if (particle.alpha <= 0)
-					particle.kill();
-			});
-		}
+		phillyWindow.alpha -= (Conductor.crochet / 1000) * FlxG.elapsed * 1.9;
 		super.update(elapsed);
 	}
 
@@ -107,6 +98,15 @@ class PhillyTrainErect extends PicoCapableStage
 		}
 	}
 
+	override function openSubState(SubState:FlxSubState) {
+		if(phillyTrain.sound?.playing){
+			phillyTrain.sound.pause();
+			PlayState.instance.subStateClosed.addOnce((sub) ->{
+				if (phillyTrain.sound != null) phillyTrain.sound.resume();
+			});
+		}
+		super.openSubState(SubState);
+	}
 	function doFlash()
 	{
 		var color:FlxColor = FlxColor.WHITE;

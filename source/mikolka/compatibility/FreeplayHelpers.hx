@@ -151,4 +151,11 @@ class FreeplayHelpers
 	public static function updateConductorSongTime(time:Float) {
 		Conductor.songPosition = time;
 	}
+	public inline static function openResetScoreState(state:FreeplayState,sng:FreeplaySongData,onScoreReset:() -> Void = null) {
+
+		state.openSubState(new ResetScoreSubState(sng.songName, sng.loadAndGetDiffId(), sng.songCharacter,-1,onScoreReset));
+	}
+	public inline static function openGameplayChanges(state:FreeplayState) {
+		state.openSubState(new GameplayChangersSubstate());
+	}
 }

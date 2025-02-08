@@ -145,6 +145,18 @@ using mikolka.funkin.utils.ArrayTools;
          }
          isNew = (( ClientPrefs.vsliceForceNewTag || isNew) && !wasCompleted); 
      }
+     public function updateIsNewTag() {
+        var wasCompleted = false;
+         var saveSongName = Paths.formatToSongPath(songId);
+         for (x in Highscore.songScores.keys()){
+            if(x.startsWith(saveSongName) && Highscore.songScores[x] > 0){
+                wasCompleted = true;
+                break;
+            }
+         }
+         isNew = (( ClientPrefs.vsliceForceNewTag || isNew) && !wasCompleted); 
+     }
+
      public function loadAndGetDiffId() {
          var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[levelId]);
  

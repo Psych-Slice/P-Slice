@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import mikolka.stages.objects.PicoCapableStage;
 import mikolka.compatibility.VsliceOptions;
 import shaders.RainShader;
 #if !LEGACY_PSYCH
@@ -8,7 +9,7 @@ import objects.Character;
 #else
 using mikolka.compatibility.stages.misc.CharUtills;
 #end
-class SpookyMansionErect extends PicoCapableStage
+class SpookyMansionErect extends BaseStage
 {
 	var halloweenBG:BGSprite;
 	var halloweenBGLight:BGSprite;
@@ -23,6 +24,11 @@ class SpookyMansionErect extends PicoCapableStage
 	var gfGhost:Character;
 	var dadGhost:Character;
 
+	var nene:PicoCapableStage;
+	public function new(nene:PicoCapableStage) {
+		super();
+		this.nene = nene;
+	}
 	override function create()
 	{
 		halloweenBG = new BGSprite('erect/bgDark', -360, -220);
@@ -77,6 +83,7 @@ class SpookyMansionErect extends PicoCapableStage
 	{
 		super.beatHit();
 		if(VsliceOptions.LOW_QUALITY) return;
+		if(curBeat == 4 && songName == "spookeez-erect") lightningStrikeShit(false); 
 		if (FlxG.random.bool(10) && curBeat > lightningStrikeBeat + lightningOffset)
 		{
 			lightningStrikeShit(); 
@@ -128,9 +135,9 @@ class SpookyMansionErect extends PicoCapableStage
 			}
 		}
 	}
-	function lightningStrikeShit():Void
+	function lightningStrikeShit(playSound:Bool = true):Void
 	{
-		FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2));
+		if(playSound) FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2));
 			FlxTimer.wait(0.06, () ->
 			{
 				halloweenBGLight.alpha = 0;
@@ -155,7 +162,7 @@ class SpookyMansionErect extends PicoCapableStage
 					gf.playAnim('scared', true);
 				if (VsliceOptions.FLASHBANG)
 				{
-					ABot_plink();
+					nene.ABot_plink();
 					boyfriend.alpha = 0;
 					dad.alpha = 0;
 					gf.alpha = 0;
@@ -200,6 +207,13 @@ class SpookyMansionErect extends PicoCapableStage
 		var bfName = PlayState.instance.boyfriend.curCharacter.split("-")[0]; 
 		if(bfName == "pico") bfName = "pico-playable";
 
+		var gfMode = PlayState.instance.gf.curCharacter.split("-")[0];
+		gfGhost = new Character(game.gf.x, game.gf.y, gfMode);
+		//if (gfMode == 'nene')
+			//gfGhost.y -= 190;
+		game.add(gfGhost);
+		gfGhost.dance();
+		
 		boyfriendGhost = new Character(game.boyfriend.x, game.boyfriend.y, bfName, true);
 		game.add(boyfriendGhost);
 		boyfriendGhost.dance();
@@ -208,13 +222,6 @@ class SpookyMansionErect extends PicoCapableStage
 		dadGhost.flipX = false;
 		game.add(dadGhost);
 		dadGhost.dance();
-
-		var gfMode = PlayState.instance.gf.curCharacter.split("-")[0];
-		gfGhost = new Character(game.gf.x, game.gf.y, gfMode);
-		//if (gfMode == 'nene')
-			//gfGhost.y -= 190;
-		game.add(gfGhost);
-		gfGhost.dance();
 
 		boyfriendGhost.alpha = 0;
 		gfGhost.alpha = 0;

@@ -1,5 +1,6 @@
 package;
 
+import mikolka.stages.EventLoader;
 import mikolka.funkin.utils.ArrayTools;
 import mikolka.vslice.results.ResultState;
 import mikolka.funkin.Scoring;
@@ -514,40 +515,7 @@ class PlayState extends MusicBeatState
 		dadGroup = new FlxSpriteGroup(DAD_X, DAD_Y);
 		gfGroup = new FlxSpriteGroup(GF_X, GF_Y);
 
-		switch (curStage)
-		{
-			case 'stage':
-				new StageWeek1(); // Week 1
-			case 'spooky':
-				new Spooky(); // Week 2
-			case 'philly':
-				new Philly(); // Week 3
-			case 'limo':
-				new Limo(); // Week 4
-			case 'mall':
-				new Mall(); // Week 5 - Cocoa, Eggnog
-			case 'mallEvil':
-				new MallEvil(); // Week 5 - Winter Horrorland
-			case 'school':
-				new School(); // Week 6 - Senpai, Roses
-			case 'schoolEvil':
-				new SchoolEvil(); // Week 6 - Thorns
-			case 'tank':
-				new Tank(); // Week 7 - Ugh, Guns, Stress
-			case 'mainStageErect':
-				new MainStageErect(); // Week 1 Special
-			case 'spookyMansionErect':
-				new SpookyMansionErect(); // Week 2 Special
-			case 'phillyTrainErect':
-				new PhillyTrainErect(); // Week 3 Special
-			case 'limoRideErect':
-				new LimoRideErect(); // Week 4 Special
-			case 'mallXmasErect':
-				new MallXmasErect(); // Week 5 Special
-			case 'phillyStreetsErect':
-				new PhillyStreetsErect(); // Weekend 1 Special
-		}
-
+		EventLoader.addstage(curStage);
 		if (isPixelStage)
 		{
 			introSoundsSuffix = '-pixel';
