@@ -52,12 +52,12 @@ class PauseSubState extends MusicBeatSubstate
 	public function new(inCutscene:Bool = false,type:PauseType = PauseType.CUTSCENE) {
 		super();
 		cutscene_branding = switch(type){
-			case VIDEO: "Video";
-			case CUTSCENE: "Cutscene";
-			case DIALOGUE: "Dialogue";
+			case VIDEO: Language.getPhrase("pause_branding_video","Video");
+			case CUTSCENE: Language.getPhrase("pause_branding_cutscene","Cutscene");
+			case DIALOGUE: Language.getPhrase("pause_branding_dialogue","Dialogue");
 		};
-		cutscene_resetTxt = 'Restart $cutscene_branding';
-		cutscene_skipTxt = 'Skip $cutscene_branding';
+		cutscene_resetTxt = Language.getPhrase("pause_branding_restart",'Restart {1}',[cutscene_branding]);
+		cutscene_skipTxt = Language.getPhrase("pause_branding_skip",'Skip {1}',[cutscene_branding]);
 		this.inVid = inCutscene;
 	}
 	override function create()
@@ -119,14 +119,15 @@ class PauseSubState extends MusicBeatSubstate
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
-		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, "Difficulty: "+CoolUtil.FUL(Difficulty.getString()), 32);
+		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, Language.getPhrase("pause_difficulty","Difficulty: {1}",[CoolUtil.FUL(Difficulty.getString())]), 32);
 		levelDifficulty.scrollFactor.set();
 		levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
 		levelDifficulty.updateHitbox();
 		add(levelDifficulty);
 
 		
-		var ballsTxt = inVid ? '$cutscene_branding Paused' : Language.getPhrase("blueballed", "{1} Blue Balls", [PlayState.deathCounter]);
+		var ballsTxt = inVid ? Language.getPhrase("pause_branding",'{1} Paused',[cutscene_branding]) : 
+			Language.getPhrase("blueballed", "{1} Blue Balls", [PlayState.deathCounter]);
 		var blueballedTxt:FlxText = new FlxText(20, 15 + 64, 0, ballsTxt , 32);
 		blueballedTxt.scrollFactor.set();
 		blueballedTxt.setFormat(Paths.font('vcr.ttf'), 32);

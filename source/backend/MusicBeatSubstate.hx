@@ -59,8 +59,7 @@ class MusicBeatSubstate extends FlxSubState
 	{
 		var extraMode = MobileData.extraActions.get(ClientPrefs.data.extraHints);
 
-		hitbox = new Hitbox(extraMode);
-		hitbox = MobileData.setButtonsColors(hitbox);
+		hitbox = new Hitbox(extraMode,MobileData.getButtonsColors());
 
 		camControls = new FlxCamera();
 		camControls.bgColor.alpha = 0;

@@ -240,7 +240,8 @@ class FreeplayState extends MusicBeatSubstate
 		currentCharacter = result;
 
 		styleData = FreeplayStyleRegistry.instance.fetchEntry(currentCharacter.getFreeplayStyleID());
-		if (styleData == null) styleData = FreeplayStyleRegistry.instance.fetchEntry("bf");
+		if (styleData == null)
+			styleData = FreeplayStyleRegistry.instance.fetchEntry("bf");
 
 		fromCharSelect = params?.fromCharSelect;
 
@@ -257,10 +258,6 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			stickerSubState = stickers;
 		}
-
-		
-
-		
 	}
 
 	var fadeShader:BlueFade = new BlueFade();
@@ -269,26 +266,28 @@ class FreeplayState extends MusicBeatSubstate
 
 	override function create():Void
 	{
-		//? Psych might've reloaded the mod list. Make sure we select current character's mod for the style
+		// ? Psych might've reloaded the mod list. Make sure we select current character's mod for the style
 		var saveBox = VsliceOptions.LAST_MOD;
 		if (ModsHelper.isModDirEnabled(saveBox.mod_dir))
 			ModsHelper.loadModDir(saveBox.mod_dir);
 		// We build a bunch of sprites BEFORE create() so we can guarantee they aren't null later on.
-		//? but doing it here, because psych 0.6.3 can destroy graphics created in the constructor
-		if(VsliceOptions.FP_CARDS){
-			switch (currentCharacterId)
+		// ? but doing it here, because psych 0.6.3 can destroy graphics created in the constructor
+		if (VsliceOptions.FP_CARDS)
 		{
-			case(PlayerRegistry.instance.hasNewCharacter()) => true:
-				backingCard = new NewCharacterCard(currentCharacter);
-			case 'bf':
-				backingCard = new BoyfriendCard(currentCharacter);
-			case 'pico':
-				backingCard = new PicoCard(currentCharacter);
-			default:
-				backingCard = new BoyfriendCard(currentCharacter);//new BackingCard(currentCharacter);
+			switch (currentCharacterId)
+			{
+				case(PlayerRegistry.instance.hasNewCharacter()) => true:
+					backingCard = new NewCharacterCard(currentCharacter);
+				case 'bf':
+					backingCard = new BoyfriendCard(currentCharacter);
+				case 'pico':
+					backingCard = new PicoCard(currentCharacter);
+				default:
+					backingCard = new BoyfriendCard(currentCharacter); // new BackingCard(currentCharacter);
+			}
 		}
-		}
-		else backingCard = new BoyfriendCard(currentCharacter);
+		else
+			backingCard = new BoyfriendCard(currentCharacter);
 
 		albumRoll = new AlbumRoll();
 		fp = new FreeplayScore(460, 60, 7, 100, styleData);
@@ -310,7 +309,7 @@ class FreeplayState extends MusicBeatSubstate
 		bgDad = new FlxSprite(backingCard.pinkBack.width * 0.74, 0).loadGraphic(styleData == null ? 'freeplay/freeplayBGdad' : styleData.getBgAssetGraphic());
 
 		BPMCache.instance.clearCache(); // for good measure
-		//? end of init
+		// ? end of init
 
 		super.create();
 		var diffIdsTotalModBinds:Map<String, String> = ["easy" => "", "normal" => "", "hard" => ""];
@@ -320,7 +319,7 @@ class FreeplayState extends MusicBeatSubstate
 		FlxTransitionableState.skipNextTransIn = true;
 
 		var fadeShaderFilter:ShaderFilter = new ShaderFilter(fadeShader);
-		ModsHelper.setFiltersOnCam(funnyCam,[fadeShaderFilter]);
+		ModsHelper.setFiltersOnCam(funnyCam, [fadeShaderFilter]);
 
 		if (stickerSubState != null)
 		{
@@ -351,11 +350,15 @@ class FreeplayState extends MusicBeatSubstate
 		PlayState.isStoryMode = false;
 		for (sngCard in FreeplayHelpers.loadSongs())
 		{
-			if(currentCharacter.shouldShowUnownedChars()){
-				if(sngCard.songPlayer != '' && sngCard.songPlayer != currentCharacterId) continue;
+			if (currentCharacter.shouldShowUnownedChars())
+			{
+				if (sngCard.songPlayer != '' && sngCard.songPlayer != currentCharacterId)
+					continue;
 			}
-			else{
-				if(sngCard.songPlayer == '' || sngCard.songPlayer != currentCharacterId) continue;
+			else
+			{
+				if (sngCard.songPlayer == '' || sngCard.songPlayer != currentCharacterId)
+					continue;
 			}
 			songs.push(sngCard);
 			for (difficulty in sngCard.songDifficulties)
@@ -387,7 +390,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		if (currentCharacter?.getFreeplayDJData() != null)
 		{
-			ModsHelper.loadModDir(VsliceOptions.LAST_MOD.mod_dir); //? make sure to load a mod dir of this character!
+			ModsHelper.loadModDir(VsliceOptions.LAST_MOD.mod_dir); // ? make sure to load a mod dir of this character!
 			dj = new FreeplayDJ(640, 366, currentCharacter);
 			exitMovers.set([dj], {
 				x: -dj.width * 1.6,
@@ -472,7 +475,7 @@ class FreeplayState extends MusicBeatSubstate
 			diffSprite.difficultyId = diffId;
 			grpDifficulties.add(diffSprite);
 		}
-		ModsHelper.loadModDir(VsliceOptions.LAST_MOD.mod_dir); //? load stuff for this Char's mod
+		ModsHelper.loadModDir(VsliceOptions.LAST_MOD.mod_dir); // ? load stuff for this Char's mod
 
 		grpDifficulties.group.forEach(function(spr)
 		{
@@ -497,7 +500,7 @@ class FreeplayState extends MusicBeatSubstate
 		// ? changed offsets
 		if (fromCharSelect == true)
 		{
-			blackOverlayBullshitLOLXD.x = black_X+220;
+			blackOverlayBullshitLOLXD.x = black_X + 220;
 			overhangStuff.y = -100;
 			backingCard?.skipIntroTween();
 		}
@@ -505,7 +508,7 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			albumRoll.applyExitMovers(exitMovers, exitMoversCharSel);
 			FlxTween.tween(overhangStuff, {y: -100}, 0.3, {ease: FlxEase.quartOut});
-			var target = black_X-30;
+			var target = black_X - 30;
 			FlxTween.tween(blackOverlayBullshitLOLXD, {x: target}, 0.7, {ease: FlxEase.quintOut});
 		}
 
@@ -642,13 +645,14 @@ class FreeplayState extends MusicBeatSubstate
 
 			// when boyfriend hits dat shiii
 
-			if (curCapsule != null) //? prevent "random" song from stealing our albums!
+			if (curCapsule != null) // ? prevent "random" song from stealing our albums!
 			{
 				albumRoll.playIntro();
 				var daSong = grpCapsules.members[curSelected].songData;
 				albumRoll.albumId = daSong?.albumId;
 			}
-			else albumRoll.albumId = '';
+			else
+				albumRoll.albumId = '';
 
 			if (fromCharSelect == null)
 			{
@@ -749,7 +753,7 @@ class FreeplayState extends MusicBeatSubstate
 		}
 
 		#if TOUCH_CONTROLS_ALLOWED
-		addTouchPad('UP_DOWN', 'A_B_F');
+		addTouchPad('UP_DOWN', 'A_B_F_X_Y');
 		addTouchPadCamera();
 		if (prepForNewRank)
 		{
@@ -1273,11 +1277,13 @@ class FreeplayState extends MusicBeatSubstate
 	override function closeSubState()
 	{
 		super.closeSubState();
+		
 		controls.isInSubstate = true;
-
 		#if TOUCH_CONTROLS_ALLOWED
+		backend.MusicBeatSubstate.instance = this;
+		persistentUpdate = true;
 		removeTouchPad();
-		addTouchPad('UP_DOWN', 'A_B_F');
+		addTouchPad('UP_DOWN', 'A_B_F_X_Y');
 		addTouchPadCamera();
 		#end
 	}
@@ -1510,12 +1516,41 @@ class FreeplayState extends MusicBeatSubstate
 		}
 		#end // ^<-- FEATURE_DEBUG_FUNCTIONS
 
-		if ((FunkinControls.FREEPLAY_CHAR || (TouchUtil.overlapsComplex(djTouchHitbox) && TouchUtil.justReleased && !SwipeUtil.swipeAny)) && !busy) 
+		if (!busy)
 		{
-			tryOpenCharSelect();
+			if ((FunkinControls.FREEPLAY_CHAR
+				|| (TouchUtil.overlapsComplex(djTouchHitbox) && TouchUtil.justReleased && !SwipeUtil.swipeAny)))
+			{
+				tryOpenCharSelect();
+			} //? Those are new too
+			else if (FlxG.keys.justPressed.CONTROL #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonX.justPressed #end)
+			{
+				persistentUpdate = false;
+				#if TOUCH_CONTROLS_ALLOWED
+				removeTouchPad();
+				#end
+				FreeplayHelpers.openGameplayChanges(this);
+			}
+			else if (controls.RESET #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonY.justPressed #end && curSelected != 0)
+			{
+				persistentUpdate = false;
+				var curSng = grpCapsules.members[curSelected];
+				#if TOUCH_CONTROLS_ALLOWED
+				removeTouchPad();
+				#end
+
+				FreeplayHelpers.openResetScoreState(this,curSng.songData,() -> {
+					curSng.songData.scoringRank = null;
+					intendedScore = 0;
+					intendedCompletion = 0;
+					curSng.songData.updateIsNewTag();
+					curSng.refreshDisplay();
+				});
+				FunkinSound.playOnce(Paths.sound('scrollMenu'), 0.4);
+			} //? //!
 		}
 
-		if (controls.FAVORITE && !busy) // ? change control binding
+		if (controls.FAVORITE #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonF.justPressed #end && !busy) // ? change control binding
 		{
 			var targetSong = grpCapsules.members[curSelected]?.songData;
 			if (targetSong != null)
@@ -1616,11 +1651,13 @@ class FreeplayState extends MusicBeatSubstate
 		if (busy)
 			return;
 
-		var upP:Bool = controls.UI_UP_P;
-		var downP:Bool = controls.UI_DOWN_P;
-		var accepted:Bool = controls.ACCEPT;
-
-		if ((controls.UI_UP || controls.UI_DOWN))
+		var upP:Bool = controls.UI_UP_P #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonUp.justPressed #end;
+		var downP:Bool = controls.UI_DOWN_P #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonDown.justPressed #end;
+		var accepted:Bool = controls.ACCEPT #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonA.justPressed #end;
+		//? new tags
+		var up = controls.UI_UP #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonUp.pressed #end;
+		var down = controls.UI_DOWN #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonDown.pressed #end;
+		if ((up || down))
 		{
 			if (spamming)
 			{
@@ -1628,7 +1665,7 @@ class FreeplayState extends MusicBeatSubstate
 				{
 					spamTimer = 0;
 
-					if (controls.UI_UP)
+					if (up)
 					{
 						changeSelection(-1);
 					}
@@ -1644,7 +1681,7 @@ class FreeplayState extends MusicBeatSubstate
 			}
 			else if (spamTimer <= 0)
 			{
-				if (controls.UI_UP)
+				if (up)
 				{
 					changeSelection(-1);
 				}
@@ -1693,7 +1730,8 @@ class FreeplayState extends MusicBeatSubstate
 			changeDiff(-1);
 			rememberedDifficulty = currentDifficulty; // ? make sure to remember it, because otherwise we'll forget about it
 			generateSongList(currentFilter, true);
-			if (diffSelLeft != null) diffSelLeft.setPress(true);
+			if (diffSelLeft != null)
+				diffSelLeft.setPress(true);
 		}
 		if (controls.UI_RIGHT_P || (TouchUtil.overlapsComplex(diffSelRight) && TouchUtil.justPressed))
 		{
@@ -1702,7 +1740,8 @@ class FreeplayState extends MusicBeatSubstate
 			changeDiff(1);
 			rememberedDifficulty = currentDifficulty; // ? make sure to remember it, because otherwise we'll forget about it
 			generateSongList(currentFilter, true);
-			if (diffSelLeft != null) diffSelRight.setPress(true);
+			if (diffSelLeft != null)
+				diffSelRight.setPress(true);
 		}
 
 		if (diffSelLeft != null && diffSelRight != null && TouchUtil.justReleased)
@@ -1711,7 +1750,7 @@ class FreeplayState extends MusicBeatSubstate
 			diffSelLeft.setPress(false);
 		}
 
-		if (controls.BACK && !busy)
+		if (controls.BACK #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonB.justPressed #end && !busy)
 		{
 			busy = true;
 			FlxTween.globalManager.clear();
@@ -1996,17 +2035,16 @@ class FreeplayState extends MusicBeatSubstate
 	{
 		// We don't have a good way to do this in psych
 		// ? yet instVariants
-		
-	
+
 		if (cap.songData.instVariants.length > 0 && cap.songData.instVariants[0] != "")
 		{
-		  var instrumentalIds = ["default"].concat(cap.songData.instVariants);
-		  openInstrumentalList(cap, instrumentalIds);
+			var instrumentalIds = ["default"].concat(cap.songData.instVariants);
+			openInstrumentalList(cap, instrumentalIds);
 		}
 		else
 		{
-		  trace('NO ALTS');
-		  capsuleOnConfirmDefault(cap);
+			trace('NO ALTS');
+			capsuleOnConfirmDefault(cap);
 		}
 	}
 
@@ -2016,31 +2054,33 @@ class FreeplayState extends MusicBeatSubstate
 	}
 
 	function openInstrumentalList(cap:SongMenuItem, instrumentalIds:Array<String>):Void
+	{
+		busy = true;
+
+		capsuleOptionsMenu = new CapsuleOptionsMenu(this, cap.x + 175, cap.y + 115, instrumentalIds);
+		capsuleOptionsMenu.cameras = [funnyCam];
+		capsuleOptionsMenu.zIndex = 10000;
+		add(capsuleOptionsMenu);
+
+		capsuleOptionsMenu.onConfirm = function(targetInstId:String)
 		{
-		  busy = true;
-	  
-		  capsuleOptionsMenu = new CapsuleOptionsMenu(this, cap.x + 175, cap.y + 115, instrumentalIds);
-		  capsuleOptionsMenu.cameras = [funnyCam];
-		  capsuleOptionsMenu.zIndex = 10000;
-		  add(capsuleOptionsMenu);
-	  
-		  capsuleOptionsMenu.onConfirm = function(targetInstId:String) {
 			capsuleOnConfirmDefault(cap, targetInstId);
-		  };
-		}
+		};
+	}
 
 	var capsuleOptionsMenu:Null<CapsuleOptionsMenu> = null;
 
 	public function cleanupCapsuleOptionsMenu():Void
 	{
 		this.busy = false;
-	  
+
 		if (capsuleOptionsMenu != null)
 		{
-		remove(capsuleOptionsMenu);
-		capsuleOptionsMenu = null;
+			remove(capsuleOptionsMenu);
+			capsuleOptionsMenu = null;
 		}
 	}
+
 	/**
 	 * Called when hitting ENTER to play the song.
 	 */
@@ -2089,7 +2129,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		new FlxTimer().start(styleData?.getStartDelay(), function(tmr:FlxTimer)
 		{
-			FreeplayHelpers.moveToPlaystate(this, cap.songData, currentDifficulty,targetInstId);
+			FreeplayHelpers.moveToPlaystate(this, cap.songData, currentDifficulty, targetInstId);
 		});
 	}
 

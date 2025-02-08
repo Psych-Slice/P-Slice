@@ -1,7 +1,7 @@
 package mikolka.stages.standard;
 
+import mikolka.stages.objects.PicoCapableStage;
 import mikolka.compatibility.VsliceOptions;
-import mikolka.stages.PicoCapableStage;
 import openfl.filters.ShaderFilter;
 import shaders.RainShader;
 
@@ -14,7 +14,7 @@ import substates.GameOverSubstate;
 import objects.Note;
 #end
 
-class PhillyBlazin extends PicoCapableStage
+class PhillyBlazin extends BaseStage
 {
 	var rainShader:RainShader;
 	var rainTimeScale:Float = 1;
@@ -27,6 +27,12 @@ class PhillyBlazin extends PicoCapableStage
 	
 	var lightningTimer:Float = 3.0;
 
+	var nene:PicoCapableStage;
+	public function new(nene:PicoCapableStage) {
+		super();
+		this.nene = nene;
+	}
+	
 	override function create()
 	{
 		FlxTransitionableState.skipNextTransOut = true; //skip the original transition fade
@@ -132,7 +138,7 @@ class PhillyBlazin extends PicoCapableStage
 			if(character == null) continue;
 			character.color = 0xFF888888;
 		}
-		abot.color = 0xFF888888;
+		nene.abot.color = 0xFF888888;
 
 		var unspawnNotes:Array<Note> = cast game.unspawnNotes;
 		for (note in unspawnNotes)
@@ -224,7 +230,7 @@ class PhillyBlazin extends PicoCapableStage
 		FlxTween.color(boyfriend, LIGHTNING_FADE_DURATION, 0xFF606060, 0xFFDEDEDE);
 		FlxTween.color(dad, LIGHTNING_FADE_DURATION, 0xFF606060, 0xFFDEDEDE);
 		FlxTween.color(gf, LIGHTNING_FADE_DURATION, 0xFF606060, 0xFF888888);
-		FlxTween.color(abot, LIGHTNING_FADE_DURATION, 0xFF606060, 0xFF888888);
+		FlxTween.color(nene.abot, LIGHTNING_FADE_DURATION, 0xFF606060, 0xFF888888);
 
 		// Sound
 		FlxG.sound.play(Paths.soundRandom('lightning/Lightning', 1, 3));

@@ -1,6 +1,6 @@
 package substates;
 
-import mikolka.stages.PicoCapableStage;
+import mikolka.stages.objects.PicoCapableStage;
 import mikolka.vslice.freeplay.FreeplayState;
 import backend.WeekData;
 

@@ -84,15 +84,15 @@ class School extends BaseStage
 
 		switch (songName)
 		{
-			case 'senpai':
+			case 'senpai'|'senpai-erect':
 				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
-			case 'roses':
+			case 'roses'|'roses-erect':
 				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX'));
 		}
 		if(isStoryMode && !seenCutscene)
 		{
-			if(songName == 'roses') FlxG.sound.play(Paths.sound('ANGRY'));
+			if(songName == 'roses' || songName == "roses-erect") FlxG.sound.play(Paths.sound('ANGRY'));
 			initDoof();
 			setStartCallback(schoolIntro);
 		}

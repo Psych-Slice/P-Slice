@@ -6,7 +6,7 @@ import openfl.utils.Assets;
 import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
-import openfl.net.FileFilter;
+import flash.net.FileFilter;
 import lime.system.Clipboard;
 import haxe.Json;
 
@@ -435,7 +435,7 @@ class WeekEditorState extends MusicBeatState implements PsychUIEventHandler.Psyc
 		_file.addEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
 		_file.addEventListener(Event.CANCEL, onLoadCancel);
 		_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file.browse([jsonFilter]);
+		_file.browse([#if !mac jsonFilter #end]);
 	}
 	
 	public static var loadedWeek:WeekFile = null;

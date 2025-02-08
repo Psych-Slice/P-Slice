@@ -174,8 +174,8 @@ class EditorPlayState extends MusicBeatSubstate
 
 		addHitbox();
 		hitbox.visible = true;
-		hitbox.onHintDown.add(onHintPress);
-		hitbox.onHintUp.add(onHintRelease);
+		hitbox.onButtonDown.add(onHintPress);
+		hitbox.onButtonUp.add(onHintRelease);
 		#end
 		
 		super.create();
@@ -766,13 +766,13 @@ class EditorPlayState extends MusicBeatSubstate
 	#if TOUCH_CONTROLS_ALLOWED
 	private function onHintPress(button:TouchButton):Void
 	{
-		var buttonCode:Int = (button.IDs[0].toString().startsWith('HITBOX')) ? button.IDs[0] : button.IDs[1];
+		var buttonCode:Int = (button.IDs[0].toString().startsWith('HITBOX')) ? button.IDs[1] : button.IDs[0];
 		if (button.justPressed) keyPressed(buttonCode);
 	}
 
 	private function onHintRelease(button:TouchButton):Void
 	{
-		var buttonCode:Int = (button.IDs[0].toString().startsWith('HITBOX')) ? button.IDs[0] : button.IDs[1];
+		var buttonCode:Int = (button.IDs[0].toString().startsWith('HITBOX')) ? button.IDs[1] : button.IDs[0];
 		if(buttonCode > -1) keyReleased(buttonCode);
 	}
 	#end
