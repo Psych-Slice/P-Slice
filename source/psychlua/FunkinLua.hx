@@ -89,7 +89,6 @@ class FunkinLua {
 		set('luaDebugMode', false);
 		set('luaDeprecatedWarnings', true);
 		set('version', MainMenuState.psychEngineVersion.trim());
-		set('versionPS', MainMenuState.pSliceVersion.trim());
 		set('modFolder', this.modFolder);
 
 		// Song/Week shit

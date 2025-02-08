@@ -3,6 +3,8 @@ package mikolka.stages.erect;
 import mikolka.compatibility.FreeplayHelpers;
 #if !LEGACY_PSYCH
 import objects.Note.EventNote;
+#else
+import Note.EventNote;
 #end
 
 import mikolka.compatibility.VsliceOptions;

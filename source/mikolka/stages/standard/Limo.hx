@@ -1,7 +1,11 @@
 package mikolka.stages.standard;
 
 import mikolka.compatibility.FreeplayHelpers;
+#if !LEGACY_PSYCH
 import objects.Note.EventNote;
+#else
+import Note.EventNote;
+#end
 import mikolka.compatibility.VsliceOptions;
 
 enum HenchmenKillState
