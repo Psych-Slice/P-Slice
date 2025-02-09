@@ -45,6 +45,7 @@ import haxe.Json;
 import mobile.psychlua.Functions;
 
 import mikolka.vslice.freeplay.FreeplayState;
+import mikolka.stages.EventLoader;
 
 class FunkinLua {
 	public var lua:State = null;
@@ -88,7 +89,6 @@ class FunkinLua {
 		set('luaDebugMode', false);
 		set('luaDeprecatedWarnings', true);
 		set('version', MainMenuState.psychEngineVersion.trim());
-		set('versionPS', MainMenuState.pSliceVersion.trim());
 		set('modFolder', this.modFolder);
 
 		// Song/Week shit
@@ -1142,8 +1142,8 @@ class FunkinLua {
 		});
 
 		Lua_helper.add_callback(lua, "setObjectCamera", function(obj:String, camera:String = 'game') {
-			var real = game.getLuaObject(obj);
-			if(real!=null){
+			var real:FlxBasic = game.getLuaObject(obj);
+			if(real != null) {
 				real.cameras = [LuaUtils.cameraFromString(camera)];
 				return true;
 			}
@@ -1162,7 +1162,7 @@ class FunkinLua {
 			return false;
 		});
 		Lua_helper.add_callback(lua, "setBlendMode", function(obj:String, blend:String = '') {
-			var real = game.getLuaObject(obj);
+			var real:FlxSprite = game.getLuaObject(obj);
 			if(real != null) {
 				real.blend = LuaUtils.blendModeFromString(blend);
 				return true;
@@ -1565,6 +1565,7 @@ class FunkinLua {
 		CustomSubstate.implement(this);
 		ShaderFunctions.implement(this);
 		DeprecatedFunctions.implement(this);
+		EventLoader.implement(this);
 		#if TOUCH_CONTROLS_ALLOWED
 		MobileFunctions.implement(this);
 		MobileDeprecatedFunctions.implement(this);

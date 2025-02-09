@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import mikolka.stages.objects.PicoCapableStage;
 import flixel.system.debug.watch.Tracker;
 import mikolka.compatibility.FunkinPath;
 import shaders.AdjustColorShader;
@@ -8,7 +9,7 @@ import mikolka.compatibility.VsliceOptions;
 import substates.GameOverSubstate;
 #end
 
-class MallXmasErect extends PicoCapableStage
+class MallXmasErect extends BaseStage
 {
 	var upperBoppers:BGSprite;
 	var bottomBoppers:MallCrowd;

@@ -67,7 +67,7 @@ class CutsceneHandler extends FlxBasic
 		
 		if(_canSkip && cutsceneTime > 0.1)
 		{
-			if (Controls.instance.pressed('pause') && !pauseJustClosed)
+			if (Controls.instance.pressed('pause') #if android || FlxG.android.justReleased.BACK #end && !pauseJustClosed)
 				{
 					var game = PlayState.instance;
 					FlxG.camera.followLerp = 0;
