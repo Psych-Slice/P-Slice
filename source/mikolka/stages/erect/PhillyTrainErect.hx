@@ -44,7 +44,7 @@ class PhillyTrainErect extends BaseStage
 
 		if (!VsliceOptions.LOW_QUALITY)
 		{
-			var streetBehind:BGSprite = new BGSprite('philly/behindTrain', -40, 50);
+			var streetBehind:BGSprite = new BGSprite('philly/erect/behindTrain', -40, 50);
 			add(streetBehind);
 		}
 
