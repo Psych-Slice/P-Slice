@@ -1,4 +1,5 @@
 package options;
+import options.Option;
 
 class BaseGameSubState extends BaseOptionsMenu {
     public function new() {

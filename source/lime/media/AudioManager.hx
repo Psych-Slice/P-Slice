@@ -8,7 +8,9 @@ import lime.media.openal.AL;
 import lime.media.openal.ALC;
 import lime.media.openal.ALContext;
 import lime.media.openal.ALDevice;
+#if sys
 import mikolka.vslice.components.ALSoftConfig;
+#end
 #if (js && html5)
 import js.Browser;
 #end

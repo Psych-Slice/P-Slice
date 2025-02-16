@@ -1,6 +1,7 @@
 package options;
 
 import objects.Character;
+import options.Option;
 
 class GraphicsSettingsSubState extends BaseOptionsMenu
 {

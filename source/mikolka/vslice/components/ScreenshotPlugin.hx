@@ -1,5 +1,6 @@
 package mikolka.vslice.components;
 
+import haxe.Timer;
 import mikolka.compatibility.FunkinControls;
 import mikolka.compatibility.VsliceOptions;
 import flixel.FlxBasic;
@@ -79,9 +80,9 @@ class ScreenshotPlugin extends FlxBasic
   {
     super.update(elapsed);
 
-    if (hasPressedScreenshot() && lastScreenshotTimeStamp+2<Sys.time())
+    if (hasPressedScreenshot() && lastScreenshotTimeStamp+2<Timer.stamp())
     {
-      lastScreenshotTimeStamp = Sys.time();
+      lastScreenshotTimeStamp = Timer.stamp();
       trace('Capturing screen at $lastScreenshotTimeStamp !');
       capture();
     }

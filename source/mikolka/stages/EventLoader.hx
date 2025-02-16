@@ -5,12 +5,15 @@ import mikolka.stages.objects.*;
 import mikolka.stages.erect.*;
 import haxe.ds.List;
 #if !LEGACY_PSYCH
+#if LUA_ALLOWED
 import psychlua.FunkinLua;
+import mikolka.vslice.components.crash.UserErrorSubstate;
+#end
 import states.MainMenuState;
 #end
 
 class EventLoader extends BaseStage {
-
+    #if LUA_ALLOWED
     public static function implement(funk:FunkinLua)
         {
             var lua:State = funk.lua;
@@ -18,7 +21,13 @@ class EventLoader extends BaseStage {
             Lua_helper.add_callback(lua, "markAsPicoCapable", function() {
                 new PicoCapableStage();
             });
+            Lua_helper.add_callback(lua, "showCrashScreen", function(name:String,description:String) {
+                if(name == null || name == "") name = "An error occurred";
+                if(description == null || description == "") name = "That's all we know";
+                FlxG.state.openSubState(new UserErrorSubstate(name,description));
+            });
         }
+    #end
     public static function addstage(name:String) {
         var addNene = true;
         switch (name)

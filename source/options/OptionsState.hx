@@ -1,5 +1,6 @@
 package options;
 
+import mikolka.vslice.components.crash.UserErrorSubstate;
 import states.MainMenuState;
 import backend.StageData;
 import flixel.FlxObject;
@@ -45,7 +46,8 @@ class OptionsState extends MusicBeatState
 				if (controls.mobileC)
 				{
 					funnyCam.visible = persistentUpdate = true;
-					FlxG.sound.play(Paths.sound('cancelMenu'));
+					openSubState(new UserErrorSubstate("Unsupported controls", 
+					"You don't need to go there on mobile!\n\nIf you wish to go there anyway\nSet 'Mobile Controls Opacity' to 0%"));
 				}
 				else
 					openSubState(new options.ControlsSubState());

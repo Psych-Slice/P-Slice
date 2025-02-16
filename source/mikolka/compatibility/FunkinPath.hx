@@ -10,6 +10,7 @@ class FunkinPath {
         return getPath("images/"+path);
     }
     public static function getPath(path:String,forceNative:Bool = false):String {
+        #if MODS_ALLOWED
         if(forceNative) return Paths.getSharedPath(path);
         
         var curMod = Mods.currentModDirectory;
@@ -22,7 +23,9 @@ class FunkinPath {
                 return testPath;
         }
         if (FileSystem.exists(#if mobile Sys.getCwd() + #end 'mods/$path')) return #if mobile Sys.getCwd() + #end 'mods/$path';
-        else return Paths.getSharedPath(path);
+        else 
+        #end
+        return Paths.getSharedPath(path);
     }
 
     public static function sound(key:String):String {

@@ -709,6 +709,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 				Reflect.setField(songCopy, '__original_path', Song.chartPath);
 				var dataToSave:String = haxe.Json.stringify(songCopy);
 				//trace(chartName, dataToSave);
+				#if sys
 				if(!FileSystem.isDirectory('backups')) FileSystem.createDirectory('backups');
 				File.saveContent('backups/$chartName.$BACKUP_EXT', dataToSave);
 
@@ -757,6 +758,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 						}
 					}
 				}
+				#end
 
 				FlxTween.tween(autoSaveIcon, {alpha: 1}, 0.5, {onComplete: function(_)
 					FlxTween.tween(autoSaveIcon, {alpha: 0}, 0.5, {startDelay: 2})
@@ -3705,6 +3707,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 		btnY += 20;
 		#end
+
+		#if sys
 		var btn:PsychUIButton = new PsychUIButton(btnX, btnY, '  Open Autosave...', function()
 		{
 			if(!fileDialog.completed) return;
@@ -3793,6 +3797,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		}, btnWid);
 		btn.text.alignment = LEFT;
 		tab_group.add(btn);
+		#end 
 
 		#if !mobile
 		if(SHOW_EVENT_COLUMN)
@@ -3935,6 +3940,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			tab_group.add(btn);
 		}
 
+		#if sys
 		btnY++;
 		btnY += 20;
 		var btn:PsychUIButton = new PsychUIButton(btnX, btnY, '  Reload Chart', function()
@@ -3971,8 +3977,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		}, btnWid);
 		btn.text.alignment = LEFT;
 		tab_group.add(btn);
+		#end
 
-		#if !mobile
+		#if (!mobile && sys)
 		btnY++;
 		btnY += 20;
 		var btn:PsychUIButton = new PsychUIButton(btnX, btnY, '  Save (V-Slice)...', function()
@@ -4834,9 +4841,11 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			#if mobile
 			var chartName:String = Paths.formatToSongPath(PlayState.SONG.song) + '.json';
 			StorageUtil.saveContent(chartName, chartData);
-			#else
+			#elseif sys
 			File.saveContent(Song.chartPath, chartData);
 			showOutput('Chart saved successfully to: ${Song.chartPath}');
+			#else
+			showOutput('Cannot override! Use "Save as" to save your chart',true);
 			#end
 		}
 		else
@@ -5146,6 +5155,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	}
 	
 	var overwriteSavedSomething:Bool = false;
+	#if sys
 	function overwriteCheck(savePath:String, overwriteName:String, saveData:String, continueFunc:Void->Void = null, ?continueOnCancel:Bool = false)
 	{
 		if(FileSystem.exists(savePath))
@@ -5165,6 +5175,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			if(continueFunc != null) continueFunc();
 		}
 	}
+	#end
 
 	// Undo/Redo stuff
 	var undoActions:Array<UndoStruct> = [];

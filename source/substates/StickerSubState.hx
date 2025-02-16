@@ -165,7 +165,7 @@ class StickerSubState extends MusicBeatSubstate
     // globalMods.pushUnique("mods/"+Mods.currentModDirectory);
     // globalMods.push("assets/shared"); // base stickers
 
-
+      #if sys
       var modStickerDir = Paths.getPath('images/transitionSwag/$STICKER_SET',TEXT,null,true);
       if(!FileSystem.exists(modStickerDir)){
         trace('Couldn\'t find sticker set "$STICKER_SET" in $modStickerDir');
@@ -175,6 +175,7 @@ class StickerSubState extends MusicBeatSubstate
         trace('Sticker set $STICKER_SET doesn\'t contain a "stickers.json" file.');
       }
       else{
+
         try{
           var infoObj = new StickerInfo(STICKER_SET);
           stickers = infoObj;
@@ -183,7 +184,12 @@ class StickerSubState extends MusicBeatSubstate
         catch(x){
           trace('Error while creating "$modStickerDir" sticker pack: ${x.message}');
         }
+
       }
+      #else
+      var infoObj = new StickerInfo(STICKER_SET);
+          stickers = infoObj;
+      #end
     // sticker group -> array of sticker names
 
     var xPos:Float = -100;

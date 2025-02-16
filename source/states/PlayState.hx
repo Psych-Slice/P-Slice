@@ -435,7 +435,7 @@ class PlayState extends MusicBeatState
 		// "SCRIPTS FOLDER" SCRIPTS
 		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'scripts/'))
 			#if linux
-			for (file in CoolUtil.sortAlphabetically(Paths.readDirectory(folder)))
+			for (file in CoolUtil.sortAlphabetically(NativeFileSystem.readDirectory(folder)))
 			#else
 			for (file in Paths.readDirectory(folder))
 			#end
@@ -609,7 +609,7 @@ class PlayState extends MusicBeatState
 		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
 		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'data/$songName/'))
 			#if linux
-			for (file in CoolUtil.sortAlphabetically(Paths.readDirectory(folder)))
+			for (file in CoolUtil.sortAlphabetically(NativeFileSystem.readDirectory(folder)))
 			#else
 			for (file in Paths.readDirectory(folder))
 			#end

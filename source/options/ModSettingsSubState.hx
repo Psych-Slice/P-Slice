@@ -8,6 +8,7 @@ import objects.Character;
 import haxe.Json;
 
 import options.Option.OptionType;
+import options.Option;
 
 class ModSettingsSubState extends BaseOptionsMenu
 {

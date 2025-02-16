@@ -53,7 +53,7 @@ class Mods
 		#if MODS_ALLOWED
 		var modsFolder:String = Paths.mods();
 		if(FileSystem.exists(modsFolder)) {
-			for (folder in Paths.readDirectory(modsFolder))
+			for (folder in NativeFileSystem.readDirectory(modsFolder))
 			{
 				var path = haxe.io.Path.join([modsFolder, folder]);
 				if (FileSystem.isDirectory(path) && !ignoreModFolders.contains(folder.toLowerCase()) && !list.contains(folder))
@@ -94,13 +94,13 @@ class Mods
 	inline public static function directoriesWithFile(path:String, fileToFind:String, mods:Bool = true)
 	{
 		var foldersToCheck:Array<String> = [];
-		if(FileSystem.exists(path + fileToFind))
+		if(NativeFileSystem.exists(path + fileToFind))
 			foldersToCheck.push(path + fileToFind);
 
 		if(Paths.currentLevel != null && Paths.currentLevel != path)
 		{
 			var pth:String = Paths.getFolderPath(fileToFind, Paths.currentLevel);
-			if(FileSystem.exists(pth))
+			if(NativeFileSystem.exists(pth))
 				foldersToCheck.push(pth);
 		}
 

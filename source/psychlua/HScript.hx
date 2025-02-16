@@ -581,7 +581,7 @@ class CustomFlxColor {
 		return cast FlxColor.fromString(str);
 }
 #end
-
+#if HSCRIPT_ALLOWED
 class CustomInterp extends crowplexus.hscript.Interp
 {
 	public var parentInstance:Dynamic;
@@ -616,3 +616,4 @@ class CustomInterp extends crowplexus.hscript.Interp
 		return null;
 	}
 }
+#end

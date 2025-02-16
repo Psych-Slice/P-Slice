@@ -74,7 +74,7 @@ class MobileData
 		folder = folder.contains(':') ? folder.split(':')[1] : folder;
 
 		#if MODS_ALLOWED if (FileSystem.exists(folder)) #end
-		for (file in Paths.readDirectory(folder))
+		for (file in NativeFileSystem.readDirectory(folder))
 		{
 			var fileWithNoLib:String = file.contains(':') ? file.split(':')[1] : file;
 			if (Path.extension(fileWithNoLib) == 'json')

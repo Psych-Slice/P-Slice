@@ -18,7 +18,7 @@ class BPMCache {
             trace('Missing data folder for $fileSngName in $sngDataPath for BPM scrapping!!'); //TODO
             return 0;
         }
-        var chartFiles = Paths.readDirectory(sngDataPath);
+        var chartFiles = NativeFileSystem.readDirectory(sngDataPath);
         #if MODS_ALLOWED
         chartFiles = chartFiles.filter(s -> s.toLowerCase().startsWith(fileSngName) && s.endsWith(".json"));
         var chosenChartToScrap = sngDataPath+"/"+chartFiles[0];

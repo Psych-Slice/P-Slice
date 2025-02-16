@@ -16,7 +16,9 @@ import states.StoryMenuState;
 import states.OutdatedState;
 import states.MainMenuState;
 import mikolka.vslice.components.ScreenshotPlugin;
+#if VIDEOS_ALLOWED
 import mikolka.vslice.AttractState;
+#end
 
 typedef TitleData =
 {
@@ -822,8 +824,9 @@ class TitleState extends MusicBeatState
 	 * After sitting on the title screen for a while, transition to the attract screen.
 	 */
 	function moveToAttract():Void
-	{	
+	{	#if VIDEOS_ALLOWED
 		if(!Std.isOfType(FlxG.state,TitleState)) return;
 		FlxG.switchState(() -> new AttractState());
+		#end
 	}
 }

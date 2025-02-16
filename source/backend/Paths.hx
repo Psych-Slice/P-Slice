@@ -484,7 +484,7 @@ class Paths
 			var allFiles:Array<String> = null;
 			try
 			{
-				allFiles = Paths.readDirectory(dir);
+				allFiles = NativeFileSystem.readDirectory(dir);
 			}
 			catch (e)
 			{
@@ -507,6 +507,7 @@ class Paths
 	#if flxanimate
 	public static function loadAnimateAtlas(spr:FlxAnimate, folderOrImg:Dynamic, spriteJson:Dynamic = null, animationJson:Dynamic = null)
 	{
+		#if sys
 		var changedAnimJson = false;
 		var changedAtlasJson = false;
 		var changedImage = false;
@@ -572,27 +573,9 @@ class Paths
 		//trace(spriteJson);
 		//trace(animationJson);
 		spr.loadAtlasEx(folderOrImg, spriteJson, animationJson);
-	}
-	#end
-
-	public static function readDirectory(directory:String):Array<String>
-	{
-		#if MODS_ALLOWED
-		return FileSystem.readDirectory(directory);
 		#else
-		var dirs:Array<String> = [];
-		for(dir in Assets.list().filter(folder -> folder.startsWith(directory)))
-		{
-			@:privateAccess
-			for(library in lime.utils.Assets.libraries.keys())
-			{
-				if(library != 'default' && Assets.exists('$library:$dir') && (!dirs.contains('$library:$dir') || !dirs.contains(dir)))
-					dirs.push('$library:$dir');
-				else if(Assets.exists(dir) && !dirs.contains(dir))
-					dirs.push(dir);
-			}
-		}
-		return dirs;
+		spr.loadAtlas(folderOrImg);
 		#end
 	}
+	#end
 }
