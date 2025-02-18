@@ -55,23 +55,7 @@ class VideoSprite extends FlxSpriteGroup {
 		if(canSkip) this.canSkip = true;
 
 		// callbacks
-		if(!shouldLoop)
-		{
-			videoSprite.bitmap.onEndReached.add(function() {
-				if(alreadyDestroyed) return;
-	
-				trace('Video destroyed');
-				if(cover != null)
-				{
-					remove(cover);
-					cover.destroy();
-				}
-		
-				PlayState.instance?.remove(this);
-				destroy();
-				alreadyDestroyed = true;
-			});
-		}
+		if(!shouldLoop) videoSprite.bitmap.onEndReached.add(destroy);
 		#if hxvlc
 		videoSprite.bitmap.onFormatSetup.add(function()
 		#else
@@ -100,10 +84,7 @@ class VideoSprite extends FlxSpriteGroup {
 	override function destroy()
 	{
 		if(alreadyDestroyed)
-		{
-			super.destroy();
 			return;
-		}
 
 		trace('Video destroyed');
 		if(cover != null)
@@ -116,8 +97,16 @@ class VideoSprite extends FlxSpriteGroup {
 			finishCallback();
 		onSkip = null;
 
-		PlayState.instance?.remove(this);
+		if(FlxG.state != null)
+		{
+			if(FlxG.state.members.contains(this))
+				FlxG.state.remove(this);
+
+			if(FlxG.state.subState != null && FlxG.state.subState.members.contains(this))
+				FlxG.state.subState.remove(this);
+		}
 		super.destroy();
+		alreadyDestroyed = true;
 	}
 
 	override function update(elapsed:Float)

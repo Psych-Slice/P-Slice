@@ -23,9 +23,9 @@ class EditorPlayState extends MusicBeatSubstate
 	var startingSong:Bool = true;
 
 	var playbackRate:Float = 1;
+	var inst:FlxSound = new FlxSound();
 	var vocals:FlxSound;
 	var opponentVocals:FlxSound;
-	var inst:FlxSound;
 	
 	var notes:FlxTypedGroup<Note>;
 	var unspawnNotes:Array<Note> = [];
@@ -79,7 +79,9 @@ class EditorPlayState extends MusicBeatSubstate
 		this.startPos = Conductor.songPosition;
 		Conductor.songPosition = startPos;
 
+		#if FLX_PITCH
 		playbackRate = FlxG.sound.music.pitch;
+		#end
 	}
 
 	override function create()
@@ -140,13 +142,7 @@ class EditorPlayState extends MusicBeatSubstate
 		dataTxt.borderSize = 1.25;
 		add(dataTxt);
 
-        var daButton:String;
-	if (controls.mobileC)
-		daButton = #if android "BACK" #else "X" #end;
-        else
-		daButton = "ESC";
-
-    	var tipText:FlxText = new FlxText(10, FlxG.height - 24, 0, 'Press ' + daButton + ' to Go Back to Chart Editor', 16);
+		var tipText:FlxText = new FlxText(10, FlxG.height - 24, 0, 'Press ${(controls.mobileC) ? #if android 'BACK' #else 'X' #end : 'ESC'} to Go Back to Chart Editor', 16);
 		tipText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		tipText.borderSize = 2;
 		tipText.scrollFactor.set();
@@ -209,8 +205,8 @@ class EditorPlayState extends MusicBeatSubstate
 			Conductor.songPosition += elapsed * 1000 * playbackRate;
 			if (Conductor.songPosition >= 0)
 			{
-				var timeDiff:Float = Math.abs((FlxG.sound.music.time + Conductor.offset) - Conductor.songPosition);
-				Conductor.songPosition = FlxMath.lerp(FlxG.sound.music.time + Conductor.offset, Conductor.songPosition, Math.exp(-elapsed * 2.5));
+				var timeDiff:Float = Math.abs((inst.time + Conductor.offset) - Conductor.songPosition);
+				Conductor.songPosition = FlxMath.lerp(inst.time + Conductor.offset, Conductor.songPosition, Math.exp(-elapsed * 2.5));
 				if (timeDiff > 1000 * playbackRate)
 					Conductor.songPosition = Conductor.songPosition + 1000 * FlxMath.signOf(timeDiff);
 			}
@@ -300,22 +296,28 @@ class EditorPlayState extends MusicBeatSubstate
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 		FlxG.mouse.visible = true;
 		NoteSplash.configs.clear();
+		FlxG.sound.list.remove(inst);
+		flixel.util.FlxDestroyUtil.destroy(inst);
 		super.destroy();
 	}
 	
 	function startSong():Void
 	{
 		startingSong = false;
-		FlxG.sound.music.onComplete = finishSong;
-		FlxG.sound.music.volume = vocals.volume = opponentVocals.volume = 1;
+		@:privateAccess inst.loadEmbedded(FlxG.sound.music._sound);
+		inst.looped = false;
+		inst.onComplete = finishSong;
+		inst.volume = vocals.volume = opponentVocals.volume = 1;
+		FlxG.sound.list.add(inst);
 
-		FlxG.sound.music.play();
+		FlxG.sound.music.pause();
+		inst.play();
 		vocals.play();
 		opponentVocals.play();
-		FlxG.sound.music.time = vocals.time = opponentVocals.time = startPos - Conductor.offset;
+		inst.time = vocals.time = opponentVocals.time = startPos - Conductor.offset;
 
 		// Song duration in a float, useful for the time left feature
-		songLength = FlxG.sound.music.length;
+		songLength = inst.length;
 	}
 
 	// Borrowed from PlayState
@@ -336,7 +338,7 @@ class EditorPlayState extends MusicBeatSubstate
 		var songData = PlayState.SONG;
 		Conductor.bpm = songData.bpm;
 
-		FlxG.sound.music.volume = vocals.volume = opponentVocals.volume = 0;
+		inst.volume = vocals.volume = opponentVocals.volume = 0;
 
 		notes = new FlxTypedGroup<Note>();
 		add(notes);
@@ -513,7 +515,7 @@ class EditorPlayState extends MusicBeatSubstate
 		for (note in unspawnNotes)
 			if(note != null) invalidateNote(note);
 
-		FlxG.sound.music.pause();
+		inst.pause();
 		vocals.pause();
 		opponentVocals.pause();
 

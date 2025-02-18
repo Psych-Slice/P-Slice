@@ -79,6 +79,8 @@ class PauseSubState extends MusicBeatSubstate
 			menuItemsOG.insert(4 + num, 'Toggle Practice Mode');
 			menuItemsOG.insert(5 + num, 'Toggle Botplay');
 		}
+	 	else if(PlayState.instance.practiceMode && !PlayState.instance.startingSong)
+			menuItemsOG.insert(3, 'Skip Time');
 		if(inVid) {
 			menuItems = ['Resume',cutscene_resetTxt , cutscene_skipTxt , 'Options', 'Exit to menu'];
 			if(!cutscene_allowSkipping) menuItems.remove(cutscene_skipTxt);
