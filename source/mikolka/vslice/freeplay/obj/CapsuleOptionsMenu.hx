@@ -64,8 +64,9 @@ class CapsuleOptionsMenu extends FlxSpriteGroup
       return;
     }
     @:privateAccess
-    if (parent.controls.BACK)
+    if (parent.controls.BACK && !busy)
     {
+      busy = true;
       close();
       return;
     }

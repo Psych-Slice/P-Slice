@@ -443,7 +443,7 @@ class PlayState extends MusicBeatState
 			#if linux
 			for (file in CoolUtil.sortAlphabetically(NativeFileSystem.readDirectory(folder)))
 			#else
-			for (file in Paths.readDirectory(folder))
+			for (file in NativeFileSystem.readDirectory(folder))
 			#end
 			{
 				#if LUA_ALLOWED
@@ -617,7 +617,7 @@ class PlayState extends MusicBeatState
 			#if linux
 			for (file in CoolUtil.sortAlphabetically(NativeFileSystem.readDirectory(folder)))
 			#else
-			for (file in Paths.readDirectory(folder))
+			for (file in NativeFileSystem.readDirectory(folder))
 			#end
 			{
 				#if LUA_ALLOWED
