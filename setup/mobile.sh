@@ -4,8 +4,8 @@ echo Making the haxelib and setuping folder in same time...
 #haxelib newrepo
 echo Installing dependencies...
 echo This might take a few moments depending on your internet speed.
-haxelib git hxcpp https://github.com/mcagabe19-stuff/hxcpp --quiet
-haxelib git lime https://github.com/mcagabe19-stuff/lime --quiet
+haxelib git hxcpp https://github.com/mcagabe19-stuff/hxcpp 4563457945f9b6334f3d473c2dd23861d7b577ca --quiet
+haxelib git lime https://github.com/mcagabe19-stuff/lime 572b9a552d56082ed8f5153e5327b2632974a17b --quiet
 haxelib git openfl https://github.com/mcagabe19-stuff/openfl 9.3.3 --quiet
 haxelib git flixel https://github.com/Psych-Slice/p-slice-1.0-flixel 4cb4b8a51ef00abb4a7881bb869b13e399e82577 --quiet
 haxelib install flixel-addons 3.2.2 --quiet
