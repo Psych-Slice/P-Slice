@@ -1992,7 +1992,6 @@ class PlayState extends MusicBeatState
 		canResync = false;
 		FlxG.camera.followLerp = 0;
 		persistentUpdate = false;
-		chartingMode = true;
 		paused = true;
 
 		if(FlxG.sound.music != null)
@@ -2007,7 +2006,8 @@ class PlayState extends MusicBeatState
 		DiscordClient.resetClientID();
 		#end
 
-		MusicBeatState.switchState(new ChartingState());
+		MusicBeatState.switchState(new ChartingState(!chartingMode));
+		chartingMode = true;
 	}
 
 	function openCharacterEditor()
@@ -2574,6 +2574,15 @@ class PlayState extends MusicBeatState
 
 				storyPlaylist.remove(storyPlaylist[0]);
 
+				#if !switch
+					//!! We have to save the score for current song BEFORE loading the next one
+					if(!ClientPrefs.getGameplaySetting('practice') && !ClientPrefs.getGameplaySetting('botplay')){
+						var percent:Float = ratingPercent;
+						if(Math.isNaN(percent)) percent = 0;
+						Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent,songMisses == 0);
+					}
+				#end
+
 				if (storyPlaylist.length <= 0)
 				{
 					var prevScore =Highscore.getWeekScore(WeekData.weeksList[storyWeek],storyDifficulty);
@@ -2611,15 +2620,6 @@ class PlayState extends MusicBeatState
 					FlxTransitionableState.skipNextTransIn = true;
 					FlxTransitionableState.skipNextTransOut = true;
 					prevCamFollow = camFollow;
-					
-					#if !switch
-					//!! We have to save the score for current song BEFORE loading the next one
-					if(!ClientPrefs.getGameplaySetting('practice') && !ClientPrefs.getGameplaySetting('botplay')){
-						var percent:Float = ratingPercent;
-						if(Math.isNaN(percent)) percent = 0;
-						Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent,songMisses == 0);
-					}
-					#end
 
 					Song.loadFromJson(PlayState.storyPlaylist[0] + difficulty, PlayState.storyPlaylist[0]);
 					FlxG.sound.music.stop();

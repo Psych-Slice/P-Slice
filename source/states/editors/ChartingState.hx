@@ -5250,6 +5250,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		updateChartData();
 		StageData.loadDirectory(PlayState.SONG);
 		PlayState.altInstrumentals = null; // don't persist alt inst
+		PlayState.startOnTime = FlxG.sound.music.time;
 		LoadingState.loadAndSwitchState(new PlayState());
 		ClientPrefs.toggleVolumeKeys(true);
 	}
