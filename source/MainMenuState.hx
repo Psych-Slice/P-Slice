@@ -178,7 +178,7 @@ class MainMenuState extends MusicBeatState
 				FlxTransitionableState.skipNextTransOut = false;
 				if (optionShit[curSelected] == 'donate')
 				{
-					CoolUtil.browserLoad('https://www.makeship.com/shop/creator/friday-night-funkin');
+					CoolUtil.browserLoad('https://needlejuicerecords.com/pages/friday-night-funkin');
 				}
 				else
 				{
