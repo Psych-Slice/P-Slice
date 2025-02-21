@@ -22,7 +22,7 @@ class HealthIcon extends FlxSprite
 			setPosition(sprTracker.x + sprTracker.width + 12, sprTracker.y - 30);
 	}
 
-	private var iconOffsets:Array<Float> = [0, 0];
+	private var iconOffsets:Array<Float> = [0, 0, 0];
 	public function changeIcon(char:String, ?allowGPU:Bool = true) {
 		if(this.char != char) {
 			var name:String = 'icons/' + char;
@@ -31,12 +31,29 @@ class HealthIcon extends FlxSprite
 			
 			var graphic = Paths.image(name, allowGPU);
 			var iSize:Float = Math.round(graphic.width / graphic.height);
-			loadGraphic(graphic, true, Math.floor(graphic.width / iSize), Math.floor(graphic.height));
-			iconOffsets[0] = (width - 150) / iSize;
-			iconOffsets[1] = (height - 150) / iSize;
+			//loadGraphic(graphic, true, Math.floor(graphic.width / iSize), Math.floor(graphic.height));
+			loadGraphic(graphic);
+			var width2 = width;
+			if (graphic.width == 450) {
+				loadGraphic(graphic, true, Math.floor(width / 3), Math.floor(height)); //Then load it fr // winning icons go br
+				iconOffsets[0] = (width - 150) / iSize;
+				iconOffsets[1] = (width - 150) / iSize;
+				iconOffsets[2] = (width - 150) / iSize;
+			
+			} else if (graphic.width == 300) {
+				loadGraphic(graphic, true, Math.floor(width / 2), Math.floor(height));
+				iconOffsets[0] = (width - 150) / iSize;
+				iconOffsets[1] = (width - 150) / iSize;
+				
+			}
 			updateHitbox();
 
-			animation.add(char, [for(i in 0...frames.frames.length) i], 0, false, isPlayer);
+			//animation.add(char, [for(i in 0...frames.frames.length) i], 0, false, isPlayer);
+			if (width2 == 450) {
+				animation.add(char, [0, 1, 2], 0, false, isPlayer);
+			} else {
+				animation.add(char, [0, 1], 0, false, isPlayer);
+			}
 			animation.play(char);
 			this.char = char;
 
