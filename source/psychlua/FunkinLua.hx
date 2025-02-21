@@ -464,6 +464,7 @@ class FunkinLua {
 					}
 				}
 				var groupOrArray:Dynamic = CustomSubstate.instance != null ? CustomSubstate.instance : LuaUtils.getTargetInstance();
+				if(groupOrArray == null) return -1;
 				return groupOrArray.members.indexOf(leObj);
 			}
 			luaTrace('getObjectOrder: Object $obj doesn\'t exist!', false, false, FlxColor.RED);

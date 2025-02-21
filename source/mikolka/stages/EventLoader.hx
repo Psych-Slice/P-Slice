@@ -21,11 +21,6 @@ class EventLoader extends BaseStage {
             Lua_helper.add_callback(lua, "markAsPicoCapable", function() {
                 new PicoCapableStage();
             });
-            Lua_helper.add_callback(lua, "showCrashScreen", function(name:String,description:String) {
-                if(name == null || name == "") name = "An error occurred";
-                if(description == null || description == "") name = "That's all we know";
-                FlxG.state.openSubState(new UserErrorSubstate(name,description));
-            });
         }
     #end
     public static function addstage(name:String) {
