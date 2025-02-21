@@ -667,18 +667,18 @@ class LoadingState extends MusicBeatState
 	static function initThread(func:Void->Dynamic, traceData:String)
 	{
 		// trace('scheduled $func in threadPool');
-		#if debug
+		#if (debug && sys)
 		var threadSchedule = Sys.time();
 		#end
 		new Future(() -> {
-			#if debug
+			#if (debug && sys)
 			var threadStart = Sys.time();
 			trace('$traceData took ${threadStart - threadSchedule}s to start preloading');
 			#end
 
 			try {
 				if (func() != null) {
-					#if debug
+					#if (debug && sys)
 					var diff = Sys.time() - threadStart;
 					trace('finished preloading $traceData in ${diff}s');
 					#end

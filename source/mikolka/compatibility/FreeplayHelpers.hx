@@ -23,7 +23,7 @@ class FreeplayHelpers {
 		return Conductor.bpm;
 	}
 
-    public inline static function loadSongs(){
+    public static function loadSongs(){
         var songs = [];
         WeekData.reloadWeekFiles(false);
 		// programmatically adds the songs via LevelRegistry and SongRegistry
