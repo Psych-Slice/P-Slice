@@ -1,5 +1,6 @@
 package substates;
 
+import mikolka.vslice.components.crash.UserErrorSubstate;
 import mikolka.compatibility.VsliceOptions;
 import states.MainMenuState;
 import flixel.FlxSprite;
@@ -165,25 +166,31 @@ class StickerSubState extends MusicBeatSubstate
     // globalMods.pushUnique("mods/"+Mods.currentModDirectory);
     // globalMods.push("assets/shared"); // base stickers
 
-
+      #if sys
       var modStickerDir = Paths.getPath('images/transitionSwag/$STICKER_SET',TEXT,null,true);
       if(!FileSystem.exists(modStickerDir)){
-        trace('Couldn\'t find sticker set "$STICKER_SET" in $modStickerDir');
+        openSubState(new UserErrorSubstate("Missing sticker_set",'Couldn\'t find sticker set "$STICKER_SET"\n\nin $modStickerDir'));
         
       }
       else if(!FileSystem.exists('$modStickerDir/stickers.json')){
-        trace('Sticker set $STICKER_SET doesn\'t contain a "stickers.json" file.');
+        openSubState(new UserErrorSubstate("Missing manifest",'Sticker set $STICKER_SET doesn\'t contain a "stickers.json" file\n\nin $modStickerDir/stickers.json'));
       }
       else{
+
         try{
           var infoObj = new StickerInfo(STICKER_SET);
           stickers = infoObj;
-          if(infoObj.getPack(STICKER_PACK) == null) trace('Sticker set ${infoObj.name} doesn\'t contain "$STICKER_PACK" pack. All available stickers will be loaded instead.');
+          if(infoObj.getPack(STICKER_PACK) == null) openSubState(new UserErrorSubstate('Missing pack','Sticker set ${infoObj.name} doesn\'t contain "$STICKER_PACK" pack.\n\nAll available stickers will be loaded instead.'));
         }
         catch(x){
-          trace('Error while creating "$modStickerDir" sticker pack: ${x.message}');
+          openSubState(new UserErrorSubstate('Couldn\'t make $STICKER_PACK','In "$modStickerDir":\n\n${x.message}'));
         }
+
       }
+      #else
+      var infoObj = new StickerInfo(STICKER_SET);
+          stickers = infoObj;
+      #end
     // sticker group -> array of sticker names
 
     var xPos:Float = -100;
@@ -303,8 +310,12 @@ class StickerSubState extends MusicBeatSubstate
               dipshit.addChild(bitmap);
               // FlxG.addChildBelowMouse(dipshit);
              */
-            FlxG.switchState(targetState(this)
-            );
+             if(subState != null){
+              subStateClosed.addOnce(s -> {
+                FlxG.switchState(targetState(this));
+              });
+             }
+             else FlxG.switchState(targetState(this));
           }
         });
       });

@@ -112,8 +112,8 @@ using mikolka.funkin.utils.ArrayTools;
          //if(sngDataPath == null) return;
          
          if(this.songDifficulties.length == 0){
-             if(FileSystem.exists(sngDataPath)){
-                 var chartFiles = FileSystem.readDirectory(sngDataPath)
+             if(NativeFileSystem.exists(sngDataPath)){
+                 var chartFiles = NativeFileSystem.readDirectory(sngDataPath)
                  .filter(s -> s.toLowerCase().startsWith(fileSngName) && s.endsWith(".json"));
  
                  var diffNames = chartFiles.map(s -> s.substring(fileSngName.length+1,s.length-5));

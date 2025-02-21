@@ -1051,7 +1051,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 		var characterList = Mods.mergeAllTextsNamed('data/characterList.txt');
 		var foldersToCheck:Array<String> = Mods.directoriesWithFile(Paths.getSharedPath(), 'characters/');
 		for (folder in foldersToCheck)
-			for (file in Paths.readDirectory(folder))
+			for (file in NativeFileSystem.readDirectory(folder))
 				if(file.toLowerCase().endsWith('.json'))
 				{
 					var charToCheck:String = file.substr(0, file.length - 5);
@@ -1357,7 +1357,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 		var stageList:Array<String> = [];
 		var foldersToCheck:Array<String> = Mods.directoriesWithFile(Paths.getSharedPath(), 'stages/');
 		for (folder in foldersToCheck)
-			for (file in FileSystem.readDirectory(folder))
+			for (file in NativeFileSystem.readDirectory(folder))
 				if (file.toLowerCase().endsWith('.json'))
 				{
 					var stageToCheck:String = file.substr(0, file.length - '.json'.length);
@@ -1965,7 +1965,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 		}
 		_file = null;
 		#else
-		trace('File couldn' t be loaded!You aren 't on Desktop, are you?');
+		trace('File couldn\' t be loaded!You aren \'t on Desktop, are you?');
 		#end
 	}
 

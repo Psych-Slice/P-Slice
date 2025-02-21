@@ -1,5 +1,7 @@
 package states;
 
+import lime.app.Promise;
+import lime.app.Future;
 import haxe.Json;
 import lime.utils.Assets;
 import openfl.display.BitmapData;
@@ -15,11 +17,20 @@ import backend.Song;
 import backend.StageData;
 import objects.Character;
 
-import sys.thread.Thread;
+#if sys 
+//import sys.thread.Thread;
 import sys.thread.Mutex;
+#end 
 
 import objects.Note;
 import objects.NoteSplash;
+
+#if HSCRIPT_ALLOWED
+import psychlua.HScript;
+import crowplexus.iris.Iris;
+import crowplexus.hscript.Expr.Error as IrisError;
+import crowplexus.hscript.Printer;
+#end
 
 class LoadingState extends MusicBeatState
 {
@@ -28,7 +39,9 @@ class LoadingState extends MusicBeatState
 
 	static var originalBitmapKeys:Map<String, String> = [];
 	static var requestedBitmaps:Map<String, BitmapData> = [];
+	#if sys
 	static var mutex:Mutex;
+	#end
 
 	function new(target:FlxState, stopMusic:Bool)
 	{
@@ -45,11 +58,12 @@ class LoadingState extends MusicBeatState
 	var stopMusic:Bool = false;
 	var dontUpdate:Bool = false;
 
+	var barGroup:FlxSpriteGroup;
 	var bar:FlxSprite;
 	var barWidth:Int = 0;
 	var intendedPercent:Float = 0;
 	var curPercent:Float = 0;
-	var canChangeState:Bool = true;
+	var stateChangeDelay:Float = 0;
 
 	#if PSYCH_WATERMARKS
 	var logo:FlxSprite;
@@ -67,73 +81,111 @@ class LoadingState extends MusicBeatState
 	var funkay:FlxSprite;
 	#end
 
+	#if HSCRIPT_ALLOWED
+	var hscript:HScript;
+	#end
 	override function create()
 	{
-		#if !SHOW_LOADING_SCREEN
-		while(true)
-		#end
+		persistentUpdate = true;
+		barGroup = new FlxSpriteGroup();
+		add(barGroup);
+
+		var barBack:FlxSprite = new FlxSprite(0, 660).makeGraphic(1, 1, FlxColor.BLACK);
+		barBack.scale.set(FlxG.width - 300, 25);
+		barBack.updateHitbox();
+		barBack.screenCenter(X);
+		barGroup.add(barBack);
+
+		bar = new FlxSprite(barBack.x + 5, barBack.y + 5).makeGraphic(1, 1, FlxColor.WHITE);
+		bar.scale.set(0, 15);
+		bar.updateHitbox();
+		barGroup.add(bar);
+		barWidth = Std.int(barBack.width - 10);
+
+		#if HSCRIPT_ALLOWED
+		if(Mods.currentModDirectory != null && Mods.currentModDirectory.trim().length > 0)
 		{
-			if (checkLoaded())
+			var scriptPath:String = 'mods/${Mods.currentModDirectory}/data/LoadingScreen.hx'; //mods/My-Mod/data/LoadingScreen.hx
+			if(FileSystem.exists(scriptPath))
 			{
-				dontUpdate = true;
-				super.create();
-				onLoad();
-				return;
+				try
+				{
+					hscript = new HScript(null, scriptPath);
+					hscript.set('getLoaded', function() return loaded);
+					hscript.set('getLoadMax', function() return loadMax);
+					hscript.set('barBack', barBack);
+					hscript.set('bar', bar);
+	
+					if(hscript.exists('onCreate'))
+					{
+						hscript.call('onCreate');
+						trace('initialized hscript interp successfully: $scriptPath');
+						return super.create();
+					}
+					else
+					{
+						trace('"$scriptPath" contains no \"onCreate" function, stopping script.');
+					}
+				}
+				catch(e:IrisError)
+				{
+					var pos:HScriptInfos = cast {fileName: scriptPath, showLine: false};
+					Iris.error(Printer.errorToString(e, false), pos);
+					var hscript:HScript = cast (Iris.instances.get(scriptPath), HScript);
+				}
+				if(hscript != null) hscript.destroy();
+				hscript = null;
 			}
-			#if !SHOW_LOADING_SCREEN
-			Sys.sleep(0.001);
-			#end
 		}
+		#end
 
 		#if PSYCH_WATERMARKS // PSYCH LOADING SCREEN
 		var bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		bg.antialiasing = ClientPrefs.data.antialiasing;
 		bg.setGraphicSize(Std.int(FlxG.width));
 		bg.color = 0xFFD16FFF;
 		bg.updateHitbox();
-		add(bg);
+		addBehindBar(bg);
 	
 		loadingText = new FlxText(520, 600, 400, Language.getPhrase('now_loading', 'Now Loading', ['...']), 32);
 		loadingText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, LEFT, OUTLINE_FAST, FlxColor.BLACK);
 		loadingText.borderSize = 2;
-		add(loadingText);
+		addBehindBar(loadingText);
 	
 		logo = new FlxSprite(0, 0).loadGraphic(Paths.image('loading_screen/icon'));
+		logo.antialiasing = ClientPrefs.data.antialiasing;
 		logo.scale.set(0.75, 0.75);
 		logo.updateHitbox();
-		logo.antialiasing = ClientPrefs.data.antialiasing;
 		logo.screenCenter();
 		logo.x -= 50;
 		logo.y -= 40;
-		add(logo);
+		addBehindBar(logo);
 
 		#else // BASE GAME LOADING SCREEN
 		var bg = new FlxSprite().makeGraphic(1, 1, 0xFFCAFF4D);
 		bg.scale.set(FlxG.width, FlxG.height);
 		bg.updateHitbox();
 		bg.screenCenter();
-		add(bg);
+		addBehindBar(bg);
 
 		funkay = new FlxSprite(0, 0).loadGraphic(Paths.image('funkay'));
 		funkay.antialiasing = ClientPrefs.data.antialiasing;
 		funkay.setGraphicSize(0, FlxG.height);
 		funkay.updateHitbox();
-		add(funkay);
+		addBehindBar(funkay);
 		#end
-
-		var bg:FlxSprite = new FlxSprite(0, 660).makeGraphic(1, 1, FlxColor.BLACK);
-		bg.scale.set(FlxG.width - 300, 25);
-		bg.updateHitbox();
-		bg.screenCenter(X);
-		add(bg);
-
-		bar = new FlxSprite(bg.x + 5, bg.y + 5).makeGraphic(1, 1, FlxColor.WHITE);
-		bar.scale.set(0, 15);
-		bar.updateHitbox();
-		add(bar);
-		barWidth = Std.int(bg.width - 10);
-
-		persistentUpdate = true;
 		super.create();
+
+		if (stateChangeDelay <= 0 && checkLoaded())
+		{
+			dontUpdate = true;
+			onLoad();
+		}
+	}
+
+	function addBehindBar(obj:flixel.FlxBasic)
+	{
+		insert(members.indexOf(barGroup), obj);
 	}
 
 	var transitioning:Bool = false;
@@ -144,11 +196,15 @@ class LoadingState extends MusicBeatState
 
 		if (!transitioning)
 		{
-			if (canChangeState && !finishedLoading && checkLoaded())
+			if (!finishedLoading && checkLoaded())
 			{
-				transitioning = true;
-				onLoad();
-				return;
+				if(stateChangeDelay <= 0)
+				{
+					transitioning = true;
+					onLoad();
+					return;
+				}
+				else stateChangeDelay = Math.max(0, stateChangeDelay - elapsed);
 			}
 			intendedPercent = loaded / loadMax;
 		}
@@ -161,6 +217,14 @@ class LoadingState extends MusicBeatState
 			bar.scale.x = barWidth * curPercent;
 			bar.updateHitbox();
 		}
+		
+		#if HSCRIPT_ALLOWED
+		if(hscript != null)
+		{
+			if(hscript.exists('onUpdate')) hscript.call('onUpdate', [elapsed]);
+			return;
+		}
+		#end
 
 		#if PSYCH_WATERMARKS // PSYCH LOADING SCREEN
 		timePassed += elapsed;
@@ -193,7 +257,7 @@ class LoadingState extends MusicBeatState
 				FlxG.camera.fade(0xAAFFFFFF, 0.5, true);
 				logo.visible = false;
 				spawnedPessy = true;
-				canChangeState = false;
+				stateChangeDelay = 5;
 				FlxG.sound.play(Paths.sound('secret'));
 
 				pessy = new FlxSprite(700, 140);
@@ -202,21 +266,22 @@ class LoadingState extends MusicBeatState
 				pessy.animation.addByPrefix('spin', 'spin', 24, true);
 				pessy.antialiasing = ClientPrefs.data.antialiasing;
 				pessy.flipX = (logo.offset.x > 0);
-				pessy.x = FlxG.width + 200;
-				pessy.velocity.x = -1100;
+				pessy.visible = false;
 
 				new FlxTimer().start(0.01, function(tmr:FlxTimer) {
+					pessy.x = FlxG.width + 200;
+					pessy.velocity.x = -1100;
 					if(pessy.flipX)
 					{
 						pessy.x = -pessy.width - 200;
 						pessy.velocity.x *= -1;
 					}
 		
+					pessy.visible = true;
 					pessy.animation.play('run', true);
 					#if ACHIEVEMENTS_ALLOWED Achievements.unlock('pessy_easter_egg'); #end
 					
 					insert(members.indexOf(loadingText), pessy);
-					new FlxTimer().start(5, function(tmr:FlxTimer) canChangeState = true);
 				});
 			}
 		}
@@ -232,31 +297,56 @@ class LoadingState extends MusicBeatState
 		}
 		#end
 	}
+
+	#if HSCRIPT_ALLOWED
+	override function destroy()
+	{
+		if(hscript != null)
+		{
+			if(hscript.exists('onDestroy')) hscript.call('onDestroy');
+			hscript.destroy();
+		}
+		hscript = null;
+		super.destroy();
+	}
+	#end
 	
 	var finishedLoading:Bool = false;
 	function onLoad()
 	{
+		_loaded();
+
 		if (stopMusic && FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
 		FlxG.camera.visible = false;
-		FlxTransitionableState.skipNextTransIn = true;
 		MusicBeatState.switchState(target);
 		transitioning = true;
 		finishedLoading = true;
-		mutex = null;
+	}
+
+	static function _loaded()
+	{
+		loaded = 0;
+		loadMax = 0;
+		initialThreadCompleted = true;
+		isIntrusive = false;
+
+		FlxTransitionableState.skipNextTransIn = true;
+		#if sys mutex = null; #end
 	}
 
 	public static function checkLoaded():Bool
 	{
 		for (key => bitmap in requestedBitmaps)
 		{
-			if (bitmap != null && Paths.cacheBitmap(originalBitmapKeys.get(key), bitmap) != null) trace('finished preloading image $key');
+			if (bitmap != null && Paths.cacheBitmap(originalBitmapKeys.get(key), bitmap) != null) {} //trace('finished preloading image $key');
 			else trace('failed to cache image $key');
 		}
 		requestedBitmaps.clear();
 		originalBitmapKeys.clear();
-		return (loaded == loadMax && initialThreadCompleted);
+		// trace('we checked if loaded');
+		return (loaded >= loadMax && initialThreadCompleted);
 	}
 
 	public static function loadNextDirectory()
@@ -271,22 +361,31 @@ class LoadingState extends MusicBeatState
 		trace('Setting asset folder to ' + directory);
 	}
 
+	static var isIntrusive:Bool = false;
 	static function getNextState(target:FlxState, stopMusic = false, intrusive:Bool = true):FlxState
 	{
+		#if !SHOW_LOADING_SCREEN
+		intrusive = false;
+		#end
+
+		LoadingState.isIntrusive = intrusive;
+		//_startPool();
 		loadNextDirectory();
+
 		if(intrusive)
 			return new LoadingState(target, stopMusic);
-
+		
 		if (stopMusic && FlxG.sound.music != null)
 			FlxG.sound.music.stop();
-		
+
 		while(true)
 		{
-			if(!checkLoaded())
+			if(checkLoaded())
 			{
-				Sys.sleep(0.001);
+				_loaded();
+				break;
 			}
-			else break;
+			#if sys else Sys.sleep(0.001); #end
 		}
 		return target;
 	}
@@ -306,6 +405,20 @@ class LoadingState extends MusicBeatState
 	static var dontPreloadDefaultVoices:Bool = false;
 	public static function prepareToSong()
 	{
+		if(PlayState.SONG == null)
+		{
+			imagesToPrepare = [];
+			soundsToPrepare = [];
+			musicToPrepare = [];
+			songsToPrepare = [];
+			loaded = 0;
+			loadMax = 0;
+			initialThreadCompleted = true;
+			isIntrusive = false;
+			return;
+		}
+
+		//_startPool();
 		imagesToPrepare = [];
 		soundsToPrepare = [];
 		musicToPrepare = [];
@@ -313,7 +426,7 @@ class LoadingState extends MusicBeatState
 
 		initialThreadCompleted = false;
 		var threadsCompleted:Int = 0;
-		var threadsMax:Int = 2;
+		var threadsMax:Int = 0;
 		function completedThread()
 		{
 			threadsCompleted++;
@@ -327,7 +440,7 @@ class LoadingState extends MusicBeatState
 
 		var song:SwagSong = PlayState.SONG;
 		var folder:String = Paths.formatToSongPath(Song.loadedSongName);
-		Thread.create(() -> {
+		new Future<Bool>(() -> {
 			// LOAD NOTE IMAGE
 			var noteSkin:String = Note.defaultNoteSkin;
 			if(PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1) noteSkin = PlayState.SONG.arrowSkin;
@@ -380,10 +493,9 @@ class LoadingState extends MusicBeatState
 				}
 			}
 			catch(e:Dynamic) {}
-			completedThread();
-		});
-
-		Thread.create(() -> {
+			return true;
+		}, isIntrusive)
+		.then((_) -> new Future<Bool>(() -> {
 			if (song.stage == null || song.stage.length < 1)
 				song.stage = StageData.vanillaSongStage(folder);
 
@@ -448,20 +560,30 @@ class LoadingState extends MusicBeatState
 			if (player2 != player1)
 			{
 				threadsMax++;
-				Thread.create(() -> {
-					preloadCharacter(player2, prefixVocals);
+				new Future(() -> {
+					try { preloadCharacter(player2, prefixVocals); } catch (e:Dynamic) {}
 					completedThread();
-				});
+				},true);
 			}
 			if (!stageData.hide_girlfriend && gfVersion != player2 && gfVersion != player1)
 			{
 				threadsMax++;
-				Thread.create(() -> {
-					preloadCharacter(gfVersion);
+				new Future(() -> {
+					try { preloadCharacter(gfVersion); } catch (e:Dynamic) {}
 					completedThread();
-				});
+				},true);
 			}
-			completedThread();
+
+			if(threadsCompleted == threadsMax)
+			{
+				clearInvalids();
+				startThreads();
+				initialThreadCompleted = true;
+			}
+			return true;
+		}, isIntrusive))
+		.onError((err:Dynamic) -> {
+			trace('ERROR! while preparing song: $err');
 		});
 	}
 
@@ -486,7 +608,7 @@ class LoadingState extends MusicBeatState
 			{
 				for (subfolder in Mods.directoriesWithFile(Paths.getSharedPath(), '$prefix/$nam'))
 				{
-					for (file in Paths.readDirectory(subfolder))
+					for (file in NativeFileSystem.readDirectory(subfolder))
 					{
 						if(file.endsWith(ext))
 						{
@@ -521,11 +643,19 @@ class LoadingState extends MusicBeatState
 
 	public static function startThreads()
 	{
+		#if sys
 		mutex = new Mutex();
+		#end
 		loadMax = imagesToPrepare.length + soundsToPrepare.length + musicToPrepare.length + songsToPrepare.length;
 		loaded = 0;
 
 		//then start threads
+		_threadFunc();
+	}
+
+	static function _threadFunc()
+	{
+		//_startPool();
 		for (sound in soundsToPrepare) initThread(() -> preloadSound('sounds/$sound'), 'sound $sound');
 		for (music in musicToPrepare) initThread(() -> preloadSound('music/$music'), 'music $music');
 		for (song in songsToPrepare) initThread(() -> preloadSound(song, 'songs', true, false), 'song $song');
@@ -536,18 +666,31 @@ class LoadingState extends MusicBeatState
 
 	static function initThread(func:Void->Dynamic, traceData:String)
 	{
-		Thread.create(() -> {
+		// trace('scheduled $func in threadPool');
+		#if (debug && sys)
+		var threadSchedule = Sys.time();
+		#end
+		new Future(() -> {
+			#if (debug && sys)
+			var threadStart = Sys.time();
+			trace('$traceData took ${threadStart - threadSchedule}s to start preloading');
+			#end
+
 			try {
-				if (func() != null) trace('finished preloading $traceData');
-				else trace('ERROR! fail on preloading $traceData');
+				if (func() != null) {
+					#if (debug && sys)
+					var diff = Sys.time() - threadStart;
+					trace('finished preloading $traceData in ${diff}s');
+					#end
+				} else trace('ERROR! fail on preloading $traceData ');
 			}
 			catch(e:Dynamic) {
-				trace('ERROR! fail on preloading $traceData');
+				trace('ERROR! fail on preloading $traceData: $e');
 			}
-			mutex.acquire();
+			// mutex.acquire();
 			loaded++;
-			mutex.release();
-		});
+			// mutex.release();
+		},true);
 	}
 
 	inline private static function preloadCharacter(char:String, ?prefixVocals:String)
@@ -619,9 +762,9 @@ class LoadingState extends MusicBeatState
 			if (#if sys FileSystem.exists(file) || #end OpenFlAssets.exists(file, SOUND))
 			{
 				var sound:Sound = #if sys Sound.fromFile(file) #else OpenFlAssets.getSound(file, false) #end;
-				mutex.acquire();
+				#if sys mutex.acquire(); #end
 				Paths.currentTrackedSounds.set(file, sound);
-				mutex.release();
+				#if sys mutex.release(); #end
 			}
 			else if (beepOnNull)
 			{
@@ -630,9 +773,9 @@ class LoadingState extends MusicBeatState
 				return FlxAssets.getSound('flixel/sounds/beep');
 			}
 		}
-		mutex.acquire();
+		#if sys mutex.acquire();#end
 		Paths.localTrackedAssets.push(file);
-		mutex.release();
+		#if sys mutex.release(); #end
 
 		return Paths.currentTrackedSounds.get(file);
 	}
@@ -652,13 +795,13 @@ class LoadingState extends MusicBeatState
 				{
 					#if sys
 					var bitmap:BitmapData = BitmapData.fromFile(file);
+					mutex.acquire();
 					#else
 					var bitmap:BitmapData = OpenFlAssets.getBitmapData(file, false);
 					#end
-					mutex.acquire();
 					requestedBitmaps.set(file, bitmap);
 					originalBitmapKeys.set(file, requestKey);
-					mutex.release();
+					#if sys mutex.release(); #end
 					return bitmap;
 				}
 				else trace('no such image $key exists');

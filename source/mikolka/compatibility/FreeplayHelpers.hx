@@ -1,5 +1,6 @@
 package mikolka.compatibility;
 
+import backend.StageData;
 import options.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
 import mikolka.vslice.components.crash.UserErrorSubstate;
@@ -22,7 +23,7 @@ class FreeplayHelpers {
 		return Conductor.bpm;
 	}
 
-    public inline static function loadSongs(){
+    public static function loadSongs(){
         var songs = [];
         WeekData.reloadWeekFiles(false);
 		// programmatically adds the songs via LevelRegistry and SongRegistry
@@ -100,6 +101,18 @@ class FreeplayHelpers {
 				PlayState.isStoryMode = false;
 				PlayState.storyDifficulty = diffId;
 
+				var directory = StageData.forceNextDirectory;
+				LoadingState.loadNextDirectory();
+				StageData.forceNextDirectory = directory;
+
+				// @:privateAccess
+				// if(PlayState._lastLoadedModDirectory != Mods.currentModDirectory)
+				// {
+				// 	trace('CHANGED MOD DIRECTORY, RELOADING STUFF');
+				// 	Paths.freeGraphicsFromMemory();
+				// }
+				LoadingState.prepareToSong();
+
 				trace('CURRENT WEEK: ' + WeekData.getWeekFileName());
 			}
 			catch (e:Dynamic)
@@ -114,7 +127,9 @@ class FreeplayHelpers {
                 }
 				return;
 			}
-			LoadingState.loadAndSwitchState(new PlayState());
+			
+			#if !SHOW_LOADING_SCREEN FlxG.sound.music.stop(); #end
+			LoadingState.loadAndSwitchState(new PlayState(), true);
 
 			FlxG.sound.music.volume = 0;
 
@@ -127,6 +142,7 @@ class FreeplayHelpers {
         {
             var leWeek:WeekData = WeekData.weeksLoaded.get(name);
             return (!leWeek.startUnlocked
+                && leWeek.weekBefore != null
                 && leWeek.weekBefore.length > 0
                 && (!StoryMenuState.weekCompleted.exists(leWeek.weekBefore) || !StoryMenuState.weekCompleted.get(leWeek.weekBefore)));
         }

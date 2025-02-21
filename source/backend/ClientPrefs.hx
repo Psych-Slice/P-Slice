@@ -12,7 +12,7 @@ import states.TitleState;
 	public var extraHints:String = "NONE"; // hitbox extra hint option
 	public var hitbox2:Bool = true; // hitbox extra button position option
 	public var dynamicColors:Bool = true; // yes cause its cool -Karim
-	public var controlsAlpha:Float = FlxG.onMobile ? 0.6 : 0;
+	public var controlsAlpha:Float = 0.6;
 	public var screensaver:Bool = false;
 	public var wideScreen:Bool = false;
 	#if android
