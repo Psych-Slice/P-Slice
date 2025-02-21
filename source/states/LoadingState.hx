@@ -563,7 +563,7 @@ class LoadingState extends MusicBeatState
 				new Future(() -> {
 					try { preloadCharacter(player2, prefixVocals); } catch (e:Dynamic) {}
 					completedThread();
-				},true);
+				},false);
 			}
 			if (!stageData.hide_girlfriend && gfVersion != player2 && gfVersion != player1)
 			{
@@ -571,7 +571,7 @@ class LoadingState extends MusicBeatState
 				new Future(() -> {
 					try { preloadCharacter(gfVersion); } catch (e:Dynamic) {}
 					completedThread();
-				},true);
+				},false);
 			}
 
 			if(threadsCompleted == threadsMax)
