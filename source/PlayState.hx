@@ -3171,6 +3171,16 @@ class PlayState extends MusicBeatState
 
 				storyPlaylist.remove(storyPlaylist[0]);
 
+				if (SONG.validScore)
+					{
+							#if !switch
+							var percent:Float = ratingPercent;
+							if (Math.isNaN(percent))
+								percent = 0;
+							Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent, songMisses == 0);
+							#end
+					}
+
 				if (storyPlaylist.length <= 0)
 				{
 					var prevScore = Highscore.getWeekScore(WeekData.weeksList[storyWeek], storyDifficulty);
@@ -3220,16 +3230,6 @@ class PlayState extends MusicBeatState
 
 					trace('LOADING NEXT SONG');
 					trace(Paths.formatToSongPath(PlayState.storyPlaylist[0]) + difficulty);
-
-					if (SONG.validScore)
-					{
-							#if !switch
-							var percent:Float = ratingPercent;
-							if (Math.isNaN(percent))
-								percent = 0;
-							Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent, songMisses == 0);
-							#end
-					}
 
 					var winterHorrorlandNext = (Paths.formatToSongPath(SONG.song) == "eggnog");
 					if (winterHorrorlandNext)

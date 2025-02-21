@@ -557,7 +557,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		new FlxTimer().start(FlxG.random.float(12, 50), function(tmr)
 		{
-			fnfHighscoreSpr.animation.play('highscore');
+			fnfHighscoreSpr?.animation?.play('highscore');
 			tmr.time = FlxG.random.float(20, 60);
 		}, 0);
 

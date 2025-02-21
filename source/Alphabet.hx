@@ -71,7 +71,7 @@ class Alphabet extends FlxSpriteGroup
 				scaleX = newX;
 			@:bypassAccessor
 				scaleY = newY;
-	
+			
 			scale.x = newX;
 			scale.y = newY;
 			set_text(text);
@@ -126,9 +126,10 @@ class Alphabet extends FlxSpriteGroup
 			{
 				letter.kill();
 				letters.remove(letter);
-				var bak = FlxPoint.get(letter.scale.x,letter.scale.y); //! that's a leak here. Is there a better way???
+				remove(letter);
+				//var bak = FlxPoint.get(letter.scale.x,letter.scale.y); //! that's a leak here. Is there a better way???
 				letter.destroy(); 
-				letter.scale = bak;
+				//letter.scale = bak;
 			}
 		}
 		letters = [];

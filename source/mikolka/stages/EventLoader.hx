@@ -5,12 +5,15 @@ import mikolka.stages.objects.*;
 import mikolka.stages.erect.*;
 import haxe.ds.List;
 #if !LEGACY_PSYCH
+#if LUA_ALLOWED
 import psychlua.FunkinLua;
+import mikolka.vslice.components.crash.UserErrorSubstate;
+#end
 import states.MainMenuState;
 #end
 
 class EventLoader extends BaseStage {
-
+    #if LUA_ALLOWED
     public static function implement(funk:FunkinLua)
         {
             var lua:State = funk.lua;
@@ -19,6 +22,7 @@ class EventLoader extends BaseStage {
                 new PicoCapableStage();
             });
         }
+    #end
     public static function addstage(name:String) {
         var addNene = true;
         switch (name)
