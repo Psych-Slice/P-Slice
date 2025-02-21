@@ -419,11 +419,9 @@ class CharSelectSubState extends MusicBeatSubState
     FlxG.sound.defaultSoundGroup.add(introSound);
     FlxG.sound.list.add(introSound);
 
-    if(!Save.instance.oldChar) openSubState(new AttractState('assets/videos/introSelect.mp4')); //? added a missing check
-    else {
-      remove(blackScreen);
-      checkNewChar();
-    }
+    remove(blackScreen); //? There was supposed to be a video, but we don't lock characters
+    checkNewChar(); //? so no reason for unlock video lol
+    
 
     subStateClosed.addOnce((_) -> {
       remove(blackScreen);

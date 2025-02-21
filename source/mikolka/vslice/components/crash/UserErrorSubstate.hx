@@ -59,7 +59,7 @@ class UserErrorSubstate extends MusicBeatSubstate
             }
             
             printError(error);
-            if(isCritical) saveError(error);
+            #if sys if(isCritical) saveError(error); #end
         }
     
         function collectErrorData():CrashData
@@ -86,13 +86,13 @@ class UserErrorSubstate extends MusicBeatSubstate
                                 regex.match(classname);
                                 line.push("CLS:" + regex.matched(0)+":"+method+"()");
                             default:
-                                Sys.println(stackItem);
+                                #if sys Sys.println #else trace #end(stackItem); 
                         }
                         line.push("Line:" + pos_line);
                         errMsg.push(line);
                         errExtended.push('In file ${file}: ${line.join("  ")}');
                     default:
-                        Sys.println(stackItem);
+                        #if sys Sys.println #else trace #end(stackItem);
                 }
             }
             return {
@@ -188,6 +188,7 @@ class UserErrorSubstate extends MusicBeatSubstate
             });
         }
     
+        #if sys
         static function saveError(error:CrashData)
         {
             var errMsg = "";
@@ -213,10 +214,10 @@ class UserErrorSubstate extends MusicBeatSubstate
             #else
             var path = './crash/' + 'PSlice_' + dateNow + '.txt';
             File.saveContent(path, errMsg + '\n');
-            Sys.println(errMsg);
             #end
             Sys.println(errMsg);
         }
+        #end
     
         var textNextY = 5;
     

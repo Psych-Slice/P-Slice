@@ -1,5 +1,6 @@
 package substates;
 
+import mikolka.vslice.components.crash.UserErrorSubstate;
 import sys.FileSystem;
 import flixel.system.FlxSound;
 import MainMenuState;
@@ -166,27 +167,24 @@ class StickerSubState extends MusicBeatSubstate
     // globalMods.pushUnique("mods/"+Mods.currentModDirectory);
     // globalMods.push("assets/shared"); // base stickers
 
-      var modStickerDir = Paths.modFolders('images/transitionSwag/$STICKER_SET');
-      if(!FileSystem.exists(modStickerDir)){
-        modStickerDir = Paths.getPath('images/transitionSwag/$STICKER_SET',TEXT);
-        // this does not check mods in PE 0.6.3
+    var modStickerDir = Paths.getPath('images/transitionSwag/$STICKER_SET',TEXT,null);
+    if(!FileSystem.exists(modStickerDir)){
+      openSubState(new UserErrorSubstate("Missing sticker_set",'Couldn\'t find sticker set "$STICKER_SET"\n\nin $modStickerDir'));
+      
+    }
+    else if(!FileSystem.exists('$modStickerDir/stickers.json')){
+      openSubState(new UserErrorSubstate("Missing manifest",'Sticker set $STICKER_SET doesn\'t contain a "stickers.json" file\n\nin $modStickerDir/stickers.json'));
+    }
+    else{
+
+      try{
+        var infoObj = new StickerInfo(STICKER_SET);
+        stickers = infoObj;
+        if(infoObj.getPack(STICKER_PACK) == null) openSubState(new UserErrorSubstate('Missing pack','Sticker set ${infoObj.name} doesn\'t contain "$STICKER_PACK" pack.\n\nAll available stickers will be loaded instead.'));
       }
-      if(!FileSystem.exists(modStickerDir)){
-        trace('Couldn\'t find sticker set "$STICKER_SET" in $modStickerDir');
-        
+      catch(x){
+        openSubState(new UserErrorSubstate('Couldn\'t make $STICKER_PACK','In "$modStickerDir":\n\n${x.message}'));
       }
-      else if(!FileSystem.exists('$modStickerDir/stickers.json')){
-        trace('Sticker set $STICKER_SET doesn\'t contain a "stickers.json" file.');
-      }
-      else{
-        try{
-          var infoObj = new StickerInfo(STICKER_SET);
-          stickers = infoObj;
-          if(infoObj.getPack(STICKER_PACK) == null) trace('Sticker set ${infoObj.name} doesn\'t contain "$STICKER_PACK" pack. All available stickers will be loaded instead.');
-        }
-        catch(x){
-          trace('Error while creating "$modStickerDir" sticker pack: ${x.message}');
-        }
       }
     // sticker group -> array of sticker names
 

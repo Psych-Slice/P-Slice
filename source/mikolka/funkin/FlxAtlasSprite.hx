@@ -80,6 +80,7 @@ class FlxAtlasSprite extends PsychFlxAnimate
       super.loadAtlas(path);
       return;
     }
+    #if sys
     try{
       trace(path);
       super.loadAtlasEx(ModsHelper.loadabsoluteGraphic('$path/spritemap1.png'),
@@ -91,7 +92,7 @@ class FlxAtlasSprite extends PsychFlxAnimate
       FlxG.log.error('Failed to load "$path" via EXtended loader: $x');
       trace('Failed to load "$path" via EXtended loader: $x');
     }
-    
+    #end
     
   }
   /**
