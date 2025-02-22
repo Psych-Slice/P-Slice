@@ -15,7 +15,7 @@ import cutscenes.CutsceneHandler;
 
 import flixel.FlxSubState;
 
-class PhillyStreetsErect extends PicoCapableStage
+class PhillyStreetsErect extends BaseStage
     {
         var rainShader:RainShader;
         var rainShaderStartIntensity:Float = 0;
