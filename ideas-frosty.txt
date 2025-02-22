@@ -1,0 +1,1 @@
+optimization so it doesent run like shit

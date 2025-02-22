@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="NeoAct1Part1.png">
+	<!-- Created with Adobe Animate version 23.0.1.70 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Bop-Sing0000" x="2884" y="836" width="705" height="748" pivotX="383.65" pivotY="406.8" frameX="-41" frameY="-44" frameWidth="767" frameHeight="813"/>
+	<SubTexture name="Bop-Sing0001" x="0" y="0" width="733" height="778" frameX="-27" frameY="-29" frameWidth="788" frameHeight="836"/>
+	<SubTexture name="Bop-Sing0002" x="733" y="0" width="761" height="806" frameX="-13" frameY="-15" frameWidth="788" frameHeight="836"/>
+	<SubTexture name="Bop-Sing0003" x="1494" y="0" width="788" height="836"/>
+	<SubTexture name="Bop-Sing0004" x="2282" y="0" width="775" height="821" frameX="-6" frameY="-8" frameWidth="788" frameHeight="836"/>
+	<SubTexture name="Bop-Sing0005" x="3057" y="0" width="761" height="806" frameX="-13" frameY="-15" frameWidth="788" frameHeight="836"/>
+	<SubTexture name="Bop-Sing0006" x="0" y="836" width="747" height="792" frameX="-20" frameY="-22" frameWidth="788" frameHeight="836"/>
+	<SubTexture name="Bop-Sing0007" x="747" y="836" width="733" height="778" frameX="-27" frameY="-29" frameWidth="788" frameHeight="836"/>
+	<SubTexture name="Bop-Sing0008" x="1480" y="836" width="719" height="762" frameX="-34" frameY="-37" frameWidth="788" frameHeight="836"/>
+	<SubTexture name="Bop-Sing0009" x="2884" y="836" width="705" height="748" frameX="-41" frameY="-44" frameWidth="767" frameHeight="813"/>
+	<SubTexture name="Bop-idle0000" x="2199" y="836" width="685" height="727" pivotX="383.65" pivotY="406.8" frameX="-41" frameY="-43" frameWidth="767" frameHeight="813"/>
+	<SubTexture name="Bop-idle0001" x="2884" y="836" width="705" height="748" frameX="-31" frameY="-33" frameWidth="767" frameHeight="813"/>
+	<SubTexture name="Bop-idle0002" x="0" y="1628" width="727" height="769" frameX="-20" frameY="-22" frameWidth="767" frameHeight="813"/>
+	<SubTexture name="Bop-idle0003" x="727" y="1628" width="747" height="791" frameX="-10" frameY="-11" frameWidth="767" frameHeight="813"/>
+	<SubTexture name="Bop-idle0004" x="1474" y="1628" width="767" height="813"/>
+	<SubTexture name="Bop-idle0005" x="2241" y="1628" width="761" height="807" frameX="-3" frameY="-3" frameWidth="767" frameHeight="813"/>
+	<SubTexture name="Bop-idle0006" x="3002" y="1628" width="755" height="801" frameX="-6" frameY="-6" frameWidth="767" frameHeight="813"/>
+	<SubTexture name="Bop-idle0007" x="0" y="2441" width="749" height="793" frameX="-9" frameY="-10" frameWidth="767" frameHeight="813"/>
+	<SubTexture name="Bop-idle0008" x="749" y="2441" width="743" height="787" frameX="-12" frameY="-13" frameWidth="767" frameHeight="813"/>
+	<SubTexture name="Bop-idle0009" x="1492" y="2441" width="737" height="781" frameX="-15" frameY="-16" frameWidth="767" frameHeight="813"/>
+	<SubTexture name="Bop-idle0010" x="2229" y="2441" width="731" height="775" frameX="-18" frameY="-19" frameWidth="767" frameHeight="813"/>
+	<SubTexture name="Bop-idle0011" x="2960" y="2441" width="723" height="767" frameX="-22" frameY="-23" frameWidth="767" frameHeight="813"/>
+	<SubTexture name="Bop-idle0012" x="0" y="3234" width="717" height="761" frameX="-25" frameY="-26" frameWidth="767" frameHeight="813"/>
+	<SubTexture name="Bop-idle0013" x="717" y="3234" width="711" height="755" frameX="-28" frameY="-29" frameWidth="767" frameHeight="813"/>
+	<SubTexture name="Bop-idle0014" x="2884" y="836" width="705" height="748" frameX="-31" frameY="-33" frameWidth="767" frameHeight="813"/>
+</TextureAtlas>
