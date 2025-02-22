@@ -260,8 +260,8 @@ class PhillyStreetsErect extends BaseStage
             }
             PlayState.instance.subStateClosed.addOnce((sub) ->{
                 carSndAmbience.volume = 0.1;
-                carSndAmbience.resume();
-                rainSndAmbience.resume();
+                if (carSndAmbience != null) carSndAmbience.resume();
+                if (rainSndAmbience != null) rainSndAmbience.resume();
             });
         }
 
