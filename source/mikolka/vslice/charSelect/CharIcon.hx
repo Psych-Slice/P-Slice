@@ -1,6 +1,5 @@
 package mikolka.vslice.charSelect;
 
-import flixel.FlxSprite;
 
 class CharIcon extends FlxSprite
 {
