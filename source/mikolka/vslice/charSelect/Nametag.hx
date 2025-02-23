@@ -1,9 +1,9 @@
 package mikolka.vslice.charSelect;
 
 import flixel.system.debug.watch.Tracker.TrackerProfile;
-import flixel.FlxSprite;
+//import flixel.FlxSprite;
 import shaders.MosaicEffect;
-import flixel.util.FlxTimer;
+//import flixel.util.FlxTimer;
 
 class Nametag extends FlxSprite
 {
