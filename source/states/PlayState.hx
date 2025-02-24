@@ -2626,7 +2626,7 @@ class PlayState extends MusicBeatState
 
 					canResync = false;
 					LoadingState.prepareToSong();
-					LoadingState.loadAndSwitchState(new PlayState(), false, false);
+					LoadingState.loadAndSwitchState(new PlayState(), false);
 				}
 			}
 			else
