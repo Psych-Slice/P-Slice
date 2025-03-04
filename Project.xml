@@ -117,10 +117,15 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	</section>
 
 	<section if="BASE_GAME_FILES">
-		<assets path="assets/base_game/preload"   rename="assets"  embed="true" if="web"/>
-		<assets path="assets/base_game/preload"   rename="assets"  unless="web"/>
-		<assets path="assets/base_game" rename="assets"  embed="false" if="web"/>
-		<assets path="assets/base_game" rename="assets"   unless="web"/>
+		<section if="web">
+			<assets path="assets/base_game/week_data"   rename="assets" embed="false"/>
+			<assets path="assets/base_game/characters"   rename="assets/shared/characters" include="*.xml|*.json" embed="true"/>
+			<assets path="assets/base_game/characters"   rename="assets/shared/characters" include="*.png" embed="false"/>
+			<assets path="assets/base_game/shared" rename="assets/shared" embed="true"/>
+		</section>
+		<assets path="assets/base_game/week_data" rename="assets"   unless="web"/>
+		<assets path="assets/base_game/characters" rename="assets/shared/characters"   unless="web"/>
+		<assets path="assets/base_game/shared" rename="assets/shared"   unless="web"/>
 	</section>
 
 	<section if="MODS_ALLOWED">
