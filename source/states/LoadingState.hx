@@ -1,5 +1,8 @@
 package states;
 
+#if html5
+typedef LoadingState = HTML5LoadingScreen;
+#else
 import lime.app.Future;
 import sys.thread.FixedThreadPool;
 import haxe.Json;
@@ -36,9 +39,7 @@ import crowplexus.hscript.Printer;
 #include <thread>
 ')
 #end
-#if html5
-typedef LoadingState = HTML5LoadingScreen;
-#else
+
 class LoadingState extends MusicBeatState
 {
 	public static var loaded:Int = 0;
