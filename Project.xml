@@ -156,8 +156,6 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<haxelib name="flxanimate"/>
 
-	<!-- Android Specific-->
-	<haxelib name="extension-androidtools" if="android" />
 	<!-- Category Type for Apple Systems -->
 	<config:ios category_type="public.app-category.music-games" />
 	<config:mac category_type="public.app-category.music-games" />

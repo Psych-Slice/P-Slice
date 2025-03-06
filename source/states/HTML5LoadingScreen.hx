@@ -659,7 +659,6 @@ class HTML5LoadingScreen extends MusicBeatState { // JS exclusive loading screen
     
                 var isAnimateAtlas:Bool = false;
                 var img:String = character.image;
-                trace(img);
                 img = img.trim();
                 #if flxanimate
                 var animToFind:String = Paths.getPath('images/$img/Animation.json', TEXT);
