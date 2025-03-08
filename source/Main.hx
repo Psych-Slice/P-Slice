@@ -23,6 +23,9 @@ import states.CopyState;
 #if mobile
 import mobile.backend.MobileScaleMode;
 #end
+#if debug
+import flixel.addons.studio.FlxStudio;
+#end
 
 #if (linux && !debug)
 import lime.graphics.Image;
