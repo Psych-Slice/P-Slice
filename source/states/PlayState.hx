@@ -1950,10 +1950,11 @@ class PlayState extends MusicBeatState
 		}
 
 		// update health bar
-		if (health > 2)
-			health = 2;
+		health = value;
+		var newPercent:Null<Float> = FlxMath.remapToRange(FlxMath.bound(healthBar.valueFunction(), healthBar.bounds.min, healthBar.bounds.max), healthBar.bounds.min, healthBar.bounds.max, 0, 100);
+		healthBar.percent = (newPercent != null ? newPercent : 0);
 
-		if (iconP1.animation.frames == 3) { 			// Three Slot Icons | Player
+		if (iconP1.animation.frames == 3) {
 			if (healthBar.percent < 20)
 				iconP1.animation.curAnim.curFrame = 1;
 			else if (healthBar.percent >80)
@@ -1961,20 +1962,20 @@ class PlayState extends MusicBeatState
 			else
 				iconP1.animation.curAnim.curFrame = 0;
 		} 
-		else {							// Legacy Icons | Player
+		else {
 			if (healthBar.percent < 20)
 				iconP1.animation.curAnim.curFrame = 1;
 			else
 				iconP1.animation.curAnim.curFrame = 0;
 		}
-		if (iconP2.animation.frames == 3) { 			// Three Slot Icons | Enemy
+		if (iconP2.animation.frames == 3) {
 			if (healthBar.percent > 80)
 				iconP2.animation.curAnim.curFrame = 1;
 			else if (healthBar.percent < 20)
 				iconP2.animation.curAnim.curFrame = 2;
 			else 
 				iconP2.animation.curAnim.curFrame = 0;
-		} else {						// Legacy Icons | Enemy
+		} else {
 			if (healthBar.percent > 80)
 				iconP2.animation.curAnim.curFrame = 1;
 			else 

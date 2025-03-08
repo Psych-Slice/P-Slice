@@ -76,14 +76,7 @@ class MainMenuState extends MusicBeatState
 			{
 				openfl.Lib.application.window.title = "Friday Night Funkin' VS Pokémon Mystery Dungeon: Loss of Light real?";
 			}
-		if (FlxG.random.bool(80))
-		{
-			openfl.Lib.application.window.title = "Friday Night Funkin': Xythe Engine";
-		}
-		if (FlxG.random.bool(80))
-			{
-				openfl.Lib.application.window.title = "Go to Credits for sea shanties!";
-			}
+		
 			
 		#end
 
