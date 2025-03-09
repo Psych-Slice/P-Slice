@@ -11,5 +11,17 @@
 	"camera_boyfriend": [-200, 0],
 	"camera_opponent": [0, 0],
 	"camera_girlfriend": [0, 0],
-	"camera_speed": 1
+	"camera_speed": 1,
+
+	"preload": {
+		"images/limo/erect/limoSunset": 3,
+		"limo/erect/shooting star": 3,
+		"images/limo/limoDancer": 2,
+		"images/limo/erect/limoDrive": 2,
+		"limo/erect/mistMid": 2,
+		"limo/erect/mistBack": 2,
+		"images/gore/": 2,
+		"images/limo/fastCarLol": 3,
+		"images/limo/erect/bgLimo": 3
+	}
 }

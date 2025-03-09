@@ -16,6 +16,8 @@
 	"preload": {
 		"images/stageback": 3,
 		"images/stagefront": 3,
+		"images/spotlight": 3,
+		"images/smoke": 3,
 		"images/stagecurtains": 2,
 		"images/stage_light": 2
 	},

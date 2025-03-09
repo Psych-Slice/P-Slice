@@ -12,5 +12,26 @@
 	"camera_opponent": [450, -110],
 	"camera_girlfriend": [0, 0],
 	"camera_speed": 1,
+	"preload": {
+		"images/abot/": 3,
+		"images/abot/systemEyes/": 3,
+		"images/abot/abotSystem/": 3,
 
+		"images/SpraycanPile": 3,
+		"images/phillyStreets/erect/phillyConstruction": 3,
+		"images/phillyStreets/erect/phillyHighwayLights": 3,
+		"images/phillyStreets/erect/phillyHighway": 3,
+		"images/phillyStreets/erect/phillyForeground": 3,
+		"images/phillyStreets/erect/greyGradient": 3,
+		"images/phillyStreets/erect/mistMid": 3,
+		"images/phillyStreets/erect/mistBack": 3,
+		"images/phillyStreets/erect/phillySkybox": 2,
+		"images/phillyStreets/erect/phillySkyline": 2,
+		"images/phillyStreets/phillyHighwayLights_lightmap": 2,
+		"images/phillyStreets/phillySmog": 2,
+		"images/phillyStreets/erect/phillyCars": 2,
+		"images/phillyStreets/erect/phillyTraffic": 2,
+		"images/phillyStreets/erect/phillyTraffic_lightmap": 2,
+		"images/phillyStreets/erect/phillyForegroundCity": 2
+	}
 }

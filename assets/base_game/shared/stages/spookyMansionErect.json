@@ -11,5 +11,13 @@
 	"camera_boyfriend": [-50, 10],
 	"camera_opponent": [0, 0],
 	"camera_girlfriend": [0, 0],
-	"camera_speed": 1
+	"camera_speed": 1,
+
+	"preload": {
+		"images/bgDark": 2,
+		"images/bgLight": 2,
+		"images/stairsDark": 2,
+		"images/stairsLight": 2,
+		"images/bgtrees": 2
+	}
 }

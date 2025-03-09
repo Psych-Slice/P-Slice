@@ -53,5 +53,6 @@ class EventLoader extends BaseStage {
             default: addNene = false;
 		}
         if(addNene) new PicoCapableStage();
+        new VSliceEvents();
     } 
 }
