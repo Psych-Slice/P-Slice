@@ -1,5 +1,6 @@
 package mikolka.editors;
 
+import mikolka.editors.substates.ResultsScreenEdit;
 import mikolka.vslice.components.crash.UserErrorSubstate;
 #if LEGACY_PSYCH
 import openfl.events.Event;
@@ -15,9 +16,9 @@ import mikolka.compatibility.FunkinControls;
 import mikolka.editors.editorProps.CharJson;
 import haxe.Json;
 import lime.ui.FileDialog;
-import mikolka.editors.editorProps.FreeplayEditSubstate;
+import mikolka.editors.substates.FreeplayEditSubstate;
 import mikolka.editors.editorProps.AnimPreview;
-import mikolka.editors.editorProps.HelpSubstate;
+import mikolka.editors.substates.HelpSubstate;
 import mikolka.editors.editorProps.CharIconGrid;
 import mikolka.vslice.charSelect.CharSelectPlayer;
 import mikolka.compatibility.FreeplayHelpers;
@@ -114,7 +115,7 @@ class CharSelectEditor extends MusicBeatState
 		add(icons);
 		addEditorBox();
 
-		animPreview = new AnimPreview(100, 100);
+		animPreview = new AnimPreview(false,100, 100);
 		add(animPreview);
 
 		add(HelpSubstate.makeLabel());
@@ -317,6 +318,11 @@ class CharSelectEditor extends MusicBeatState
 			persistentUpdate = false;
 			openSubState(new FreeplayEditSubstate(activePlayer));
 		});
+		var btn_result:PsychUIButton = new PsychUIButton(150, 100, "Edit Results", () ->
+		{
+			persistentUpdate = false;
+			openSubState(new ResultsScreenEdit(activePlayer));
+		});
 
 
 		// GF
@@ -367,6 +373,7 @@ class CharSelectEditor extends MusicBeatState
 
 		tab.add(btn_player_prev);
 		tab.add(btn_dj);
+		tab.add(btn_result);
 		
 		tab.add(btn_save);
 

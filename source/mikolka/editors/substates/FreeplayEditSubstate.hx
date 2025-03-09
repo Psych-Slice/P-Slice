@@ -1,5 +1,6 @@
-package mikolka.editors.editorProps;
+package mikolka.editors.substates;
 
+import mikolka.editors.editorProps.DJAnimPreview;
 import mikolka.compatibility.FunkinControls;
 import mikolka.vslice.freeplay.BGScrollingText;
 import mikolka.funkin.freeplay.FreeplayStyle;
@@ -102,7 +103,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		dj = new FlxAtlasSprite(640, 366, data.getFreeplayDJData().getAtlasPath());
 		add(dj);
 		dj.playAnimation(data.getFreeplayDJData().getAnimationPrefix("idle"));
-		dj_anim = new DJAnimPreview(100, 100);
+		dj_anim = new DJAnimPreview(true,100, 100);
 		dj_anim.visible = false;
 		dj_anim.dj = data;
 		dj_anim.attachSprite(dj);
@@ -464,7 +465,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		tab.add(list_animations);
 	}
 
-	function newLabel(ref:FlxSprite, text:String)
+	inline function newLabel(ref:FlxSprite, text:String)
 	{
 		return new FlxText(ref.x, ref.y - 13, 100, text);
 	}
