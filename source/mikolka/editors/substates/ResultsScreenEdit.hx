@@ -8,31 +8,18 @@ import mikolka.funkin.custom.VsliceSubState;
 class ResultsScreenEdit extends VsliceSubState {
 	var loaded:Bool = false;
 	var resultsDialogBox:PsychUIBox;
-	final cameraBG:FlxCamera;
-	final cameraEverything:FlxCamera;
 
 	var rankBg:FunkinSprite;  
 	final resultsAnim:FunkinSprite;
 	var bgFlash:FlxSprite;
 
 	public function new(activePlayer:PlayableCharacter) {
-		cameraBG = new FunkinCamera('resultsBG', 0, 0, FlxG.width, FlxG.height);
-    	cameraEverything = new FunkinCamera('resultsEverything', 0, 0, FlxG.width, FlxG.height);
 		resultsAnim = FunkinSprite.createSparrow(-200, -10, "resultScreen/results");
 		bgFlash = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [0xFFFFF1A6, 0xFFFFF1BE], 90);
 		super();
 	}
 
     override function create() {
-        
-		cameraBG.bgColor = FlxColor.MAGENTA;
-		cameraEverything.bgColor = FlxColor.TRANSPARENT;
-
-		FlxG.cameras.add(cameraBG, false);
-		FlxG.cameras.add(cameraEverything, false);
-
-		FlxG.cameras.setDefaultDrawTarget(cameraEverything, true);
-		this.camera = cameraEverything;
 
 		// Reset the camera zoom on the results screen.
 		FlxG.camera.zoom = 1.0;
@@ -80,6 +67,7 @@ class ResultsScreenEdit extends VsliceSubState {
 
         #if TOUCH_CONTROLS_ALLOWED
 		addTouchPad("LEFT_FULL", "A_B_C_F");
+		controls.isInSubstate = true;
 		touchPad.visible = false;
 		#end
 

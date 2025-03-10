@@ -101,7 +101,7 @@ class UserErrorSubstate extends MusicBeatSubstate
                 trace: errMsg,
                 extendedTrace: errExtended,
                 date: Date.now().toString(),
-                systemName: #if android 'Android' #elseif linux 'Linux' #elseif mac 'macOS' #elseif windows 'Windows' #else 'iOS' #end,
+                systemName: #if android 'Android' #elseif linux 'Linux' #elseif mac 'macOS' #elseif windows 'Windows'#elseif html5 FlxG.html5.platform.getName()+ '(${FlxG.html5.browser.getName()})' #else 'iOS' #end,
                 activeMod: ModsHelper.getActiveMod()
             }
         }

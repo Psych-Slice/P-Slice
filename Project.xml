@@ -50,7 +50,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<!-- Other stuff -->
 	<define name="ACHIEVEMENTS_ALLOWED" />
-	<define name="TRANSLATIONS_ALLOWED" />
+	<define name="TRANSLATIONS_ALLOWED" unless="web" />
 	<define name="SHOW_LOADING_SCREEN" />
 	<define name="MULTITHREADED_LOADING" if="cpp" /> <!-- UNCOMMENTING THIS LINE WILL ENABLE MULTITHREADED LOADING, WHICH IMPROVES LOADING TIMES, BUT WITH A LOW CHANCE FOR THE GAME FREEZE ON SONG LOAD -->
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN -->
@@ -63,7 +63,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<window width="1280" height="720" fps="60" background="#000000" hardware="true" vsync="false" allow-high-dpi="true"/>
 
 	<!--HTML5-specific-->
-	<window if="html5" resizable="true" />
+	<window if="html5" resizable="true" fullscreen="true" />
 
 	<!--Desktop-specific-->
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false"/>
@@ -125,7 +125,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 			<assets path="assets/base_game/shared" rename="assets/shared" embed="true"/>
 		</section>
 		<assets path="assets/base_game/week_data" rename="assets"   unless="web"/>
-		<assets path="assets/base_game/characters" rename="assets/shared/characters"   unless="web"/>
+		<assets path="assets/base_game/characters" rename="assets/shared/images/characters"   unless="web"/>
 		<assets path="assets/base_game/shared" rename="assets/shared"   unless="web"/>
 	</section>
 

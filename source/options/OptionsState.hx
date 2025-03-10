@@ -65,8 +65,10 @@ class OptionsState extends MusicBeatState
 			case 'Mobile Options':
 				openSubState(new mobile.options.MobileOptionsSubState());
 			#end
+			#if TRANSLATIONS_ALLOWED
 			case 'Language':
 				openSubState(new options.LanguageSubState());
+			#end
 		}
 	}
 

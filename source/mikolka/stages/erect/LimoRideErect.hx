@@ -185,7 +185,10 @@ class LimoRideErect extends BaseStage
 		addBehindGF(fastCar);
 
 		var limo:BGSprite = new BGSprite('limo/erect/limoDrive', -120, 550, 1, 1, ['Limo stage'], true);
-		addBehindGF(limo); // Shitty layering but whatev it works LOL
+		if(FlxG.random.bool(25)){
+			addBehindGF(limo); // Shitty layering but whatev it works LOL
+		}
+		else insert(members.indexOf(game.gfGroup)+1, limo);
 		addBehindGF(mist4);
 		addBehindGF(mist3);
 
@@ -193,14 +196,18 @@ class LimoRideErect extends BaseStage
 		// add(mist1);
 		if (VsliceOptions.SHADERS)
 		{
-			grpLimoDancers.forEach(s -> s.shader = colorShader);
+			if(!VsliceOptions.LOW_QUALITY){
+				grpLimoDancers.forEach(s -> s.shader = colorShader);
+				limoCorpse.shader = colorShader;
+				limoCorpseTwo.shader = colorShader;
+
+				limoMetalPole.shader = colorShader;
+				limoBgMetalPole.shader = colorShader;
+				grpLimoParticles.forEach(s -> s.shader = colorShader);
+			}
 
 			limoLight.shader = colorShader;
-			limoMetalPole.shader = colorShader;
-			limoCorpse.shader = colorShader;
-			limoCorpseTwo.shader = colorShader;
 
-			limoBgMetalPole.shader = colorShader;
 			limoBglight.shader = colorShader;
 
 			gf.shader = colorShader;
