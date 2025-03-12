@@ -318,7 +318,7 @@ class CharSelectEditor extends MusicBeatState
 			persistentUpdate = false;
 			openSubState(new FreeplayEditSubstate(activePlayer));
 		});
-		var btn_result:PsychUIButton = new PsychUIButton(150, 100, "Edit Results", () ->
+		var btn_result:PsychUIButton = new PsychUIButton(150, 90, "Edit Results", () ->
 		{
 			persistentUpdate = false;
 			openSubState(new ResultsScreenEdit(activePlayer));

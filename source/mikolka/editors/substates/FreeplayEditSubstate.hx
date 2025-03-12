@@ -8,6 +8,8 @@ import mikolka.funkin.freeplay.FreeplayStyleRegistry;
 import shaders.AngleMask;
 import mikolka.vslice.freeplay.backcards.BoyfriendCard;
 
+using mikolka.editors.PsychUIUtills;
+
 class FreeplayEditSubstate extends MusicBeatSubstate
 {
 	public static var instance:FreeplayEditSubstate;
@@ -378,8 +380,8 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				return;
 			}
-			@:privateAccess{
-				list_animations._items.remove(list_animations._items[index]);
+			
+				list_animations.removeIndex(index);
 				dj_anim.anims.remove(dj_anim.anims[index]);
 				var label = dj_anim.labels[index];
 				dj_anim.remove(label);
@@ -387,7 +389,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 				for (x in index...dj_anim.labels.length){
 					dj_anim.labels[x].y -= 20; 
 				}
-			}
+			
 			list_animations.list.remove(list_animations.list[index]);
 			dj_anim.offsets.remove(dj_anim.offsets[index]);
 			dj_selectAnim(index ==0 ? 0 : -1);
@@ -399,10 +401,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		stepper_offset_y = new PsychUINumericStepper(85, 130, 1, dj_anim.curOffset[1],-9999,9999);
 		input_animName.onChange = (old,cur) ->{
 			dj_anim.curAnimName = cur;
-			list_animations.list[list_animations.selectedIndex] = cur;
-			@:privateAccess
-			list_animations._items[list_animations.selectedIndex].label = cur;
-			list_animations.text = cur;
+			list_animations.updateCurrentItem(cur);
 		}
 		input_animPrefix.onChange = (old,cur) ->{
 			dj_anim.curAnimPrefix = cur;
@@ -421,16 +420,16 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		UI_box.selectedName = 'General';
 		var tab = UI_box.getTab('General').menu;
 
-		tab.add(newLabel(input_assetPath, 'Asset path:'));
+		tab.add(input_assetPath.makeLabel('Asset path:'));
 		tab.add(input_assetPath);
 		tab.add(btn_reload);
 
-		tab.add(newLabel(input_text1, "Scroll texts:"));
+		tab.add(input_text1.makeLabel("Scroll texts:"));
 		tab.add(input_text1);
 		tab.add(input_text2);
 		tab.add(input_text3);
 		
-		tab.add(newLabel(steper_charSelectDelay, "Transition delay:"));
+		tab.add(steper_charSelectDelay.makeLabel("Transition delay:"));
 		tab.add(steper_charSelectDelay);
 
 		// DJ EDITOR
@@ -455,19 +454,14 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		var tab = UI_box.getTab("Animation").menu;
 		tab.add(btn_newAnim);
 		tab.add(btn_trashAnim);
-		tab.add(newLabel(input_animName, "Name"));
+		tab.add(input_animName.makeLabel("Name"));
 		tab.add(input_animName);
-		tab.add(newLabel(input_animPrefix, "Prefix"));
+		tab.add(input_animPrefix.makeLabel("Prefix"));
 		tab.add(input_animPrefix);
 		tab.add(new FlxText(10, 110, 100, "Offsets (x,y)"));
 		tab.add(stepper_offset_x);
 		tab.add(stepper_offset_y);
 		tab.add(list_animations);
-	}
-
-	inline function newLabel(ref:FlxSprite, text:String)
-	{
-		return new FlxText(ref.x, ref.y - 13, 100, text);
 	}
 
 	function setDadBG()

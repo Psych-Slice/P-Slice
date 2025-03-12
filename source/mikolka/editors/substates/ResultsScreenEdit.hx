@@ -1,9 +1,13 @@
 package mikolka.editors.substates;
 
+import mikolka.funkin.Scoring.ScoringRank;
 import mikolka.compatibility.FunkinControls;
 import flixel.util.FlxGradient;
 import mikolka.compatibility.FunkinCamera;
+import mikolka.editors.editorProps.ResultsPropsGrp;
 import mikolka.funkin.custom.VsliceSubState;
+
+using mikolka.editors.PsychUIUtills;
 
 class ResultsScreenEdit extends VsliceSubState {
 	var loaded:Bool = false;
@@ -12,8 +16,14 @@ class ResultsScreenEdit extends VsliceSubState {
 	var rankBg:FunkinSprite;  
 	final resultsAnim:FunkinSprite;
 	var bgFlash:FlxSprite;
+	var propSystem:ResultsPropsGrp;
+	var activePlayer:PlayableCharacter;
+
+	// GENERAL
+	var list_objSelector:PsychUIDropDownMenu;
 
 	public function new(activePlayer:PlayableCharacter) {
+		this.activePlayer = activePlayer;
 		resultsAnim = FunkinSprite.createSparrow(-200, -10, "resultScreen/results");
 		bgFlash = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [0xFFFFF1A6, 0xFFFFF1BE], 90);
 		super();
@@ -37,6 +47,10 @@ class ResultsScreenEdit extends VsliceSubState {
 		// bgFlash.cameras = [cameraBG];
 		add(bgFlash);
 	
+		//? All props after this point can be shadowed by user
+		propSystem = new ResultsPropsGrp();
+		propSystem.zIndex = 50;
+		add(propSystem);
 		// The sound system which falls into place behind the score text. Plays every time!
 		var soundSystem:FlxSprite = FunkinSprite.createSparrow(-15, -180, 'resultScreen/soundSystem');
 		soundSystem.animation.addByPrefix("idle", "sound system", 24, false);
@@ -45,19 +59,16 @@ class ResultsScreenEdit extends VsliceSubState {
 		  soundSystem.animation.play("idle");
 		  soundSystem.visible = true;
 		});
-		soundSystem.zIndex = 1100;
-		add(soundSystem);
+		propSystem.addStaticProp(soundSystem,1100);
 		
 		var blackTopBar:FlxSprite = new FlxSprite().loadGraphic(Paths.image("resultScreen/topBarBlack"));
 		blackTopBar.y = -blackTopBar.height;
 		FlxTween.tween(blackTopBar, {y: 0}, 7 / 24, {ease: FlxEase.quartOut, startDelay: 3 / 24});
-		blackTopBar.zIndex = 1010;
-		add(blackTopBar);
+		propSystem.addStaticProp(blackTopBar,1010);
 
 		resultsAnim.animation.addByPrefix("result", "results instance 1", 24, false);
 		resultsAnim.visible = false;
-		resultsAnim.zIndex = 1200;
-		add(resultsAnim);
+		propSystem.addStaticProp(resultsAnim,1200);
 		new FlxTimer().start(6 / 24, _ -> {
 			resultsAnim.visible = true;
 			resultsAnim.animation.play("result");
@@ -96,18 +107,36 @@ class ResultsScreenEdit extends VsliceSubState {
 			resultsDialogBox.scrollFactor.set();
 			resultsDialogBox.visible = false;
 
-			var rankSelector = new PsychUIDropDownMenu(20,20,["PERFECT_GOLD","PERFECT","EXCELLENT","GREAT","GOOD","BAD","SHIT"],(index, name) -> {
+			var rankSelector = new PsychUIDropDownMenu(20,20,["PERFECT_GOLD","PERFECT","EXCELLENT","GREAT","GOOD","SHIT"],(index, name) -> {
+				reloadprops([PERFECT_GOLD,PERFECT,EXCELLENT,GREAT,GOOD,SHIT][index]);
+			});
+
+			list_objSelector = new PsychUIDropDownMenu(150,20,[],(index, name) -> {
 
 			});
 
 			resultsDialogBox.selectedName = 'General';
 			var tab = resultsDialogBox.getTab('General').menu;
 			tab.add(rankSelector);
-			tab.add(newLabel(rankSelector,"Rank"));
+			tab.add(rankSelector.makeLabel("Rank"));
+			tab.add(list_objSelector);
+			tab.add(list_objSelector.makeLabel("Object:"));
 
 			add(resultsDialogBox);
 		}
 
+		function reloadprops(rank:ScoringRank) {
+			var data = activePlayer.getResultsAnimationDatas(rank);
+			propSystem.clearProps();
+			//list_objSelector.list.
+			for (prop in data){
+				propSystem.addProp(prop);
+				var parts = prop.assetPath.split("/");
+				@:privateAccess
+				list_objSelector.addOption(parts[parts.length-1].split(".")[0]);
+			}
+			propSystem.refresh();
+		}
     override function update(elapsed:Float) {
         controls.isInSubstate = true;
 		super.update(elapsed);
@@ -138,9 +167,5 @@ class ResultsScreenEdit extends VsliceSubState {
 		controls.isInSubstate = true;
 	}
 	#end
-	inline function newLabel(ref:FlxSprite, text:String)
-		{
-			return new FlxText(ref.x, ref.y - 13, 100, text);
-		}
 	
 }

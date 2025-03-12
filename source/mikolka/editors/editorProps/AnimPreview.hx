@@ -11,8 +11,8 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 	var selectedAnimLength:Int = 0;
 
 	public var selectedIndex:Int = 0;
-	var labels:Array<FlxText> = new Array();
-	var anims:Array<CharAnim> = new Array();
+	public var labels:Array<FlxText> = new Array();
+	public var anims:Array<CharAnim> = new Array();
 	var frameTxt:FlxText;
 	var useAtlasSymbols:Bool;
 	public function new(useAtlasSymbols:Bool,x:Float,y:Float) {
