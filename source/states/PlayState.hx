@@ -1,5 +1,6 @@
 package states;
 
+import mikolka.compatibility.VsliceOptions;
 import mikolka.stages.EventLoader;
 import mikolka.JoinedLuaVariables;
 import substates.StickerSubState;
@@ -749,8 +750,11 @@ class PlayState extends MusicBeatState
 	#end
 
 	public function reloadHealthBarColors() {
-		healthBar.setColors(FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
-			FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2]));
+		if(ClientPrefs.data.vsliceLegacyBar) healthBar.setColors(FlxColor.RED,FlxColor.LIME);
+		else healthBar.setColors(
+			FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
+			FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2])
+		);
 	}
 
 	public function addCharacterToList(newCharacter:String, type:Int) {
@@ -1174,6 +1178,7 @@ class PlayState extends MusicBeatState
 	// cool right? -Crow
 	public dynamic function updateScore(miss:Bool = false, scoreBop:Bool = true)
 	{
+		if(ClientPrefs.data.vsliceLegacyBar) scoreBop = false;
 		var ret:Dynamic = callOnScripts('preUpdateScore', [miss], true);
 		if (ret == LuaUtils.Function_Stop)
 			return;
@@ -3377,6 +3382,10 @@ class PlayState extends MusicBeatState
 				maxCombo = FlxMath.maxInt(maxCombo,combo);
 				if(combo > 9999) combo = 9999;
 				popUpScore(note);
+			}
+			else if(!guitarHeroSustains){ //? Legacy scoring for sustains
+				songScore += 125;
+				updateScoreText();
 			}
 			var gainHealth:Bool = true; // prevent health gain, *if* sustains are treated as a singular note
 			if (guitarHeroSustains && note.isSustainNote) gainHealth = false;

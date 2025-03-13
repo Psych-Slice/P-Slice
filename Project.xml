@@ -168,6 +168,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 		<!--These defines are mostly for testing (aren't required to be used)-->
 		<haxelib name="hxcpp-debug-server" />
 		<haxelib name="flixel-studio" />
+		<haxelib name="hscript"/>
 		<haxedef name="HXVLC_VERBOSE" value="2" />
 		<haxedef name="HXVLC_LOGGING" />
 	</section>

@@ -1,5 +1,6 @@
 package mikolka.stages;
 
+import mikolka.compatibility.VsliceOptions;
 import mikolka.stages.standard.*;
 import mikolka.stages.objects.*;
 import mikolka.stages.erect.*;
@@ -53,6 +54,7 @@ class EventLoader extends BaseStage {
             default: addNene = false;
 		}
         if(addNene) new PicoCapableStage();
+        if(VsliceOptions.LEGACY_BAR) new LecacyScoreBars();
         new VSliceEvents();
     } 
 }
