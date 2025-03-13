@@ -15,12 +15,15 @@
 
 	"preload": {
 		"images/limo/erect/limoSunset": 3,
-		"limo/erect/shooting star": 3,
+		"images/limo/erect/shooting_star": 3,
 		"images/limo/limoDancer": 2,
 		"images/limo/erect/limoDrive": 2,
-		"limo/erect/mistMid": 2,
-		"limo/erect/mistBack": 2,
+		"images/limo/erect/mistMid": 2,
+		"images/limo/erect/mistBack": 2,
 		"images/gore/": 2,
+		"sounds/dancerdeath": 2,
+		"sounds/carPass0": 3,
+		"sounds/carPass1": 3,
 		"images/limo/fastCarLol": 3,
 		"images/limo/erect/bgLimo": 3
 	}

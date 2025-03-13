@@ -59,7 +59,7 @@ class LimoRideErect extends BaseStage
 		skyBG.updateHitbox();
 		add(skyBG);
 
-		star = new BGSprite('limo/erect/shooting star', 200, 0, 1, 1, ['shooting star']);
+		star = new BGSprite('limo/erect/shooting_star', 200, 0, 1, 1, ['shooting star']);
 		star.blend = BlendMode.ADD;
 		add(star);
 		if (VsliceOptions.SHADERS)

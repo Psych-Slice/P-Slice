@@ -1550,7 +1550,7 @@ class PlayState extends MusicBeatState
 
 	function eventEarlyTrigger(event:EventNote):Float {
 		var returnedValue:Null<Float> = callOnScripts('eventEarlyTrigger', [event.event, event.value1, event.value2, event.strumTime], true);
-		if(returnedValue != null && returnedValue != 0) {
+		if(returnedValue != null && Std.isOfType(returnedValue,Float) && returnedValue != 0) { //! I hate js
 			return returnedValue;
 		}
 

@@ -647,10 +647,9 @@ class HTML5LoadingScreen extends MusicBeatState
 
 	static function advancePromise()
 	{
+		if (promises.length <= 0) return;
 		var root = promises.shift();
 		trace('${promises.length} left ($loaded/$loadMax)');
-		if (promises.length <= 0)
-			return;
 		if (root == null)
 		{
 			loaded++;
@@ -776,7 +775,8 @@ class HTML5LoadingScreen extends MusicBeatState
 			return {
 				task: () ->
 				{
-					OpenFlAssets.loadSound(file, false);
+					trace(file);
+					return OpenFlAssets.loadSound(file, false);
 				},
 				onError: () ->
 				{
@@ -815,6 +815,7 @@ class HTML5LoadingScreen extends MusicBeatState
 					return {
 						task: () ->
 						{
+							trace(file);
 							return OpenFlAssets.loadBitmapData(file, false);
 						},
 						onError: () ->
