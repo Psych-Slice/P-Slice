@@ -48,34 +48,36 @@ class MainMenuState extends MusicBeatState
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
-		if (FlxG.random.bool(50))
+		
+		if (FlxG.random.bool(85))
 		{
-			openfl.Lib.application.window.title = "KYS";
+			openfl.Lib.application.window.title = "Friday Night Funkin': Xythe (P-Slice) Engine";
 		}
-		if (FlxG.random.bool(25))
+
+		if (FlxG.random.bool(15))
 		{
 			openfl.Lib.application.window.title = "Shader? Is that you?";
 		}
-		if (FlxG.random.bool(60))
+		if (FlxG.random.bool(10))
 		{
 			openfl.Lib.application.window.title = "If You See This... Fuck You!";
 		}
-		if (FlxG.random.bool(10))
+		if (FlxG.random.bool(5))
 		{
 			openfl.Lib.application.window.title = "Holy Hell, A rare Find!!!!";
 		}
-		if (FlxG.random.bool(40))
+		if (FlxG.random.bool(10))
 			{
 				openfl.Lib.application.window.title = "FnF VS Fire In The Hole";
 			}
-		if (FlxG.random.bool(50))
+		if (FlxG.random.bool(10))
 		{
 			openfl.Lib.application.window.title = "FnF VS Bitch day";
 		}
-		if (FlxG.random.bool(30))
-			{
-				openfl.Lib.application.window.title = "Friday Night Funkin' VS Pokémon Mystery Dungeon: Loss of Light real?";
-			}
+		if (FlxG.random.bool(15))
+		{
+			openfl.Lib.application.window.title = "Friday Night Funkin' VS Pokémon Mystery Dungeon: Loss of Light real?";
+		}
 		
 			
 		#end
