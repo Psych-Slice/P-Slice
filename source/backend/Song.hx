@@ -8,6 +8,8 @@ import objects.Note;
 typedef SwagSong =
 {
 	var song:String;
+	var artist:String;
+	var charter:String;
 	var notes:Array<SwagSection>;
 	var events:Array<Dynamic>;
 	var bpm:Float;
@@ -46,6 +48,8 @@ typedef SwagSection =
 class Song
 {
 	public var song:String;
+	public var artist:String;
+	public var charter:String;
 	public var notes:Array<SwagSection>;
 	public var events:Array<Dynamic>;
 	public var bpm:Float;
