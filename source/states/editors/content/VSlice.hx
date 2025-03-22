@@ -248,6 +248,8 @@ class VSlice
 
 			var swagSong:SwagSong = {
 				song: metadata.songName,
+				artist: metadata.artist,
+				charter: metadata.charter,
 				notes: sectionData,
 				events: [],
 				bpm: songBpm,
@@ -262,7 +264,6 @@ class VSlice
 				format: 'psych_v1_convert'
 			}
 
-			Reflect.setField(swagSong, 'artist', metadata.artist);
 			Reflect.setField(swagSong, 'charter', metadata.charter);
 			Reflect.setField(swagSong, 'generatedBy', 'Psych Engine v${MainMenuState.psychEngineVersion} - Chart Editor V-Slice Importer');
 			songDifficulties.set(diff, swagSong);
