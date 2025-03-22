@@ -1,4 +1,4 @@
-package mikolka.compatibility;
+package mikolka.compatibility.freeplay;
 
 import mikolka.vslice.components.crash.UserErrorSubstate;
 import openfl.utils.AssetType;

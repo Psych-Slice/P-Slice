@@ -79,6 +79,7 @@ class ClientPrefs {
 
 	public static var vsliceFreeplayColors:Bool = true;
 	public static var vsliceResults:Bool = true;
+	public static var vsliceLegacyBar:Bool = false;
 	public static var vsliceSmoothBar:Bool = true;
 	public static var vsliceForceNewTag:Bool = false;
 	public static var lastFreeplayMod:String = "||bf";
@@ -176,6 +177,7 @@ class ClientPrefs {
 		FlxG.save.data.vsliceFreeplayColors = vsliceFreeplayColors;
 		FlxG.save.data.vsliceResults = vsliceResults;
 		FlxG.save.data.vsliceSmoothBar = vsliceSmoothBar;
+		FlxG.save.data.vsliceLegacyBar = vsliceLegacyBar;
 		FlxG.save.data.vsliceForceNewTag = vsliceForceNewTag;
 		FlxG.save.data.vsliceSpecialCards = vsliceSpecialCards;
 		FlxG.save.data.favSongIds = favSongIds;
@@ -342,6 +344,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.vsliceSmoothBar != null) {
 			vsliceSmoothBar = FlxG.save.data.vsliceSmoothBar;
+		}
+		if(FlxG.save.data.vsliceLegacyBar != null) {
+			vsliceLegacyBar = FlxG.save.data.vsliceLegacyBar;
 		}
 		if(FlxG.save.data.vsliceForceNewTag != null) {
 			vsliceForceNewTag = FlxG.save.data.vsliceForceNewTag;

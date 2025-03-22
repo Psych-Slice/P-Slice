@@ -1,4 +1,4 @@
-package mikolka.editors.editorProps;
+package mikolka.editors.substates;
 
 class HelpSubstate extends MusicBeatSubstate {
     public static var CHAR_EDIT_TEXT:Array<String> = [

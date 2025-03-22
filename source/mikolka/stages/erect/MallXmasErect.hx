@@ -2,7 +2,7 @@ package mikolka.stages.erect;
 
 import mikolka.stages.objects.PicoCapableStage;
 import flixel.system.debug.watch.Tracker;
-import mikolka.compatibility.FunkinPath;
+import mikolka.compatibility.funkin.FunkinPath;
 import shaders.AdjustColorShader;
 import mikolka.compatibility.VsliceOptions;
 #if !LEGACY_PSYCH

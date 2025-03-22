@@ -1,6 +1,6 @@
 package;
 
-import substates.StickerSubState;
+import mikolka.vslice.StickerSubState;
 import Controls.Control;
 import flixel.FlxG;
 import flixel.FlxSprite;

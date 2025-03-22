@@ -11,7 +11,7 @@ import flixel.graphics.FlxGraphic;
 #if desktop
 import Discord.DiscordClient;
 #end
-import substates.StickerSubState;
+import mikolka.vslice.StickerSubState;
 import Section.SwagSection;
 import Song.SwagSong;
 import WiggleEffect.WiggleEffectType;
@@ -1116,7 +1116,8 @@ class PlayState extends MusicBeatState
 
 	public function reloadHealthBarColors()
 	{
-		healthBar.createFilledBar(FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
+		if(ClientPrefs.vsliceLegacyBar) healthBar.createFilledBar(FlxColor.RED,FlxColor.LIME);
+		else healthBar.createFilledBar(FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
 			FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2]));
 
 		healthBar.updateBar();
@@ -1601,7 +1602,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	public function updateScore(miss:Bool = false)
+	public dynamic function updateScore(miss:Bool = false)
 	{
 		scoreTxt.text = 'Score: '
 			+ songScore

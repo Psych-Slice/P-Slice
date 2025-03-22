@@ -1,5 +1,7 @@
 package mikolka.stages;
 
+import mikolka.vslice.StickerSubState;
+import mikolka.compatibility.VsliceOptions;
 import mikolka.stages.standard.*;
 import mikolka.stages.objects.*;
 import mikolka.stages.erect.*;
@@ -9,7 +11,6 @@ import haxe.ds.List;
 import psychlua.FunkinLua;
 import mikolka.vslice.components.crash.UserErrorSubstate;
 #end
-import states.MainMenuState;
 #end
 
 class EventLoader extends BaseStage {
@@ -21,10 +22,16 @@ class EventLoader extends BaseStage {
             Lua_helper.add_callback(lua, "markAsPicoCapable", function() {
                 new PicoCapableStage();
             });
+            Lua_helper.add_callback(lua, "changeTransStickers", function(stickerSet:String = null,stickerPack:String = null) {
+                if(stickerSet != null && stickerSet != "") StickerSubState.STICKER_SET = stickerSet;
+                if(stickerPack != null && stickerPack != "") StickerSubState.STICKER_PACK = stickerPack;
+            });
         }
     #end
     public static function addstage(name:String) {
         var addNene = true;
+        if(VsliceOptions.LEGACY_BAR) new LegacyScoreBars();
+        new VSliceEvents();
         switch (name)
 		{
 			case 'stage': new StageWeek1(); 						//Week 1

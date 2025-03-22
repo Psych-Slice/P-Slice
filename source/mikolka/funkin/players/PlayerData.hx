@@ -1,6 +1,6 @@
 package mikolka.funkin.players;
 
-import mikolka.compatibility.FunkinPath as Paths;
+import mikolka.compatibility.funkin.FunkinPath as Paths;
 
 @:nullSafety
 class PlayerData
