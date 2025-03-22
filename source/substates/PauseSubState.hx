@@ -14,6 +14,10 @@ import options.OptionsState;
 
 class PauseSubState extends MusicBeatSubstate
 {
+	static final CHARTER_FADE_DELAY:Float = 15.0;
+	static final CHARTER_FADE_DURATION:Float = 0.75;
+    	public static final DEFAULT_ARTIST:String = 'None';
+    	public static final DEFAULT_CHARTER:String = 'None';
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
 	var menuItems:Array<String> = [];
@@ -121,6 +125,12 @@ class PauseSubState extends MusicBeatSubstate
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
+		artistTxt = new FlxText(20, 15 + 32, 0, Language.getPhrase("artist", "Artist: {1}", [PlayState.SONG.artist]), 32);
+		artistTxt.scrollFactor.set();
+		artistTxt.setFormat(Paths.font('vcr.ttf'), 32);
+		artistTxt.updateHitbox();
+		add(artistTxt);
+
 		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, Language.getPhrase("pause_difficulty","Difficulty: {1}",[CoolUtil.FUL(Difficulty.getString())]), 32);
 		levelDifficulty.scrollFactor.set();
 		levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
@@ -156,15 +166,18 @@ class PauseSubState extends MusicBeatSubstate
 		blueballedTxt.alpha = 0;
 		levelDifficulty.alpha = 0;
 		levelInfo.alpha = 0;
+		artistTxt.alpha = 0;
 
 		levelInfo.x = FlxG.width - (levelInfo.width + 20);
+		artistTxt.x = FlxG.width - (artistTxt.width + 20);
 		levelDifficulty.x = FlxG.width - (levelDifficulty.width + 20);
 		blueballedTxt.x = FlxG.width - (blueballedTxt.width + 20);
 
 		FlxTween.tween(bg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
 		FlxTween.tween(levelInfo, {alpha: 1, y: 20}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
-		FlxTween.tween(levelDifficulty, {alpha: 1, y: levelDifficulty.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
-		FlxTween.tween(blueballedTxt, {alpha: 1, y: blueballedTxt.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
+		FlxTween.tween(artistTxt, {alpha: 1, y: artistTxt.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
+		FlxTween.tween(levelDifficulty, {alpha: 1, y: levelDifficulty.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
+		FlxTween.tween(blueballedTxt, {alpha: 1, y: blueballedTxt.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.9});
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
@@ -189,8 +202,80 @@ class PauseSubState extends MusicBeatSubstate
 		addTouchPad(PlayState.chartingMode ? 'LEFT_FULL' : 'UP_DOWN', 'A');
 		addTouchPadCamera();
 		#end
-
+		
+		artistTxtTween();
+			
 		super.create();
+	}
+
+	var charterFadeTween:Null<FlxTween> = null;
+
+	function charterTxtTween():Void
+	{
+	    charterFadeTween = FlxTween.tween(artistTxt, {alpha: 0.0}, CHARTER_FADE_DURATION,
+	    {
+	        startDelay: CHARTER_FADE_DELAY,
+	        ease: FlxEase.quartOut,
+	        onComplete: (_) -> {
+	            if (PlayState.SONG != null)
+	            {
+	                artistTxt.text = Language.getPhrase("Charter", "Charter: {1}", [PlayState.SONG.charter]);
+	            }
+	            else
+	            {
+	                artistTxt.text = Language.getPhrase("Charter", "Charter: {1}", [DEFAULT_CHARTER]);
+	            }
+	
+	            var length:Int = artistTxt.text.length;
+	            var shortName:Bool = length < 5;
+	
+	            artistTxt.x = FlxG.width - artistTxt.width - 6;
+	            if (shortName)
+	                artistTxt.x -= 10 * length - length;
+	
+	            FlxTween.tween(artistTxt, {alpha: 1.0}, CHARTER_FADE_DURATION,
+	            {
+	                ease: FlxEase.quartOut,
+	                onComplete: (_) -> {
+	                    artistTxtTween();
+	                }
+	            });
+	        }
+	    });
+	}
+	
+	function artistTxtTween():Void
+	{
+	    charterFadeTween = FlxTween.tween(artistTxt, {alpha: 0.0}, CHARTER_FADE_DURATION,
+	    {
+	        startDelay: CHARTER_FADE_DELAY,
+	        ease: FlxEase.quartOut,
+	        onComplete: (_) -> {
+	            if (PlayState.SONG != null)
+	            {
+	                artistTxt.text = Language.getPhrase("artist", "Artist: {1}", [PlayState.SONG.artist]);
+	            }
+	            else
+	            {
+	                artistTxt.text = Language.getPhrase("artist", "Artist: {1}", [DEFAULT_ARTIST]);
+	            }
+	
+	            var length:Int = artistTxt.text.length;
+	            var shortName:Bool = length < 5;
+	
+	            artistTxt.x = FlxG.width - artistTxt.width - 6;
+	            if (shortName)
+	                artistTxt.x -= 10 * length - length;
+	
+	            FlxTween.tween(artistTxt, {alpha: 1.0}, CHARTER_FADE_DURATION,
+	            {
+	                ease: FlxEase.quartOut,
+	                onComplete: (_) -> {
+	                    charterTxtTween();
+	                }
+	            });
+	        }
+	    });
 	}
 	
 	function getPauseSong()
