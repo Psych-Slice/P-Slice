@@ -1,6 +1,6 @@
 package;
 
-import substates.StickerSubState;
+import mikolka.vslice.StickerSubState;
 #if desktop
 import Discord.DiscordClient;
 #end

@@ -1,7 +1,7 @@
 package;
 
 import mikolka.stages.objects.PicoCapableStage;
-import substates.StickerSubState;
+import mikolka.vslice.StickerSubState;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSubState;

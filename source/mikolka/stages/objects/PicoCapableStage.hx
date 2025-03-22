@@ -74,7 +74,7 @@ class PicoCapableStage extends BaseStage
 	override function startSong()
 	{
 		super.startSong();
-		gf.animation.finishCallback = onNeneAnimationFinished;
+		if(gf != null) gf.animation.finishCallback = onNeneAnimationFinished;
 		if (abot == null)
 			return;
 		abot.snd = FlxG.sound.music;

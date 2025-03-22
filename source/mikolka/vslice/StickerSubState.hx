@@ -1,9 +1,9 @@
-package substates;
+package mikolka.vslice;
 
+import mikolka.compatibility.ModsHelper;
 import mikolka.vslice.components.crash.UserErrorSubstate;
-import sys.FileSystem;
-import flixel.system.FlxSound;
-import MainMenuState;
+import mikolka.compatibility.VsliceOptions;
+
 import flixel.FlxSprite;
 import haxe.Json;
 import lime.utils.Assets;
@@ -140,7 +140,11 @@ class StickerSubState extends MusicBeatSubstate
       new FlxTimer().start(sticker.timing, _ -> {
         sticker.visible = false;
         var daSound:String = FlxG.random.getObject(sounds);
+        #if !LEGACY_PSYCH
+        new FlxSound().loadEmbedded(Paths.sound(daSound)).play();
+        #else
         new FlxSound().loadEmbedded(Paths.sound(daSound,"shared")).play();
+        #end
 
         if (grpStickers == null || ind == grpStickers.members.length - 1)
         {
@@ -160,32 +164,42 @@ class StickerSubState extends MusicBeatSubstate
     }
 
     trace("Collecting stickers...");
-    trace("Current mod: "+Paths.currentModDirectory);
+    trace("Current mod: "+ModsHelper.getActiveMod());
     var stickers:StickerInfo = null;
 
     // var globalMods = Mods.getGlobalMods().map(s -> "mods/"+s);
     // globalMods.pushUnique("mods/"+Mods.currentModDirectory);
     // globalMods.push("assets/shared"); // base stickers
 
-    var modStickerDir = Paths.getPath('images/transitionSwag/$STICKER_SET',TEXT,null);
-    if(!FileSystem.exists(modStickerDir)){
-      openSubState(new UserErrorSubstate("Missing sticker_set",'Couldn\'t find sticker set "$STICKER_SET"\n\nin $modStickerDir'));
-      
-    }
-    else if(!FileSystem.exists('$modStickerDir/stickers.json')){
-      openSubState(new UserErrorSubstate("Missing manifest",'Sticker set $STICKER_SET doesn\'t contain a "stickers.json" file\n\nin $modStickerDir/stickers.json'));
-    }
-    else{
+      #if sys
+      #if !LEGACY_PSYCH
+      var modStickerDir = Paths.getPath('images/transitionSwag/$STICKER_SET',TEXT,null,true);
+      #else
+      var modStickerDir = Paths.getPath('images/transitionSwag/$STICKER_SET',TEXT,null);
+      #end
+      if(!FileSystem.exists(modStickerDir)){
+        openSubState(new UserErrorSubstate("Missing sticker_set",'Couldn\'t find sticker set "$STICKER_SET"\n\nin $modStickerDir'));
+        
+      }
+      else if(!FileSystem.exists('$modStickerDir/stickers.json')){
+        openSubState(new UserErrorSubstate("Missing manifest",'Sticker set $STICKER_SET doesn\'t contain a "stickers.json" file\n\nin $modStickerDir/stickers.json'));
+      }
+      else{
 
-      try{
-        var infoObj = new StickerInfo(STICKER_SET);
-        stickers = infoObj;
-        if(infoObj.getPack(STICKER_PACK) == null) openSubState(new UserErrorSubstate('Missing pack','Sticker set ${infoObj.name} doesn\'t contain "$STICKER_PACK" pack.\n\nAll available stickers will be loaded instead.'));
+        try{
+          var infoObj = new StickerInfo(STICKER_SET);
+          stickers = infoObj;
+          if(infoObj.getPack(STICKER_PACK) == null) openSubState(new UserErrorSubstate('Missing pack','Sticker set ${infoObj.name} doesn\'t contain "$STICKER_PACK" pack.\n\nAll available stickers will be loaded instead.'));
+        }
+        catch(x){
+          openSubState(new UserErrorSubstate('Couldn\'t make $STICKER_PACK','In "$modStickerDir":\n\n${x.message}'));
+        }
+
       }
-      catch(x){
-        openSubState(new UserErrorSubstate('Couldn\'t make $STICKER_PACK','In "$modStickerDir":\n\n${x.message}'));
-      }
-      }
+      #else
+      var infoObj = new StickerInfo(STICKER_SET);
+          stickers = infoObj;
+      #end
     // sticker group -> array of sticker names
 
     var xPos:Float = -100;
@@ -273,7 +287,11 @@ class StickerSubState extends MusicBeatSubstate
 
         sticker.visible = true;
         var daSound:String = FlxG.random.getObject(sounds);
+        #if !LEGACY_PSYCH
+        new FlxSound().loadEmbedded(Paths.sound(daSound)).play();
+        #else
         new FlxSound().loadEmbedded(Paths.sound(daSound,"shared")).play();
+        #end
 
         var frameTimer:Int = FlxG.random.int(0, 2);
 
@@ -305,9 +323,12 @@ class StickerSubState extends MusicBeatSubstate
               dipshit.addChild(bitmap);
               // FlxG.addChildBelowMouse(dipshit);
              */
-
-            FlxG.switchState(targetState(this)
-            );
+             if(subState != null){
+              subStateClosed.addOnce(s -> {
+                FlxG.switchState(targetState(this));
+              });
+             }
+             else FlxG.switchState(targetState(this));
           }
         });
       });
@@ -325,7 +346,11 @@ class StickerSubState extends MusicBeatSubstate
 
     STICKER_SET = "stickers-set-1";
     STICKER_PACK = "all";
-    WeekData.loadTheFirstEnabledMod(); // We won't be messing with mods from here on
+    #if !LEGACY_PSYCH
+    Mods.loadTopMod(); // We won't be messing with mods from here on
+    #else
+    WeekData.loadTheFirstEnabledMod();
+    #end
   }
 
   override public function update(elapsed:Float):Void
@@ -357,14 +382,20 @@ class StickerSubState extends MusicBeatSubstate
 class StickerSprite extends FlxSprite
 {
   public var timing:Float = 0;
+  var stickerPath:String;
+  public function loadSticker() {
+    loadGraphic(Paths.image(stickerPath));
+    updateHitbox();
+    scrollFactor.set();
+  }
 
   public function new(x:Float, y:Float, stickerSet:String, stickerName:String):Void
   {
     super(x, y);
-    var path = stickerSet == null ? stickerName : 'transitionSwag/$stickerSet/$stickerName';
-    loadGraphic(Paths.image(path));
-    updateHitbox();
-    scrollFactor.set();
+    stickerPath = stickerSet == null ? stickerName : 'transitionSwag/$stickerSet/$stickerName';
+    antialiasing = VsliceOptions.ANTIALIASING;
+    loadSticker();
+    
   }
 }
 

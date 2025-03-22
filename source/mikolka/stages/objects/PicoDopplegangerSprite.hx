@@ -1,6 +1,6 @@
 package mikolka.stages.objects;
 
-import mikolka.compatibility.FunkinPath;
+import mikolka.compatibility.funkin.FunkinPath;
 #if !LEGACY_PSYCH
 import cutscenes.CutsceneHandler;
 #end

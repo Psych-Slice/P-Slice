@@ -1,4 +1,4 @@
-package mikolka.compatibility;
+package mikolka.compatibility.funkin;
 
 import openfl.media.Sound;
 import flixel.graphics.frames.FlxAtlasFrames;

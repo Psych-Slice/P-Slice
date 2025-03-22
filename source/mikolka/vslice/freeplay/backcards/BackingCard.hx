@@ -18,7 +18,7 @@ import flixel.util.FlxTimer;
 import mikolka.funkin.players.PlayableCharacter;
 import openfl.display.BlendMode;
 import flixel.group.FlxSpriteGroup;
-import mikolka.compatibility.FunkinPath as Paths;
+import mikolka.compatibility.funkin.FunkinPath as Paths;
 
 /**
  * A class for the backing cards so they dont have to be part of freeplayState......

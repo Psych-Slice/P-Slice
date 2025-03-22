@@ -1,4 +1,4 @@
-package mikolka.compatibility;
+package mikolka.compatibility.freeplay;
 
 import mikolka.vslice.freeplay.pslice.BPMCache;
 import mikolka.funkin.Scoring.ScoringRank;

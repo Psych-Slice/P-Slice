@@ -1,6 +1,6 @@
 package mikolka.stages.standard;
 
-import mikolka.compatibility.FreeplayHelpers;
+import mikolka.compatibility.freeplay.FreeplayHelpers;
 #if !LEGACY_PSYCH
 import objects.Note.EventNote;
 #else
@@ -102,7 +102,10 @@ class Limo extends BaseStage
 		addBehindGF(fastCar);
 		
 		var limo:BGSprite = new BGSprite('limo/limoDrive', -120, 550, 1, 1, ['Limo stage'], true);
-		addBehindGF(limo); //Shitty layering but whatev it works LOL
+		if(FlxG.random.bool(25)){
+			addBehindGF(limo); // Shitty layering but whatev it works LOL
+		}
+		else insert(members.indexOf(game.gfGroup)+1, limo);
 	}
 
 	var limoSpeed:Float = 0;

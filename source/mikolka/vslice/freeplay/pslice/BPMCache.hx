@@ -19,14 +19,9 @@ class BPMCache {
             return 0;
         }
         var chartFiles = NativeFileSystem.readDirectory(sngDataPath);
-        #if MODS_ALLOWED
+
         chartFiles = chartFiles.filter(s -> s.toLowerCase().startsWith(fileSngName) && s.endsWith(".json"));
         var chosenChartToScrap = sngDataPath+"/"+chartFiles[0];
-        #else
-        var regexSongName = fileSngName.replace("(","\\(").replace(")","\\)");
-        chartFiles = chartFiles.filter(s -> new EReg('\\/$regexSongName\\/$regexSongName.*\\.json',"").match(s));
-        var chosenChartToScrap = chartFiles[0];
-        #end
         
         
 		

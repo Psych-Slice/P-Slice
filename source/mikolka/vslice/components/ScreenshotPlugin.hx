@@ -1,7 +1,7 @@
 package mikolka.vslice.components;
 
 import haxe.Timer;
-import mikolka.compatibility.FunkinControls;
+import mikolka.compatibility.funkin.FunkinControls;
 import mikolka.compatibility.VsliceOptions;
 import flixel.FlxBasic;
 import flixel.FlxCamera;

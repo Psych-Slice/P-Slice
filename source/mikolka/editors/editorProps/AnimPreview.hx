@@ -11,10 +11,14 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 	var selectedAnimLength:Int = 0;
 
 	public var selectedIndex:Int = 0;
-	var labels:Array<FlxText> = new Array();
-	var anims:Array<CharAnim> = new Array();
+	public var labels:Array<FlxText> = new Array();
+	public var anims:Array<CharAnim> = new Array();
 	var frameTxt:FlxText;
-
+	var useAtlasSymbols:Bool;
+	public function new(useAtlasSymbols:Bool,x:Float,y:Float) {
+		this.useAtlasSymbols = useAtlasSymbols;
+		super(x,y);
+	}
 	public function attachSprite(value:FlxAtlasSprite)
 	{
 		anims = new Array();
@@ -71,15 +75,18 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 	{
 		activeSprite.pauseAnimation();
         var newFrame = Std.int(FlxMath.bound(selectedFrame+diff,1,selectedAnimLength));
-		activeSprite.anim.curFrame = selectedAnimIndices[newFrame-1];
+		if(useAtlasSymbols) activeSprite.anim.curFrame = newFrame-1;
+		else activeSprite.anim.curFrame = selectedAnimIndices[newFrame-1];
+		
         selectedFrame = newFrame;
         frameTxt.text = 'Frame (${selectedFrame}/${selectedAnimLength})';
 	}
 
 	public function input_playAnim()
 	{
+
 		var newAnim = anims[selectedIndex];
-        selectedFrame = 0;
+        selectedFrame = useAtlasSymbols ? 1 : 0;
         selectedAnimLength = 0;
 		activeSprite.playAnimation(newAnim.anim, true);
 	}

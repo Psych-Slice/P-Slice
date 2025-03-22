@@ -2,7 +2,7 @@
 package;
 
 import mikolka.vslice.freeplay.FreeplayState;
-import substates.StickerSubState;
+import mikolka.vslice.StickerSubState;
 import openfl.display.BitmapData;
 import mikolka.stages.EventLoader;
 #if LUA_ALLOWED

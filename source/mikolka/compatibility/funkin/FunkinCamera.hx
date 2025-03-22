@@ -1,4 +1,4 @@
-package mikolka.compatibility;
+package mikolka.compatibility.funkin;
 
 import openfl.filters.BitmapFilter;
 

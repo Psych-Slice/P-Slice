@@ -1,11 +1,12 @@
 package shaders;
 
+import flixel.system.FlxAssets.FlxShader;
 import flixel.graphics.frames.FlxFrame;
-import shaders.flixel.system.FlxShader;
 import openfl.display.BitmapData;
 import openfl.display.ShaderParameter;
 import openfl.display.ShaderParameterType;
 import openfl.utils.Assets;
+import flixel.util.FlxColor;
 
 typedef Light =
 {
@@ -482,6 +483,14 @@ class RainShader extends FlxShader
 		return mask = value;
 	}
 
+	public var rainColor(default, set):FlxColor;
+	
+	function set_rainColor(color:FlxColor):FlxColor
+	{
+		this.uRainColor.value = [color.red / 255, color.green / 255, color.blue / 255];
+		return rainColor = color;
+	}
+
 	public var lightMap(default, set):BitmapData;
 
 	function set_lightMap(value:BitmapData):BitmapData
@@ -511,6 +520,8 @@ class RainShader extends FlxShader
 		uCameraBounds.value = [0, 0, FlxG.width, FlxG.height];
 	    uFrameBounds.value = [0, 0, FlxG.width, FlxG.height];
 		this.uScreenResolution.value = [FlxG.width, FlxG.height];
+
+		this.rainColor = 0xFF6680cc;
 	}
 
 	public function update(elapsed:Float):Void

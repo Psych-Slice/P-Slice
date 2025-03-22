@@ -1,6 +1,6 @@
 package mikolka.funkin.custom;
 
-import mikolka.compatibility.FunkinPath;
+import mikolka.compatibility.funkin.FunkinPath;
 import haxe.Json;
 
 class PsliceRegistry {

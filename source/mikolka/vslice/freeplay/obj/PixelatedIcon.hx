@@ -1,8 +1,8 @@
 package mikolka.vslice.freeplay.obj;
 
-import mikolka.compatibility.FunkinPath;
+import mikolka.compatibility.funkin.FunkinPath;
 import mikolka.compatibility.ModsHelper;
-import mikolka.compatibility.FreeplayHelpers;
+import mikolka.compatibility.freeplay.FreeplayHelpers;
 import flixel.FlxSprite;
 import mikolka.funkin.FlxFilteredSprite;
 

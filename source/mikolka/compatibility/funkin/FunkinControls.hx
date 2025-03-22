@@ -1,4 +1,4 @@
-package mikolka.compatibility;
+package mikolka.compatibility.funkin;
 
 class FunkinControls {
     public static var FREEPLAY_LEFT(get,never):Bool;    

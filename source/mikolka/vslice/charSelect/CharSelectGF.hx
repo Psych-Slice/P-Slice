@@ -9,7 +9,7 @@ import mikolka.funkin.FramesJSFLParser.FramesJSFLInfo;
 import mikolka.funkin.FramesJSFLParser.FramesJSFLFrame;
 import flixel.math.FlxMath;
 import funkin.vis.dsp.SpectralAnalyzer;
-import mikolka.compatibility.FunkinPath as Paths;
+import mikolka.compatibility.funkin.FunkinPath as Paths;
 
 class CharSelectGF extends FlxAtlasSprite 
 {
