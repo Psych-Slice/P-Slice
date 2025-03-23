@@ -40,6 +40,7 @@ class PauseSubState extends MusicBeatSubstate
 
 	var missingTextBG:FlxSprite;
 	var missingText:FlxText;
+	var artistTxt:FlxText;
 
 	var inVid:Bool;
 	public var cutscene_allowSkipping = true;
