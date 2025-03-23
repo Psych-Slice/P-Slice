@@ -1940,6 +1940,8 @@
 		],
 		"player2": "pico",
 		"song": "Pico",
+		"artist": "Kawai Sprite",
+  		"charter": "ninjamuffin99 + MtH",
 		"needsVoices": true,
 		"bpm": 150,
 		"speed": 1.6,
