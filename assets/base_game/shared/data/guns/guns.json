@@ -4454,6 +4454,8 @@
 		"events": [],
 		"player3": null,
 		"song": "Guns",
+		"artist": "Kawai Sprite",
+  		"charter": "MtH",
 		"needsVoices": true,
 		"stage": "tank",
 		"format": "psych_v1_convert",
