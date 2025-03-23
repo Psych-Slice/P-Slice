@@ -2698,6 +2698,8 @@
 		"events": [],
 		"player3": null,
 		"song": "Ugh",
+		"artist": "Kawai Sprite",
+  		"charter": "None",
 		"needsVoices": true,
 		"stage": "tank",
 		"format": "psych_v1_convert",
