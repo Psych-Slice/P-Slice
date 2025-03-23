@@ -2042,6 +2042,8 @@
 		"events": [],
 		"player3": null,
 		"song": "Roses",
+		"artist": "Kawai Sprite",
+  		"charter": "ninjamuffin99 + MtH",
 		"needsVoices": true,
 		"stage": "school",
 		"format": "psych_v1_convert",
