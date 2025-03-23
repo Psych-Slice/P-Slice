@@ -3509,6 +3509,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	}
 
 	var songNameInputText:PsychUIInputText;
+	var artistInputText:PsychUIInputText;
+	var charterInputText:PsychUIInputText;
 	var allowVocalsCheckBox:PsychUICheckBox;
 
 	var bpmStepper:PsychUINumericStepper;
