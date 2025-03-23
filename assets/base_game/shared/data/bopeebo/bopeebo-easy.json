@@ -803,6 +803,8 @@
 			}
 		],
 		"song": "Bopeebo",
+		"artist": "Kawai Sprite",
+		"charter": "ninjamuffin99 + MtH",
 		"needsVoices": true,
 		"validScore": true,
 		"format": "psych_v1_convert",
