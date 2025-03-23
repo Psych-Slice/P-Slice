@@ -620,6 +620,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	{
 		var song:SwagSong = {
 			song: 'Test',
+			artist: 'None',
+			charter: 'None',
 			notes: [],
 			events: [],
 			bpm: 150,
@@ -659,6 +661,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 		// SONG TAB
 		songNameInputText.text = PlayState.SONG.song;
+		artistInputText.text = PlayState.SONG.artist;
+		charterInputText.text = PlayState.SONG.charter;
 		allowVocalsCheckBox.checked = (PlayState.SONG.needsVoices != false); //If the song for some reason does not have this value, it will be set to true
 
 		bpmStepper.value = PlayState.SONG.bpm;
@@ -3525,6 +3529,12 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		songNameInputText = new PsychUIInputText(objX, objY, 100, 'None', 8);
 		songNameInputText.onChange = function(old:String, cur:String) PlayState.SONG.song = cur;
 
+		artistInputText = new PsychUIInputText(objX + 110, objY, 100, 'None', 8);
+		artistInputText.onChange = function(old:String, cur:String) PlayState.SONG.artist = cur;
+
+		charterInputText = new PsychUIInputText(objX + 110, objY + 20, 'None', 8);
+		charterInputText.onChange = function(old:String, cur:String) PlayState.SONG.charter = cur;
+
 		allowVocalsCheckBox = new PsychUICheckBox(objX, objY + 20, 'Allow Vocals', 80, function()
 		{
 			PlayState.SONG.needsVoices = allowVocalsCheckBox.checked;
@@ -3587,7 +3597,11 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		};
 
 		tab_group.add(new FlxText(songNameInputText.x, songNameInputText.y - 15, 80, 'Song Name:'));
+		tab_group.add(new FlxText(artistInputText.x, artistInputText.y - 15, 80, 'Credits:'));
+		tab_group.add(new FlxText(charterInputText.x, charterInputText.y - 15, 80, '       :'));
 		tab_group.add(songNameInputText);
+		tab_group.add(artistInputText);
+		tab_group.add(charterInputText);
 		tab_group.add(allowVocalsCheckBox);
 		tab_group.add(reloadAudioButton);
 		#if (mac || mobile)
@@ -4201,7 +4215,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 											if(diffChart != null)
 											{
 												var subpack:VSlicePackage = VSlice.export(diffChart);
-												var	diffSpeed:Null<Float> = subpack.chart.scrollSpeed.get(diff);
+												var diffSpeed:Null<Float> = subpack.chart.scrollSpeed.get(diff);
 												var diffNotes:Array<VSliceNote> = subpack.chart.notes.get(diff);
 												if(diffSpeed != null && diffNotes != null)
 												{
