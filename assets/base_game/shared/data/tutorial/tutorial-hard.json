@@ -555,6 +555,8 @@
 			}
 		],
 		"song": "Tutorial",
+		"artist": "Kawai Sprite",
+  		"charter": "ninjamuffin99 + MtH",
 		"sections": 0,
 		"needsVoices": true,
 		"format": "psych_v1_convert",
