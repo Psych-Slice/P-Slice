@@ -94,7 +94,9 @@ class ResultsScreenEdit extends VsliceSubState {
 			loaded = true;
 			helpTxt.visible = true;
 			resultsDialogBox.visible = true;
+	            #if TOUCH_CONTROLS_ALLOWED
 			touchPad.visible = true;
+	    		#end
 		});
         super.create();
 		
