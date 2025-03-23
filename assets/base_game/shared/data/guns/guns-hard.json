@@ -5138,6 +5138,8 @@
 		"events": [],
 		"player3": null,
 		"song": "Guns",
+		"artist": "Kawai Sprite",
+  		"charter": "MtH",
 		"validScore": true,
 		"needsVoices": true,
 		"stage": "tank",
