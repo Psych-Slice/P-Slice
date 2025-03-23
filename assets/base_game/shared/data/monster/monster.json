@@ -2502,6 +2502,8 @@
 		],
 		"player2": "monster",
 		"song": "Monster",
+		"artist": "BassetFilms",
+  		"charter": "ChaoticGamerCG + Spazkid",
 		"needsVoices": true,
 		"bpm": 95,
 		"speed": 1.3,
