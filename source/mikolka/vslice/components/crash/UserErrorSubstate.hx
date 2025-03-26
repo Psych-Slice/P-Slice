@@ -11,18 +11,28 @@ class UserErrorSubstate extends MusicBeatSubstate
     {
         var textBg:FlxSprite;
     
-        var EMessage:String;
-        var callstack:OneOfTwo<Array<StackItem>,String>;
+        var error:CrashData;
         var isCritical:Bool;
         var allowClosing:Bool = false;
 
         var camOverlay:FlxCamera;
     
-        public function new(EMessage:String,callstack:OneOfTwo<Array<StackItem>,String>)
+        public static function makeMessage(errorMessage:String,description:String) {
+            var state = FlxG.state;
+            while(state.subState != null) state = state.subState;
+            state.persistentUpdate = false;
+            state.openSubState(new UserErrorSubstate(UserErrorSubstate.collectMessageData(errorMessage,description)));
+        }
+        public static function makeError(error:CrashData,isCritical:Bool = false) {
+            var state = FlxG.state;
+            while(state.subState != null) state = state.subState;
+            state.persistentUpdate = false;
+            state.openSubState(new UserErrorSubstate(error,isCritical));
+        }
+        public function new(error:CrashData,isCritical:Bool = false)
         {
-            this.EMessage = EMessage;
-            this.callstack = callstack;
-            isCritical = Std.isOfType(callstack,Array);
+            this.error = error;
+            this.isCritical = isCritical;
             camOverlay = new FlxCamera();
             camOverlay.bgColor = FlxColor.TRANSPARENT;
             FlxG.cameras.add(camOverlay);
@@ -38,35 +48,12 @@ class UserErrorSubstate extends MusicBeatSubstate
             textBg.screenCenter();
             textBg.camera = camOverlay;
             add(textBg);
-            var error:CrashData;
-            if(Std.isOfType(callstack,Array)){
-                error = collectErrorData();
-            }else{
-                var message = cast (callstack,String);
-                var tbl = new Array<Array<String>>();
-                for (x in message.split("\n")){
-                    tbl.push([x]);
-                }
-                error = {
-                    logToFile: false,
-                    extendedTrace: [],
-                    trace: tbl,
-                    message: EMessage,
-                    date: Date.now().toString(),
-                    systemName: #if android 'Android' #elseif linux 'Linux' #elseif mac 'macOS' #elseif windows 'Windows' #else 'iOS' #end,
-                    activeMod: ModsHelper.getActiveMod()
-                };
-            }
             
             printError(error);
-            #if sys if(isCritical) saveError(error); #end
         }
     
-        function collectErrorData():CrashData
+        public static function collectErrorData(errorMessage:String,callStack:Array<StackItem>):CrashData
         {
-            var errorMessage = EMessage;
-    
-            var callStack:Array<StackItem> = callstack;
             var errMsg = new Array<Array<String>>();
             var errExtended = new Array<String>();
             for (stackItem in callStack)
@@ -101,10 +88,26 @@ class UserErrorSubstate extends MusicBeatSubstate
                 trace: errMsg,
                 extendedTrace: errExtended,
                 date: Date.now().toString(),
-                systemName: #if android 'Android' #elseif linux 'Linux' #elseif mac 'macOS' #elseif windows 'Windows' #else 'iOS' #end,
+                systemName: #if android 'Android' #elseif linux 'Linux' #elseif mac 'macOS' #elseif windows 'Windows'#elseif html5 FlxG.html5.platform.getName()+ '(${FlxG.html5.browser.getName()})' #else 'iOS' #end,
                 activeMod: ModsHelper.getActiveMod()
             }
         }
+        public static function collectMessageData(errorMessage:String,description:String):CrashData
+            {
+                var tbl = new Array<Array<String>>();
+                for (x in description.split("\n")){
+                    tbl.push([x]);
+                }
+                return {
+                    logToFile: false,
+                    extendedTrace: [],
+                    trace: tbl,
+                    message: errorMessage,
+                    date: Date.now().toString(),
+                    systemName: #if android 'Android' #elseif linux 'Linux' #elseif mac 'macOS' #elseif windows 'Windows' #elseif html5 FlxG.html5.platform.getName()+ '(${FlxG.html5.browser.getName()})' #else 'iOS' #end,
+                    activeMod: ModsHelper.getActiveMod()
+                };
+            }
     
         override function update(elapsed:Float)
         {
@@ -140,7 +143,7 @@ class UserErrorSubstate extends MusicBeatSubstate
     
         function printError(error:CrashData)
         {
-            var star = #if CHECK_FOR_UPDATES "" #else "*" #end;
+            var star = #if (CHECK_FOR_UPDATES || debug) "" #else "*" #end;
             printToTrace('P-SLICE ${MainMenuState.pSliceVersion}$star  (${error.message})');
             textNextY += 35;
             FlxTimer.wait(1 / 24, () ->
@@ -188,36 +191,7 @@ class UserErrorSubstate extends MusicBeatSubstate
             });
         }
     
-        #if sys
-        static function saveError(error:CrashData)
-        {
-            var errMsg = "";
-            var dateNow:String = error.date;
-            var star = #if CHECK_FOR_UPDATES "" #else "*" #end;
-            dateNow = dateNow.replace(' ', '_');
-            dateNow = dateNow.replace(':', "'");
-            errMsg += 'P-Slice ${MainMenuState.pSliceVersion}$star\n';
-            errMsg += '\nUncaught Error: ' + error.message + "\n";
-            for (x in error.extendedTrace)
-            {
-                errMsg += x + "\n";
-            }
-            errMsg += '----------\n';
-            errMsg += 'Active mod: ${error.activeMod}\n';
-            errMsg += 'Platform: ${error.systemName}\n';
-            errMsg += '\n';
-            errMsg += '\nPlease report this error to the GitHub page: https://github.com/Psych-Slice/P-Slice\n\n> Crash Handler written by: sqirra-rng';
-    
-            #if !LEGACY_PSYCH
-            @:privateAccess // lazy
-            backend.CrashHandler.saveErrorMessage(errMsg + '\n');
-            #else
-            var path = './crash/' + 'PSlice_' + dateNow + '.txt';
-            File.saveContent(path, errMsg + '\n');
-            #end
-            Sys.println(errMsg);
-        }
-        #end
+        
     
         var textNextY = 5;
     

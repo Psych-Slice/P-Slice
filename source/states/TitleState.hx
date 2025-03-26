@@ -14,7 +14,6 @@ import openfl.display.BitmapData;
 import shaders.ColorSwap;
 import states.StoryMenuState;
 import states.OutdatedState;
-import states.MainMenuState;
 import mikolka.vslice.components.ScreenshotPlugin;
 #if VIDEOS_ALLOWED
 import mikolka.vslice.AttractState;

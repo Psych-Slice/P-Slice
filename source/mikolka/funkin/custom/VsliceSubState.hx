@@ -1,6 +1,6 @@
 package mikolka.funkin.custom;
 
-import mikolka.compatibility.FreeplayHelpers;
+import mikolka.compatibility.freeplay.FreeplayHelpers;
 import flixel.FlxBasic;
 import flixel.util.FlxSort;
 

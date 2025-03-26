@@ -76,7 +76,7 @@ import objects.Alphabet;
 import objects.BGSprite;
 
 import states.PlayState;
-import states.MainMenuState;
+import mikolka.vslice.ui.*;
 import states.StoryMenuState;
 import states.LoadingState;
 

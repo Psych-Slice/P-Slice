@@ -9,7 +9,6 @@ import flixel.math.FlxRandom;
 import backend.WeekData;
 import mikolka.vslice.results.ResultState;
 import objects.Character;
-import states.MainMenuState;
 
 class MasterEditorMenu extends MusicBeatState
 {
@@ -152,7 +151,7 @@ class MasterEditorMenu extends MusicBeatState
 							true,true,new openfl.errors.Error("The devs are too stupid and they write way too long errors")));
 				}
 				case 'Usermess the game':{
-					openSubState(new UserErrorSubstate("The devs are too stupid and they write way too long errors","Skill issue :/"));
+					UserErrorSubstate.makeMessage("The devs are too stupid and they write way too long errors","Skill issue :/");
 				}
 				#end
 				case 'Result Preview Menu':

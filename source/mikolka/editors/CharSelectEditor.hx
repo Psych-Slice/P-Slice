@@ -1,5 +1,6 @@
 package mikolka.editors;
 
+import mikolka.editors.substates.ResultsScreenEdit;
 import mikolka.vslice.components.crash.UserErrorSubstate;
 #if LEGACY_PSYCH
 import openfl.events.Event;
@@ -11,19 +12,19 @@ import states.editors.content.FileDialogHandler;
 import states.editors.MasterEditorMenu;
 #end
 
-import mikolka.compatibility.FunkinControls;
+import mikolka.compatibility.funkin.FunkinControls;
 import mikolka.editors.editorProps.CharJson;
 import haxe.Json;
 import lime.ui.FileDialog;
-import mikolka.editors.editorProps.FreeplayEditSubstate;
+import mikolka.editors.substates.FreeplayEditSubstate;
 import mikolka.editors.editorProps.AnimPreview;
-import mikolka.editors.editorProps.HelpSubstate;
+import mikolka.editors.substates.HelpSubstate;
 import mikolka.editors.editorProps.CharIconGrid;
 import mikolka.vslice.charSelect.CharSelectPlayer;
-import mikolka.compatibility.FreeplayHelpers;
+import mikolka.compatibility.freeplay.FreeplayHelpers;
 import mikolka.compatibility.ModsHelper;
 import mikolka.funkin.players.PlayerData.PlayerCharSelectGFData;
-import mikolka.compatibility.FunkinPath;
+import mikolka.compatibility.funkin.FunkinPath;
 import mikolka.vslice.charSelect.CharSelectGF;
 import mikolka.vslice.charSelect.Nametag;
 import mikolka.vslice.charSelect.Lock;
@@ -114,7 +115,7 @@ class CharSelectEditor extends MusicBeatState
 		add(icons);
 		addEditorBox();
 
-		animPreview = new AnimPreview(100, 100);
+		animPreview = new AnimPreview(false,100, 100);
 		add(animPreview);
 
 		add(HelpSubstate.makeLabel());
@@ -198,9 +199,9 @@ class CharSelectEditor extends MusicBeatState
 		trace('currentGFPath(${currentGFPath})');
 		if (currentGFPath == null || !FunkinPath.exists('images/${gfData?.assetPath}/Animation.json'))
 		{
-			openSubState(new UserErrorSubstate("Couldn't find GF's Atlas sprite!",
+			UserErrorSubstate.makeMessage("Couldn't find GF's Atlas sprite!",
 			'Failed to read the following file:\n\nimages/${gfData?.assetPath}/Animation.json'
-			));
+			);
 			gfChill.visible = false;
 			return;
 		}
@@ -215,9 +216,9 @@ class CharSelectEditor extends MusicBeatState
 			var animInfoPath = 'images/${gfData?.animInfoPath}';
 			if (!FunkinPath.exists(animInfoPath + '/In.txt') || !FunkinPath.exists(animInfoPath + '/Out.txt'))
 			{
-				openSubState(new UserErrorSubstate("Couldn't find JSFL Data files!",
+				UserErrorSubstate.makeMessage("Couldn't find JSFL Data files!",
 				'Make sure that in:\n${animInfoPath}\n\nFollowing files are present:\nIn.txt\nOut.txt'
-				));
+				);
 				animInfoPath = 'images/charSelect/gfAnimInfo';
 			}
 			@:privateAccess {
@@ -317,6 +318,11 @@ class CharSelectEditor extends MusicBeatState
 			persistentUpdate = false;
 			openSubState(new FreeplayEditSubstate(activePlayer));
 		});
+		var btn_result:PsychUIButton = new PsychUIButton(150, 90, "Edit Results", () ->
+		{
+			persistentUpdate = false;
+			openSubState(new ResultsScreenEdit(activePlayer));
+		});
 
 
 		// GF
@@ -367,6 +373,7 @@ class CharSelectEditor extends MusicBeatState
 
 		tab.add(btn_player_prev);
 		tab.add(btn_dj);
+		tab.add(btn_result);
 		
 		tab.add(btn_save);
 
@@ -394,10 +401,10 @@ class CharSelectEditor extends MusicBeatState
 		StorageUtil.saveContent('${playerId}.json', charData);
 		#elseif LEGACY_PSYCH
 			var file = new FileReference();
-			file.addEventListener(IOErrorEvent.IO_ERROR, function(x) openSubState(new UserErrorSubstate('Error on saving character!',"")));
+			file.addEventListener(IOErrorEvent.IO_ERROR, function(x) UserErrorSubstate.makeMessage('Error on saving character!',""));
 			file.save(charData, '${playerId}.json');
 		#else
-		fileDialog.save('${playerId}.json', charData, null, null, function() openSubState(new UserErrorSubstate('Error on saving character!','')));
+		fileDialog.save('${playerId}.json', charData, null, null, function() UserErrorSubstate.makeMessage('Error on saving character!',''));
 		#end
 	}
 

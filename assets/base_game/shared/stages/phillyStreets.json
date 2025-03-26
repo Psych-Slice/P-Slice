@@ -18,6 +18,11 @@
 		"images/abot/systemEyes/": 3,
 		"images/abot/abotSystem/": 3,
 
+		"sounds/ambience/": 3,
+		"sounds/sounds/fnf_loss_sfx-pico-gutpunch": 3,
+		"sounds/sounds/fnf_loss_sfx-pico": 3,
+		"sounds/lightning/": 3,
+		
 		"images/SpraycanPile": 3,
 		"images/phillyStreets/phillyConstruction": 3,
 		"images/phillyStreets/phillyHighwayLights": 3,

@@ -21,6 +21,11 @@ class BaseGameSubState extends BaseOptionsMenu {
 			'vsliceSmoothBar',
 			BOOL,);
 		addOption(option);
+		var option:Option = new Option('Use legacy bar',
+			'Makes health bar and score text much simpler',
+			'vsliceLegacyBar',
+			BOOL,);
+		addOption(option);
 		var option:Option = new Option('Special freeplay cards',
 			'If disabled will force every character to use BF\'s card (including pico)',
 			'vsliceSpecialCards',
