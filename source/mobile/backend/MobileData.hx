@@ -79,7 +79,7 @@ class MobileData
 			var fileWithNoLib:String = file.contains(':') ? file.split(':')[1] : file;
 			if (Path.extension(fileWithNoLib) == 'json')
 			{
-				#if MODS_ALLOWED file = Path.join([folder, Path.withoutDirectory(file)]); #end
+				file = Path.join([folder, Path.withoutDirectory(file)]);
 				var str = #if MODS_ALLOWED File.getContent(file) #else Assets.getText(file) #end;
 				var json:TouchButtonsData = cast Json.parse(str);
 				var mapKey:String = Path.withoutDirectory(Path.withoutExtension(fileWithNoLib));

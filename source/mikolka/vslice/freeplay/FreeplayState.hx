@@ -1,10 +1,11 @@
 package mikolka.vslice.freeplay;
 
+import mikolka.vslice.ui.MainMenuState;
+import mikolka.vslice.freeplay.backcards.LuaCard;
 import mikolka.vslice.freeplay.obj.CapsuleOptionsMenu;
-import mikolka.compatibility.FunkinControls;
+import mikolka.compatibility.funkin.FunkinControls;
 import mikolka.vslice.charSelect.CharSelectSubState;
 import openfl.filters.ShaderFilter;
-import mikolka.vslice.freeplay.backcards.PicoCard;
 import mikolka.vslice.freeplay.backcards.NewCharacterCard;
 import mikolka.vslice.freeplay.backcards.PicoCard;
 import mikolka.funkin.freeplay.FreeplayStyleRegistry;
@@ -15,12 +16,11 @@ import mikolka.vslice.freeplay.backcards.BackingCard;
 import mikolka.vslice.freeplay.DJBoyfriend.FreeplayDJ;
 import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.VsliceOptions;
-import mikolka.compatibility.FunkinCamera;
+import mikolka.compatibility.funkin.FunkinCamera;
 import mikolka.vslice.freeplay.pslice.BPMCache;
-import mikolka.vslice.freeplay.pslice.FreeplayColorTweener;
-import mikolka.compatibility.FreeplaySongData;
-import mikolka.compatibility.FreeplayHelpers;
-import mikolka.compatibility.FunkinPath as Paths;
+import mikolka.compatibility.freeplay.FreeplaySongData;
+import mikolka.compatibility.freeplay.FreeplayHelpers;
+import mikolka.compatibility.funkin.FunkinPath as Paths;
 import mikolka.funkin.custom.VsliceSubState as MusicBeatSubstate;
 import openfl.utils.AssetCache;
 import mikolka.funkin.AtlasText;
@@ -29,19 +29,15 @@ import shaders.HSVShader;
 import shaders.StrokeShader;
 import shaders.AngleMask;
 import mikolka.funkin.IntervalShake;
-import substates.StickerSubState;
+import mikolka.vslice.StickerSubState;
 import mikolka.funkin.Scoring.ScoringRank;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxCamera;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
-import flixel.input.touch.FlxTouch;
-import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
 import openfl.display.BlendMode;
-import flixel.system.debug.watch.Tracker.TrackerProfile;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -176,7 +172,6 @@ class FreeplayState extends MusicBeatSubstate
 	var curPlaying:Bool = false;
 
 	var dj:Null<FreeplayDJ> = null;
-	var djTouchHitbox:FlxSprite = new FlxSprite(78, 308);
 
 	var ostName:FlxText;
 	var albumRoll:AlbumRoll;
@@ -276,6 +271,10 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			switch (currentCharacterId)
 			{
+				#if (!LEGACY_PSYCH && HSCRIPT_ALLOWED)
+				case (LuaCard.hasCustomCard(currentCharacterId)) => true:
+					backingCard = new LuaCard(currentCharacter,currentCharacterId);
+				#end
 				case(PlayerRegistry.instance.hasNewCharacter()) => true:
 					backingCard = new NewCharacterCard(currentCharacter);
 				case 'bf':
@@ -403,11 +402,6 @@ class FreeplayState extends MusicBeatSubstate
 				wait: 0.1
 			});
 		}
-
-		djTouchHitbox = djTouchHitbox.makeGraphic(250, 250, FlxColor.TRANSPARENT);
-		djTouchHitbox.cameras = dj.cameras;
-		djTouchHitbox.active = false;
-		add(djTouchHitbox);
 
 		bgDad.shader = angleMaskShader;
 		bgDad.visible = false;
@@ -753,7 +747,7 @@ class FreeplayState extends MusicBeatSubstate
 		}
 
 		#if TOUCH_CONTROLS_ALLOWED
-		addTouchPad('UP_DOWN', 'A_B_F_X_Y');
+		addTouchPad('UP_DOWN', 'A_B_C_X_Y_F');
 		addTouchPadCamera();
 		if (prepForNewRank)
 		{
@@ -1283,7 +1277,7 @@ class FreeplayState extends MusicBeatSubstate
 		backend.MusicBeatSubstate.instance = this;
 		persistentUpdate = true;
 		removeTouchPad();
-		addTouchPad('UP_DOWN', 'A_B_F_X_Y');
+		addTouchPad('UP_DOWN', 'A_B_C_X_Y_F');
 		addTouchPadCamera();
 		#end
 	}
@@ -1518,8 +1512,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		if (!busy)
 		{
-			if ((FunkinControls.FREEPLAY_CHAR
-				|| (TouchUtil.overlapsComplex(djTouchHitbox) && TouchUtil.justReleased && !SwipeUtil.swipeAny)))
+			if (FunkinControls.FREEPLAY_CHAR #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonC.justPressed #end)
 			{
 				tryOpenCharSelect();
 			} //? Those are new too

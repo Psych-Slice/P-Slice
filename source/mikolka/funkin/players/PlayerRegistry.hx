@@ -2,7 +2,7 @@ package mikolka.funkin.players;
 
 import haxe.Json;
 import mikolka.funkin.players.PlayerData;
-import mikolka.compatibility.FunkinPath;
+import mikolka.compatibility.funkin.FunkinPath;
 
 using mikolka.funkin.custom.FunkinTools;
 using StringTools;

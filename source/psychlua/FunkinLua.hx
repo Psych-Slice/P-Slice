@@ -23,11 +23,10 @@ import objects.Note;
 import objects.NoteSplash;
 import objects.Character;
 
-import states.MainMenuState;
 import states.StoryMenuState;
 
 import substates.PauseSubState;
-import substates.StickerSubState;
+import mikolka.vslice.StickerSubState;
 import substates.GameOverSubstate;
 
 import psychlua.LuaUtils;

@@ -48,6 +48,7 @@ import states.TitleState;
 	public var vsliceResults:Bool = true;
 	public var vsliceSpecialCards:Bool = true;
 	public var vsliceSmoothBar:Bool = true;
+	public var vsliceLegacyBar:Bool = false;
 	public var vsliceForceNewTag:Bool = false;
 	public var noteOffset:Int = 0;
 	public var arrowRGB:Array<Array<FlxColor>> = [

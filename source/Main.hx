@@ -85,6 +85,15 @@ class Main extends Sprite
 		// this shouldn't be needed for other systems
 		// Credit to YoshiCrafter29 for finding this function
 		untyped __cpp__("SetProcessDPIAware();");
+		var display = lime.system.System.getDisplay(0);
+		if (display != null) {
+			var dpiScale:Float = display.dpi / 96;
+			Application.current.window.width = Std.int(game.width * dpiScale);
+			Application.current.window.height = Std.int(game.height * dpiScale);
+
+			Application.current.window.x = Std.int((Application.current.window.display.bounds.width - Application.current.window.width) / 2);
+			Application.current.window.y = Std.int((Application.current.window.display.bounds.height - Application.current.window.height) / 2);
+		}
 		#end
 
 		if (stage != null)
@@ -218,9 +227,11 @@ class Main extends Sprite
 		#if mobile
 		FlxG.game.addChild(fpsVar);
 	  	#else
-		var border = new GameBorder();
-		addChild(border);
-		Lib.current.stage.window.onResize.add(border.updateGameSize);
+		#if !debug 
+			var border = new GameBorder();
+			addChild(border);
+			Lib.current.stage.window.onResize.add(border.updateGameSize);
+		#end
 		addChild(fpsVar);
 		#end
 		Lib.current.stage.align = "tl";

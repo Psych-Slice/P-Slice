@@ -9,7 +9,7 @@ import flixel.util.FlxStringUtil;
 import flixel.addons.transition.FlxTransitionableState;
 
 import states.StoryMenuState;
-import substates.StickerSubState;
+import mikolka.vslice.StickerSubState;
 import options.OptionsState;
 
 class PauseSubState extends MusicBeatSubstate

@@ -19,6 +19,12 @@ class ModsHelper {
 	public inline static function getActiveMod():String {
 		return Mods.currentModDirectory;
 	}
+	public inline static function resetActiveMods() {
+		#if MODS_ALLOWED
+		Mods.pushGlobalMods();
+		#end
+		Mods.loadTopMod();
+	}
 	public static function getModsWithPlayersRegistry():Array<String> {
 		#if MODS_ALLOWED
 		return Mods.parseList().enabled.filter(s ->FileSystem.exists(Paths.mods(s)+'/registry/players'));

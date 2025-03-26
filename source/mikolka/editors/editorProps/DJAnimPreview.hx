@@ -44,12 +44,7 @@ class DJAnimPreview extends AnimPreview {
         }
      override function input_selectFrame(diff:Int = 0)
         {
-            activeSprite.pauseAnimation();
-            var newFrame = Std.int(FlxMath.bound(selectedFrame+diff,1,selectedAnimLength));
-            //activeSprite.anim.curFrame = selectedAnimIndices[newFrame-1];
-            activeSprite.anim.curFrame = newFrame-1;
-            selectedFrame = newFrame;
-
+            super.input_selectFrame(diff);
             updateFramesText();
         }
 
@@ -66,7 +61,7 @@ class DJAnimPreview extends AnimPreview {
         labels[selectedIndex].color = 0xFF09C729;
         super.input_playAnim();
         activeSprite.offset.set(curOffset[0],curOffset[1]);
-        selectedFrame = 1;
+        //selectedFrame = 1;
     }
     function updateFramesText() {
         frameTxt.text = 'Frame (${selectedFrame}/${selectedAnimLength}) [${curOffset[0]},${curOffset[1]}]';

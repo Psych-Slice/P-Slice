@@ -3,7 +3,7 @@
 	"defaultZoom": 0.9,
 	"stageUI": "",
 
-	"boyfriend": [1030, -120],
+	"boyfriend": [1050, -140],
 	"girlfriend": [400, 130],
 	"opponent": [100, 100],
 	"hide_girlfriend": false,
@@ -11,5 +11,20 @@
 	"camera_boyfriend": [-200, 0],
 	"camera_opponent": [0, 0],
 	"camera_girlfriend": [0, 0],
-	"camera_speed": 1
+	"camera_speed": 1,
+
+	"preload": {
+		"images/limo/erect/limoSunset": 3,
+		"images/limo/erect/shooting_star": 3,
+		"images/limo/limoDancer": 2,
+		"images/limo/erect/limoDrive": 2,
+		"images/limo/erect/mistMid": 2,
+		"images/limo/erect/mistBack": 2,
+		"images/gore/": 2,
+		"sounds/dancerdeath": 2,
+		"sounds/carPass0": 3,
+		"sounds/carPass1": 3,
+		"images/limo/fastCarLol": 3,
+		"images/limo/erect/bgLimo": 3
+	}
 }

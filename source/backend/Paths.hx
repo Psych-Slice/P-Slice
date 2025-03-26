@@ -48,7 +48,7 @@ class Paths
 				currentTrackedAssets.remove(key); // and remove the key from local cache map
 			}
 		}
-
+		
 		// run the garbage collector for good measure lmfao
 		System.gc();
 		#if cpp
@@ -67,6 +67,7 @@ class Paths
 		{
 			if (!currentTrackedAssets.exists(key))
 				destroyGraphic(FlxG.bitmap.get(key));
+			
 		}
 
 		// clear all sounds that are cached

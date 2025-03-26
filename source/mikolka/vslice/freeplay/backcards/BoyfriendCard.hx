@@ -1,6 +1,6 @@
 package mikolka.vslice.freeplay.backcards;
 
-import mikolka.compatibility.FreeplayHelpers;
+import mikolka.compatibility.freeplay.FreeplayHelpers;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.vslice.freeplay.pslice.FreeplayColorTweener;
 import flixel.FlxSprite;

@@ -10,7 +10,7 @@ import flixel.FlxSubState;
 import flixel.math.FlxPoint;
 
 import states.StoryMenuState;
-import substates.StickerSubState;
+import mikolka.vslice.StickerSubState;
 
 class GameOverSubstate extends MusicBeatSubstate
 {

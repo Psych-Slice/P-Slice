@@ -13,7 +13,7 @@ import objects.MenuCharacter;
 
 import options.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
-import substates.StickerSubState;
+import mikolka.vslice.StickerSubState;
 
 import backend.StageData;
 
@@ -89,9 +89,9 @@ class StoryMenuState extends MusicBeatState
 		{
 			FlxTransitionableState.skipNextTransIn = true;
 			persistentUpdate = false;
-			MusicBeatState.switchState(new states.ErrorState("NO LEVELS ADDED FOR STORY MODE\n\nPress " + accept + " to go to the Week Editor Menu.\nPress " + reject + " to return to Main Menu.",
+			MusicBeatState.switchState(new ErrorState("NO LEVELS ADDED FOR STORY MODE\n\nPress " + accept + " to go to the Week Editor Menu.\nPress " + reject + " to return to Main Menu.",
 				function() MusicBeatState.switchState(new states.editors.WeekEditorState()),
-				function() MusicBeatState.switchState(new states.MainMenuState())));
+				function() MusicBeatState.switchState(new MainMenuState())));
 			return;
 		}
 

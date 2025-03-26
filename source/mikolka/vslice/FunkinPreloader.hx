@@ -130,13 +130,13 @@ class FunkinPreloader extends FlxBasePreloader
 
   public function new()
   {
-    super(0.0);
+    super(0.0,["psych-slice.github.io",FlxBasePreloader.LOCAL]);
 
     // We can't even call trace() yet, until Flixel loads.
     trace('Initializing custom preloader...');
 
     this.siteLockTitleText = "You Loser!";
-    this.siteLockBodyText = "This isn't Newgrounds!\nGo play Friday Night Funkin' on Newgrounds:";
+    //this.siteLockBodyText = "This isn't Newgrounds!\nGo play Friday Night Funkin' on Newgrounds:";
   }
 
   override function create():Void
