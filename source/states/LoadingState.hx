@@ -133,7 +133,7 @@ class LoadingState extends MusicBeatState
 						trace('"$scriptPath" contains no \"onCreate" function, stopping script.');
 						gotError = true;
 						FlxTimer.wait(0.01,() ->{
-							UserErrorSubstate.makeError("Error while compiling script",'"$scriptPath" contains no \"onCreate" function.');
+							UserErrorSubstate.makeMessage("Error while compiling script",'"$scriptPath" contains no \"onCreate" function.');
 							subStateClosed.addOnce(x -> {
 								if(finishedLoading) MusicBeatState.switchState(target);
 							});
@@ -146,7 +146,7 @@ class LoadingState extends MusicBeatState
 					Iris.error(Printer.errorToString(e, false), pos);
 					gotError = true;
 					FlxTimer.wait(0.01,() ->{
-						UserErrorSubstate.makeError("Error while compiling script",
+						UserErrorSubstate.makeMessage("Error while compiling script",
 						'Path: ${scriptPath}\n\n'+
 						'Error: ${Printer.errorToString(e, false)}\n\n'+
 						'In function ${pos.funcName} line  ${pos.lineNumber}\n');

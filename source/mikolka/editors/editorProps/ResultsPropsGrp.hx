@@ -6,6 +6,7 @@ import mikolka.funkin.players.PlayerData.PlayerResultsAnimationData;
 
 typedef ResultsProp = {
     var sprite:FlxSprite;
+    var get_name:Void->String;
     var zIndex:Int;
     var data: PlayerResultsAnimationData;
 }
@@ -22,14 +23,19 @@ class ResultsPropsGrp extends FlxTypedSpriteGroup<FlxSprite> {
         sprites.push({
             sprite: sprite,
             zIndex: data.zIndex,
+            get_name: () ->{
+                var parts = data.assetPath.split("/");
+                return parts[parts.length - 1].split(".")[0];
+            },
             data: data
         });
         sprite.zIndex = data.zIndex;
         add(sprite);
     }
-    public function addStaticProp(sprite:FlxSprite,zIndex:Int) {
+    public function addStaticProp(sprite:FlxSprite,name:String,zIndex:Int) {
         sprites.push({
             sprite: sprite,
+            get_name: () -> name,
             zIndex: zIndex,
             data: null
         });

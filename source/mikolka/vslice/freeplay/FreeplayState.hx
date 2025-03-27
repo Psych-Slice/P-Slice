@@ -273,7 +273,7 @@ class FreeplayState extends MusicBeatSubstate
 			{
 				#if (!LEGACY_PSYCH && HSCRIPT_ALLOWED)
 				case (LuaCard.hasCustomCard(currentCharacterId)) => true:
-					backingCard = new LuaCard(currentCharacter,currentCharacterId);
+					backingCard = new LuaCard(currentCharacter,currentCharacterId,stickerSubState == null);
 				#end
 				case(PlayerRegistry.instance.hasNewCharacter()) => true:
 					backingCard = new NewCharacterCard(currentCharacter);
