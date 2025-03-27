@@ -1,7 +1,6 @@
 package mikolka.compatibility;
 
 import openfl.filters.BitmapFilter;
-import flixel.system.FlxSound;
 import flixel.util.FlxSort;
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
