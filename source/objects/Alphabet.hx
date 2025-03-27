@@ -399,7 +399,11 @@ class AlphaCharacter extends FlxSprite
 			if(curLetter != null && curLetter.anim != null) alphaAnim = curLetter.anim;
 
 			var anim:String = alphaAnim + postfix;
+			#if debug //! This only exists to prevent annoying beeps!
+			animation.addByPrefix(anim, anim+" instance ", 24);
+			#else
 			animation.addByPrefix(anim, anim, 24);
+			#end
 			animation.play(anim, true);
 			if(animation.curAnim == null)
 			{

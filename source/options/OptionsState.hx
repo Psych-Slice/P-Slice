@@ -173,7 +173,7 @@ class OptionsState extends MusicBeatState
 				if(grpOptions.members.length > 6) {
 					thing = grpOptions.members.length * 2;
 				}
-				camFollow.setPosition(635, item.getGraphicMidpoint().y + 100 - thing);
+				camFollow.setPosition(635, item.y + 100 - thing);
 			}
 		}
 
