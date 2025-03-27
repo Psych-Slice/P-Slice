@@ -39,7 +39,7 @@ class CrashState extends FlxState
 		DiscordClient.shutdown();
 		#end
 		var crash = UserErrorSubstate.collectErrorData(EMessage,callstack);
-		#if sys saveError(crash) #end
+		#if sys saveError(crash); #end
 		var previousScreen = new FlxSprite(0, 0, BitmapData.fromImage(FlxG.stage.window.readPixels()));
 		previousScreen.setGraphicSize(FlxG.width,FlxG.height);
 		previousScreen.updateHitbox();
@@ -48,7 +48,7 @@ class CrashState extends FlxState
 		
 	}
 	#if sys
-        static function saveError(error:CrashData)
+        static function saveError(error:mikolka.vslice.components.crash.UserErrorSubstate.CrashData)
         {
             var errMsg = "";
             var dateNow:String = error.date;

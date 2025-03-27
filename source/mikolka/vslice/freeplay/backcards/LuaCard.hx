@@ -22,7 +22,7 @@ class LuaCard extends BackingCard
 	public static inline function hasCustomCard(charId:String):Bool {
 		return Paths.fileExists('registry/cards/$charId.hx',TEXT);
 	}
-	public override function new(currentCharacter:PlayableCharacter, charId:String)
+	public override function new(currentCharacter:PlayableCharacter, charId:String,allowMessages:Bool = true)
 	{
 		super(currentCharacter);
 
@@ -53,13 +53,12 @@ class LuaCard extends BackingCard
 				{
 					var pos:HScriptInfos = cast {fileName: scriptPath, showLine: false};
 					Iris.error(Printer.errorToString(e, false), pos);
-					FlxTimer.wait(0.5,() ->{
-						UserErrorSubstate.makeError("Error while compiling script",
+					if(allowMessages) FlxTimer.wait(0.5,() ->{
+						UserErrorSubstate.makeMessage("Error while compiling script",
 						'Path: ${scriptPath}\n\n'+
 						'Error: ${Printer.errorToString(e, false)}\n\n'+
 						'In function ${pos.funcName} line  ${pos.lineNumber}\n');
 					});
-					var hscript:HScript = cast(Iris.instances.get(scriptPath), HScript);
 				}
 			}
 		}

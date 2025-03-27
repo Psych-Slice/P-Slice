@@ -239,7 +239,7 @@ class UserErrorSubstate extends MusicBeatSubstate
         // }
     }
     
-    typedef CrashData =
+     typedef CrashData =
     {
         logToFile:Bool,
         message:String,

@@ -68,16 +68,16 @@ class ResultsScreenEdit extends VsliceSubState
 			soundSystem.animation.play("idle");
 			soundSystem.visible = true;
 		});
-		propSystem.addStaticProp(soundSystem, 1100);
+		propSystem.addStaticProp(soundSystem,"soundSystem", 1100);
 
 		var blackTopBar:FlxSprite = new FlxSprite().loadGraphic(Paths.image("resultScreen/topBarBlack"));
 		blackTopBar.y = -blackTopBar.height;
 		FlxTween.tween(blackTopBar, {y: 0}, 7 / 24, {ease: FlxEase.quartOut, startDelay: 3 / 24});
-		propSystem.addStaticProp(blackTopBar, 1010);
+		propSystem.addStaticProp(blackTopBar,"blackTopBar", 1010);
 
 		resultsAnim.animation.addByPrefix("result", "results instance 1", 24, false);
 		resultsAnim.visible = false;
-		propSystem.addStaticProp(resultsAnim, 1200);
+		propSystem.addStaticProp(resultsAnim,"resultsAnim", 1200);
 		new FlxTimer().start(6 / 24, _ ->
 		{
 			resultsAnim.visible = true;
@@ -124,7 +124,21 @@ class ResultsScreenEdit extends VsliceSubState
 			reloadprops([PERFECT_GOLD, PERFECT, EXCELLENT, GREAT, GOOD, SHIT][index]);
 		});
 
-		list_objSelector = new PsychUIDropDownMenu(140, 20, [], (index, name) -> {});
+		list_objSelector = new PsychUIDropDownMenu(140, 20, [], (index, name) -> {
+			var selected_prop = propSystem.sprites[index];
+			if(selected_prop.data == null){
+				resultsObjectControls.visible = false;
+				resultsObjectControls_labels.visible = false;
+				resultsObjectControls_empty.visible = true;
+				return;
+			}
+			else if(selected_prop.data.renderType == "animateatlas"){
+				resultsObjectControls_labels.visible = true;
+			}
+			else resultsObjectControls_labels.visible = false;
+			resultsObjectControls.visible = true;
+			resultsObjectControls_empty.visible = false;
+		});
 
 		input_musicPath = new PsychUIInputText(10, 60, 240);
 		input_musicPath.onChange = (prevText, text) ->
@@ -170,6 +184,20 @@ class ResultsScreenEdit extends VsliceSubState
 		var tab = resultsDialogBox.getTab('Properties').menu;
 		resultsObjectControls_labels = new FlxSpriteGroup();
 		resultsObjectControls = new FlxSpriteGroup();
+		var input_imagePath = new PsychUIInputText(20,20,250);
+		var stepper_scale = new PsychUINumericStepper(50,60);
+		var stepper_offsetX = new PsychUINumericStepper(30,60);
+		var stepper_offsetY = new PsychUINumericStepper(30,90);
+		resultsObjectControls.add(input_imagePath);
+		resultsObjectControls.add(input_imagePath.makeLabel("Image path"));
+		resultsObjectControls.add(new FlxText(10, 47, 100, "Scale"));
+		resultsObjectControls.add(stepper_scale);
+		resultsObjectControls.add(new FlxText(10, 60, 100, "x:"));
+		resultsObjectControls.add(stepper_offsetX);
+		resultsObjectControls.add(new FlxText(10, 90, 100, "y:"));
+		resultsObjectControls.add(stepper_offsetY);
+		//resultsObjectControls.add(stepper_offsetX);
+
 		resultsObjectControls_empty = new FlxText(0, 80, 270, "You cannot edit properties for this object");
 		resultsObjectControls_empty.alignment = CENTER;
 		resultsObjectControls_empty.size = 10;
@@ -187,14 +215,12 @@ class ResultsScreenEdit extends VsliceSubState
 		input_musicPath.text = activePlayer.getResultsMusicPath(rank);
 		propSystem.clearProps();
 		list_objSelector.list = [];
-		for (prop in data)
-		{
-			propSystem.addProp(prop);
-			var parts = prop.assetPath.split("/");
-			@:privateAccess
-			list_objSelector.addOption(parts[parts.length - 1].split(".")[0]);
-		}
+
+		for (prop in data) propSystem.addProp(prop);
 		propSystem.refresh();
+		@:privateAccess
+		for(prop in propSystem.sprites) list_objSelector.addOption(prop.get_name());
+		
 	}
 
 	override function update(elapsed:Float)
