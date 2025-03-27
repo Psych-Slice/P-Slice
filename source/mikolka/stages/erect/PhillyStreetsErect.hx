@@ -290,7 +290,11 @@ class PhillyStreetsErect extends BaseStage
             }
             rainShader.intensity = rainShaderStartIntensity;
             rainShader.rainColor = 0xFFa8adb5;
+            #if LEGACY_PSYCH
             FlxG.camera.setFilters([new ShaderFilter(rainShader)]);
+            #else
+            FlxG.camera.filters = [new ShaderFilter(rainShader)];
+            #end
         }
     
         override function update(elapsed:Float)
