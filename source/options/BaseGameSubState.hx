@@ -11,6 +11,12 @@ class BaseGameSubState extends BaseOptionsMenu {
 			BOOL);
 		addOption(option);
 
+		var option:Option = new Option('Logging type',
+			'Controls verbosity of the game\'s logs',
+			'loggingType',
+			STRING,["None","Console","File"]);
+		addOption(option);
+
 		var option:Option = new Option('Use results screen',
 			'If disabled will skip showing the result screen',
 			'vsliceResults',
