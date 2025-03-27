@@ -1,20 +1,12 @@
 package mikolka.vslice;
 
-import openfl.filters.GlowFilter;
-import openfl.display.SpreadMethod;
-import openfl.display.GradientType;
-import openfl.geom.Matrix;
-import openfl.filters.BlurFilter;
+#if sys import mikolka.vslice.components.crash.Logger; #end
 import openfl.events.MouseEvent;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
-import flash.display.BlendMode;
-import flash.display.Sprite;
 import flash.Lib;
 import flixel.system.FlxBasePreloader;
 import mikolka.funkin.utils.MathUtil;
-import lime.app.Future;
-import lime.math.Rectangle;
 import openfl.display.Sprite;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
@@ -1008,6 +1000,7 @@ class FunkinPreloader extends FlxBasePreloader
 
   function immediatelyStartGame():Void
   {
+    #if sys Logger.startLogging(); #end
     _loaded = true;
   }
 
