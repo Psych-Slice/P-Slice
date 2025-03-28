@@ -744,7 +744,7 @@ class PlayState extends MusicBeatState
 		});
 		luaDebugGroup.add(newText);
 
-		Sys.println(text);
+		trace(text);
 	}
 	#end
 
