@@ -49,7 +49,7 @@ class MainMenuState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		
-		if (FlxG.random.bool(85))
+		if (FlxG.random.bool(100))
 		{
 			openfl.Lib.application.window.title = "Friday Night Funkin': Xythe (P-Slice) Engine";
 		}
