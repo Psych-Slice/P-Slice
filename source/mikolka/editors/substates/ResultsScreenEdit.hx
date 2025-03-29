@@ -113,7 +113,7 @@ class ResultsScreenEdit extends VsliceSubState
 
 	function addEditorBox()
 	{
-		resultsDialogBox = new PsychUIBox(FlxG.width - 500, FlxG.height, 270, 250, ['General', "Properties"]);
+		resultsDialogBox = new PsychUIBox(FlxG.width - 500, FlxG.height, 270, 220, ['General', "Properties"]);
 		resultsDialogBox.x -= resultsDialogBox.width;
 		resultsDialogBox.y -= resultsDialogBox.height;
 		resultsDialogBox.scrollFactor.set();
@@ -140,7 +140,7 @@ class ResultsScreenEdit extends VsliceSubState
 			resultsObjectControls_empty.visible = false;
 		});
 
-		input_musicPath = new PsychUIInputText(10, 60, 240);
+		input_musicPath = new PsychUIInputText(10, 60, 250);
 		input_musicPath.onChange = (prevText, text) ->
 		{
 			var data = activePlayer._data.results.music;
@@ -161,8 +161,8 @@ class ResultsScreenEdit extends VsliceSubState
 			}
 		};
 
-		var btn_moveUp = new PsychUIButton(140, 90, "Move up", () -> {}, 100);
-		var btn_moveDown = new PsychUIButton(140, 120, "Move down", () -> {}, 100);
+		var btn_moveUp = new PsychUIButton(160, 90, "Move up", () -> {}, 100);
+		var btn_moveDown = new PsychUIButton(160, 120, "Move down", () -> {}, 100);
 		var btn_newSparrow = new PsychUIButton(10, 90, "New sparrow", () -> {}, 100);
 		var btn_newAtlas = new PsychUIButton(10, 120, "New atlas", () -> {}, 100);
 		var btn_removeObject = new PsychUIButton(10, 150, "Remove object", () -> {}, 100);
@@ -182,16 +182,18 @@ class ResultsScreenEdit extends VsliceSubState
 
 		resultsDialogBox.selectedName = 'Properties';
 		var tab = resultsDialogBox.getTab('Properties').menu;
-		resultsObjectControls_labels = new FlxSpriteGroup();
-		resultsObjectControls_labels.visible = false;
 		resultsObjectControls = new FlxSpriteGroup();
 		resultsObjectControls.visible = false;
-		var input_imagePath = new PsychUIInputText(10,20,220);
-		var stepper_scale = new PsychUINumericStepper(100,60);
-		var stepper_offsetX = new PsychUINumericStepper(30,60);
-		var stepper_offsetY = new PsychUINumericStepper(30,90);
-		var stepper_delay = new PsychUINumericStepper(10,150);
-		var stepper_loopFrame = new PsychUINumericStepper(10,180);
+		var input_imagePath = new PsychUIInputText(10,20,250);
+		var stepper_scale = new PsychUINumericStepper(90,130);
+		var stepper_offsetX = new PsychUINumericStepper(25,60);
+		var stepper_offsetY = new PsychUINumericStepper(25,90);
+
+		var stepper_delay = new PsychUINumericStepper(10,130);
+		var chkBox_loopable = new PsychUICheckBox(100,60,"loopable",100,() ->{
+
+		});
+		var stepper_loopFrame = new PsychUINumericStepper(100,100);
 		resultsObjectControls.add(input_imagePath);
 		resultsObjectControls.add(input_imagePath.makeLabel("Image path"));
 		resultsObjectControls.add(new FlxText(10, 47, 100, "Offsets"));
@@ -203,8 +205,22 @@ class ResultsScreenEdit extends VsliceSubState
 		resultsObjectControls.add(stepper_scale);
 		resultsObjectControls.add(stepper_delay);
 		resultsObjectControls.add(stepper_delay.makeLabel("Delay"));
+		resultsObjectControls.add(chkBox_loopable);
 		resultsObjectControls.add(stepper_loopFrame.makeLabel("Loop frame"));
-		//resultsObjectControls.add(stepper_offsetX);
+		resultsObjectControls.add(stepper_loopFrame);
+
+		resultsObjectControls_labels = new FlxSpriteGroup();
+		var chkBox_useLabels = new PsychUICheckBox(180,60,"Use labels",100,() ->{
+
+		});
+		var input_labelStart = new PsychUIInputText(180,130,80);
+		var input_labelLoop = new PsychUIInputText(180,90,80);
+		resultsObjectControls_labels.add(chkBox_useLabels);
+		resultsObjectControls_labels.add(input_labelStart);
+		resultsObjectControls_labels.add(input_labelStart.makeLabel("Start label"));
+		resultsObjectControls_labels.add(input_labelLoop);
+		resultsObjectControls_labels.add(input_labelLoop.makeLabel("Loop label"));
+		resultsObjectControls_labels.visible = false;
 
 		resultsObjectControls_empty = new FlxText(0, 80, 270, "You cannot edit properties for this object");
 		resultsObjectControls_empty.alignment = CENTER;
