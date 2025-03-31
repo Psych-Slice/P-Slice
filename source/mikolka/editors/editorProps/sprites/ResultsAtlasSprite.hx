@@ -10,8 +10,8 @@ class ResultsAtlasSprite extends FlxAtlasSprite implements IResultsSprite
 
 	public function new(animData:PlayerResultsAnimationData)
 	{
-		var offsets = animData.offsets ?? [0, 0];
 		data = animData;
+		var offsets = animData.offsets ?? [0, 0];
 		// ? Scaling offsets because Pico decided to be annoying
 		var xDiff = offsets[0] - (offsets[0] * (animData.scale ?? 1.0));
 		var yDiff = offsets[1] - (offsets[1] * (animData.scale ?? 1.0));
@@ -63,5 +63,15 @@ class ResultsAtlasSprite extends FlxAtlasSprite implements IResultsSprite
 			anim.curFrame = data.loopFrame;
 		else
 			anim.curFrame = anim.curSymbol.length-1;//animation.curAnim.numFrames - 1;
+	}
+
+	public function set_offset(x:Float,y:Float) {
+		var offsets = [x,y];
+		// ? Scaling offsets because Pico decided to be annoying
+		var xDiff = offsets[0] - (offsets[0] * (data.scale ?? 1.0));
+		var yDiff = offsets[1] - (offsets[1] * (data.scale ?? 1.0));
+		offsets[0] -= xDiff * 1.8;
+		offsets[1] -= yDiff * 1.8;
+		setPosition(offsets[0],offsets[1]);
 	}
 }

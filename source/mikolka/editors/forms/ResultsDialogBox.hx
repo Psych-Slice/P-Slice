@@ -1,18 +1,31 @@
 package mikolka.editors.forms;
 
+import mikolka.editors.editorProps.ResultsPropsGrp.ResultsProp;
 import mikolka.editors.substates.ResultsScreenEdit;
 import mikolka.funkin.Scoring.ScoringRank;
 using mikolka.editors.PsychUIUtills;
 
 class ResultsDialogBox extends PsychUIBox {
+	var selected_prop:ResultsProp;
+	
+	//PAGERS
     public var resultsObjectControls_empty:FlxText;
 	public var resultsObjectControls:FlxSpriteGroup;
 	public var resultsObjectControls_labels:FlxSpriteGroup;
 
-
 	// GENERAL
 	public var list_objSelector:PsychUIDropDownMenu;
 	public var input_musicPath:PsychUIInputText;
+	//PROPERTIES
+	var input_imagePath:PsychUIInputText;
+	var stepper_scale:PsychUINumericStepper;
+	var stepper_offsetY:PsychUINumericStepper;
+	var chkBox_loopable:PsychUICheckBox;
+	var stepper_offsetX:PsychUINumericStepper;
+	var stepper_delay:PsychUINumericStepper;
+	var stepper_loopFrame:PsychUINumericStepper;
+	var input_labelStart:PsychUIInputText;
+	var input_labelLoop:PsychUIInputText;
 
     public function new(host:ResultsScreenEdit) {
         super(FlxG.width - 500, FlxG.height, 270, 220, ['General', "Properties"]);
@@ -27,7 +40,7 @@ class ResultsDialogBox extends PsychUIBox {
 		});
 
 		list_objSelector = new PsychUIDropDownMenu(140, 20, [], (index, name) -> {
-			var selected_prop = host.propSystem.sprites[index];
+			selected_prop = host.propSystem.sprites[index];
 			if(selected_prop.data == null){
 				resultsObjectControls.visible = false;
 				resultsObjectControls_labels.visible = false;
@@ -40,6 +53,16 @@ class ResultsDialogBox extends PsychUIBox {
 			else resultsObjectControls_labels.visible = false;
 			resultsObjectControls.visible = true;
 			resultsObjectControls_empty.visible = false;
+
+			input_imagePath.text = selected_prop.data.assetPath;
+			stepper_scale.value = selected_prop.data.scale;
+			stepper_loopFrame.value = selected_prop.data.loopFrame;
+			stepper_offsetY.value = selected_prop.data.offsets[1];
+			stepper_offsetX.value = selected_prop.data.offsets[0];
+			stepper_delay.value = selected_prop.data.delay;
+			chkBox_loopable.checked = selected_prop.data.looped;
+			input_labelStart.text = selected_prop.data.startFrameLabel;
+			input_labelLoop.text = selected_prop.data.loopFrameLabel;
 		});
 
 		input_musicPath = new PsychUIInputText(10, 60, 250);
@@ -86,16 +109,35 @@ class ResultsDialogBox extends PsychUIBox {
 		var tab = getTab('Properties').menu;
 		resultsObjectControls = new FlxSpriteGroup();
 		resultsObjectControls.visible = false;
-		var input_imagePath = new PsychUIInputText(10,20,250);
-		var stepper_scale = new PsychUINumericStepper(90,130);
-		var stepper_offsetX = new PsychUINumericStepper(25,60);
-		var stepper_offsetY = new PsychUINumericStepper(25,90);
 
-		var stepper_delay = new PsychUINumericStepper(10,130);
-		var chkBox_loopable = new PsychUICheckBox(100,60,"loopable",100,() ->{
+		input_imagePath = new PsychUIInputText(10,20,250);
+		stepper_scale = new PsychUINumericStepper(90,130,0.1);
+		stepper_offsetX = new PsychUINumericStepper(25,60);
+		stepper_offsetY = new PsychUINumericStepper(25,90);
+		stepper_delay = new PsychUINumericStepper(10,130);
+		input_imagePath.onChange = (old,cur) ->{
 
+		};
+		stepper_delay.onValueChange = () -> {
+			selected_prop.data.delay = stepper_delay.value;
+		}
+		stepper_offsetX.onValueChange = () -> {
+			selected_prop.data.offsets[0] = stepper_delay.value;
+			selected_prop.prop.set_offset(selected_prop.data.offsets[0],selected_prop.data.offsets[1]);
+		}
+		stepper_offsetY.onValueChange = () -> {
+			selected_prop.data.offsets[1] = stepper_delay.value;
+			selected_prop.prop.set_offset(selected_prop.data.offsets[0],selected_prop.data.offsets[1]);
+		}
+		stepper_scale.onValueChange = () -> {
+			selected_prop.data.scale = stepper_delay.value;
+			selected_prop.sprite.scale.set(stepper_delay.value);
+		}
+		
+		chkBox_loopable = new PsychUICheckBox(100,60,"loopable",100,() ->{
+			selected_prop.data.looped = chkBox_loopable.checked;
 		});
-		var stepper_loopFrame = new PsychUINumericStepper(100,100);
+		stepper_loopFrame = new PsychUINumericStepper(100,100);
 		resultsObjectControls.add(input_imagePath);
 		resultsObjectControls.add(input_imagePath.makeLabel("Image path"));
 		resultsObjectControls.add(new FlxText(10, 47, 100, "Offsets"));
@@ -112,12 +154,10 @@ class ResultsDialogBox extends PsychUIBox {
 		resultsObjectControls.add(stepper_loopFrame);
 
 		resultsObjectControls_labels = new FlxSpriteGroup();
-		var chkBox_useLabels = new PsychUICheckBox(180,60,"Use labels",100,() ->{
 
-		});
-		var input_labelStart = new PsychUIInputText(180,130,80);
-		var input_labelLoop = new PsychUIInputText(180,90,80);
-		resultsObjectControls_labels.add(chkBox_useLabels);
+		input_labelStart = new PsychUIInputText(180,130,80);
+		input_labelLoop = new PsychUIInputText(180,90,80);
+		
 		resultsObjectControls_labels.add(input_labelStart);
 		resultsObjectControls_labels.add(input_labelStart.makeLabel("Start label"));
 		resultsObjectControls_labels.add(input_labelLoop);
