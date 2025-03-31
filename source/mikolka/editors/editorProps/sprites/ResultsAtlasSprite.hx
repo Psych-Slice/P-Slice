@@ -1,10 +1,10 @@
 package mikolka.editors.editorProps.sprites;
 
-import mikolka.editors.editorProps.sprites.ResultsSprite;
+import mikolka.editors.editorProps.sprites.IResultsSprite;
 import mikolka.funkin.players.PlayerData.PlayerResultsAnimationData;
 import mikolka.compatibility.funkin.FunkinPath;
 
-class ResultsAtlasSprite extends FlxAtlasSprite implements ResultsSprite
+class ResultsAtlasSprite extends FlxAtlasSprite implements IResultsSprite
 {
 	var data:PlayerResultsAnimationData;
 
@@ -58,10 +58,10 @@ class ResultsAtlasSprite extends FlxAtlasSprite implements ResultsSprite
 
 	public function resetAnimation()
 	{
-		animation.curAnim = animation.getByName("");
+		//animation.curAnim = animation.getByName("");
 		if (data.loopFrame != null && data.looped)
 			anim.curFrame = data.loopFrame;
 		else
-			anim.curFrame = animation.curAnim.numFrames - 1;
+			anim.curFrame = anim.curSymbol.length-1;//animation.curAnim.numFrames - 1;
 	}
 }
