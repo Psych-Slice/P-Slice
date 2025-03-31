@@ -1,11 +1,11 @@
 package mikolka.editors.editorProps.sprites;
 
-import mikolka.editors.editorProps.sprites.ResultsSprite.SpriteType;
+import mikolka.editors.editorProps.sprites.IResultsSprite.SpriteType;
 import mikolka.compatibility.funkin.FunkinPath;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.funkin.players.PlayerData.PlayerResultsAnimationData;
 
-class ResultsSparrowSprite extends FlxSprite implements ResultsSprite
+class ResultsSparrowSprite extends FlxSprite implements IResultsSprite
 {
 	var data:PlayerResultsAnimationData;
 
