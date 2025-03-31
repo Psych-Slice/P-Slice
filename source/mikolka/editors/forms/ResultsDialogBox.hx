@@ -116,7 +116,8 @@ class ResultsDialogBox extends PsychUIBox {
 		stepper_offsetY = new PsychUINumericStepper(25,90);
 		stepper_delay = new PsychUINumericStepper(10,130);
 		input_imagePath.onChange = (old,cur) ->{
-
+			selected_prop.data.assetPath = cur;
+			list_objSelector.updateCurrentItem(selected_prop.get_name());
 		};
 		stepper_delay.onValueChange = () -> {
 			selected_prop.data.delay = stepper_delay.value;
@@ -157,6 +158,12 @@ class ResultsDialogBox extends PsychUIBox {
 
 		input_labelStart = new PsychUIInputText(180,130,80);
 		input_labelLoop = new PsychUIInputText(180,90,80);
+		input_labelStart.onChange = (old,cur) ->{
+			selected_prop.data.startFrameLabel = cur;
+		};
+		input_labelLoop.onChange = (old,cur) ->{
+			selected_prop.data.loopFrameLabel = cur;
+		};
 		
 		resultsObjectControls_labels.add(input_labelStart);
 		resultsObjectControls_labels.add(input_labelStart.makeLabel("Start label"));

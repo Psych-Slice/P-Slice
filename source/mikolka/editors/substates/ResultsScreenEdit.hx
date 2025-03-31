@@ -166,7 +166,15 @@ class ResultsScreenEdit extends VsliceSubState
 					#end
 					playingAnimations = true;
 					resultsDialogBox.kill();
-					if(wasReset) propSystem.playAll();
+					if(wasReset) {
+						propSystem.playAll();
+						FunkinSound.playMusic(,
+						{
+							startingVolume: 1.0,
+							overrideExisting: true,
+							restartTrack: true
+						});
+					}
 					else propSystem.resumeAll();
 					wasReset = false;
 				}
