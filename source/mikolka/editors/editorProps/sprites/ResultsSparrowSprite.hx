@@ -8,6 +8,7 @@ import mikolka.funkin.players.PlayerData.PlayerResultsAnimationData;
 class ResultsSparrowSprite extends FlxSprite implements IResultsSprite
 {
 	var data:PlayerResultsAnimationData;
+	var timer:FlxTimer;
 
 	public function new(animData:PlayerResultsAnimationData)
 	{
@@ -24,33 +25,51 @@ class ResultsSparrowSprite extends FlxSprite implements IResultsSprite
 			{
 				animation.play('idle', true, false, animData.loopFrame ?? 0);
 			}
-    }
-			// Hide until ready to play.
-			visible = false;
 		}
+		// Hide until ready to play.
+		visible = false;
+	}
 
-		public function getSpriteType():SpriteType
-		{
-			return SPARROW;
-		}
+	public function getSpriteType():SpriteType
+	{
+		return SPARROW;
+	}
 
-		public function startAnimation()
-		{
+	public function startAnimation()
+	{
+		timer?.cancel();
+		visible = false;
+		timer = FlxTimer.wait(data.delay,() ->{
+			visible = true;
 			animation.play('idle', true);
-		}
+		});
+	}
 
-		public function pauseAnimation()
-		{
-			animation.pause();
-		}
-	
-    public function resetAnimation() {
-      animation.curAnim = animation.getByName("idle");
-      if (data.loopFrame != null && data.looped) animation.frameIndex = data.loopFrame;
-      else animation.frameIndex = animation.curAnim.numFrames-1;
-    }
-  
-    public function resumeAnimation() {
-      animation.resume();
-    }
-  }
+	public function pauseAnimation()
+	{
+		animation.pause();
+		timer.active = false;
+	}
+
+	public function resetAnimation()
+	{
+		timer?.cancel();
+		visible = true;
+		animation.curAnim = animation.getByName("idle");
+		if (data.loopFrame != null && data.looped)
+			animation.frameIndex = data.loopFrame;
+		else
+			animation.frameIndex = animation.curAnim.numFrames - 1;
+	}
+
+	public function resumeAnimation()
+	{
+		animation.resume();
+		timer.active = true;
+	}
+
+	public function set_offset(x:Float, y:Float)
+	{
+		setPosition(x, y);
+	}
+}

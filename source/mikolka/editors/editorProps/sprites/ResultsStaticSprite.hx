@@ -21,5 +21,7 @@ class ResultsStaticSprite implements IResultsSprite {
     public function resetAnimation():Void{
 
     }
+    public function set_offset(x:Float,y:Float) {
 
+	}
 }

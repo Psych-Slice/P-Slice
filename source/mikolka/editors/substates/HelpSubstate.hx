@@ -39,6 +39,22 @@ class HelpSubstate extends MusicBeatSubstate {
 			"",
 			"B - Exit this substate",
     ];
+	public static var RESULTS_EDIT_TEXT:Array<String> = [
+        "Results editor controls:",
+        	"Up/Down - Change active animation",
+			"Space - Starts/pauses playback of the result animations",
+			"R - Resets the playbcack",
+			"",
+			"ESCAPE - Exit this substate",
+    ];
+    public static var RESULTS_EDIT_TEXT_MOBILE:Array<String> = [
+        "Results editor controls:",
+        	"Up/Down - Change active animation",
+			"A - Starts/pauses playback of the result animations",
+			"C - Resets the playbcack",
+			"",
+			"B - Exit this substate",
+    ];
 	private var text:Array<String>;
 	public function new(text:Array<String>) {
 		this.text = text;

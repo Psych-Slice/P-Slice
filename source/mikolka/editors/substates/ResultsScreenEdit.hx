@@ -142,6 +142,7 @@ class ResultsScreenEdit extends VsliceSubState
 						playingAnimations = false;
 						resultsDialogBox.revive();
 						propSystem.pauseAll();
+						FlxG.sound.music?.pause();
 					}
 			}
 			else
@@ -156,7 +157,7 @@ class ResultsScreenEdit extends VsliceSubState
 				{
 					persistentUpdate = false;
 					#if TOUCH_CONTROLS_ALLOWED removeTouchPad(); #end
-					openSubState(new HelpSubstate(controls.mobileC ? HelpSubstate.FREEPLAY_EDIT_TEXT_MOBILE : HelpSubstate.FREEPLAY_EDIT_TEXT));
+					openSubState(new HelpSubstate(controls.mobileC ? HelpSubstate.RESULTS_EDIT_TEXT_MOBILE : HelpSubstate.RESULTS_EDIT_TEXT));
 				}
 				else if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonA.justPressed || #end controls.ACCEPT)
 				{
@@ -168,14 +169,17 @@ class ResultsScreenEdit extends VsliceSubState
 					resultsDialogBox.kill();
 					if(wasReset) {
 						propSystem.playAll();
-						FunkinSound.playMusic(,
+						FunkinSound.playMusic(resultsDialogBox.input_musicPath.text,
 						{
 							startingVolume: 1.0,
 							overrideExisting: true,
 							restartTrack: true
 						});
 					}
-					else propSystem.resumeAll();
+					else {
+						propSystem.resumeAll();
+						FlxG.sound.music?.resume();
+					}
 					wasReset = false;
 				}
 				else if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonC.justPressed || #end controls.RESET)
@@ -183,6 +187,7 @@ class ResultsScreenEdit extends VsliceSubState
 					FlxG.sound.play(Paths.sound('cancelMenu'));
 					wasReset = true;
 					propSystem.resetAll();
+					FlxG.sound.music?.pause();
 				}
 			}
 		}
