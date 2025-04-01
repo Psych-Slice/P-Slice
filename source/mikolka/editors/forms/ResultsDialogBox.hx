@@ -6,7 +6,7 @@ import mikolka.funkin.Scoring.ScoringRank;
 using mikolka.editors.PsychUIUtills;
 
 class ResultsDialogBox extends PsychUIBox {
-	var selected_prop:ResultsProp;
+	public var selected_prop:ResultsProp;
 	
 	//PAGERS
     public var resultsObjectControls_empty:FlxText;
@@ -37,6 +37,9 @@ class ResultsDialogBox extends PsychUIBox {
 		var rankSelector = new PsychUIDropDownMenu(10, 20, ["PERFECT_GOLD", "PERFECT", "EXCELLENT", "GREAT", "GOOD", "SHIT"], (index, name) ->
 		{
 			host.reloadprops([PERFECT_GOLD, PERFECT, EXCELLENT, GREAT, GOOD, SHIT][index]);
+			resultsObjectControls.visible = false;
+			resultsObjectControls_labels.visible = false;
+			resultsObjectControls_empty.visible = true;
 		});
 
 		list_objSelector = new PsychUIDropDownMenu(140, 20, [], (index, name) -> {
@@ -86,7 +89,9 @@ class ResultsDialogBox extends PsychUIBox {
 			}
 		};
 
-		var btn_moveUp = new PsychUIButton(160, 90, "Move up", () -> {}, 100);
+		var btn_moveUp = new PsychUIButton(160, 90, "Move up", () -> {
+			
+		}, 100);
 		var btn_moveDown = new PsychUIButton(160, 120, "Move down", () -> {}, 100);
 		var btn_newSparrow = new PsychUIButton(10, 90, "New sparrow", () -> {}, 100);
 		var btn_newAtlas = new PsychUIButton(10, 120, "New atlas", () -> {}, 100);
@@ -112,8 +117,8 @@ class ResultsDialogBox extends PsychUIBox {
 
 		input_imagePath = new PsychUIInputText(10,20,250);
 		stepper_scale = new PsychUINumericStepper(90,130,0.1);
-		stepper_offsetX = new PsychUINumericStepper(25,60);
-		stepper_offsetY = new PsychUINumericStepper(25,90);
+		stepper_offsetX = new PsychUINumericStepper(25,60,1,0,-9999,9999);
+		stepper_offsetY = new PsychUINumericStepper(25,90,1,0,-9999,9999);
 		stepper_delay = new PsychUINumericStepper(10,130);
 		input_imagePath.onChange = (old,cur) ->{
 			selected_prop.data.assetPath = cur;
@@ -123,16 +128,16 @@ class ResultsDialogBox extends PsychUIBox {
 			selected_prop.data.delay = stepper_delay.value;
 		}
 		stepper_offsetX.onValueChange = () -> {
-			selected_prop.data.offsets[0] = stepper_delay.value;
+			selected_prop.data.offsets[0] = stepper_offsetX.value;
 			selected_prop.prop.set_offset(selected_prop.data.offsets[0],selected_prop.data.offsets[1]);
 		}
 		stepper_offsetY.onValueChange = () -> {
-			selected_prop.data.offsets[1] = stepper_delay.value;
+			selected_prop.data.offsets[1] = stepper_offsetY.value;
 			selected_prop.prop.set_offset(selected_prop.data.offsets[0],selected_prop.data.offsets[1]);
 		}
 		stepper_scale.onValueChange = () -> {
-			selected_prop.data.scale = stepper_delay.value;
-			selected_prop.sprite.scale.set(stepper_delay.value);
+			selected_prop.data.scale = stepper_scale.value;
+			selected_prop.sprite.scale.set(stepper_scale.value);
 		}
 		
 		chkBox_loopable = new PsychUICheckBox(100,60,"loopable",100,() ->{

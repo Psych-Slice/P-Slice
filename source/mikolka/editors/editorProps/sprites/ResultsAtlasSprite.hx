@@ -7,6 +7,7 @@ import mikolka.compatibility.funkin.FunkinPath;
 class ResultsAtlasSprite extends FlxAtlasSprite implements IResultsSprite
 {
 	var data:PlayerResultsAnimationData;
+	var timer:FlxTimer;
 
 	public function new(animData:PlayerResultsAnimationData)
 	{
@@ -51,13 +52,28 @@ class ResultsAtlasSprite extends FlxAtlasSprite implements IResultsSprite
 		return ATLAS;
 	}
 
+	override function pauseAnimation() {
+		super.pauseAnimation();
+		timer.active = false;
+	}
+	override function resumeAnimation() {
+		super.resumeAnimation();
+		timer.active = true;
+	}
 	public function startAnimation()
 	{
-		playAnimation(''); 
+		timer?.cancel();
+		visible = false;
+		timer = FlxTimer.wait(data.delay,() ->{
+			playAnimation(''); 
+			visible = true;
+		});
 	}
 
 	public function resetAnimation()
 	{
+		visible = true;
+		timer?.cancel();
 		//animation.curAnim = animation.getByName("");
 		if (data.loopFrame != null && data.looped)
 			anim.curFrame = data.loopFrame;

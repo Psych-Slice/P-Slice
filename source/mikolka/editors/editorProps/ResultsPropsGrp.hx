@@ -59,6 +59,8 @@ class ResultsPropsGrp extends FlxTypedSpriteGroup<FlxSprite> {
             remove(data.sprite);
             sprites.insert(index,data);
             insert(index,data.sprite);
+            if(index == 0) data.zIndex = 0;
+            else data.zIndex = sprites[index-1].zIndex+1;
         }
     }
     public function playAll() for (prop in sprites) prop.prop.startAnimation();
