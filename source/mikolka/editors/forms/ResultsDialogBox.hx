@@ -27,6 +27,9 @@ class ResultsDialogBox extends PsychUIBox {
 	var input_labelStart:PsychUIInputText;
 	var input_labelLoop:PsychUIInputText;
 
+	var btn_moveUp:PsychUIButton;
+	var btn_moveDown:PsychUIButton;
+
     public function new(host:ResultsScreenEdit) {
         super(FlxG.width - 500, FlxG.height, 270, 220, ['General', "Properties"]);
 		x -= width;
@@ -37,17 +40,13 @@ class ResultsDialogBox extends PsychUIBox {
 		var rankSelector = new PsychUIDropDownMenu(10, 20, ["PERFECT_GOLD", "PERFECT", "EXCELLENT", "GREAT", "GOOD", "SHIT"], (index, name) ->
 		{
 			host.reloadprops([PERFECT_GOLD, PERFECT, EXCELLENT, GREAT, GOOD, SHIT][index]);
-			resultsObjectControls.visible = false;
-			resultsObjectControls_labels.visible = false;
-			resultsObjectControls_empty.visible = true;
+			showEmptyObject();
 		});
 
 		list_objSelector = new PsychUIDropDownMenu(140, 20, [], (index, name) -> {
 			selected_prop = host.propSystem.sprites[index];
 			if(selected_prop.data == null){
-				resultsObjectControls.visible = false;
-				resultsObjectControls_labels.visible = false;
-				resultsObjectControls_empty.visible = true;
+				showEmptyObject();
 				return;
 			}
 			else if(selected_prop.data.renderType == "animateatlas"){
@@ -56,6 +55,8 @@ class ResultsDialogBox extends PsychUIBox {
 			else resultsObjectControls_labels.visible = false;
 			resultsObjectControls.visible = true;
 			resultsObjectControls_empty.visible = false;
+			btn_moveUp.visible = true;
+			btn_moveDown.visible = true;
 
 			input_imagePath.text = selected_prop.data.assetPath;
 			stepper_scale.value = selected_prop.data.scale;
@@ -89,10 +90,31 @@ class ResultsDialogBox extends PsychUIBox {
 			}
 		};
 
-		var btn_moveUp = new PsychUIButton(160, 90, "Move up", () -> {
-			
+		
+		btn_moveUp = new PsychUIButton(160, 90, "Move up", () -> {
+			var curIndex = list_objSelector.selectedIndex;
+			if(curIndex == 0) {
+				FlxG.sound.play(Paths.sound('CS_hihat'));
+				return;
+			}
+			list_objSelector.moveCurrentItem(-1);
+			host.propSystem.moveProp(selected_prop,curIndex-1);
+			host.propSystem.refresh();
+			list_objSelector.selectedIndex = curIndex-1;
 		}, 100);
-		var btn_moveDown = new PsychUIButton(160, 120, "Move down", () -> {}, 100);
+		btn_moveDown = new PsychUIButton(160, 120, "Move down", () -> {
+			var curIndex = list_objSelector.selectedIndex;
+			if(curIndex == list_objSelector.list.length-1) {
+				FlxG.sound.play(Paths.sound('CS_hihat'));
+				return;
+			}
+			list_objSelector.moveCurrentItem(1);
+			host.propSystem.moveProp(selected_prop,curIndex+1);
+			host.propSystem.refresh();
+			list_objSelector.selectedIndex = curIndex+1;
+		}, 100);
+		btn_moveDown.visible = false;
+		btn_moveUp.visible = false;
 		var btn_newSparrow = new PsychUIButton(10, 90, "New sparrow", () -> {}, 100);
 		var btn_newAtlas = new PsychUIButton(10, 120, "New atlas", () -> {}, 100);
 		var btn_removeObject = new PsychUIButton(10, 150, "Remove object", () -> {}, 100);
@@ -117,8 +139,8 @@ class ResultsDialogBox extends PsychUIBox {
 
 		input_imagePath = new PsychUIInputText(10,20,250);
 		stepper_scale = new PsychUINumericStepper(90,130,0.1);
-		stepper_offsetX = new PsychUINumericStepper(25,60,1,0,-9999,9999);
-		stepper_offsetY = new PsychUINumericStepper(25,90,1,0,-9999,9999);
+		stepper_offsetX = new PsychUINumericStepper(25,60,1,0,-999,9999);
+		stepper_offsetY = new PsychUINumericStepper(25,90,1,0,-999,9999);
 		stepper_delay = new PsychUINumericStepper(10,130);
 		input_imagePath.onChange = (old,cur) ->{
 			selected_prop.data.assetPath = cur;
@@ -185,4 +207,11 @@ class ResultsDialogBox extends PsychUIBox {
 		tab.add(resultsObjectControls_labels);
         selectedName = 'General';
     }
+	private function showEmptyObject() {
+		resultsObjectControls.visible = false;
+		resultsObjectControls_labels.visible = false;
+		resultsObjectControls_empty.visible = true;
+		btn_moveUp.visible = false;
+		btn_moveDown.visible = false;
+	}
 }

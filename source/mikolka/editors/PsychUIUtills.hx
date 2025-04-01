@@ -18,5 +18,21 @@ class PsychUIUtills {
 		box.text = text;
         
     }
+    public static function moveCurrentItem(box:PsychUIDropDownMenu,diff:Int) {
+        
+        var curIndex = box.selectedIndex;
+        
+		swap(box.list,curIndex,curIndex+diff);
+        @:privateAccess{
+            swap(box._items,curIndex,curIndex+diff);
+            box._items[curIndex].onClick = function() box.clickedOn(curIndex,box._items[curIndex].label);
+            box._items[curIndex+diff].onClick = function() box.clickedOn(curIndex+diff,box._items[curIndex+diff].label);
+        }
+    }
+    private static function swap<T>(list:Array<T>,oldIndex:Int,newIndex:Int) {
+        var carry = list[newIndex];
+        list[newIndex] = list[oldIndex];
+        list[oldIndex] = carry;
+    }
     
 }

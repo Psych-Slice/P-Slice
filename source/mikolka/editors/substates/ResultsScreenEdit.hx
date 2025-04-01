@@ -116,6 +116,7 @@ class ResultsScreenEdit extends VsliceSubState
 		for (prop in data)
 			propSystem.addProp(prop);
 		propSystem.refresh();
+		wasReset = true;
 		@:privateAccess
 		for (prop in propSystem.sprites)
 			resultsDialogBox.list_objSelector.addOption(prop.get_name());
