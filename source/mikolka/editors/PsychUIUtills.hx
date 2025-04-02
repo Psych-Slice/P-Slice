@@ -8,6 +8,7 @@ class PsychUIUtills {
     public static inline function removeIndex(box:PsychUIDropDownMenu,index:Int) {
         @:privateAccess
         box._items.remove(box._items[index]);
+        box.list.remove(box.list[index]);
         
     }
     @:privateAccess

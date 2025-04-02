@@ -1,5 +1,6 @@
 package mikolka.editors.forms;
 
+import mikolka.funkin.players.PlayerData.PlayerResultsAnimationData;
 import mikolka.editors.editorProps.ResultsPropsGrp.ResultsProp;
 import mikolka.editors.substates.ResultsScreenEdit;
 import mikolka.funkin.Scoring.ScoringRank;
@@ -29,6 +30,7 @@ class ResultsDialogBox extends PsychUIBox {
 
 	var btn_moveUp:PsychUIButton;
 	var btn_moveDown:PsychUIButton;
+	var btn_removeObject:PsychUIButton;
 
     public function new(host:ResultsScreenEdit) {
         super(FlxG.width - 500, FlxG.height, 270, 220, ['General', "Properties"]);
@@ -57,6 +59,7 @@ class ResultsDialogBox extends PsychUIBox {
 			resultsObjectControls_empty.visible = false;
 			btn_moveUp.visible = true;
 			btn_moveDown.visible = true;
+			btn_removeObject.visible = true;
 
 			input_imagePath.text = selected_prop.data.assetPath;
 			stepper_scale.value = selected_prop.data.scale;
@@ -115,9 +118,16 @@ class ResultsDialogBox extends PsychUIBox {
 		}, 100);
 		btn_moveDown.visible = false;
 		btn_moveUp.visible = false;
-		var btn_newSparrow = new PsychUIButton(10, 90, "New sparrow", () -> {}, 100);
-		var btn_newAtlas = new PsychUIButton(10, 120, "New atlas", () -> {}, 100);
-		var btn_removeObject = new PsychUIButton(10, 150, "Remove object", () -> {}, 100);
+		var btn_newSparrow = new PsychUIButton(10, 90, "New sparrow", () -> spawnNewObject("sparrow",host), 100);
+		var btn_newAtlas = new PsychUIButton(10, 120, "New atlas", () -> spawnNewObject("animateatlas",host), 100);
+		btn_removeObject = new PsychUIButton(10, 150, "Remove object", () -> {
+			var curIndex = list_objSelector.selectedIndex;
+
+			list_objSelector.removeIndex(curIndex);
+			host.propSystem.removeProp(selected_prop);
+			host.activePlayer.getResultsAnimationDatas(host.activeRank).remove(selected_prop.data);
+			list_objSelector.selectedIndex = FlxMath.minInt(curIndex,list_objSelector.list.length-1);
+		}, 100);
 		selectedName = 'General';
 		var tab = getTab('General').menu;
 		tab.add(input_musicPath.makeLabel("Rank music path:"));
@@ -213,5 +223,30 @@ class ResultsDialogBox extends PsychUIBox {
 		resultsObjectControls_empty.visible = true;
 		btn_moveUp.visible = false;
 		btn_moveDown.visible = false;
+		btn_removeObject.visible = false;
+	}
+	private function spawnNewObject(kind:String,host:ResultsScreenEdit){
+		@:privateAccess
+		list_objSelector.addOption("none");
+		if (list_objSelector.list.length >= 20)
+			{
+				FlxG.sound.play(Paths.sound('cancelMenu'));
+				return;
+			}
+		var data:PlayerResultsAnimationData = {
+			renderType: kind,
+			assetPath: "none",
+			zIndex: host.propSystem.sprites[host.propSystem.sprites.length-1].zIndex,
+			offsets: [500,500],
+			loopFrameLabel: "",
+			loopFrame: "",
+			looped: false,
+			startFrameLabel: "",
+			scale: 1.0,
+			delay: 0
+		};
+		host.propSystem.addProp(data);
+		host.activePlayer.getResultsAnimationDatas(host.activeRank).push(data);
+		list_objSelector.selectedIndex = list_objSelector.list.length-1;
 	}
 }
