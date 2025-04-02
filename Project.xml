@@ -138,7 +138,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- <library name="songs" preload="false" /> -->
 	<!-- _______________________________ Libraries ______________________________ -->
 
-	<haxelib name="flixel" version="6.0.0"/>
+	<haxelib name="flixel"/>
 	<haxelib name="flixel-addons" version="3.3.2"/>
 	<haxelib name="tjson" version="1.4.0"/>
 	<haxelib name="FlxPartialSound" version="git"/>

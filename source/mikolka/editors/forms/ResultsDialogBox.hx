@@ -239,7 +239,7 @@ class ResultsDialogBox extends PsychUIBox {
 			zIndex: host.propSystem.sprites[host.propSystem.sprites.length-1].zIndex,
 			offsets: [500,500],
 			loopFrameLabel: "",
-			loopFrame: "",
+			loopFrame: 0,
 			looped: false,
 			startFrameLabel: "",
 			scale: 1.0,
