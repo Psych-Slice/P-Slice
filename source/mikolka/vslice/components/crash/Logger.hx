@@ -9,7 +9,11 @@ import haxe.Log;
 class Logger{
     private static var file:FileOutput;
     public static function startLogging() {
+        #if LEGACY_PSYCH
         file = File.write("latest.log");
+        #else
+        file = File.write(StorageUtil.getStorageDirectory()+"/latest.log");
+        #end
         Log.trace = log;
     }
     private static function log(v:Dynamic, ?infos:PosInfos):Void {

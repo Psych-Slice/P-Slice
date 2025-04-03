@@ -8,6 +8,7 @@ using mikolka.editors.PsychUIUtills;
 
 class ResultsDialogBox extends PsychUIBox {
 	public var selected_prop:ResultsProp;
+	private inline static final selectedColor:FlxColor = 0x9E2929;
 	
 	//PAGERS
     public var resultsObjectControls_empty:FlxText;
@@ -17,20 +18,20 @@ class ResultsDialogBox extends PsychUIBox {
 	// GENERAL
 	public var list_objSelector:PsychUIDropDownMenu;
 	public var input_musicPath:PsychUIInputText;
-	var btn_moveUp:PsychUIButton;
-	var btn_moveDown:PsychUIButton;
-	var btn_removeObject:PsychUIButton;
+	public var btn_moveUp:PsychUIButton;
+	public var btn_moveDown:PsychUIButton;
+	public var btn_removeObject:PsychUIButton;
 	//PROPERTIES
-	var input_imagePath:PsychUIInputText;
-	var stepper_scale:PsychUINumericStepper;
-	var stepper_offsetY:PsychUINumericStepper;
-	var chkBox_loopable:PsychUICheckBox;
-	var stepper_offsetX:PsychUINumericStepper;
-	var stepper_delay:PsychUINumericStepper;
-	var stepper_loopFrame:PsychUINumericStepper;
-	var input_labelStart:PsychUIInputText;
-	var input_labelLoop:PsychUIInputText;
-	var btn_reload:PsychUIButton;
+	public var input_imagePath:PsychUIInputText;
+	public var stepper_scale:PsychUINumericStepper;
+	public var stepper_offsetY:PsychUINumericStepper;
+	public var chkBox_loopable:PsychUICheckBox;
+	public var stepper_offsetX:PsychUINumericStepper;
+	public var stepper_delay:PsychUINumericStepper;
+	public var stepper_loopFrame:PsychUINumericStepper;
+	public var input_labelStart:PsychUIInputText;
+	public var input_labelLoop:PsychUIInputText;
+	public var btn_reload:PsychUIButton;
 
     public function new(host:ResultsScreenEdit) {
         super(FlxG.width - 500, FlxG.height, 270, 220, ['General', "Properties"]);
@@ -64,15 +65,15 @@ class ResultsDialogBox extends PsychUIBox {
 
 			input_imagePath.text = selected_prop.data.assetPath;
 			stepper_scale.value = selected_prop.data.scale;
-			stepper_loopFrame.value = selected_prop.data.loopFrame;
+			stepper_loopFrame.value = selected_prop.data.loopFrame ?? 0;
 			stepper_offsetY.value = selected_prop.data.offsets[1];
 			stepper_offsetX.value = selected_prop.data.offsets[0];
 			stepper_delay.value = selected_prop.data.delay;
-			chkBox_loopable.checked = selected_prop.data.looped;
-			input_labelStart.text = selected_prop.data.startFrameLabel;
-			input_labelLoop.text = selected_prop.data.loopFrameLabel;
+			chkBox_loopable.checked = selected_prop.data.looped ?? true;
+			input_labelStart.text = selected_prop.data.startFrameLabel ?? "";
+			input_labelLoop.text = selected_prop.data.loopFrameLabel ?? "";
 
-			if(selected_prop?.sprite != null) selected_prop.sprite.color = 0x9E2929;
+			if(selected_prop?.sprite != null) selected_prop.sprite.color = selectedColor;
 		});
 
 		input_musicPath = new PsychUIInputText(10, 60, 250);
@@ -152,15 +153,16 @@ class ResultsDialogBox extends PsychUIBox {
 		resultsObjectControls.visible = false;
 
 		input_imagePath = new PsychUIInputText(10,20,250);
-		stepper_scale = new PsychUINumericStepper(90,130,0.1);
+		stepper_scale = new PsychUINumericStepper(90,130,0.1,1,0,10,2);
 		stepper_offsetX = new PsychUINumericStepper(25,60,1,0,-999,9999);
 		stepper_offsetY = new PsychUINumericStepper(25,90,1,0,-999,9999);
-		stepper_delay = new PsychUINumericStepper(10,130);
+		stepper_delay = new PsychUINumericStepper(10,130,0.1,0,0,20,1);
 		btn_reload = new PsychUIButton(10, 150, "Reload", () -> {
 			host.propSystem.reloadProp(selected_prop);
 			@:privateAccess
 			host.wasReset = true;
 			host.propSystem.resetAll();
+			if(selected_prop?.sprite != null) selected_prop.sprite.color = selectedColor;
 		});
 		input_imagePath.onChange = (old,cur) ->{
 			selected_prop.data.assetPath = cur;
@@ -228,6 +230,15 @@ class ResultsDialogBox extends PsychUIBox {
 		tab.add(resultsObjectControls_labels);
         selectedName = 'General';
     }
+	public function addOffset(x:Int,y:Int) {
+		if(selected_prop?.data == null) return;
+		selected_prop.data.offsets[0] += x;
+		selected_prop.data.offsets[1] += y;
+		stepper_offsetX.value = selected_prop.data.offsets[0];
+		stepper_offsetY.value = selected_prop.data.offsets[1];
+		if(selected_prop?.prop == null) return;
+		selected_prop.prop.set_offset(selected_prop.data.offsets[0],selected_prop.data.offsets[1]);
+	}
 	private function showEmptyObject() {
 		resultsObjectControls.visible = false;
 		resultsObjectControls_labels.visible = false;
@@ -259,5 +270,6 @@ class ResultsDialogBox extends PsychUIBox {
 		host.propSystem.addProp(data);
 		host.activePlayer.getResultsAnimationDatas(host.activeRank).push(data);
 		list_objSelector.selectedIndex = list_objSelector.list.length-1;
+		list_objSelector.onSelect(list_objSelector.selectedIndex,list_objSelector.selectedLabel);
 	}
 }
