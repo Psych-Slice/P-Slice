@@ -17,6 +17,9 @@ class ResultsDialogBox extends PsychUIBox {
 	// GENERAL
 	public var list_objSelector:PsychUIDropDownMenu;
 	public var input_musicPath:PsychUIInputText;
+	var btn_moveUp:PsychUIButton;
+	var btn_moveDown:PsychUIButton;
+	var btn_removeObject:PsychUIButton;
 	//PROPERTIES
 	var input_imagePath:PsychUIInputText;
 	var stepper_scale:PsychUINumericStepper;
@@ -27,10 +30,7 @@ class ResultsDialogBox extends PsychUIBox {
 	var stepper_loopFrame:PsychUINumericStepper;
 	var input_labelStart:PsychUIInputText;
 	var input_labelLoop:PsychUIInputText;
-
-	var btn_moveUp:PsychUIButton;
-	var btn_moveDown:PsychUIButton;
-	var btn_removeObject:PsychUIButton;
+	var btn_reload:PsychUIButton;
 
     public function new(host:ResultsScreenEdit) {
         super(FlxG.width - 500, FlxG.height, 270, 220, ['General', "Properties"]);
@@ -46,6 +46,7 @@ class ResultsDialogBox extends PsychUIBox {
 		});
 
 		list_objSelector = new PsychUIDropDownMenu(140, 20, [], (index, name) -> {
+			if(selected_prop?.sprite != null) selected_prop.sprite.color = 0xFFFFFF;
 			selected_prop = host.propSystem.sprites[index];
 			if(selected_prop.data == null){
 				showEmptyObject();
@@ -70,6 +71,8 @@ class ResultsDialogBox extends PsychUIBox {
 			chkBox_loopable.checked = selected_prop.data.looped;
 			input_labelStart.text = selected_prop.data.startFrameLabel;
 			input_labelLoop.text = selected_prop.data.loopFrameLabel;
+
+			if(selected_prop?.sprite != null) selected_prop.sprite.color = 0x9E2929;
 		});
 
 		input_musicPath = new PsychUIInputText(10, 60, 250);
@@ -122,11 +125,11 @@ class ResultsDialogBox extends PsychUIBox {
 		var btn_newAtlas = new PsychUIButton(10, 120, "New atlas", () -> spawnNewObject("animateatlas",host), 100);
 		btn_removeObject = new PsychUIButton(10, 150, "Remove object", () -> {
 			var curIndex = list_objSelector.selectedIndex;
-
 			list_objSelector.removeIndex(curIndex);
 			host.propSystem.removeProp(selected_prop);
 			host.activePlayer.getResultsAnimationDatas(host.activeRank).remove(selected_prop.data);
 			list_objSelector.selectedIndex = FlxMath.minInt(curIndex,list_objSelector.list.length-1);
+			list_objSelector.onSelect(list_objSelector.selectedIndex,list_objSelector.selectedLabel);
 		}, 100);
 		selectedName = 'General';
 		var tab = getTab('General').menu;
@@ -152,6 +155,12 @@ class ResultsDialogBox extends PsychUIBox {
 		stepper_offsetX = new PsychUINumericStepper(25,60,1,0,-999,9999);
 		stepper_offsetY = new PsychUINumericStepper(25,90,1,0,-999,9999);
 		stepper_delay = new PsychUINumericStepper(10,130);
+		btn_reload = new PsychUIButton(10, 150, "Reload", () -> {
+			host.propSystem.reloadProp(selected_prop);
+			@:privateAccess
+			host.wasReset = true;
+			host.propSystem.resetAll();
+		});
 		input_imagePath.onChange = (old,cur) ->{
 			selected_prop.data.assetPath = cur;
 			list_objSelector.updateCurrentItem(selected_prop.get_name());
@@ -190,6 +199,7 @@ class ResultsDialogBox extends PsychUIBox {
 		resultsObjectControls.add(chkBox_loopable);
 		resultsObjectControls.add(stepper_loopFrame.makeLabel("Loop frame"));
 		resultsObjectControls.add(stepper_loopFrame);
+		resultsObjectControls.add(btn_reload);
 
 		resultsObjectControls_labels = new FlxSpriteGroup();
 
