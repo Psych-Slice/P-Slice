@@ -92,9 +92,10 @@ class ResultsScreenEdit extends VsliceSubState
 		add(helpTxt);
 		resultsDialogBox = new ResultsDialogBox(this);
 		add(resultsDialogBox);
-		reloadprops(ScoringRank.PERFECT_GOLD);
+		
 		new FlxTimer().start(24 / 24, t ->
 		{
+			reloadprops(ScoringRank.PERFECT_GOLD);
 			bg.visible = true;
 			bgFlash.visible = true;
 			FlxTween.tween(bgFlash, {alpha: 0}, 5 / 24);
@@ -137,14 +138,14 @@ class ResultsScreenEdit extends VsliceSubState
 		if (PsychUIInputText.focusOn == null)
 		{
 			FunkinControls.enableVolume();
-			var timeScale = Math.floor(elapsed * 100);
+			
 			if (playingAnimations)
 			{
 				if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonA.justPressed || #end controls.ACCEPT)
 					{
 						#if TOUCH_CONTROLS_ALLOWED
 						removeTouchPad();
-						addTouchPad("LEFT_FULL", "A_B_C_F");
+						addTouchPad("LEFT_FULL", "RESULTS_EDITOR");
 						#end
 						playingAnimations = false;
 						resultsDialogBox.revive();
@@ -157,6 +158,7 @@ class ResultsScreenEdit extends VsliceSubState
 				if (#if TOUCH_CONTROLS_ALLOWED touchPad.buttonB.justPressed || #end controls.BACK)
 				{
 					FlxG.sound.play(Paths.sound('cancelMenu'));
+					flushResultsData();
 					close();
 					controls.isInSubstate = false;
 				}
@@ -177,7 +179,7 @@ class ResultsScreenEdit extends VsliceSubState
 					if(wasReset) {
 						propSystem.playAll();
 						var key = resultsDialogBox.input_musicPath.text;
-						if(Paths.fileExists(key+"/"+key+"."+Paths.SOUND_EXT,MUSIC)){
+						if(Paths.fileExists("music/"+key+"/"+key+"."+Paths.SOUND_EXT,MUSIC)){
 							FunkinSound.playMusic(key,
 							{
 								startingVolume: 1.0,
@@ -199,17 +201,54 @@ class ResultsScreenEdit extends VsliceSubState
 					propSystem.resetAll();
 					FlxG.sound.music?.pause();
 				}
+				else if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonZ.pressed || #end FlxG.keys.pressed.SHIFT){
+					var timeScale = Math.floor(elapsed * 100);
+					if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonUp.pressed || #end controls.UI_DOWN)
+						resultsDialogBox.addOffset(0,5*timeScale);
+					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonLeft.pressed || #end controls.UI_RIGHT)
+						resultsDialogBox.addOffset(5*timeScale,0);
+					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonDown.pressed || #end controls.UI_UP)
+						resultsDialogBox.addOffset(0,-5*timeScale);
+					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonRight.pressed || #end controls.UI_LEFT)
+						resultsDialogBox.addOffset(-5*timeScale,0);
+				}
+				else{
+					if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonUp.justPressed || #end controls.UI_DOWN_P)
+						resultsDialogBox.addOffset(0,1);
+					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonLeft.justPressed || #end controls.UI_RIGHT_P)
+						resultsDialogBox.addOffset(1,0);
+					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonDown.justPressed || #end controls.UI_UP_P)
+						resultsDialogBox.addOffset(0,-1);
+					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonRight.justPressed || #end controls.UI_LEFT_P)
+						resultsDialogBox.addOffset(-1,0);
+				}
 			}
 		}
 		else
 			FunkinControls.disableVolume();
 	}
-	
+	private function flushResultsData() {
+		//TODO
+		for (prop in propSystem.sprites) if(prop.data != null) {
+			prop.data.zIndex = prop.zIndex;
+			prop.data.looped =  prop.data.looped ?? true;
+			if(prop.data.looped){
+				if(prop.data.loopFrameLabel == "") prop.data.loopFrameLabel = null;
+				if(prop.data.startFrameLabel == "") prop.data.startFrameLabel = null;
+				if(prop.data.loopFrame == 0) prop.data.loopFrame = null;		
+			}
+			else{
+				prop.data.loopFrameLabel = null;
+				prop.data.startFrameLabel = null;
+				prop.data.loopFrame = null;
+			}
+		}
+	}
 	#if TOUCH_CONTROLS_ALLOWED
 	override function closeSubState()
 	{
 		super.closeSubState();
-		addTouchPad("LEFT_FULL", "A_B_C_F");
+		addTouchPad("LEFT_FULL", "RESULTS_EDITOR");
 		controls.isInSubstate = true;
 	}
 	#end

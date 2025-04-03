@@ -58,7 +58,7 @@ class ResultsPropsGrp extends FlxTypedSpriteGroup<FlxSprite> {
     public function reloadProp(data:ResultsProp) {
         if (!sprites.contains(data)) return;
         if(data.sprite != null) remove(data.sprite);
-        var sprite = makeSprite(data.data);
+        var sprite = makeSprite(data.data,true);
         data.sprite = cast sprite;
         data.prop = sprite;
         refresh();
@@ -84,7 +84,7 @@ class ResultsPropsGrp extends FlxTypedSpriteGroup<FlxSprite> {
         for( x in sprites.copy()){
             if(x.data != null) {
                 sprites.remove(x);
-                remove(x.sprite);
+                if(x.sprite != null) remove(x.sprite);
             }
         }
     }
