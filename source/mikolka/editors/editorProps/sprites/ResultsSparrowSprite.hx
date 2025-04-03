@@ -1,5 +1,6 @@
 package mikolka.editors.editorProps.sprites;
 
+import shaders.ColorSwap;
 import mikolka.editors.editorProps.sprites.IResultsSprite.SpriteType;
 import mikolka.compatibility.funkin.FunkinPath;
 import mikolka.compatibility.VsliceOptions;

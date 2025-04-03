@@ -1,5 +1,6 @@
 package mikolka.editors.substates;
 
+import mikolka.vslice.components.crash.UserErrorSubstate;
 import mikolka.editors.forms.ResultsDialogBox;
 import mikolka.funkin.Scoring.ScoringRank;
 import mikolka.compatibility.funkin.FunkinControls;
@@ -113,13 +114,18 @@ class ResultsScreenEdit extends VsliceSubState
 		propSystem.clearProps();
 		resultsDialogBox.list_objSelector.list = [];
 
-		for (prop in data)
-			propSystem.addProp(prop);
+		var succsessful = true;
+		for (prop in data){
+			if(succsessful) succsessful = propSystem.addProp(prop);
+			else propSystem.addProp(prop);
+		}
 		propSystem.refresh();
 		wasReset = true;
 		@:privateAccess
 		for (prop in propSystem.sprites)
 			resultsDialogBox.list_objSelector.addOption(prop.get_name());
+
+		if(!succsessful) UserErrorSubstate.makeMessage("Failed to load",'Some props failed to load\nMake sure all props have correct paths set');
 	}
 
 	override function update(elapsed:Float)
@@ -170,12 +176,15 @@ class ResultsScreenEdit extends VsliceSubState
 					resultsDialogBox.kill();
 					if(wasReset) {
 						propSystem.playAll();
-						FunkinSound.playMusic(resultsDialogBox.input_musicPath.text,
-						{
-							startingVolume: 1.0,
-							overrideExisting: true,
-							restartTrack: true
-						});
+						var key = resultsDialogBox.input_musicPath.text;
+						if(Paths.fileExists(key+"/"+key+"."+Paths.SOUND_EXT,MUSIC)){
+							FunkinSound.playMusic(key,
+							{
+								startingVolume: 1.0,
+								overrideExisting: true,
+								restartTrack: true
+							});
+						}
 					}
 					else {
 						propSystem.resumeAll();
@@ -195,7 +204,7 @@ class ResultsScreenEdit extends VsliceSubState
 		else
 			FunkinControls.disableVolume();
 	}
-
+	
 	#if TOUCH_CONTROLS_ALLOWED
 	override function closeSubState()
 	{

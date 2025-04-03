@@ -517,7 +517,7 @@ class FreeplayState extends MusicBeatSubstate
 		charSelectHint.alignment = CENTER;
 		charSelectHint.font = "5by7";
 		charSelectHint.color = 0xFF5F5F5F;
-		charSelectHint.text = controls.mobileC ? 'Touch on the DJ to change characters' : 'Press [ TAB ] to change characters'; // ?! ${controls.getDialogueNameFromControl(FREEPLAY_CHAR_SELECT, true)}
+		charSelectHint.text = controls.mobileC ? 'Touch [ X ] to change characters' : 'Press [ ${FunkinControls.FREEPLAY_CHAR_name()} ] to change characters'; // ?! ${controls.getDialogueNameFromControl(FREEPLAY_CHAR_SELECT, true)}
 		charSelectHint.y -= 100;
 		FlxTween.tween(charSelectHint, {y: charSelectHint.y + 100}, 0.8, {ease: FlxEase.quartOut});
 
@@ -626,10 +626,9 @@ class FreeplayState extends MusicBeatSubstate
 		add(fnfFreeplay);
 		add(ostName);
 
-		if (PlayerRegistry.instance.hasNewCharacter() == true)
-		{
+		#if (BASE_GAME_FILES || MODS_ALLOWED)
 			add(charSelectHint);
-		}
+		#end
 
 		// be careful not to "add()" things in here unless it's to a group that's already added to the state
 		// otherwise it won't be properly attatched to funnyCamera (relavent code should be at the bottom of create())
