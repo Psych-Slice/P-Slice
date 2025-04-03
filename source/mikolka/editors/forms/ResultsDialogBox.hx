@@ -131,6 +131,7 @@ class ResultsDialogBox extends PsychUIBox {
 			list_objSelector.selectedIndex = FlxMath.minInt(curIndex,list_objSelector.list.length-1);
 			list_objSelector.onSelect(list_objSelector.selectedIndex,list_objSelector.selectedLabel);
 		}, 100);
+		btn_removeObject.visible = false;
 		selectedName = 'General';
 		var tab = getTab('General').menu;
 		tab.add(input_musicPath.makeLabel("Rank music path:"));
