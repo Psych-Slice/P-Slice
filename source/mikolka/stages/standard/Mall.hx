@@ -1,5 +1,6 @@
 package mikolka.stages.standard;
 
+import mikolka.vslice.StickerSubState;
 import mikolka.compatibility.VsliceOptions;
 
 class Mall extends BaseStage
@@ -10,6 +11,7 @@ class Mall extends BaseStage
 
 	override function create()
 	{
+		StickerSubState.STICKER_PACK = "parents";
 		var bg:BGSprite = new BGSprite('christmas/bgWalls', -1000, -500, 0.2, 0.2);
 		bg.setGraphicSize(Std.int(bg.width * 0.8));
 		bg.updateHitbox();

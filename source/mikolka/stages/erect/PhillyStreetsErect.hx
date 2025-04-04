@@ -1,5 +1,9 @@
 package mikolka.stages.erect;
 
+import mikolka.vslice.StickerSubState;
+import mikolka.compatibility.ModsHelper;
+import mikolka.compatibility.funkin.FunkinControls;
+import mikolka.compatibility.freeplay.FreeplayHelpers;
 import openfl.filters.BlurFilter;
 import mikolka.compatibility.VsliceOptions;
 import shaders.AdjustColorShader;
@@ -208,6 +212,7 @@ class PhillyStreetsErect extends BaseStage
         override function createPost()
         {
             super.createPost();
+            if(VsliceOptions.LAST_MOD.char_name == "pico") StickerSubState.STICKER_PACK = "weekend";
             spraycanPile = new BGSprite('SpraycanPile', 920, 1045, 1, 1);
 
             add(spraycanPile);

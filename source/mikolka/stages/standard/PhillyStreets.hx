@@ -1,5 +1,6 @@
 package mikolka.stages.standard;
 
+import mikolka.vslice.StickerSubState;
 import flixel.FlxSubState;
 import openfl.filters.ShaderFilter;
 import shaders.RainShader;
@@ -166,6 +167,7 @@ class PhillyStreets extends BaseStage
 
 	override function createPost()
 	{
+		StickerSubState.STICKER_PACK = "weekend";
 		var unspawnNotes:Array<Note> = cast game.unspawnNotes;
 		for (note in unspawnNotes)
 		{

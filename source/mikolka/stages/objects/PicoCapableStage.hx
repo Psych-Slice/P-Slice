@@ -1,5 +1,6 @@
 package mikolka.stages.objects;
 
+import mikolka.vslice.StickerSubState;
 import mikolka.compatibility.VsliceOptions;
 #if !LEGACY_PSYCH
 import objects.Note;
@@ -26,17 +27,22 @@ class PicoCapableStage extends BaseStage
 	public static var NENE_LIST = ['nene', 'nene-christmas', 'nene-dark'];
 
 	public var abot:ABotSpeaker;
-
+	var forceABot:Bool = false;
 	var blinkCountdown:Int = 3;
+	public function new(forceABot:Bool = false) {
+		super();
+		this.forceABot = forceABot;
+	}
 
 	override function createPost()
 	{
 		super.createPost();
 		abot = null;
 		var game = PlayState.instance;
-		if (!NENE_LIST.contains(PlayState.SONG.gfVersion))
+		if (!(NENE_LIST.contains(PlayState.SONG.gfVersion) || forceABot))
 			return;
-
+		StickerSubState.STICKER_SET = "stickers-set-2"; //? yep, it's pico time!
+		
 		var _song = PlayState.SONG;
 		#if !LEGACY_PSYCH if (_song.gameOverSound == null || _song.gameOverSound.trim().length < 1) #end
 		GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pico';
