@@ -1,5 +1,9 @@
 package mikolka.stages.erect;
 
+import shaders.AdjustColorShader;
+import shaders.ColorSwap;
+import shaders.DropShadowShader;
+import objects.Character;
 import mikolka.compatibility.VsliceOptions;
 
 #if !LEGACY_PSYCH
@@ -77,6 +81,15 @@ class SchoolErect extends BaseStage
 
 		if(!VsliceOptions.LOW_QUALITY) {
 			bgGirls = new BackgroundGirls(-100, 190);
+			if(VsliceOptions.SHADERS){
+				var color = new AdjustColorShader(); //-66, -10, 24, -23
+				color.brightness = -66;
+				color.hue = -10;
+				color.contrast = 24;
+				color.saturation = -23;
+				bgGirls.color = 0xFF52351d;
+				bgGirls.shader = color;
+			}
 			bgGirls.scrollFactor.set(0.9, 0.9);
 			add(bgGirls);
 		}
@@ -95,6 +108,13 @@ class SchoolErect extends BaseStage
 			if(songName == 'roses' || songName == "roses-erect") FlxG.sound.play(Paths.sound('ANGRY'));
 			initDoof();
 			setStartCallback(schoolIntro);
+		}
+	}
+	override function createPost(){
+		if(VsliceOptions.SHADERS) {
+		applyShader(boyfriend);
+		applyShader(gf);
+		applyShader(dad);
 		}
 	}
 
@@ -173,5 +193,58 @@ class SchoolErect extends BaseStage
 			}
 			else tmr.reset(0.3);
 		});
+	}
+	function applyShader(character:Character) {
+		var rim = new DropShadowShader();
+		rim.setAdjustColor(-66, -10, 24, -23);
+    	rim.color = 0xFF52351d;
+		rim.antialiasAmt = 0;
+		rim.attachedSprite = character;
+		rim.distance = 5;
+		switch(character.curCharacter){
+			case "bf-pixel":{
+
+				rim.angle = 90;
+				character.shader = rim;
+
+				//rim.loadAltMask('assets/week6/images/weeb/erect/masks/bfPixel_mask.png');
+				rim.altMaskImage = Paths.image("weeb/erect/masks/bfPixel_mask").bitmap;
+				rim.maskThreshold = 1;
+				rim.useAltMask = true;
+
+				character.animation.callback = function(anim,frame,index) {
+      			rim.updateFrameInfo(character.frame);
+				};
+			}
+			case "gf-pixel":{
+
+				rim.setAdjustColor(-42, -10, 5, -25);
+				rim.angle = 90;
+				character.shader = rim;
+				rim.distance = 3;
+				rim.threshold = 0.3;
+				rim.altMaskImage = Paths.image("weeb/erect/masks/gfPixel_mask").bitmap;
+				rim.maskThreshold = 1;
+				rim.useAltMask = true;
+
+				character.animation.callback = function(anim,frame,index) {
+      			rim.updateFrameInfo(character.frame);
+    		};
+			}
+
+			case "senpai":{
+
+				rim.angle = 90;
+				character.shader = rim;
+				rim.altMaskImage = Paths.image("weeb/erect/masks/senpai_mask").bitmap;
+				rim.maskThreshold = 1;
+				rim.useAltMask = true;
+
+				character.animation.callback = function(anim,frame,index) {
+      			rim.updateFrameInfo(character.frame);
+    		};
+			}
+
+		}
 	}
 }

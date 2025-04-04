@@ -1,5 +1,6 @@
 package shaders;
 
+import openfl.display.BitmapData;
 import flixel.graphics.frames.FlxFrame;
 import flixel.system.FlxAssets.FlxShader;
 import flixel.tweens.FlxEase;
@@ -18,7 +19,9 @@ class DropShadowShader extends FlxShader
 	public var baseHue(default, set):Float;
 	public var color(default, set):FlxColor;
 	public var attachedSprite(default, set):FlxSprite;
+	public var altMaskImage(default, set):BitmapData;
 	public var useAltMask(default, set):Bool;
+	public var maskThreshold(default, set):Float;
 
 	@:glFragmentSource('
       #pragma header
@@ -290,18 +293,34 @@ class DropShadowShader extends FlxShader
 		this.useMask.value = [value];
 		return value;
     }
+	function set_altMaskImage(_bitmapData:BitmapData) {
+		this.altMaskImage = _bitmapData;
+		this.altMask.input = _bitmapData;
+		return _bitmapData;
+	}
+	function set_maskThreshold(val) {
+		this.maskThreshold = val;
+		this.thr2.value = [val];
+		return val;
+	}
     function set_attachedSprite(spr:FlxSprite) {
 		this.attachedSprite = spr;
 		this.updateFrameInfo(this.attachedSprite.frame);
 		return spr;
 	}
-    function onAttachedFrame(name,frameNum,frameIndex) {
-		if(this.attachedSprite != null) {
-			this.updateFrameInfo(this.attachedSprite.frame);
-		}
-	}
-    function updateFrameInfo(frame:FlxFrame) {
+    // function onAttachedFrame(name,frameNum,frameIndex) {
+	// 	if(this.attachedSprite != null) {
+	// 		this.updateFrameInfo(this.attachedSprite.frame);
+	// 	}
+	// }
+    public function updateFrameInfo(frame:FlxFrame) {
 		this.uFrameBounds.value = [frame.uv.x,frame.uv.y,frame.uv.width,frame.uv.height];
 		this.angOffset.value = [frame.angle * (Math.PI / 180)];
+	}
+	public function setAdjustColor(b:Float,h:Float,c:Float,s:Float) {
+		this.set_baseBrightness(b);
+		this.set_baseHue(h);
+		this.set_baseContrast(c);
+		this.set_baseSaturation(s);
 	}
 }
