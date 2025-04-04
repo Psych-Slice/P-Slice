@@ -1,9 +1,9 @@
 {
-	"songRating": 6,
-	"albumId": "expansion2",
+	"songRating": 4,
+	"albumId": "volume4",
 	"freeplayCharacter": "pico",
 	"freeplaySongLength": 86.4,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "Pico",
+	"altInstrumentalSongs": "",
 	"freeplayPrevStart": 0
 }

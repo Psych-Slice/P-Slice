@@ -1,149 +1,385 @@
 {
 	"events": [
 		[
+			0,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
 			3840,
 			[
-				["Kill Henchmen", "", ""]
+				[
+					"Kill Henchmen",
+					"",
+					""
+				]
+			]
+		],
+		[
+			3840,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			11520,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			19200,
 			[
-				["Kill Henchmen", "", ""]
+				[
+					"Kill Henchmen",
+					"",
+					""
+				]
+			]
+		],
+		[
+			19200,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			26880,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			34560,
 			[
-				["Kill Henchmen", "", ""]
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			34560,
+			[
+				[
+					"Kill Henchmen",
+					"",
+					""
+				]
 			]
 		],
 		[
 			42240,
 			[
-				["Camera Follow Pos", "620", "390"]
+				[
+					"Target Camera",
+					2,
+					"-100,210,32,expoOut"
+				]
 			]
 		],
 		[
 			42360,
 			[
-				["ZoomCamera", "32,0.95", "expoOut"]
-			]
-		],
-		[
-			45840,
-			[
-				["Camera Follow Pos", "", ""]
+				[
+					"Zoom Camera",
+					"32,0.95",
+					"expoOut"
+				]
 			]
 		],
 		[
 			45960,
 			[
-				["ZoomCamera", "32,1", "smoothStepInOut"]
+				[
+					"Zoom Camera",
+					"32,1",
+					"smoothStepInOut"
+				]
+			]
+		],
+		[
+			46080,
+			[
+				[
+					"Target Camera",
+					0,
+					"60,0,32,smoothStepInOut"
+				]
 			]
 		],
 		[
 			48960,
 			[
-				["ZoomCamera", "6,1.1", "quadOut"]
+				[
+					"Zoom Camera",
+					"6,1.1",
+					"quadOut"
+				]
 			]
 		],
 		[
 			49440,
 			[
-				["ZoomCamera", "6,1.2", "quadOut"]
+				[
+					"Zoom Camera",
+					"6,1.2",
+					"quadOut"
+				]
 			]
 		],
 		[
 			49920,
 			[
-				["ZoomCamera", "8,1", "quadOut"]
+				[
+					"Zoom Camera",
+					"8,1",
+					"quadOut"
+				]
+			]
+		],
+		[
+			50640,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			57600,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			65280,
 			[
-				["Kill Henchmen", "", ""]
+				[
+					"Kill Henchmen",
+					"",
+					""
+				]
+			]
+		],
+		[
+			65280,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			72960,
+			[
+				[
+					"Target Camera",
+					2,
+					"-100,210,32,expoOut"
+				]
 			]
 		],
 		[
 			73080,
 			[
-				["ZoomCamera", "32,0.95", "expoOut"]
-			]
-		],
-		[
-			76560,
-			[
-				["Camera Follow Pos", "", ""]
+				[
+					"Zoom Camera",
+					"32,0.95",
+					"expoOut"
+				]
 			]
 		],
 		[
 			76680,
 			[
-				["ZoomCamera", "32,1", "smoothStepInOut"]
+				[
+					"Zoom Camera",
+					"32,1",
+					"smoothStepInOut"
+				]
+			]
+		],
+		[
+			76800,
+			[
+				[
+					"Target Camera",
+					0,
+					"60,0,32,smoothStepInOut"
+				]
 			]
 		],
 		[
 			79680,
 			[
-				["ZoomCamera", "6,1.1", "quadOut"]
+				[
+					"Zoom Camera",
+					"6,1.1",
+					"quadOut"
+				]
 			]
 		],
 		[
 			80160,
 			[
-				["ZoomCamera", "6,1.2", "quadOut"]
+				[
+					"Zoom Camera",
+					"6,1.2",
+					"quadOut"
+				]
 			]
 		],
 		[
 			80640,
 			[
-				["Kill Henchmen", "", ""]
+				[
+					"Kill Henchmen",
+					"",
+					""
+				]
+			]
+		],
+		[
+			80640,
+			[
+				[
+					"Target Camera",
+					2,
+					"-100,210,32,expoOut"
+				]
 			]
 		],
 		[
 			80760,
 			[
-				["ZoomCamera", "32,0.95", "expoOut"]
+				[
+					"Zoom Camera",
+					"32,0.95",
+					"expoOut"
+				]
 			]
 		],
 		[
-			80880,
+			84480,
 			[
-				["Camera Follow Pos", "620", "390"]
+				[
+					"Target Camera",
+					2,
+					"-220,170,32,sineOut"
+				]
 			]
 		],
 		[
 			84600,
 			[
-				["ZoomCamera", "32,1.1", "sineOut"]
+				[
+					"Zoom Camera",
+					"32,1.1",
+					"sineOut"
+				]
+			]
+		],
+		[
+			88320,
+			[
+				[
+					"Target Camera",
+					2,
+					"-100,210,32,expoOut"
+				]
 			]
 		],
 		[
 			88440,
 			[
-				["ZoomCamera", "32,0.95", "expoOut"]
+				[
+					"Zoom Camera",
+					"32,0.95",
+					"expoOut"
+				]
+			]
+		],
+		[
+			92160,
+			[
+				[
+					"Target Camera",
+					2,
+					"90,120,32,sineOut"
+				]
 			]
 		],
 		[
 			92280,
 			[
-				["ZoomCamera", "32,1.1", "sineOut"]
+				[
+					"Zoom Camera",
+					"32,1.1",
+					"sineOut"
+				]
 			]
 		],
 		[
 			96000,
 			[
-				["Kill Henchmen", "", ""]
+				[
+					"Kill Henchmen",
+					"",
+					""
+				]
+			]
+		],
+		[
+			96000,
+			[
+				[
+					"Target Camera",
+					2,
+					"-100,210,32,expoOut"
+				]
 			]
 		],
 		[
 			96120,
 			[
-				["ZoomCamera", "32,0.95", "expoOut"]
+				[
+					"Zoom Camera",
+					"32,0.95",
+					"expoOut"
+				]
 			]
 		]
 	],
-	"format": "psych_v1"
+	"format": "psych_v1_convert"
 }

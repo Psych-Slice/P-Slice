@@ -1,0 +1,305 @@
+{
+	"events": [
+		[
+			6193,
+			[
+				[
+					"Target Camera",
+					1,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			9290,
+			[
+				[
+					"Target Camera",
+					0,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			18580,
+			[
+				[
+					"Target Camera",
+					0,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			24774.1935483871,
+			[
+				[
+					"Target Camera",
+					1,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			30967.7419354839,
+			[
+				[
+					"Target Camera",
+					0,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			37161.2903225806,
+			[
+				[
+					"Target Camera",
+					1,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			43354.8387096774,
+			[
+				[
+					"Target Camera",
+					0,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			49548,
+			[
+				[
+					"Target Camera",
+					1,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			53032.2580645161,
+			[
+				[
+					"Target Camera",
+					0,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			55741,
+			[
+				[
+					"Target Camera",
+					1,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			61935,
+			[
+				[
+					"Target Camera",
+					1,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			65032,
+			[
+				[
+					"Target Camera",
+					0,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			68129,
+			[
+				[
+					"Target Camera",
+					1,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			71225,
+			[
+				[
+					"Target Camera",
+					0,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			74322.5806451613,
+			[
+				[
+					"Target Camera",
+					1,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			80516.1290322581,
+			[
+				[
+					"Target Camera",
+					0,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			86709.6774193548,
+			[
+				[
+					"Target Camera",
+					1,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			92903.2258064516,
+			[
+				[
+					"Target Camera",
+					0,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			99096,
+			[
+				[
+					"Target Camera",
+					1,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			102193.548387097,
+			[
+				[
+					"Target Camera",
+					0,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			105289,
+			[
+				[
+					"Target Camera",
+					1,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			108386,
+			[
+				[
+					"Target Camera",
+					0,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			111483.387096774,
+			[
+				[
+					"Target Camera",
+					1,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			114580.64516129,
+			[
+				[
+					"Target Camera",
+					0,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			117677.64516129,
+			[
+				[
+					"Target Camera",
+					1,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			120773.64516129,
+			[
+				[
+					"Target Camera",
+					0,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			58838,
+			[
+				[
+					"Target Camera",
+					0,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			12387,
+			[
+				[
+					"Target Camera",
+					1,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			3096.77419354839,
+			[
+				[
+					"Target Camera",
+					0,
+					"null,null,null,null"
+				]
+			]
+		],
+		[
+			0,
+			[
+				[
+					"Target Camera",
+					1,
+					"null,null,null,null"
+				]
+			]
+		]
+	],
+	"format": "psych_v1_convert"
+}

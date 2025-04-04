@@ -1,9 +1,9 @@
 {
-	"songRating": 12,
-	"albumId": "expansion2",
+	"songRating": 5,
+	"albumId": "volume4",
 	"freeplayCharacter": "pico",
 	"freeplaySongLength": 106.909093,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "Blammed",
+	"altInstrumentalSongs": "",
 	"freeplayPrevStart": 0
 }
