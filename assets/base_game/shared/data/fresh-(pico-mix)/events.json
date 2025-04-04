@@ -1,131 +1,475 @@
 {
 	"events": [
 		[
-			25000,
+			4000,
 			[
-				["Camera Follow Pos", "400", "400"]
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			6000,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			10000,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			12250,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			14000,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			16250,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			18000,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			20000,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			22000,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			24000,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			25075,
 			[
-				["ZoomCamera", "16,0.75", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.75",
+					"expoOut"
+				]
 			]
 		],
 		[
 			28000,
 			[
-				["Camera Follow Pos", "", ""]
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			28075,
 			[
-				["ZoomCamera", "16,0.85", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.85",
+					"expoOut"
+				]
+			]
+		],
+		[
+			32500,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			36000,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			40000,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			40062,
 			[
-				["ZoomCamera", "16,1", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,1",
+					"expoOut"
+				]
+			]
+		],
+		[
+			42000,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			44000,
 			[
-				["ZoomCamera", "16,0.85", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.85",
+					"expoOut"
+				]
+			]
+		],
+		[
+			44250,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			46250,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			46312,
 			[
-				["ZoomCamera", "16,0.95", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.95",
+					"expoOut"
+				]
 			]
 		],
 		[
 			48000,
 			[
-				["ZoomCamera", "16,0.85", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.85",
+					"expoOut"
+				]
+			]
+		],
+		[
+			48250,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			50250,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			50312,
 			[
-				["ZoomCamera", "16,0.95", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.95",
+					"expoOut"
+				]
 			]
 		],
 		[
 			51812,
 			[
-				["ZoomCamera", "16,0.85", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.85",
+					"expoOut"
+				]
+			]
+		],
+		[
+			52000,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			54250,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			54312,
 			[
-				["ZoomCamera", "16,0.95", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.95",
+					"expoOut"
+				]
+			]
+		],
+		[
+			56000,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			56062,
 			[
-				["ZoomCamera", "8,0.85", "expoOut"]
+				[
+					"Zoom Camera",
+					"8,0.85",
+					"expoOut"
+				]
 			]
 		],
 		[
 			57000,
 			[
-				["Camera Follow Pos", "400", "400"]
+				[
+					"Target Camera",
+					1,
+					"200,80,4,CLASSIC"
+				]
 			]
 		],
 		[
 			57075,
 			[
-				["ZoomCamera", "16,0.75", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.75",
+					"expoOut"
+				]
 			]
 		],
 		[
 			60000,
 			[
-				["Camera Follow Pos", "", ""]
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			60075,
 			[
-				["ZoomCamera", "16,0.85", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.85",
+					"expoOut"
+				]
+			]
+		],
+		[
+			68000,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			68062,
 			[
-				["ZoomCamera", "16,0.9", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.9",
+					"expoOut"
+				]
 			]
 		],
 		[
 			70000,
 			[
-				["ZoomCamera", "16,1", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,1",
+					"expoOut"
+				]
 			]
 		],
 		[
 			71000,
 			[
-				["ZoomCamera", "16,1.1", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,1.1",
+					"expoOut"
+				]
 			]
 		],
 		[
 			71500,
 			[
-				["ZoomCamera", "16,1.15", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,1.15",
+					"expoOut"
+				]
 			]
 		],
 		[
 			72000,
 			[
-				["ZoomCamera", "60,0.8", "circOut"]
+				[
+					"Zoom Camera",
+					"60,0.8",
+					"circOut"
+				]
+			]
+		],
+		[
+			64500,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			25000,
+			[
+				[
+					"Target Camera",
+					1,
+					"200,80,4,CLASSIC"
+				]
+			]
+		],
+		[
+			8250,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			2000,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			0,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
 			]
 		]
 	],
-	"format": "psych_v1"
+	"format": "psych_v1_convert"
 }

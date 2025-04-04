@@ -1,9 +1,9 @@
 {
-	"songRating": 7,
-	"albumId": "expansion2",
+	"songRating": 3,
+	"albumId": "volume4",
 	"freeplayCharacter": "pico",
 	"freeplaySongLength": 97.6,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "Spookeez",
+	"altInstrumentalSongs": "",
 	"freeplayPrevStart": 0
 }

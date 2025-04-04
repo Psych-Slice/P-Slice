@@ -48,12 +48,12 @@ class VSliceEvents extends BaseStage {
                 var dur = floaties[2];
                 switch (value1){
                     case "bf"|"0":{
-                        targetx += game.boyfriend.getMidpoint().x -100 + boyfriend.cameraPosition[0] - game.boyfriendCameraOffset[0];
-                        targety += game.boyfriend.getMidpoint().y -100 + boyfriend.cameraPosition[1] - game.boyfriendCameraOffset[1];
+                        targetx += game.boyfriend.getMidpoint().x -100 - boyfriend.cameraPosition[0] + game.boyfriendCameraOffset[0];
+                        targety += game.boyfriend.getMidpoint().y -100 + boyfriend.cameraPosition[1] + game.boyfriendCameraOffset[1];
                     }
                     case "dad"|"1":{
-                        targetx += game.dad.getMidpoint().x +150 + dad.cameraPosition[0] - game.opponentCameraOffset[0];
-                        targety += game.dad.getMidpoint().y -100 + dad.cameraPosition[1] - game.opponentCameraOffset[1];
+                        targetx += game.dad.getMidpoint().x +150 + dad.cameraPosition[0] + game.opponentCameraOffset[0];
+                        targety += game.dad.getMidpoint().y -100 + dad.cameraPosition[1] + game.opponentCameraOffset[1];
                     }
                     case "gf"|"2":{
                         targetx += game.gf.getMidpoint().x + gf.cameraPosition[0] - game.girlfriendCameraOffset[0];
