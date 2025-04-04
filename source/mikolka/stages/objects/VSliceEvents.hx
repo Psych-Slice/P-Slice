@@ -23,7 +23,7 @@ class VSliceEvents extends BaseStage {
 							}
 						});
 				}
-            case 'SetCameraBop': //P-slice event notes
+            case 'Set Camera Bopping': //P-slice event notes
 				var val1 = Std.parseFloat(value1);
 				var val2 = Std.parseFloat(value2);
 				game.camZoomingMult = !Math.isNaN(val2) ? val2 : 1;
@@ -80,7 +80,7 @@ class VSliceEvents extends BaseStage {
                         }
                     });
                 }
-			case 'ZoomCamera': //defaultCamZoom
+			case 'Zoom Camera': //defaultCamZoom
 				var keyValues = value1.split(",");
 				if(keyValues.length != 2) {
 					trace("INVALID EVENT VALUE");
