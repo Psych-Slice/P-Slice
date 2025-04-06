@@ -57,6 +57,7 @@ class EventLoader extends BaseStage {
 			case 'limoRideErect': new LimoRideErect();  			//Week 4 Special 
 			case 'mallXmasErect': new MallXmasErect(); 				//Week 5 Special 
 			case 'schoolErect': new SchoolErect();					//Week 6 Special
+			case 'schoolPico': new SchoolErect();					//Week 6 Special
 			case 'phillyStreetsErect': new PhillyStreetsErect(); 	//Weekend 1 Special 
             default: addNene = false;
 		}

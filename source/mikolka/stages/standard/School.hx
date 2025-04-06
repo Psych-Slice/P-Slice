@@ -32,7 +32,7 @@ class School extends BaseStage
 
 		var repositionShit = -200;
 
-		var bgSchool:BGSprite = new BGSprite('weeb/weebSchool', repositionShit, 0, 0.6, 0.90);
+		var bgSchool:BGSprite = new BGSprite('weeb/weebSchool', repositionShit, 0, 0.75, 0.75);
 		add(bgSchool);
 		bgSchool.antialiasing = false;
 
