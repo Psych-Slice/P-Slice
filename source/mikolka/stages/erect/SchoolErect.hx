@@ -30,13 +30,17 @@ class SchoolErect extends BaseStage
 		if(_song.gameOverChar == null || _song.gameOverChar.trim().length < 1) GameOverSubstate.characterName = 'bf-pixel-dead';
 		#end
 
-		var bgSky:BGSprite = new BGSprite('weeb/erect/weebSky', 0, 0, 0.1, 0.1);
+		var repositionShit = -200;
+
+		var bgSky:BGSprite = new BGSprite('weeb/erect/weebSky', repositionShit+38, -78, 0.2, 0.2);
 		add(bgSky);
 		bgSky.antialiasing = false;
 
-		var repositionShit = -200;
+		var foliage:BGSprite = new BGSprite('weeb/erect/weebBackTrees', repositionShit, -0, 0.5, 0.5);
+		add(foliage);
+		foliage.antialiasing = false;
 
-		var bgSchool:BGSprite = new BGSprite('weeb/erect/weebSchool', repositionShit, 0, 0.6, 0.90);
+		var bgSchool:BGSprite = new BGSprite('weeb/erect/weebSchool', repositionShit, -15, 0.6, 0.90);
 		add(bgSchool);
 		bgSchool.antialiasing = false;
 
@@ -45,15 +49,16 @@ class SchoolErect extends BaseStage
 		bgStreet.antialiasing = false;
 
 		var widShit = Std.int(bgSky.width * PlayState.daPixelZoom);
+
 		if(!VsliceOptions.LOW_QUALITY) {
-			var fgTrees:BGSprite = new BGSprite('weeb/erect/weebTreesBack', repositionShit + 170, 130, 0.9, 0.9);
-			fgTrees.setGraphicSize(Std.int(widShit * 0.8));
+			var fgTrees:BGSprite = new BGSprite('weeb/erect/weebTreesBack', repositionShit +20 , 0, 0.9, 0.9);
+			fgTrees.setGraphicSize(Std.int(widShit));
 			fgTrees.updateHitbox();
 			add(fgTrees);
 			fgTrees.antialiasing = false;
 		}
 
-		var bgTrees:FlxSprite = new FlxSprite(repositionShit - 380, -800);
+		var bgTrees:FlxSprite = new FlxSprite(repositionShit - 410, -900);
 		bgTrees.frames = Paths.getPackerAtlas('weeb/erect/weebTrees');
 		bgTrees.animation.add('treeLoop', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 12);
 		bgTrees.animation.play('treeLoop');
@@ -62,7 +67,7 @@ class SchoolErect extends BaseStage
 		bgTrees.antialiasing = false;
 
 		if(!VsliceOptions.LOW_QUALITY) {
-			var treeLeaves:BGSprite = new BGSprite('weeb/erect/petals', repositionShit, -40, 0.85, 0.85, ['PETALS ALL'], true);
+			var treeLeaves:BGSprite = new BGSprite('weeb/erect/petals', repositionShit+30, -40, 0.85, 0.85, ['PETALS ALL'], true);
 			treeLeaves.setGraphicSize(widShit);
 			treeLeaves.updateHitbox();
 			add(treeLeaves);
@@ -70,11 +75,13 @@ class SchoolErect extends BaseStage
 		}
 
 		bgSky.setGraphicSize(widShit);
+		foliage.setGraphicSize(widShit);
 		bgSchool.setGraphicSize(widShit);
 		bgStreet.setGraphicSize(widShit);
-		bgTrees.setGraphicSize(Std.int(widShit * 1.4));
+		bgTrees.setGraphicSize(Std.int(widShit * 1.5));
 
 		bgSky.updateHitbox();
+		foliage.updateHitbox();
 		bgSchool.updateHitbox();
 		bgStreet.updateHitbox();
 		bgTrees.updateHitbox();
@@ -211,6 +218,20 @@ class SchoolErect extends BaseStage
       			rim.updateFrameInfo(sprite.frame);
 				};
 			}
+			case "pico-pixel":{
+
+				rim.angle = 90;
+				sprite.shader = rim;
+
+				//rim.loadAltMask('assets/week6/images/weeb/erect/masks/bfPixel_mask.png');
+				rim.altMaskImage = Paths.image("weeb/erect/masks/picoPixel_mask").bitmap;
+				rim.maskThreshold = 1;
+				rim.useAltMask = true;
+
+				sprite.animation.callback = function(anim,frame,index) {
+      			rim.updateFrameInfo(sprite.frame);
+				};
+			}
 			case "gf-pixel":{
 
 				rim.setAdjustColor(-42, -10, 5, -25);
@@ -219,6 +240,21 @@ class SchoolErect extends BaseStage
 				rim.distance = 3;
 				rim.threshold = 0.3;
 				rim.altMaskImage = Paths.image("weeb/erect/masks/gfPixel_mask").bitmap;
+				rim.maskThreshold = 1;
+				rim.useAltMask = true;
+
+				sprite.animation.callback = function(anim,frame,index) {
+      			rim.updateFrameInfo(sprite.frame);
+    		};
+			}
+			case "nene-pixel":{
+
+				rim.setAdjustColor(-42, -10, 5, -25);
+				rim.angle = 90;
+				sprite.shader = rim;
+				rim.distance = 3;
+				rim.threshold = 0.3;
+				rim.altMaskImage = Paths.image("weeb/erect/masks/nenePixel_mask").bitmap;
 				rim.maskThreshold = 1;
 				rim.useAltMask = true;
 
