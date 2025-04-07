@@ -36,11 +36,11 @@ class SchoolErect extends BaseStage
 		add(bgSky);
 		bgSky.antialiasing = false;
 
-		var foliage:BGSprite = new BGSprite('weeb/erect/weebBackTrees', repositionShit, -0, 0.5, 0.5);
+		var foliage:BGSprite = new BGSprite('weeb/erect/weebBackTrees', repositionShit, -10, 0.5, 0.5);
 		add(foliage);
 		foliage.antialiasing = false;
 
-		var bgSchool:BGSprite = new BGSprite('weeb/erect/weebSchool', repositionShit, -15, 0.6, 0.90);
+		var bgSchool:BGSprite = new BGSprite('weeb/erect/weebSchool', repositionShit, -15, 0.8, 0.90);
 		add(bgSchool);
 		bgSchool.antialiasing = false;
 
@@ -51,7 +51,7 @@ class SchoolErect extends BaseStage
 		var widShit = Std.int(bgSky.width * PlayState.daPixelZoom);
 
 		if(!VsliceOptions.LOW_QUALITY) {
-			var fgTrees:BGSprite = new BGSprite('weeb/erect/weebTreesBack', repositionShit +20 , 0, 0.9, 0.9);
+			var fgTrees:BGSprite = new BGSprite('weeb/erect/weebTreesBack', repositionShit +15 , -15, 0.9, 0.9);
 			fgTrees.setGraphicSize(Std.int(widShit));
 			fgTrees.updateHitbox();
 			add(fgTrees);
@@ -68,7 +68,7 @@ class SchoolErect extends BaseStage
 
 		if(!VsliceOptions.LOW_QUALITY) {
 			var treeLeaves:BGSprite = new BGSprite('weeb/erect/petals', repositionShit+30, -40, 0.85, 0.85, ['PETALS ALL'], true);
-			treeLeaves.setGraphicSize(widShit);
+			treeLeaves.setGraphicSize(widShit* 0.95);
 			treeLeaves.updateHitbox();
 			add(treeLeaves);
 			treeLeaves.antialiasing = false;
