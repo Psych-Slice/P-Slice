@@ -1,0 +1,108 @@
+{
+	"animations": [
+		{
+			"offsets": [0, 0],
+			"loop": false,
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "otis idle0"
+		},
+		{
+			"offsets": [0, 13],
+			"loop": false,
+			"fps": 24,
+			"anim": "shoot1",
+			"indices": [],
+			"name": "shoot back0"
+		},
+		{
+			"offsets": [-35, 21],
+			"loop": false,
+			"fps": 24,
+			"anim": "shoot2",
+			"indices": [],
+			"name": "shoot back low0"
+		},
+		{
+			"offsets": [238, 96],
+			"loop": false,
+			"fps": 24,
+			"anim": "shoot3",
+			"indices": [],
+			"name": "shoot forward0"
+		},
+		{
+			"offsets": [260, 23],
+			"loop": false,
+			"fps": 24,
+			"anim": "shoot4",
+			"indices": [],
+			"name": "shoot forward low0"
+		},
+		{
+			"offsets": [238, 96],
+			"loop": true,
+			"fps": 24,
+			"anim": "shoot3-loop",
+			"indices": [
+				50,
+				51,
+				52
+			],
+			"name": "shoot forward0"
+		},
+		{
+			"offsets": [0, 13],
+			"loop": true,
+			"fps": 24,
+			"anim": "shoot1-loop",
+			"indices": [
+				23,
+				24,
+				25
+			],
+			"name": "shoot back0"
+		},
+		{
+			"offsets": [-35, 21],
+			"loop": true,
+			"fps": 24,
+			"anim": "shoot2-loop",
+			"indices": [
+				57,
+				58,
+				59
+			],
+			"name": "shoot back low0"
+		},
+		{
+			"offsets": [260, 23],
+			"loop": true,
+			"fps": 24,
+			"anim": "shoot4-loop",
+			"indices": [
+				50,
+				51,
+				52
+			],
+			"name": "shoot forward low0"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/otisSpeaker",
+	"position": [-40, -135],
+	"healthicon": "pico",
+	"flip_x": false,
+	"healthbar_colors": [
+		183,
+		216,
+		85
+	],
+	"camera_position": [
+		-310,
+		100
+	],
+	"sing_duration": 4,
+	"scale": 1
+}

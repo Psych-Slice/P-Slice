@@ -18,14 +18,14 @@ class TankErect extends BaseStage {
         bg.scale.set(1.15,1.15);
 		add(bg);
 
-        sniper = new FlxSprite( -127, 349);
+        sniper = new FlxSprite( -346, 245);
 		sniper.frames = Paths.getSparrowAtlas('erect/sniper');
         sniper.animation.addByPrefix("idle","Tankmanidlebaked instance 1",24);
         sniper.animation.addByPrefix("sip","tanksippingBaked instance 1",24);
         sniper.scale.set(1.15,1.15);
 		add(sniper);
 
-        guy = new FlxSprite(-127, 349);
+        guy = new FlxSprite(1175, 270);
 		guy.frames = Paths.getSparrowAtlas('erect/guy');
         guy.animation.addByPrefix("idle","BLTank2 instance 1",24);
         guy.scale.set(1.15,1.15);
