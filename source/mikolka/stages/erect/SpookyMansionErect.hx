@@ -207,8 +207,8 @@ class SpookyMansionErect extends BaseStage
 
 		var gfMode = PlayState.instance.gf.curCharacter.split("-")[0];
 		gfGhost = new Character(game.gf.x, game.gf.y, gfMode);
-		//if (gfMode == 'nene')
-			//gfGhost.y -= 190;
+		if (gfMode == 'nene')
+			gfGhost.y -= 200;
 		game.add(gfGhost);
 		gfGhost.dance();
 		

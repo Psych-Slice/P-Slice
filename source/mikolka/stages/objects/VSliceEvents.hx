@@ -16,7 +16,7 @@ class VSliceEvents extends BaseStage {
 					if(flValue2 <= 0)
 						game.songSpeed = newValue;
 					else
-						game.songSpeedTween = FlxTween.tween(this, {songSpeed: newValue}, flValue2 / game.playbackRate, {ease: FlxEase.quadInOut, onComplete:
+						game.songSpeedTween = FlxTween.tween(game, {songSpeed: newValue}, flValue2 / game.playbackRate, {ease: FlxEase.quadInOut, onComplete:
 							function (twn:FlxTween)
 							{
 								game.songSpeedTween = null;
@@ -45,7 +45,7 @@ class VSliceEvents extends BaseStage {
 
                 var targetx = floaties[0];
                 var targety = floaties[1];
-                var dur = floaties[2];
+                var dur = floaties[2]*(Conductor.stepCrochet/1000);
                 switch (value1){
                     case "bf"|"0":{
                         targetx += game.boyfriend.getMidpoint().x -100 - boyfriend.cameraPosition[0] + game.boyfriendCameraOffset[0];
