@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import mikolka.stages.objects.PicoCapableStage;
 import shaders.AdjustColorShader;
 import shaders.ColorSwap;
 import shaders.DropShadowShader;
@@ -117,6 +118,7 @@ class SchoolErect extends BaseStage
 		applyShader(boyfriend,boyfriend.curCharacter);
 		applyShader(gf,gf.curCharacter);
 		applyShader(dad,dad.curCharacter);
+		if(PicoCapableStage.instance?.abotPixel != null)applyShader(PicoCapableStage.instance.abotPixel,"");
 		}
 	}
 

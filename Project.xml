@@ -100,8 +100,6 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<assets path="assets/embed"          if="web" embed="true"/>
 	<assets path="assets/embed"          unless="web" embed="true"/>
-	<assets path="assets/songs"          if="web"/>
-	<assets path="assets/songs"          unless="web"/>
 
 	<assets path="assets/week_assets"   rename="assets"  if="web"/>
 	<assets path="assets/week_assets"   rename="assets"  unless="web"/>

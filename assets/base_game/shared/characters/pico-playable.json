@@ -167,6 +167,20 @@
 		"fps": 24,
       "name": "pico swear left",
       "offsets": [84, -11]
+    },
+    {
+      "anim": "hey",
+      "loop": false,
+	  "fps": 24,
+      "name": "Pico HEY!!0",
+      "offsets": [0, 0]
+    },
+    {
+      "anim": "cheer",
+      "loop": false,
+	  "fps": 24,
+      "name": "Pico YEAH cheer0",
+      "offsets": [0, 0]
     }
 	],
 	"vocals_file": "",
