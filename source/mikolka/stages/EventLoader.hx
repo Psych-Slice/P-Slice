@@ -45,14 +45,10 @@ class EventLoader extends BaseStage {
 			case 'tank': new Tank();								//Week 7 - Ugh, Guns, Stress
             #if !LEGACY_PSYCH
 			case 'phillyStreets': new PhillyStreets(); 				//Weekend 1 - Darnell, Lit Up, 2Hot
-			case 'phillyBlazin': 
-                new PhillyBlazin(new PicoCapableStage());				//Weekend 1 - Blazin
-                return;
+			case 'phillyBlazin': new PhillyBlazin();				//Weekend 1 - Blazin
             #end
 			case 'mainStageErect': new MainStageErect();			//Week 1 Special 
-			case 'spookyMansionErect': 
-                new SpookyMansionErect(new PicoCapableStage());	//Week 2 Special 
-                return;
+			case 'spookyMansionErect': new SpookyMansionErect();	//Week 2 Special 
 			case 'phillyTrainErect': new PhillyTrainErect();  		//Week 3 Special 
 			case 'limoRideErect': new LimoRideErect();  			//Week 4 Special 
 			case 'mallXmasErect': new MallXmasErect(); 				//Week 5 Special 
@@ -62,6 +58,6 @@ class EventLoader extends BaseStage {
 			case 'phillyStreetsErect': new PhillyStreetsErect(); 	//Weekend 1 Special 
             default: addNene = false;
 		}
-        if(addNene) new PicoCapableStage();
+        if(addNene && PicoCapableStage.instance == null) new PicoCapableStage();
     } 
 }

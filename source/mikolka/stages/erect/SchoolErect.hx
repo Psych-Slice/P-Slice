@@ -257,10 +257,9 @@ class SchoolErect extends BaseStage
 				rim.altMaskImage = Paths.image("weeb/erect/masks/nenePixel_mask").bitmap;
 				rim.maskThreshold = 1;
 				rim.useAltMask = true;
-
 				sprite.animation.callback = function(anim,frame,index) {
-      			rim.updateFrameInfo(sprite.frame);
-    		};
+      				rim.updateFrameInfo(sprite.frame);
+    			};
 			}
 
 			case "senpai"|"senpai-angry":{
