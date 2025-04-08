@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import mikolka.stages.objects.PicoCapableStage;
 import flixel.FlxSubState;
 import mikolka.stages.objects.PhillyLights;
 import mikolka.stages.objects.PicoDopplegangerSprite;
@@ -78,6 +79,7 @@ class PhillyTrainErect extends BaseStage
 			dad.shader = colorShader;
 			gf.shader = colorShader;
 			phillyTrain.shader = colorShader;
+			if(PicoCapableStage.instance?.abot != null) PicoCapableStage.instance.abot.shader = colorShader;
 		}
 	}
 

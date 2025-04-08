@@ -92,7 +92,7 @@ class Character extends FlxSprite
 		
 		switch(curCharacter)
 		{
-			case 'pico-speaker':
+			case 'pico-speaker'|'otis-speaker':
 				skipDance = true;
 				loadMappedAnims();
 				playAnim("shoot1");
@@ -273,7 +273,7 @@ class Character extends FlxSprite
 
 		switch(curCharacter)
 		{
-			case 'pico-speaker':
+			case 'pico-speaker'|'otis-speaker':
 				if(animationNotes.length > 0 && Conductor.songPosition > animationNotes[0][0])
 				{
 					var noteData:Int = 1;

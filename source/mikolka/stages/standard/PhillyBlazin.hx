@@ -28,10 +28,8 @@ class PhillyBlazin extends BaseStage
 	
 	var lightningTimer:Float = 3.0;
 
-	var nene:PicoCapableStage;
-	public function new(nene:PicoCapableStage) {
+	public function new() {
 		super();
-		this.nene = nene;
 	}
 	
 	override function create()
@@ -140,7 +138,7 @@ class PhillyBlazin extends BaseStage
 			if(character == null) continue;
 			character.color = 0xFF888888;
 		}
-		nene.abot.color = 0xFF888888;
+		PicoCapableStage.instance.abot.color = 0xFF888888;
 
 		var unspawnNotes:Array<Note> = cast game.unspawnNotes;
 		for (note in unspawnNotes)
@@ -236,7 +234,7 @@ class PhillyBlazin extends BaseStage
 		FlxTween.color(boyfriend, LIGHTNING_FADE_DURATION, 0xFF606060, 0xFFDEDEDE);
 		FlxTween.color(dad, LIGHTNING_FADE_DURATION, 0xFF606060, 0xFFDEDEDE);
 		FlxTween.color(gf, LIGHTNING_FADE_DURATION, 0xFF606060, 0xFF888888);
-		FlxTween.color(nene.abot, LIGHTNING_FADE_DURATION, 0xFF606060, 0xFF888888);
+		FlxTween.color(PicoCapableStage.instance.abot, LIGHTNING_FADE_DURATION, 0xFF606060, 0xFF888888);
 
 		// Sound
 		FlxG.sound.play(Paths.soundRandom('lightning/Lightning', 1, 3));

@@ -1,7 +1,9 @@
 package mikolka.stages.objects;
 
+import flixel.util.typeLimit.OneOfTwo;
 import mikolka.vslice.StickerSubState;
 import mikolka.compatibility.VsliceOptions;
+import mikolka.stages.objects.ABotPixel;
 #if !LEGACY_PSYCH
 import objects.Note;
 import substates.GameOverSubstate;
@@ -24,16 +26,23 @@ class PicoCapableStage extends BaseStage
 	final MAX_BLINK_DELAY:Int = 7;
 	final VULTURE_THRESHOLD:Float = 0.5;
 
-	public static var NENE_LIST = ['nene', 'nene-christmas', 'nene-dark'];
+	public static var instance:PicoCapableStage = null;
+	public static var NENE_LIST = ['nene','nene-pixel',"otis-speaker", 'nene-christmas', 'nene-dark'];
+	public static var PIXEL_LIST = ['nene-pixel'];
 
 	public var abot:ABotSpeaker;
+	public var abotPixel:ABotPixel;
 	var forceABot:Bool = false;
 	var blinkCountdown:Int = 3;
 	public function new(forceABot:Bool = false) {
+		instance = null;
 		super();
 		this.forceABot = forceABot;
 	}
-
+	override function destroy() {
+		instance = null;
+		super.destroy();
+	}
 	override function createPost()
 	{
 		super.createPost();
@@ -41,7 +50,7 @@ class PicoCapableStage extends BaseStage
 		var game = PlayState.instance;
 		if (!(NENE_LIST.contains(PlayState.SONG.gfVersion) || forceABot))
 			return;
-		StickerSubState.STICKER_SET = "stickers-set-2"; //? yep, it's pico time!
+		if (!forceABot) StickerSubState.STICKER_SET = "stickers-set-2"; //? yep, it's pico time!
 		
 		var _song = PlayState.SONG;
 		#if !LEGACY_PSYCH if (_song.gameOverSound == null || _song.gameOverSound.trim().length < 1) #end
@@ -54,14 +63,23 @@ class PicoCapableStage extends BaseStage
 		GameOverSubstate.characterName = 'pico-dead';
 
 		game.gfGroup.y -= 200;
-		abot = new ABotSpeaker(game.gfGroup.x - 50, game.gfGroup.y + 550 - 30, PlayState.SONG.gfVersion == "nene-dark");
-		updateABotEye(true);
-		game.addBehindGF(abot);
+		if(PIXEL_LIST.contains(PlayState.SONG.gfVersion) || PlayState.isPixelStage) {
+			abotPixel = new ABotPixel(game.gfGroup.x - 165, game.gfGroup.y + 340 - 30);
+			updateABotEye(true);
+			game.addBehindGF(abotPixel);
+		}
+		else {
+			abot = new ABotSpeaker(game.gfGroup.x - 50, game.gfGroup.y + 550 - 30, PlayState.SONG.gfVersion == "nene-dark");
+			updateABotEye(true);
+			game.addBehindGF(abot);
+		}
 
 		if (gf != null)
 		{
+			var oldCallback = gf.animation.callback;
 			gf.animation.callback = function(name:String, frameNumber:Int, frameIndex:Int)
 			{
+				if(oldCallback != null) oldCallback(name,frameNumber,frameIndex);
 				switch (currentNeneState)
 				{
 					case STATE_PRE_RAISE:
@@ -81,14 +99,13 @@ class PicoCapableStage extends BaseStage
 	{
 		super.startSong();
 		if(gf != null) gf.animation.finishCallback = onNeneAnimationFinished;
-		if (abot == null)
-			return;
-		abot.snd = FlxG.sound.music;
+		if (abot != null) abot.snd = FlxG.sound.music;
+		if (abotPixel != null) abotPixel.snd = FlxG.sound.music;
 	}
 
 	override function sectionHit()
 	{
-		if (abot == null)
+		if (abot == null && abotPixel == null)
 			return;
 		updateABotEye(); // If this fails we probably need to dispose our ABot
 	}
@@ -237,13 +254,19 @@ class PicoCapableStage extends BaseStage
 		@:privateAccess // lol
 		if (PlayState.SONG.notes[
 			Std.int(FlxMath.bound(PlayState.instance.curSection, 0, PlayState.SONG.notes.length - 1))
-		].mustHitSection == true)
-			abot.lookRight();
-		else
-			abot.lookLeft();
+		].mustHitSection == true){
+			abot?.lookRight();
+			abotPixel?.lookRight();
+		}
+		else{
+			abot?.lookLeft();
+			abotPixel?.lookLeft();
+		}
 
-		if (finishInstantly)
-			abot.eyes.anim.curFrame = abot.eyes.anim.length - 1;
+		if (finishInstantly){
+			if(abot != null) abot.eyes.anim.curFrame = abot.eyes.anim.length - 1;
+			if(abotPixel != null) abotPixel.eyes.animation.frameIndex= abotPixel.eyes.animation.curAnim.numFrames - 1;
+		}
 	}
 
 	public static function playPicoDeath(state:GameOverSubstate)

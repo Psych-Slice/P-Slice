@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import mikolka.stages.objects.PicoCapableStage;
 import objects.Character;
 import mikolka.compatibility.VsliceOptions;
 import shaders.DropShadowShader;
@@ -51,6 +52,7 @@ class TankErect extends BaseStage {
 		applyShader(boyfriend,boyfriend.curCharacter);
 		applyShader(gf,gf.curCharacter);
 		applyShader(dad,dad.curCharacter);
+		if(PicoCapableStage.instance?.abot != null) applyShader(PicoCapableStage.instance.abot,"abot");
 		}
 		if(!VsliceOptions.LOW_QUALITY)
 			{
@@ -60,6 +62,7 @@ class TankErect extends BaseStage {
 					if(gf.curCharacter == 'otis-speaker')
 					{
 						var firstTank:TankmenBG = new TankmenBG(20, 500, true);
+						applyShader(firstTank,"");
 						firstTank.resetShit(20, 1500, true);
 						firstTank.strumTime = 10;
 						firstTank.visible = false;
@@ -126,13 +129,20 @@ class TankErect extends BaseStage {
       			rim.updateFrameInfo(sprite.frame);
     		};
 			}
-			case "nene":{}
+			case "nene":{
+				rim.threshold = 0.1;
+				rim.angle = 90;
+				sprite.shader = rim;
+				sprite.animation.callback = function(anim,frame,index) {
+				rim.updateFrameInfo(sprite.frame);
+				};
+			}
 			default:{
 				rim.angle = 90;
 				sprite.shader = rim;
 				sprite.animation.callback = function(anim,frame,index) {
 				rim.updateFrameInfo(sprite.frame);
-			};
+				};
 			}
 		}
 	}

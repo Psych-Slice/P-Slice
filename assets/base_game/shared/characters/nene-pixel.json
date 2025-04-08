@@ -6,7 +6,7 @@
 			"fps": 24,
 			"anim": "danceLeft",
 			"loop": false,
-			"name": "Idle"
+			"name": "idle"
 		},
 		{
 			"offsets": [0, 0],
@@ -14,31 +14,7 @@
 			"fps": 24,
 			"anim": "danceRight",
 			"loop": false,
-			"name": "Idle"
-		},
-		{
-			"offsets": [-119, 55],
-			"indices": [],
-			"fps": 24,
-			"anim": "combo50",
-			"loop": false,
-			"name": "ComboCheer"
-		},
-		{
-			"offsets": [17, -5],
-			"indices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 7, 8, 9, 10, 11, 7, 8, 9, 10, 11, 7, 8, 9, 10, 11, 7, 8, 9, 10, 11, 7, 8, 9, 10, 11],
-			"fps": 24,
-			"anim": "laughCutscene",
-			"loop": false,
-			"name": "Laugh0"
-		},
-		{
-			"offsets": [-41, -15],
-			"indices": [0, 1, 2, 3, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6],
-			"fps": 24,
-			"anim": "combo100",
-			"loop": false,
-			"name": "ComboFawn0"
+			"name": "idle"
 		},
 		{
 			"offsets": [0, 10],
@@ -68,7 +44,7 @@
 	"vocals_file": "",
 	"no_antialiasing": true,
 	"image": "characters/nenePixel/nenePixel",
-	"position": [0, 200],
+	"position": [-15, 200],
 	"healthicon": "face",
 	"flip_x": false,
 	"healthbar_colors": [161, 161, 161],
