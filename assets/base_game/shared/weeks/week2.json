@@ -15,6 +15,7 @@
 	"storyName": "Spooky Month",
 	"weekBefore": "week1",
 	"weekName": "Week 2",
+	"difficulties": "Easy,Normal,Hard,Erect,Nightmare",
 	"startUnlocked": true,
 
 	"hideStoryMode": false,

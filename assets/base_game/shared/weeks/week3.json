@@ -15,6 +15,7 @@
 	"storyName": "PICO",
 	"weekBefore": "week2",
 	"weekName": "Week 3",
+	"difficulties": "Easy,Normal,Hard,Erect,Nightmare",
 	"startUnlocked": true,
 
 	"hideStoryMode": false,

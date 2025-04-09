@@ -2231,7 +2231,7 @@ class FreeplayState extends MusicBeatSubstate
 			// ? psych dir setting
 			var songData = daSongCapsule.songData;
 			ModsHelper.loadModDir(songData.folder);
-			FunkinSound.playMusic(daSongCapsule.songData.songId, {
+			FunkinSound.playMusic(daSongCapsule.songData.getNativeSongId(), {
 				startingVolume: 0.0,
 				overrideExisting: true,
 				restartTrack: false,
