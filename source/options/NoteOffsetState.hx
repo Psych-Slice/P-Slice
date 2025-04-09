@@ -5,7 +5,7 @@ import objects.Character;
 import objects.Bar;
 import flixel.addons.display.shapes.FlxShapeCircle;
 
-import mikolka.stages.standard.StageWeek1 as BackgroundStage;
+import mikolka.stages.erect.MainStageErect as BackgroundStage;
 
 class NoteOffsetState extends MusicBeatState
 {
