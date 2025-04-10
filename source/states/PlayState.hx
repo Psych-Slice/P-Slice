@@ -1,5 +1,6 @@
 package states;
 
+import cutscenes.DialogueStyle.PixelDialogueStyle;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.stages.EventLoader;
 import mikolka.JoinedLuaVariables;
@@ -948,7 +949,7 @@ class PlayState extends MusicBeatState
 
 		if(dialogueFile.dialogue.length > 0) {
 			inCutscene = true;
-			psychDialogue = new DialogueBoxPsych(dialogueFile, song);
+			psychDialogue = new DialogueBoxPsych(dialogueFile, song);//TODO
 			psychDialogue.scrollFactor.set();
 			if(endingSong) {
 				psychDialogue.finishThing = function() {
