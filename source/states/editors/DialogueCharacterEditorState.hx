@@ -432,8 +432,7 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 			case 'center':
 				anim = 'center';
 		}
-		box.animation.play(anim, true);
-		DialogueBoxPsych.updateBoxOffsets(box);
+		box.animation.play(anim, true); // too lazy to add offsets back
 	}
 
 	public function UIEvent(id:String, sender:Dynamic) {

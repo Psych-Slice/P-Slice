@@ -50,7 +50,7 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 				this.style = new PixelDialogueStyle();
 			}
 			default:{
-				this.style = new DialogueStyle();
+				this.style = new PsychDialogueStyle();
 			}
 		}
 		
@@ -186,7 +186,7 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 				this.style = new PixelDialogueStyle();
 			}
 			default:{
-				this.style = new DialogueStyle();
+				this.style = new PsychDialogueStyle();
 			}
 		}
 		box = cast replace(box,style.makeDialogueBox());
@@ -195,24 +195,15 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 	}
 	function updateTextBox() {
 		var isAngry:Bool = angryCheckbox.checked;
-		var anim:String = isAngry ? 'angry' : 'normal';
+		var lePos = switch (character.jsonFile.dialogue_pos){
+			case "left": LEFT;
+			case "right": RIGHT;
+			case "center": CENTER;
+			default: RIGHT;
+		};
+		style.playBoxAnim(lePos,IDLE,isAngry ? 'angry' : 'normal');
+		//style.playBoxAnim(style.last_position,CLOSE_FINISH,lastBoxType);
 
-		switch(character.jsonFile.dialogue_pos) {
-			case 'left':
-				if(isAngry) {
-					anim = 'left-angry';
-				} else {
-					anim = 'left-normal';
-				}
-			case 'center':
-				if(isAngry) {
-					anim = 'center-angry';
-				} else {
-					anim = 'center-normal';
-				}
-		}
-		box.animation.play(anim, true);
-		DialogueBoxPsych.updateBoxOffsets(box);
 	}
 
 	function reloadCharacter() {
@@ -453,7 +444,7 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 				}
 			}
 			var selectedAnim:String = character.jsonFile.animations[curAnim].anim;
-			character.playAnim(selectedAnim, style.isLineFincharished());
+			character.playAnim(selectedAnim, style.isLineFinished());
 			animText.text = 'Animation: $selectedAnim (${curAnim + 1} / ${character.jsonFile.animations.length} ) - Press W or S to scroll';
 		}
 		else animText.text = 'ERROR! NO ANIMATIONS FOUND';
