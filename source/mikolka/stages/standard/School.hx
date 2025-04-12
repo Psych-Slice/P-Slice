@@ -1,5 +1,7 @@
 package mikolka.stages.standard;
 
+import cutscenes.DialogueBoxPsych;
+import cutscenes.DialogueBoxPsych.DialogueFile;
 import mikolka.compatibility.VsliceOptions;
 
 #if !LEGACY_PSYCH
@@ -11,6 +13,7 @@ import openfl.utils.Assets as OpenFlAssets;
 class School extends BaseStage
 {
 	var bgGirls:BackgroundGirls;
+	var dialogue:DialogueFile;
 	override function create()
 	{
 		var _song = PlayState.SONG;
@@ -117,9 +120,9 @@ class School extends BaseStage
 	function initDoof()
 	{
 		#if LEGACY_PSYCH
-		var file:String = Paths.txt('$songName/${songName}Dialogue'); //Checks for vanilla/Senpai dialogue
+		var file:String = Paths.json('$songName/${songName}Dialogue'); //Checks for vanilla/Senpai dialogue
 		#else
-		var file:String = Paths.txt('$songName/${songName}Dialogue_${ClientPrefs.data.language}'); //Checks for vanilla/Senpai dialogue
+		var file:String = Paths.json('$songName/${songName}Dialogue_${ClientPrefs.data.language}'); //Checks for vanilla/Senpai dialogue
 		#end
 		#if MODS_ALLOWED
 		if (!FileSystem.exists(file))
@@ -127,7 +130,7 @@ class School extends BaseStage
 		if (!OpenFlAssets.exists(file))
 		#end
 		{
-			file = Paths.txt('$songName/${songName}Dialogue');
+			file = Paths.json('$songName/${songName}Dialogue');
 		}
 
 		#if MODS_ALLOWED
@@ -139,15 +142,7 @@ class School extends BaseStage
 			startCountdown();
 			return;
 		}
-
-		doof = new DialogueBox(false, CoolUtil.coolTextFile(file));
-		doof.cameras = [camHUD];
-		doof.scrollFactor.set();
-		doof.finishThing = startCountdown;
-		@:privateAccess{
-			doof.nextDialogueThing = PlayState.instance.startNextDialogue;
-			doof.skipDialogueThing = PlayState.instance.skipDialogue;
-		}
+		dialogue = DialogueBoxPsych.parseDialogue(file);
 	}
 	
 	function schoolIntro():Void
@@ -163,13 +158,9 @@ class School extends BaseStage
 
 			if (black.alpha <= 0)
 			{
-				if (doof != null)
-					add(doof);
-				else
-					startCountdown();
-
 				remove(black);
 				black.destroy();
+				if(dialogue != null) game.startDialogue(dialogue);
 			}
 			else tmr.reset(0.3);
 		});

@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import cutscenes.DialogueBoxPsych;
 import mikolka.stages.objects.PicoCapableStage;
 import shaders.AdjustColorShader;
 import shaders.ColorSwap;
@@ -15,6 +16,7 @@ import openfl.utils.Assets as OpenFlAssets;
 
 class SchoolErect extends BaseStage
 {
+	var dialogue:DialogueFile;
 	//var bgGirls:BackgroundGirls;
 	override function create()
 	{
@@ -68,7 +70,7 @@ class SchoolErect extends BaseStage
 		bgTrees.antialiasing = false;
 
 		if(!VsliceOptions.LOW_QUALITY) {
-			var treeLeaves:BGSprite = new BGSprite('weeb/erect/petals', repositionShit+30, -40, 0.85, 0.85, ['PETALS ALL'], true);
+			var treeLeaves:BGSprite = new BGSprite('weeb/erect/petals', repositionShit+30, 0, 0.85, 0.85, ['PETALS ALL'], true);
 			treeLeaves.setGraphicSize(widShit* 0.95);
 			treeLeaves.updateHitbox();
 			add(treeLeaves);
@@ -100,15 +102,15 @@ class SchoolErect extends BaseStage
 
 		switch (songName)
 		{
-			case 'senpai'|'senpai-erect':
+			case 'senpai-(pico-mix)'|'senpai-erect':
 				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
-			case 'roses'|'roses-erect':
+			case 'roses-(pico-mix)'|'roses-erect':
 				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX'));
 		}
-		if(isStoryMode && !seenCutscene)
+		if(!seenCutscene)
 		{
-			if(songName == 'roses' || songName == "roses-erect") FlxG.sound.play(Paths.sound('ANGRY'));
+			if(songName == 'roses-(pico-mix)' || songName == "roses-erect") FlxG.sound.play(Paths.sound('ANGRY'));
 			initDoof();
 			setStartCallback(schoolIntro);
 		}
@@ -120,6 +122,8 @@ class SchoolErect extends BaseStage
 		applyShader(dad,dad.curCharacter);
 		if(PicoCapableStage.instance?.abotPixel != null)applyShader(PicoCapableStage.instance.abotPixel,"");
 		}
+		camFollow_set(800,500);
+		camGame.snapToTarget();
 	}
 
 	// override function beatHit()
@@ -137,13 +141,12 @@ class SchoolErect extends BaseStage
 	// 	}
 	// }
 
-	var doof:DialogueBox = null;
 	function initDoof()
 	{
 		#if LEGACY_PSYCH
-		var file:String = Paths.txt('$songName/${songName}Dialogue'); //Checks for vanilla/Senpai dialogue
+		var file:String = Paths.json('$songName/${songName}Dialogue'); //Checks for vanilla/Senpai dialogue
 		#else
-		var file:String = Paths.txt('$songName/${songName}Dialogue_${ClientPrefs.data.language}'); //Checks for vanilla/Senpai dialogue
+		var file:String = Paths.json('$songName/${songName}Dialogue_${ClientPrefs.data.language}'); //Checks for vanilla/Senpai dialogue
 		#end
 		#if MODS_ALLOWED
 		if (!FileSystem.exists(file))
@@ -151,7 +154,7 @@ class SchoolErect extends BaseStage
 		if (!OpenFlAssets.exists(file))
 		#end
 		{
-			file = Paths.txt('$songName/${songName}Dialogue');
+			file = Paths.json('$songName/${songName}Dialogue');
 		}
 
 		#if MODS_ALLOWED
@@ -163,15 +166,7 @@ class SchoolErect extends BaseStage
 			startCountdown();
 			return;
 		}
-
-		doof = new DialogueBox(false, CoolUtil.coolTextFile(file));
-		doof.cameras = [camHUD];
-		doof.scrollFactor.set();
-		doof.finishThing = startCountdown;
-		@:privateAccess{
-			doof.nextDialogueThing = PlayState.instance.startNextDialogue;
-			doof.skipDialogueThing = PlayState.instance.skipDialogue;
-		}
+		dialogue = DialogueBoxPsych.parseDialogue(file);
 	}
 	
 	function schoolIntro():Void
@@ -179,7 +174,7 @@ class SchoolErect extends BaseStage
 		inCutscene = true;
 		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
 		black.scrollFactor.set();
-		if(songName == 'senpai') add(black);
+		if(dialogue != null) add(black);
 
 		new FlxTimer().start(0.3, function(tmr:FlxTimer)
 		{
@@ -187,13 +182,9 @@ class SchoolErect extends BaseStage
 
 			if (black.alpha <= 0)
 			{
-				if (doof != null)
-					add(doof);
-				else
-					startCountdown();
-
 				remove(black);
 				black.destroy();
+				if(dialogue != null) game.startDialogue(dialogue);
 			}
 			else tmr.reset(0.3);
 		});

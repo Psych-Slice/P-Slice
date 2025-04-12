@@ -1,5 +1,6 @@
 package mikolka.vslice.components.crash;
 
+import flixel.system.debug.log.LogStyle;
 import mikolka.compatibility.VsliceOptions;
 #if sys
 import haxe.PosInfos;
@@ -15,6 +16,8 @@ class Logger{
         file = File.write(StorageUtil.getStorageDirectory()+"/latest.log");
         #end
         Log.trace = log;
+        LogStyle.WARNING.onLog.add(log);
+        LogStyle.ERROR.onLog.add(log);
     }
     private static function log(v:Dynamic, ?infos:PosInfos):Void {
         if(VsliceOptions.LOGGING == "None") return;

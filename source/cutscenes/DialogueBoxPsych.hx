@@ -66,7 +66,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 				this.style = new PixelDialogueStyle();
 			}
 			default:{
-				this.style = new DialogueStyle();
+				this.style = new PsychDialogueStyle();
 			}
 		}
 		//precache sounds
@@ -99,11 +99,9 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		skipText.borderSize = 2;
 		add(skipText);
 
-		FlxTween.tween(bgFade,{alpha:0.5},style.FADE_DURATION,{
-			ease: FlxEase.linear,
-			onComplete: tween -> if(style.WAIT_FOR_FADE) startNextDialog()
-		});
-		if(!style.WAIT_FOR_FADE) startNextDialog();
+		FlxTween.tween(bgFade,{alpha:0.5},style.FADE_DURATION,
+			{ease: FlxEase.linear});
+		startNextDialog(true);
 	}
 
 	var dialogueStarted:Bool = false;
@@ -156,12 +154,19 @@ class DialogueBoxPsych extends FlxSpriteGroup
 
 	public var closeSound:String = 'dialogueClose';
 	public var closeVolume:Float = 1;
-	override function update(elapsed:Float)
+	var cumulatedElapsed:Float = 0;
+	override function update(elapsed_real:Float)
 	{
+		var elapsed:Float = 0;
+		cumulatedElapsed += elapsed_real;
 		if(ignoreThisFrame) {
 			ignoreThisFrame = false;
-			super.update(elapsed);
+			super.update(elapsed_real);
 			return;
+		}
+		if(cumulatedElapsed>style.visualUpdateThreshold){
+			elapsed = cumulatedElapsed;
+			cumulatedElapsed = 0;
 		}
 
 		if(!dialogueEnded) {
@@ -219,24 +224,19 @@ class DialogueBoxPsych extends FlxSpriteGroup
 					skipDialogue();
 				} else {
 					FlxG.sound.play(Paths.sound(closeSound), closeVolume);
-					startNextDialog();
+					style.advanceBoxLine(startNextDialog.bind(false));
 				}
 			} else if(style.isLineFinished()) {
 				var char:DialogueCharacter = arrayCharacters[lastCharacter];
 				if(char != null && char.animation.curAnim != null && char.animationIsLoop() && char.animation.finished) {
 					char.playAnim(char.animation.curAnim.name, true);
 				}
-				//tryPlayingBoxAnim(checkArray[j] + textBoxTypes[i]);
+				style.playBoxAnim(style.last_position,WAIT,lastBoxType);
 			} else {
 				var char:DialogueCharacter = arrayCharacters[lastCharacter];
 				if(char != null && char.animation.curAnim != null && char.animation.finished) {
 					char.animation.curAnim.restart();
 				}
-			}
-
-			if(box.animation.curAnim.finished) {
-				tryPlayingBoxAnim(last_pos,last_style,"");
-				updateBoxOffsets(box);
 			}
 
 			if(lastCharacter != -1 && arrayCharacters.length > 0) {
@@ -284,7 +284,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			}
 
 			if(bgFade != null) {
-				bgFade.alpha -= 0.5 * elapsed;
+				bgFade.alpha -= 0.5 * elapsed_real;
 				if(bgFade.alpha <= 0) {
 					bgFade.kill();
 					remove(bgFade);
@@ -296,6 +296,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			for (i in 0...arrayCharacters.length) {
 				var leChar:DialogueCharacter = arrayCharacters[i];
 				if(leChar != null) {
+					
 					switch(arrayCharacters[i].jsonFile.dialogue_pos) {
 						case 'left':
 							leChar.x -= style.scrollSpeed * elapsed;
@@ -322,29 +323,25 @@ class DialogueBoxPsych extends FlxSpriteGroup
 				kill();
 			}
 		}
-		super.update(elapsed);
+		super.update(elapsed_real);
 	}
 
 	function skipDialogue(){
 		dialogueEnded = true;
-
-		tryPlayingBoxAnim(last_pos,last_style,'Open');
-
-					box.animation.curAnim.curFrame = box.animation.curAnim.frames.length - 1;
-					box.animation.curAnim.reverse();
-					if(daText != null)
-					{
-						daText.kill();
-						remove(daText);
-						daText.destroy();
-					}
-					skipText.visible = false;
-					updateBoxOffsets(box);
-					FlxG.sound.music.fadeOut(1, 0, (_) -> FlxG.sound.music.stop());
+		style.playBoxAnim(style.last_position,CLOSE_FINISH,lastBoxType);
+		if(daText != null)
+		{
+			daText.kill();
+			remove(daText);
+			daText.destroy();
+		}
+		skipText.visible = false;
+		FlxG.sound.music.fadeOut(1, 0, (_) -> FlxG.sound.music.stop());
 	}
+
 	var lastCharacter:Int = -1;
 	var lastBoxType:String = '';
-	function startNextDialog():Void
+	function startNextDialog(init:Bool = false):Void
 	{
 		var curDialogue:DialogueLine = null;
 		do {
@@ -371,17 +368,23 @@ class DialogueBoxPsych extends FlxSpriteGroup
 				break;
 			}
 		}
-		var centerPrefix:String = '';
-		var lePosition:String = arrayCharacters[character].jsonFile.dialogue_pos;
-		if(lePosition == 'center') centerPrefix = 'center-';
-		if(lePosition == 'left') centerPrefix = 'left-';
+		var lePos = switch (arrayCharacters[character].jsonFile.dialogue_pos){
+			case "left": LEFT;
+			case "right": RIGHT;
+			case "center": CENTER;
+			default: RIGHT;
+		};
+		var leType = DialogueBoxState.OPEN;
+		
+		if(init){
+			leType = DialogueBoxState.OPEN_INIT;
+		}
 
 		if(character != lastCharacter) {
-			tryPlayingBoxAnim(centerPrefix,boxType,'Open');
-			updateBoxOffsets(box);
+			style.playBoxAnim(lePos,leType,boxType);
 		} else if(boxType != lastBoxType) {
-			tryPlayingBoxAnim(centerPrefix,boxType,"");
-			updateBoxOffsets(box);
+			leType = DialogueBoxState.IDLE;
+			style.playBoxAnim(lePos,leType,boxType);
 		}
 		lastCharacter = character;
 		lastBoxType = boxType;
@@ -410,23 +413,6 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		}
 	}
 
-	var last_pos = "";
-	var last_style = "";
-	var last_state = "";
-	function tryPlayingBoxAnim(pos:String,style:String,state:String) {
-		var anim = pos+style+state;
-		if(!box.animation.getNameList().contains(anim)){
-			#if debug
-			trace('Animation ${anim} is missing from the box. Is that intentional?');
-			#end
-			return;
-		}
-		last_pos = pos;
-		last_style = style;
-		last_state = state;
-		box.animation.play(anim, true);
-	}
-
 	inline public static function parseDialogue(path:String):DialogueFile {
 		#if MODS_ALLOWED
 		return cast (FileSystem.exists(path)) ? Json.parse(File.getContent(path)) : dummy();
@@ -449,17 +435,4 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		style:""};
 	}
 
-	public static function updateBoxOffsets(box:FlxSprite) { //Had to make it static because of the editors
-		box.centerOffsets();
-		box.updateHitbox();
-		if(box.animation.curAnim.name.startsWith('angry')) {
-			box.offset.set(50, 65);
-		} else if(box.animation.curAnim.name.startsWith('center-angry')) {
-			box.offset.set(50, 30);
-		} else {
-			box.offset.set(10, 0);
-		}
-		
-		if(!box.flipX) box.offset.y += 10;
-	}
 }
