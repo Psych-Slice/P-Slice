@@ -5,7 +5,7 @@
 			"sound": "pixelText",
 			"speed": 0.05,
 			"portrait": "senpai-pixel",
-			"boxState": "normal",
+			"boxState": "angry",
 			"expression": "angry",
 			"text": "You disgusting orange boy and your awful way of 'singing'."
 		},
