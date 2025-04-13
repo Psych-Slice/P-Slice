@@ -3,7 +3,6 @@ package states;
 import cutscenes.DialogueStyle.PixelDialogueStyle;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.stages.EventLoader;
-import mikolka.JoinedLuaVariables;
 import mikolka.vslice.StickerSubState;
 import mikolka.vslice.freeplay.FreeplayState;
 import backend.Highscore;
@@ -284,7 +283,6 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
-		this.variables = new JoinedLuaVariables();
 		//trace('Playback Rate: ' + playbackRate);
 		_lastLoadedModDirectory = Mods.currentModDirectory;
 		Paths.clearUnusedMemory();
