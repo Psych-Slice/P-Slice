@@ -10,6 +10,7 @@ on:
 jobs:
   BuildDesktop:
     name: ${{ matrix.name }}
+    permissions: write-all
     strategy:
       matrix:
         include:
@@ -51,6 +52,7 @@ jobs:
       artifactName: ${{ matrix.artifactName }}
       artifactPath: ${{ matrix.artifactPath }}
   BuildMobile:
+    permissions: write-all
     name: ${{ matrix.name }}
     strategy:
       matrix:
