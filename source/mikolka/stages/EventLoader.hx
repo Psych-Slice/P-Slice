@@ -19,8 +19,8 @@ class EventLoader extends BaseStage {
         {
             var lua:State = funk.lua;
             funk.set('versionPS', MainMenuState.pSliceVersion.trim());
-            Lua_helper.add_callback(lua, "markAsPicoCapable", function() {
-                new PicoCapableStage();
+            Lua_helper.add_callback(lua, "markAsPicoCapable", function(force:Bool = false) {
+                new PicoCapableStage(force);
             });
             Lua_helper.add_callback(lua, "changeTransStickers", function(stickerSet:String = null,stickerPack:String = null) {
                 if(stickerSet != null && stickerSet != "") StickerSubState.STICKER_SET = stickerSet;

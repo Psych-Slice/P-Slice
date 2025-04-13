@@ -38,6 +38,14 @@ class LuaCard extends BackingCard
 					hscript.set('add',this.add);
 					hscript.set('remove',this.remove);
 					hscript.set('insert',this.insert);
+					hscript.set('backingTextYeah',this.backingTextYeah);
+					hscript.set('orangeBackShit',this.orangeBackShit);
+					hscript.set('alsoOrangeLOL',this.alsoOrangeLOL);
+					hscript.set('pinkBack',this.pinkBack);
+					hscript.set('confirmGlow',this.confirmGlow);
+					hscript.set('confirmGlow2',this.confirmGlow2);
+					hscript.set('confirmTextGlow',this.confirmTextGlow);
+					hscript.set('cardGlow',this.cardGlow);
 
 					if (hscript.exists('onCreate'))
 					{

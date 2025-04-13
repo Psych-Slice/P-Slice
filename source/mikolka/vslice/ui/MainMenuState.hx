@@ -28,8 +28,8 @@ class MainMenuState extends MusicBeatState
 	#else
 	public static var psychEngineVersion:String = '0.6.3'; // This is also used for Discord RPC
 	#end
-	public static var pSliceVersion:String = '3.0'; 
-	public static var funkinVersion:String = '0.5.3'; // Version of funkin' we are emulationg
+	public static var pSliceVersion:String = '2.3.1'; 
+	public static var funkinVersion:String = '0.5.3+'; // Version of funkin' we are emulationg
 	public static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
