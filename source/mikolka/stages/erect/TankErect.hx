@@ -36,7 +36,7 @@ class TankErect extends BaseStage
 
 		tankmanRun = new FlxTypedGroup<TankmenBG>();
 		add(tankmanRun);
-		if (isStoryMode && songName == "stress-(pico-mix)" && !seenCutscene)
+		if (songName == "stress-(pico-mix)" && !seenCutscene)
 		{
 			setStartCallback(videoCutscene.bind('stressPicoCutscene'));
 
@@ -133,6 +133,7 @@ class TankErect extends BaseStage
 			#end
 			return;
 		}
+		startCountdown();
 	}
 	function applyShader(sprite:FlxSprite, char_name:String)
 	{
