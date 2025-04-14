@@ -14,10 +14,10 @@
 	"camera_speed": 1,
 
 	"preload": {
-		"images/bgDark": 2,
-		"images/bgLight": 2,
-		"images/stairsDark": 2,
-		"images/stairsLight": 2,
-		"images/bgtrees": 2
+		"images/erect/bgDark": 3,
+		"images/erect/bgLight": 3,
+		"images/erect/stairsDark": 3,
+		"images/erect/stairsLight": 3,
+		"images/erect/bgtrees": 3
 	}
 }
