@@ -100,8 +100,6 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<assets path="assets/embed"          if="web" embed="true"/>
 	<assets path="assets/embed"          unless="web" embed="true"/>
-	<assets path="assets/songs"          if="web"/>
-	<assets path="assets/songs"          unless="web"/>
 
 	<assets path="assets/week_assets"   rename="assets"  if="web"/>
 	<assets path="assets/week_assets"   rename="assets"  unless="web"/>
@@ -138,8 +136,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- <library name="songs" preload="false" /> -->
 	<!-- _______________________________ Libraries ______________________________ -->
 
-	<haxelib name="flixel" version="git"/>
-	<haxelib name="flixel-addons" version="3.2.2"/>
+	<haxelib name="flixel"/>
+	<haxelib name="flixel-addons" version="3.3.2"/>
 	<haxelib name="tjson" version="1.4.0"/>
 	<haxelib name="FlxPartialSound" version="git"/>
 	<haxelib name="grig.audio" />
