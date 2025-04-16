@@ -3,6 +3,8 @@ package states.stages.objects;
 #if funkin.vis
 import funkin.vis.dsp.SpectralAnalyzer;
 #end
+import shaders.AdjustColorShader; //Golden Fungus
+import mikolka.compatibility.VsliceOptions; //Golden Fungus
 
 class ABotSpeaker extends FlxSpriteGroup
 {
@@ -16,6 +18,8 @@ class ABotSpeaker extends FlxSpriteGroup
 	public var eyes:FlxAnimate;
 	public var speaker:FlxAnimate;
 	public var speakerAlt:FlxAnimate;
+	var aboyShaders = new AdjustColorShader();
+	var game = PlayState.instance;
 
 	#if funkin.vis
 	var analyzer:SpectralAnalyzer;
@@ -35,10 +39,46 @@ class ABotSpeaker extends FlxSpriteGroup
 	public function new(x:Float = 0, y:Float = 0,useDark:Bool = false)
 	{
 		super(x, y);
+		var songName = game.songName;
+
+		//gives Abot shaders on levels that have them, this was a very noticible thing
+		if(VsliceOptions.SHADERS){
+			switch(songName){
+				case 'bopeebo-(pico-mix)' | 'fresh-(pico-mix)' | 'dad-battle-(pico-mix)':
+					shaders.hue = -9;
+        				shaders.saturation = 0;
+        				shaders.brightness = -30;
+        				shaders.contrast = -4;
+				case 'pico-(pico-mix)' | 'philly-nice-(pico-mix)' | 'blammed-(pico-mix)':
+					shaders.hue = -26;
+					shaders.saturation = -16;
+					shaders.contrast = 0;
+					shaders.brightness = -5;
+				case 'satin-panties-(pico-mix)' | 'high-(pico-mix)' | 'milf-(pico-mix)': //GoldenFungus: futureproofing
+					shaders.hue = -30;
+					shaders.saturation = -20;
+					shaders.contrast = 0;
+					shaders.brightness = -30;
+				case 'cocoa-(pico-mix)' | 'eggnog-(pico-mix)' | 'winter-horrorland-(pico-mix)': //GoldenFungus: This is assuming that winter horrorland wont have different shaders
+					shaders.hue = 5;
+					shaders.saturation = 20;
+				/*case 'ugh-(pico-mix)' | 'guns-(pico-mix)' | 'stress-(pico-mix)': //GoldenFungus: this is just here for when this stage is added
+					shaders.hue = -38;
+					shaders.saturation = -20;
+					shaders.contrast = -25;
+					shaders.brightness = -46;*/
+				case 'darnell-erect'| 'lit-up-erect' | '2hot-erect':
+					shaders.hue = -5;
+                			shaders.saturation = -40;
+                			shaders.contrast = -25;
+                			shaders.brightness = -20;
+			}
+		}
 
 		var antialias = ClientPrefs.data.antialiasing;
 		bg = new FlxSprite(90, 20).loadGraphic(Paths.image('abot/stereoBG'));
 		bg.antialiasing = antialias;
+		bg.shader = shaders;//GF
 		add(bg);
 
 		var vizX:Float = 0;
@@ -55,6 +95,7 @@ class ABotSpeaker extends FlxSpriteGroup
 			viz.animation.play('VIZ', true);
 			viz.animation.curAnim.finish(); //make it go to the lowest point
 			viz.antialiasing = antialias;
+			viz.shader = shaders;//GF
 			vizSprites.push(viz);
 			viz.updateHitbox();
 			viz.centerOffsets();
@@ -64,6 +105,7 @@ class ABotSpeaker extends FlxSpriteGroup
 		eyeBg = new FlxSprite(-30, 215).makeGraphic(1, 1, FlxColor.WHITE);
 		eyeBg.scale.set(160, 60);
 		eyeBg.updateHitbox();
+		eyeBg.shader = shaders;//GF
 		add(eyeBg);
 
 		eyes = new FlxAnimate(-10, 230);
@@ -72,6 +114,7 @@ class ABotSpeaker extends FlxSpriteGroup
 		eyes.anim.addBySymbolIndices('lookright', 'a bot eyes lookin', [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35], 24, false);
 		eyes.anim.play('lookright', true);
 		eyes.anim.curFrame = eyes.anim.length - 1;
+		eyes.shader = shaders;//GF
 		add(eyes);
 
 		speaker = abotLol(useDark);
@@ -87,6 +130,7 @@ class ABotSpeaker extends FlxSpriteGroup
 		temp.anim.play('anim', true);
 		temp.anim.curFrame = temp.anim.length - 1;
 		temp.antialiasing = ClientPrefs.data.antialiasing;
+		temp.shader = shaders;//GF
 		add(temp);
 		return temp;
 	}
