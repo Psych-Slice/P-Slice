@@ -72,6 +72,7 @@ class ABotSpeaker extends FlxSpriteGroup
                 			shaders.saturation = -40;
                 			shaders.contrast = -25;
                 			shaders.brightness = -20;
+				//GF: this can be added onto as more erect stages are added
 			}
 		}
 
