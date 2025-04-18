@@ -135,7 +135,9 @@ class ScreenshotPlugin extends FlxBasic
     shotPreviewBitmap.scaleY /= 5;
 
     previewSprite.addChild(shotPreviewBitmap);
+    #if !debug // I hate this sooo much
     FlxG.stage.addChild(flashSprite);
+    #end
 
     region = params.region ?? null;
     flashColor = params.flashColor;

@@ -32,6 +32,7 @@ class ControlsSubState extends MusicBeatSubstate
 		[true, 'Reset', 'reset', 'Reset'],
 		[true, 'Accept', 'accept', 'Accept'],
 		[true, 'Back', 'back', 'Back'],
+		[true, 'Capture', 'screenshot', 'Capture'],
 		[true, 'Pause', 'pause', 'Pause'],
 		[false],
 		[false, 'P-SLICE'],

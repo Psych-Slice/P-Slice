@@ -1,5 +1,6 @@
 package mikolka.stages.standard;
 
+import mikolka.stages.cutscenes.VideoCutscene;
 import mikolka.vslice.StickerSubState;
 import flixel.FlxSubState;
 import openfl.filters.ShaderFilter;
@@ -209,35 +210,17 @@ class PhillyStreets extends BaseStage
 
 	function videoCutscene(?videoName:String = null)
 	{
-		game.inCutscene = true;
-		if (!videoEnded && videoName != null)
-		{
-			#if VIDEOS_ALLOWED
-			game.startVideo(videoName);
-			game.videoCutscene.finishCallback = game.videoCutscene.onSkip = function()
+		VideoCutscene.playVideo(videoName,() ->{
+			game.inCutscene = true;
+			if (isStoryMode && PlayState.instance != null)
 			{
-				videoEnded = true;
-				game.videoCutscene = null;
-				videoCutscene();
-			};
-			#else // Make a timer to prevent it from crashing due to sprites not being ready yet.
-			new FlxTimer().start(0.0, function(tmr:FlxTimer)
-			{
-				videoEnded = true;
-				videoCutscene(videoName);
-			});
-			#end
-			return;
-		}
-
-		if (isStoryMode && PlayState.instance != null)
-		{
-			switch (songName)
-			{
-				case 'darnell':
-					DarnellStart.darnellCutscene(this);
+				switch (songName)
+				{
+					case 'darnell':
+						DarnellStart.darnellCutscene(this);
+				}
 			}
-		}
+		});
 	}
 
 

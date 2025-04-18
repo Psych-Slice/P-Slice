@@ -18,7 +18,7 @@ class PicoTankman {
     	shader.angle = 45;
 		shader.threshold = 0.3;
 		shaderCamera = new ShaderFilter(shader);
-		tankmanEnding = new FlxAtlasSprite(320,320,"assets/week7/images/erect/cutscene/tankmanEnding");
+		tankmanEnding = new FlxAtlasSprite(520,350,"assets/week7/images/erect/cutscene/tankmanEnding");
 		cutsceneSounds = new FlxSound().loadEmbedded(Paths.sound('erect/endCutscene'));
 		bgSprite = new FunkinSprite(0, 0);
 		bgSprite.makeSolidColor(2000, 2500, 0xFF000000);
@@ -44,10 +44,18 @@ class PicoTankman {
 			FlxTween.tween(game.camHUD,{alpha:0},1);
 			FlxTween.tween(game.camFollow,{ x:tankmanPos[0] + 320, y:tankmanPos[1] - 70}, 2.8, { ease:FlxEase.expoOut});
 			game.defaultCamZoom = 0.65;
+			game.dad.visible = false;
 			tankmanEnding.playAnimation("tankman stress ending", true, false, false);
     		cutsceneSounds.play();
 		};
 		cutscene.finishCallback = () ->{
+			game.endSong();
+		};
+		#if LEGACY_PSYCH
+		cutscene.finishCallback2 = function(){
+		#else
+		cutscene.skipCallback = function(){
+		#end
 			game.endSong();
 		};
 		cutscene.timer(176/24,() ->{
