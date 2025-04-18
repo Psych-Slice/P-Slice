@@ -73,6 +73,9 @@ class TankErect extends BaseStage
 		if (songName.toLowerCase() == "stress (pico mix)")
 		{
 			// We gonna have some events here
+			if(curBeat == 60){
+				game.triggerEvent("Change Character","dad","tankman-bloody",0);
+			}
 		}
 	}
 
@@ -84,7 +87,7 @@ class TankErect extends BaseStage
 			applyShader(gf, gf.curCharacter);
 			applyShader(dad, dad.curCharacter);
 			if (PicoCapableStage.instance?.abot != null)
-				applyAbotShader(PicoCapableStage.instance.abot, "abot");
+				applyAbotShader(PicoCapableStage.instance.abot);
 		}
 		if (!VsliceOptions.LOW_QUALITY)
 		{
@@ -147,7 +150,7 @@ class TankErect extends BaseStage
 		}
 		startCountdown();
 	}
-	function applyAbotShader(sprite:FlxSprite, char_name:String){
+	function applyAbotShader(sprite:FlxSprite){
 		var rim = new DropShadowScreenspace();
 		rim.setAdjustColor(-46, -38, -25, -20);
 		rim.color = 0xFFDFEF3C;
@@ -204,6 +207,19 @@ class TankErect extends BaseStage
 					rim.angle = 135;
 					sprite.shader = rim;
 					rim.altMaskImage = Paths.image("erect/masks/tankmanCaptainBloody_mask").bitmap;
+					rim.threshold = 0.3;
+					rim.maskThreshold = 1;
+					rim.useAltMask = true;
+
+					sprite.animation.callback = function(anim, frame, index)
+					{
+						rim.updateFrameInfo(sprite.frame);
+					};
+				}
+			case "tankman":
+				{
+					rim.angle = 135;
+					sprite.shader = rim;
 					rim.threshold = 0.3;
 					rim.maskThreshold = 1;
 					rim.useAltMask = false;
