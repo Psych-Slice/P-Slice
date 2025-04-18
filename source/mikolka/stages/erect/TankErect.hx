@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import mikolka.stages.cutscenes.PicoTankman;
 import openfl.filters.ShaderFilter;
 import cutscenes.CutsceneHandler;
 import shaders.DropShadowScreenspace;
@@ -15,6 +16,7 @@ class TankErect extends BaseStage
 	var guy:FlxSprite;
 	var tankmanRim:DropShadowShader;
 	var tankmanRun:FlxTypedGroup<TankmenBG>;
+	var cutscene:PicoTankman;
 
 	override function create()
 	{
@@ -39,10 +41,12 @@ class TankErect extends BaseStage
 
 		tankmanRun = new FlxTypedGroup<TankmenBG>();
 		add(tankmanRun);
-		if (songName == "stress-(pico-mix)" && !seenCutscene)
+		if (songName == "stress-(pico-mix)")
 		{
-			setStartCallback(videoCutscene.bind('stressPicoCutscene'));
-
+			this.cutscene = new PicoTankman(this);
+			if(!seenCutscene) setStartCallback(videoCutscene.bind('stressPicoCutscene'));
+			setEndCallback(cutscene.playCutscene);
+			
 			// setEndCallback(function()
 			// {
 			// 	game.endingSong = true;
@@ -112,8 +116,11 @@ class TankErect extends BaseStage
 				}
 			}
 		}
+		cutscene?.preloadCutscene();
 	}
-
+	override function endSong():Bool {
+		return super.endSong();
+	}
 	var videoEnded:Bool = false;
 
 	function videoCutscene(?videoName:String = null)
@@ -139,6 +146,21 @@ class TankErect extends BaseStage
 			return;
 		}
 		startCountdown();
+	}
+	function applyAbotShader(sprite:FlxSprite, char_name:String){
+		var rim = new DropShadowScreenspace();
+		rim.setAdjustColor(-46, -38, -25, -20);
+		rim.color = 0xFFDFEF3C;
+		rim.antialiasAmt = 0;
+		rim.attachedSprite = sprite;
+		rim.distance = 5;
+		rim.angle = 90;
+		sprite.shader = rim;
+		sprite.animation.callback = function(anim, frame, index)
+		{
+			rim.updateFrameInfo(sprite.frame);
+			rim.curZoom = camGame.zoom;
+		};
 	}
 	function applyShader(sprite:FlxSprite, char_name:String)
 	{
@@ -212,46 +234,5 @@ class TankErect extends BaseStage
 				}
 		}
 	}
-	function preloadCutscene() {
-		var shader = new DropShadowScreenspace();
-		shader.baseBrightness = -46;
-		shader.baseHue = -38;
-		shader.baseContrast = -25;
-		shader.baseSaturation = -20;
-    	shader.angle = 45;
-		shader.threshold = 0.3;
-		shaderCamera = new ShaderFilter(shader);
-		tankmanEnding = new FlxAtlasSprite(0,0,"assets/week7/images/philly/erect/cutscenes/pico_doppleganger");
-		cutsceneSounds = new FlxSound().loadEmbedded(Paths.sound('erect/endCutscene'));
-		bgSprite = new FunkinSprite(0, 0);
-		bgSprite.makeSolidColor(2000, 2500, 0xFF000000);
-		bgSprite.cameras = [camOther]; // Show over the HUD but below the video.
-		bgSprite.alpha = 0;
-		add(bgSprite);
-	}
-	var cutscene:CutsceneHandler;
-	var shaderCamera:ShaderFilter;
-	var tankmanEnding:FlxAtlasSprite;
-	var cutsceneSounds:FlxSound;
-	var bgSprite:FunkinSprite;
-	override function endSong():Bool {
-		if(songName.toLowerCase() != "stress (pico mix)") return true;
-		cutscene = new CutsceneHandler();
-		cutscene.endTime = 320/24;
-		cutscene.onStart = () -> {
-			var rimlightCamera = new FlxCamera();
-    		FlxG.cameras.insert(rimlightCamera, -1, false);
-    		rimlightCamera.bgColor = 0x00FFFFFF; // Show the game scene behind the camera.
-			rimlightCamera.filters = [shaderCamera];
-			FlxTween.tween(camHUD,{alpha:0},1);
-			tankmanEnding.playAnimation("tankman stress ending", true, false, false);
-    		cutsceneSounds.play();
-		};
-		cutscene.timer(176/24,() ->{
-			boyfriend.playAnim("laughEnd",true);
-		});
-		cutscene.timer(270/24,() ->{});
-		cutscene.timer(176/24,() ->{});
-		return false;
-	}
+
 }
