@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import mikolka.stages.cutscenes.VideoCutscene;
 import mikolka.stages.cutscenes.PicoTankman;
 import openfl.filters.ShaderFilter;
 import cutscenes.CutsceneHandler;
@@ -44,7 +45,7 @@ class TankErect extends BaseStage
 		if (songName == "stress-(pico-mix)")
 		{
 			this.cutscene = new PicoTankman(this);
-			if(!seenCutscene) setStartCallback(videoCutscene.bind('stressPicoCutscene'));
+			if(!seenCutscene) setStartCallback(VideoCutscene.playVideo.bind('stressPicoCutscene',startCountdown));
 			setEndCallback(cutscene.playCutscene);
 			
 			// setEndCallback(function()
@@ -111,7 +112,9 @@ class TankErect extends BaseStage
 							tankBih.strumTime = TankmenBG.animationNotes[i][0];
 							tankBih.scale.set(1, 1);
 							tankBih.updateHitbox();
-							tankBih.resetShit(500, 100, TankmenBG.animationNotes[i][1] < 2);
+							tankBih.resetShit(500, 150, TankmenBG.animationNotes[i][1] < 2);
+							@:privateAccess
+							tankBih.endingOffset = 
 							tankmanRun.add(tankBih);
 						}
 					}
@@ -121,35 +124,8 @@ class TankErect extends BaseStage
 		}
 		cutscene?.preloadCutscene();
 	}
-	override function endSong():Bool {
-		return super.endSong();
-	}
-	var videoEnded:Bool = false;
 
-	function videoCutscene(?videoName:String = null)
-	{
-		game.inCutscene = true;
-		if (!videoEnded && videoName != null)
-		{
-			#if VIDEOS_ALLOWED
-			game.startVideo(videoName);
-			game.videoCutscene.finishCallback = game.videoCutscene.onSkip = function()
-			{
-				videoEnded = true;
-				game.videoCutscene = null;
-				videoCutscene();
-			};
-			#else // Make a timer to prevent it from crashing due to sprites not being ready yet.
-			new FlxTimer().start(0.0, function(tmr:FlxTimer)
-			{
-				videoEnded = true;
-				videoCutscene(videoName);
-			});
-			#end
-			return;
-		}
-		startCountdown();
-	}
+
 	function applyAbotShader(sprite:FlxSprite){
 		var rim = new DropShadowScreenspace();
 		rim.setAdjustColor(-46, -38, -25, -20);
@@ -204,7 +180,7 @@ class TankErect extends BaseStage
 
 			case "tankman-bloody":
 				{
-					rim.angle = 135;
+					//rim.angle = 135;
 					sprite.shader = rim;
 					rim.altMaskImage = Paths.image("erect/masks/tankmanCaptainBloody_mask").bitmap;
 					rim.threshold = 0.3;
@@ -218,7 +194,7 @@ class TankErect extends BaseStage
 				}
 			case "tankman":
 				{
-					rim.angle = 135;
+					//rim.angle = 135;
 					sprite.shader = rim;
 					rim.threshold = 0.3;
 					rim.maskThreshold = 1;

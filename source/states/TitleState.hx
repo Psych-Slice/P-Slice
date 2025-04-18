@@ -1,5 +1,6 @@
 package states;
 
+import states.editors.ChartingState;
 import backend.WeekData;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.frames.FlxAtlasFrames;
