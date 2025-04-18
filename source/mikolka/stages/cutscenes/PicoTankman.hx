@@ -18,13 +18,13 @@ class PicoTankman {
     	shader.angle = 45;
 		shader.threshold = 0.3;
 		shaderCamera = new ShaderFilter(shader);
-		tankmanEnding = new FlxAtlasSprite(0,0,"assets/week7/images/philly/erect/cutscenes/pico_doppleganger");
+		tankmanEnding = new FlxAtlasSprite(320,320,"assets/week7/images/erect/cutscene/tankmanEnding");
 		cutsceneSounds = new FlxSound().loadEmbedded(Paths.sound('erect/endCutscene'));
 		bgSprite = new FunkinSprite(0, 0);
 		bgSprite.makeSolidColor(2000, 2500, 0xFF000000);
 		bgSprite.cameras = [stage.camOther]; // Show over the HUD but below the video.
 		bgSprite.alpha = 0;
-		stage.add(bgSprite);
+		PlayState.instance.add(bgSprite);
 	}
 	var cutscene:CutsceneHandler;
 	var stage:TankErect;
@@ -34,28 +34,39 @@ class PicoTankman {
 	var bgSprite:FunkinSprite;
 
 	public function playCutscene() {
+		var game = PlayState.instance;
 		cutscene = new CutsceneHandler();
+		FlxG.sound.list.add(cutsceneSounds);
+		cutsceneSounds.play();
 		var tankmanPos:Array<Float> = [500,500];
 		cutscene.endTime = 320/24;
 		cutscene.onStart = () -> {
-			var rimlightCamera = new FlxCamera();
-    		FlxG.cameras.insert(rimlightCamera, -1, false);
-    		rimlightCamera.bgColor = 0x00FFFFFF; // Show the game scene behind the camera.
-
-			rimlightCamera.filters = [shaderCamera];
-			FlxTween.tween(camHUD,{alpha:0},1);
+			FlxTween.tween(game.camHUD,{alpha:0},1);
 			FlxTween.tween(game.camFollow,{ x:tankmanPos[0] + 320, y:tankmanPos[1] - 70}, 2.8, { ease:FlxEase.expoOut});
-			defaultCamZoom = 0.65;
+			game.defaultCamZoom = 0.65;
 			tankmanEnding.playAnimation("tankman stress ending", true, false, false);
     		cutsceneSounds.play();
 		};
+		cutscene.finishCallback = () ->{
+			game.endSong();
+		};
 		cutscene.timer(176/24,() ->{
-			boyfriend.playAnim("laughEnd",true);
+			stage.boyfriend.playAnim("laughEnd",true);
 		});
 		cutscene.timer(270/24,() ->{
 			FlxTween.tween(game.camFollow,{ x:tankmanPos[0] + 320, y:tankmanPos[1] - 370}, 2, { ease:FlxEase.quadInOut});
       		FlxTween.tween(bgSprite, {alpha: 1}, 2, null);
 		});
-		return false;
+		var rimlightCamera = new FlxCamera();
+    	rimlightCamera.bgColor = 0x00FFFFFF; // Show the game scene behind the camera.
+		rimlightCamera.filters = [shaderCamera];
+    	FlxG.cameras.insert(rimlightCamera, FlxG.cameras.list.indexOf(game.camHUD), false);
+		@:privateAccess{
+			stage.applyAbotShader(tankmanEnding);
+			game.canPause = false;
+		}
+		game.add(tankmanEnding);
+		cutscene.objects.push(tankmanEnding);
+		game.inCutscene = true;
 	}
 }

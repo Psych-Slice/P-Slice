@@ -257,7 +257,7 @@ class Main extends Sprite
 
 		
 
-		#if debug
+		#if (debug)
 		flixel.addons.studio.FlxStudio.create();
 		#end
 
