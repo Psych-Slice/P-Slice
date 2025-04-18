@@ -4,6 +4,7 @@
 	"freeplayCharacter": "",
 	"freeplaySongLength": 126.967732,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "",
+	"altInstrumentalSongs": "darnell",
+	"allowErectVariants": true,
 	"freeplayPrevStart": 0
 }

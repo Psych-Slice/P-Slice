@@ -7,7 +7,7 @@ import shaders.RainShader;
 import flixel.addons.display.FlxTiledSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import mikolka.compatibility.VsliceOptions;
-
+using source.mikolka.stages.cutscenes.DarnellStart;
 #if !LEGACY_PSYCH
 import substates.PauseSubState;
 import substates.GameOverSubstate;
@@ -31,7 +31,7 @@ class PhillyStreets extends BaseStage
 	var phillyCars2:BGSprite;
 
 	var picoFade:FlxSprite;
-	var spraycan:SpraycanAtlasSprite;
+	public var spraycan:SpraycanAtlasSprite;
 	var spraycanPile:BGSprite;
 
 	var darkenable:Array<FlxSprite> = [];
@@ -235,157 +235,11 @@ class PhillyStreets extends BaseStage
 			switch (songName)
 			{
 				case 'darnell':
-					darnellCutscene();
+					DarnellStart.darnellCutscene(this);
 			}
 		}
 	}
 
-	var cutsceneHandler:CutsceneHandler;
-
-	function darnellCutscene()
-	{
-		moveCamera(false);
-		camFollow.x += 250;
-		FlxG.camera.snapToTarget();
-		FlxG.camera.zoom = 1.3;
-		spraycan.cutscene = true;
-
-		cutsceneHandler = new CutsceneHandler();
-		cutsceneHandler.endTime = 10;
-
-		var cutsceneMusic:FlxSound = new FlxSound().loadEmbedded(Paths.music('darnellCanCutscene'));
-		cutsceneMusic.looped = true;
-		FlxG.sound.list.add(cutsceneMusic);
-
-		var darnellLaugh:FlxSound = new FlxSound().loadEmbedded(Paths.sound('cutscene/darnell_laugh'));
-		darnellLaugh.volume = 0.6;
-		FlxG.sound.list.add(darnellLaugh);
-
-		var neneLaugh:FlxSound = new FlxSound().loadEmbedded(Paths.sound('cutscene/nene_laugh'));
-		neneLaugh.volume = 0.6;
-		FlxG.sound.list.add(neneLaugh);
-
-		camHUD.alpha = 0;
-		gf.animation.finishCallback = function(name:String)
-		{
-			switch (name)
-			{
-				case 'danceLeft', 'danceRight':
-					gf.dance();
-			}
-		}
-		gf.dance();
-
-		dad.animation.finishCallback = function(name:String)
-		{
-			switch (name)
-			{
-				case 'idle':
-					dad.dance();
-			}
-		}
-		dad.dance();
-
-		final cutsceneDelay = 2.0;
-		boyfriend.playAnim('intro1', true);
-		cutsceneHandler.timer(0.7, function() // play music
-		{
-			cutsceneMusic.play();
-		});
-		cutsceneHandler.timer(cutsceneDelay, function() // zoom out to show off everything
-		{
-			moveCamera(true);
-			camFollow.x += 100;
-			FlxTween.tween(FlxG.camera.scroll, {x: camFollow.x + 100 - FlxG.width / 2, y: camFollow.y - FlxG.height / 2}, 2.5, {ease: FlxEase.quadInOut});
-			FlxTween.tween(FlxG.camera, {zoom: 0.66}, 2.5, {ease: FlxEase.quadInOut});
-		});
-		cutsceneHandler.timer(cutsceneDelay + 3, function() // darnell lights can
-		{
-			dad.playAnim('lightCan', true);
-			lightCanSnd.play(true);
-		});
-		cutsceneHandler.timer(cutsceneDelay + 4, function() // pico reloads
-		{
-			boyfriend.playAnim('cock', true);
-			FlxTween.tween(FlxG.camera.scroll, {x: camFollow.x + 180 - FlxG.width / 2}, 0.4, {ease: FlxEase.backOut});
-			gunPrepSnd.play(true);
-		});
-		cutsceneHandler.timer(cutsceneDelay + 4.166, function() createCasing());
-		cutsceneHandler.timer(cutsceneDelay + 4.4, function() // darnell kicks can
-		{
-			dad.playAnim('kickCan', true);
-			spraycan.playCanStart();
-			kickCanSnd.play(true);
-		});
-		cutsceneHandler.timer(cutsceneDelay + 4.8, function() // darnell knees can
-		{
-			dad.playAnim('kneeCan', true);
-			kneeCanSnd.play(true);
-		});
-		cutsceneHandler.timer(cutsceneDelay + 5.1, function() // pico fires at can
-		{
-			boyfriend.playAnim('intro2', true);
-
-			FlxG.sound.play(Paths.soundRandom('shots/shot', 1, 4));
-
-			FlxTween.tween(FlxG.camera.scroll, {x: camFollow.x + 100 - FlxG.width / 2}, 2.5, {ease: FlxEase.quadInOut});
-
-			spraycan.playCanShot();
-			new FlxTimer().start(1 / 24, function(_)
-			{
-				darkenStageProps();
-			});
-		});
-		// darnell laughs
-		cutsceneHandler.timer(cutsceneDelay + 5.9, function()
-		{
-			dad.animation.finishCallback = null;
-			dad.playAnim('laughCutscene', true);
-			darnellLaugh.play(true);
-		});
-
-		// nene spits and laughs
-		cutsceneHandler.timer(cutsceneDelay + 6.2, function()
-		{
-			gf.animation.finishCallback = null;
-			gf.playAnim('laughCutscene', true);
-			neneLaugh.play(true);
-		});
-
-		// cutscene ended, camera returns to normal, cutscene flags set and countdown starts.
-		cutsceneHandler.finishCallback = function()
-		{
-			cutsceneMusic.stop(); // stop the music!!!!!!
-
-			game.cameraSpeed = 0;
-			FlxTween.tween(FlxG.camera, {zoom: 0.77}, 2, {ease: FlxEase.sineInOut});
-			FlxTween.tween(FlxG.camera.scroll, {x: camFollow.x + 180 - FlxG.width / 2}, 2,
-				{ease: FlxEase.sineInOut, onComplete: function(_) game.cameraSpeed = 1});
-			game.inCutscene = false;
-
-			spraycan.visible = spraycan.active = spraycan.cutscene = false;
-			camHUD.alpha = 1;
-			startCountdown();
-		};
-		cutsceneHandler.skipCallback = function()
-		{
-			cutsceneHandler.finishCallback();
-
-			dad.dance();
-			gf.dance();
-			boyfriend.dance();
-			dad.animation.finishCallback = null;
-			gf.animation.finishCallback = null;
-
-			game.moveCameraSection();
-			game.cameraSpeed = 1;
-			FlxTween.cancelTweensOf(FlxG.camera);
-			FlxTween.cancelTweensOf(FlxG.camera.scroll);
-			FlxG.camera.scroll.set(camFollow.x - FlxG.width / 2, camFollow.y - FlxG.height / 2);
-			FlxG.camera.zoom = defaultCamZoom;
-		};
-		FlxG.camera.fade(FlxColor.BLACK, 2, true, null, true);
-	}
 
 	override function startSong()
 	{
@@ -413,11 +267,11 @@ class PhillyStreets extends BaseStage
 
 	var casingGroup:FlxSpriteGroup;
 	var casingFrames:FlxAtlasFrames;
-	var gunPrepSnd:FlxSound;
 	var bonkSnd:FlxSound;
-	var lightCanSnd:FlxSound;
-	var kickCanSnd:FlxSound;
-	var kneeCanSnd:FlxSound;
+	public var gunPrepSnd:FlxSound;
+	public var lightCanSnd:FlxSound;
+	public var kickCanSnd:FlxSound;
+	public var kneeCanSnd:FlxSound;
 
 	function precache()
 	{
@@ -527,7 +381,7 @@ class PhillyStreets extends BaseStage
 			rainShader.updateViewInfo(FlxG.width, FlxG.height, FlxG.camera);
 			rainShader.update(elapsed);
 
-			if (rainSndAmbience != null)
+			if (rainSndAmbience != null && FlxG.sound.volume != 0)
 			{
 				rainSndAmbience.volume = Math.min(0.3, remappedIntensityValue * 2);
 			}
@@ -774,7 +628,7 @@ class PhillyStreets extends BaseStage
 		}
 	}
 
-	function createCasing()
+	public function createCasing()
 	{
 		if (VsliceOptions.LOW_QUALITY)
 			return;
@@ -927,7 +781,7 @@ class PhillyStreets extends BaseStage
 		FlxTween.tween(picoFade, {alpha: 0}, 0.4, {onComplete: (_) -> (picoFade.visible = false)});
 	}
 
-	function darkenStageProps()
+	public function darkenStageProps()
 	{
 		// Darken the background, then fade it back.
 		for (sprite in darkenable)

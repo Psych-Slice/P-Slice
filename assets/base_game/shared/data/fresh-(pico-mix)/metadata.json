@@ -5,6 +5,6 @@
 	"freeplaySongLength": 84.098957,
 	"freeplayPrevEnd": 20,
 	"altInstrumentalSongs": "Fresh",
-	"freeplayPrevStart": 0,
-	"allowErectVariants": true
+	"allowErectVariants": true,
+	"freeplayPrevStart": 0
 }

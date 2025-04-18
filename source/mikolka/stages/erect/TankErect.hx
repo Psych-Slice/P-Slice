@@ -1,5 +1,8 @@
 package mikolka.stages.erect;
 
+import openfl.filters.ShaderFilter;
+import cutscenes.CutsceneHandler;
+import shaders.DropShadowScreenspace;
 import mikolka.stages.objects.PicoCapableStage;
 import objects.Character;
 import mikolka.compatibility.VsliceOptions;
@@ -77,7 +80,7 @@ class TankErect extends BaseStage
 			applyShader(gf, gf.curCharacter);
 			applyShader(dad, dad.curCharacter);
 			if (PicoCapableStage.instance?.abot != null)
-				applyShader(PicoCapableStage.instance.abot, "abot");
+				applyAbotShader(PicoCapableStage.instance.abot, "abot");
 		}
 		if (!VsliceOptions.LOW_QUALITY)
 		{
@@ -87,7 +90,6 @@ class TankErect extends BaseStage
 				if (gf.curCharacter == 'otis-speaker')
 				{
 					var firstTank:TankmenBG = new TankmenBG(20, 500, true);
-					applyShader(firstTank, "");
 					firstTank.resetShit(20, 1500, true);
 					firstTank.strumTime = 10;
 					firstTank.visible = false;
@@ -98,8 +100,11 @@ class TankErect extends BaseStage
 						if (FlxG.random.bool(16))
 						{
 							var tankBih = tankmanRun.recycle(TankmenBG);
+							applyShader(tankBih, ""); // Is this wasting resources? I don't know tbh
 							tankBih.strumTime = TankmenBG.animationNotes[i][0];
-							tankBih.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2);
+							tankBih.scale.set(1, 1);
+							tankBih.updateHitbox();
+							tankBih.resetShit(500, 100, TankmenBG.animationNotes[i][1] < 2);
 							tankmanRun.add(tankBih);
 						}
 					}
@@ -206,5 +211,47 @@ class TankErect extends BaseStage
 					};
 				}
 		}
+	}
+	function preloadCutscene() {
+		var shader = new DropShadowScreenspace();
+		shader.baseBrightness = -46;
+		shader.baseHue = -38;
+		shader.baseContrast = -25;
+		shader.baseSaturation = -20;
+    	shader.angle = 45;
+		shader.threshold = 0.3;
+		shaderCamera = new ShaderFilter(shader);
+		tankmanEnding = new FlxAtlasSprite(0,0,"assets/week7/images/philly/erect/cutscenes/pico_doppleganger");
+		cutsceneSounds = new FlxSound().loadEmbedded(Paths.sound('erect/endCutscene'));
+		bgSprite = new FunkinSprite(0, 0);
+		bgSprite.makeSolidColor(2000, 2500, 0xFF000000);
+		bgSprite.cameras = [camOther]; // Show over the HUD but below the video.
+		bgSprite.alpha = 0;
+		add(bgSprite);
+	}
+	var cutscene:CutsceneHandler;
+	var shaderCamera:ShaderFilter;
+	var tankmanEnding:FlxAtlasSprite;
+	var cutsceneSounds:FlxSound;
+	var bgSprite:FunkinSprite;
+	override function endSong():Bool {
+		if(songName.toLowerCase() != "stress (pico mix)") return true;
+		cutscene = new CutsceneHandler();
+		cutscene.endTime = 320/24;
+		cutscene.onStart = () -> {
+			var rimlightCamera = new FlxCamera();
+    		FlxG.cameras.insert(rimlightCamera, -1, false);
+    		rimlightCamera.bgColor = 0x00FFFFFF; // Show the game scene behind the camera.
+			rimlightCamera.filters = [shaderCamera];
+			FlxTween.tween(camHUD,{alpha:0},1);
+			tankmanEnding.playAnimation("tankman stress ending", true, false, false);
+    		cutsceneSounds.play();
+		};
+		cutscene.timer(176/24,() ->{
+			boyfriend.playAnim("laughEnd",true);
+		});
+		cutscene.timer(270/24,() ->{});
+		cutscene.timer(176/24,() ->{});
+		return false;
 	}
 }

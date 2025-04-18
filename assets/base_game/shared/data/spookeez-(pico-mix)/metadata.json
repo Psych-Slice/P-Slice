@@ -4,7 +4,7 @@
 	"freeplayCharacter": "pico",
 	"freeplaySongLength": 97.6,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "",
-	"freeplayPrevStart": 0,
-	"allowErectVariants": true
+	"altInstrumentalSongs": "spookeez",
+	"allowErectVariants": true,
+	"freeplayPrevStart": 0
 }

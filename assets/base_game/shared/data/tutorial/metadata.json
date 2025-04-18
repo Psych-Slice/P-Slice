@@ -4,6 +4,7 @@
 	"freeplayCharacter": "",
 	"freeplaySongLength": 67.2,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "",
+	"altInstrumentalSongs": "tutorial (Pico Mix)",
+	"allowErectVariants": true,
 	"freeplayPrevStart": 0
 }
