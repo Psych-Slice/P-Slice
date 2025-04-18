@@ -4,7 +4,7 @@
 	"freeplayCharacter": "",
 	"freeplaySongLength": 86.617188,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "",
-	"freeplayPrevStart": 0,
-	"allowErectVariants": true
+	"altInstrumentalSongs": "ugh (Pico Mix)",
+	"allowErectVariants": true,
+	"freeplayPrevStart": 0
 }

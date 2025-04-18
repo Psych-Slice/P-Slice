@@ -4,6 +4,7 @@
 	"freeplayCharacter": "pico",
 	"freeplaySongLength": 106.909093,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "",
+	"altInstrumentalSongs": "blammed",
+	"allowErectVariants": true,
 	"freeplayPrevStart": 0
 }

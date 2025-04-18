@@ -4,7 +4,7 @@
 	"freeplayCharacter": "pico",
 	"freeplaySongLength": 96.031247,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "",
-	"freeplayPrevStart": 0,
-	"allowErectVariants": true
+	"altInstrumentalSongs": "eggnog",
+	"allowErectVariants": true,
+	"freeplayPrevStart": 0
 }
