@@ -22,6 +22,7 @@
 
 package mobile.objects;
 
+import shaders.flixel.system.FlxShader;
 import flixel.input.FlxInput;
 import flixel.input.FlxPointer;
 import flixel.input.IFlxInput;

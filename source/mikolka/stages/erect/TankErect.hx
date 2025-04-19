@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import mikolka.stages.objects.TankmenBG;
 import mikolka.stages.cutscenes.VideoCutscene;
 import mikolka.stages.cutscenes.PicoTankman;
 import openfl.filters.ShaderFilter;
@@ -88,7 +89,7 @@ class TankErect extends BaseStage
 			applyShader(gf, gf.curCharacter);
 			applyShader(dad, dad.curCharacter);
 			if (PicoCapableStage.instance?.abot != null)
-				applyAbotShader(PicoCapableStage.instance.abot);
+				applyAbotShader(PicoCapableStage.instance.abot.speaker);
 		}
 		if (!VsliceOptions.LOW_QUALITY)
 		{
@@ -98,7 +99,7 @@ class TankErect extends BaseStage
 				if (gf.curCharacter == 'otis-speaker')
 				{
 					var firstTank:TankmenBG = new TankmenBG(20, 500, true);
-					firstTank.resetShit(20, 1500, true);
+					firstTank.resetShit(20, 1500, true,false);
 					firstTank.strumTime = 10;
 					firstTank.visible = false;
 					tankmanRun.add(firstTank);
@@ -112,9 +113,7 @@ class TankErect extends BaseStage
 							tankBih.strumTime = TankmenBG.animationNotes[i][0];
 							tankBih.scale.set(1, 1);
 							tankBih.updateHitbox();
-							tankBih.resetShit(500, 150, TankmenBG.animationNotes[i][1] < 2);
-							@:privateAccess
-							tankBih.endingOffset = 
+							tankBih.resetShit(500, 150, TankmenBG.animationNotes[i][1] < 2,false);
 							tankmanRun.add(tankBih);
 						}
 					}
@@ -146,7 +145,7 @@ class TankErect extends BaseStage
 		var rim = new DropShadowShader();
 		rim.setAdjustColor(-46, -38, -25, -20);
 		rim.color = 0xFFDFEF3C;
-		rim.antialiasAmt = 0;
+		rim.threshold = 0.3;
 		rim.attachedSprite = sprite;
 		rim.distance = 5;
 		switch (char_name)
@@ -194,7 +193,7 @@ class TankErect extends BaseStage
 				}
 			case "tankman":
 				{
-					//rim.angle = 135;
+					rim.angle = 135;
 					sprite.shader = rim;
 					rim.threshold = 0.3;
 					rim.maskThreshold = 1;
@@ -207,7 +206,7 @@ class TankErect extends BaseStage
 				}
 			case "nene":
 				{
-					rim.threshold = 0.1;
+					rim.threshold = 0.3;
 					rim.angle = 90;
 					sprite.shader = rim;
 					sprite.animation.callback = function(anim, frame, index)

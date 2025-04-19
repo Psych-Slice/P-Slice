@@ -253,7 +253,7 @@ class ScreenshotPlugin extends FlxBasic
 
   public function hasPressedScreenshot():Bool
   {
-    return FunkinControls.SCREENSHOT;
+    return FunkinControls.SCREENSHOT && !noSavingScreenshots;
   }
 
   public function updateFlashColor():Void
@@ -280,7 +280,7 @@ class ScreenshotPlugin extends FlxBasic
     if (screenshotBeingSpammed == true)
     {
       // Save the screenshots to the buffer instead
-      if (screenshotBuffer.length < 100)
+      if (screenshotBuffer.length < 15)
       {
         screenshotBuffer.push(shot);
         screenshotNameBuffer.push('screenshot-${DateUtil.generateTimestamp()}');
@@ -291,8 +291,14 @@ class ScreenshotPlugin extends FlxBasic
       else
       {
         noSavingScreenshots = true;
+        screenshotBuffer = [];
+        screenshotNameBuffer = [];
         UserErrorSubstate.makeMessage("Too many screenshots!",
-          "You've tried taking more than 100 screenshots at a time. Give the game a funkin break! Jeez. If you wanted those screenshots, well too bad!");
+          "You've tried taking more than 15 screenshots at a time. Give the game a funkin break! Jeez.\n\n\nIf you wanted those screenshots, well too bad!");
+        FlxG.state.subStateClosed.addOnce(state -> {
+            noSavingScreenshots = false;
+        });
+
       }
       showCaptureFeedback();
       if (wasMouseHidden && !FlxG.mouse.visible && VsliceOptions.FLASHBANG) // Just in case
