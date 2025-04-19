@@ -35,7 +35,7 @@ class PicoCapableStage extends BaseStage
 	var forceABot:Bool = false;
 	var blinkCountdown:Int = 3;
 	public function new(forceABot:Bool = false) {
-		instance = null;
+		instance = this;
 		super();
 		this.forceABot = forceABot;
 	}
@@ -310,7 +310,7 @@ class PicoCapableStage extends BaseStage
 				neneKnife.animation.finishCallback = function(_)
 				{
 					state.remove(neneKnife);
-					neneKnife.destroy();
+					//neneKnife.destroy();
 				}
 				state.insert(0, neneKnife);
 				neneKnife.animation.play('anim', true);

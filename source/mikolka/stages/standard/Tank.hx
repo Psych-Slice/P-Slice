@@ -1,5 +1,7 @@
 package mikolka.stages.standard;
 
+
+import mikolka.stages.objects.TankmenBG;
 #if !LEGACY_PSYCH
 import cutscenes.CutsceneHandler;
 import substates.GameOverSubstate;
@@ -104,7 +106,7 @@ class Tank extends BaseStage
 				if(gf.curCharacter == 'pico-speaker')
 				{
 					var firstTank:TankmenBG = new TankmenBG(20, 500, true);
-					firstTank.resetShit(20, 1500, true);
+					firstTank.resetShit(20, 1500, true,true);
 					firstTank.strumTime = 10;
 					firstTank.visible = false;
 					tankmanRun.add(firstTank);
@@ -114,7 +116,7 @@ class Tank extends BaseStage
 						if(FlxG.random.bool(16)) {
 							var tankBih = tankmanRun.recycle(TankmenBG);
 							tankBih.strumTime = TankmenBG.animationNotes[i][0];
-							tankBih.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2);
+							tankBih.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2,true);
 							tankmanRun.add(tankBih);
 						}
 					}

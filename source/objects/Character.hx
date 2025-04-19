@@ -9,7 +9,7 @@ import openfl.utils.Assets;
 import haxe.Json;
 
 import backend.Song;
-import states.stages.objects.TankmenBG;
+import mikolka.stages.objects.TankmenBG;
 
 typedef CharacterFile = {
 	var animations:Array<AnimArray>;

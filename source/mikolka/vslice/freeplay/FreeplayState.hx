@@ -1511,11 +1511,11 @@ class FreeplayState extends MusicBeatSubstate
 
 		if (!busy)
 		{
-			if (FunkinControls.FREEPLAY_CHAR #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonC.justPressed #end)
+			if (FunkinControls.FREEPLAY_CHAR #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonX.justPressed #end)
 			{
 				tryOpenCharSelect();
 			} //? Those are new too
-			else if (FlxG.keys.justPressed.CONTROL #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonX.justPressed #end)
+			else if (FlxG.keys.justPressed.CONTROL #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonC.justPressed #end)
 			{
 				persistentUpdate = false;
 				#if TOUCH_CONTROLS_ALLOWED
