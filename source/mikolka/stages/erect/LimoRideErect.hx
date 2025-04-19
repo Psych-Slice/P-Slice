@@ -203,6 +203,7 @@ class LimoRideErect extends BaseStage
 
 				limoMetalPole.shader = colorShader;
 				limoBgMetalPole.shader = colorShader;
+				fastCar.shader = colorShader;
 				grpLimoParticles.forEach(s -> s.shader = colorShader);
 			}
 
