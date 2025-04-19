@@ -378,6 +378,11 @@ class NoteOffsetState extends MusicBeatState
 				holdTime += elapsed;
 				if(controls.UI_LEFT) mult = -1;
 			}
+			if(controls.UI_LEFT_R || controls.UI_RIGHT_R)
+			{
+				holdTime = 0;
+				updateNoteDelay();
+			}
 
 			if(holdTime > 0.5)
 			{
