@@ -121,6 +121,13 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 			['Time Left', 'Time Elapsed', 'Song Name', 'Disabled']);
 		addOption(option);
 
+		var option:Option = new Option("Icon Bop type:",
+			"Which icon bop do you want to see?",
+			"bopType",
+			STRING,
+			['Normal', 'Old vanilla']); //todo: [, 'Twist', 'Lo-HP Shake']
+		addOption(option);
+
 		var option:Option = new Option('Flashing Lights',
 			"Uncheck this if you're sensitive to flashing lights!",
 			'flashing',

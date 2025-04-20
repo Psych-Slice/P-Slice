@@ -56,6 +56,9 @@ class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler
 
 	var selectedFormat:FlxTextFormat = new FlxTextFormat(FlxColor.LIME);
 
+	var welcomeMusic:FlxSound;
+	var bgMusicTimer:FlxTimer;
+
 	public function new(char:String = null, goToPlayState:Bool = true)
 	{
 		this._char = char;
@@ -156,6 +159,9 @@ class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler
 
 		makeUIMenu();
 
+		setupWelcomeMusic();
+		fadeInWelcomeMusic();
+
 		updatePointerPos();
 		updateHealthBar();
 		character.finishAnimation();
@@ -170,6 +176,12 @@ class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler
 		super.create();
 	}
 
+	override function destroy():Void
+		{
+			destroyWelcomeMusic();
+			super.destroy();
+		}
+		
 	function addHelpScreen()
 	{
 		var str:Array<String> = controls.mobileC ? ["CAMERA",
@@ -279,6 +291,7 @@ class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler
 		addSettingsUI();
 		addAnimationsUI();
 		addCharacterUI();
+		
 
 		UI_box.selectedName = 'Settings';
 		UI_characterbox.selectedName = 'Character';
@@ -387,6 +400,56 @@ class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler
 		tab_group.add(highlightGhost);
 		tab_group.add(ghostAlphaSlider);
 	}
+
+
+
+
+
+	function setupWelcomeMusic():Void
+		{
+			welcomeMusic = new FlxSound();
+			welcomeMusic.loadEmbedded(Paths.music('chartEditorLoop/chartEditorLoop'));
+			FlxG.sound.list.add(welcomeMusic);
+			welcomeMusic.looped = true;
+		}
+		
+		function fadeInWelcomeMusic(?extraWait:Float = 0, ?fadeInTime:Float = 5):Void
+		{
+			trace("Playing Chart Editor Moosic");
+			if (!welcomeMusic.active)
+			{
+				stopWelcomeMusic();
+				return;
+			}
+		
+			bgMusicTimer = new FlxTimer().start(extraWait, function(timer:FlxTimer)
+			{
+				welcomeMusic.volume = 0;
+				if (welcomeMusic.active)
+				{
+					welcomeMusic.play();
+					welcomeMusic.fadeIn(fadeInTime, 0, 1.0);
+				}
+			});
+		}
+		
+		function stopWelcomeMusic():Void
+		{
+			if (bgMusicTimer != null) bgMusicTimer.cancel();
+			// welcomeMusic.fadeOut(4, 0); // Optional fade-out
+			welcomeMusic.pause();
+		}
+		
+		function destroyWelcomeMusic():Void
+		{
+			if (welcomeMusic != null)
+			{
+				welcomeMusic.stop();
+				welcomeMusic.destroy();
+			}
+		}
+			
+
 
 	var check_player:PsychUICheckBox;
 	var charDropDown:PsychUIDropDownMenu;
@@ -1148,6 +1211,7 @@ class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler
 			{
 				FlxG.mouse.visible = false;
 				MusicBeatState.switchState(new PlayState());
+				stopWelcomeMusic();
 			}
 			return;
 		}

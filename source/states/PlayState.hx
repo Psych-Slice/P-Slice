@@ -1921,15 +1921,57 @@ class PlayState extends MusicBeatState
 	}
 
 	// Health icon updaters
+	//ChatGPT remade the old vanilla icon bop lmfao
+//	{
+//		var lerpRatioFast = FlxMath.bound(Math.exp(-elapsed * 20 * playbackRate), 0, 1);
+//		var lerpRatioSlow = FlxMath.bound(Math.exp(-elapsed * 12 * playbackRate), 0, 1);
+//	
+//		// Player 1
+//		var target1 = (healthBar.percent < 20) ? 1.15 : 1.0;
+//		var mult1 = FlxMath.lerp(iconP1.scale.x, target1, (healthBar.percent < 20) ? lerpRatioFast : lerpRatioSlow);
+//		iconP1.scale.set(mult1, mult1);
+//		iconP1.updateHitbox();
+//		iconP1.centerOffsets();
+//	
+//		// Player 2
+//		var target2 = (healthBar.percent > 80) ? 1.15 : 1.0;
+//		var mult2 = FlxMath.lerp(iconP2.scale.x, target2, (healthBar.percent > 80) ? lerpRatioFast : lerpRatioSlow);
+//		iconP2.scale.set(mult2, mult2);
+//		iconP2.updateHitbox();
+//		iconP2.centerOffsets();
+//	}
 	public dynamic function updateIconsScale(elapsed:Float)
 	{
-		var mult:Float = FlxMath.lerp(1, iconP1.scale.x, Math.exp(-elapsed * 9 * playbackRate));
-		iconP1.scale.set(mult, mult);
-		iconP1.updateHitbox();
+		switch(ClientPrefs.data.bopType) {
+			case "Normal":
+				var mult:Float = FlxMath.lerp(1, iconP1.scale.x, Math.exp(-elapsed * 9 * playbackRate));
+				iconP1.scale.set(mult, mult);
+				iconP1.updateHitbox();
 
-		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, Math.exp(-elapsed * 9 * playbackRate));
-		iconP2.scale.set(mult, mult);
-		iconP2.updateHitbox();
+				var mult:Float = FlxMath.lerp(1, iconP2.scale.x, Math.exp(-elapsed * 9 * playbackRate));
+				iconP2.scale.set(mult, mult);
+				iconP2.updateHitbox();
+				
+			case "Old vanilla":
+				var lerpRatioFast = FlxMath.bound(Math.exp(-elapsed * 20 * playbackRate), 0, 1);
+				var lerpRatioSlow = FlxMath.bound(Math.exp(-elapsed * 12 * playbackRate), 0, 1);
+
+				// Player 1
+				//var target1 = (healthBar.percent < 20) ? 1.15 : 1.0;
+				var mult1 = FlxMath.lerp(iconP1.scale.x, 1, (healthBar.percent < 20) ? lerpRatioFast : lerpRatioSlow);
+				iconP1.scale.set(mult1, mult1);
+				iconP1.updateHitbox();
+				iconP1.centerOffsets();
+				//	
+				// Player 2
+				//var target2 = (healthBar.percent > 80) ? 1.15 : 1.0;
+				var mult2 = FlxMath.lerp(iconP2.scale.x, 1, (healthBar.percent > 80) ? lerpRatioFast : lerpRatioSlow);
+				iconP2.scale.set(mult2, mult2);
+				iconP2.updateHitbox();
+				iconP2.centerOffsets();
+			
+		}
+		
 	}
 
 	public dynamic function updateIconsPosition()
