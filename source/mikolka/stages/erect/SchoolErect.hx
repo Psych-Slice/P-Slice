@@ -20,22 +20,6 @@ class SchoolErect extends BaseStage
 	// var bgGirls:BackgroundGirls;
 	override function create()
 	{
-		var _song = PlayState.SONG;
-		#if LEGACY_PSYCH
-		GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pixel';
-		GameOverSubstate.loopSoundName = 'gameOver-pixel';
-		GameOverSubstate.endSoundName = 'gameOverEnd-pixel';
-		GameOverSubstate.characterName = 'bf-pixel-dead';
-		#else
-		if (_song.gameOverSound == null || _song.gameOverSound.trim().length < 1)
-			GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pixel';
-		if (_song.gameOverLoop == null || _song.gameOverLoop.trim().length < 1)
-			GameOverSubstate.loopSoundName = 'gameOver-pixel';
-		if (_song.gameOverEnd == null || _song.gameOverEnd.trim().length < 1)
-			GameOverSubstate.endSoundName = 'gameOverEnd-pixel';
-		if (_song.gameOverChar == null || _song.gameOverChar.trim().length < 1)
-			GameOverSubstate.characterName = 'bf-pixel-dead';
-		#end
 
 		var repositionShit = -200;
 
@@ -116,24 +100,49 @@ class SchoolErect extends BaseStage
 		}
 		if (!seenCutscene)
 		{
-			if (songName == 'roses-(pico-mix)' || songName == "roses-erect")
-				FlxG.sound.play(Paths.sound('ANGRY'));
 			initDoof();
-			setStartCallback(schoolIntro);
+			if(songName == 'roses-(pico-mix)' || songName == "roses-erect") {
+				FlxG.sound.play(Paths.sound('ANGRY'));
+				setStartCallback(game.startDialogue.bind(dialogue));
+			}
+			else setStartCallback(schoolIntro);
 		}
 	}
+	override function createPost(){
+		var _song = PlayState.SONG;
+		if(PicoCapableStage.PIXEL_LIST.contains(gf.curCharacter)){
+			#if LEGACY_PSYCH
+			GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pixel-pico';
+			GameOverSubstate.loopSoundName = 'gameOver-pixel-pico';
+			GameOverSubstate.endSoundName = 'gameOverEnd-pixel-pico';
+			GameOverSubstate.characterName = 'pico-pixel';
+			#else
+			if(_song.gameOverSound == null || _song.gameOverSound.trim().length < 1) GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pixel-pico';
+			if(_song.gameOverLoop == null || _song.gameOverLoop.trim().length < 1) GameOverSubstate.loopSoundName = 'gameOver-pixel-pico';
+			if(_song.gameOverEnd == null || _song.gameOverEnd.trim().length < 1) GameOverSubstate.endSoundName = 'gameOverEnd-pixel-pico';
+			if(_song.gameOverChar == null || _song.gameOverChar.trim().length < 1) GameOverSubstate.characterName = 'pico-pixel';
+			#end
+		}
+		else{
+			#if LEGACY_PSYCH
+			GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pixel';
+			GameOverSubstate.loopSoundName = 'gameOver-pixel';
+			GameOverSubstate.endSoundName = 'gameOverEnd-pixel';
+			GameOverSubstate.characterName = 'pico-pixel-dead';
+			#else
+			if(_song.gameOverSound == null || _song.gameOverSound.trim().length < 1) GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pixel';
+			if(_song.gameOverLoop == null || _song.gameOverLoop.trim().length < 1) GameOverSubstate.loopSoundName = 'gameOver-pixel';
+			if(_song.gameOverEnd == null || _song.gameOverEnd.trim().length < 1) GameOverSubstate.endSoundName = 'gameOverEnd-pixel';
+			if(_song.gameOverChar == null || _song.gameOverChar.trim().length < 1) GameOverSubstate.characterName = 'bf-pixel-dead';
+			#end
+		}
 
-	override function createPost()
-	{
-		if (VsliceOptions.SHADERS)
-		{
-			applyShader(boyfriend, boyfriend.curCharacter);
-			applyShader(gf, gf.curCharacter);
-			applyShader(dad, dad.curCharacter);
-			if (PicoCapableStage.instance?.abotPixel != null)
-			{
-				applyShader(PicoCapableStage.instance.abotPixel.speaker, "");
-			}
+
+		if(VsliceOptions.SHADERS) {
+		applyShader(boyfriend,boyfriend.curCharacter);
+		applyShader(gf,gf.curCharacter);
+		applyShader(dad,dad.curCharacter);
+		if(PicoCapableStage.instance?.abotPixel != null)applyShader(PicoCapableStage.instance.abotPixel,"");
 		}
 		camFollow_set(800, 500);
 		camGame.snapToTarget();

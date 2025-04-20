@@ -1,6 +1,9 @@
 package mikolka.stages.erect;
 
 import mikolka.stages.objects.TankmenBG;
+#if !LEGACY_PSYCH
+import substates.GameOverSubstate;
+#end
 import mikolka.stages.cutscenes.VideoCutscene;
 import mikolka.stages.cutscenes.PicoTankman;
 import openfl.filters.ShaderFilter;
@@ -45,6 +48,7 @@ class TankErect extends BaseStage
 		add(tankmanRun);
 		if (songName == "stress-(pico-mix)")
 		{
+			new PicoCapableStage(true).create();
 			this.cutscene = new PicoTankman(this);
 			if(!seenCutscene) setStartCallback(VideoCutscene.playVideo.bind('stressPicoCutscene',startCountdown));
 			setEndCallback(cutscene.playCutscene);
@@ -98,6 +102,7 @@ class TankErect extends BaseStage
 				var gf:Character = cast daGf;
 				if (gf.curCharacter == 'otis-speaker')
 				{
+					GameOverSubstate.characterName = 'pico-holding-nene-dead';
 					var firstTank:TankmenBG = new TankmenBG(20, 500, true);
 					firstTank.resetShit(20, 1500, true,false);
 					firstTank.strumTime = 10;

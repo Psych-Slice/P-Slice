@@ -98,6 +98,36 @@
 			"fps": 24,
 			"name": "downmiss0",
 			"indices": []
+		},
+				{
+			"offsets": [
+				0,0
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "deathLoop",
+			"loop": true,
+			"name": "deathLoop0"
+		},
+		{
+			"offsets": [
+				0,0
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "firstDeath",
+			"loop": false,
+			"name": "firstDeath0"
+		},
+		{
+			"offsets": [
+				0,0
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "deathConfirm",
+			"loop": false,
+			"name": "deathConfirm0"
 		}
 	],
 	"no_antialiasing": true,
