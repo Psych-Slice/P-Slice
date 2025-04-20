@@ -27,12 +27,12 @@ class PicoCapableStage extends BaseStage
 	final VULTURE_THRESHOLD:Float = 0.5;
 
 	public static var instance:PicoCapableStage = null;
-	public static var NENE_LIST = ['nene','nene-pixel',"otis-speaker", 'nene-christmas', 'nene-dark'];
+	public static var NENE_LIST = ['nene','nene-pixel', 'nene-christmas', 'nene-dark'];
 	public static var PIXEL_LIST = ['nene-pixel'];
 
 	public var abot:ABotSpeaker;
 	public var abotPixel:ABotPixel;
-	var forceABot:Bool = false;
+	public var forceABot:Bool = false;
 	var blinkCountdown:Int = 3;
 	public function new(forceABot:Bool = false) {
 		instance = this;
@@ -43,15 +43,10 @@ class PicoCapableStage extends BaseStage
 		instance = null;
 		super.destroy();
 	}
-	override function createPost()
-	{
-		super.createPost();
-		abot = null;
-		var game = PlayState.instance;
-		if (!(NENE_LIST.contains(PlayState.SONG.gfVersion) || forceABot))
-			return;
-		if (!forceABot) StickerSubState.STICKER_SET = "stickers-set-2"; //? yep, it's pico time!
+	override function create() {
 		
+		if (!(NENE_LIST.contains(PlayState.SONG.gfVersion) || forceABot))
+			return;	
 		var _song = PlayState.SONG;
 		#if !LEGACY_PSYCH if (_song.gameOverSound == null || _song.gameOverSound.trim().length < 1) #end
 		GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pico';
@@ -61,6 +56,15 @@ class PicoCapableStage extends BaseStage
 		GameOverSubstate.endSoundName = 'gameOverEnd-pico';
 		#if !LEGACY_PSYCH if (_song.gameOverChar == null || _song.gameOverChar.trim().length < 1) #end
 		GameOverSubstate.characterName = 'pico-dead';
+	}
+	override function createPost()
+	{
+		super.createPost();
+		abot = null;
+		var game = PlayState.instance;
+		if (!(NENE_LIST.contains(PlayState.SONG.gfVersion) || forceABot))
+			return;
+		if (!forceABot) StickerSubState.STICKER_SET = "stickers-set-2"; //? yep, it's pico time!
 
 		game.gfGroup.y -= 200;
 		if(PIXEL_LIST.contains(PlayState.SONG.gfVersion) || PlayState.isPixelStage) {
@@ -304,9 +308,16 @@ class PicoCapableStage extends BaseStage
 			if (PlayState.instance.gf != null && NENE_LIST.contains(PlayState.SONG.gfVersion))
 			{
 				var neneKnife:FlxSprite = new FlxSprite(state.boyfriend.x - 450, state.boyfriend.y - 250);
-				neneKnife.frames = Paths.getSparrowAtlas('NeneKnifeToss');
-				neneKnife.animation.addByPrefix('anim', 'knife toss', 24, false);
-				neneKnife.antialiasing = VsliceOptions.ANTIALIASING;
+				if(PlayState.isPixelStage){
+					neneKnife.frames = Paths.getSparrowAtlas('NenePixelKnifeToss');
+					neneKnife.antialiasing = false;
+					neneKnife.animation.addByPrefix('anim', 'knifetosscolor', 24, false);
+				}
+				else{
+					neneKnife.frames = Paths.getSparrowAtlas('NeneKnifeToss');
+					neneKnife.antialiasing = VsliceOptions.ANTIALIASING;
+					neneKnife.animation.addByPrefix('anim', 'knife toss', 24, false);
+				}
 				neneKnife.animation.finishCallback = function(_)
 				{
 					state.remove(neneKnife);
