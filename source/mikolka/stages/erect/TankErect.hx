@@ -113,7 +113,9 @@ class TankErect extends BaseStage
 							tankBih.strumTime = TankmenBG.animationNotes[i][0];
 							tankBih.scale.set(1, 1);
 							tankBih.updateHitbox();
-							tankBih.resetShit(500, 150, TankmenBG.animationNotes[i][1] < 2,false);
+							tankBih.resetShit(500, 150, TankmenBG.animationNotes[i][1] < 2);
+							// @:privateAccess
+							// tankBih.endingOffset = 
 							tankmanRun.add(tankBih);
 						}
 					}
