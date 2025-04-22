@@ -79,7 +79,7 @@ class PhillyTrainErect extends BaseStage
 			dad.shader = colorShader;
 			gf.shader = colorShader;
 			phillyTrain.shader = colorShader;
-			if(PicoCapableStage.instance?.abot != null) PicoCapableStage.instance.abot.speaker.shader = colorShader;
+			PicoCapableStage.instance?.applyABotShader(colorShader);
 		}
 	}
 

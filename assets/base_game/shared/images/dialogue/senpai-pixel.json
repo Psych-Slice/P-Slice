@@ -1,11 +1,11 @@
 {
 	"position": [
 		370,
-		230
+		220
 	],
 	"dialogue_pos": "left",
 	"no_antialiasing": true,
-	"scale": 6,
+	"scale": 7,
 	"image": "senpai-pixel",
 	"animations": [
 		{

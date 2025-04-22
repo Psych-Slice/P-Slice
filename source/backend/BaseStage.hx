@@ -188,7 +188,7 @@ class BaseStage extends FlxBasic
 		return game.defaultCamZoom;
 	}
 	inline private function get_camFollow():FlxObject return game.camFollow;
-	inline private function camFollow_set(x:Float,y:Float) {
+	inline public function camFollow_set(x:Float,y:Float) {
 		camFollow.setPosition(x,y);
 	}
 }

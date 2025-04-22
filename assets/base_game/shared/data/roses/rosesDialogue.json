@@ -18,10 +18,10 @@
 		},
 		{
 			"sound": "",
-			"speed": 0.045,
-			"portrait": "bf",
+			"speed": 0.05,
+			"portrait": "bf-pixel",
 			"boxState": "normal",
-			"expression": "talk",
+			"expression": "idle",
 			"text": "Bop beep be be skdoo bep"
 		}
 	]

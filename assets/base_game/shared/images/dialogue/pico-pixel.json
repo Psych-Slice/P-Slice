@@ -1,11 +1,11 @@
 {
 	"position": [
-		-20,
-		230
+		-10,
+		220
 	],
 	"dialogue_pos": "right",
 	"no_antialiasing": true,
-	"scale": 6,
+	"scale": 7,
 	"image": "pico-pixel",
 	"animations": [
 		{

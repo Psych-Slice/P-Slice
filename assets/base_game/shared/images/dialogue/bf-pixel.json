@@ -1,12 +1,12 @@
 {
 	"position": [
-		-40,
-		230
+		10,
+		235
 	],
 	"dialogue_pos": "right",
 	"no_antialiasing": true,
 	"scale": 7,
-	"image": "nene-pixel",
+	"image": "bf-pixel",
 	"animations": [
 		{
 			"loop_offsets": [
@@ -20,19 +20,6 @@
 			],
 			"loop_name": "idle",
 			"idle_name": "idle"
-		},
-		{
-			"loop_offsets": [
-				0,
-				0
-			],
-			"anim": "peeved",
-			"idle_offsets": [
-				0,
-				0
-			],
-			"loop_name": "peeved",
-			"idle_name": "peeved"
 		}
 	]
 }

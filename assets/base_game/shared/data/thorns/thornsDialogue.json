@@ -1,0 +1,49 @@
+{
+	"style": "decay",
+	"dialogue": [
+		{
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "senpai-pixel",
+			"boxState": "normal",
+			"expression": "dead",
+			"text": "Direct contact with real humans, after being trapped in here for so long..."
+		},	{
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "senpai-pixel",
+			"boxState": "normal",
+			"expression": "dead",
+			"text": "and HER of all people."
+		},	{
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "senpai-pixel",
+			"boxState": "normal",
+			"expression": "dead",
+			"text": "I'll make her father pay for what he's done to me and all the others,,,,"
+		},	{
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "senpai-pixel",
+			"boxState": "normal",
+			"expression": "dead",
+			"text": "I'll beat you and make you take my place."
+		},	{
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "senpai-pixel",
+			"boxState": "normal",
+			"expression": "dead",
+			"text": "You don't mind your bodies being borrowed right? It's only fair..."
+		},
+		{
+			"sound": "pixelText",
+			"speed": 0.045,
+			"portrait": "bf-pixel",
+			"boxState": "normal",
+			"expression": "idle",
+			"text": "I do mind, but I'm too stupid to care."
+		}
+	]
+}

@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import mikolka.stages.objects.PicoCapableStage;
 import mikolka.vslice.StickerSubState;
 import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.funkin.FunkinControls;
@@ -240,6 +241,7 @@ class PhillyStreetsErect extends BaseStage
                 boyfriend.shader = colorShader;
                 dad.shader = colorShader;
                 gf.shader = colorShader;
+                PicoCapableStage.instance?.applyABotShader(colorShader);
             }
         }
     

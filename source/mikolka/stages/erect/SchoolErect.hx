@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import mikolka.stages.cutscenes.SchoolDoof;
 import cutscenes.DialogueBoxPsych;
 import mikolka.stages.objects.PicoCapableStage;
 import shaders.AdjustColorShader;
@@ -9,15 +10,12 @@ import objects.Character;
 import mikolka.compatibility.VsliceOptions;
 #if !LEGACY_PSYCH
 import substates.GameOverSubstate;
-import cutscenes.DialogueBox;
 #end
 import openfl.utils.Assets as OpenFlAssets;
 
 class SchoolErect extends BaseStage
 {
-	var dialogue:DialogueFile;
 
-	// var bgGirls:BackgroundGirls;
 	override function create()
 	{
 
@@ -79,15 +77,6 @@ class SchoolErect extends BaseStage
 		bgStreet.updateHitbox();
 		bgTrees.updateHitbox();
 
-		// if(!VsliceOptions.LOW_QUALITY) {
-		// 	bgGirls = new BackgroundGirls(-100, 190);
-		// 	if(VsliceOptions.SHADERS){
-
-		// 		applyShader(bgGirls,"");
-		// 	}
-		// 	bgGirls.scrollFactor.set(0.9, 0.9);
-		// 	add(bgGirls);
-		// }
 		setDefaultGF('gf-pixel');
 
 		switch (songName)
@@ -100,12 +89,12 @@ class SchoolErect extends BaseStage
 		}
 		if (!seenCutscene)
 		{
-			initDoof();
+			var cutscene = new SchoolDoof(songName);
 			if(songName == 'roses-(pico-mix)' || songName == "roses-erect") {
-				FlxG.sound.play(Paths.sound('ANGRY'));
-				setStartCallback(game.startDialogue.bind(dialogue));
+				
+				setStartCallback(cutscene.doAngryIntro);
 			}
-			else setStartCallback(schoolIntro);
+			else setStartCallback(cutscene.doSchoolIntro);
 		}
 	}
 	override function createPost(){
@@ -137,81 +126,15 @@ class SchoolErect extends BaseStage
 			#end
 		}
 
-
 		if(VsliceOptions.SHADERS) {
 		applyShader(boyfriend,boyfriend.curCharacter);
 		applyShader(gf,gf.curCharacter);
 		applyShader(dad,dad.curCharacter);
-		if(PicoCapableStage.instance?.abotPixel != null)applyShader(PicoCapableStage.instance.abotPixel,"");
+
+		if(PicoCapableStage.instance?.abotPixel != null)applyShader(PicoCapableStage.instance.abotPixel.speaker,"");
 		}
 		camFollow_set(800, 500);
 		camGame.snapToTarget();
-	}
-
-	// override function beatHit()
-	// {
-	// 	if(bgGirls != null) bgGirls.dance();
-	// }
-	// For events
-	// override function eventCalled(eventName:String, value1:String, value2:String, flValue1:Null<Float>, flValue2:Null<Float>, strumTime:Float)
-	// {
-	// 	switch(eventName)
-	// 	{
-	// 		case "BG Freaks Expression":
-	// 			if(bgGirls != null) bgGirls.swapDanceType();
-	// 	}
-	// }
-
-	function initDoof()
-	{
-		#if LEGACY_PSYCH
-		var file:String = Paths.json('$songName/${songName}Dialogue'); // Checks for vanilla/Senpai dialogue
-		#else
-		var file:String = Paths.json('$songName/${songName}Dialogue_${ClientPrefs.data.language}'); // Checks for vanilla/Senpai dialogue
-		#end
-		#if MODS_ALLOWED
-		if (!FileSystem.exists(file))
-		#else
-		if (!OpenFlAssets.exists(file))
-		#end
-		{
-			file = Paths.json('$songName/${songName}Dialogue');
-		}
-
-		#if MODS_ALLOWED
-		if (!FileSystem.exists(file))
-		#else
-		if (!OpenFlAssets.exists(file))
-		#end
-		{
-			startCountdown();
-			return;
-		}
-		dialogue = DialogueBoxPsych.parseDialogue(file);
-	}
-
-	function schoolIntro():Void
-	{
-		inCutscene = true;
-		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
-		black.scrollFactor.set();
-		if (dialogue != null)
-			add(black);
-
-		new FlxTimer().start(0.3, function(tmr:FlxTimer)
-		{
-			black.alpha -= 0.15;
-
-			if (black.alpha <= 0)
-			{
-				remove(black);
-				black.destroy();
-				if (dialogue != null)
-					game.startDialogue(dialogue);
-			}
-			else
-				tmr.reset(0.3);
-		});
 	}
 
 	function applyShader(sprite:FlxSprite, char_name:String)

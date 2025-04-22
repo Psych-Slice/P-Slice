@@ -1,7 +1,8 @@
 package cutscenes;
 
-import cutscenes.DialogueStyle.PixelDialogueStyle;
-import cutscenes.DialogueStyle;
+import cutscenes.styles.DialogueStyle.DialogueBoxState;
+import cutscenes.styles.DialogueStyle.DialogueBoxPosition;
+import cutscenes.styles.*;
 import substates.PauseSubState;
 import haxe.Json;
 import openfl.utils.Assets;
@@ -64,6 +65,9 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		switch(dialogueList.style){
 			case "pixel":{
 				this.style = new PixelDialogueStyle();
+			}
+			case "decay":{
+				this.style = new DecayDialogueStyle();
 			}
 			default:{
 				this.style = new PsychDialogueStyle();
@@ -152,8 +156,6 @@ class DialogueBoxPsych extends FlxSpriteGroup
 	var daText:FlxSprite = null;
 	var ignoreThisFrame:Bool = true; //First frame is reserved for loading dialogue images
 
-	public var closeSound:String = 'dialogueClose';
-	public var closeVolume:Float = 1;
 	var cumulatedElapsed:Float = 0;
 	override function update(elapsed_real:Float)
 	{
@@ -176,10 +178,11 @@ class DialogueBoxPsych extends FlxSpriteGroup
 				if(!style.isLineFinished() && !back)
 				{
 					style.finishLine();
+					style.playBoxAnim(style.last_position,WAIT,lastBoxType);
 					if(skipDialogueThing != null) {
 						skipDialogueThing();
 					}
-					FlxG.sound.play(Paths.sound(closeSound), closeVolume);
+					FlxG.sound.play(Paths.sound(style.closeSound), style.closeVolume);
 				}
 				else if (back && !pauseJustClosed && !dialogueEnded)
 					{
@@ -203,7 +206,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 								case SKIP: {
 										trace('skipped cutscene');
 										skipDialogue();
-										FlxG.sound.play(Paths.sound(closeSound), closeVolume);
+										FlxG.sound.play(Paths.sound(style.closeSound), style.closeVolume);
 									}
 								case RESUME: {
 									FlxG.sound.music.resume();
@@ -213,17 +216,17 @@ class DialogueBoxPsych extends FlxSpriteGroup
 									dialogueList.dialogue = staticDialList.copy();
 									currentText = 0;
 									startNextDialog();
-									FlxG.sound.play(Paths.sound(closeSound), closeVolume);
+									FlxG.sound.play(Paths.sound(style.closeSound), style.closeVolume);
 								}
 							}
 						});
 					}
 				else if(currentText >= dialogueList.dialogue.length)
 				{
-					FlxG.sound.play(Paths.sound(closeSound), closeVolume);
+					FlxG.sound.play(Paths.sound(style.closeSound), style.closeVolume);
 					skipDialogue();
 				} else {
-					FlxG.sound.play(Paths.sound(closeSound), closeVolume);
+					FlxG.sound.play(Paths.sound(style.closeSound), style.closeVolume);
 					style.advanceBoxLine(startNextDialog.bind(false));
 				}
 			} else if(style.isLineFinished()) {
@@ -382,7 +385,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 
 		if(character != lastCharacter) {
 			style.playBoxAnim(lePos,leType,boxType);
-		} else if(boxType != lastBoxType) {
+		} else {
 			leType = DialogueBoxState.IDLE;
 			style.playBoxAnim(lePos,leType,boxType);
 		}
