@@ -730,11 +730,7 @@ class LoadingState extends MusicBeatState
 		try
 		{
 			var path:String = Paths.getPath('characters/$char.json', TEXT);
-			#if MODS_ALLOWED
-			var character:Dynamic = Json.parse(File.getContent(path));
-			#else
-			var character:Dynamic = Json.parse(Assets.getText(path));
-			#end
+			var character:Dynamic = Json.parse(NativeFileSystem.getContent(path));
 
 			var isAnimateAtlas:Bool = false;
 			var img:String = character.image;
@@ -791,9 +787,15 @@ class LoadingState extends MusicBeatState
 		//trace('precaching sound: $file');
 		if(!Paths.currentTrackedSounds.exists(file))
 		{
-			if (#if sys FileSystem.exists(file) || #end OpenFlAssets.exists(file, SOUND))
+			var sound:Sound = null;
+			#if OPENFL_LOOKUP
+			if(OpenFlAssets.exists(file, SOUND)) sound = OpenFlAssets.getSound(file, false);
+			#end
+			#if sys
+			if(FileSystem.exists(file) ) sound = Sound.fromFile(file);
+			#end
+			if (sound != null)
 			{
-				var sound:Sound = #if sys Sound.fromFile(file) #else OpenFlAssets.getSound(file, false) #end;
 				mutex.acquire();
 				Paths.currentTrackedSounds.set(file, sound);
 				mutex.release();
@@ -823,13 +825,16 @@ class LoadingState extends MusicBeatState
 			if (!Paths.currentTrackedAssets.exists(requestKey))
 			{
 				var file:String = Paths.getPath(requestKey, IMAGE);
-				if (#if sys FileSystem.exists(file) || #end OpenFlAssets.exists(file, IMAGE))
+				var bitmap:BitmapData = null;
+				#if OPENFL_LOOKUP
+				if(OpenFlAssets.exists(file, IMAGE)) bitmap = OpenFlAssets.getBitmapData(file, false);
+				#end
+				#if sys
+				if(FileSystem.exists(file) ) bitmap = BitmapData.fromFile(file);
+				#end
+				if (bitmap != null)
 				{
-					#if sys
-					var bitmap:BitmapData = BitmapData.fromFile(file);
-					#else
-					var bitmap:BitmapData = OpenFlAssets.getBitmapData(file, false);
-					#end
+
 
 					mutex.acquire();
 					requestedBitmaps.set(file, bitmap);
