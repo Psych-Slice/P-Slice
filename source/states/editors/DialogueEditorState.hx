@@ -1,12 +1,12 @@
 package states.editors;
 
-import cutscenes.DialogueStyle;
+import cutscenes.styles.DialogueStyle;
+import cutscenes.styles.*;
 import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileFilter;
 import haxe.Json;
-import objects.TypedAlphabet;
 
 import cutscenes.DialogueBoxPsych;
 import cutscenes.DialogueCharacter;

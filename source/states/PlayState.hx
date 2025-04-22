@@ -1,6 +1,6 @@
 package states;
 
-import cutscenes.DialogueStyle.PixelDialogueStyle;
+import cutscenes.DialogueBoxPsych;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.stages.EventLoader;
 import mikolka.vslice.StickerSubState;

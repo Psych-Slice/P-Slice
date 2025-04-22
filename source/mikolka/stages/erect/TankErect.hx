@@ -92,8 +92,11 @@ class TankErect extends BaseStage
 			applyShader(boyfriend, boyfriend.curCharacter);
 			applyShader(gf, gf.curCharacter);
 			applyShader(dad, dad.curCharacter);
-			if (PicoCapableStage.instance?.abot != null)
+			if (PicoCapableStage.instance?.abot != null){
 				applyAbotShader(PicoCapableStage.instance.abot.speaker);
+				applyShader(PicoCapableStage.instance.abot.bg,"");
+				applyAbotShader(PicoCapableStage.instance.abot.eyes);
+			}
 		}
 		if (!VsliceOptions.LOW_QUALITY)
 		{

@@ -1,5 +1,6 @@
 package mikolka.stages.objects;
 
+import flixel.graphics.tile.FlxGraphicsShader;
 import flixel.util.typeLimit.OneOfTwo;
 import mikolka.vslice.StickerSubState;
 import mikolka.compatibility.VsliceOptions;
@@ -39,6 +40,21 @@ class PicoCapableStage extends BaseStage
 		super();
 		this.forceABot = forceABot;
 	}
+	public function applyABotShader(shader:FlxGraphicsShader) {
+		if(abotPixel != null){
+			abotPixel.bg.shader = shader;
+			abotPixel.eyes.shader = shader;
+			abotPixel.speaker.shader = shader;
+			for (viz in abotPixel.vizSprites) viz.shader = shader;
+		}
+		else if(abot != null){
+			abot.bg.shader = shader;
+			abot.eyes.shader = shader;
+			abot.speaker.shader = shader;
+			for (viz in abot.vizSprites) viz.shader = shader;
+		}
+	}
+
 	override function destroy() {
 		instance = null;
 		super.destroy();

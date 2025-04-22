@@ -52,10 +52,11 @@ class PicoTankman {
 			game.endSong();
 		};
 		#if LEGACY_PSYCH
-		cutscene.finishCallback2 = function(){
+		cutscene.finishCallback2 = function()
 		#else
-		cutscene.skipCallback = function(){
+		cutscene.skipCallback = function()
 		#end
+		{
 			game.endSong();
 		};
 		cutscene.timer(176/24,() ->{

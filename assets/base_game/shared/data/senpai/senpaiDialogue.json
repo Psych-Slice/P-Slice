@@ -19,9 +19,9 @@
 		{
 			"sound": "",
 			"speed": 0.045,
-			"portrait": "bf",
+			"portrait": "bf-pixel",
 			"boxState": "normal",
-			"expression": "talk",
+			"expression": "idle",
 			"text": "Beep bo bop"
 		}
 	]

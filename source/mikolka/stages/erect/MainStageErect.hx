@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import mikolka.stages.objects.PicoCapableStage;
 import mikolka.compatibility.VsliceOptions;
 import openfl.display.BlendMode;
 import shaders.AdjustColorShader;
@@ -64,6 +65,7 @@ class MainStageErect extends BaseStage {
             gf.shader = makeCoolShader(-9,0,-30,-4);
             dad.shader = makeCoolShader(-32,0,-33,-23);
             boyfriend.shader = makeCoolShader(12,0,-23,7);
+            PicoCapableStage.instance?.applyABotShader(makeCoolShader(-9,0,-30,-4));
         }
     }
 

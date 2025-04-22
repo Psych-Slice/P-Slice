@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import mikolka.stages.objects.PicoCapableStage;
 import mikolka.compatibility.freeplay.FreeplayHelpers;
 #if !LEGACY_PSYCH
 import objects.Note.EventNote;
@@ -214,6 +215,7 @@ class LimoRideErect extends BaseStage
 			gf.shader = colorShader;
 			dad.shader = colorShader;
 			boyfriend.shader = colorShader;
+			PicoCapableStage.instance?.applyABotShader(colorShader);
 		}
 	}
 
