@@ -87,7 +87,7 @@ class SchoolErect extends BaseStage
 			case 'roses-(pico-mix)' | 'roses-erect':
 				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX'));
 		}
-		if (!seenCutscene)
+		if (!seenCutscene && (songName.endsWith("(pico-mix)") || isStoryMode))
 		{
 			var cutscene = new SchoolDoof(songName);
 			if(songName == 'roses-(pico-mix)' || songName == "roses-erect") {
@@ -96,6 +96,32 @@ class SchoolErect extends BaseStage
 			}
 			else setStartCallback(cutscene.doSchoolIntro);
 		}
+	}
+	var wasInit:Bool = true;
+	override function startNextDialogue(dialogueCount:Int) {
+		if(songName == "senpai-(pico-mix)"){
+			switch (dialogueCount){
+				case 1:{
+					if(wasInit) {
+						wasInit = false;
+						return;
+					}
+					FlxG.sound.playMusic(Paths.music('Lunchbox'), 0);
+					FlxG.sound.music.fadeIn(1, 0, 0.8);
+				}
+				case 2: {
+					FlxG.sound.music.pause();
+				}
+				case 8: {
+					FlxG.sound.music.fadeIn(1, 0, 0.8);
+					FlxG.sound.music.resume();
+				}
+			}
+		}
+		if(songName == "senpai-erect" && dialogueCount == 2){
+			FlxG.sound.music.pause();
+		}
+
 	}
 	override function createPost(){
 		var _song = PlayState.SONG;

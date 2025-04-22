@@ -26,7 +26,7 @@ class DecayDialogueStyle extends DialogueStyle {
 		closeSound = "clickText";
 	}
 	public function makeDialogueBox():FlxSprite{
-		box = new FlxSprite(537, 347);
+		box = new FlxSprite(537, 335);
 		var staticBox = ["Spirit Textbox0000"];
 		box.antialiasing = false;
 		box.frames = Paths.getSparrowAtlas('pixelUI/dialogueBox-evilNew');

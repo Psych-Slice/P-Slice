@@ -1268,12 +1268,15 @@ class PlayState extends MusicBeatState
 	}
 
 	public function startNextDialogue() {
-		dialogueCount++;
+		@:privateAccess
+		dialogueCount = psychDialogue.currentText;
 		callOnScripts('onNextDialogue', [dialogueCount]);
+		stagesFunc(function(stage:BaseStage) stage.startNextDialogue(dialogueCount));
 	}
 
 	public function skipDialogue() {
 		callOnScripts('onSkipDialogue', [dialogueCount]);
+		stagesFunc(function(stage:BaseStage) stage.onSkipDialogue(dialogueCount));
 	}
 
 	function startSong():Void

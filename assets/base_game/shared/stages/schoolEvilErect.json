@@ -14,9 +14,7 @@
 	"camera_speed": 1,
 
 	"preload": {
-		"images/weeb/evilSchoolBG": 3,
-		"images/weeb/evilSchoolFG": 3,
-		"images/weeb/bgGhouls": 2
+		"images/weeb/erecr/evilSchoolBG": 3
 	},
 
 	"_editorMeta": {
