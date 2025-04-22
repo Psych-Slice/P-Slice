@@ -6,22 +6,23 @@
 			"speed": 0.05,
 			"portrait": "senpai-pixel",
 			"boxState": "normal",
-			"expression": "idle",
-			"text": "Ah, a new fair maiden has come in search of true love!"
-		},				{
+			"expression": "talk",
+			"text": "Ah, another lovely fair maiden has graced m-"
+		},
+		{
 			"sound": "pixelText",
 			"speed": 0.05,
 			"portrait": "senpai-pixel",
 			"boxState": "normal",
-			"expression": "idle",
-			"text": "A serenade between gentlemen shall decide where her beautiful heart shall reside."
+			"expression": "bwuh",
+			"text": "You again?"
 		},
 		{
 			"sound": "pixelText",
-			"speed": 0.045,
+			"speed": 0.05,
 			"portrait": "bf-pixel",
 			"boxState": "normal",
-			"expression": "idle",
+			"expression": "talk",
 			"text": "Beep bo bop"
 		}
 	]

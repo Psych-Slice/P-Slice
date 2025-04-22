@@ -213,6 +213,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 								}
 								case NOTHING: {}
 								case RESTART: {
+									FlxG.sound.music?.resume();
 									dialogueList.dialogue = staticDialList.copy();
 									currentText = 0;
 									startNextDialog();
