@@ -30,9 +30,9 @@ import options.Option;
 class MobileOptionsSubState extends BaseOptionsMenu
 {
 	#if android
-	var storageTypes:Array<String> = ["EXTERNAL_DATA", "EXTERNAL_OBB", "EXTERNAL_MEDIA", "EXTERNAL"];
+	//var storageTypes:Array<String> = ["EXTERNAL_DATA", "EXTERNAL_OBB", "EXTERNAL_MEDIA", "EXTERNAL"];
 	var externalPaths:Array<String> = StorageUtil.checkExternalPaths(true);
-	var lastStorageType:String = ClientPrefs.data.storageType;
+	var lastStorageType:String = ClientPrefs.data.storageType_internal;
 	#end
 	final exControlTypes:Array<String> = ["NONE", "SINGLE", "DOUBLE"];
 	final hintOptions:Array<String> = ["No Gradient", "No Gradient (Old)", "Gradient", "Hidden"];
@@ -40,8 +40,8 @@ class MobileOptionsSubState extends BaseOptionsMenu
 
 	public function new()
 	{
-		#if android if (!externalPaths.contains('\n'))
-			storageTypes = storageTypes.concat(externalPaths); #end
+		// #if android if (!externalPaths.contains('\n'))
+		// 	storageTypes = storageTypes.concat(externalPaths); #end
 		title = 'Mobile Options';
 		rpcTitle = 'Mobile Options Menu'; // for Discord Rich Presence, fuck it
 
@@ -91,8 +91,7 @@ class MobileOptionsSubState extends BaseOptionsMenu
 		addOption(option);
 
 		#if android
-		option = new Option('Storage Type', 'Which folder Psych Engine should use?\n(CHANGING THIS MAKES DELETE YOUR OLD FOLDER!!)', 'storageType', STRING,
-			storageTypes);
+		option = new Option('Storage Type', 'Which folder Psych Engine should use?\n(CHANGING THIS MAKES DELETE YOUR OLD FOLDER!!)', 'storageType_internal', BOOL);
 		addOption(option);
 		#end
 
@@ -104,14 +103,14 @@ class MobileOptionsSubState extends BaseOptionsMenu
 	{
 		File.saveContent(lime.system.System.applicationStorageDirectory + 'storagetype.txt', ClientPrefs.data.storageType);
 
-		var lastStoragePath:String = StorageType.fromStrForce(lastStorageType) + '/';
+		// var lastStoragePath:String = StorageType.fromStrForce(lastStorageType) + '/';
 
-		try
-		{
-			Sys.command('rm', ['-rf', lastStoragePath]);
-		}
-		catch (e:haxe.Exception)
-			trace('Failed to remove last directory. (${e.message})');
+		// try
+		// {
+		// 	Sys.command('rm', ['-rf', lastStoragePath]);
+		// }
+		// catch (e:haxe.Exception)
+		// 	trace('Failed to remove last directory. (${e.message})');
 	}
 	#end
 
@@ -119,7 +118,7 @@ class MobileOptionsSubState extends BaseOptionsMenu
 	{
 		super.destroy();
 		#if android
-		if (ClientPrefs.data.storageType != lastStorageType)
+		if (ClientPrefs.data.storageType_internal != storageType_internal)
 		{
 			ClientPrefs.saveSettings();
 			onStorageChange();

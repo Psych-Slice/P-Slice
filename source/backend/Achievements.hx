@@ -33,6 +33,7 @@ class Achievements {
 	public static function init()
 	{
 		createAchievement('friday_night_play',		{name: "Just like the game!", description: "Play on a Friday... Night.", hidden: true});
+		#if BASE_GAME_FILES
 		createAchievement('week1_nomiss',			{name: "More Like Daddy Queerest", description: "Beat Week 1 on Hard with no Misses."});
 		createAchievement('week2_nomiss',			{name: "IT IS THE SPOOKY MONTH", description: "Beat Week 2 on Hard with no Misses."});
 		createAchievement('week3_nomiss',			{name: "Pico Funny", description: "Beat Week 3 on Hard with no Misses."});
@@ -41,15 +42,18 @@ class Achievements {
 		createAchievement('week6_nomiss',			{name: "A Visual Novelty", description: "Beat Week 6 on Hard with no Misses."});
 		createAchievement('week7_nomiss',			{name: "I <3 JohnnyUtah", description: "Beat Week 7 on Hard with no Misses."});
 		createAchievement('weekend1_nomiss',		{name: "Yo, Really Think So?", description: "Beat Weekend 1 on Hard with no Misses."});
+		createAchievement('roadkill_enthusiast',	{name: "Roadkill Enthusiast", description: "Watch the Henchmen die 50 times.", maxScore: 50, maxDecimals: 0});
+		createAchievement('debugger',				{name: "Debugger", description: "Beat the \"Test\" Stage from the Chart Editor.", hidden: true});
+		#end
 		createAchievement('ur_bad',					{name: "L", description: "Complete a Song with a rating lower than 20%."});
 		createAchievement('ur_good',				{name: "You Should Drink More Water", description: "Complete a Song with a rating of 100%."});
-		createAchievement('roadkill_enthusiast',	{name: "Roadkill Enthusiast", description: "Watch the Henchmen die 50 times.", maxScore: 50, maxDecimals: 0});
 		createAchievement('oversinging', 			{name: "Oversinging Much...?", description: "Sing for 10 seconds without going back to Idle."});
 		createAchievement('hype',					{name: "Hyperactive", description: "Finish a Song without going back to Idle."});
 		createAchievement('two_keys',				{name: "Just the Two of Us", description: "Finish a Song pressing only two keys."});
 		createAchievement('toastie',				{name: "Toaster Gamer", description: "Have you tried to run the game on a toaster?"});
-		createAchievement('debugger',				{name: "Debugger", description: "Beat the \"Test\" Stage from the Chart Editor.", hidden: true});
+		#if (TITLE_SCREEN_EASTER_EGG || PSYCH_WATERMARKS)
 		createAchievement('pessy_easter_egg',		{name: "Engine-chan!", description: "Teehee, you found me~!", hidden: true});
+		#end
 		
 		//dont delete this thing below
 		_originalLength = _sortID + 1;

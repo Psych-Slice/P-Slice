@@ -1,5 +1,6 @@
 package mikolka.vslice.freeplay;
 
+import mikolka.compatibility.VsliceOptions;
 import mikolka.funkin.freeplay.FreeplayStyle;
 import shaders.GaussianBlurShader;
 import openfl.filters.BitmapFilterQuality;
@@ -37,7 +38,7 @@ class CapsuleText extends FlxSpriteGroup
     super(x, y);
 
     blurredText = initText(songTitle, size);
-    blurredText.shader = new GaussianBlurShader(1);
+    if(VsliceOptions.SHADERS) blurredText.shader = new GaussianBlurShader(1);
     whiteText = initText(songTitle, size);
     // whiteText.shader = new GaussianBlurShader(0.3);
     text = songTitle;

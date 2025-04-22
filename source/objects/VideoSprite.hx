@@ -55,7 +55,7 @@ class VideoSprite extends FlxSpriteGroup {
 		if(canSkip) this.canSkip = true;
 
 		// callbacks
-		if(!shouldLoop) videoSprite.bitmap.onEndReached.add(destroy);
+		if(!shouldLoop) videoSprite.bitmap.onEndReached.add(finishVideo);
 		#if hxvlc
 		videoSprite.bitmap.onFormatSetup.add(function()
 		#else
@@ -93,8 +93,7 @@ class VideoSprite extends FlxSpriteGroup {
 			cover.destroy();
 		}
 
-		if(finishCallback != null)
-			finishCallback();
+		finishCallback = null;
 		onSkip = null;
 
 		if(FlxG.state != null)
@@ -111,7 +110,7 @@ class VideoSprite extends FlxSpriteGroup {
 
 	override function update(elapsed:Float)
 	{
-		if (Controls.instance.pressed('pause') #if android || FlxG.android.justReleased.BACK #end && !pauseJustClosed && PlayState.instance != null)
+		if (Controls.instance.pressed('pause') #if android || FlxG.android.justReleased.BACK #end && !pauseJustClosed && PlayState.instance != null )
 			{
 				var game = PlayState.instance;
 					FlxG.camera.followLerp = 0;
@@ -150,7 +149,16 @@ class VideoSprite extends FlxSpriteGroup {
 			}
 		super.update(elapsed);
 	}
-
+	function finishVideo()
+		{
+			if (!alreadyDestroyed)
+			{
+				if(finishCallback != null)
+					finishCallback();
+	
+				destroy();
+			}
+		}
 	public function resume() videoSprite?.resume();
 	public function pause() videoSprite?.pause();
 

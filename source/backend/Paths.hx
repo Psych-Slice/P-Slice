@@ -557,7 +557,7 @@ class Paths
 
 	static function findNode(dir:String, key:String):String {
 		try {
-			var allFiles:Array<String> = NativeFileSystem.readDirectory(dir);
+			var allFiles:Array<String> = sys.FileSystem.readDirectory(dir);
 			var fileMap:Map<String, String> = new Map();
 
 			for (file in allFiles) {

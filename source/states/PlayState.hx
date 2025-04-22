@@ -2260,6 +2260,7 @@ class PlayState extends MusicBeatState
 							}
 
 							var lastAlpha:Float = boyfriend.alpha;
+							boyfriend.shader = null; //? remove the shader
 							boyfriend.alpha = 0.00001;
 							boyfriend = boyfriendMap.get(value2);
 							boyfriend.alpha = lastAlpha;
@@ -2275,6 +2276,7 @@ class PlayState extends MusicBeatState
 
 							var wasGf:Bool = dad.curCharacter.startsWith('gf-') || dad.curCharacter == 'gf';
 							var lastAlpha:Float = dad.alpha;
+							dad.shader = null; //? remove the shader
 							dad.alpha = 0.00001;
 							dad = dadMap.get(value2);
 							if(!dad.curCharacter.startsWith('gf-') && dad.curCharacter != 'gf') {
@@ -2299,6 +2301,7 @@ class PlayState extends MusicBeatState
 								}
 
 								var lastAlpha:Float = gf.alpha;
+								gf.shader = null; //? remove the shader
 								gf.alpha = 0.00001;
 								gf = gfMap.get(value2);
 								gf.alpha = lastAlpha;
