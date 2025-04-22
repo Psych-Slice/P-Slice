@@ -38,6 +38,6 @@ class FreeplayMeta {
             trace(x.message);
         }
 		
-		return null;
+		return new FreeplayMetaJSON();
 	}
 }

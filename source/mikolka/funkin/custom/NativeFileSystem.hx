@@ -1,19 +1,21 @@
 package mikolka.funkin.custom;
 
+#if OPENFL_LOOKUP
 import lime.utils.Assets;
 import openfl.utils.Assets as OpenFlAssets;
+#end
 
 class NativeFileSystem {
     public static function getContent(path:String) {
+        #if OPENFL_LOOKUP
+        var openfl_content = (OpenFlAssets.exists(path, TEXT)) ? Assets.getText(path) : null;
+		if (openfl_content != null) return openfl_content;
+		#end
         #if sys
 		var sys_res = (FileSystem.exists(path)) ? File.getContent(path) : null;
         if(sys_res != null) return sys_res;
 		#end
-        #if OPENFL_LOOKUP
-		return (OpenFlAssets.exists(path, TEXT)) ? Assets.getText(path) : null;
-		#else 
         return null; 
-        #end
     }
     public static function exists(path:String) {
         #if sys

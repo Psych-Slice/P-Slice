@@ -32,7 +32,7 @@ class MobileOptionsSubState extends BaseOptionsMenu
 	#if android
 	var storageTypes:Array<String> = ["EXTERNAL_DATA", "EXTERNAL"];
 	var externalPaths:Array<String> = StorageUtil.checkExternalPaths(true);
-	var lastStorageType:String = ClientPrefs.data.storageType_internal;
+	var lastStorageType:String = ClientPrefs.data.storageType;
 	#end
 	final exControlTypes:Array<String> = ["NONE", "SINGLE", "DOUBLE"];
 	final hintOptions:Array<String> = ["No Gradient", "No Gradient (Old)", "Gradient", "Hidden"];
@@ -91,7 +91,7 @@ class MobileOptionsSubState extends BaseOptionsMenu
 		addOption(option);
 
 		#if android
-		option = new Option('Storage Type', 'Which folder Psych Engine should use?\n(CHANGING THIS MAKES DELETE YOUR OLD FOLDER!!)', 'storageType', STRING);
+		option = new Option('Storage Type', 'Which folder Psych Engine should use?\n(CHANGING THIS MAKES DELETE YOUR OLD FOLDER!!)', 'storageType', STRING,storageTypes);
 		addOption(option);
 		#end
 
@@ -118,7 +118,7 @@ class MobileOptionsSubState extends BaseOptionsMenu
 	{
 		super.destroy();
 		#if android
-		if (ClientPrefs.data.storageType != storageType)
+		if (ClientPrefs.data.storageType != lastStorageType)
 		{
 			ClientPrefs.saveSettings();
 			onStorageChange();
