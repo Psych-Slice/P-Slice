@@ -30,7 +30,7 @@ import options.Option;
 class MobileOptionsSubState extends BaseOptionsMenu
 {
 	#if android
-	//var storageTypes:Array<String> = ["EXTERNAL_DATA", "EXTERNAL_OBB", "EXTERNAL_MEDIA", "EXTERNAL"];
+	var storageTypes:Array<String> = ["EXTERNAL_DATA", "EXTERNAL"];
 	var externalPaths:Array<String> = StorageUtil.checkExternalPaths(true);
 	var lastStorageType:String = ClientPrefs.data.storageType_internal;
 	#end
@@ -40,8 +40,8 @@ class MobileOptionsSubState extends BaseOptionsMenu
 
 	public function new()
 	{
-		// #if android if (!externalPaths.contains('\n'))
-		// 	storageTypes = storageTypes.concat(externalPaths); #end
+		#if android if (!externalPaths.contains('\n'))
+			storageTypes = storageTypes.concat(externalPaths); #end
 		title = 'Mobile Options';
 		rpcTitle = 'Mobile Options Menu'; // for Discord Rich Presence, fuck it
 
@@ -91,7 +91,7 @@ class MobileOptionsSubState extends BaseOptionsMenu
 		addOption(option);
 
 		#if android
-		option = new Option('Storage Type', 'Which folder Psych Engine should use?\n(CHANGING THIS MAKES DELETE YOUR OLD FOLDER!!)', 'storageType_internal', BOOL);
+		option = new Option('Storage Type', 'Which folder Psych Engine should use?\n(CHANGING THIS MAKES DELETE YOUR OLD FOLDER!!)', 'storageType', STRING);
 		addOption(option);
 		#end
 
@@ -118,7 +118,7 @@ class MobileOptionsSubState extends BaseOptionsMenu
 	{
 		super.destroy();
 		#if android
-		if (ClientPrefs.data.storageType_internal != storageType_internal)
+		if (ClientPrefs.data.storageType != storageType)
 		{
 			ClientPrefs.saveSettings();
 			onStorageChange();
