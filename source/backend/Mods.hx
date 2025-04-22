@@ -97,6 +97,7 @@ class Mods
 		if(NativeFileSystem.exists(path + fileToFind))
 			foldersToCheck.push(path + fileToFind);
 
+		// Week folder
 		if(Paths.currentLevel != null && Paths.currentLevel != path)
 		{
 			var pth:String = Paths.getFolderPath(fileToFind, Paths.currentLevel);
@@ -168,7 +169,7 @@ class Mods
 
 		#if MODS_ALLOWED
 		try {
-			for (mod in CoolUtil.coolTextFile(Sys.getCwd() + 'modsList.txt'))
+			for (mod in CoolUtil.coolTextFile(StorageUtil.getStorageDirectory() + 'modsList.txt'))
 			{
 				//trace('Mod: $mod');
 				if(mod.trim().length < 1) continue;
@@ -194,7 +195,7 @@ class Mods
 		var list:Array<Array<Dynamic>> = [];
 		var added:Array<String> = [];
 		try {
-			for (mod in CoolUtil.coolTextFile(Sys.getCwd() + 'modsList.txt'))
+			for (mod in CoolUtil.coolTextFile(StorageUtil.getStorageDirectory() + 'modsList.txt'))
 			{
 				var dat:Array<String> = mod.split("|");
 				var folder:String = dat[0];
@@ -228,7 +229,7 @@ class Mods
 			fileStr += values[0] + '|' + (values[1] ? '1' : '0');
 		}
 
-		File.saveContent(Sys.getCwd() + 'modsList.txt', fileStr);
+		File.saveContent(#if android StorageUtil.getStorageDirectory() + #else Sys.getCwd() + #end 'modsList.txt', fileStr);
 		updatedOnState = true;
 		//trace('Saved modsList.txt');
 		#end

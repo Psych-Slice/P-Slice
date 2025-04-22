@@ -18,6 +18,10 @@ import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.app.Application;
 import states.TitleState;
+
+#if (linux || mac)
+import lime.graphics.Image;
+#end
 #if COPYSTATE_ALLOWED
 import states.CopyState;
 #end
@@ -26,30 +30,13 @@ import mobile.backend.MobileScaleMode;
 #end
 
 #if (linux && !debug)
-import lime.graphics.Image;
 @:cppInclude('./external/gamemode_client.h')
 @:cppFileCode('#define GAMEMODE_AUTO')
 #end
 
-#if windows
-@:buildXml('
-<target id="haxe">
-	<lib name="wininet.lib" if="windows" />
-	<lib name="dwmapi.lib" if="windows" />
-</target>
-')
-@:cppFileCode('
-	#define GAMEMODE_AUTO
-#include <windows.h>
-#include <winuser.h>
-#pragma comment(lib, "Shell32.lib")
-extern "C" HRESULT WINAPI SetCurrentProcessExplicitAppUserModelID(PCWSTR AppID);
-')
-#end
-
 class Main extends Sprite
 {
-	var game = {
+	public static final game = {
 		width: 1280, // WINDOW width
 		height: 720, // WINDOW height
 		initialState: TitleState, // initial game state
@@ -81,20 +68,8 @@ class Main extends Sprite
 		#end
 		backend.CrashHandler.init();
 
-		#if windows
-		// DPI Scaling fix for windows 
-		// this shouldn't be needed for other systems
-		// Credit to YoshiCrafter29 for finding this function
-		untyped __cpp__("SetProcessDPIAware();");
-		var display = lime.system.System.getDisplay(0);
-		if (display != null) {
-			var dpiScale:Float = display.dpi / 96;
-			Application.current.window.width = Std.int(game.width * dpiScale);
-			Application.current.window.height = Std.int(game.height * dpiScale);
-
-			Application.current.window.x = Std.int((Application.current.window.display.bounds.width - Application.current.window.width) / 2);
-			Application.current.window.y = Std.int((Application.current.window.display.bounds.height - Application.current.window.height) / 2);
-		}
+		#if (cpp && windows)
+		backend.Native.fixScaling();
 		#end
 
 		if (stage != null)
@@ -279,11 +254,12 @@ class Main extends Sprite
 		DiscordClient.prepare();
 		#end
 
-		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
-
+		
 		#if mobile
+		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
 		lime.system.System.allowScreenTimeout = ClientPrefs.data.screensaver;
 		FlxG.scaleMode = new MobileScaleMode();
+		Application.current.window.vsync = ClientPrefs.data.vsync;
 		#end
 
 		// shader coords fix

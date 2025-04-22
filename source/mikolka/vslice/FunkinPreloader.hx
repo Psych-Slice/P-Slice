@@ -145,7 +145,7 @@ class FunkinPreloader extends FlxBasePreloader
     this._height = Lib.current.stage.stageHeight;
 
     // Tux icon!!!
-    #if linux
+    #if (linux || mac) // fix the app icon not showing up on the Linux Panel 
 		var icon = lime.graphics.Image.fromFile("icon.png");
 		Lib.current.stage.window.setIcon(icon);
 		#end

@@ -830,7 +830,8 @@ class FreeplayState extends MusicBeatSubstate
 		currentFilteredSongs = tempSongs;
 		curSelected = 0;
 
-		var hsvShader:HSVShader = new HSVShader();
+		var hsvShader:HSVShader = null; //? make this disablable
+		if(VsliceOptions.SHADERS) hsvShader = new HSVShader();
 
 		var randomCapsule:SongMenuItem = grpCapsules.recycle(SongMenuItem);
 		randomCapsule.init(FlxG.width, 0, null, styleData);

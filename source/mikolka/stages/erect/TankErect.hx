@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import mikolka.vslice.StickerSubState;
 import mikolka.stages.objects.TankmenBG;
 #if !LEGACY_PSYCH
 import substates.GameOverSubstate;
@@ -49,6 +50,7 @@ class TankErect extends BaseStage
 		if (songName == "stress-(pico-mix)")
 		{
 			new PicoCapableStage(true).create();
+			StickerSubState.STICKER_SET = "stickers-set-2"; //? yep, it's pico time!
 			this.cutscene = new PicoTankman(this);
 			if(!seenCutscene) setStartCallback(VideoCutscene.playVideo.bind('stressPicoCutscene',startCountdown));
 			setEndCallback(cutscene.playCutscene);
@@ -117,7 +119,7 @@ class TankErect extends BaseStage
 						if (FlxG.random.bool(16))
 						{
 							var tankBih = tankmanRun.recycle(TankmenBG);
-							applyShader(tankBih, ""); // Is this wasting resources? I don't know tbh
+							if (VsliceOptions.SHADERS) applyShader(tankBih, ""); // Is this wasting resources? I don't know tbh
 							tankBih.strumTime = TankmenBG.animationNotes[i][0];
 							tankBih.scale.set(1, 1);
 							tankBih.updateHitbox();
