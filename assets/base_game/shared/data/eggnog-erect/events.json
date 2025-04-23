@@ -166,7 +166,7 @@
 				[
 					"Target Camera",
 					2,
-					"-230,-80,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],
@@ -226,7 +226,7 @@
 				[
 					"Target Camera",
 					2,
-					"-230,-80,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],
@@ -276,7 +276,7 @@
 				[
 					"Target Camera",
 					2,
-					"-230,-80,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],
@@ -316,7 +316,7 @@
 				[
 					"Target Camera",
 					2,
-					"-230,-80,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],
@@ -356,7 +356,7 @@
 				[
 					"Target Camera",
 					2,
-					"-230,-80,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],
@@ -396,7 +396,7 @@
 				[
 					"Target Camera",
 					2,
-					"-230,-80,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],
@@ -446,7 +446,7 @@
 				[
 					"Target Camera",
 					2,
-					"-230,-80,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],
@@ -596,7 +596,7 @@
 				[
 					"Target Camera",
 					2,
-					"-230,-80,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],
@@ -636,7 +636,7 @@
 				[
 					"Target Camera",
 					2,
-					"-230,-80,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],
@@ -746,7 +746,7 @@
 				[
 					"Target Camera",
 					2,
-					"-230,-80,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],
@@ -836,7 +836,7 @@
 				[
 					"Target Camera",
 					2,
-					"-230,-80,46,quadInOut"
+					"0,0,46,quadInOut"
 				]
 			]
 		],
