@@ -236,7 +236,7 @@
 				[
 					"Target Camera",
 					2,
-					"-100,30,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],
@@ -256,7 +256,7 @@
 				[
 					"Target Camera",
 					2,
-					"-20,30,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],
@@ -366,7 +366,7 @@
 				[
 					"Target Camera",
 					2,
-					"-100,30,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],
@@ -396,7 +396,7 @@
 				[
 					"Target Camera",
 					2,
-					"-20,30,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],
@@ -406,7 +406,7 @@
 				[
 					"Target Camera",
 					2,
-					"-100,30,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],
@@ -416,7 +416,7 @@
 				[
 					"Target Camera",
 					2,
-					"-20,30,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],
@@ -426,7 +426,7 @@
 				[
 					"Target Camera",
 					2,
-					"-100,30,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],
@@ -636,7 +636,7 @@
 				[
 					"Target Camera",
 					2,
-					"-100,30,32,expoOut"
+					"0,0,32,expoOut"
 				]
 			]
 		],

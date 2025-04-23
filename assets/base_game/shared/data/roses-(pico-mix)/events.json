@@ -536,7 +536,7 @@
 				[
 					"Target Camera",
 					1,
-					"270,16,16,expoOut"
+					"0,0,16,expoOut"
 				]
 			]
 		],
@@ -576,7 +576,7 @@
 				[
 					"Target Camera",
 					1,
-					"270,16,16,expoOut"
+					"0,0,16,expoOut"
 				]
 			]
 		],
@@ -616,7 +616,7 @@
 				[
 					"Target Camera",
 					1,
-					"270,16,16,expoOut"
+					"0,0,16,expoOut"
 				]
 			]
 		],
@@ -656,7 +656,7 @@
 				[
 					"Target Camera",
 					1,
-					"270,16,16,expoOut"
+					"0,0,16,expoOut"
 				]
 			]
 		],

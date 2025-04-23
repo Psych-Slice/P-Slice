@@ -1,6 +1,26 @@
 {
 	"events": [
 		[
+			0,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			5393,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
 			8089.15730337079,
 			[
 				[
@@ -17,6 +37,16 @@
 					"Target Camera",
 					1,
 					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			10828.1573033708,
+			[
+				[
+					"Zoom Camera",
+					"32,1",
+					"expoOut"
 				]
 			]
 		],
@@ -97,6 +127,16 @@
 					"Zoom Camera",
 					"32,0.9",
 					"expoOut"
+				]
+			]
+		],
+		[
+			24269.5168539326,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
 				]
 			]
 		],
@@ -361,6 +401,16 @@
 			]
 		],
 		[
+			57977.1573033708,
+			[
+				[
+					"Zoom Camera",
+					"16,1.09",
+					"expoOut"
+				]
+			]
+		],
+		[
 			58651.1573033708,
 			[
 				[
@@ -426,7 +476,7 @@
 				[
 					"Target Camera",
 					1,
-					"0,0,16,expoOut"
+					"-20,20,16,expoOut"
 				]
 			]
 		],
@@ -486,7 +536,7 @@
 				[
 					"Target Camera",
 					0,
-					"0,0,8,expoOut"
+					"-20,20,8,expoOut"
 				]
 			]
 		],
@@ -506,7 +556,7 @@
 				[
 					"Target Camera",
 					1,
-					"220,-20,16,expoOut"
+					"-20,20,16,expoOut"
 				]
 			]
 		],
@@ -596,7 +646,7 @@
 				[
 					"Target Camera",
 					1,
-					"320,-100,32,expoOut"
+					"-20,20,32,expoOut"
 				]
 			]
 		],
@@ -836,7 +886,7 @@
 				[
 					"Target Camera",
 					1,
-					"320,-100,32,expoOut"
+					"-20,20,32,expoOut"
 				]
 			]
 		],
@@ -966,7 +1016,7 @@
 				[
 					"Target Camera",
 					1,
-					"320,-100,32,expoOut"
+					"-20,20,32,expoOut"
 				]
 			]
 		],
@@ -986,7 +1036,7 @@
 				[
 					"Target Camera",
 					0,
-					"0,0,32,expoOut"
+					"-20,20,32,expoOut"
 				]
 			]
 		],
@@ -1036,7 +1086,7 @@
 				[
 					"Target Camera",
 					1,
-					"320,-100,32,expoOut"
+					"-20,20,32,expoOut"
 				]
 			]
 		],
@@ -1117,56 +1167,6 @@
 					"Set Camera Bopping",
 					1,
 					0
-				]
-			]
-		],
-		[
-			57977.1573033708,
-			[
-				[
-					"Zoom Camera",
-					"16,1.09",
-					"expoOut"
-				]
-			]
-		],
-		[
-			24269.5168539326,
-			[
-				[
-					"Target Camera",
-					0,
-					"0,0,4,CLASSIC"
-				]
-			]
-		],
-		[
-			10828.1573033708,
-			[
-				[
-					"Zoom Camera",
-					"32,1",
-					"expoOut"
-				]
-			]
-		],
-		[
-			5393,
-			[
-				[
-					"Target Camera",
-					0,
-					"0,0,4,CLASSIC"
-				]
-			]
-		],
-		[
-			0,
-			[
-				[
-					"Target Camera",
-					1,
-					"0,0,4,CLASSIC"
 				]
 			]
 		]
