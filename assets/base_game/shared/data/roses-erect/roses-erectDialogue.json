@@ -41,7 +41,7 @@
 			"text": "I'm gonna do what you do with an E at the end!"
 		},
 		{
-			"sound": "",
+			"sound": "pixelText",
 			"speed": 0.05,
 			"portrait": "bf-pixel",
 			"boxState": "normal",
