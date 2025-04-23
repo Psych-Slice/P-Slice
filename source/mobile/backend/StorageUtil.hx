@@ -29,6 +29,7 @@ import haxe.Exception;
 /**
  * A storage class for mobile.
  * @author Karim Akra and Lily Ross (mcagabe19)
+ * @author Mikolka9144
  */
 class StorageUtil
 {

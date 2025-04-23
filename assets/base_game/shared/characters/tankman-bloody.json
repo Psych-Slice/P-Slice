@@ -44,9 +44,9 @@
 			"offsets": [0, 90],
 			"indices": [],
 			"fps": 24,
-			"anim": "singDOWN-alt",
+			"anim": "hehPrettyGood",
 			"loop": false,
-			"name": "PRETTY GOOD tankman"
+			"name": "pretty good anim0"
 		},
 		{
       "offsets": [110, 117],

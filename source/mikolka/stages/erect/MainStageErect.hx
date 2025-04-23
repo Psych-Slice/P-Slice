@@ -29,7 +29,7 @@ class MainStageErect extends BaseStage {
             add(lightSmol);
         }
 
-		var stageFront:BGSprite = new BGSprite('erect/bg', -603, -187);
+		var stageFront:BGSprite = new BGSprite('erect/stage_bg', -603, -187);
 		add(stageFront);
 
         var server:BGSprite = new BGSprite('erect/server', -361, 205);

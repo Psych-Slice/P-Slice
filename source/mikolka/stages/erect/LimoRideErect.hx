@@ -399,6 +399,16 @@ class LimoRideErect extends BaseStage
 			case "Kill Henchmen":
 				killHenchmen();
 		}
+		if(eventName == "Change Character" && VsliceOptions.SHADERS){
+			switch(value1.toLowerCase().trim()) {
+				case 'gf' | 'girlfriend' | '2':
+					gf.shader = colorShader;
+				case 'dad' | 'opponent' | '1':
+					dad.shader = colorShader;
+				default:
+					boyfriend.shader = colorShader;
+			}
+		}
 	}
 
 	function dancersParenting()
