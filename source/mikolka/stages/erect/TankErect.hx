@@ -49,7 +49,10 @@ class TankErect extends BaseStage
 		add(tankmanRun);
 		if (songName == "stress-(pico-mix)")
 		{
-			new PicoCapableStage(true).create();
+			var pico_stage = new PicoCapableStage(true);
+			pico_stage.create();
+			game.stages.remove(pico_stage);
+			game.stages.insert(1,pico_stage);
 			StickerSubState.STICKER_SET = "stickers-set-2"; //? yep, it's pico time!
 			this.cutscene = new PicoTankman(this);
 			if(!seenCutscene) setStartCallback(VideoCutscene.playVideo.bind('stressPicoCutscene',startCountdown));
@@ -68,6 +71,16 @@ class TankErect extends BaseStage
 		}
 	}
 
+	// [
+	// 	61980.011,
+	// 	[
+	// 		[
+	// 			"Change Character",
+	// 			"dad",
+	// 			"tankman-bloody"
+	// 		]
+	// 	]
+	// ],
 	override function beatHit()
 	{
 		super.beatHit();
@@ -78,11 +91,24 @@ class TankErect extends BaseStage
 		}
 		if (FlxG.random.bool(2))
 			sniper.animation.play('sip', true);
-		if (songName.toLowerCase() == "stress (pico mix)")
+		if (songName == "stress-(pico-mix)")
 		{
 			// We gonna have some events here
-			if(curBeat == 60){
-				game.triggerEvent("Change Character","dad","tankman-bloody",0);
+			if(curBeat == 184){
+				game.triggerEvent("","dad","tankman-bloody",0);
+				if (VsliceOptions.SHADERS) applyShader(dad, dad.curCharacter);
+			}
+		}
+	}
+	override function eventCalled(eventName:String, value1:String, value2:String, flValue1:Null<Float>, flValue2:Null<Float>, strumTime:Float) {
+		if(eventName == "Change Character" && VsliceOptions.SHADERS){
+			switch(value1.toLowerCase().trim()) {
+				case 'gf' | 'girlfriend' | '2':
+					applyShader(gf, gf.curCharacter);
+				case 'dad' | 'opponent' | '1':
+					applyShader(dad, dad.curCharacter);
+				default:
+					applyShader(boyfriend, boyfriend.curCharacter);
 			}
 		}
 	}

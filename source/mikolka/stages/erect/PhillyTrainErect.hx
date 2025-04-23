@@ -82,6 +82,18 @@ class PhillyTrainErect extends BaseStage
 			PicoCapableStage.instance?.applyABotShader(colorShader);
 		}
 	}
+	override function eventCalled(eventName:String, value1:String, value2:String, flValue1:Null<Float>, flValue2:Null<Float>, strumTime:Float) {
+		if(eventName == "Change Character" && VsliceOptions.SHADERS){
+			switch(value1.toLowerCase().trim()) {
+				case 'gf' | 'girlfriend' | '2':
+					gf.shader = colorShader;
+				case 'dad' | 'opponent' | '1':
+					dad.shader = colorShader;
+				default:
+					boyfriend.shader = colorShader;
+			}
+		}
+	}
 
 	override function update(elapsed:Float)
 	{

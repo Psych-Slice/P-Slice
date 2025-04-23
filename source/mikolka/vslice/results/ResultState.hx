@@ -446,7 +446,7 @@ class ResultState extends MusicBeatSubState
       if (Paths.exists('music/$introMusic.ogg'))
       {
         // Play the intro music.
-        FunkinSound.load(Paths.music(introMusic), 1.0, false, true, true, () -> {
+        FlxG.sound.music = FunkinSound.load(Paths.music(introMusic), 1.0, false, true, true, () -> {
           FunkinSound.playMusic(getMusicPath(playerCharacter, rank),
             {
               startingVolume: 1.0,

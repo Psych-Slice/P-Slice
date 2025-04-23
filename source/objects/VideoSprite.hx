@@ -117,7 +117,7 @@ class VideoSprite extends FlxSpriteGroup {
 					FlxG.state.persistentUpdate = false;
 					FlxG.state.persistentDraw = true;
 					pause();
-					//game.paused = true;
+					game.paused = true;
 					var pauseState = new PauseSubState(true,VIDEO);
 					pauseState.cutscene_allowSkipping = canSkip;
 					pauseState.cutscene_hardReset = false;
@@ -125,7 +125,7 @@ class VideoSprite extends FlxSpriteGroup {
 
 					game.subStateClosed.addOnce(s ->{ //TODO
 						pauseJustClosed = true;
-						FlxTimer.wait(0.1,() -> pauseJustClosed = false);
+						FlxTimer.wait(0.2,() -> pauseJustClosed = false);
 						switch (pauseState.specialAction){
 							case SKIP:{
 								//finishCallback = null;
@@ -167,6 +167,10 @@ class VideoSprite extends FlxSpriteGroup {
 		videoSprite.play();
 		#else
 		videoSprite.play(videoName, doWeLoop);
+		if (FlxG.autoPause)
+		{
+			FlxG.signals.focusGained.remove(videoSprite.resume);
+		}
 		#end
 	}
 
