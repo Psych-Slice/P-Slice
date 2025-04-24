@@ -1,53 +1,39 @@
 {
 	"animations": [
 		{
-			"offsets": [
-				0,0
-			],
-			"indices": [],
-			"fps": 24,
-			"anim": "deathLoop",
 			"loop": true,
-			"name": "loop"
+			"offsets": [0, 0],
+			"anim": "deathLoop",
+			"fps": 24,
+			"name": "loop",
+			"indices": []
 		},
 		{
-			"offsets": [
-				0,0
-			],
-			"indices": [],
-			"fps": 24,
+			"loop": false,
+			"offsets": [0, 0],
 			"anim": "firstDeath",
-			"loop": false,
-			"name": "intro"
+			"fps": 24,
+			"name": "intro",
+			"indices": []
 		},
 		{
-			"offsets": [
-				0,0
-			],
-			"indices": [],
-			"fps": 24,
-			"anim": "deathConfirm",
 			"loop": false,
-			"name": "confirm"
+			"offsets": [0, 0],
+			"anim": "deathConfirm",
+			"fps": 24,
+			"name": "confirm",
+			"indices": []
 		}
 	],
+	"vocals_file": "",
 	"no_antialiasing": false,
 	"image": "characters/picoAndNene-DEAD",
-	"position": [
-		20,
-		2
-	],
+	"position": [-10, 322],
 	"healthicon": "bf",
 	"flip_x": true,
-	"healthbar_colors": [
-		49,
-		176,
-		209
-	],
-	"camera_position": [
-		0,
-		0
-	],
+	"healthbar_colors": [49, 176, 209],
+	"camera_position": [0, 0],
 	"sing_duration": 4,
-	"scale": 1.05
+	"scale": 0.95,
+	"_editor_isPlayer": true
 }

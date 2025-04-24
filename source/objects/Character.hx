@@ -220,8 +220,10 @@ class Character extends FlxSprite
 				{
 					if(animIndices != null && animIndices.length > 0)
 						atlas.anim.addBySymbolIndices(animAnim, animName, animIndices, animFps, animLoop);
-					else
+					else if (atlas.anim.symbolDictionary.exists(animName)) //? Allow us to use labels please
 						atlas.anim.addBySymbol(animAnim, animName, animFps, animLoop);
+					else //? Allow us to use labels please
+						atlas.anim.addByFrameLabel(animAnim, animName, animFps, animLoop);
 				}
 				#end
 
