@@ -16,7 +16,7 @@
 				[
 					"Target Camera",
 					"1",
-					"0,0,null,null"
+					"0,0,4,CLASSIC"
 				]
 			]
 		],
@@ -26,7 +26,7 @@
 				[
 					"Target Camera",
 					"0",
-					"0,0,null,null"
+					"0,0,4,CLASSIC"
 				]
 			]
 		],
@@ -56,7 +56,7 @@
 				[
 					"Target Camera",
 					"1",
-					"0,0,null,null"
+					"0,0,4,CLASSIC"
 				]
 			]
 		],
@@ -66,7 +66,7 @@
 				[
 					"Target Camera",
 					"0",
-					"0,0,null,null"
+					"0,0,4,CLASSIC"
 				]
 			]
 		],
@@ -116,7 +116,7 @@
 				[
 					"Target Camera",
 					"0",
-					"0,0,null,null"
+					"0,0,4,CLASSIC"
 				]
 			]
 		],
@@ -166,7 +166,7 @@
 				[
 					"Target Camera",
 					"1",
-					"0,0,null,null"
+					"0,0,4,CLASSIC"
 				]
 			]
 		],
@@ -186,7 +186,7 @@
 				[
 					"Target Camera",
 					"0",
-					"0,0,null,null"
+					"0,0,4,CLASSIC"
 				]
 			]
 		],
@@ -236,7 +236,7 @@
 				[
 					"Target Camera",
 					"1",
-					"0,0,null,null"
+					"0,0,4,CLASSIC"
 				]
 			]
 		],
@@ -256,7 +256,7 @@
 				[
 					"Target Camera",
 					"0",
-					"0,0,null,null"
+					"0,0,4,CLASSIC"
 				]
 			]
 		],
@@ -296,7 +296,7 @@
 				[
 					"Target Camera",
 					"0",
-					"0,0,null,null"
+					"0,0,4,CLASSIC"
 				]
 			]
 		],
@@ -326,7 +326,7 @@
 				[
 					"Target Camera",
 					"1",
-					"0,0,null,null"
+					"0,0,4,CLASSIC"
 				]
 			]
 		],
@@ -346,7 +346,7 @@
 				[
 					"Target Camera",
 					"0",
-					"0,0,null,null"
+					"0,0,4,CLASSIC"
 				]
 			]
 		],
@@ -396,7 +396,7 @@
 				[
 					"Target Camera",
 					"0",
-					"0,0,null,null"
+					"0,0,4,CLASSIC"
 				]
 			]
 		],
@@ -536,7 +536,7 @@
 				[
 					"Target Camera",
 					"0",
-					"0,0,null,null"
+					"0,0,4,CLASSIC"
 				]
 			]
 		],
@@ -546,7 +546,7 @@
 				[
 					"Target Camera",
 					"1",
-					"0,0,null,null"
+					"0,0,4,CLASSIC"
 				]
 			]
 		]

@@ -81,7 +81,7 @@ class ResultsScreenEdit extends VsliceSubState
 		refresh();
 
 		#if TOUCH_CONTROLS_ALLOWED
-		addTouchPad("LEFT_FULL", "A_B_C_F");
+		addTouchPad("LEFT_FULL", "RESULTS_EDITOR");
 		controls.isInSubstate = true;
 		touchPad.visible = false;
 		#end
@@ -203,23 +203,23 @@ class ResultsScreenEdit extends VsliceSubState
 				}
 				else if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonZ.pressed || #end FlxG.keys.pressed.SHIFT){
 					var timeScale = Math.floor(elapsed * 100);
-					if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonUp.pressed || #end controls.UI_DOWN)
+					if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonDown.pressed || #end controls.UI_DOWN)
 						resultsDialogBox.addOffset(0,5*timeScale);
-					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonLeft.pressed || #end controls.UI_RIGHT)
+					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonRight.pressed || #end controls.UI_RIGHT)
 						resultsDialogBox.addOffset(5*timeScale,0);
-					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonDown.pressed || #end controls.UI_UP)
+					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonUp.pressed || #end controls.UI_UP)
 						resultsDialogBox.addOffset(0,-5*timeScale);
-					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonRight.pressed || #end controls.UI_LEFT)
+					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonLeft.pressed || #end controls.UI_LEFT)
 						resultsDialogBox.addOffset(-5*timeScale,0);
 				}
 				else{
-					if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonUp.justPressed || #end controls.UI_DOWN_P)
+					if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonDown.justPressed || #end controls.UI_DOWN_P)
 						resultsDialogBox.addOffset(0,1);
-					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonLeft.justPressed || #end controls.UI_RIGHT_P)
+					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonRight.justPressed || #end controls.UI_RIGHT_P)
 						resultsDialogBox.addOffset(1,0);
-					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonDown.justPressed || #end controls.UI_UP_P)
+					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonUp.justPressed || #end controls.UI_UP_P)
 						resultsDialogBox.addOffset(0,-1);
-					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonRight.justPressed || #end controls.UI_LEFT_P)
+					else if (#if TOUCH_CONTROLS_ALLOWED  touchPad.buttonLeft.justPressed || #end controls.UI_LEFT_P)
 						resultsDialogBox.addOffset(-1,0);
 				}
 			}
