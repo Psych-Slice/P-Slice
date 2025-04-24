@@ -103,7 +103,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<assets path="assets/shared"         if="web"/>
 
 	<assets path="assets/embed"          if="web" embed="true"/>
-	<assets path="assets/embed"          unless="web" embed="true"/>
+	<assets path="assets/embed"          unless="web" embed="false"/>
+	<assets path="assets/embed"          if="OPENFL_LOOKUP" unless="web" embed="true"/>
 
 	<assets path="assets/week_assets"   rename="assets"  if="web"/>
 	<assets path="assets/week_assets"   rename="assets"  unless="web"/>

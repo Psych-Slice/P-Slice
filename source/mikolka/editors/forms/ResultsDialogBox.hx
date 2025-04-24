@@ -64,7 +64,7 @@ class ResultsDialogBox extends PsychUIBox {
 			btn_removeObject.visible = true;
 
 			input_imagePath.text = selected_prop.data.assetPath;
-			stepper_scale.value = selected_prop.data.scale;
+			stepper_scale.value = selected_prop.data.scale ?? 1;
 			stepper_loopFrame.value = selected_prop.data.loopFrame ?? 0;
 			stepper_offsetY.value = selected_prop.data.offsets[1];
 			stepper_offsetX.value = selected_prop.data.offsets[0];
@@ -153,7 +153,7 @@ class ResultsDialogBox extends PsychUIBox {
 		resultsObjectControls.visible = false;
 
 		input_imagePath = new PsychUIInputText(10,20,250);
-		stepper_scale = new PsychUINumericStepper(90,130,0.1,1,0,10,2);
+		stepper_scale = new PsychUINumericStepper(90,130,0.1,1,0,10,3);
 		stepper_offsetX = new PsychUINumericStepper(25,60,1,0,-999,9999);
 		stepper_offsetY = new PsychUINumericStepper(25,90,1,0,-999,9999);
 		stepper_delay = new PsychUINumericStepper(10,130,0.1,0,0,20,1);
@@ -181,7 +181,7 @@ class ResultsDialogBox extends PsychUIBox {
 		}
 		stepper_scale.onValueChange = () -> {
 			selected_prop.data.scale = stepper_scale.value;
-			selected_prop.sprite.scale.set(stepper_scale.value);
+			selected_prop.sprite.scale.set(stepper_scale.value,stepper_scale.value);
 		}
 		
 		chkBox_loopable = new PsychUICheckBox(100,60,"loopable",100,() ->{
