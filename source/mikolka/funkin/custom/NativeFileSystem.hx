@@ -4,7 +4,9 @@ package mikolka.funkin.custom;
 import lime.utils.Assets;
 import openfl.utils.Assets as OpenFlAssets;
 #end
-
+/**
+    Basically FIleSystem, but we can emulate it on OpenFL
+**/
 class NativeFileSystem {
     public static function getContent(path:String) {
         #if OPENFL_LOOKUP

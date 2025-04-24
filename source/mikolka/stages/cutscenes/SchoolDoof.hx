@@ -22,22 +22,13 @@ class SchoolDoof
 		#else
 		var file:String = Paths.json('$songName/${songName}Dialogue_${ClientPrefs.data.language}'); // Checks for vanilla/Senpai dialogue
 		#end
-		#if MODS_ALLOWED
-		if (!FileSystem.exists(file))
-		#else
-		if (!OpenFlAssets.exists(file))
-		#end
+		if (!NativeFileSystem.exists(file))
 		{
 			file = Paths.json('$songName/${songName}Dialogue');
 		}
 
-		#if MODS_ALLOWED
-		if (!FileSystem.exists(file))
+		if (!NativeFileSystem.exists(file))
 			return;
-		#else
-		if (!OpenFlAssets.exists(file))
-			return;
-		#end
 
 		dialogue = DialogueBoxPsych.parseDialogue(file);
 	}
