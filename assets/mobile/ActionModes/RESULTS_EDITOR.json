@@ -15,6 +15,13 @@
         "color": "0xFFCB00"
       },
       {
+        "button": "buttonC",
+        "graphic": "c",
+        "x": 908,
+        "y": 596,
+        "color": "0x44FF00"
+      },
+      {
         "button": "buttonF",
         "graphic": "f",
         "x": 1156,

@@ -182,6 +182,7 @@ class ResultsDialogBox extends PsychUIBox {
 		stepper_scale.onValueChange = () -> {
 			selected_prop.data.scale = stepper_scale.value;
 			selected_prop.sprite.scale.set(stepper_scale.value,stepper_scale.value);
+			addOffset(0,0);
 		}
 		
 		chkBox_loopable = new PsychUICheckBox(100,60,"loopable",100,() ->{
