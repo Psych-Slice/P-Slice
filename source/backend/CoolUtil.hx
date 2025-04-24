@@ -21,12 +21,7 @@ class CoolUtil
 	inline public static function coolTextFile(path:String):Array<String>
 	{
 		var daList:String = null;
-		#if (sys && MODS_ALLOWED)
-		if(FileSystem.exists(path)) daList = File.getContent(path);
-		#end
-		#if OPENFL_LOOKUP
-		if(daList == null && Assets.exists(path)) daList = Assets.getText(path);
-		#end
+		if(NativeFileSystem.exists(path)) daList = NativeFileSystem.getContent(path);
 		return daList != null ? listFromString(daList) : [];
 	}
 
