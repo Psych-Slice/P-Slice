@@ -88,4 +88,16 @@ class FunkinTools
 		}
 		return target;
 	}
+	public static function convertToErectVariants(target:Array<String>):Array<String>{
+		var res = [];
+		for(songId in target){
+			var meta = FreeplayMeta.getMeta(songId);
+			if(!meta.allowErectVariants) continue;
+			if(Paths.fileExists('data/${Paths.formatToSongPath(songId)}-erect/metadata.json',TEXT)){
+				res.push(songId+"-erect");
+			}
+		}
+		trace(res);
+		return res;
+	}
 }

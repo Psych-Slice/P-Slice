@@ -77,6 +77,7 @@ class MallXmasErect extends BaseStage
 				erectSanta.shader = santa.shader;
 				erectParents.shader = santa.shader;
 			}
+			PicoCapableStage.instance?.applyABotShader(colorShader);
 		}
 		
 		@:privateAccess

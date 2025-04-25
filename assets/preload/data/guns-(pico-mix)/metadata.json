@@ -1,9 +1,10 @@
 {
-	"songRating": 13,
-	"albumId": "expansion2",
+	"songRating": 5,
+	"albumId": "volume4",
 	"freeplayCharacter": "pico",
 	"freeplaySongLength": 140.432426,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "Guns",
+	"altInstrumentalSongs": "guns",
+	"allowErectVariants": true,
 	"freeplayPrevStart": 0
 }

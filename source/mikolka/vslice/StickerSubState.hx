@@ -178,21 +178,21 @@ class StickerSubState extends MusicBeatSubstate
       var modStickerDir = Paths.getPath('images/transitionSwag/$STICKER_SET',TEXT,null);
       #end
       if(!FileSystem.exists(modStickerDir)){
-        openSubState(new UserErrorSubstate("Missing sticker_set",'Couldn\'t find sticker set "$STICKER_SET"\n\nin $modStickerDir'));
+        UserErrorSubstate.makeMessage("Missing sticker_set",'Couldn\'t find sticker set "$STICKER_SET"\n\nin $modStickerDir');
         
       }
       else if(!FileSystem.exists('$modStickerDir/stickers.json')){
-        openSubState(new UserErrorSubstate("Missing manifest",'Sticker set $STICKER_SET doesn\'t contain a "stickers.json" file\n\nin $modStickerDir/stickers.json'));
+        UserErrorSubstate.makeMessage("Missing manifest",'Sticker set $STICKER_SET doesn\'t contain a "stickers.json" file\n\nin $modStickerDir/stickers.json');
       }
       else{
 
         try{
           var infoObj = new StickerInfo(STICKER_SET);
           stickers = infoObj;
-          if(infoObj.getPack(STICKER_PACK) == null) openSubState(new UserErrorSubstate('Missing pack','Sticker set ${infoObj.name} doesn\'t contain "$STICKER_PACK" pack.\n\nAll available stickers will be loaded instead.'));
+          if(infoObj.getPack(STICKER_PACK) == null) UserErrorSubstate.makeMessage('Missing pack','Sticker set ${infoObj.name} doesn\'t contain "$STICKER_PACK" pack.\n\nAll available stickers will be loaded instead.');
         }
         catch(x){
-          openSubState(new UserErrorSubstate('Couldn\'t make $STICKER_PACK','In "$modStickerDir":\n\n${x.message}'));
+          UserErrorSubstate.makeMessage('Couldn\'t make $STICKER_PACK','In "$modStickerDir":\n\n${x.message}');
         }
 
       }

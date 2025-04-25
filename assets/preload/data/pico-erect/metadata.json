@@ -1,9 +1,10 @@
 {
-	"songRating": 9,
+	"songRating": 10,
 	"albumId": "volume3",
 	"freeplayCharacter": "",
 	"freeplaySongLength": 109.629637,
 	"freeplayPrevEnd": 20,
 	"altInstrumentalSongs": "",
+	"allowErectVariants": true,
 	"freeplayPrevStart": 0
 }

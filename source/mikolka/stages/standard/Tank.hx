@@ -1,5 +1,8 @@
 package mikolka.stages.standard;
 
+
+import mikolka.stages.cutscenes.TankStageScenes;
+import mikolka.stages.objects.TankmenBG;
 #if !LEGACY_PSYCH
 import cutscenes.CutsceneHandler;
 import substates.GameOverSubstate;
@@ -10,10 +13,10 @@ import mikolka.compatibility.VsliceOptions;
 
 class Tank extends BaseStage
 {
+	public var foregroundSprites:FlxTypedGroup<BGSprite>;
 	var tankWatchtower:BGSprite;
 	var tankGround:BackgroundTank;
 	var tankmanRun:FlxTypedGroup<TankmenBG>;
-	var foregroundSprites:FlxTypedGroup<BGSprite>;
 
 	override function create()
 	{
@@ -79,14 +82,15 @@ class Tank extends BaseStage
 		
 		if (isStoryMode && !seenCutscene)
 		{
+			var cutscene = new TankStageScenes(this);
 			switch (songName.toLowerCase())
 			{
 				case 'ugh':
-					setStartCallback(ughIntro);
+					setStartCallback(cutscene.ughIntro);
 				case 'guns':
-					setStartCallback(gunsIntro);
+					setStartCallback(cutscene.gunsIntro);
 				case 'stress':
-					setStartCallback(stressIntro);
+					setStartCallback(cutscene.stressIntro);
 			}
 		}
 		super.create();
@@ -104,7 +108,7 @@ class Tank extends BaseStage
 				if(gf.curCharacter == 'pico-speaker')
 				{
 					var firstTank:TankmenBG = new TankmenBG(20, 500, true);
-					firstTank.resetShit(20, 1500, true);
+					firstTank.resetShit(20, 1500, true,true);
 					firstTank.strumTime = 10;
 					firstTank.visible = false;
 					tankmanRun.add(firstTank);
@@ -114,7 +118,7 @@ class Tank extends BaseStage
 						if(FlxG.random.bool(16)) {
 							var tankBih = tankmanRun.recycle(TankmenBG);
 							tankBih.strumTime = TankmenBG.animationNotes[i][0];
-							tankBih.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2);
+							tankBih.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2,true);
 							tankmanRun.add(tankBih);
 						}
 					}
@@ -136,296 +140,5 @@ class Tank extends BaseStage
 		{
 			spr.dance();
 		});
-	}
-
-	// Cutscenes
-	var cutsceneHandler:CutsceneHandler;
-	var tankman:FlxAnimate;
-	var pico:FlxAnimate;
-	var boyfriendCutscene:FlxSprite;
-	var audioPlaying:FlxSound;
-	function prepareCutscene()
-	{
-		cutsceneHandler = new CutsceneHandler();
-
-		dadGroup.alpha = 0.00001;
-		camHUD.visible = false;
-		//inCutscene = true; //this would stop the camera movement, oops
-
-		tankman = new FlxAnimate(dad.x + 419, dad.y + 225);
-		tankman.showPivot = false;
-		Paths.loadAnimateAtlas(tankman, 'cutscenes/tankman');
-		tankman.antialiasing = VsliceOptions.ANTIALIASING;
-		addBehindDad(tankman);
-		cutsceneHandler.push(tankman);
-
-		cutsceneHandler.finishCallback = function()
-		{
-			var timeForStuff:Float = Conductor.crochet / 1000 * 4.5;
-			FlxG.sound.music.fadeOut(timeForStuff);
-			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, timeForStuff, {ease: FlxEase.quadInOut});
-			startCountdown();
-
-			dadGroup.alpha = 1;
-			camHUD.visible = true;
-			boyfriend.animation.finishCallback = null;
-			gf.animation.finishCallback = null;
-			gf.dance();
-		};
-		#if LEGACY_PSYCH
-		cutsceneHandler.finishCallback2 = function()
-		#else
-		cutsceneHandler.skipCallback = function()
-		#end
-		{
-			dadGroup.alpha = 1;
-			gfGroup.alpha = 1;
-			boyfriendGroup.alpha = 1;
-			camHUD.visible = true;
-
-			if(audioPlaying != null)
-				audioPlaying.stop();
-
-			boyfriend.animation.finishCallback = null;
-			gf.animation.finishCallback = null;
-			gf.dance();
-			dad.dance();
-			boyfriend.dance();
-
-			FlxTween.cancelTweensOf(FlxG.camera);
-			FlxTween.cancelTweensOf(camFollow);
-			@:privateAccess
-			game.moveCameraSection();
-			FlxG.camera.scroll.set(camFollow.x - FlxG.width/2, camFollow.y - FlxG.height/2);
-			FlxG.camera.zoom = defaultCamZoom;
-			startCountdown();
-		};
-		camFollow_set(dad.x + 280, dad.y + 170);
-	}
-
-	function ughIntro()
-	{
-		prepareCutscene();
-		cutsceneHandler.endTime = 12;
-		cutsceneHandler.music = 'DISTORTO';
-		Paths.sound('wellWellWell');
-		Paths.sound('killYou');
-		Paths.sound('bfBeep');
-
-		var wellWellWell:FlxSound = new FlxSound().loadEmbedded(Paths.sound('wellWellWell'));
-		FlxG.sound.list.add(wellWellWell);
-		var killYou:FlxSound = new FlxSound().loadEmbedded(Paths.sound('killYou'));
-		FlxG.sound.list.add(killYou);
-
-		tankman.anim.addBySymbol('wellWell', 'TANK TALK 1 P1', 24, false);
-		tankman.anim.addBySymbol('killYou', 'TANK TALK 1 P2', 24, false);
-		tankman.anim.play('wellWell', true);
-		FlxG.camera.zoom *= 1.2;
-
-		// Well well well, what do we got here?
-		cutsceneHandler.timer(0.1, function()
-		{
-			wellWellWell.play(true);
-			audioPlaying = wellWellWell;
-		});
-
-		// Move camera to BF
-		cutsceneHandler.timer(3, function()
-		{
-			camFollow.x += 750;
-			camFollow.y += 100;
-		});
-
-		// Beep!
-		cutsceneHandler.timer(4.5, function()
-		{
-			boyfriend.playAnim('singUP', true);
-			boyfriend.specialAnim = true;
-			FlxG.sound.play(Paths.sound('bfBeep'));
-		});
-
-		// Move camera to Tankman
-		cutsceneHandler.timer(6, function()
-		{
-			camFollow.x -= 750;
-			camFollow.y -= 100;
-
-			// We should just kill you but... what the hell, it's been a boring day... let's see what you've got!
-			tankman.anim.play('killYou', true);
-			killYou.play(true);
-			audioPlaying = killYou;
-		});
-	}
-	function gunsIntro()
-	{
-		prepareCutscene();
-		cutsceneHandler.endTime = 11.5;
-		cutsceneHandler.music = 'DISTORTO';
-		Paths.sound('tankSong2');
-
-		var tightBars:FlxSound = new FlxSound().loadEmbedded(Paths.sound('tankSong2'));
-		FlxG.sound.list.add(tightBars);
-
-		tankman.anim.addBySymbol('tightBars', 'TANK TALK 2', 24, false);
-		tankman.anim.play('tightBars', true);
-		boyfriend.animation.curAnim.finish();
-
-		cutsceneHandler.onStart = function()
-		{
-			tightBars.play(true);
-			audioPlaying = tightBars;
-			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 4, {ease: FlxEase.quadInOut});
-			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2 * 1.2}, 0.5, {ease: FlxEase.quadInOut, startDelay: 4});
-			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 1, {ease: FlxEase.quadInOut, startDelay: 4.5});
-		};
-
-		cutsceneHandler.timer(4, function()
-		{
-			gf.playAnim('sad', true);
-			gf.animation.finishCallback = function(name:String)
-			{
-				gf.playAnim('sad', true);
-			};
-		});
-	}
-	var dualWieldAnimPlayed = 0;
-	function stressIntro()
-	{
-		prepareCutscene();
-		
-		cutsceneHandler.endTime = 35.5;
-		gfGroup.alpha = 0.00001;
-		boyfriendGroup.alpha = 0.00001;
-		camFollow_set(dad.x + 400, dad.y + 170);
-		FlxTween.tween(FlxG.camera, {zoom: 0.9 * 1.2}, 1, {ease: FlxEase.quadInOut});
-		foregroundSprites.forEach(function(spr:BGSprite)
-		{
-			spr.y += 100;
-		});
-		Paths.sound('stressCutscene');
-
-		pico = new FlxAnimate(gf.x + 150, gf.y + 450);
-		pico.showPivot = false;
-		Paths.loadAnimateAtlas(pico, 'cutscenes/picoAppears');
-		pico.antialiasing = VsliceOptions.ANTIALIASING;
-		pico.anim.addBySymbol('dance', 'GF Dancing at Gunpoint', 24, true);
-		pico.anim.addBySymbol('dieBitch', 'GF Time to Die sequence', 24, false);
-		pico.anim.addBySymbol('picoAppears', 'Pico Saves them sequence', 24, false);
-		pico.anim.addBySymbol('picoEnd', 'Pico Dual Wield on Speaker idle', 24, false);
-		pico.anim.play('dance', true);
-		addBehindGF(pico);
-		cutsceneHandler.push(pico);
-
-		// prepare pico animation cycle
-		function picoStressCycle() {
-			switch (pico.anim.curInstance.symbol.name) {
-				case "dieBitch", "GF Time to Die sequence":
-					pico.anim.play('picoAppears', true);
-					boyfriendGroup.alpha = 1;
-					boyfriendCutscene.visible = false;
-					boyfriend.playAnim('bfCatch', true);
-					boyfriend.animation.finishCallback = function(name:String)
-					{
-						if(name != 'idle')
-						{
-							boyfriend.playAnim('idle', true);
-							boyfriend.animation.curAnim.finish(); //Instantly goes to last frame
-						}
-					};
-				case "picoAppears", "Pico Saves them sequence":
-					pico.anim.play('picoEnd', true);
-				case "picoEnd", "Pico Dual Wield on Speaker idle":
-					gfGroup.alpha = 1;
-					pico.visible = false;
-					if (pico.anim.onComplete.has(picoStressCycle)) // for safety
-						pico.anim.onComplete.remove(picoStressCycle);
-			}
-		}
-		pico.anim.onComplete.add(picoStressCycle);
-
-		boyfriendCutscene = new FlxSprite(boyfriend.x + 5, boyfriend.y + 20);
-		boyfriendCutscene.antialiasing = VsliceOptions.ANTIALIASING;
-		boyfriendCutscene.frames = Paths.getSparrowAtlas('characters/BOYFRIEND');
-		boyfriendCutscene.animation.addByPrefix('idle', 'BF idle dance', 24, false);
-		boyfriendCutscene.animation.play('idle', true);
-		boyfriendCutscene.animation.curAnim.finish();
-		addBehindBF(boyfriendCutscene);
-		cutsceneHandler.push(boyfriendCutscene);
-
-		var cutsceneSnd:FlxSound = new FlxSound().loadEmbedded(Paths.sound('stressCutscene'));
-		FlxG.sound.list.add(cutsceneSnd);
-
-		tankman.anim.addBySymbol('godEffingDamnIt', 'TANK TALK 3 P1 UNCUT', 24, false);
-		tankman.anim.addBySymbol('lookWhoItIs', 'TANK TALK 3 P2 UNCUT', 24, false);
-		tankman.anim.play('godEffingDamnIt', true);
-
-		cutsceneHandler.onStart = function()
-		{
-			cutsceneSnd.play(true);
-			audioPlaying = cutsceneSnd;
-		};
-
-		cutsceneHandler.timer(15.2, function()
-		{
-			FlxTween.tween(camFollow, {x: 650, y: 300}, 1, {ease: FlxEase.sineOut});
-			FlxTween.tween(FlxG.camera, {zoom: 0.9 * 1.2 * 1.2}, 2.25, {ease: FlxEase.quadInOut});
-			pico.anim.play('dieBitch', true);
-		});
-
-		cutsceneHandler.timer(17.5, function()
-		{
-			zoomBack();
-		});
-
-		cutsceneHandler.timer(19.5, function()
-		{
-			tankman.anim.play('lookWhoItIs', true);
-		});
-
-		cutsceneHandler.timer(20, function()
-		{
-			camFollow_set(dad.x + 500, dad.y + 170);
-		});
-
-		cutsceneHandler.timer(31.2, function()
-		{
-			boyfriend.playAnim('singUPmiss', true);
-			boyfriend.animation.finishCallback = function(name:String)
-			{
-				if (name == 'singUPmiss')
-				{
-					boyfriend.playAnim('idle', true);
-					boyfriend.animation.curAnim.finish(); //Instantly goes to last frame
-				}
-			};
-
-			camFollow_set(boyfriend.x + 280, boyfriend.y + 200);
-			FlxG.camera.snapToTarget();
-			game.cameraSpeed = 12;
-			FlxTween.tween(FlxG.camera, {zoom: 0.9 * 1.2 * 1.2}, 0.25, {ease: FlxEase.elasticOut});
-		});
-
-		cutsceneHandler.timer(32.2, function()
-		{
-			zoomBack();
-		});
-	}
-
-	function zoomBack()
-	{
-		var calledTimes:Int = 0;
-		camFollow_set(630, 425);
-		FlxG.camera.snapToTarget();
-		FlxG.camera.zoom = 0.8;
-		game.cameraSpeed = 1;
-
-		calledTimes++;
-		if (calledTimes > 1)
-		{
-			foregroundSprites.forEach(function(spr:BGSprite)
-			{
-				spr.y -= 100;
-			});
-		}
 	}
 }

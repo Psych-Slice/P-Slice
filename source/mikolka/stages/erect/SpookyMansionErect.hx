@@ -24,10 +24,8 @@ class SpookyMansionErect extends BaseStage
 	var gfGhost:Character;
 	var dadGhost:Character;
 
-	var nene:PicoCapableStage;
-	public function new(nene:PicoCapableStage) {
+	public function new() {
 		super();
-		this.nene = nene;
 	}
 	override function create()
 	{
@@ -162,7 +160,7 @@ class SpookyMansionErect extends BaseStage
 					gf.playAnim('scared', true);
 				if (VsliceOptions.FLASHBANG)
 				{
-					nene.ABot_plink();
+					PicoCapableStage.instance?.ABot_plink();
 					boyfriend.alpha = 0;
 					dad.alpha = 0;
 					gf.alpha = 0;
@@ -209,8 +207,8 @@ class SpookyMansionErect extends BaseStage
 
 		var gfMode = PlayState.instance.gf.curCharacter.split("-")[0];
 		gfGhost = new Character(game.gf.x, game.gf.y, gfMode);
-		//if (gfMode == 'nene')
-			//gfGhost.y -= 190;
+		if (gfMode == 'nene')
+			gfGhost.y -= 200;
 		game.add(gfGhost);
 		gfGhost.dance();
 		

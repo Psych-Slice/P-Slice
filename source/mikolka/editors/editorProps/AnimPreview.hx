@@ -1,5 +1,6 @@
 package mikolka.editors.editorProps;
 
+import mikolka.vslice.components.crash.UserErrorSubstate;
 import flxanimate.animate.FlxSymbol;
 
 class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
@@ -43,7 +44,15 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 		value.onAnimationFrame.add(onFrameAdvance);
 		activeSprite?.onAnimationFrame.remove(onFrameAdvance);
 		activeSprite = value;
-		input_selectAnim(0);
+
+		if(labels.length == 0){
+			UserErrorSubstate.makeMessage("No animations registered",
+			"Looks like you haven't registered any animations.\n\nHave you exported your sprite correctly?");
+            activeSprite?.onAnimationFrame.remove(onFrameAdvance);
+            activeSprite = null;
+        }
+		else input_selectAnim(0);
+
 	}
 
 	private function registerAnims(value:FlxAtlasSprite) {

@@ -22,7 +22,7 @@ class LuaCard extends BackingCard
 	public static inline function hasCustomCard(charId:String):Bool {
 		return Paths.fileExists('registry/cards/$charId.hx',TEXT);
 	}
-	public override function new(currentCharacter:PlayableCharacter, charId:String)
+	public override function new(currentCharacter:PlayableCharacter, charId:String,allowMessages:Bool = true)
 	{
 		super(currentCharacter);
 
@@ -38,6 +38,14 @@ class LuaCard extends BackingCard
 					hscript.set('add',this.add);
 					hscript.set('remove',this.remove);
 					hscript.set('insert',this.insert);
+					hscript.set('backingTextYeah',this.backingTextYeah);
+					hscript.set('orangeBackShit',this.orangeBackShit);
+					hscript.set('alsoOrangeLOL',this.alsoOrangeLOL);
+					hscript.set('pinkBack',this.pinkBack);
+					hscript.set('confirmGlow',this.confirmGlow);
+					hscript.set('confirmGlow2',this.confirmGlow2);
+					hscript.set('confirmTextGlow',this.confirmTextGlow);
+					hscript.set('cardGlow',this.cardGlow);
 
 					if (hscript.exists('onCreate'))
 					{
@@ -53,13 +61,12 @@ class LuaCard extends BackingCard
 				{
 					var pos:HScriptInfos = cast {fileName: scriptPath, showLine: false};
 					Iris.error(Printer.errorToString(e, false), pos);
-					FlxTimer.wait(0.5,() ->{
-						UserErrorSubstate.makeError("Error while compiling script",
+					if(allowMessages) FlxTimer.wait(0.5,() ->{
+						UserErrorSubstate.makeMessage("Error while compiling script",
 						'Path: ${scriptPath}\n\n'+
 						'Error: ${Printer.errorToString(e, false)}\n\n'+
 						'In function ${pos.funcName} line  ${pos.lineNumber}\n');
 					});
-					var hscript:HScript = cast(Iris.instances.get(scriptPath), HScript);
 				}
 			}
 		}

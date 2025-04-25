@@ -16,14 +16,14 @@ class VSliceEvents extends BaseStage {
 					if(flValue2 <= 0)
 						game.songSpeed = newValue;
 					else
-						game.songSpeedTween = FlxTween.tween(this, {songSpeed: newValue}, flValue2 / game.playbackRate, {ease: FlxEase.quadInOut, onComplete:
+						game.songSpeedTween = FlxTween.tween(game, {songSpeed: newValue}, flValue2 / game.playbackRate, {ease: FlxEase.quadInOut, onComplete:
 							function (twn:FlxTween)
 							{
 								game.songSpeedTween = null;
 							}
 						});
 				}
-            case 'SetCameraBop': //P-slice event notes
+            case 'Set Camera Bopping': //P-slice event notes
 				var val1 = Std.parseFloat(value1);
 				var val2 = Std.parseFloat(value2);
 				game.camZoomingMult = !Math.isNaN(val2) ? val2 : 1;
@@ -45,15 +45,15 @@ class VSliceEvents extends BaseStage {
 
                 var targetx = floaties[0];
                 var targety = floaties[1];
-                var dur = floaties[2];
+                var dur = floaties[2]*(Conductor.stepCrochet/1000);
                 switch (value1){
                     case "bf"|"0":{
-                        targetx += game.boyfriend.getMidpoint().x -100 + boyfriend.cameraPosition[0] - game.boyfriendCameraOffset[0];
-                        targety += game.boyfriend.getMidpoint().y -100 + boyfriend.cameraPosition[1] - game.boyfriendCameraOffset[1];
+                        targetx += game.boyfriend.getMidpoint().x -100 - boyfriend.cameraPosition[0] + game.boyfriendCameraOffset[0];
+                        targety += game.boyfriend.getMidpoint().y -100 + boyfriend.cameraPosition[1] + game.boyfriendCameraOffset[1];
                     }
                     case "dad"|"1":{
-                        targetx += game.dad.getMidpoint().x +150 + dad.cameraPosition[0] - game.opponentCameraOffset[0];
-                        targety += game.dad.getMidpoint().y -100 + dad.cameraPosition[1] - game.opponentCameraOffset[1];
+                        targetx += game.dad.getMidpoint().x +150 + dad.cameraPosition[0] + game.opponentCameraOffset[0];
+                        targety += game.dad.getMidpoint().y -100 + dad.cameraPosition[1] + game.opponentCameraOffset[1];
                     }
                     case "gf"|"2":{
                         targetx += game.gf.getMidpoint().x + gf.cameraPosition[0] - game.girlfriendCameraOffset[0];
@@ -80,7 +80,7 @@ class VSliceEvents extends BaseStage {
                         }
                     });
                 }
-			case 'ZoomCamera': //defaultCamZoom
+			case 'Zoom Camera': //defaultCamZoom
 				var keyValues = value1.split(",");
 				if(keyValues.length != 2) {
 					trace("INVALID EVENT VALUE");

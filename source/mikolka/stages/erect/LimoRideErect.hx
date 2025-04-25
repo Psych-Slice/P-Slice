@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import mikolka.stages.objects.PicoCapableStage;
 import mikolka.compatibility.freeplay.FreeplayHelpers;
 #if !LEGACY_PSYCH
 import objects.Note.EventNote;
@@ -203,6 +204,7 @@ class LimoRideErect extends BaseStage
 
 				limoMetalPole.shader = colorShader;
 				limoBgMetalPole.shader = colorShader;
+				fastCar.shader = colorShader;
 				grpLimoParticles.forEach(s -> s.shader = colorShader);
 			}
 
@@ -213,6 +215,7 @@ class LimoRideErect extends BaseStage
 			gf.shader = colorShader;
 			dad.shader = colorShader;
 			boyfriend.shader = colorShader;
+			PicoCapableStage.instance?.applyABotShader(colorShader);
 		}
 	}
 
@@ -395,6 +398,16 @@ class LimoRideErect extends BaseStage
 		{
 			case "Kill Henchmen":
 				killHenchmen();
+		}
+		if(eventName == "Change Character" && VsliceOptions.SHADERS){
+			switch(value1.toLowerCase().trim()) {
+				case 'gf' | 'girlfriend' | '2':
+					gf.shader = colorShader;
+				case 'dad' | 'opponent' | '1':
+					dad.shader = colorShader;
+				default:
+					boyfriend.shader = colorShader;
+			}
 		}
 	}
 

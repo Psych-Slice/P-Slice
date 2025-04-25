@@ -1,9 +1,10 @@
 {
-	"songRating": 5,
-	"albumId": "expansion2",
+	"songRating": 3,
+	"albumId": "volume4",
 	"freeplayCharacter": "pico",
 	"freeplaySongLength": 84,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "Bopeebo",
+	"altInstrumentalSongs": "bopeebo",
+	"allowErectVariants": true,
 	"freeplayPrevStart": 0
 }

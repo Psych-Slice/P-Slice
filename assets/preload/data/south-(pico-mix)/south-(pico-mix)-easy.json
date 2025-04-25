@@ -1760,17 +1760,6 @@
 				],
 				"sectionBeats": 4,
 				"mustHitSection": false
-			},
-			{
-				"sectionNotes": [
-					[
-						86909.0909090909,
-						7,
-						181.818181818182
-					]
-				],
-				"sectionBeats": 4,
-				"mustHitSection": false
 			}
 		],
 		"events": [],

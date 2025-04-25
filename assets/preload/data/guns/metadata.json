@@ -4,6 +4,7 @@
 	"freeplayCharacter": "",
 	"freeplaySongLength": 140.472971,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "Guns (Pico Mix)",
+	"altInstrumentalSongs": "guns (Pico Mix)",
+	"allowErectVariants": true,
 	"freeplayPrevStart": 0
 }
