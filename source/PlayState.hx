@@ -1,5 +1,7 @@
 package;
 
+import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych;
+import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych.DialogueFile;
 import mikolka.stages.EventLoader;
 import mikolka.funkin.utils.ArrayTools;
 import mikolka.vslice.results.ResultState;
@@ -66,7 +68,6 @@ import animateatlas.AtlasFrameMaker;
 import Achievements;
 import StageData;
 import FunkinLua;
-import DialogueBoxPsych;
 import Conductor.Rating;
 import mikolka.stages.standard.*;
 import mikolka.stages.erect.*;
@@ -585,29 +586,30 @@ class PlayState extends MusicBeatState
 		#end
 
 		var gfVersion:String = SONG.gfVersion;
-		if (gfVersion == null || gfVersion.length < 1)
-		{
-			switch (curStage)
-			{
-				case 'limo':
-					gfVersion = 'gf-car';
-				case 'mall' | 'mallEvil':
-					gfVersion = 'gf-christmas';
-				case 'school' | 'schoolEvil':
-					gfVersion = 'gf-pixel';
-				case 'tank':
-					gfVersion = 'gf-tankmen';
-				default:
-					gfVersion = 'gf';
-			}
+		//? Can me yeet this?
+		// if (gfVersion == null || gfVersion.length < 1)
+		// {
+		// 	switch (curStage)
+		// 	{
+		// 		case 'limo':
+		// 			gfVersion = 'gf-car';
+		// 		case 'mall' | 'mallEvil':
+		// 			gfVersion = 'gf-christmas';
+		// 		case 'school' | 'schoolEvil':
+		// 			gfVersion = 'gf-pixel';
+		// 		case 'tank':
+		// 			gfVersion = 'gf-tankmen';
+		// 		default:
+		// 			gfVersion = 'gf';
+		// 	}
 
-			switch (Paths.formatToSongPath(SONG.song))
-			{
-				case 'stress':
-					gfVersion = 'pico-speaker';
-			}
-			SONG.gfVersion = gfVersion; // Fix for the Chart Editor
-		}
+		// 	switch (Paths.formatToSongPath(SONG.song))
+		// 	{
+		// 		case 'stress':
+		// 			gfVersion = 'pico-speaker';
+		// 	}
+		// 	SONG.gfVersion = gfVersion; // Fix for the Chart Editor
+		// }
 
 		if (!stageData.hide_girlfriend)
 		{
@@ -647,19 +649,6 @@ class PlayState extends MusicBeatState
 		{
 			dialogueJson = DialogueBoxPsych.parseDialogue(file);
 		}
-
-		var file:String = Paths.txt(songName + '/' + songName + 'Dialogue'); // Checks for vanilla/Senpai dialogue
-		if (OpenFlAssets.exists(file))
-		{
-			dialogue = CoolUtil.coolTextFile(file);
-		}
-		var doof:DialogueBox = new DialogueBox(false, dialogue);
-		// doof.x += 70;
-		// doof.y = FlxG.height * 0.5;
-		doof.scrollFactor.set();
-		doof.finishThing = startCountdown;
-		doof.nextDialogueThing = startNextDialogue;
-		doof.skipDialogueThing = skipDialogue;
 
 		Conductor.songPosition = -5000 / Conductor.songPosition;
 
@@ -832,7 +821,6 @@ class PlayState extends MusicBeatState
 		timeBar.cameras = [camHUD];
 		timeBarBG.cameras = [camHUD];
 		timeTxt.cameras = [camHUD];
-		doof.cameras = [camHUD];
 
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;

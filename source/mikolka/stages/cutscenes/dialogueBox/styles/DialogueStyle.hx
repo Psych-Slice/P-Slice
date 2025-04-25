@@ -1,4 +1,4 @@
-package mikolka.compatibility.dialogueBox.styles;
+package mikolka.stages.cutscenes.dialogueBox.styles;
 
 enum abstract DialogueBoxPosition(String) {
 	var LEFT = "left";

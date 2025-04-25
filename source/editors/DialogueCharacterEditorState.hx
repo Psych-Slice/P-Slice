@@ -1,5 +1,8 @@
 package editors;
 
+import mikolka.stages.cutscenes.dialogueBox.styles.PsychDialogueStyle;
+import mikolka.stages.cutscenes.dialogueBox.styles.DialogueStyle;
+import mikolka.stages.cutscenes.dialogueBox.DialogueCharacter;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -25,7 +28,6 @@ import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import flash.net.FileFilter;
 import haxe.Json;
-import DialogueBoxPsych;
 import flixel.FlxCamera;
 import flixel.group.FlxSpriteGroup;
 import lime.system.Clipboard;
@@ -58,6 +60,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 	var character:DialogueCharacter;
 	var ghostLoop:DialogueCharacter;
 	var ghostIdle:DialogueCharacter;
+	var style:DialogueStyle;
 
 	var curAnim:Int = 0;
 
@@ -91,6 +94,8 @@ class DialogueCharacterEditorState extends MusicBeatState
 		ghostLoop.cameras = [camGame];
 		add(ghostLoop);
 		
+		style = new PsychDialogueStyle();
+
 		ghostIdle = new DialogueCharacter();
 		ghostIdle.alpha = 0;
 		ghostIdle.color = FlxColor.BLUE;
@@ -165,7 +170,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 		reloadCharacter();
 		updateTextBox();
 
-		daText = new TypedAlphabet(DialogueBoxPsych.DEFAULT_TEXT_X, DialogueBoxPsych.DEFAULT_TEXT_Y, '', 0.05, false);
+		daText = new TypedAlphabet(style.DEFAULT_TEXT_X, style.DEFAULT_TEXT_Y, '', 0.05, false);
 		daText.scaleX = 0.7;
 		daText.scaleY = 0.7;
 		daText.text = DEFAULT_TEXT;
@@ -447,12 +452,12 @@ class DialogueCharacterEditorState extends MusicBeatState
 			char.setGraphicSize(Std.int(char.width * DialogueCharacter.DEFAULT_SCALE * character.jsonFile.scale));
 			char.updateHitbox();
 		}
-		character.x = DialogueBoxPsych.LEFT_CHAR_X;
-		character.y = DialogueBoxPsych.DEFAULT_CHAR_Y;
+		character.x = style.LEFT_CHAR_X;
+		character.y = style.DEFAULT_CHAR_Y;
 
 		switch(character.jsonFile.dialogue_pos) {
 			case 'right':
-				character.x = FlxG.width - character.width + DialogueBoxPsych.RIGHT_CHAR_X;
+				character.x = FlxG.width - character.width + style.RIGHT_CHAR_X;
 			
 			case 'center':
 				character.x = FlxG.width / 2;
@@ -492,8 +497,28 @@ class DialogueCharacterEditorState extends MusicBeatState
 				anim = 'center';
 		}
 		box.animation.play(anim, true);
-		DialogueBoxPsych.updateBoxOffsets(box);
+		updateBoxOffsets(box);
 	}
+	public function updateBoxOffsets(box:FlxSprite)
+		{ // Had to make it static because of the editors
+			box.centerOffsets();
+			box.updateHitbox();
+			if (box.animation.curAnim.name.startsWith('angry'))
+			{
+				box.offset.set(50, 65);
+			}
+			else if (box.animation.curAnim.name.startsWith('center-angry'))
+			{
+				box.offset.set(50, 30);
+			}
+			else
+			{
+				box.offset.set(10, 0);
+			}
+	
+			if (!box.flipX)
+				box.offset.y += 10;
+		}
 
 	override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>) {
 		if(id == FlxUIInputText.CHANGE_EVENT && sender == imageInputText) {
