@@ -22,7 +22,9 @@
 
 package mobile.backend;
 
+#if android
 import android.os.Environment;
+#end
 import lime.system.System as LimeSystem;
 import haxe.io.Path;
 import haxe.Exception;
