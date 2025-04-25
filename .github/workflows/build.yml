@@ -58,6 +58,8 @@ jobs:
         if: inputs.name == 'Linux'
         run: sudo apt install libvlc-dev libvlccore-dev
 
+      - name: Setup haxelib
+        run: haxelib newrepo    
       - name: Install Libraries
         run: ${{ inputs.setupScript }}
 
