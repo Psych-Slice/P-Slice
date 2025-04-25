@@ -1,0 +1,10 @@
+{
+	"songRating": 5,
+	"albumId": "volume3",
+	"freeplayCharacter": "pico",
+	"freeplaySongLength": 120,
+	"freeplayPrevEnd": 20,
+	"altInstrumentalSongs": "2hot (Pico Mix)",
+	"allowErectVariants": true,
+	"freeplayPrevStart": 0
+}

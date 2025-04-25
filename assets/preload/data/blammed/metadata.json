@@ -4,6 +4,7 @@
 	"freeplayCharacter": "",
 	"freeplaySongLength": 106.969705,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "Blammed (Pico Mix)",
+	"altInstrumentalSongs": "blammed (Pico Mix)",
+	"allowErectVariants": true,
 	"freeplayPrevStart": 0
 }

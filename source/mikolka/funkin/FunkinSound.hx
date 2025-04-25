@@ -103,7 +103,7 @@ class FunkinSound extends FlxSound
 							var fp = cast (FlxG.state.subState,FreeplayState);
 
 							var cap = fp.grpCapsules.members[fp.curSelected];
-							if(cap.songData == null || cap.songData.songId != key || fp.busy) return;
+							if(cap.songData == null || cap.songData.getNativeSongId() != key || fp.busy) return;
 						}
 						
 						trace("Playing preview!");

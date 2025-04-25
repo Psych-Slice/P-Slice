@@ -4,7 +4,9 @@ import mikolka.compatibility.ui.MainMenuHooks;
 import mikolka.compatibility.VsliceOptions;
 #if !LEGACY_PSYCH
 import states.TitleState;
+#if MODS_ALLOWED
 import states.ModsMenuState;
+#end
 import states.AchievementsMenuState;
 import states.CreditsState;
 import states.editors.MasterEditorMenu;
@@ -22,12 +24,12 @@ import options.OptionsState;
 class MainMenuState extends MusicBeatState
 {
 	#if !LEGACY_PSYCH
-	public static var psychEngineVersion:String = '1.0.3'; // This is also used for Discord RPC
+	public static var psychEngineVersion:String = '1.0.4'; // This is also used for Discord RPC
 	#else
 	public static var psychEngineVersion:String = '0.6.3'; // This is also used for Discord RPC
 	#end
 	public static var pSliceVersion:String = '3.0'; 
-	public static var funkinVersion:String = '0.5.3'; // Version of funkin' we are emulationg
+	public static var funkinVersion:String = '0.6.0'; // Version of funkin' we are emulationg
 	public static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
@@ -129,7 +131,6 @@ class MainMenuState extends MusicBeatState
 
 		#if MODS_ALLOWED
 		MainMenuHooks.reloadAchievements();
-		//Achievements.reloadList();
 		#end
 		#end
 

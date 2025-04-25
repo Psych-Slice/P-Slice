@@ -1,9 +1,10 @@
 {
-	"songRating": 10,
-	"albumId": "expansion2",
+	"songRating": 9,
+	"albumId": "volume4",
 	"freeplayCharacter": "",
 	"freeplaySongLength": 83.647063,
 	"freeplayPrevEnd": 20,
 	"altInstrumentalSongs": "",
+	"allowErectVariants": true,
 	"freeplayPrevStart": 0
 }

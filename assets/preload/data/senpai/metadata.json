@@ -1,9 +1,10 @@
 {
 	"songRating": 3,
-	"albumId": "volume3alt",
+	"albumId": "volume2alt",
 	"freeplayCharacter": "",
 	"freeplaySongLength": 106.666667,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "",
+	"altInstrumentalSongs": "senpai (Pico Mix)",
+	"allowErectVariants": true,
 	"freeplayPrevStart": 0
 }

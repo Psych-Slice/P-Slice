@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import mikolka.stages.objects.PicoCapableStage;
 import mikolka.compatibility.VsliceOptions;
 import openfl.display.BlendMode;
 import shaders.AdjustColorShader;
@@ -28,7 +29,7 @@ class MainStageErect extends BaseStage {
             add(lightSmol);
         }
 
-		var stageFront:BGSprite = new BGSprite('erect/bg', -603, -187);
+		var stageFront:BGSprite = new BGSprite('erect/stage_bg', -603, -187);
 		add(stageFront);
 
         var server:BGSprite = new BGSprite('erect/server', -361, 205);
@@ -64,6 +65,7 @@ class MainStageErect extends BaseStage {
             gf.shader = makeCoolShader(-9,0,-30,-4);
             dad.shader = makeCoolShader(-32,0,-33,-23);
             boyfriend.shader = makeCoolShader(12,0,-23,7);
+            PicoCapableStage.instance?.applyABotShader(makeCoolShader(-9,0,-30,-4));
         }
     }
 

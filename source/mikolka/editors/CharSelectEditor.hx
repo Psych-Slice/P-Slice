@@ -199,7 +199,7 @@ class CharSelectEditor extends MusicBeatState
 		trace('currentGFPath(${currentGFPath})');
 		if (currentGFPath == null || !FunkinPath.exists('images/${gfData?.assetPath}/Animation.json'))
 		{
-			UserErrorSubstate.makeError("Couldn't find GF's Atlas sprite!",
+			UserErrorSubstate.makeMessage("Couldn't find GF's Atlas sprite!",
 			'Failed to read the following file:\n\nimages/${gfData?.assetPath}/Animation.json'
 			);
 			gfChill.visible = false;
@@ -216,7 +216,7 @@ class CharSelectEditor extends MusicBeatState
 			var animInfoPath = 'images/${gfData?.animInfoPath}';
 			if (!FunkinPath.exists(animInfoPath + '/In.txt') || !FunkinPath.exists(animInfoPath + '/Out.txt'))
 			{
-				UserErrorSubstate.makeError("Couldn't find JSFL Data files!",
+				UserErrorSubstate.makeMessage("Couldn't find JSFL Data files!",
 				'Make sure that in:\n${animInfoPath}\n\nFollowing files are present:\nIn.txt\nOut.txt'
 				);
 				animInfoPath = 'images/charSelect/gfAnimInfo';
@@ -401,10 +401,10 @@ class CharSelectEditor extends MusicBeatState
 		StorageUtil.saveContent('${playerId}.json', charData);
 		#elseif LEGACY_PSYCH
 			var file = new FileReference();
-			file.addEventListener(IOErrorEvent.IO_ERROR, function(x) openSubState(new UserErrorSubstate('Error on saving character!',"")));
+			file.addEventListener(IOErrorEvent.IO_ERROR, function(x) UserErrorSubstate.makeMessage('Error on saving character!',""));
 			file.save(charData, '${playerId}.json');
 		#else
-		fileDialog.save('${playerId}.json', charData, null, null, function() openSubState(new UserErrorSubstate('Error on saving character!','')));
+		fileDialog.save('${playerId}.json', charData, null, null, function() UserErrorSubstate.makeMessage('Error on saving character!',''));
 		#end
 	}
 

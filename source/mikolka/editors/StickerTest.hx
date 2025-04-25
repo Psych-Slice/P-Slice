@@ -26,7 +26,7 @@ class StickerTest extends MusicBeatState {
         super();
     }
     override function create() {
-        FlxG.sound.music.pause();
+        FlxG.sound.music?.pause();
         FlxG.mouse.visible = true;
         Paths.clearUnusedMemory();
         if (stickerSubState != null)

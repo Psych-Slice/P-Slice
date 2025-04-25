@@ -3,7 +3,8 @@
 	"albumId": "volume1",
 	"freeplayCharacter": "",
 	"freeplaySongLength": 124.7361,
-	"freeplayPrevEnd": 20,
+	"freeplayPrevEnd": 57,
 	"altInstrumentalSongs": "",
-	"freeplayPrevStart": 0
+	"allowErectVariants": true,
+	"freeplayPrevStart": 36
 }

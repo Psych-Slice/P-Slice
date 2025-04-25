@@ -1,0 +1,103 @@
+{
+	"animations": [
+		{
+			"loop": false,
+			"offsets": [-15, -3],
+			"anim": "idle",
+			"fps": 24,
+			"name": "Pico Idle Dance",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [27, -16],
+			"anim": "singLEFT",
+			"fps": 24,
+			"name": "Pico NOTE LEFT0",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [93, -70],
+			"anim": "singDOWN",
+			"fps": 24,
+			"name": "Pico Down Note0",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [56, 3],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "pico Up note0",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [-48, -20],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"name": "Pico Note Right0",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [28, -11],
+			"anim": "singLEFTmiss",
+			"fps": 24,
+			"name": "note miss left pico nene0",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [95, -74],
+			"anim": "singDOWNmiss",
+			"fps": 24,
+			"name": "note miss down pico nene0",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [60, 2],
+			"anim": "singUPmiss",
+			"fps": 24,
+			"name": "note miss up piconene0",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [-45, -19],
+			"anim": "singRIGHTmiss",
+			"fps": 24,
+			"name": "note miss right pico nene0",
+			"indices": []
+		},
+		{
+			"offsets": [14, 26],
+			"loop": false,
+			"fps": 24,
+			"anim": "knifeToss",
+			"indices": [],
+			"name": "pico nene knife toss0"
+		},
+		{
+			"offsets": [5, 7],
+			"loop": false,
+			"fps": 24,
+			"anim": "laughEnd",
+			"indices": [],
+			"name": "pico nene laughing full0"
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/picoAndNene",
+	"position": [-20, 258],
+	"healthicon": "pico",
+	"flip_x": true,
+	"healthbar_colors": [183, 216, 85],
+	"camera_position": [160, -20],
+	"sing_duration": 4,
+	"scale": 1,
+	"_editor_isPlayer": true
+}
