@@ -1,18 +1,20 @@
-package mikolka.compatibility.dialogueBox.styles;
+package mikolka.stages.cutscenes.dialogueBox.styles;
 
+import mikolka.stages.cutscenes.dialogueBox.styles.DialogueStyle.DialogueBoxState;
+import mikolka.stages.cutscenes.dialogueBox.styles.DialogueStyle.DialogueBoxPosition;
 import flixel.FlxSprite;
-import backend.Paths;
 import flixel.FlxG;
-import cutscenes.styles.DialogueStyle;
 import flixel.addons.text.FlxTypeText;
-import objects.TypedAlphabet;
+#if !LEGACY_PSYCH
+import backend.Paths;
+#end
 
-class PixelDialogueStyle extends DialogueStyle {
+class DecayDialogueStyle extends DialogueStyle {
 	var swagDialogue:FlxTypeText;
 	var isDone:Bool = false;
 	var lastSnd:String = "";
 	public function new() {
-		BG_COLOR = 0xBFB3DFD8;
+		BG_COLOR = 0xBF0A3D35;
 		FADE_DURATION = 1;
 
 		offsetXPos = -100;
@@ -23,20 +25,19 @@ class PixelDialogueStyle extends DialogueStyle {
 
 		DEFAULT_TEXT_Y = 470;
 		DEFAULT_TEXT_X = 206;
+
 		closeSound = "clickText";
 	}
 	public function makeDialogueBox():FlxSprite{
-		box = new FlxSprite(537, 347);
-		var staticBox = ["Text Box Speaking0001"];
-		var senpaiBox = ['SENPAI ANGRY IMPACT SPEECH0007'];
+		box = new FlxSprite(537, 335);
+		var staticBox = ["Spirit Textbox0000"];
 		box.antialiasing = false;
-		box.frames = Paths.getSparrowAtlas('pixelUI/dialogueBox-new');
+		box.frames = Paths.getSparrowAtlas('pixelUI/dialogueBox-evilNew');
 		box.scrollFactor.set();
 		box.animation.addByNames ('normal', staticBox, 24,false);
-		box.animation.addByPrefix('normalOpen', 'Text Box Appear', 24, false);
-		box.animation.addByPrefix('normalWait', 'Text Box wait to click0', 24,true);
-		box.animation.addByPrefix('angryOpen', 'SENPAI ANGRY IMPACT SPEECH0', 24, false);
-		box.animation.addByPrefix('normalClick', 'Text Box CLICK', 24, false);
+		box.animation.addByPrefix('normalOpen', 'Spirit Textbox spawn', 24, false);
+		box.animation.addByPrefix('normalWait', 'Spirit Text Box Sentence Complete0', 24,true);
+		box.animation.addByPrefix('normalClick', 'Spirit Text Box Click', 24, false);
 		//box.animation.addByPrefix('normalClick', 'SENPAI ANGRY IMPACT SPEECH0', 24, false);
 		box.animation.play('normalOpen', true);
 
@@ -47,9 +48,16 @@ class PixelDialogueStyle extends DialogueStyle {
 	}
 	override function advanceBoxLine(callback:() -> Void) {
 		box.animation.play("normalClick");
+		#if LEGACY_PSYCH
+		box.animation.finishCallback = (anim) ->{
+			callback();
+			box.animation.finishCallback = null;
+		}
+		#else
 		box.animation.onFinish.addOnce(anim ->{
 			callback();
 		});
+		#end
 	}
 	public function _playBoxAnim(pos:DialogueBoxPosition,style:DialogueBoxState,boxType:String) {
 		super.playBoxAnim(pos,style,boxType);
@@ -57,15 +65,9 @@ class PixelDialogueStyle extends DialogueStyle {
 			case OPEN_INIT:
 				box.centerOffsets();
 				box.updateHitbox();
-				if(boxType == "angry"){
-					box.offset.set(50, 65); //angry
-					box.animation.play("angryOpen",true);
-					
-				}
-				else{
-					box.offset.set(10, 0);
-					box.animation.play("normalOpen",true);
-				}
+				box.offset.set(10, 0);
+				box.animation.play("normalOpen",true);
+				
 			case CLOSE_FINISH:
 				box.animation.play("normalOpen",true,true);
 			case IDLE:
@@ -86,10 +88,10 @@ class PixelDialogueStyle extends DialogueStyle {
 		swagDialogue = new FlxTypeText(DEFAULT_TEXT_X, DEFAULT_TEXT_Y, Std.int(FlxG.width * 0.6), '', 32);
 		swagDialogue.font = Paths.font('pixel-latin.ttf');
 		set_sound("pixelText");
-		swagDialogue.color = 0xFF3F2021;
-		swagDialogue.borderStyle = SHADOW;
-		swagDialogue.borderColor = 0xFFD89494;
-		swagDialogue.shadowOffset.set(2, 2);
+		swagDialogue.color = 0xFFFFFFFF;
+		swagDialogue.borderStyle = NONE;
+		swagDialogue.borderColor = 0xFF3D3D3D;
+		//swagDialogue.shadowOffset.set(2, 2);
 		swagDialogue.completeCallback = () -> isDone = true;
 		return swagDialogue;
 	}

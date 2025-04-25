@@ -3,15 +3,15 @@ package mikolka.stages.erect;
 import mikolka.vslice.StickerSubState;
 import mikolka.stages.objects.TankmenBG;
 #if !LEGACY_PSYCH
+import cutscenes.CutsceneHandler;
+import objects.Character;
 import substates.GameOverSubstate;
 #end
 import mikolka.stages.cutscenes.VideoCutscene;
 import mikolka.stages.cutscenes.PicoTankman;
 import openfl.filters.ShaderFilter;
-import cutscenes.CutsceneHandler;
 import shaders.DropShadowScreenspace;
 import mikolka.stages.objects.PicoCapableStage;
-import objects.Character;
 import mikolka.compatibility.VsliceOptions;
 import shaders.DropShadowShader;
 

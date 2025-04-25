@@ -1,9 +1,10 @@
-package mikolka.compatibility.dialogueBox;
+package mikolka.stages.cutscenes.dialogueBox;
 
-import mikolka.compatibility.styles.DialogueStyle.DialogueBoxState;
-import mikolka.compatibility.styles.DialogueStyle.DialogueBoxPosition;
+import mikolka.stages.cutscenes.dialogueBox.styles.*;
+import mikolka.stages.cutscenes.dialogueBox.styles.DialogueStyle;
+import mikolka.stages.cutscenes.dialogueBox.styles.DialogueStyle.DialogueBoxState;
+import mikolka.stages.cutscenes.dialogueBox.styles.DialogueStyle.DialogueBoxPosition;
 import cutscenes.styles.*;
-import PauseSubState;
 import haxe.Json;
 
 typedef DialogueFile = {
@@ -94,7 +95,8 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		daText = style.initText();
 		add(daText);
 
-		skipText = new FlxText(FlxG.width - 320, FlxG.height - 30, 300, Language.getPhrase('dialogue_skip', 'Press BACK to Skip'), 16);
+		var text = #if LEGACY_PSYCH 'Press BACK to Skip' #else Language.getPhrase('dialogue_skip', 'Press BACK to Skip') #end;
+		skipText = new FlxText(FlxG.width - 320, FlxG.height - 30, 300, text, 16);
 		skipText.setFormat(null, 16, FlxColor.WHITE, RIGHT, OUTLINE_FAST, FlxColor.BLACK);
 		skipText.borderSize = 2;
 		add(skipText);
@@ -187,8 +189,11 @@ class DialogueBoxPsych extends FlxSpriteGroup
 						FlxG.state.persistentUpdate = false;
 						FlxG.state.persistentDraw = true;
 						FlxG.sound.music.pause();
-			
+						#if LEGACY_PSYCH
+						var pauseState = new PauseSubState(0,0,true,DIALOGUE);
+						#else
 						var pauseState = new PauseSubState(true,DIALOGUE);
+						#end
 						pauseState.cutscene_allowSkipping = true;
 						pauseState.cutscene_hardReset = false;
 						game.openSubState(pauseState);

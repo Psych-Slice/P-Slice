@@ -1,8 +1,6 @@
 package shaders;
 
 // STOLEN FROM HAXEFLIXEL DEMO LOL
-import shaders.flixel.system.FlxShader;
-
 enum WiggleEffectType
 {
 	DREAMY;

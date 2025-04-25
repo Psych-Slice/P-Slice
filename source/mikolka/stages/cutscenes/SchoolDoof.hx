@@ -1,8 +1,9 @@
 package mikolka.stages.cutscenes;
-
+#if !LEGACY_PSYCH
 import cutscenes.CutsceneHandler;
-import cutscenes.DialogueBoxPsych;
-import cutscenes.DialogueBoxPsych.DialogueFile;
+#end
+import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych;
+import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych.DialogueFile;
 
 class SchoolDoof
 {
