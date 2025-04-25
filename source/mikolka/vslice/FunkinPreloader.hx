@@ -1,5 +1,6 @@
 package mikolka.vslice;
 
+import flixel.math.FlxRandom;
 #if sys import mikolka.vslice.components.crash.Logger; #end
 import openfl.events.MouseEvent;
 import flash.display.Bitmap;
@@ -18,7 +19,7 @@ using StringTools;
 // Annotation embeds the asset in the executable for faster loading.
 // Polymod can't override this, so we can't use this technique elsewhere.
 
-@:bitmap("art/preloaderArt.png")
+@:bitmap("art/banner.png")
 class LogoImage extends BitmapData {}
 
 #if TOUCH_HERE_TO_PLAY
@@ -163,7 +164,7 @@ class FunkinPreloader extends FlxBasePreloader
       bmp.x = (this._width - bmp.width) / 2;
       bmp.y = (this._height - bmp.height) / 2;
     });
-    // addChild(logo);
+    if(FlxG.random.bool(25)) addChild(logo);
 
     var amountOfPieces:Int = 16;
     progressBarPieces = [];
