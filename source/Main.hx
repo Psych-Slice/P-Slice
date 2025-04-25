@@ -1,5 +1,6 @@
 package;
 
+import mikolka.vslice.components.crash.Logger;
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import psychlua.HScript.HScriptInfos;
@@ -66,6 +67,7 @@ class Main extends Sprite
 		#end
 		Sys.setCwd(StorageUtil.getStorageDirectory());
 		#end
+		#if sys Logger.startLogging(); #end
 		backend.CrashHandler.init();
 
 		#if (cpp && windows)

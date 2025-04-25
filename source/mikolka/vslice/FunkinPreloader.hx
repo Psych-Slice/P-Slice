@@ -1000,7 +1000,6 @@ class FunkinPreloader extends FlxBasePreloader
 
   function immediatelyStartGame():Void
   {
-    #if sys Logger.startLogging(); #end
     _loaded = true;
   }
 
