@@ -2,6 +2,7 @@ package;
 
 import mikolka.GameBorder;
 import mikolka.vslice.components.MemoryCounter;
+import mikolka.vslice.components.crash.Logger;
 import lime.graphics.Image;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
@@ -61,7 +62,7 @@ class Main extends Sprite
 		#end
 		Sys.setCwd(StorageUtil.getStorageDirectory());
 		#end
-
+		#if sys Logger.startLogging(); #end
 		CrashHandler.init();
 
 		if (stage != null)

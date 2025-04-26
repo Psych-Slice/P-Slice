@@ -499,7 +499,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 		box.animation.play(anim, true);
 		updateBoxOffsets(box);
 	}
-	public function updateBoxOffsets(box:FlxSprite)
+	public static function updateBoxOffsets(box:FlxSprite)
 		{ // Had to make it static because of the editors
 			box.centerOffsets();
 			box.updateHitbox();

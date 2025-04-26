@@ -17,6 +17,9 @@ class FunkinControls {
     public static function get_FREEPLAY_CHAR():Bool {
         return PlayerSettings.player1.controls.CHAR_SELECT;
     }
+    public static function FREEPLAY_CHAR_name():String {
+        return InputFormatter.getKeyName(ClientPrefs.keyBinds.get("char_select")[0]);
+    }
     public static function enableVolume(){
 		FlxG.sound.muteKeys = TitleState.muteKeys;
 		FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;

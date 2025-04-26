@@ -9,7 +9,13 @@ class BaseGameOptions extends BaseOptionsMenu {
 			'vsliceFreeplayColors',
 			'bool');
 		addOption(option);
-
+		#if sys
+		var option:Option = new Option('Logging type',
+			'Controls verbosity of the game\'s logs',
+			'loggingType',
+			'string',["None","Console","File"]);
+		addOption(option);
+		#end
 		var option:Option = new Option('Use results screen',
 			'If disabled will skip showing the result screen',
 			'vsliceResults',

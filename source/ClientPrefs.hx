@@ -83,6 +83,7 @@ class ClientPrefs {
 	public static var vsliceSmoothBar:Bool = true;
 	public static var vsliceForceNewTag:Bool = false;
 	public static var lastFreeplayMod:String = "||bf";
+	public static var psliceLogging:String = "None";
 	public static var vsliceSpecialCards:Bool = true;
 
 	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
@@ -182,6 +183,7 @@ class ClientPrefs {
 		FlxG.save.data.vsliceSpecialCards = vsliceSpecialCards;
 		FlxG.save.data.favSongIds = favSongIds;
 		FlxG.save.data.lastFreeplayMod = lastFreeplayMod;
+		FlxG.save.data.psliceLogging = psliceLogging;
 	
 		FlxG.save.flush();
 
@@ -359,6 +361,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.lastFreeplayMod != null) {
 			lastFreeplayMod = FlxG.save.data.lastFreeplayMod;
+		}
+		if(FlxG.save.data.psliceLogging != null) {
+			psliceLogging = FlxG.save.data.psliceLogging;
 		}
 		
 		// flixel automatically saves your volume!

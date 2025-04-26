@@ -91,14 +91,6 @@ class TankErect extends BaseStage
 		}
 		if (FlxG.random.bool(2))
 			sniper.animation.play('sip', true);
-		if (songName == "stress-(pico-mix)")
-		{
-			// We gonna have some events here
-			if(curBeat == 184){
-				game.triggerEvent("","dad","tankman-bloody",0);
-				if (VsliceOptions.SHADERS) applyShader(dad, dad.curCharacter);
-			}
-		}
 	}
 	override function eventCalled(eventName:String, value1:String, value2:String, flValue1:Null<Float>, flValue2:Null<Float>, strumTime:Float) {
 		if(eventName == "Change Character" && VsliceOptions.SHADERS){

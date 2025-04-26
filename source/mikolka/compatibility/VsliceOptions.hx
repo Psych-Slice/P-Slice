@@ -34,6 +34,10 @@ class VsliceOptions {
     public static function get_LEGACY_BAR():Bool {
         return ClientPrefs.vsliceLegacyBar;
     }
+    public static var LOGGING(get,never):String;    
+    public static function get_LOGGING():String {
+        return ClientPrefs.psliceLogging;
+    }
     public static var LAST_MOD(get,set):CharSave; //format: "mod_dir||char_name"
     public static function get_LAST_MOD():CharSave {
         var shards = ClientPrefs.lastFreeplayMod.split('||');

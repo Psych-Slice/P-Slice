@@ -1,5 +1,7 @@
 package editors;
 
+import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych.DialogueFile;
+import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych.DialogueLine;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -60,6 +62,7 @@ class DialogueEditorState extends MusicBeatState
 		};
 
 		dialogueFile = {
+			style:"",
 			dialogue: [
 				copyDefaultLine()
 			]
@@ -205,7 +208,7 @@ class DialogueEditorState extends MusicBeatState
 				}
 		}
 		box.animation.play(anim, true);
-		DialogueBoxPsych.updateBoxOffsets(box);
+		DialogueCharacterEditorState.updateBoxOffsets(box);
 	}
 
 	function reloadCharacter() {

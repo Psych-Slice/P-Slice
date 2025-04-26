@@ -88,6 +88,9 @@ class BaseStage extends FlxBasic
 	public function eventPushed(event:EventNote) {}
 	public function eventPushedUnique(event:EventNote) {}
 
+	// Dialogues
+	public function startNextDialogue(dialogueCount:Int) {}
+	public function onSkipDialogue(dialogueCount:Int) {}
 	// Note Hit/Miss
 	public function goodNoteHit(note:Note) {}
 	public function opponentNoteHit(note:Note) {}

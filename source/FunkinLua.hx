@@ -1,6 +1,7 @@
-
 package;
 
+import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych.DialogueFile;
+import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych;
 import mikolka.vslice.freeplay.FreeplayState;
 import mikolka.vslice.StickerSubState;
 import openfl.display.BitmapData;
@@ -49,7 +50,6 @@ import sys.io.File;
 
 import Type.ValueType;
 import Controls;
-import DialogueBoxPsych;
 
 #if hscript
 import hscript.Parser;

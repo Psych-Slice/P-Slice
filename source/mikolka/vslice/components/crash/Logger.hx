@@ -14,10 +14,10 @@ class Logger{
         file = File.write("latest.log");
         #else
         file = File.write(StorageUtil.getStorageDirectory()+"/latest.log");
-        #end
-        Log.trace = log;
         LogStyle.WARNING.onLog.add(log);
         LogStyle.ERROR.onLog.add(log);
+        #end
+        Log.trace = log;
     }
     private static function log(v:Dynamic, ?infos:PosInfos):Void {
         if(VsliceOptions.LOGGING == "None") return;

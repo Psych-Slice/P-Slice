@@ -245,10 +245,14 @@ class ScreenshotPlugin extends FlxBasic
    */
   public static function initialize():Void
   {
-    FlxG.plugins.addPlugin(new ScreenshotPlugin(
+    #if LEGACY_PSYCH FlxG.plugins.add
+    #else FlxG.plugins.addPlugin
+    #end 
+    (new ScreenshotPlugin(
       {
         flashColor: VsliceOptions.FLASHBANG ? FlxColor.WHITE : null, // Was originally a black flash.
       }));
+    
   }
 
   public function hasPressedScreenshot():Bool
