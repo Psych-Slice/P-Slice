@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="abotHead.png">
+	<!-- Created with Adobe Animate version 24.0.7.61 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="toleft0000" x="0" y="0" width="29" height="40"/>
+	<SubTexture name="toleft0001" x="0" y="0" width="29" height="40"/>
+	<SubTexture name="toleft0002" x="34" y="0" width="29" height="40"/>
+	<SubTexture name="toleft0003" x="34" y="0" width="29" height="40"/>
+	<SubTexture name="toleft0004" x="68" y="0" width="29" height="40"/>
+	<SubTexture name="toleft0005" x="68" y="0" width="29" height="40"/>
+	<SubTexture name="left0000" x="68" y="0" width="29" height="40"/>
+	<SubTexture name="toright0000" x="68" y="0" width="29" height="40"/>
+	<SubTexture name="toright0001" x="68" y="0" width="29" height="40"/>
+	<SubTexture name="toright0002" x="34" y="0" width="29" height="40"/>
+	<SubTexture name="toright0003" x="34" y="0" width="29" height="40"/>
+	<SubTexture name="toright0004" x="0" y="0" width="29" height="40"/>
+	<SubTexture name="toright0005" x="0" y="0" width="29" height="40"/>
+	<SubTexture name="right0000" x="0" y="0" width="29" height="40"/>
+</TextureAtlas>

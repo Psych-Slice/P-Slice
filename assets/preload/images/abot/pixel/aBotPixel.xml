@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="aBotPixel.png">
+	<!-- Created with Adobe Animate version 24.0.7.61 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="idle0000" x="0" y="0" width="127" height="51"/>
+	<SubTexture name="idle0001" x="0" y="0" width="127" height="51"/>
+	<SubTexture name="idle0002" x="129" y="0" width="127" height="51"/>
+	<SubTexture name="idle0003" x="129" y="0" width="127" height="51"/>
+	<SubTexture name="idle0004" x="0" y="53" width="127" height="51"/>
+	<SubTexture name="idle0005" x="0" y="53" width="127" height="51"/>
+	<SubTexture name="idle0006" x="129" y="53" width="127" height="51"/>
+	<SubTexture name="idle0007" x="129" y="53" width="127" height="51"/>
+	<SubTexture name="idle0008" x="0" y="0" width="127" height="51"/>
+	<SubTexture name="idle0009" x="0" y="0" width="127" height="51"/>
+	<SubTexture name="idle0010" x="0" y="0" width="127" height="51"/>
+	<SubTexture name="idle0011" x="0" y="0" width="127" height="51"/>
+	<SubTexture name="idle0012" x="0" y="0" width="127" height="51"/>
+	<SubTexture name="idle0013" x="0" y="0" width="127" height="51"/>
+</TextureAtlas>

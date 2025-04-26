@@ -121,7 +121,6 @@
 	<section if="MODS_ALLOWED">
 		<assets path='example_mods' rename='mods' embed='false'/>
 	</section>
-	<assets path='art/readme.txt' rename='do NOT readme.txt' unless="mobile" />
 		
 	<!--FNF is changing openAL config, because the default one is broken. lol. -->
 	<section if="desktop">

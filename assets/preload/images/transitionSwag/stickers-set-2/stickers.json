@@ -1,0 +1,21 @@
+{
+  "name": "stickers-set-2",
+  "artist": "PhantomArcade3K",
+  "stickers": {
+    "alucard": ["alucardSticker1", "alucardSticker2"],
+    "cassandra": ["cassandraSticker1", "cassandraSticker2", "cassandraSticker3"],
+    "cyclops": ["cyclopsSticker1", "cyclopsSticker2"],
+    "dad": ["dadSticker1", "dadSticker2", "dadSticker3"],
+    "darnell": ["darnellSticker1", "darnellSticker2", "darnellSticker3"],
+    "nene": ["neneSticker1", "neneSticker2", "neneSticker3"],
+    "pico": ["picoSticker1", "picoSticker2", "picoSticker3"],
+    "someDeadGuy": ["someDeadGuySticker1", "someDeadGuySticker2"],
+    "misc": ["miscSticker1","miscSticker2","miscSticker3","miscSticker4","miscSticker5"]
+  },
+  "stickerPacks": {
+    "tutorial": ["pico", "nene"],
+    "weekend": ["pico", "nene", "darnell", "misc"],
+    "all": [ "alucard", "cassandra", "cyclops", "dad", "darnell", "nene", "someDeadGuy", "misc"
+    ]
+  }
+}

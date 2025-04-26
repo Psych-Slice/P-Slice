@@ -15,8 +15,9 @@
 	"storyName": "hating simulator ft. moawling",
 	"weekBefore": "week5",
 	"weekName": "Week 6",
+	"difficulties": "Easy,Normal,Hard,Erect,Nightmare",
 	"startUnlocked": true,
-
+	"directory": "week6",
 	"hideStoryMode": false,
 	"hideFreeplay": false
 }

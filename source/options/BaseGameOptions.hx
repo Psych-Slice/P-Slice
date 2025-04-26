@@ -12,8 +12,11 @@ class BaseGameOptions extends BaseOptionsMenu {
 		#if sys
 		var option:Option = new Option('Logging type',
 			'Controls verbosity of the game\'s logs',
-			'loggingType',
-			'string',["None","Console","File"]);
+			'psliceLogging',
+			'string',
+			"None",
+			["None","Console","File"]
+			);
 		addOption(option);
 		#end
 		var option:Option = new Option('Use results screen',

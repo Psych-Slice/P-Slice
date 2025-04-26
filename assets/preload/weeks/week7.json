@@ -36,12 +36,14 @@
 		"gf"
 	],
 	"storyName": "Tankman",
+	"difficulties": "Easy,Normal,Hard,Erect,Nightmare",
 	"weekName": "Week 7",
 	"freeplayColor": [
 		146,
 		113,
 		253
 	],
+	"directory": "week7",
 	"hideStoryMode": false,
 	"weekBefore": "week6",
 	"startUnlocked": true

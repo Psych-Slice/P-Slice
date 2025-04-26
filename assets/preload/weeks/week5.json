@@ -15,8 +15,9 @@
 	"storyName": "RED SNOW",
 	"weekBefore": "week4",
 	"weekName": "Week 5",
+	"difficulties": "Easy,Normal,Hard,Erect,Nightmare",
 	"startUnlocked": true,
-
+	"directory": "week5",
 	"hideStoryMode": false,
 	"hideFreeplay": false
 }

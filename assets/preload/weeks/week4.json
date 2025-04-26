@@ -15,6 +15,7 @@
 	"storyName": "MOMMY MUST MURDER",
 	"weekBefore": "week3",
 	"weekName": "Week 4",
+	"difficulties": "Easy,Normal,Hard,Erect,Nightmare",
 	"startUnlocked": true,
 	"directory": "week4",
 	"hideStoryMode": false,

@@ -62,6 +62,7 @@ class StageData {
 
 		var stageFile:StageFile = getStageFile(stage);
 		if(stageFile == null) { //preventing crashes
+			trace("STAGE IS NULL!!!");
 			forceNextDirectory = '';
 		} else {
 			forceNextDirectory = stageFile.directory;

@@ -1,0 +1,25 @@
+{
+	"position": [
+		10,
+		235
+	],
+	"dialogue_pos": "right",
+	"no_antialiasing": true,
+	"scale": 7,
+	"image": "bf-pixel",
+	"animations": [
+		{
+			"loop_offsets": [
+				0,
+				0
+			],
+			"anim": "idle",
+			"idle_offsets": [
+				0,
+				0
+			],
+			"loop_name": "idle",
+			"idle_name": "idle"
+		}
+	]
+}
