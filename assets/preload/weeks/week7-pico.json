@@ -17,6 +17,15 @@
 				182,
 				4
 			]
+		],
+		[
+			"Stress (Pico mix)",
+			"tankman",
+			[
+				246,
+				182,
+				4
+			]
 		]
 	],
 	"hideFreeplay": false,
@@ -35,6 +44,6 @@
 	],
 	"hideStoryMode": true,
 	"weekBefore": "week6",
-	"directory": "week6",
+	"directory": "week7",
 	"startUnlocked": true
 }

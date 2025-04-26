@@ -15,6 +15,7 @@
 	"storyName": "Daddy Dearest",
 	"weekBefore": "tutorial",
 	"weekName": "Week 1",
+	"difficulties": "Easy,Normal,Hard,Erect,Nightmare",
 	"startUnlocked": true,
 
 	"hideStoryMode": false,

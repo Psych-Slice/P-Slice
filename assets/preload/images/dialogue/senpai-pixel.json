@@ -1,0 +1,64 @@
+{
+	"position": [
+		370,
+		220
+	],
+	"dialogue_pos": "left",
+	"no_antialiasing": true,
+	"scale": 7,
+	"image": "senpai-pixel",
+	"animations": [
+		{
+			"loop_offsets": [
+				2,
+				1
+			],
+			"anim": "idle",
+			"idle_offsets": [
+				2,
+				1
+			],
+			"loop_name": "idle",
+			"idle_name": "idle"
+		},
+		{
+			"loop_offsets": [
+				-12,
+				10
+			],
+			"anim": "angry",
+			"idle_offsets": [
+				-12,
+				10
+			],
+			"loop_name": "angry",
+			"idle_name": "angry"
+		},
+		{
+			"loop_offsets": [
+				27,
+				10
+			],
+			"anim": "bwuh",
+			"idle_offsets": [
+				25,
+				10
+			],
+			"loop_name": "bwuh",
+			"idle_name": "bwuh"
+		},
+		{
+			"loop_offsets": [
+				-49,
+				112
+			],
+			"anim": "dead",
+			"idle_offsets": [
+				-50,
+				112
+			],
+			"loop_name": "dead",
+			"idle_name": "dead"
+		}
+	]
+}

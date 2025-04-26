@@ -1,12 +1,13 @@
 {
 	"songs": [
-		["Darnell (BF Mix)", "darnell", [65, 60, 174]]
+		["Darnell (BF Mix)", "darnell", [65, 60, 174]],
+		["Lit up (BF Mix)", "darnell", [65, 60, 174]]
 	],
 
 	"weekCharacters": [
-		"bf",
-		"bf",
-		"bf"
+		"darnell",
+		"pico-player",
+		"nene"
 	],
 	"weekBackground": "phillystreets",
 
@@ -17,5 +18,6 @@
 
 	"hideStoryMode": true,
 	"hideFreeplay": false,
+	"directory": "weekend1",
 	"difficulties": "Easy, Normal, Hard"
 }
