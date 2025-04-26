@@ -1642,13 +1642,16 @@ class PlayState extends MusicBeatState
 
 	function startNextDialogue()
 	{
-		dialogueCount++;
+		@:privateAccess
+		dialogueCount = psychDialogue.currentText;
 		callOnLuas('onNextDialogue', [dialogueCount]);
+		stagesFunc(function(stage:BaseStage) stage.startNextDialogue(dialogueCount));
 	}
 
 	function skipDialogue()
 	{
 		callOnLuas('onSkipDialogue', [dialogueCount]);
+		stagesFunc(function(stage:BaseStage) stage.onSkipDialogue(dialogueCount));
 	}
 
 	var previousFrameTime:Int = 0;
