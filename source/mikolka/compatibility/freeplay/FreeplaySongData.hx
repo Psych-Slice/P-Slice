@@ -66,6 +66,13 @@ using mikolka.funkin.utils.ArrayTools;
         }
         
     }
+    var fileSngName = Paths.formatToSongPath(getNativeSongId());
+		if (allowErect && !hasErectSong())
+		{
+			trace('$songName is missing variant in $sngDataPath');
+			this.songDifficulties.remove("erect");
+			this.songDifficulties.remove("nightmare");
+		}
     if (!this.songDifficulties.contains(currentDifficulty))
         currentDifficulty = songDifficulties[0]; // TODO
     
