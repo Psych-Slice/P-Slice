@@ -19,7 +19,7 @@ jobs:
             buildArgs: windows
             exportPath: windows
             artifactName: P-Slice.1.0.windows
-            setupScript: .windows.bat
+            setupScript: windows.bat
             artifactPath: export\release\windows\bin\*
           - name: Linux
             os: ubuntu-22.04
