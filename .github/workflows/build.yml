@@ -61,7 +61,9 @@ jobs:
       - name: Setup haxelib
         run: haxelib newrepo    
       - name: Install Libraries
-        run: ${{ inputs.setupScript }}
+        run: |
+          cd setup
+          ${{ inputs.setupScript }}
 
       - name: Configure Android
         if: inputs.name == 'Android'
