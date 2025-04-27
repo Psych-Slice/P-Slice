@@ -1,5 +1,6 @@
 package mikolka.stages.objects;
 
+import flixel.util.FlxSignal;
 import flixel.graphics.tile.FlxGraphicsShader;
 import flixel.util.typeLimit.OneOfTwo;
 import mikolka.vslice.StickerSubState;
@@ -26,6 +27,7 @@ class PicoCapableStage extends BaseStage
 	final MIN_BLINK_DELAY:Int = 3;
 	final MAX_BLINK_DELAY:Int = 7;
 	final VULTURE_THRESHOLD:Float = 0.5;
+	public final onABotInit:FlxTypedSignal<PicoCapableStage->Void> = new FlxTypedSignal();
 
 	public static var instance:PicoCapableStage = null;
 	public static var NENE_LIST = ['nene','nene-pixel', 'nene-christmas', 'nene-dark'];
@@ -36,6 +38,7 @@ class PicoCapableStage extends BaseStage
 	public var forceABot:Bool = false;
 	var blinkCountdown:Int = 3;
 	public function new(forceABot:Bool = false) {
+		instance?.destroy();
 		instance = this;
 		super();
 		this.forceABot = forceABot;
@@ -57,6 +60,7 @@ class PicoCapableStage extends BaseStage
 
 	override function destroy() {
 		instance = null;
+		onABotInit.removeAll();
 		super.destroy();
 	}
 	override function create() {
@@ -113,6 +117,7 @@ class PicoCapableStage extends BaseStage
 				}
 			}
 		}
+		onABotInit.dispatch(this);
 	}
 
 	override function startSong()

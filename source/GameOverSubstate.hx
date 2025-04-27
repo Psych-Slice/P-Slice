@@ -131,24 +131,32 @@ class GameOverSubstate extends MusicBeatSubstate
 
 			if (boyfriend.animation.curAnim.finished && !playingDeathSound)
 			{
-				if (PlayState.SONG.stage == 'tank')
+				switch(PlayState.SONG.stage)
 				{
-					playingDeathSound = true;
-					coolStartDeath(0.2);
-					
-					var exclude:Array<Int> = [];
-					//if(!ClientPrefs.cursing) exclude = [1, 3, 8, 13, 17, 21];
-
-					FlxG.sound.play(Paths.sound('jeffGameover/jeffGameover-' + FlxG.random.int(1, 25, exclude)), 1, false, null, true, function() {
-						if(!isEnding)
-						{
-							FlxG.sound.music.fadeIn(0.2, 1, 4);
-						}
-					});
-				}
-				else
-				{
-					coolStartDeath();
+					case 'tank'|'tankmanBattlefieldErect':
+						coolStartDeath(0.2);
+						var onEnd = function() {
+							if(!isEnding)
+							{
+								FlxG.sound.music.fadeIn(0.2, 1, 4);
+							}
+						};
+						switch (PlayState.SONG.player1){
+							case "bf-holding-bf"|"bf":{
+								var exclude:Array<Int> = [];
+								//if(!ClientPrefs.cursing) exclude = [1, 3, 8, 13, 17, 21];
+								FlxG.sound.play(Paths.sound('jeffGameover/jeffGameover-' + FlxG.random.int(1, 25, exclude)), 1, false, null, true,onEnd);
+							}
+							case "pico-playable"|"pico-holding-nene":{
+								FlxG.sound.play(Paths.sound('jeffGameover-pico/jeffGameover-' + FlxG.random.int(1, 9)), 1, false, null, true,onEnd);
+							}
+							default:{
+								FlxG.sound.play(Paths.sound('jeffGameover-pico/jeffGameover-10'), 1, false, null, true,onEnd);
+							}
+						};
+ 					//? Another hardcoding lol
+					default:
+						coolStartDeath();
 				}
 				boyfriend.startedDeath = true;
 			}

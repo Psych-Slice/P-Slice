@@ -342,6 +342,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		}
 		skipText.visible = false;
 		FlxG.sound.music.fadeOut(1, 0, (_) -> FlxG.sound.music.stop());
+		PlayState.instance.inCutscene = false;
 	}
 
 	var lastCharacter:Int = -1;
