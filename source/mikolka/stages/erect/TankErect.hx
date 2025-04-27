@@ -23,7 +23,12 @@ class TankErect extends BaseStage
 	var tankmanRim:DropShadowShader;
 	var tankmanRun:FlxTypedGroup<TankmenBG>;
 	var cutscene:PicoTankman;
+	var pico_stage:PicoCapableStage;
 
+	public function new() {
+		if (songName == "stress-(pico-mix)") pico_stage = new PicoCapableStage(true);
+		super();
+	}
 	override function create()
 	{
 		super.create();
@@ -47,9 +52,14 @@ class TankErect extends BaseStage
 
 		tankmanRun = new FlxTypedGroup<TankmenBG>();
 		add(tankmanRun);
+		if (PicoCapableStage.instance != null)
+			PicoCapableStage.instance.onABotInit.addOnce( (pico) ->{
+			applyAbotShader(pico.abot.speaker);
+			applyShader(pico.abot.bg,"");
+			applyAbotShader(pico.abot.eyes);
+		});
 		if (songName == "stress-(pico-mix)")
 		{
-			var pico_stage = new PicoCapableStage(true);
 			pico_stage.create();
 			game.stages.remove(pico_stage);
 			game.stages.insert(1,pico_stage);
@@ -57,30 +67,9 @@ class TankErect extends BaseStage
 			this.cutscene = new PicoTankman(this);
 			if(!seenCutscene) setStartCallback(VideoCutscene.playVideo.bind('stressPicoCutscene',startCountdown));
 			setEndCallback(cutscene.playCutscene);
-			
-			// setEndCallback(function()
-			// {
-			// 	game.endingSong = true;
-			// 	inCutscene = true;
-			// 	canPause = false;
-			// 	FlxTransitionableState.skipNextTransIn = true;
-			// 	FlxG.camera.visible = false;
-			// 	camHUD.visible = false;
-			// 	game.startVideo('2hotCutscene');
-			// });
 		}
 	}
 
-	// [
-	// 	61980.011,
-	// 	[
-	// 		[
-	// 			"Change Character",
-	// 			"dad",
-	// 			"tankman-bloody"
-	// 		]
-	// 	]
-	// ],
 	override function beatHit()
 	{
 		super.beatHit();
@@ -112,11 +101,7 @@ class TankErect extends BaseStage
 			applyShader(boyfriend, boyfriend.curCharacter);
 			applyShader(gf, gf.curCharacter);
 			applyShader(dad, dad.curCharacter);
-			if (PicoCapableStage.instance?.abot != null){
-				applyAbotShader(PicoCapableStage.instance.abot.speaker);
-				applyShader(PicoCapableStage.instance.abot.bg,"");
-				applyAbotShader(PicoCapableStage.instance.abot.eyes);
-			}
+			
 		}
 		if (!VsliceOptions.LOW_QUALITY)
 		{

@@ -1246,6 +1246,7 @@ class PlayState extends MusicBeatState
 				#end
 			 */
 			video.setGraphicSize(FlxG.width);
+			video.bitmap.volume = 90;
 			video.updateHitbox();
 			video.screenCenter();
 		});
