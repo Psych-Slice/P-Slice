@@ -1443,7 +1443,7 @@ class FreeplayState extends MusicBeatSubstate
 			touchPad.alpha = 0;
 			#if LEGACY_PSYCH
 			FlxTween.tween(touchPad, {alpha: ClientPrefs.controlsAlpha}, 0.8, {ease: FlxEase.backIn});
-			#esle
+			#else
 			FlxTween.tween(touchPad, {alpha: ClientPrefs.data.controlsAlpha}, 0.8, {ease: FlxEase.backIn});
 			#end
 			#end

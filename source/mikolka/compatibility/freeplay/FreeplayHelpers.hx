@@ -64,7 +64,7 @@ class FreeplayHelpers
 			diffId = 0;
 		}
 
-		var songLowercase:String = Paths.formatToSongPath(cap.songId);
+		var songLowercase:String = Paths.formatToSongPath(cap.getNativeSongId());
 		var poop:String = Highscore.formatSong(songLowercase, diffId); // TODO //currentDifficulty);
 		/*#if MODS_ALLOWED
 			if(!FileSystem.exists(Paths.modsJson(songLowercase + '/' + poop)) && !FileSystem.exists(Paths.json(songLowercase + '/' + poop))) {

@@ -19,6 +19,7 @@ import flixel.util.FlxTimer;
 import lime.net.curl.CURLCode;
 import flixel.graphics.FlxGraphic;
 import WeekData;
+using mikolka.funkin.custom.FunkinTools;
 
 using StringTools;
 
@@ -342,13 +343,17 @@ class StoryMenuState extends MusicBeatState
 				songArray.push(leWeek[i][0]);
 			}
 
+			var diffic = CoolUtil.getDifficultyFilePath(curDifficulty);
+			if(diffic == null) diffic = '';
+
 			// Nevermind that's stupid lmao
-			PlayState.storyPlaylist = songArray;
+			     //? We load erect songs (because yes)
+				 if(diffic == "-erect" || diffic == "-nightmare") PlayState.storyPlaylist = songArray.convertToErectVariants();
+				 else PlayState.storyPlaylist = songArray;
 			PlayState.isStoryMode = true;
 			selectedWeek = true;
 
-			var diffic = CoolUtil.getDifficultyFilePath(curDifficulty);
-			if(diffic == null) diffic = '';
+			
 
 			PlayState.storyDifficulty = curDifficulty;
 			PlayState.storyDifficultyColor = CoolUtil.dominantColor(sprDifficulty);
