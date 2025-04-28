@@ -953,6 +953,7 @@ function loadMetadata() {
 	characterName.text = songMetadata.freeplayCharacter;
 	txt_altInstSong.text = songMetadata.altInstrumentalSongs;
 	chk_allowNew.checked = songMetadata.allowNewTag;
+	chk_allowErect.checked = songMetadata.allowErectVariants;
 	albumName.text = songMetadata.albumId;
 }
 
@@ -963,6 +964,7 @@ var ratingInput:FlxUINumericStepper;
 	var albumName:FlxUIInputText;
 	var txt_altInstSong:FlxUIInputText;
 	var chk_allowNew:FlxUICheckBox;
+	var chk_allowErect:FlxUICheckBox;
 	var exportMetadataBtn:FlxButton;
 	var maxTime:Float = 0.0;
 	function addMetadataTab()
@@ -976,6 +978,7 @@ var ratingInput:FlxUINumericStepper;
 		characterName = new FlxUIInputText(180,70,100,"",8);
 		albumName = new FlxUIInputText(180,120,100,"",8);
 		chk_allowNew = new FlxUICheckBox(180,30,null,null,"Show \"new\" tag");
+		chk_allowErect = new FlxUICheckBox(180,200,null,null,"Has erect variant");
 		txt_altInstSong = new FlxUIInputText(20,160,250,"",8);
 
 		tab_group.add(new FlxText(ratingInput.x, ratingInput.y - 15, 80, 'Rating:'));
@@ -1003,6 +1006,7 @@ var ratingInput:FlxUINumericStepper;
 		blockPressWhileTypingOn.push(txt_altInstSong);
 		
 		tab_group.add(chk_allowNew);
+		tab_group.add(chk_allowErect);
 		tab_group.add(exportMetadataBtn);
 
 		UI_box.addGroup(tab_group);
@@ -1018,6 +1022,7 @@ var ratingInput:FlxUINumericStepper;
 		meta.altInstrumentalSongs = txt_altInstSong.text;
 		meta.freeplayCharacter = characterName.text;
 		meta.allowNewTag = chk_allowNew.checked;
+		meta.allowErectVariants = chk_allowErect.checked;
 		meta.freeplaySongLength = FlxG.sound.music.length/1000;
 
 		var data:String = haxe.Json.stringify(meta, "\t");

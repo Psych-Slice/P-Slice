@@ -78,6 +78,20 @@
       "offsets": [33, -3]
     },
     {
+      "anim": "hey",
+      "loop": false,
+	  "fps": 24,
+      "name": "Pico HEY!!0",
+      "offsets": [0, 0]
+    },
+    {
+      "anim": "cheer",
+      "loop": false,
+	  "fps": 24,
+      "name": "Pico YEAH cheer0",
+      "offsets": [0, 0]
+    },
+    {
       "anim": "shit",
       "loop": false,
 	  "fps": 24,
