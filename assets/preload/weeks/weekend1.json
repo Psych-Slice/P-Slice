@@ -15,7 +15,7 @@
 	"weekName": "Weekend 1",
 	"startUnlocked": true,
 
-	"hideStoryMode": false,
+	"hideStoryMode": true,
 	"hideFreeplay": false,
 	"difficulties": "Erect,Nightmare"
 }

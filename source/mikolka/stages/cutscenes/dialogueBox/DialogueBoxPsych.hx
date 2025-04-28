@@ -342,7 +342,12 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		}
 		skipText.visible = false;
 		FlxG.sound.music.fadeOut(1, 0, (_) -> FlxG.sound.music.stop());
-		PlayState.instance.inCutscene = false;
+		#if LEGACY_PSYCH
+		var game = PlayState.instance;
+		game.camGame.follow(game.camFollowPos, LOCKON, 1);
+		PlayState.seenCutscene = true;
+		game.psychDialogue = null;
+		#end
 	}
 
 	var lastCharacter:Int = -1;
