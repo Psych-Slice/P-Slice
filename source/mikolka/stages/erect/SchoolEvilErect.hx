@@ -1,5 +1,6 @@
 package mikolka.stages.erect;
 
+import shaders.DropShadowShader;
 import shaders.WiggleEffectRuntime;
 import mikolka.stages.cutscenes.SchoolDoof;
 import flixel.addons.effects.FlxTrail;
@@ -62,6 +63,13 @@ class SchoolEvilErect extends BaseStage
 			bg.shader = wiggle;
 		}
 		addBehindDad(trail);
+		if (VsliceOptions.SHADERS)
+			{
+				applyShader(boyfriend, boyfriend.curCharacter);
+				applyShader(gf, gf.curCharacter);
+				applyShader(dad, dad.curCharacter);
+				
+			}
 	}
 
 	override function update(elapsed:Float)
@@ -112,4 +120,99 @@ class SchoolEvilErect extends BaseStage
 				}
 		}
 	}
+	function applyShader(sprite:FlxSprite, char_name:String)
+		{
+			var rim = new DropShadowShader();
+			rim.setAdjustColor(-66, -10, 24, -23);
+			rim.color = 0xFF641B1B;
+			rim.antialiasAmt = 0;
+			rim.attachedSprite = sprite;
+			rim.distance = 5;
+			switch (char_name)
+			{
+				case "bf-pixel":
+					{
+						rim.angle = 90;
+						sprite.shader = rim;
+	
+						// rim.loadAltMask('assets/week6/images/weeb/erect/masks/bfPixel_mask.png');
+						rim.altMaskImage = Paths.image("weeb/erect/masks/bfPixel_mask").bitmap;
+						rim.maskThreshold = 1;
+						rim.useAltMask = true;
+	
+						sprite.animation.callback = function(anim, frame, index)
+						{
+							rim.updateFrameInfo(sprite.frame);
+						};
+					}
+				case "pico-pixel":
+					{
+						rim.angle = 90;
+						sprite.shader = rim;
+	
+						// rim.loadAltMask('assets/week6/images/weeb/erect/masks/bfPixel_mask.png');
+						rim.altMaskImage = Paths.image("weeb/erect/masks/picoPixel_mask").bitmap;
+						rim.maskThreshold = 1;
+						rim.useAltMask = true;
+	
+						sprite.animation.callback = function(anim, frame, index)
+						{
+							rim.updateFrameInfo(sprite.frame);
+						};
+					}
+				case "gf-pixel":
+					{
+						rim.setAdjustColor(-42, -10, 5, -25);
+						rim.angle = 90;
+						sprite.shader = rim;
+						rim.distance = 3;
+						rim.threshold = 0.3;
+						rim.altMaskImage = Paths.image("weeb/erect/masks/gfPixel_mask").bitmap;
+						rim.maskThreshold = 1;
+						rim.useAltMask = true;
+	
+						sprite.animation.callback = function(anim, frame, index)
+						{
+							rim.updateFrameInfo(sprite.frame);
+						};
+					}
+				case "nene-pixel":
+					{
+						rim.setAdjustColor(-42, -10, 5, -25);
+						rim.angle = 90;
+						sprite.shader = rim;
+						rim.distance = 3;
+						rim.threshold = 0.3;
+						rim.altMaskImage = Paths.image("weeb/erect/masks/nenePixel_mask").bitmap;
+						rim.maskThreshold = 1;
+						rim.useAltMask = true;
+						sprite.animation.callback = function(anim, frame, index)
+						{
+							rim.updateFrameInfo(sprite.frame);
+						};
+					}
+	
+				case "spirit":
+					{
+						rim.angle = 90;
+						sprite.shader = rim;
+						rim.setAdjustColor(0, -10, 44, -13);
+						rim.useAltMask = false;
+	
+						sprite.animation.callback = function(anim, frame, index)
+						{
+							rim.updateFrameInfo(sprite.frame);
+						};
+					}
+				default:
+					{
+						rim.angle = 90;
+						sprite.shader = rim;
+						sprite.animation.callback = function(anim, frame, index)
+						{
+							rim.updateFrameInfo(sprite.frame);
+						};
+					}
+			}
+		}
 }

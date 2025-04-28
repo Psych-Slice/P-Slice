@@ -2826,6 +2826,7 @@ class PlayState extends MusicBeatState
 
 							var lastAlpha:Float = boyfriend.alpha;
 							boyfriend.alpha = 0.00001;
+							boyfriend.shader = null;
 							boyfriend = boyfriendMap.get(value2);
 							boyfriend.alpha = lastAlpha;
 							iconP1.changeIcon(boyfriend.healthIcon);
@@ -2843,6 +2844,7 @@ class PlayState extends MusicBeatState
 							var wasGf:Bool = dad.curCharacter.startsWith('gf');
 							var lastAlpha:Float = dad.alpha;
 							dad.alpha = 0.00001;
+							dad.shader = null;
 							dad = dadMap.get(value2);
 							if (!dad.curCharacter.startsWith('gf'))
 							{
@@ -2872,6 +2874,7 @@ class PlayState extends MusicBeatState
 
 								var lastAlpha:Float = gf.alpha;
 								gf.alpha = 0.00001;
+								gf.shader = null;
 								gf = gfMap.get(value2);
 								gf.alpha = lastAlpha;
 							}

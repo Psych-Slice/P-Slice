@@ -56,7 +56,6 @@ class TankErect extends BaseStage
 			PicoCapableStage.instance.onABotInit.addOnce( (pico) ->{
 			applyAbotShader(pico.abot.speaker);
 			applyShader(pico.abot.bg,"");
-			applyAbotShader(pico.abot.eyes);
 		});
 		if (songName == "stress-(pico-mix)")
 		{
@@ -162,14 +161,14 @@ class TankErect extends BaseStage
 		rim.color = 0xFFDFEF3C;
 		rim.threshold = 0.3;
 		rim.attachedSprite = sprite;
-		rim.distance = 5;
+		rim.distance = 15;
+		rim.strength = 1;
+		rim.angle = 90;
 		switch (char_name)
 		{
 			case "bf":
 				{
-					rim.angle = 90;
-					sprite.shader = rim;
-
+					rim.threshold = 0.1;
 					sprite.animation.callback = function(anim, frame, index)
 					{
 						rim.updateFrameInfo(sprite.frame);
@@ -178,8 +177,6 @@ class TankErect extends BaseStage
 			case "gf-tankmen":
 				{
 					rim.setAdjustColor(-42, -10, 5, -25);
-					rim.angle = 90;
-					sprite.shader = rim;
 					rim.distance = 3;
 					rim.threshold = 0.3;
 					rim.altMaskImage = Paths.image("erect/masks/gfTankmen_mask").bitmap;
@@ -194,11 +191,10 @@ class TankErect extends BaseStage
 
 			case "tankman-bloody":
 				{
-					//rim.angle = 135;
-					sprite.shader = rim;
+					rim.angle = 135;
 					rim.altMaskImage = Paths.image("erect/masks/tankmanCaptainBloody_mask").bitmap;
-					rim.threshold = 0.3;
 					rim.maskThreshold = 1;
+					rim.threshold = 0.3;
 					rim.useAltMask = true;
 
 					sprite.animation.callback = function(anim, frame, index)
@@ -209,8 +205,6 @@ class TankErect extends BaseStage
 			case "tankman":
 				{
 					rim.angle = 135;
-					sprite.shader = rim;
-					rim.threshold = 0.3;
 					rim.maskThreshold = 1;
 					rim.useAltMask = false;
 
@@ -223,7 +217,6 @@ class TankErect extends BaseStage
 				{
 					rim.threshold = 0.3;
 					rim.angle = 90;
-					sprite.shader = rim;
 					sprite.animation.callback = function(anim, frame, index)
 					{
 						rim.updateFrameInfo(sprite.frame);
@@ -232,13 +225,13 @@ class TankErect extends BaseStage
 			default:
 				{
 					rim.angle = 90;
-					sprite.shader = rim;
 					sprite.animation.callback = function(anim, frame, index)
 					{
 						rim.updateFrameInfo(sprite.frame);
 					};
 				}
 		}
+		sprite.shader = rim;
 	}
 
 }
