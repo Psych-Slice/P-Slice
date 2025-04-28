@@ -14,6 +14,17 @@
 		{
 			"loop": false,
 			"offsets": [
+				59,
+				-20
+			],
+			"anim": "cheer",
+			"fps": 24,
+			"name": "spooky kids YEAH!!",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
 				130,
 				-10
 			],
