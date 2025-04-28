@@ -18,7 +18,7 @@ class SchoolErect extends BaseStage
 
 	override function create()
 	{
-
+		#if LEGACY_PSYCH PlayState.SONG.splashSkin = "pixelNoteSplash"; #end
 		var repositionShit = -200;
 
 		var bgSky:BGSprite = new BGSprite('weeb/erect/weebSky', repositionShit + 38, -78, 0.2, 0.2);
