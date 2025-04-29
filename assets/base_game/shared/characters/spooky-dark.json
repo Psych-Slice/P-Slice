@@ -14,6 +14,17 @@
 		{
 			"loop": false,
 			"offsets": [
+				0,
+				0
+			],
+			"anim": "hey",
+			"fps": 24,
+			"name": "cheer",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
 				130,
 				-10
 			],

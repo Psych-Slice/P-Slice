@@ -2,7 +2,9 @@ package mikolka.stages.cutscenes;
 
 import mikolka.compatibility.VsliceOptions;
 import mikolka.stages.standard.Tank;
+#if !LEGACY_PSYCH
 import cutscenes.CutsceneHandler;
+#end
 
 class TankStageScenes {
     public function new(host:Tank) {

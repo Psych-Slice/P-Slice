@@ -1,11 +1,13 @@
-package cutscenes.styles;
+package mikolka.stages.cutscenes.dialogueBox.styles;
 
+import mikolka.stages.cutscenes.dialogueBox.styles.DialogueStyle.DialogueBoxState;
+import mikolka.stages.cutscenes.dialogueBox.styles.DialogueStyle.DialogueBoxPosition;
 import flixel.FlxSprite;
-import backend.Paths;
 import flixel.FlxG;
-import cutscenes.styles.DialogueStyle;
 import flixel.addons.text.FlxTypeText;
+#if !LEGACY_PSYCH
 import objects.TypedAlphabet;
+#end
 
 class PixelDialogueStyle extends DialogueStyle {
 	var swagDialogue:FlxTypeText;
@@ -47,9 +49,16 @@ class PixelDialogueStyle extends DialogueStyle {
 	}
 	override function advanceBoxLine(callback:() -> Void) {
 		box.animation.play("normalClick");
+		#if LEGACY_PSYCH
+		box.animation.finishCallback = (anim) ->{
+			callback();
+			box.animation.finishCallback = null;
+		}
+		#else
 		box.animation.onFinish.addOnce(anim ->{
 			callback();
 		});
+		#end
 	}
 	public function _playBoxAnim(pos:DialogueBoxPosition,style:DialogueBoxState,boxType:String) {
 		super.playBoxAnim(pos,style,boxType);

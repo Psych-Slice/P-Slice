@@ -3,15 +3,15 @@ package mikolka.stages.erect;
 import mikolka.vslice.StickerSubState;
 import mikolka.stages.objects.TankmenBG;
 #if !LEGACY_PSYCH
+import cutscenes.CutsceneHandler;
+import objects.Character;
 import substates.GameOverSubstate;
 #end
 import mikolka.stages.cutscenes.VideoCutscene;
 import mikolka.stages.cutscenes.PicoTankman;
 import openfl.filters.ShaderFilter;
-import cutscenes.CutsceneHandler;
 import shaders.DropShadowScreenspace;
 import mikolka.stages.objects.PicoCapableStage;
-import objects.Character;
 import mikolka.compatibility.VsliceOptions;
 import shaders.DropShadowShader;
 
@@ -23,7 +23,12 @@ class TankErect extends BaseStage
 	var tankmanRim:DropShadowShader;
 	var tankmanRun:FlxTypedGroup<TankmenBG>;
 	var cutscene:PicoTankman;
+	var pico_stage:PicoCapableStage;
 
+	public function new() {
+		if (songName == "stress-(pico-mix)") pico_stage = new PicoCapableStage(true);
+		super();
+	}
 	override function create()
 	{
 		super.create();
@@ -47,9 +52,13 @@ class TankErect extends BaseStage
 
 		tankmanRun = new FlxTypedGroup<TankmenBG>();
 		add(tankmanRun);
+		if (PicoCapableStage.instance != null)
+			PicoCapableStage.instance.onABotInit.addOnce( (pico) ->{
+			applyAbotShader(pico.abot.speaker);
+			applyShader(pico.abot.bg,"");
+		});
 		if (songName == "stress-(pico-mix)")
 		{
-			var pico_stage = new PicoCapableStage(true);
 			pico_stage.create();
 			game.stages.remove(pico_stage);
 			game.stages.insert(1,pico_stage);
@@ -57,30 +66,9 @@ class TankErect extends BaseStage
 			this.cutscene = new PicoTankman(this);
 			if(!seenCutscene) setStartCallback(VideoCutscene.playVideo.bind('stressPicoCutscene',startCountdown));
 			setEndCallback(cutscene.playCutscene);
-			
-			// setEndCallback(function()
-			// {
-			// 	game.endingSong = true;
-			// 	inCutscene = true;
-			// 	canPause = false;
-			// 	FlxTransitionableState.skipNextTransIn = true;
-			// 	FlxG.camera.visible = false;
-			// 	camHUD.visible = false;
-			// 	game.startVideo('2hotCutscene');
-			// });
 		}
 	}
 
-	// [
-	// 	61980.011,
-	// 	[
-	// 		[
-	// 			"Change Character",
-	// 			"dad",
-	// 			"tankman-bloody"
-	// 		]
-	// 	]
-	// ],
 	override function beatHit()
 	{
 		super.beatHit();
@@ -91,14 +79,6 @@ class TankErect extends BaseStage
 		}
 		if (FlxG.random.bool(2))
 			sniper.animation.play('sip', true);
-		if (songName == "stress-(pico-mix)")
-		{
-			// We gonna have some events here
-			if(curBeat == 184){
-				game.triggerEvent("","dad","tankman-bloody",0);
-				if (VsliceOptions.SHADERS) applyShader(dad, dad.curCharacter);
-			}
-		}
 	}
 	override function eventCalled(eventName:String, value1:String, value2:String, flValue1:Null<Float>, flValue2:Null<Float>, strumTime:Float) {
 		if(eventName == "Change Character" && VsliceOptions.SHADERS){
@@ -120,11 +100,7 @@ class TankErect extends BaseStage
 			applyShader(boyfriend, boyfriend.curCharacter);
 			applyShader(gf, gf.curCharacter);
 			applyShader(dad, dad.curCharacter);
-			if (PicoCapableStage.instance?.abot != null){
-				applyAbotShader(PicoCapableStage.instance.abot.speaker);
-				applyShader(PicoCapableStage.instance.abot.bg,"");
-				applyAbotShader(PicoCapableStage.instance.abot.eyes);
-			}
+			
 		}
 		if (!VsliceOptions.LOW_QUALITY)
 		{
@@ -185,14 +161,14 @@ class TankErect extends BaseStage
 		rim.color = 0xFFDFEF3C;
 		rim.threshold = 0.3;
 		rim.attachedSprite = sprite;
-		rim.distance = 5;
+		rim.distance = 15;
+		rim.strength = 1;
+		rim.angle = 90;
 		switch (char_name)
 		{
 			case "bf":
 				{
-					rim.angle = 90;
-					sprite.shader = rim;
-
+					rim.threshold = 0.1;
 					sprite.animation.callback = function(anim, frame, index)
 					{
 						rim.updateFrameInfo(sprite.frame);
@@ -201,8 +177,6 @@ class TankErect extends BaseStage
 			case "gf-tankmen":
 				{
 					rim.setAdjustColor(-42, -10, 5, -25);
-					rim.angle = 90;
-					sprite.shader = rim;
 					rim.distance = 3;
 					rim.threshold = 0.3;
 					rim.altMaskImage = Paths.image("erect/masks/gfTankmen_mask").bitmap;
@@ -217,11 +191,10 @@ class TankErect extends BaseStage
 
 			case "tankman-bloody":
 				{
-					//rim.angle = 135;
-					sprite.shader = rim;
+					rim.angle = 135;
 					rim.altMaskImage = Paths.image("erect/masks/tankmanCaptainBloody_mask").bitmap;
-					rim.threshold = 0.3;
 					rim.maskThreshold = 1;
+					rim.threshold = 0.3;
 					rim.useAltMask = true;
 
 					sprite.animation.callback = function(anim, frame, index)
@@ -232,8 +205,6 @@ class TankErect extends BaseStage
 			case "tankman":
 				{
 					rim.angle = 135;
-					sprite.shader = rim;
-					rim.threshold = 0.3;
 					rim.maskThreshold = 1;
 					rim.useAltMask = false;
 
@@ -246,7 +217,6 @@ class TankErect extends BaseStage
 				{
 					rim.threshold = 0.3;
 					rim.angle = 90;
-					sprite.shader = rim;
 					sprite.animation.callback = function(anim, frame, index)
 					{
 						rim.updateFrameInfo(sprite.frame);
@@ -255,13 +225,13 @@ class TankErect extends BaseStage
 			default:
 				{
 					rim.angle = 90;
-					sprite.shader = rim;
 					sprite.animation.callback = function(anim, frame, index)
 					{
 						rim.updateFrameInfo(sprite.frame);
 					};
 				}
 		}
+		sprite.shader = rim;
 	}
 
 }

@@ -111,12 +111,20 @@ class CapsuleOptionsMenu extends FlxSpriteGroup
 
   public function close():Void
   {
+    #if LEGACY_PSYCH
+    capsuleMenuBG.animation.play('open', true, true);
+    FlxTimer.wait(0.2,() ->{
+      parent.cleanupCapsuleOptionsMenu();
+      queueDestroy = true;
+    });
+    #else
     // Play in reverse.
     capsuleMenuBG.animation.play('open', true, true);
     capsuleMenuBG.animation.finishCallback = function(_) {
       parent.cleanupCapsuleOptionsMenu();
       queueDestroy = true;
     };
+    #end
   }
 
   /**

@@ -1274,7 +1274,11 @@ class FreeplayState extends MusicBeatSubstate
 		
 		controls.isInSubstate = true;
 		#if TOUCH_CONTROLS_ALLOWED
+		#if LEGACY_PSYCH
+		MusicBeatSubstate.instance = this;
+		#else
 		backend.MusicBeatSubstate.instance = this;
+		#end
 		persistentUpdate = true;
 		removeTouchPad();
 		addTouchPad('UP_DOWN', 'A_B_C_X_Y_F');
@@ -1441,7 +1445,11 @@ class FreeplayState extends MusicBeatSubstate
 			}
 			#if TOUCH_CONTROLS_ALLOWED
 			touchPad.alpha = 0;
+			#if LEGACY_PSYCH
+			FlxTween.tween(touchPad, {alpha: ClientPrefs.controlsAlpha}, 0.8, {ease: FlxEase.backIn});
+			#else
 			FlxTween.tween(touchPad, {alpha: ClientPrefs.data.controlsAlpha}, 0.8, {ease: FlxEase.backIn});
+			#end
 			#end
 		}
 	}

@@ -1,14 +1,14 @@
-package cutscenes;
+package mikolka.stages.cutscenes.dialogueBox;
 
-import cutscenes.styles.DialogueStyle.DialogueBoxState;
-import cutscenes.styles.DialogueStyle.DialogueBoxPosition;
-import cutscenes.styles.*;
+#if !LEGACY_PSYCH
 import substates.PauseSubState;
+#end
+import mikolka.stages.cutscenes.dialogueBox.styles.*;
+import mikolka.stages.cutscenes.dialogueBox.styles.DialogueStyle;
+import mikolka.stages.cutscenes.dialogueBox.styles.DialogueStyle.DialogueBoxState;
+import mikolka.stages.cutscenes.dialogueBox.styles.DialogueStyle.DialogueBoxPosition;
+import cutscenes.styles.*;
 import haxe.Json;
-import openfl.utils.Assets;
-
-import objects.TypedAlphabet;
-import cutscenes.DialogueCharacter;
 
 typedef DialogueFile = {
 	var dialogue:Array<DialogueLine>;
@@ -98,7 +98,8 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		daText = style.initText();
 		add(daText);
 
-		skipText = new FlxText(FlxG.width - 320, FlxG.height - 30, 300, Language.getPhrase('dialogue_skip', 'Press BACK to Skip'), 16);
+		var text = #if LEGACY_PSYCH 'Press BACK to Skip' #else Language.getPhrase('dialogue_skip', 'Press BACK to Skip') #end;
+		skipText = new FlxText(FlxG.width - 320, FlxG.height - 30, 300, text, 16);
 		skipText.setFormat(null, 16, FlxColor.WHITE, RIGHT, OUTLINE_FAST, FlxColor.BLACK);
 		skipText.borderSize = 2;
 		add(skipText);
@@ -191,8 +192,11 @@ class DialogueBoxPsych extends FlxSpriteGroup
 						FlxG.state.persistentUpdate = false;
 						FlxG.state.persistentDraw = true;
 						FlxG.sound.music.pause();
-			
+						#if LEGACY_PSYCH
+						var pauseState = new PauseSubState(0,0,true,DIALOGUE);
+						#else
 						var pauseState = new PauseSubState(true,DIALOGUE);
+						#end
 						pauseState.cutscene_allowSkipping = true;
 						pauseState.cutscene_hardReset = false;
 						game.openSubState(pauseState);
@@ -341,6 +345,12 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		}
 		skipText.visible = false;
 		FlxG.sound.music.fadeOut(1, 0, (_) -> FlxG.sound.music.stop());
+		#if LEGACY_PSYCH
+		var game = PlayState.instance;
+		game.camGame.follow(game.camFollowPos, LOCKON, 1);
+		PlayState.seenCutscene = true;
+		game.psychDialogue = null;
+		#end
 	}
 
 	var lastCharacter:Int = -1;
