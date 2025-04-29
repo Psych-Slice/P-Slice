@@ -1,6 +1,6 @@
 package states;
 
-import cutscenes.DialogueBoxPsych;
+
 import mikolka.compatibility.VsliceOptions;
 import mikolka.stages.EventLoader;
 import mikolka.vslice.StickerSubState;
@@ -23,8 +23,6 @@ import lime.utils.Assets;
 import openfl.utils.Assets as OpenFlAssets;
 import openfl.events.KeyboardEvent;
 import haxe.Json;
-
-import cutscenes.DialogueBoxPsych;
 
 import states.StoryMenuState;
 

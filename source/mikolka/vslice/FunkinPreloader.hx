@@ -1,6 +1,5 @@
 package mikolka.vslice;
 
-import flixel.math.FlxRandom;
 #if sys import mikolka.vslice.components.crash.Logger; #end
 import openfl.events.MouseEvent;
 import flash.display.Bitmap;
@@ -164,7 +163,7 @@ class FunkinPreloader extends FlxBasePreloader
       bmp.x = (this._width - bmp.width) / 2;
       bmp.y = (this._height - bmp.height) / 2;
     });
-    if(FlxG.random.bool(25)) addChild(logo);
+    // addChild(logo);
 
     var amountOfPieces:Int = 16;
     progressBarPieces = [];

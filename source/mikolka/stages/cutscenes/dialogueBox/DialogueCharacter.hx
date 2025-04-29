@@ -1,5 +1,7 @@
-package cutscenes;
+package mikolka.stages.cutscenes.dialogueBox;
 
+import mikolka.compatibility.VsliceOptions;
+import mikolka.compatibility.funkin.FunkinPath;
 import haxe.Json;
 import lime.utils.Assets;
 
@@ -46,7 +48,7 @@ class DialogueCharacter extends FlxSprite
 		frames = Paths.getSparrowAtlas('dialogue/' + jsonFile.image);
 		reloadAnimations();
 
-		antialiasing = ClientPrefs.data.antialiasing;
+		antialiasing = VsliceOptions.ANTIALIASING;
 		if(jsonFile.no_antialiasing == true) antialiasing = false;
 	}
 
@@ -57,22 +59,23 @@ class DialogueCharacter extends FlxSprite
 		#if MODS_ALLOWED
 		var path:String = Paths.modFolders(characterPath);
 		if (!FileSystem.exists(path)) {
-			path = Paths.getSharedPath(characterPath);
+			path = FunkinPath.getPath(characterPath,true);
 		}
 
 		if(!FileSystem.exists(path)) {
-			path = Paths.getSharedPath('images/dialogue/' + DEFAULT_CHARACTER + '.json');
+			path = FunkinPath.getPath('images/dialogue/' + DEFAULT_CHARACTER + '.json',true);
 		}
 		rawJson = File.getContent(path);
 
-		#else
-		var path:String = Paths.getSharedPath(characterPath);
+		#end
+		#if OPENFL_LOOKUP
+		var path:String = FunkinPath.getPath(characterPath,true);
 		rawJson = Assets.getText(path);
 		#end
 		
 		jsonFile = cast Json.parse(rawJson);
 		
-		antialiasing = ClientPrefs.data.antialiasing;
+		antialiasing = VsliceOptions.ANTIALIASING;
 		if(jsonFile.no_antialiasing == true) antialiasing = false;
 	}
 

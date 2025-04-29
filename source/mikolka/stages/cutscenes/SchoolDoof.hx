@@ -1,8 +1,9 @@
 package mikolka.stages.cutscenes;
-
+#if !LEGACY_PSYCH
 import cutscenes.CutsceneHandler;
-import cutscenes.DialogueBoxPsych;
-import cutscenes.DialogueBoxPsych.DialogueFile;
+#end
+import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych;
+import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych.DialogueFile;
 
 class SchoolDoof
 {
@@ -120,15 +121,14 @@ class SchoolDoof
             FlxG.camera.fade(FlxColor.WHITE, 0.01, true,null, true);
 			doSimpleDialogue();
 		};
-		#if LEGACY_PSYCH
-		cutscene.finishCallback2 = function()
-		#else
+		#if !LEGACY_PSYCH
 		cutscene.skipCallback = function()
-		#end
-		{
-            game.camHUD.visible = true;
-            FlxG.camera.fade(FlxColor.WHITE, 0.01, true,null, true);
-			game.startCountdown();
-		};
+			{
+				
+				game.camHUD.visible = true;
+				FlxG.camera.fade(FlxColor.WHITE, 0.01, true,null, true);
+				game.startCountdown();
+			};
+			#end
 	}
 }

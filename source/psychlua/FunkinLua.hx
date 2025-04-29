@@ -16,7 +16,7 @@ import flixel.FlxState;
 import flixel.addons.display.FlxRuntimeShader;
 #end
 
-import cutscenes.DialogueBoxPsych;
+
 
 import objects.StrumNote;
 import objects.Note;

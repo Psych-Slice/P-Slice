@@ -1,8 +1,8 @@
 package mikolka.stages.standard;
 
 import mikolka.stages.cutscenes.SchoolDoof;
-import cutscenes.DialogueBoxPsych;
-import cutscenes.DialogueBoxPsych.DialogueFile;
+import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych;
+import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych.DialogueFile;
 import mikolka.compatibility.VsliceOptions;
 
 #if !LEGACY_PSYCH
@@ -18,6 +18,7 @@ class School extends BaseStage
 	{
 		var _song = PlayState.SONG;
 		#if LEGACY_PSYCH
+		PlayState.SONG.splashSkin = "pixelNoteSplash";
 		GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pixel';
 		GameOverSubstate.loopSoundName = 'gameOver-pixel';
 		GameOverSubstate.endSoundName = 'gameOverEnd-pixel';

@@ -19,6 +19,7 @@ class SchoolEvil extends BaseStage
 	{
 		var _song = PlayState.SONG;
 		#if LEGACY_PSYCH
+		PlayState.SONG.splashSkin = "pixelNoteSplash";
 		GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pixel';
 		 GameOverSubstate.loopSoundName = 'gameOver-pixel';
 		 GameOverSubstate.endSoundName = 'gameOverEnd-pixel';

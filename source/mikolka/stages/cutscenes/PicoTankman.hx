@@ -1,9 +1,11 @@
 package mikolka.stages.cutscenes;
 
 import openfl.filters.ShaderFilter;
-import cutscenes.CutsceneHandler;
 import shaders.DropShadowScreenspace;
 import mikolka.stages.erect.TankErect;
+#if !LEGACY_PSYCH
+import cutscenes.CutsceneHandler;
+#end
 
 class PicoTankman {
     public function new(stage:TankErect) {
@@ -68,8 +70,14 @@ class PicoTankman {
 		});
 		var rimlightCamera = new FlxCamera();
     	rimlightCamera.bgColor = 0x00FFFFFF; // Show the game scene behind the camera.
+		
+		#if LEGACY_PSYCH
+		rimlightCamera.setFilters([shaderCamera]);
+    	FlxG.cameras.list.insert(FlxG.cameras.list.indexOf(game.camHUD),rimlightCamera);
+		#else
 		rimlightCamera.filters = [shaderCamera];
     	FlxG.cameras.insert(rimlightCamera, FlxG.cameras.list.indexOf(game.camHUD), false);
+		#end
 		@:privateAccess{
 			stage.applyAbotShader(tankmanEnding);
 			game.canPause = false;

@@ -1,5 +1,6 @@
 package mikolka.stages.objects;
 
+import mikolka.compatibility.ModsHelper;
 #if funkin.vis
 import funkin.vis.dsp.SpectralAnalyzer;
 #end
@@ -124,7 +125,7 @@ class ABotPixel extends FlxSpriteGroup
 	public function initAnalyzer()
 	{
 		@:privateAccess
-		analyzer = new SpectralAnalyzer(snd._channel.__audioSource, 7, 0.1, 40);
+		analyzer = new SpectralAnalyzer(ModsHelper.getSoundChannel(snd), 7, 0.1, 40);
 	
 		#if !web
 		// On native it uses FFT stuff that isn't as optimized as the direct browser stuff we use on HTML5

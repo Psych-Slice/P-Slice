@@ -1,5 +1,7 @@
 package states.editors;
 
+import mikolka.stages.cutscenes.dialogueBox.DialogueCharacter.DialogueCharacterFile;
+import mikolka.stages.cutscenes.dialogueBox.DialogueCharacter.DialogueAnimArray;
 import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
@@ -8,9 +10,6 @@ import haxe.Json;
 import lime.system.Clipboard;
 
 import objects.TypedAlphabet;
-
-import cutscenes.DialogueBoxPsych;
-import cutscenes.DialogueCharacter;
 
 import states.editors.content.Prompt;
 
