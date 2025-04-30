@@ -157,7 +157,11 @@ class SchoolErect extends BaseStage
 		applyShader(gf,gf.curCharacter);
 		applyShader(dad,dad.curCharacter);
 
-		if(PicoCapableStage.instance?.abotPixel != null)applyShader(PicoCapableStage.instance.abotPixel.speaker,"");
+		if(PicoCapableStage.instance?.abotPixel != null){
+			applyShader(PicoCapableStage.instance.abotPixel.speakerTop,"speakerTop");
+			applyShader(PicoCapableStage.instance.abotPixel.speaker,"");
+			applyShader(PicoCapableStage.instance.abotPixel.eyes,"");
+		}
 		}
 		camFollow_set(800, 500);
 		camGame.snapToTarget();
@@ -248,9 +252,23 @@ class SchoolErect extends BaseStage
 						rim.updateFrameInfo(sprite.frame);
 					};
 				}
+			case "speakerTop":
+				{
+					rim.angle = 90;
+					sprite.shader = rim;
+					rim.altMaskImage = Paths.image("weeb/erect/masks/senpai_mask").bitmap;
+					rim.maskThreshold = 1;
+					rim.useAltMask = true;
+
+					sprite.animation.callback = function(anim, frame, index)
+					{
+						rim.updateFrameInfo(sprite.frame);
+					};
+				}
 			default:
 				{
 					rim.angle = 90;
+					rim.threshold = 0.1;
 					sprite.shader = rim;
 					sprite.animation.callback = function(anim, frame, index)
 					{

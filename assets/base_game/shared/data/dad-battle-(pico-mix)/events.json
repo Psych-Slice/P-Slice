@@ -6,7 +6,7 @@
 				[
 					"Target Camera",
 					1,
-					"0,0,4,CLASSIC"
+					"200,80,4,CLASSIC"
 				]
 			]
 		],
@@ -66,7 +66,7 @@
 				[
 					"Target Camera",
 					1,
-					"0,0,4,CLASSIC"
+					"200,80,4,CLASSIC"
 				]
 			]
 		],
@@ -131,22 +131,32 @@
 			]
 		],
 		[
+			31333.3333333333,
+			[
+				[
+					"Play Animation",
+					"hey",
+					"boyfriend"
+				]
+			]
+		],
+		[
+			31666.6666666667,
+			[
+				[
+					"Play Animation",
+					"cheer",
+					"boyfriend"
+				]
+			]
+		],
+		[
 			31916.6666666667,
 			[
 				[
 					"Dadbattle Spotlight",
 					"1",
 					""
-				]
-			]
-		],
-		[
-			32000,
-			[
-				[
-					"Target Camera",
-					1,
-					"0,0,4,CLASSIC"
 				]
 			]
 		],
@@ -161,12 +171,22 @@
 			]
 		],
 		[
-			41000,
+			32000,
 			[
 				[
 					"Target Camera",
 					1,
 					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			41000,
+			[
+				[
+					"Target Camera",
+					1,
+					"200,80,4,CLASSIC"
 				]
 			]
 		],
@@ -306,7 +326,7 @@
 				[
 					"Target Camera",
 					1,
-					"0,0,4,CLASSIC"
+					"200,80,4,CLASSIC"
 				]
 			]
 		],
@@ -366,7 +386,7 @@
 				[
 					"Target Camera",
 					1,
-					"0,0,4,CLASSIC"
+					"200,80,4,CLASSIC"
 				]
 			]
 		],

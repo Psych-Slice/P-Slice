@@ -206,7 +206,7 @@
 				[
 					"Target Camera",
 					2,
-					"0,0,32,expoOut"
+					"-50,50,32,expoOut"
 				]
 			]
 		],
@@ -286,7 +286,7 @@
 				[
 					"Target Camera",
 					2,
-					"0,0,32,expoOut"
+					"-50,50,32,expoOut"
 				]
 			]
 		],
@@ -476,7 +476,7 @@
 				[
 					"Target Camera",
 					2,
-					"0,0,32,expoOut"
+					"-50,50,32,expoOut"
 				]
 			]
 		],
@@ -556,7 +556,7 @@
 				[
 					"Target Camera",
 					2,
-					"0,0,32,expoOut"
+					"-50,50,32,expoOut"
 				]
 			]
 		],
@@ -635,8 +635,18 @@
 			[
 				[
 					"Zoom Camera",
-					"64,0.75",
-					"sineInOut"
+					"32,0.9",
+					"expoOut"
+				]
+			]
+		],
+		[
+			109915.254237288,
+			[
+				[
+					"Target Camera",
+					2,
+					"0,0,64,expoOut"
 				]
 			]
 		],
