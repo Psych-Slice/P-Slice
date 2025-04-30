@@ -5,12 +5,12 @@ echo Installing dependencies...
 echo This might take a few moments depending on your internet speed.
 haxelib git hxcpp https://github.com/MobilePorting/hxcpp  --quiet
 haxelib git lime https://github.com/MobilePorting/lime --quiet 3e1de341e5aa043e934616f359e270733cf669e9
-haxelib install openfl  9.4.1 --quiet
-haxelib install flixel 6.0.0
-haxelib install flixel-addons 3.3.2 --quiet
-haxelib install flixel-tools 1.5.1 --quiet
-haxelib install hscript-iris 1.1.3 --quiet
-haxelib install tjson 1.4.0 --quiet
+haxelib install flixel 6.0.0 --quiet --skip-dependencies
+haxelib install openfl  9.4.1 --quiet --skip-dependencies
+haxelib install flixel-addons 3.3.2 --quiet --skip-dependencies
+haxelib install flixel-tools 1.5.1 --quiet --skip-dependencies
+haxelib install hscript-iris 1.1.3 --quiet 
+haxelib install tjson 1.4.0 --quiet 
 haxelib git flxanimate https://github.com/Psych-Slice/FlxAnimate.git 42f1b5d193b4345ca7d6933380ab3105985b44a3 --quiet
 haxelib git linc_luajit https://github.com/MobilePorting/linc_luajit --quiet
 haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc f9353b9edce10f4605d125dd1bda24ac36898bfb --quiet --skip-dependencies
