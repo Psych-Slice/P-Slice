@@ -702,7 +702,7 @@ class EditorPlayState extends MusicBeatSubstate
 
 		// more accurate hit time for the ratings?
 		var lastTime:Float = Conductor.songPosition;
-		if(Conductor.songPosition >= 0) Conductor.songPosition = FlxG.sound.music.time + Conductor.offset;
+		if(Conductor.songPosition >= 0) Conductor.songPosition = inst.time + Conductor.offset;
 
 		// obtain notes that the player can hit
 		var plrInputNotes:Array<Note> = notes.members.filter(function(n:Note)
