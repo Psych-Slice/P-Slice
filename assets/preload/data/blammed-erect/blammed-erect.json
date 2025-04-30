@@ -1,6 +1,6 @@
 {
 	"song": {
-		"player2": "tankman",
+		"player2": "pico",
 		"player1": "bf",
 		"offset": 0,
 		"notes": [
@@ -17,6 +17,121 @@
 			{
 				"sectionNotes": [],
 				"sectionBeats": 4,
+				"mustHitSection": true
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": true
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": false
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": false
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": true
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": true
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": false
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": false
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": false
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": false
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": true
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": true
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": true
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": true
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": true
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": false
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": false
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": false
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": true
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": true
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": true
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": true
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
+				"mustHitSection": true
+			},
+			{
+				"sectionNotes": [],
+				"sectionBeats": 4,
 				"mustHitSection": false
 			},
 			{
@@ -102,47 +217,12 @@
 			{
 				"sectionNotes": [],
 				"sectionBeats": 4,
-				"mustHitSection": true
-			},
-			{
-				"sectionNotes": [],
-				"sectionBeats": 4,
-				"mustHitSection": true
-			},
-			{
-				"sectionNotes": [],
-				"sectionBeats": 4,
 				"mustHitSection": false
 			},
 			{
 				"sectionNotes": [],
 				"sectionBeats": 4,
 				"mustHitSection": false
-			},
-			{
-				"sectionNotes": [],
-				"sectionBeats": 4,
-				"mustHitSection": false
-			},
-			{
-				"sectionNotes": [],
-				"sectionBeats": 4,
-				"mustHitSection": false
-			},
-			{
-				"sectionNotes": [],
-				"sectionBeats": 4,
-				"mustHitSection": true
-			},
-			{
-				"sectionNotes": [],
-				"sectionBeats": 4,
-				"mustHitSection": true
-			},
-			{
-				"sectionNotes": [],
-				"sectionBeats": 4,
-				"mustHitSection": true
 			},
 			{
 				"sectionNotes": [],
@@ -187,47 +267,12 @@
 			{
 				"sectionNotes": [],
 				"sectionBeats": 4,
-				"mustHitSection": false
-			},
-			{
-				"sectionNotes": [],
-				"sectionBeats": 4,
 				"mustHitSection": true
 			},
 			{
 				"sectionNotes": [],
 				"sectionBeats": 4,
 				"mustHitSection": true
-			},
-			{
-				"sectionNotes": [],
-				"sectionBeats": 4,
-				"mustHitSection": true
-			},
-			{
-				"sectionNotes": [],
-				"sectionBeats": 4,
-				"mustHitSection": true
-			},
-			{
-				"sectionNotes": [],
-				"sectionBeats": 4,
-				"mustHitSection": false
-			},
-			{
-				"sectionNotes": [],
-				"sectionBeats": 4,
-				"mustHitSection": false
-			},
-			{
-				"sectionNotes": [],
-				"sectionBeats": 4,
-				"mustHitSection": true
-			},
-			{
-				"sectionNotes": [],
-				"sectionBeats": 4,
-				"mustHitSection": false
 			},
 			{
 				"sectionNotes": [],
@@ -267,37 +312,32 @@
 			{
 				"sectionNotes": [],
 				"sectionBeats": 4,
-				"mustHitSection": true
+				"mustHitSection": false
 			},
 			{
 				"sectionNotes": [],
 				"sectionBeats": 4,
-				"mustHitSection": true
+				"mustHitSection": false
 			},
 			{
 				"sectionNotes": [],
 				"sectionBeats": 4,
-				"mustHitSection": true
+				"mustHitSection": false
 			},
 			{
 				"sectionNotes": [],
 				"sectionBeats": 4,
-				"mustHitSection": true
-			},
-			{
-				"sectionNotes": [],
-				"sectionBeats": 4,
-				"mustHitSection": true
+				"mustHitSection": false
 			}
 		],
 		"events": [],
-		"gfVersion": "gf-tankmen",
-		"charter": "Fabs + Spazkid",
+		"gfVersion": "gf",
+		"charter": "fabs + Spazkid",
 		"needsVoices": true,
-		"song": "Ugh Erect",
+		"song": "Blammed Erect",
 		"generatedBy": "P-Slice converter",
 		"format": "psych_v1_convert",
-		"stage": "tankmanBattlefieldErect",
+		"stage": "phillyTrainErect",
 		"bpm": 170,
 		"artist": "Kawai Sprite",
 		"speed": null

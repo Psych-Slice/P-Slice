@@ -1,5 +1,8 @@
 package mikolka.stages.cutscenes.dialogueBox;
 
+#if !LEGACY_PSYCH
+import substates.PauseSubState;
+#end
 import mikolka.stages.cutscenes.dialogueBox.styles.*;
 import mikolka.stages.cutscenes.dialogueBox.styles.DialogueStyle;
 import mikolka.stages.cutscenes.dialogueBox.styles.DialogueStyle.DialogueBoxState;

@@ -1274,7 +1274,11 @@ class FreeplayState extends MusicBeatSubstate
 		
 		controls.isInSubstate = true;
 		#if TOUCH_CONTROLS_ALLOWED
+		#if LEGACY_PSYCH
 		MusicBeatSubstate.instance = this;
+		#else
+		backend.MusicBeatSubstate.instance = this;
+		#end
 		persistentUpdate = true;
 		removeTouchPad();
 		addTouchPad('UP_DOWN', 'A_B_C_X_Y_F');
