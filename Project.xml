@@ -166,6 +166,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- Disable Discord IO Thread -->
 	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc" />
 	<haxedef name="NO_PRECOMPILED_HEADERS" if="linux" />
+	<!-- I hate you @superpowers04 for changing commits like that -->
+	<haxedef name="SHUT_UP_LINC_LUAJIT" unless="linux" />
 
 	<section if="debug">
 		<!--These defines are mostly for testing (aren't required to be used)-->
