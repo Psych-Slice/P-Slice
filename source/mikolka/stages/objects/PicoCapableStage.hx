@@ -160,6 +160,7 @@ class PicoCapableStage extends BaseStage
 		super.beatHit();
 		if (!NENE_LIST.contains(PlayState.SONG.gfVersion))
 			return;
+		if(abotPixel != null) abotPixel.speaker.animation.play('anim', true);
 		switch (currentNeneState)
 		{
 			case STATE_READY:

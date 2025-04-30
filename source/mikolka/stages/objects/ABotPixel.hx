@@ -15,6 +15,7 @@ class ABotPixel extends FlxSpriteGroup
 	public var vizSprites:Array<FlxSprite> = [];
 	public var eyeBg:FlxSprite;
 	public var eyes:FlxSprite;
+	public var speakerTop:FlxSprite;
 	public var speaker:FlxSprite;
 
 	#if funkin.vis
@@ -35,6 +36,16 @@ class ABotPixel extends FlxSpriteGroup
 	public function new(x:Float = 0, y:Float = 0)
 	{
 		super(x, y);
+
+		speakerTop = new FlxSprite(-65, -10);
+		speakerTop.frames = Paths.getSparrowAtlas('abot/pixel/aBotPixelSpeaker');
+		speakerTop.scale.set(6, 6);
+		speakerTop.animation.addByPrefix("anim","bop",24,false);
+		speakerTop.animation.play('anim', true);
+		speakerTop.animation.frameIndex = speakerTop.animation.curAnim.numFrames - 1;
+		speakerTop.antialiasing = false;
+		speakerTop.updateHitbox();
+		add(speakerTop);
 
 		bg = new FlxSprite(90, 20).loadGraphic(Paths.image('abot/pixel/aBotPixelBack'));
         bg.scale.set(6, 6);
@@ -76,10 +87,10 @@ class ABotPixel extends FlxSpriteGroup
 		speaker = abotLol();
 	}
 	function abotLol() {
-		var temp = new FlxSprite(-65, -10);
-        temp.frames = Paths.getSparrowAtlas('abot/pixel/aBotPixel');
+		var temp = new FlxSprite(65, -10);
+        temp.frames = Paths.getSparrowAtlas('abot/pixel/aBotPixelBody');
 		temp.scale.set(6, 6);
-		temp.animation.addByPrefix("anim","idle",24,false);
+		temp.animation.addByPrefix("anim","bop",24,false);
 		temp.animation.play('anim', true);
 		temp.animation.frameIndex = temp.animation.curAnim.numFrames - 1;
 		temp.antialiasing = false;
@@ -118,7 +129,7 @@ class ABotPixel extends FlxSpriteGroup
 
 	public function beatHit()
 	{
-		speaker.animation.play('anim', true);
+		speakerTop.animation.play('anim', true);
 	}
 
 	#if funkin.vis

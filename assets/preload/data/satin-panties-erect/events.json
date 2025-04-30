@@ -127,7 +127,7 @@
 					[
 						"Target Camera",
 						2,
-						"0,0,32,expoOut"
+						"-100,210,32,expoOut"
 					]
 				]
 			],
@@ -167,7 +167,7 @@
 					[
 						"Target Camera",
 						0,
-						"0,0,32,smoothStepInOut"
+						"60,0,32,smoothStepInOut"
 					]
 				]
 			],
@@ -247,7 +247,7 @@
 					[
 						"Target Camera",
 						2,
-						"0,0,32,expoOut"
+						"-100,210,32,expoOut"
 					]
 				]
 			],
@@ -357,7 +357,7 @@
 					[
 						"Target Camera",
 						2,
-						"0,0,32,expoOut"
+						"-100,210,32,expoOut"
 					]
 				]
 			],
@@ -397,7 +397,7 @@
 					[
 						"Target Camera",
 						0,
-						"0,0,32,smoothStepInOut"
+						"60,0,32,smoothStepInOut"
 					]
 				]
 			],
@@ -487,7 +487,7 @@
 					[
 						"Target Camera",
 						2,
-						"0,0,32,expoOut"
+						"-100,210,32,expoOut"
 					]
 				]
 			],
@@ -587,7 +587,7 @@
 					[
 						"Target Camera",
 						0,
-						"0,0,32,smoothStepInOut"
+						"60,0,32,smoothStepInOut"
 					]
 				]
 			],
@@ -627,7 +627,7 @@
 					[
 						"Target Camera",
 						2,
-						"0,0,32,expoOut"
+						"-100,210,32,expoOut"
 					]
 				]
 			],

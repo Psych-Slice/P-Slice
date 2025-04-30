@@ -237,7 +237,7 @@
 					[
 						"Target Camera",
 						2,
-						"0,0,32,expoOut"
+						"-100,30,32,expoOut"
 					]
 				]
 			],
@@ -246,7 +246,7 @@
 				[
 					[
 						"Zoom Camera",
-						"32,0.8",
+						"32,0.95",
 						"expoOut"
 					]
 				]
@@ -257,7 +257,7 @@
 					[
 						"Target Camera",
 						2,
-						"0,0,32,expoOut"
+						"-20,30,32,expoOut"
 					]
 				]
 			],
@@ -367,7 +367,7 @@
 					[
 						"Target Camera",
 						2,
-						"0,0,32,expoOut"
+						"-100,30,32,expoOut"
 					]
 				]
 			],
@@ -386,8 +386,8 @@
 				[
 					[
 						"Zoom Camera",
-						"32,0.8",
-						"linear"
+						"32,0.9",
+						"expoOut"
 					]
 				]
 			],
@@ -397,7 +397,7 @@
 					[
 						"Target Camera",
 						2,
-						"0,0,32,expoOut"
+						"-20,30,32,expoOut"
 					]
 				]
 			],
@@ -407,7 +407,7 @@
 					[
 						"Target Camera",
 						2,
-						"0,0,32,expoOut"
+						"-100,30,32,expoOut"
 					]
 				]
 			],
@@ -417,7 +417,7 @@
 					[
 						"Target Camera",
 						2,
-						"0,0,32,expoOut"
+						"-20,30,32,expoOut"
 					]
 				]
 			],
@@ -427,7 +427,7 @@
 					[
 						"Target Camera",
 						2,
-						"0,0,32,expoOut"
+						"-100,30,32,expoOut"
 					]
 				]
 			],
@@ -637,7 +637,7 @@
 					[
 						"Target Camera",
 						2,
-						"0,0,32,expoOut"
+						"-100,30,32,expoOut"
 					]
 				]
 			],
@@ -646,7 +646,7 @@
 				[
 					[
 						"Zoom Camera",
-						"32,0.8",
+						"32,0.9",
 						"expoOut"
 					]
 				]
@@ -656,7 +656,7 @@
 				[
 					[
 						"Zoom Camera",
-						"32,0.9",
+						"32,0.95",
 						"expoOut"
 					]
 				]

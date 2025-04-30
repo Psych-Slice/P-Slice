@@ -327,7 +327,7 @@
 					[
 						"Target Camera",
 						1,
-						"0,0,4,CLASSIC"
+						"200,80,4,CLASSIC"
 					]
 				]
 			],
@@ -437,7 +437,7 @@
 					[
 						"Target Camera",
 						1,
-						"0,0,4,CLASSIC"
+						"200,80,4,CLASSIC"
 					]
 				]
 			],
