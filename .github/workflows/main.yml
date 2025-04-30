@@ -2,11 +2,10 @@ name: Main
 
 on:
   push:
-    branches: [master, master-dev]
+    branches: [master-dev]
   pull_request:
-    branches: [master, master-dev]
+    branches: [master-dev]
   workflow_dispatch:
-
 jobs:
   BuildDesktop:
     name: ${{ matrix.name }}
