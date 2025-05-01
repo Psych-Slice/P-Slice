@@ -43,6 +43,7 @@ jobs:
           haxe-version: ${{ env.HAXE_VERSION }}
         
       - name: Restore existing build cache for faster compilation
+        id: load-cache
         uses: actions/cache@v3
         with:
           # not caching the bin folder to prevent asset duplication and stuff like that
@@ -53,6 +54,7 @@ jobs:
             export/release/${{ inputs.exportPath }}/obj/
           restore-keys: |
             cache-build-${{ inputs.exportPath }}
+            
 
       - name: Install libVLC
         if: inputs.name == 'Linux'
@@ -61,6 +63,7 @@ jobs:
       - name: Setup haxelib
         run: haxelib newrepo    
       - name: Install Libraries
+        if: !steps.load-cache.outputs.cache-hit
         run: ${{ inputs.setupScript }}
 
       - name: Configure Android
