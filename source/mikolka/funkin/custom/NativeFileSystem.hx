@@ -21,8 +21,7 @@ class NativeFileSystem {
     }
     public static function exists(path:String) {
         #if sys
-        var cwd = StorageUtil.getStorageDirectory();
-		if(FileSystem.exists(cwd+path)) return true;
+		if(FileSystem.exists(addCwd(path))) return true;
 		#end
 
         #if OPENFL_LOOKUP
@@ -38,11 +37,17 @@ class NativeFileSystem {
     }
     #if MODS_ALLOWED
     private static function readDirectory_sys(directory:String):Null<Array<String>>{
-        var cwd = StorageUtil.getStorageDirectory();
-        if(!FileSystem.exists(cwd+"/"+directory)) return null;
-        return FileSystem.readDirectory(cwd+"/"+directory);
+        
+        if(!FileSystem.exists(addCwd(directory))) return null;
+        return FileSystem.readDirectory(addCwd(directory));
     }
     #end
+    private inline static function addCwd(directory:String):String{
+        var cwd = StorageUtil.getStorageDirectory();
+        var test_cwd = haxe.io.Path.removeTrailingSlashes(cwd);
+        if(directory.startsWith(test_cwd)) return directory;
+        return haxe.io.Path.addTrailingSlash(cwd)+directory;
+    }
     public static function readDirectory(directory:String):Array<String>
         {
             #if MODS_ALLOWED

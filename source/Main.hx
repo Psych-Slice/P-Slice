@@ -67,7 +67,9 @@ class Main extends Sprite
 		#end
 		Sys.setCwd(StorageUtil.getStorageDirectory());
 		#end
-		#if sys Logger.startLogging(); #end
+		#if sys Logger.startLogging(); 
+		trace("CWD IS "+StorageUtil.getStorageDirectory());
+		#end
 		backend.CrashHandler.init();
 
 		#if (cpp && windows)
