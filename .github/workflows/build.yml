@@ -63,8 +63,8 @@ jobs:
       - name: Setup haxelib
         run: haxelib newrepo    
       - name: Install Libraries
-        if: !steps.load-cache.outputs.cache-hit
         run: ${{ inputs.setupScript }}
+        if: ${{ ! steps.load-cache.outputs.cache-hit }}
 
       - name: Configure Android
         if: inputs.name == 'Android'
