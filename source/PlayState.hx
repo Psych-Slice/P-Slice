@@ -587,29 +587,29 @@ class PlayState extends MusicBeatState
 
 		var gfVersion:String = SONG.gfVersion;
 		//? Can me yeet this?
-		// if (gfVersion == null || gfVersion.length < 1)
-		// {
-		// 	switch (curStage)
-		// 	{
-		// 		case 'limo':
-		// 			gfVersion = 'gf-car';
-		// 		case 'mall' | 'mallEvil':
-		// 			gfVersion = 'gf-christmas';
-		// 		case 'school' | 'schoolEvil':
-		// 			gfVersion = 'gf-pixel';
-		// 		case 'tank':
-		// 			gfVersion = 'gf-tankmen';
-		// 		default:
-		// 			gfVersion = 'gf';
-		// 	}
+		if (gfVersion == null || gfVersion.length < 1)
+		{
+			switch (curStage)
+			{
+				case 'limo':
+					gfVersion = 'gf-car';
+				case 'mall' | 'mallEvil':
+					gfVersion = 'gf-christmas';
+				case 'school' | 'schoolEvil':
+					gfVersion = 'gf-pixel';
+				case 'tank':
+					gfVersion = 'gf-tankmen';
+				default:
+					gfVersion = 'gf';
+			}
 
-		// 	switch (Paths.formatToSongPath(SONG.song))
-		// 	{
-		// 		case 'stress':
-		// 			gfVersion = 'pico-speaker';
-		// 	}
-		// 	SONG.gfVersion = gfVersion; // Fix for the Chart Editor
-		// }
+			switch (Paths.formatToSongPath(SONG.song))
+			{
+				case 'stress':
+					gfVersion = 'pico-speaker';
+			}
+			SONG.gfVersion = gfVersion; // Fix for the Chart Editor
+		}
 
 		if (!stageData.hide_girlfriend)
 		{
