@@ -517,7 +517,7 @@ class Paths
 			}
 			#end
 		}
-		return #if mobile Sys.getCwd() + #end ('mods/' + key);
+		return #if mobile StorageUtil.getStorageDirectory() + #end ('mods/' + key);
 	}
 
 	#if linux
