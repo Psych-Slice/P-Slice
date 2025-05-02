@@ -78,8 +78,12 @@ class StorageUtil
 	#if android
 	public static function requestPermissions():Void
 	{
-		if (AndroidVersion.SDK_INT < AndroidVersionCode.TIRAMISU)
+		var isAPI33 = AndroidVersion.SDK_INT >= AndroidVersionCode.TIRAMISU;
+		trace("Check perms...");
+		if (!isAPI33){
+			trace("Requesting EXTERNAL_STORAGE");
 			AndroidPermissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']);
+		}
 
 		if (!AndroidEnvironment.isExternalStorageManager())
 		{
@@ -87,14 +91,14 @@ class StorageUtil
 				AndroidSettings.requestSetting('REQUEST_MANAGE_MEDIA');
 			AndroidSettings.requestSetting('MANAGE_APP_ALL_FILES_ACCESS_PERMISSION');
 		}
-
-		if ((AndroidVersion.SDK_INT >= AndroidVersionCode.TIRAMISU
-			&& !AndroidPermissions.getGrantedPermissions().contains('android.permission.READ_MEDIA_IMAGES'))
-			|| (AndroidVersion.SDK_INT < AndroidVersionCode.TIRAMISU
-				&& !AndroidPermissions.getGrantedPermissions().contains('android.permission.READ_EXTERNAL_STORAGE')))
+		var has_MANAGE_EXTERNAL_STORAGE = Environment.isExternalStorageManager();
+		var has_READ_EXTERNAL_STORAGE = AndroidPermissions.getGrantedPermissions().contains('android.permission.READ_EXTERNAL_STORAGE');
+		//var has_READ_MEDIA_IMAGES = AndroidPermissions.getGrantedPermissions().contains('android.permission.READ_MEDIA_IMAGES');
+		if ((isAPI33 && !has_MANAGE_EXTERNAL_STORAGE)
+			|| (!isAPI33 && !has_READ_EXTERNAL_STORAGE))
 			CoolUtil.showPopUp('If you accepted the permissions you are all good!' + '\nIf you didn\'t then expect a crash' + '\nPress OK to see what happens',
 				'Notice!');
-
+		trace("Checking game directory...");
 		try
 		{
 			if (!FileSystem.exists(StorageUtil.getStorageDirectory()))
