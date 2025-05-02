@@ -27,8 +27,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<define name="MODS_ALLOWED" if="desktop || mobile" />
 
 	<!-- Adds the ability to use OpenFL asset lookup (defaults to sys if disabled)  -->
-	<define name="OPENFL_LOOKUP" if="mobile" />
-	<define name="OPENFL_LOOKUP" unless="MODS_ALLOWED || mobile" /> 
+	<define name="OPENFL_LOOKUP"/>
 
 	<!-- Adds support for Psuch's lua/HScript files-->
 	<define name="HSCRIPT_ALLOWED" if="desktop || mobile"/>
@@ -103,7 +102,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<assets path="assets/shared"         if="web"/>
 
 	<assets path="assets/embed"          if="web" embed="true"/>
-	<assets path="assets/embed"          unless="web" embed="false"/>
+	<assets path="assets/embed"          unless="web || OPENFL_LOOKUP" embed="false"/>
 	<assets path="assets/embed"          if="OPENFL_LOOKUP" unless="web" embed="true"/>
 
 	<assets path="assets/week_assets"   rename="assets"  if="web"/>
