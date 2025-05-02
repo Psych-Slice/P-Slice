@@ -223,6 +223,7 @@ class PhillyStreetsErect extends BaseStage
             add(mist2);
     
             carSndAmbience = new FlxSound().loadEmbedded(Paths.sound("ambience/car"), true);
+            FlxG.sound.list.add(carSndAmbience);
             carSndAmbience.volume = 0.01;
             carSndAmbience.play(false, FlxG.random.float(0, carSndAmbience.length));
     
@@ -230,6 +231,7 @@ class PhillyStreetsErect extends BaseStage
             {
                 // ? ambience
                 rainSndAmbience = new FlxSound().loadEmbedded(Paths.sound("ambience/rain"), true);
+                FlxG.sound.list.add(rainSndAmbience);
                 rainSndAmbience.volume = 0.01;
                 rainSndAmbience.play(false, FlxG.random.float(0, rainSndAmbience.length));
 
