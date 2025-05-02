@@ -125,7 +125,7 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 			"Which icon bop do you want to see?",
 			"bopType",
 			STRING,
-			['Normal', 'Old vanilla']); //todo: [, 'Twist', 'Lo-HP Shake']
+			['Normal', 'Kade', 'Fake Vintage']); //todo: [, 'Twist', 'Lo-HP Shake'] //scrapped: Old vanilla (is now Vintage)
 		addOption(option);
 
 		var option:Option = new Option('Flashing Lights',

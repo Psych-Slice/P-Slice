@@ -1721,6 +1721,12 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
+		if(ClientPrefs.data.bopType == "Kade") {
+			iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, 0.50)));
+			iconP2.setGraphicSize(Std.int(FlxMath.lerp(150, iconP2.width, 0.50)));
+			iconP1.updateHitbox();
+			iconP2.updateHitbox();
+		}
 		if(!inCutscene && !paused && !freezeCamera) {
 			FlxG.camera.followLerp = 0.04 * cameraSpeed * playbackRate;
 			var idleAnim:Bool = (boyfriend.getAnimationName().startsWith('idle') || boyfriend.getAnimationName().startsWith('danceLeft') || boyfriend.getAnimationName().startsWith('danceRight'));
@@ -1952,23 +1958,25 @@ class PlayState extends MusicBeatState
 				iconP2.scale.set(mult, mult);
 				iconP2.updateHitbox();
 				
-			case "Old vanilla":
+			case "Fake Vintage": //Made accidentally by Chatgpt
 				var lerpRatioFast = FlxMath.bound(Math.exp(-elapsed * 20 * playbackRate), 0, 1);
 				var lerpRatioSlow = FlxMath.bound(Math.exp(-elapsed * 12 * playbackRate), 0, 1);
 
 				// Player 1
-				//var target1 = (healthBar.percent < 20) ? 1.15 : 1.0;
-				var mult1 = FlxMath.lerp(iconP1.scale.x, 1, (healthBar.percent < 20) ? lerpRatioFast : lerpRatioSlow);
+				var target1 = (healthBar.percent < 20) ? 1.15 : 1.0;
+				var mult1 = FlxMath.lerp(iconP1.scale.x, target1, (healthBar.percent < 20) ? lerpRatioFast : lerpRatioSlow);
 				iconP1.scale.set(mult1, mult1);
 				iconP1.updateHitbox();
 				iconP1.centerOffsets();
-				//	
+
 				// Player 2
-				//var target2 = (healthBar.percent > 80) ? 1.15 : 1.0;
-				var mult2 = FlxMath.lerp(iconP2.scale.x, 1, (healthBar.percent > 80) ? lerpRatioFast : lerpRatioSlow);
+				var target2 = (healthBar.percent > 80) ? 1.15 : 1.0;
+				var mult2 = FlxMath.lerp(iconP2.scale.x, target2, (healthBar.percent > 80) ? lerpRatioFast : lerpRatioSlow);
 				iconP2.scale.set(mult2, mult2);
 				iconP2.updateHitbox();
 				iconP2.centerOffsets();
+			//case "Kade" (here for show)
+			//Kade engine icon bop is in update() and beatHit() (though the one in beatHit() works in here too.)
 			
 		}
 		
@@ -3625,6 +3633,13 @@ class PlayState extends MusicBeatState
 
 	override function beatHit()
 	{
+		if(ClientPrefs.data.bopType == "Kade") {
+			iconP1.setGraphicSize(Std.int(iconP1.width + 30));
+			iconP2.setGraphicSize(Std.int(iconP2.width + 30));
+
+			iconP1.updateHitbox();
+			iconP2.updateHitbox();
+		}
 		if(lastBeatHit >= curBeat) {
 			//trace('BEAT HIT: ' + curBeat + ', LAST HIT: ' + lastBeatHit);
 			return;
