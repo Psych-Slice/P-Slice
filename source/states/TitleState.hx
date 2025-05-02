@@ -90,7 +90,7 @@ class TitleState extends MusicBeatState
 		if (ClientPrefs.data.checkForUpdates && !closedState)
 		{
 			trace('checking for update');
-			var http = new haxe.Http("https://github.com/TheWolfLovers/Xythe-Engine/blob/master/gitVersion.txt");
+			var http = new haxe.Http("https://raw.githubusercontent.com/mikolka9144/P-Slice/master/gitVersion.txt");
 
 			http.onData = function(data:String)
 			{
@@ -182,7 +182,7 @@ class TitleState extends MusicBeatState
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		logoBl.antialiasing = ClientPrefs.data.antialiasing;
 
-		logoBl.animation.addByPrefix('bump', 'logo bumpin', 30, false);
+		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
 
@@ -277,7 +277,6 @@ class TitleState extends MusicBeatState
 		ngSpr.visible = false;
 		
 		add(gfDance);
-		gfDance.visible = false;
 		add(logoBl); //FNF Logo
 		add(titleText); //"Press Enter to Begin" text
 		add(credGroup);
@@ -295,8 +294,8 @@ class TitleState extends MusicBeatState
 	var characterImage:String = 'gfDanceTitle';
 	var animationName:String = 'gfDance';
 
-	var gfPosition:FlxPoint = FlxPoint.get(512, -200);
-	var logoPosition:FlxPoint = FlxPoint.get(147, -9);
+	var gfPosition:FlxPoint = FlxPoint.get(512, 40);
+	var logoPosition:FlxPoint = FlxPoint.get(-150, -100);
 	var enterPosition:FlxPoint = FlxPoint.get(100, 576);
 	
 	var useIdle:Bool = false;

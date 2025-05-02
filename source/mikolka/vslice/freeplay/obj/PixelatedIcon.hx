@@ -49,7 +49,7 @@ class PixelatedIcon extends FlxFilteredSprite
         };
         this.loadGraphic(image);
         if (this.width == 300) {
-          this.loadGraphic(image,true,Math.floor(image.width / 2), Math.floor(image.height));
+        this.loadGraphic(image,true,Math.floor(image.width / 2), Math.floor(image.height));
         } else if (this.width == 450) {
           this.loadGraphic(image,true,Math.floor(image.width / 3), Math.floor(image.height));
         };

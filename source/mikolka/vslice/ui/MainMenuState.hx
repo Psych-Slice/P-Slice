@@ -23,14 +23,13 @@ import options.OptionsState;
 
 class MainMenuState extends MusicBeatState
 {
-	
 	#if !LEGACY_PSYCH
 	public static var psychEngineVersion:String = '1.0.4'; // This is also used for Discord RPC
 	#else
 	public static var psychEngineVersion:String = '0.6.3'; // This is also used for Discord RPC
 	#end
 	public static var pSliceVersion:String = '3.0'; 
-	public static var xytheEngineVersion:String = "0.0.2";
+	public static var xytheEngineVersion:String = "0.0.4";
 	public static var funkinVersion:String = '0.6.0'; // Version of funkin' we are emulationg
 	public static var curSelected:Int = 0;
 
@@ -42,6 +41,7 @@ class MainMenuState extends MusicBeatState
 		#if MODS_ALLOWED 'mods', #end
 		#if ACHIEVEMENTS_ALLOWED 'awards', #end
 		'credits',
+		#if !switch 'donate', #end
 		'options'
 	];
 
@@ -62,38 +62,6 @@ class MainMenuState extends MusicBeatState
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
-		
-		if (FlxG.random.bool(100))
-		{
-			openfl.Lib.application.window.title = "Friday Night Funkin': Xythe (P-Slice) Engine";
-		}
-
-		if (FlxG.random.bool(15))
-		{
-			openfl.Lib.application.window.title = "Shader? Is that you?";
-		}
-		if (FlxG.random.bool(10))
-		{
-			openfl.Lib.application.window.title = "If You See This... Fuck You!";
-		}
-		if (FlxG.random.bool(5))
-		{
-			openfl.Lib.application.window.title = "Holy Hell, A rare Find!!!!";
-		}
-		if (FlxG.random.bool(10))
-			{
-				openfl.Lib.application.window.title = "FnF VS Fire In The Hole";
-			}
-		if (FlxG.random.bool(10))
-		{
-			openfl.Lib.application.window.title = "FnF VS Bitch day";
-		}
-		if (FlxG.random.bool(15))
-		{
-			openfl.Lib.application.window.title = "Friday Night Funkin' VS Pokémon Mystery Dungeon: Loss of Light real?";
-		}
-		
-			
 		#end
 
 
@@ -144,12 +112,12 @@ class MainMenuState extends MusicBeatState
 
 		var psychVer:FlxText = new FlxText(0, FlxG.height - 18, FlxG.width, "Psych Engine " + psychEngineVersion, 12);
 		var fnfVer:FlxText = new FlxText(0, FlxG.height - 18, FlxG.width, 'v${funkinVersion} (P-slice ${pSliceVersion})', 12);
-		var xytheVer:FlxText = new FlxText(0, FlxG.height - 38, FlxG.width, 'Xythe Engine v${xytheEngineVersion}', 12);
+		var xytheVer:FlxText = new FlxText(0, FlxG.height - 38, FlxG.width, 'Xythe Engine: v${xytheEngineVersion}', 12);
 
 		psychVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		fnfVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		xytheVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-
+		
 		psychVer.scrollFactor.set();
 		fnfVer.scrollFactor.set();
 		xytheVer.scrollFactor.set();
@@ -213,7 +181,7 @@ class MainMenuState extends MusicBeatState
 				FlxTransitionableState.skipNextTransOut = false;
 				if (optionShit[curSelected] == 'donate')
 				{
-					CoolUtil.browserLoad('https://www.makeship.com/shop/creator/friday-night-funkin');
+					CoolUtil.browserLoad('https://needlejuicerecords.com/pages/friday-night-funkin');
 				}
 				else
 				{

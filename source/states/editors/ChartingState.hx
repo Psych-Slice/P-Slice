@@ -125,7 +125,6 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		0xFF9F9F9F,
 		0xFF3F3F3F,
 	];
-
 	var curQuant(default, set):Int = 16;
 	function set_curQuant(v:Int)
 	{
@@ -147,9 +146,6 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	var infoBoxPosition:FlxPoint = FlxPoint.get(1000, 360);
 	var upperBox:PsychUIBox;
 	
-	var welcomeMusic:FlxSound;
-	var bgMusicTimer:FlxTimer;
-
 	var camUI:FlxCamera;
 
 	var prevGridBg:ChartingGridSprite;
@@ -240,11 +236,6 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		vocals.looped = true;
 		opponentVocals.autoDestroy = false;
 		opponentVocals.looped = true;
-
-
-		setupWelcomeMusic();
-		fadeInWelcomeMusic();
-		trace("FadeInWelcomeMusic has been asked out on a date!");
 
 		initPsychCamera();
 		camUI = new FlxCamera();
@@ -571,51 +562,6 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 	var gridColors:Array<FlxColor>;
 	var gridColorsOther:Array<FlxColor>;
-
-	function setupWelcomeMusic():Void
-		{
-			welcomeMusic = new FlxSound();
-			welcomeMusic.loadEmbedded(Paths.music('chartEditorLoop/chartEditorLoop'));
-			FlxG.sound.list.add(welcomeMusic);
-			welcomeMusic.looped = true;
-		}
-		
-		function fadeInWelcomeMusic(?extraWait:Float = 0, ?fadeInTime:Float = 5):Void
-		{
-			trace("Playing Chart Editor Moosic");
-			if (!welcomeMusic.active)
-			{
-				stopWelcomeMusic();
-				return;
-			}
-		
-			bgMusicTimer = new FlxTimer().start(extraWait, function(timer:FlxTimer)
-			{
-				welcomeMusic.volume = 0;
-				if (welcomeMusic.active)
-				{
-					welcomeMusic.play();
-					welcomeMusic.fadeIn(fadeInTime, 0, 1.0);
-				}
-			});
-		}
-		
-		function stopWelcomeMusic():Void
-		{
-			if (bgMusicTimer != null) bgMusicTimer.cancel();
-			// welcomeMusic.fadeOut(4, 0); // Optional fade-out
-			welcomeMusic.pause();
-		}
-		
-		function destroyWelcomeMusic():Void
-		{
-			if (welcomeMusic != null)
-			{
-				welcomeMusic.stop();
-				welcomeMusic.destroy();
-			}
-		}
-
 	function changeTheme(changeTo:ChartingTheme, ?doSave:Bool = true)
 	{
 		var oldTheme:ChartingTheme = theme;
@@ -698,7 +644,6 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		reloadNotes();
 		onChartLoaded();
 		updateHeads(true);
-		setupWelcomeMusic();
 		
 		autoSaveTime = 0;
 		Conductor.songPosition = 0;
@@ -4517,7 +4462,6 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		{
 			PlayState.chartingMode = false;
 			MusicBeatState.switchState(new states.editors.MasterEditorMenu());
-			
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			FlxG.mouse.visible = false;
 		}, btnWid);
@@ -5341,7 +5285,6 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		for (num => text in MetaNote.noteTypeTexts)
 			text.destroy();
 
-		destroyWelcomeMusic();
 		MetaNote.noteTypeTexts = [];
 		fileDialog.destroy();
 		super.destroy();

@@ -62,7 +62,7 @@
 		0,
 		240
 	],
-	"healthicon": "tankman-bloody",
+	"healthicon": "tankman-stabbed",
 	"flip_x": true,
 	"healthbar_colors": [
 		225,

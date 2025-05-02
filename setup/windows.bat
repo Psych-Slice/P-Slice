@@ -1,6 +1,5 @@
 @echo off
 color 0a
-@echo on
 echo Installing dependencies...
 echo This might take a few moments depending on your internet speed.
 haxelib install flixel 6.0.0 --quiet --skip-dependencies

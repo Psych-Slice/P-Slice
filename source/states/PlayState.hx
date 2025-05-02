@@ -551,6 +551,14 @@ class PlayState extends MusicBeatState
 		reloadHealthBarColors();
 		uiGroup.add(healthBar);
 
+		scoreTxt = new FlxText(0, healthBar.y + 50, FlxG.width, "", 20);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.scrollFactor.set();
+		scoreTxt.borderSize = 1.25;
+		scoreTxt.visible = !ClientPrefs.data.hideHud;
+		updateScore(false);
+		uiGroup.add(scoreTxt);
+
 		iconP2 = new HealthIcon(dad.healthIcon, false);
 		iconP2.y = healthBar.y - 75;
 		iconP2.visible = !ClientPrefs.data.hideHud;
@@ -563,13 +571,7 @@ class PlayState extends MusicBeatState
 		iconP1.alpha = ClientPrefs.data.healthBarAlpha;
 		uiGroup.add(iconP1);
 
-		scoreTxt = new FlxText(0, healthBar.y + 40, FlxG.width, "", 20);
-		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		scoreTxt.scrollFactor.set();
-		scoreTxt.borderSize = 1.25;
-		scoreTxt.visible = !ClientPrefs.data.hideHud;
-		updateScore(false);
-		uiGroup.insert(uiGroup.members.indexOf(iconP2), scoreTxt);
+
 
 		botplayTxt = new FlxText(400, healthBar.y - 90, FlxG.width - 800, Language.getPhrase("Botplay").toUpperCase(), 32);
 		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -1725,12 +1727,7 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
-		if(ClientPrefs.data.bopType == "Kade") {
-			iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, 0.50)));
-			iconP2.setGraphicSize(Std.int(FlxMath.lerp(150, iconP2.width, 0.50)));
-			iconP1.updateHitbox();
-			iconP2.updateHitbox();
-		}
+
 		if(!inCutscene && !paused && !freezeCamera) {
 			FlxG.camera.followLerp = 0.04 * cameraSpeed * playbackRate;
 			var idleAnim:Bool = (boyfriend.getAnimationName().startsWith('idle') || boyfriend.getAnimationName().startsWith('danceLeft') || boyfriend.getAnimationName().startsWith('danceRight'));
@@ -1954,13 +1951,13 @@ class PlayState extends MusicBeatState
 	{
 		switch(ClientPrefs.data.bopType) {
 			case "Normal":
-				var mult:Float = FlxMath.lerp(1, iconP1.scale.x, Math.exp(-elapsed * 9 * playbackRate));
-				iconP1.scale.set(mult, mult);
-				iconP1.updateHitbox();
+		var mult:Float = FlxMath.lerp(1, iconP1.scale.x, Math.exp(-elapsed * 9 * playbackRate));
+		iconP1.scale.set(mult, mult);
+		iconP1.updateHitbox();
 
-				var mult:Float = FlxMath.lerp(1, iconP2.scale.x, Math.exp(-elapsed * 9 * playbackRate));
-				iconP2.scale.set(mult, mult);
-				iconP2.updateHitbox();
+		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, Math.exp(-elapsed * 9 * playbackRate));
+		iconP2.scale.set(mult, mult);
+		iconP2.updateHitbox();
 				
 			case "Fake Vintage": //Made accidentally by Chatgpt
 				var lerpRatioFast = FlxMath.bound(Math.exp(-elapsed * 20 * playbackRate), 0, 1);
@@ -1979,7 +1976,11 @@ class PlayState extends MusicBeatState
 				iconP2.scale.set(mult2, mult2);
 				iconP2.updateHitbox();
 				iconP2.centerOffsets();
-			//case "Kade" (here for show)
+			case "Kade":
+				iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, 0.50)));
+				iconP2.setGraphicSize(Std.int(FlxMath.lerp(150, iconP2.width, 0.50)));
+				iconP1.updateHitbox();
+				iconP2.updateHitbox();
 			//Kade engine icon bop is in update() and beatHit() (though the one in beatHit() works in here too.)
 			
 		}
@@ -2008,7 +2009,7 @@ class PlayState extends MusicBeatState
 		var newPercent:Null<Float> = FlxMath.remapToRange(FlxMath.bound(healthBar.valueFunction(), healthBar.bounds.min, healthBar.bounds.max), healthBar.bounds.min, healthBar.bounds.max, 0, 100);
 		healthBar.percent = (newPercent != null ? newPercent : 0);
 
-		if (iconP1.animation.frames == 3) {
+		if (iconP1.animation.curAnim != null && iconP1.animation.curAnim.numFrames == 3) {
 			if (healthBar.percent < 20)
 				iconP1.animation.curAnim.curFrame = 1;
 			else if (healthBar.percent >80)
@@ -2022,7 +2023,7 @@ class PlayState extends MusicBeatState
 			else
 				iconP1.animation.curAnim.curFrame = 0;
 		}
-		if (iconP2.animation.frames == 3) {
+		if (iconP2.animation.curAnim != null && iconP2.animation.curAnim.numFrames == 3) {
 			if (healthBar.percent > 80)
 				iconP2.animation.curAnim.curFrame = 1;
 			else if (healthBar.percent < 20)

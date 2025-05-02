@@ -5,7 +5,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/xsd/project-1.0.4.xsd">
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': Xythe (P-Slice) Engine" file="XytheEngine" packageName="com.thewolflovers.xythe" package="com.thewolflovers.xythe" main="Main" version="0.0.2" company="thewolflovers" />
+	<app title="Friday Night Funkin': Xythe (P-Slice) Engine" file="XytheEngine" packageName="com.thewolflovers.xythe" package="com.thewolflovers.xythe" main="Main" version="0.0.4" company="TheWolfLovers" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -38,7 +38,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<define name="DISCORD_ALLOWED" if="desktop" unless="hl"/>
 	
 	<!-- Adds a Base game content to your build. Feel free to disable if you're making a source mod. -->
-	<define name="BASE_GAME_FILES" unless="modGame"/>
+	<define name="BASE_GAME_FILES" />
 
 	<!-- Adds support for touchscreen devices (like mobiles)-->
 	<define name="TOUCH_CONTROLS_ALLOWED" if="mobile || web || debug" />
@@ -83,7 +83,6 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<set name="BUILD_DIR" value="export/debug" if="debug" />
 	<set name="BUILD_DIR" value="export/release" unless="debug" />
 	<set name="BUILD_DIR" value="export/32bit" if="32bits" />
-	<set name="BUILD_DIR" value="export/empty" if="modGame" />
 
 	<classpath name="source" />
 
@@ -142,9 +141,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- <library name="songs" preload="false" /> -->
 	<!-- _______________________________ Libraries ______________________________ -->
 
-	<haxelib name="flixel" version="git"/>
-	<haxelib name="flixel-addons" version="3.2.2"/>
-	<haxelib name="flixel-studio" if="debug"/>
+	<haxelib name="flixel"/>
+	<haxelib name="flixel-addons" version="3.3.2"/>
 	<haxelib name="tjson" version="1.4.0"/>
 	<haxelib name="FlxPartialSound" version="git"/>
 	<haxelib name="grig.audio" />
