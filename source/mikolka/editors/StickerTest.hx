@@ -1,8 +1,8 @@
 package mikolka.editors;
 
-import mikolka.compatibility.FunkinControls;
+import mikolka.compatibility.funkin.FunkinControls;
 import mikolka.compatibility.ModsHelper;
-import substates.StickerSubState;
+import mikolka.vslice.StickerSubState;
 #if !LEGACY_PSYCH
 import states.editors.MasterEditorMenu;
 #else
@@ -26,7 +26,7 @@ class StickerTest extends MusicBeatState {
         super();
     }
     override function create() {
-        FlxG.sound.music.pause();
+        FlxG.sound.music?.pause();
         FlxG.mouse.visible = true;
         Paths.clearUnusedMemory();
         if (stickerSubState != null)

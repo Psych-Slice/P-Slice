@@ -1,21 +1,21 @@
 package states.editors;
 
+import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych.DialogueLine;
+import mikolka.stages.cutscenes.dialogueBox.styles.DialogueStyle;
+import mikolka.stages.cutscenes.dialogueBox.styles.*;
 import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileFilter;
 import haxe.Json;
-import objects.TypedAlphabet;
-
-import cutscenes.DialogueBoxPsych;
-import cutscenes.DialogueCharacter;
 import states.editors.content.Prompt;
 
 class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.PsychUIEvent
 {
 	var character:DialogueCharacter;
 	var box:FlxSprite;
-	var daText:TypedAlphabet;
+	var style:DialogueStyle;
+	var daText:FlxSprite;
 
 	var selectedText:FlxText;
 	var animText:FlxText;
@@ -40,24 +40,24 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 		dialogueFile = {
 			dialogue: [
 				copyDefaultLine()
-			]
+			],
+			style:""
 		};
+		switch(dialogueFile.style){
+			case "pixel":{
+				this.style = new PixelDialogueStyle();
+			}
+			default:{
+				this.style = new PsychDialogueStyle();
+			}
+		}
 		
 		character = new DialogueCharacter();
 		character.scrollFactor.set();
 		add(character);
 
-		box = new FlxSprite(70, 370);
-		box.antialiasing = ClientPrefs.data.antialiasing;
-		box.frames = Paths.getSparrowAtlas('speech_bubble');
-		box.scrollFactor.set();
-		box.animation.addByPrefix('normal', 'speech bubble normal', 24);
-		box.animation.addByPrefix('angry', 'AHH speech bubble', 24);
-		box.animation.addByPrefix('center', 'speech bubble middle', 24);
-		box.animation.addByPrefix('center-angry', 'AHH Speech Bubble middle', 24);
-		box.animation.play('normal', true);
-		box.setGraphicSize(Std.int(box.width * 0.9));
-		box.updateHitbox();
+		box = style.makeDialogueBox();
+		box.visible = true;
 		add(box);
 
 		addEditorBox();
@@ -86,8 +86,8 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 		animText.scrollFactor.set();
 		add(animText);
 		
-		daText = new TypedAlphabet(DialogueBoxPsych.DEFAULT_TEXT_X, DialogueBoxPsych.DEFAULT_TEXT_Y, DEFAULT_TEXT);
-		daText.setScale(0.7);
+		daText = style.initText();
+		style.prepareLine(DEFAULT_TEXT,0.5,"dialogue");
 		add(daText);
 		changeText();
 		#if TOUCH_CONTROLS_ALLOWED
@@ -108,6 +108,7 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 	var characterInputText:PsychUIInputText;
 	var lineInputText:PsychUIInputText;
 	var angryCheckbox:PsychUICheckBox;
+	var usePixel:PsychUICheckBox;
 	var speedStepper:PsychUINumericStepper;
 	var soundInputText:PsychUIInputText;
 	function addDialogueLineUI() {
@@ -122,7 +123,15 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 			updateTextBox();
 			dialogueFile.dialogue[curSelected].boxState = (angryCheckbox.checked ? 'angry' : 'normal');
 		};
-
+		usePixel = new PsychUICheckBox(characterInputText.x + 120, characterInputText.y, "Use pixel", 200);
+		usePixel.onClick = function()
+			{
+				dialogueFile.style = usePixel.checked ? "pixel" : "";
+				makeTextBox();
+				updateTextBox();
+				style.set_text(lineInputText.text);
+				style.startLine();
+			};
 		soundInputText = new PsychUIInputText(10, speedStepper.y + 40, 150, '', 8);
 		lineInputText = new PsychUIInputText(10, soundInputText.y + 35, 200, DEFAULT_TEXT, 8);
 		lineInputText.onPressEnter = function(e)
@@ -150,6 +159,7 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 		tab_group.add(new FlxText(10, lineInputText.y - 18, 0, 'Text:'));
 		tab_group.add(characterInputText);
 		tab_group.add(angryCheckbox);
+		tab_group.add(usePixel);
 		tab_group.add(speedStepper);
 		tab_group.add(soundInputText);
 		tab_group.add(lineInputText);
@@ -168,24 +178,30 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 		};
 		return copyLine;
 	}
-
-	function updateTextBox() {
-		box.flipX = false;
-		var isAngry:Bool = angryCheckbox.checked;
-		var anim:String = isAngry ? 'angry' : 'normal';
-
-		switch(character.jsonFile.dialogue_pos) {
-			case 'left':
-				box.flipX = true;
-			case 'center':
-				if(isAngry) {
-					anim = 'center-angry';
-				} else {
-					anim = 'center';
-				}
+	function makeTextBox(){
+		switch(dialogueFile.style){
+			case "pixel":{
+				this.style = new PixelDialogueStyle();
+			}
+			default:{
+				this.style = new PsychDialogueStyle();
+			}
 		}
-		box.animation.play(anim, true);
-		DialogueBoxPsych.updateBoxOffsets(box);
+		box = cast replace(box,style.makeDialogueBox());
+		daText = cast replace(daText,style.initText());
+		box.visible = true;
+	}
+	function updateTextBox() {
+		var isAngry:Bool = angryCheckbox.checked;
+		var lePos = switch (character.jsonFile.dialogue_pos){
+			case "left": LEFT;
+			case "right": RIGHT;
+			case "center": CENTER;
+			default: RIGHT;
+		};
+		style.playBoxAnim(lePos,IDLE,isAngry ? 'angry' : 'normal');
+		//style.playBoxAnim(style.last_position,CLOSE_FINISH,lastBoxType);
+
 	}
 
 	function reloadCharacter() {
@@ -228,11 +244,12 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 		var textToType:String = lineInputText.text;
 		if(textToType == null || textToType.length < 1) textToType = ' ';
 
-		daText.text = textToType;
+		style.set_text(textToType);
+		style.startLine();
 
 		if(skipDialogue) 
-			daText.finishText();
-		else if(daText.delay > 0)
+			style.finishLine();
+		else if(style.get_delay() > 0)
 		{
 			if(character.jsonFile.animations.length > curAnim && character.jsonFile.animations[curAnim] != null) {
 				character.playAnim(character.jsonFile.animations[curAnim].anim);
@@ -240,8 +257,8 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 			characterAnimSpeed();
 		}
 
-		daText.y = DialogueBoxPsych.DEFAULT_TEXT_Y;
-		if(daText.rows > 2) daText.y -= DialogueBoxPsych.LONG_TEXT_ADD;
+		daText.y = style.DEFAULT_TEXT_Y;
+		if(style.rowCount() > 2) daText.y -= style.LONG_TEXT_ADD;
 
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
@@ -264,7 +281,7 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 				if(character.jsonFile.animations.length > 0) {
 					curAnim = 0;
 					if(character.jsonFile.animations.length > curAnim && character.jsonFile.animations[curAnim] != null) {
-						character.playAnim(character.jsonFile.animations[curAnim].anim, daText.finishedText);
+						character.playAnim(character.jsonFile.animations[curAnim].anim, style.isLineFinished());
 						if (controls.mobileC) {
 						animText.text = 'Animation: ' + character.jsonFile.animations[curAnim].anim + ' (' + (curAnim + 1) +' / ' + character.jsonFile.animations.length + ') - Press UP or DOWN to scroll';
 						} else {
@@ -283,16 +300,18 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 			{
 				dialogueFile.dialogue[curSelected].text = lineInputText.text;
 
-				daText.text = lineInputText.text;
-				if(daText.text == null) daText.text = '';
+				var txt = lineInputText.text;
+				if(txt == null) txt = '';
+				style.set_text(txt);
 				reloadText(true);
 			}
 			else if(sender == soundInputText)
 			{
-				daText.finishText();
+				style.finishLine();
 				dialogueFile.dialogue[curSelected].sound = soundInputText.text;
-				daText.sound = soundInputText.text;
-				if(daText.sound == null) daText.sound = '';
+				var snd = soundInputText.text;
+				if(snd == null) snd = '';
+				style.set_sound(snd);
 			}
 			unsavedProgress = true;
 		} else if(id == PsychUINumericStepper.CHANGE_EVENT && (sender == speedStepper)) {
@@ -300,7 +319,7 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 			if(Math.isNaN(dialogueFile.dialogue[curSelected].speed) || dialogueFile.dialogue[curSelected].speed == null || dialogueFile.dialogue[curSelected].speed < 0.001) {
 				dialogueFile.dialogue[curSelected].speed = 0.0;
 			}
-			daText.delay = dialogueFile.dialogue[curSelected].speed;
+			style.set_delay(dialogueFile.dialogue[curSelected].speed);
 			reloadText(false);
 			unsavedProgress = true;
 		}
@@ -316,7 +335,7 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 		}
 
 		if(character.animation.curAnim != null) {
-			if(daText.finishedText) {
+			if(style.isLineFinished()) {
 				if(character.animationIsLoop() && character.animation.curAnim.finished) {
 					character.playAnim(character.animation.curAnim.name, true);
 				}
@@ -357,7 +376,7 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 
 					var animToPlay:String = character.jsonFile.animations[curAnim].anim;
 					if(character.dialogueAnimations.exists(animToPlay)) {
-						character.playAnim(animToPlay, daText.finishedText);
+						character.playAnim(animToPlay, style.isLineFinished());
 						dialogueFile.dialogue[curSelected].expression = animToPlay;
 					}
 					if (controls.mobileC) {
@@ -401,9 +420,10 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 		if (curDialogue.sound == null) curDialogue.sound = '';
 		soundInputText.text = curDialogue.sound;
 
-		daText.delay = speedStepper.value;
-		daText.sound = soundInputText.text;
-		if(daText.sound != null && daText.sound.trim() == '') daText.sound = 'dialogue';
+		var snd = soundInputText.text;
+		if(snd != null && snd.trim() == '') snd = 'dialogue';
+		style.set_sound(snd);
+		style.set_delay(speedStepper.value);
 
 		curAnim = 0;
 		character.reloadCharacterJson(characterInputText.text);
@@ -422,7 +442,7 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 				}
 			}
 			var selectedAnim:String = character.jsonFile.animations[curAnim].anim;
-			character.playAnim(selectedAnim, daText.finishedText);
+			character.playAnim(selectedAnim, style.isLineFinished());
 			animText.text = 'Animation: $selectedAnim (${curAnim + 1} / ${character.jsonFile.animations.length} ) - Press W or S to scroll';
 		}
 		else animText.text = 'ERROR! NO ANIMATIONS FOUND';
@@ -475,6 +495,7 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 					var cutName:String = _file.name.substr(0, _file.name.length - 5);
 					trace("Successfully loaded file: " + cutName);
 					dialogueFile = loadedDialog;
+					makeTextBox();
 					changeText();
 					_file = null;
 					return;

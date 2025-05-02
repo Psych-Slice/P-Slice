@@ -128,7 +128,7 @@ class PhillyLights extends BaseStage {
                             else if(VsliceOptions.FLASHBANG)
                             {
                                 var colorButLower:FlxColor = color;
-                                colorButLower.alphaFloat = 0.25;
+                                colorButLower.alpha = 64;
                                 FlxG.camera.flash(colorButLower, 0.5, null, true);
                             }
     

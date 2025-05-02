@@ -26,6 +26,10 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- Compiles mod support for P-Slice. Feel free to disable if you're making a source mod -->
 	<define name="MODS_ALLOWED" if="desktop || mobile" />
 
+	<!-- Adds the ability to use OpenFL asset lookup (defaults to sys if disabled)  -->
+	<define name="OPENFL_LOOKUP" if="mobile" />
+	<define name="OPENFL_LOOKUP" unless="MODS_ALLOWED || mobile" /> 
+
 	<!-- Adds support for Psuch's lua/HScript files-->
 	<define name="HSCRIPT_ALLOWED" if="desktop || mobile"/>
 	<define name="LUA_ALLOWED" if="cpp" />
@@ -50,7 +54,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<!-- Other stuff -->
 	<define name="ACHIEVEMENTS_ALLOWED" />
-	<define name="TRANSLATIONS_ALLOWED" />
+	<define name="TRANSLATIONS_ALLOWED" unless="web" />
 	<define name="SHOW_LOADING_SCREEN" />
 	<define name="MULTITHREADED_LOADING" if="cpp" /> <!-- UNCOMMENTING THIS LINE WILL ENABLE MULTITHREADED LOADING, WHICH IMPROVES LOADING TIMES, BUT WITH A LOW CHANCE FOR THE GAME FREEZE ON SONG LOAD -->
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN -->
@@ -63,7 +67,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<window width="1280" height="720" fps="60" background="#000000" hardware="true" vsync="false" allow-high-dpi="true"/>
 
 	<!--HTML5-specific-->
-	<window if="html5" resizable="true" />
+	<window if="html5" resizable="true" fullscreen="true" />
 
 	<!--Desktop-specific-->
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false"/>
@@ -94,31 +98,39 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- Assets -->
 	<assets path="assets/fonts" />
 	<assets path="assets/mobile" 		rename="assets/shared/mobile" if="TOUCH_CONTROLS_ALLOWED" />
-	<assets path="assets/shared"        exclude="*.mp3" if="web"/>
-	<assets path="assets/shared"        exclude="*.mp3" unless="web"/>
-	<assets path="assets/embed"         exclude="*.mp3" if="web" embed="true"/>
-	<assets path="assets/embed"         exclude="*.mp3" unless="web" embed="true"/>
 	<assets path="assets/videos"        if="VIDEOS_ALLOWED"/>
-	<assets path="assets/songs"         exclude="*.mp3" if="web"/>
-	<assets path="assets/songs"         exclude="*.mp3" unless="web"/>
-	<assets path="assets/week_assets"   rename="assets" exclude="*.mp3" if="web"/>
-	<assets path="assets/week_assets"   rename="assets" exclude="*.mp3" unless="web"/>
+
+	<assets path="assets/shared"         unless="web"/>
+	<assets path="assets/shared"         if="web"/>
+
+	<assets path="assets/embed"          if="web" embed="true"/>
+	<assets path="assets/embed"          unless="web" embed="false"/>
+	<assets path="assets/embed"          if="OPENFL_LOOKUP" unless="web" embed="true"/>
+
+	<assets path="assets/week_assets"   rename="assets"  if="web"/>
+	<assets path="assets/week_assets"   rename="assets"  unless="web"/>
+
 	<section if="TITLE_SCREEN_EASTER_EGG">
 		<assets path="assets/secrets" rename="assets/shared" exclude="*.ogg" if="web"/>
-		<assets path="assets/secrets" rename="assets/shared" exclude="*.mp3"  unless="web"/>
+		<assets path="assets/secrets" rename="assets/shared"   unless="web"/>
 	</section>
 
 	<section if="TRANSLATIONS_ALLOWED">
 		<assets path="assets/translations" rename="assets" exclude="*.ogg" if="web"/>
-		<assets path="assets/translations" rename="assets" exclude="*.mp3"  unless="web"/>
+		<assets path="assets/translations" rename="assets"   unless="web"/>
 	</section>
 
 	<section if="BASE_GAME_FILES">
-		<assets path="assets/base_game/shared/weeks" rename="assets/shared/weeks" embed='true' if="web"/>
-		<assets path="assets/base_game/shared/data" rename="assets/shared/data" embed='true' if="web"/>
-		<assets path="assets/base_game/shared/registry" rename="assets/shared/registry" embed='true' if="web"/>
-		<assets path="assets/base_game" rename="assets" exclude="*.mp3" embed='false' if="web"/>
-		<assets path="assets/base_game" rename="assets" exclude="*.mp3"  unless="web"/>
+		<section if="web">
+			<assets path="assets/base_game/week_data"   rename="assets" include="*.png|*.ogg" embed="false"/>
+			<assets path="assets/base_game/week_data"   rename="assets" include="*.xml|*.json" embed="true"/>
+			<assets path="assets/base_game/characters"   rename="assets/shared/images/characters" include="*.xml|*.json" embed="true"/>
+			<assets path="assets/base_game/characters"   rename="assets/shared/images/characters" include="*.png" embed="false"/>
+			<assets path="assets/base_game/shared" rename="assets/shared" embed="true"/>
+		</section>
+		<assets path="assets/base_game/week_data" rename="assets"   unless="web"/>
+		<assets path="assets/base_game/characters" rename="assets/shared/images/characters"   unless="web"/>
+		<assets path="assets/base_game/shared" rename="assets/shared"   unless="web"/>
 	</section>
 
 	<section if="MODS_ALLOWED">
@@ -149,8 +161,6 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<haxelib name="flxanimate"/>
 
-	<!-- Android Specific-->
-	<haxelib name="extension-androidtools" if="android" />
 	<!-- Category Type for Apple Systems -->
 	<config:ios category_type="public.app-category.music-games" />
 	<config:mac category_type="public.app-category.music-games" />
@@ -162,7 +172,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<section if="debug">
 		<!--These defines are mostly for testing (aren't required to be used)-->
 		<haxelib name="hxcpp-debug-server" />
-		<!--haxelib name="flixel-studio" /-->
+		<haxelib name="flixel-studio" />
+		<haxelib name="hscript"/>
 		<haxedef name="HXVLC_VERBOSE" value="2" />
 		<haxedef name="HXVLC_LOGGING" />
 	</section>
@@ -200,7 +211,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
-	
+	<!-- I hate you @superpowers04 for changing commits like that -->
+	<define name="SHUT_UP_LINC_LUAJIT" />
 	<!--Used for crash handler-->
 	<section if="cpp">
 		<haxedef name="HXCPP_CHECK_POINTER" />

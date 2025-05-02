@@ -1,9 +1,10 @@
 {
-	"songRating": 13,
-	"albumId": "expansion2",
+	"songRating": 4,
+	"albumId": "volume4",
 	"freeplayCharacter": "pico",
 	"freeplaySongLength": 85.875011,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "Ugh",
+	"altInstrumentalSongs": "ugh",
+	"allowErectVariants": true,
 	"freeplayPrevStart": 0
 }

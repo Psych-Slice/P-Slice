@@ -1,6 +1,7 @@
 package mikolka.stages.erect;
 
-import mikolka.compatibility.FreeplayHelpers;
+import mikolka.stages.objects.PicoCapableStage;
+import mikolka.compatibility.freeplay.FreeplayHelpers;
 #if !LEGACY_PSYCH
 import objects.Note.EventNote;
 #else
@@ -59,7 +60,7 @@ class LimoRideErect extends BaseStage
 		skyBG.updateHitbox();
 		add(skyBG);
 
-		star = new BGSprite('limo/erect/shooting star', 200, 0, 1, 1, ['shooting star']);
+		star = new BGSprite('limo/erect/shooting_star', 200, 0, 1, 1, ['shooting star']);
 		star.blend = BlendMode.ADD;
 		add(star);
 		if (VsliceOptions.SHADERS)
@@ -185,7 +186,10 @@ class LimoRideErect extends BaseStage
 		addBehindGF(fastCar);
 
 		var limo:BGSprite = new BGSprite('limo/erect/limoDrive', -120, 550, 1, 1, ['Limo stage'], true);
-		addBehindGF(limo); // Shitty layering but whatev it works LOL
+		if(FlxG.random.bool(25)){
+			addBehindGF(limo); // Shitty layering but whatev it works LOL
+		}
+		else insert(members.indexOf(game.gfGroup)+1, limo);
 		addBehindGF(mist4);
 		addBehindGF(mist3);
 
@@ -193,19 +197,25 @@ class LimoRideErect extends BaseStage
 		// add(mist1);
 		if (VsliceOptions.SHADERS)
 		{
-			grpLimoDancers.forEach(s -> s.shader = colorShader);
+			if(!VsliceOptions.LOW_QUALITY){
+				grpLimoDancers.forEach(s -> s.shader = colorShader);
+				limoCorpse.shader = colorShader;
+				limoCorpseTwo.shader = colorShader;
+
+				limoMetalPole.shader = colorShader;
+				limoBgMetalPole.shader = colorShader;
+				fastCar.shader = colorShader;
+				grpLimoParticles.forEach(s -> s.shader = colorShader);
+			}
 
 			limoLight.shader = colorShader;
-			limoMetalPole.shader = colorShader;
-			limoCorpse.shader = colorShader;
-			limoCorpseTwo.shader = colorShader;
 
-			limoBgMetalPole.shader = colorShader;
 			limoBglight.shader = colorShader;
 
 			gf.shader = colorShader;
 			dad.shader = colorShader;
 			boyfriend.shader = colorShader;
+			PicoCapableStage.instance?.applyABotShader(colorShader);
 		}
 	}
 
@@ -388,6 +398,16 @@ class LimoRideErect extends BaseStage
 		{
 			case "Kill Henchmen":
 				killHenchmen();
+		}
+		if(eventName == "Change Character" && VsliceOptions.SHADERS){
+			switch(value1.toLowerCase().trim()) {
+				case 'gf' | 'girlfriend' | '2':
+					gf.shader = colorShader;
+				case 'dad' | 'opponent' | '1':
+					dad.shader = colorShader;
+				default:
+					boyfriend.shader = colorShader;
+			}
 		}
 	}
 

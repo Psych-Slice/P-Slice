@@ -1,9 +1,10 @@
 {
-	"songRating": 11,
-	"albumId": "expansion2",
+	"songRating": 4,
+	"albumId": "volume4",
 	"freeplayCharacter": "pico",
 	"freeplaySongLength": 102.857143,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "Philly Nice",
+	"altInstrumentalSongs": "philly-nice",
+	"allowErectVariants": true,
 	"freeplayPrevStart": 0
 }

@@ -3,7 +3,7 @@ package mikolka.vslice.charSelect;
 import mikolka.compatibility.ModsHelper;
 import mikolka.vslice.charSelect.pslice.ModSelector;
 import mikolka.compatibility.VsliceOptions;
-import mikolka.compatibility.FreeplayHelpers;
+import mikolka.compatibility.freeplay.FreeplayHelpers;
 import mikolka.vslice.AttractState;
 import mikolka.vslice.freeplay.FreeplayState;
 import openfl.filters.BitmapFilter;
@@ -26,7 +26,7 @@ import mikolka.funkin.players.PlayerData;
 import mikolka.funkin.players.PlayerRegistry;
 import mikolka.funkin.FlxAtlasSprite;
 import openfl.filters.DropShadowFilter;
-import mikolka.compatibility.FunkinCamera;
+import mikolka.compatibility.funkin.FunkinCamera;
 import shaders.BlueFade;
 import mikolka.funkin.players.PlayableCharacter;
 import mikolka.vslice.freeplay.obj.PixelatedIcon;
@@ -38,7 +38,7 @@ import mikolka.funkin.FramesJSFLParser;
 import mikolka.funkin.FramesJSFLParser.FramesJSFLInfo;
 import mikolka.funkin.FramesJSFLParser.FramesJSFLFrame;
 import mikolka.funkin.custom.VsliceSubState as MusicBeatSubState;
-import mikolka.compatibility.FunkinPath as Paths;
+import mikolka.compatibility.funkin.FunkinPath as Paths;
 
 class CharSelectSubState extends MusicBeatSubState
 {

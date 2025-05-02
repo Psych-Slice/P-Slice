@@ -52,6 +52,9 @@ import mikolka.funkin.utils.*;
 import mikolka.funkin.custom.*;
 import mikolka.funkin.players.*;
 
+import mikolka.stages.cutscenes.dialogueBox.*;
+import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych.DialogueFile;
+import mikolka.stages.cutscenes.dialogueBox.styles.*;
 // Stage imports (for compatibility)
 import states.stages.objects.*;
 
@@ -76,7 +79,7 @@ import objects.Alphabet;
 import objects.BGSprite;
 
 import states.PlayState;
-import states.MainMenuState;
+import mikolka.vslice.ui.*;
 import states.StoryMenuState;
 import states.LoadingState;
 

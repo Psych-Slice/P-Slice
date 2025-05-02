@@ -293,21 +293,14 @@ class AlphaCharacter extends FlxSprite
 	public static function loadAlphabetData(request:String = 'alphabet')
 	{
 		var path:String = Paths.getPath('images/$request.json');
-		#if MODS_ALLOWED
-		if(!FileSystem.exists(path))
-		#else
-		if(!Assets.exists(path, TEXT))
-		#end
+		if(!NativeFileSystem.exists(path))
 			path = Paths.getPath('images/alphabet.json');
 
 		allLetters = new Map<String, Null<Letter>>();
 		try
 		{
-			#if MODS_ALLOWED
-			var data:Dynamic = Json.parse(File.getContent(path));
-			#else
-			var data:Dynamic = Json.parse(Assets.getText(path));
-			#end
+
+			var data:Dynamic = Json.parse(NativeFileSystem.getContent(path));
 
 			if(data.allowed != null && data.allowed.length > 0)
 			{
@@ -399,7 +392,11 @@ class AlphaCharacter extends FlxSprite
 			if(curLetter != null && curLetter.anim != null) alphaAnim = curLetter.anim;
 
 			var anim:String = alphaAnim + postfix;
+			#if debug //! This only exists to prevent annoying beeps!
+			animation.addByPrefix(anim, anim+" instance ", 24);
+			#else
 			animation.addByPrefix(anim, anim, 24);
+			#end
 			animation.play(anim, true);
 			if(animation.curAnim == null)
 			{

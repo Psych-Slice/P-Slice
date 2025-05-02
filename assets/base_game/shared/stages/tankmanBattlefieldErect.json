@@ -1,0 +1,28 @@
+{
+	"directory": "week7",
+	"defaultZoom": 0.8,
+	"stageUI": "",
+
+	"boyfriend": [895, -5],
+	"girlfriend": [315, 0],
+	"opponent": [-215, -45],
+		"camera_boyfriend": [-200, -100],
+	"camera_opponent": [200, -50],
+	"camera_girlfriend": [0, 0],
+
+	"preload": {
+		"images/tank0": 3,
+		"images/tank1": 2,
+		"images/tank2": 3,
+		"images/tank3": 2,
+		"images/tank4": 2,
+		"images/tank5": 3,
+		"images/erect/": 3
+	},
+
+	"_editorMeta": {
+		"dad": "tankman",
+		"boyfriend": "bf",
+		"gf": "gf-tankmen"
+	}
+}

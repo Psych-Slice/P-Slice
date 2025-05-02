@@ -7,7 +7,7 @@ import flixel.group.FlxSpriteGroup;
 import flixel.util.FlxSort;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
-import mikolka.compatibility.FunkinPath as Paths;
+import mikolka.compatibility.funkin.FunkinPath as Paths;
 
 /**
  * The graphic for the album roll in the FreeplayState.

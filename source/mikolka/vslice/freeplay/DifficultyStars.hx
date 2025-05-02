@@ -1,9 +1,10 @@
 package mikolka.vslice.freeplay;
 
+import mikolka.compatibility.VsliceOptions;
 import shaders.HSVShader;
 import mikolka.vslice.freeplay.obj.FreeplayFlames;
 import flixel.group.FlxSpriteGroup;
-import mikolka.compatibility.FunkinPath as Paths;
+import mikolka.compatibility.funkin.FunkinPath as Paths;
 
 class DifficultyStars extends FlxSpriteGroup
 {
@@ -28,19 +29,22 @@ class DifficultyStars extends FlxSpriteGroup
   {
     super(x, y);
 
-    hsvShader = new HSVShader();
-
+    
+    
     flames = new FreeplayFlames(0, 0);
     add(flames);
-
+    
     stars = new FlxAtlasSprite(0, 0, Paths.animateAtlas("freeplay/freeplayStars"));
     stars.anim.play("diff stars");
     add(stars);
+    if(VsliceOptions.SHADERS){
 
-    stars.shader = hsvShader;
-
-    for (memb in flames.members)
-      memb.shader = hsvShader;
+      hsvShader = new HSVShader();
+      stars.shader = hsvShader;
+      
+      for (memb in flames.members)
+        memb.shader = hsvShader;
+    }
   }
 
   override function update(elapsed:Float):Void

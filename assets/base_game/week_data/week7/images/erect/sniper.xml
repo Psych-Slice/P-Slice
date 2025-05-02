@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="sniper.png">
+	<!-- Created with Adobe Animate version 24.0.7.61 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Tankmanidlebaked instance 10000" x="0" y="0" width="295" height="358" frameX="-2" frameY="-6" frameWidth="297" frameHeight="364"/>
+	<SubTexture name="Tankmanidlebaked instance 10001" x="0" y="0" width="295" height="358" frameX="-2" frameY="-6" frameWidth="297" frameHeight="364"/>
+	<SubTexture name="Tankmanidlebaked instance 10002" x="300" y="0" width="296" height="358" frameX="0" frameY="-6" frameWidth="297" frameHeight="364"/>
+	<SubTexture name="Tankmanidlebaked instance 10003" x="300" y="0" width="296" height="358" frameX="0" frameY="-6" frameWidth="297" frameHeight="364"/>
+	<SubTexture name="Tankmanidlebaked instance 10004" x="601" y="0" width="293" height="362" frameX="-1" frameY="-2" frameWidth="297" frameHeight="364"/>
+	<SubTexture name="Tankmanidlebaked instance 10005" x="601" y="0" width="293" height="362" frameX="-1" frameY="-2" frameWidth="297" frameHeight="364"/>
+	<SubTexture name="Tankmanidlebaked instance 10006" x="899" y="0" width="291" height="364" frameX="-3" frameY="0" frameWidth="297" frameHeight="364"/>
+	<SubTexture name="Tankmanidlebaked instance 10007" x="899" y="0" width="291" height="364" frameX="-3" frameY="0" frameWidth="297" frameHeight="364"/>
+	<SubTexture name="Tankmanidlebaked instance 10008" x="1195" y="0" width="291" height="364" frameX="-3" frameY="0" frameWidth="297" frameHeight="364"/>
+	<SubTexture name="Tankmanidlebaked instance 10009" x="1195" y="0" width="291" height="364" frameX="-3" frameY="0" frameWidth="297" frameHeight="364"/>
+	<SubTexture name="Tankmanidlebaked instance 10010" x="1195" y="0" width="291" height="364" frameX="-3" frameY="0" frameWidth="297" frameHeight="364"/>
+	<SubTexture name="Tankmanidlebaked instance 10011" x="1195" y="0" width="291" height="364" frameX="-3" frameY="0" frameWidth="297" frameHeight="364"/>
+	<SubTexture name="Tankmanidlebaked instance 10012" x="1195" y="0" width="291" height="364" frameX="-3" frameY="0" frameWidth="297" frameHeight="364"/>
+	<SubTexture name="Tankmanidlebaked instance 10013" x="1195" y="0" width="291" height="364" frameX="-3" frameY="0" frameWidth="297" frameHeight="364"/>
+	<SubTexture name="Tankmanidlebaked instance 10014" x="1195" y="0" width="291" height="364" frameX="-3" frameY="0" frameWidth="297" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10000" x="1491" y="0" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10001" x="0" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10002" x="0" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10003" x="0" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10004" x="296" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10005" x="296" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10006" x="296" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10007" x="592" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10008" x="592" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10009" x="888" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10010" x="888" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10011" x="1184" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10012" x="1184" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10013" x="1480" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10014" x="1480" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10015" x="1480" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10016" x="1480" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10017" x="0" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10018" x="0" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10019" x="0" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10020" x="0" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10021" x="0" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10022" x="0" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10023" x="0" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10024" x="0" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10025" x="0" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10026" x="295" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10027" x="295" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10028" x="295" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10029" x="590" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10030" x="590" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10031" x="590" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10032" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10033" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10034" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10035" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10036" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10037" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10038" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10039" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10040" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10041" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10042" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10043" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10044" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10045" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10046" x="1181" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10047" x="1181" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10048" x="1181" y="738" width="290" height="364" frameX="0" frameY="0" frameWidth="291" frameHeight="364"/>
+	<SubTexture name="tanksippingBaked instance 10049" x="1476" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10050" x="1476" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10051" x="1476" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10052" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10053" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10054" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10055" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10056" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10057" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10058" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10059" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10060" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10061" x="885" y="738" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10062" x="0" y="1107" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10063" x="0" y="1107" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10064" x="0" y="1107" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10065" x="296" y="1107" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10066" x="296" y="1107" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10067" x="296" y="1107" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10068" x="1184" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10069" x="1184" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10070" x="888" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10071" x="888" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10072" x="592" y="369" width="291" height="364"/>
+	<SubTexture name="tanksippingBaked instance 10073" x="296" y="369" width="291" height="364"/>
+</TextureAtlas>

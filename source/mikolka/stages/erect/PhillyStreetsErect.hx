@@ -1,8 +1,14 @@
 package mikolka.stages.erect;
 
+import mikolka.stages.objects.PicoCapableStage;
+import mikolka.vslice.StickerSubState;
+import mikolka.compatibility.ModsHelper;
+import mikolka.compatibility.funkin.FunkinControls;
+import mikolka.compatibility.freeplay.FreeplayHelpers;
 import openfl.filters.BlurFilter;
 import mikolka.compatibility.VsliceOptions;
 import shaders.AdjustColorShader;
+//import openfl.display.ShaderParameter_Float;
 import flixel.addons.display.FlxBackdrop;
 import openfl.filters.ShaderFilter;
 import flixel.addons.display.FlxTiledSprite;
@@ -207,6 +213,7 @@ class PhillyStreetsErect extends BaseStage
         override function createPost()
         {
             super.createPost();
+            if(VsliceOptions.LAST_MOD.char_name == "pico") StickerSubState.STICKER_PACK = "weekend";
             spraycanPile = new BGSprite('SpraycanPile', 920, 1045, 1, 1);
 
             add(spraycanPile);
@@ -234,6 +241,7 @@ class PhillyStreetsErect extends BaseStage
                 boyfriend.shader = colorShader;
                 dad.shader = colorShader;
                 gf.shader = colorShader;
+                PicoCapableStage.instance?.applyABotShader(colorShader);
             }
         }
     
@@ -279,16 +287,21 @@ class PhillyStreetsErect extends BaseStage
             {
                 case 'darnell':
                     rainShaderStartIntensity = 0;
-                    rainShaderEndIntensity = 0.1;
+                    rainShaderEndIntensity = 0.01;
                 case 'lit-up':
-                    rainShaderStartIntensity = 0.1;
-                    rainShaderEndIntensity = 0.2;
+                    rainShaderStartIntensity = 0.01;
+                    rainShaderEndIntensity = 0.02;
                 case '2hot':
-                    rainShaderStartIntensity = 0.2;
-                    rainShaderEndIntensity = 0.4;
+                    rainShaderStartIntensity = 0.02;
+                    rainShaderEndIntensity = 0.04;
             }
             rainShader.intensity = rainShaderStartIntensity;
+            rainShader.rainColor = 0xFFa8adb5;
+            #if LEGACY_PSYCH
             FlxG.camera.setFilters([new ShaderFilter(rainShader)]);
+            #else
+            FlxG.camera.filters = [new ShaderFilter(rainShader)];
+            #end
         }
     
         override function update(elapsed:Float)
@@ -299,7 +312,7 @@ class PhillyStreetsErect extends BaseStage
             if (rainShader != null)
             {
                 var remappedIntensityValue:Float = FlxMath.remapToRange(Conductor.songPosition, 0, (FlxG.sound.music != null ? FlxG.sound.music.length : 0),
-                    rainShaderStartIntensity, rainShaderEndIntensity);
+                rainShaderStartIntensity, rainShaderEndIntensity);
                 rainShader.intensity = remappedIntensityValue;
                 rainShader.updateViewInfo(FlxG.width, FlxG.height, FlxG.camera);
                 rainShader.update(elapsed);

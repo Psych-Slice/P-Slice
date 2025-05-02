@@ -1,7 +1,7 @@
 package mikolka.vslice.freeplay;
 
 import flixel.graphics.FlxGraphic;
-import mikolka.compatibility.FunkinPath as Paths;
+import mikolka.compatibility.funkin.FunkinPath as Paths;
 
 /**
  * The sprite for the difficulty

@@ -1,4 +1,6 @@
 package;
+
+import mikolka.vslice.components.crash.Logger;
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import psychlua.HScript.HScriptInfos;
@@ -17,6 +19,10 @@ import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.app.Application;
 import states.TitleState;
+
+#if (linux || mac)
+import lime.graphics.Image;
+#end
 #if COPYSTATE_ALLOWED
 import states.CopyState;
 #end
@@ -28,30 +34,13 @@ import flixel.addons.studio.FlxStudio;
 #end
 
 #if (linux && !debug)
-import lime.graphics.Image;
 @:cppInclude('./external/gamemode_client.h')
 @:cppFileCode('#define GAMEMODE_AUTO')
 #end
 
-#if windows
-@:buildXml('
-<target id="haxe">
-	<lib name="wininet.lib" if="windows" />
-	<lib name="dwmapi.lib" if="windows" />
-</target>
-')
-@:cppFileCode('
-	#define GAMEMODE_AUTO
-#include <windows.h>
-#include <winuser.h>
-#pragma comment(lib, "Shell32.lib")
-extern "C" HRESULT WINAPI SetCurrentProcessExplicitAppUserModelID(PCWSTR AppID);
-')
-#end
-
 class Main extends Sprite
 {
-	var game = {
+	public static final game = {
 		width: 1280, // WINDOW width
 		height: 720, // WINDOW height
 		initialState: TitleState, // initial game state
@@ -81,13 +70,13 @@ class Main extends Sprite
 		#end
 		Sys.setCwd(StorageUtil.getStorageDirectory());
 		#end
+		#if sys Logger.startLogging(); 
+		trace("CWD IS "+StorageUtil.getStorageDirectory());
+		#end
 		backend.CrashHandler.init();
 
-		#if windows
-		// DPI Scaling fix for windows 
-		// this shouldn't be needed for other systems
-		// Credit to YoshiCrafter29 for finding this function
-		untyped __cpp__("SetProcessDPIAware();");
+		#if (cpp && windows)
+		backend.Native.fixScaling();
 		#end
 
 		if (stage != null)
@@ -221,13 +210,16 @@ class Main extends Sprite
 		#if mobile
 		FlxG.game.addChild(fpsVar);
 	  	#else
-		var border = new GameBorder();
-		addChild(border);
-		Lib.current.stage.window.onResize.add(border.updateGameSize);
+		#if !debug 
+			var border = new GameBorder();
+			addChild(border);
+			Lib.current.stage.window.onResize.add(border.updateGameSize);
+		#end
 		addChild(fpsVar);
 		#end
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
+		
 		if (fpsVar != null)
 		{
 			fpsVar.visible = ClientPrefs.data.showFPS;
@@ -249,7 +241,7 @@ class Main extends Sprite
 
 		
 
-		#if debug
+		#if (debug)
 		flixel.addons.studio.FlxStudio.create();
 		#end
 
@@ -270,11 +262,12 @@ class Main extends Sprite
 		DiscordClient.prepare();
 		#end
 
-		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
-
+		
 		#if mobile
+		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
 		lime.system.System.allowScreenTimeout = ClientPrefs.data.screensaver;
 		FlxG.scaleMode = new MobileScaleMode();
+		Application.current.window.vsync = ClientPrefs.data.vsync;
 		#end
 
 		// shader coords fix

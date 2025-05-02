@@ -87,8 +87,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		['Change Scroll Speed', "Value 1: Scroll Speed Multiplier (1 is default)\nValue 2: Time it takes to change fully in seconds."],
 		['Set Property', "Value 1: Variable name\nValue 2: New value"],
 		['Play Sound', "Value 1: Sound file name\nValue 2: Volume (Default: 1), ranges from 0 to 1"],
-		['SetCameraBop', "Sets how camera should bop.\nValue 1: Frequency (in beats)\nValue 2: Intensity scale (1 for default)"],
-		['ZoomCamera', "An attempt to emulate V-slice camera zoom.\nNot really accurate, but whatever.\n\nValue 1: Zoom length (in steps) and zoom scale.\n[separated with ',']\n\nValue 2: Zooming ease"]
+		['Set Camera Bopping', "Sets how camera should bop.\nValue 1: Frequency (in beats)\nValue 2: Intensity scale (1 for default)"],
+		['Zoom Camera', "An attempt to emulate V-slice camera zoom.\nNot really accurate, but whatever.\n\nValue 1: Zoom length (in steps) and zoom scale.\n[separated with ',']\n\nValue 2: Zooming ease"],
+		['Target Camera', "Focus camera on the specific point.\nThis will also lock the camera (like Camera Follow Pos)\n\nValue1:character to focus\nValue2: separated with ',' x, y, duration, ease"]
 	];
 	
 	public static var keysArray:Array<FlxKey> = [ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT]; //Used for Vortex Editor
@@ -2172,6 +2173,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			0,FlxG.sound.music.length/1000);
 		characterName.text = songMetadata.freeplayCharacter;
 		chk_allowNew.checked = songMetadata.allowNewTag;
+		chk_hasErect.checked = songMetadata.allowErectVariants;
 
 		txt_altInstSong.text = songMetadata.altInstrumentalSongs;
 		albumName.text = songMetadata.albumId;
@@ -3469,7 +3471,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 				var notetypeFile:Array<String> = CoolUtil.coolTextFile(parentFolder + 'notetypes.txt');
 				if(notetypeFile.length > 0)
 				{
-					for (ntTyp in notetypeFile)
+					for (ntTyp in notetypeFile) 
 					{
 						var name:String = ntTyp.trim();
 						if(!noteTypes.contains(name))
@@ -3706,6 +3708,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	var prevEndInput:PsychUINumericStepper;
 	var characterName:PsychUIInputText;
 	var chk_allowNew:PsychUICheckBox;
+	var chk_hasErect:PsychUICheckBox;
 
 	var txt_altVariantSong:PsychUIInputText;
 	var txt_altInstSong:PsychUIInputText;
@@ -3724,6 +3727,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		prevEndInput = new PsychUINumericStepper(20, 120,1,0,0,999,2,80);
 		albumName = new PsychUIInputText(180,120,100,"",8);
 		chk_allowNew = new PsychUICheckBox(180,30,"Show \"new\" tag");
+		chk_hasErect = new PsychUICheckBox(180,200,"Has erect variant");
 		
 		txt_altInstSong = new PsychUIInputText(20,160,250,"",8);
 
@@ -3745,6 +3749,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 		tab_group.add(meta_label(txt_altInstSong, 'Song alt vocals (separated with \',\'):'));
 		tab_group.add(txt_altInstSong);
+		tab_group.add(chk_hasErect);
 
 		tab_group.add(exportMetadataBtn);
 	}
@@ -3762,6 +3767,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		meta.albumId = albumName.text;
 		meta.freeplayCharacter = characterName.text;
 		meta.allowNewTag = chk_allowNew.checked;
+		meta.allowErectVariants = chk_hasErect.checked;
 		meta.freeplaySongLength = FlxG.sound.music.length/1000;
 		
 		var data:String = haxe.Json.stringify(meta, "\t");

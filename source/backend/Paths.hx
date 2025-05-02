@@ -48,7 +48,7 @@ class Paths
 				currentTrackedAssets.remove(key); // and remove the key from local cache map
 			}
 		}
-
+		
 		// run the garbage collector for good measure lmfao
 		System.gc();
 		#if cpp
@@ -67,6 +67,7 @@ class Paths
 		{
 			if (!currentTrackedAssets.exists(key))
 				destroyGraphic(FlxG.bitmap.get(key));
+			
 		}
 
 		// clear all sounds that are cached
@@ -251,9 +252,12 @@ class Paths
 			var file:String = getPath(key, IMAGE, parentFolder, true);
 			#if MODS_ALLOWED
 			if (FileSystem.exists(file))
-				bitmap = BitmapData.fromFile(file);
-			else #end if (OpenFlAssets.exists(file, IMAGE))
+				bitmap = BitmapData.fromFile(file); 
+			#end 
+			#if OPENFL_LOOKUP
+			if (bitmap == null && OpenFlAssets.exists(file, IMAGE))
 				bitmap = OpenFlAssets.getBitmapData(file);
+			#end
 
 			if (bitmap == null)
 			{
@@ -289,11 +293,7 @@ class Paths
 	inline static public function getTextFromFile(key:String, ?ignoreMods:Bool = false):String
 	{
 		var path:String = getPath(key, TEXT, !ignoreMods);
-		#if sys
-		return (FileSystem.exists(path)) ? File.getContent(path) : null;
-		#else
-		return (OpenFlAssets.exists(path, TEXT)) ? Assets.getText(path) : null;
-		#end
+		return (NativeFileSystem.exists(path)) ? NativeFileSystem.getContent(path) : null;
 	}
 
 	inline static public function font(key:String)
@@ -445,7 +445,8 @@ class Paths
 			#if sys
 			if(FileSystem.exists(file))
 				currentTrackedSounds.set(file, Sound.fromFile(file));
-			#else
+			#end
+			#if OPENFL_LOOKUP
 			if(OpenFlAssets.exists(file, SOUND))
 				currentTrackedSounds.set(file, OpenFlAssets.getSound(file));
 			#end
@@ -462,7 +463,7 @@ class Paths
 
 	#if MODS_ALLOWED
 	inline static public function mods(key:String = '')
-		return #if mobile Sys.getCwd() + #end 'mods/' + key;
+		return #if mobile StorageUtil.getStorageDirectory() + #end 'mods/' + key;
 
 	inline static public function modsJson(key:String)
 		return modFolders('data/' + key + '.json');
@@ -516,7 +517,7 @@ class Paths
 			}
 			#end
 		}
-		return #if mobile Sys.getCwd() + #end ('mods/' + key);
+		return #if mobile StorageUtil.getStorageDirectory() + #end ('mods/' + key);
 	}
 
 	#if linux
@@ -556,7 +557,7 @@ class Paths
 
 	static function findNode(dir:String, key:String):String {
 		try {
-			var allFiles:Array<String> = NativeFileSystem.readDirectory(dir);
+			var allFiles:Array<String> = sys.FileSystem.readDirectory(dir);
 			var fileMap:Map<String, String> = new Map();
 
 			for (file in allFiles) {

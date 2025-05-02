@@ -2,38 +2,42 @@ name: Main
 
 on:
   push:
-    branches: [master, master-dev]
+    branches: [master-dev]
   pull_request:
-    branches: [master, master-dev]
+    branches: [master-dev]
   workflow_dispatch:
-
 jobs:
   BuildDesktop:
     name: ${{ matrix.name }}
+    permissions: write-all
     strategy:
       matrix:
         include:
           - name: Windows
             os: windows-2022
             buildArgs: windows
+            exportPath: windows
             artifactName: P-Slice.1.0.windows
             setupScript: .\"setup/windows.bat"
             artifactPath: export\release\windows\bin\*
           - name: Linux
             os: ubuntu-22.04
             buildArgs: linux
+            exportPath: linux
             setupScript: sh ./setup/unix.sh
             artifactName: P-Slice.1.0.linux
             artifactPath: export/release/linux/bin/*
-          - name: macOS x86_64
-            os: macos-14
-            buildArgs: "mac -64 -D HXCPP_M64"
-            setupScript: sh ./setup/mobile.sh
-            artifactName: P-Slice.1.0.macosx64
-            artifactPath: export/release/macos/bin/*
+          # - name: macOS x86_64
+          #   os: macos-14
+          #   buildArgs: "mac -64 -D HXCPP_M64"
+          #   exportPath: macos
+          #   setupScript: sh ./setup/mobile.sh
+          #   artifactName: P-Slice.1.0.macosx64
+          #   artifactPath: export/release/macos/bin/*
           - name: macOS AArch64
             os: macos-15
             buildArgs: mac
+            exportPath: macos
             setupScript: sh ./setup/mobile.sh
             artifactName: P-Slice.1.0.macosarm64
             artifactPath: export/release/macos/bin/*
@@ -43,15 +47,18 @@ jobs:
       os: ${{ matrix.os }}
       buildArgs: ${{ matrix.buildArgs }}
       setupScript: ${{ matrix.setupScript }}
+      exportPath: ${{ matrix.exportPath }}
       artifactName: ${{ matrix.artifactName }}
       artifactPath: ${{ matrix.artifactPath }}
   BuildMobile:
+    permissions: write-all
     name: ${{ matrix.name }}
     strategy:
       matrix:
         include:
           - name: Android
             os: macos-15
+            exportPath: android
             buildArgs: "android"
             setupScript: sh ./setup/mobile.sh
             artifactName: P-Slice.1.0.android
@@ -59,6 +66,7 @@ jobs:
           - name: iOS
             os: macos-15
             buildArgs: "ios -nosign"
+            exportPath: ios
             setupScript: sh ./setup/mobile.sh
             artifactName: P-Slice.1.0.ios
             artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
@@ -68,5 +76,6 @@ jobs:
       os: ${{ matrix.os }}
       buildArgs: ${{ matrix.buildArgs }}
       setupScript: ${{ matrix.setupScript }}
+      exportPath: ${{ matrix.exportPath }}
       artifactName: ${{ matrix.artifactName }}
       artifactPath: ${{ matrix.artifactPath }}

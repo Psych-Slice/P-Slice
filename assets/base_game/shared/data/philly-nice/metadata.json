@@ -1,9 +1,10 @@
 {
-	"songRating": 2,
+	"songRating": 3,
 	"albumId": "volume1",
 	"freeplayCharacter": "",
 	"freeplaySongLength": 98.058027,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "Philly Nice (Pico Mix)",
+	"altInstrumentalSongs": "philly-nice (Pico Mix)",
+	"allowErectVariants": true,
 	"freeplayPrevStart": 0
 }

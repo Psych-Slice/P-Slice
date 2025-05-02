@@ -71,30 +71,36 @@
 		 shouldCopy = true;
  
 		 add(new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xffcaff4d));
- 
+		 #if OPENFL_LOOKUP
 		 loadingImage = new FlxSprite(0, 0, Paths.image('funkay'));
 		 loadingImage.setGraphicSize(0, FlxG.height);
 		 loadingImage.updateHitbox();
 		 loadingImage.screenCenter();
 		 add(loadingImage);
+		 #end
  
 		 loadingBar = new FlxBar(0, FlxG.height - 26, FlxBarFillDirection.LEFT_TO_RIGHT, FlxG.width, 26);
 		 loadingBar.setRange(0, maxLoopTimes);
 		 add(loadingBar);
- 
+
+		 #if OPENFL_LOOKUP
 		 loadedText = new FlxText(loadingBar.x, loadingBar.y + 4, FlxG.width, '', 16);
 		 loadedText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER);
 		 add(loadedText);
+		 #end
  
-		 thread = new ThreadPool(0, CoolUtil.getCPUThreadsCount(), MULTI_THREADED);
-		 new FlxTimer().start(0.5, (tmr) -> {
-			 thread.run(function(poop, shit) {
-				 for (file in locatedFiles)
-				 {
-					 loopTimes++;
-					 copyAsset(file);
-				 }
-			 }, null);
+		 thread = new ThreadPool(0, CoolUtil.getCPUThreadsCount());
+		 thread.doWork.add(function(poop)
+		 {
+			 for (file in locatedFiles)
+			 {
+				 loopTimes++;
+				 copyAsset(file);
+			 }
+		 });
+		 new FlxTimer().start(0.5, (tmr) ->
+		 {
+			 thread.queue({});
 		 });
  
 		 super.create();
@@ -121,11 +127,13 @@
 		 
 				 canUpdate = false;
 			 }
- 
+			 
+			 #if OPENFL_LOOKUP
 			 if (loopTimes >= maxLoopTimes)
 				 loadedText.text = "Completed!";
 			 else
 				 loadedText.text = '$loopTimes/$maxLoopTimes';
+			 #end
  
 			 loadingBar.percent = Math.min((loopTimes / maxLoopTimes) * 100, 100);
 		 }

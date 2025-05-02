@@ -1,20 +1,12 @@
 package mikolka.vslice;
 
-import openfl.filters.GlowFilter;
-import openfl.display.SpreadMethod;
-import openfl.display.GradientType;
-import openfl.geom.Matrix;
-import openfl.filters.BlurFilter;
+#if sys import mikolka.vslice.components.crash.Logger; #end
 import openfl.events.MouseEvent;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
-import flash.display.BlendMode;
-import flash.display.Sprite;
 import flash.Lib;
 import flixel.system.FlxBasePreloader;
 import mikolka.funkin.utils.MathUtil;
-import lime.app.Future;
-import lime.math.Rectangle;
 import openfl.display.Sprite;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
@@ -26,7 +18,7 @@ using StringTools;
 // Annotation embeds the asset in the executable for faster loading.
 // Polymod can't override this, so we can't use this technique elsewhere.
 
-@:bitmap("art/preloaderArt.png")
+@:bitmap("art/banner.png")
 class LogoImage extends BitmapData {}
 
 #if TOUCH_HERE_TO_PLAY
@@ -130,13 +122,13 @@ class FunkinPreloader extends FlxBasePreloader
 
   public function new()
   {
-    super(0.0);
+    super(0.0,["psych-slice.github.io",FlxBasePreloader.LOCAL]);
 
     // We can't even call trace() yet, until Flixel loads.
     trace('Initializing custom preloader...');
 
     this.siteLockTitleText = "You Loser!";
-    this.siteLockBodyText = "This isn't Newgrounds!\nGo play Friday Night Funkin' on Newgrounds:";
+    //this.siteLockBodyText = "This isn't Newgrounds!\nGo play Friday Night Funkin' on Newgrounds:";
   }
 
   override function create():Void
@@ -153,7 +145,7 @@ class FunkinPreloader extends FlxBasePreloader
     this._height = Lib.current.stage.stageHeight;
 
     // Tux icon!!!
-    #if linux
+    #if (linux || mac) // fix the app icon not showing up on the Linux Panel 
 		var icon = lime.graphics.Image.fromFile("icon.png");
 		Lib.current.stage.window.setIcon(icon);
 		#end

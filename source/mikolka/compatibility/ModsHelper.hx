@@ -1,7 +1,6 @@
 package mikolka.compatibility;
 
 import openfl.filters.BitmapFilter;
-import flixel.system.FlxSound;
 import flixel.util.FlxSort;
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
@@ -18,6 +17,12 @@ class ModsHelper {
 	}
 	public inline static function getActiveMod():String {
 		return Mods.currentModDirectory;
+	}
+	public inline static function resetActiveMods() {
+		#if MODS_ALLOWED
+		Mods.pushGlobalMods();
+		#end
+		Mods.loadTopMod();
 	}
 	public static function getModsWithPlayersRegistry():Array<String> {
 		#if MODS_ALLOWED
@@ -65,7 +70,7 @@ class ModsHelper {
 		dirsToList = dirsToList.concat(modsToSearch);
 		var commercialsToSelect = new Array<String>();
 		for(potencialComercials in dirsToList){
-		  for (file in FileSystem.readDirectory(potencialComercials).filter(s -> s.endsWith(".mp4"))) {
+		  for (file in NativeFileSystem.readDirectory(potencialComercials).filter(s -> s.endsWith(".mp4"))) {
 			commercialsToSelect.push(potencialComercials + '/'+file);
 		  }
 		}

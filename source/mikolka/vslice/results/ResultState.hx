@@ -6,13 +6,13 @@ import mikolka.funkin.FlxAtlasSprite;
 import mikolka.funkin.FunkinSprite;
 import mikolka.funkin.players.PlayerData;
 import flixel.FlxSubState;
-import mikolka.compatibility.FreeplayHelpers;
-import mikolka.compatibility.FunkinPath as Paths;
+import mikolka.compatibility.freeplay.FreeplayHelpers;
+import mikolka.compatibility.funkin.FunkinPath as Paths;
 import mikolka.vslice.results.Tallies.SaveScoreData;
-import mikolka.compatibility.FunkinCamera;
+import mikolka.compatibility.funkin.FunkinCamera;
 import mikolka.vslice.freeplay.FreeplayState;
 import flixel.addons.transition.FlxTransitionableState;
-import substates.StickerSubState;
+import mikolka.vslice.StickerSubState;
 import mikolka.funkin.Scoring;
 import shaders.LeftMaskShader;
 import flixel.FlxSprite;
@@ -446,7 +446,7 @@ class ResultState extends MusicBeatSubState
       if (Paths.exists('music/$introMusic.ogg'))
       {
         // Play the intro music.
-        FunkinSound.load(Paths.music(introMusic), 1.0, false, true, true, () -> {
+        FlxG.sound.music = FunkinSound.load(Paths.music(introMusic), 1.0, false, true, true, () -> {
           FunkinSound.playMusic(getMusicPath(playerCharacter, rank),
             {
               startingVolume: 1.0,

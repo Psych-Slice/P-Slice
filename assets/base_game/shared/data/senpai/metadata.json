@@ -4,6 +4,7 @@
 	"freeplayCharacter": "",
 	"freeplaySongLength": 106.666667,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "",
+	"altInstrumentalSongs": "senpai (Pico Mix)",
+	"allowErectVariants": true,
 	"freeplayPrevStart": 0
 }

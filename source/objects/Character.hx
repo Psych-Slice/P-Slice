@@ -9,7 +9,7 @@ import openfl.utils.Assets;
 import haxe.Json;
 
 import backend.Song;
-import states.stages.objects.TankmenBG;
+import mikolka.stages.objects.TankmenBG;
 
 typedef CharacterFile = {
 	var animations:Array<AnimArray>;
@@ -92,7 +92,7 @@ class Character extends FlxSprite
 		
 		switch(curCharacter)
 		{
-			case 'pico-speaker':
+			case 'pico-speaker'|'otis-speaker':
 				skipDance = true;
 				loadMappedAnims();
 				playAnim("shoot1");
@@ -109,11 +109,7 @@ class Character extends FlxSprite
 		var characterPath:String = 'characters/$character.json';
 
 		var path:String = Paths.getPath(characterPath, TEXT);
-		#if MODS_ALLOWED
-		if (!FileSystem.exists(path))
-		#else
-		if (!Assets.exists(path))
-		#end
+		if (!NativeFileSystem.exists(path))
 		{
 			path = Paths.getSharedPath('characters/' + DEFAULT_CHARACTER + '.json'); //If a character couldn't be found, change him to BF just to prevent a crash
 			missingCharacter = true;
@@ -123,11 +119,7 @@ class Character extends FlxSprite
 
 		try
 		{
-			#if MODS_ALLOWED
-			loadCharacterFile(Json.parse(File.getContent(path)));
-			#else
-			loadCharacterFile(Json.parse(Assets.getText(path)));
-			#end
+			loadCharacterFile(Json.parse(NativeFileSystem.getContent(path)));
 		}
 		catch(e:Dynamic)
 		{
@@ -220,8 +212,10 @@ class Character extends FlxSprite
 				{
 					if(animIndices != null && animIndices.length > 0)
 						atlas.anim.addBySymbolIndices(animAnim, animName, animIndices, animFps, animLoop);
-					else
+					else if (atlas.anim.symbolDictionary.exists(animName)) //? Allow us to use labels please
 						atlas.anim.addBySymbol(animAnim, animName, animFps, animLoop);
+					else //? Allow us to use labels please
+						atlas.anim.addByFrameLabel(animAnim, animName, animFps, animLoop);
 				}
 				#end
 
@@ -273,7 +267,7 @@ class Character extends FlxSprite
 
 		switch(curCharacter)
 		{
-			case 'pico-speaker':
+			case 'pico-speaker'|'otis-speaker':
 				if(animationNotes.length > 0 && Conductor.songPosition > animationNotes[0][0])
 				{
 					var noteData:Int = 1;

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="spritesheet.png">
+	<SubTexture name="knifetosscolor0000" x="0" y="0" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0001" x="0" y="0" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0002" x="61" y="0" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0003" x="61" y="0" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0004" x="122" y="0" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0005" x="122" y="0" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0006" x="183" y="0" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0007" x="183" y="0" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0008" x="183" y="0" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0009" x="183" y="0" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0010" x="0" y="68" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0011" x="0" y="68" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0012" x="61" y="68" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0013" x="61" y="68" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0014" x="122" y="68" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0015" x="122" y="68" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0016" x="183" y="68" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0017" x="183" y="68" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0018" x="183" y="68" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0019" x="183" y="68" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0020" x="0" y="136" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0021" x="0" y="136" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0022" x="0" y="136" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0023" x="0" y="136" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0024" x="61" y="136" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0025" x="61" y="136" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0026" x="61" y="136" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+	<SubTexture name="knifetosscolor0027" x="61" y="136" width="60" height="67" frameX="0" frameY="0" frameWidth="60" frameHeight="67" />
+</TextureAtlas>

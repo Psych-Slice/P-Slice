@@ -6,7 +6,6 @@ import flixel.math.FlxRandom;
 import backend.WeekData;
 import mikolka.vslice.results.ResultState;
 import objects.Character;
-import states.MainMenuState;
 
 class ResultPreviewMenu extends MusicBeatState
 {

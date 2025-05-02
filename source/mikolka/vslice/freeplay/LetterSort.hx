@@ -1,7 +1,7 @@
 package mikolka.vslice.freeplay;
 
-import mikolka.compatibility.FunkinControls as Controls;
-import mikolka.compatibility.FunkinPath as Paths;
+import mikolka.compatibility.funkin.FunkinControls as Controls;
+import mikolka.compatibility.funkin.FunkinPath as Paths;
 
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;

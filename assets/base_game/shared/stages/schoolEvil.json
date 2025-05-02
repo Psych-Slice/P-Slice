@@ -14,8 +14,8 @@
 	"camera_speed": 1,
 
 	"preload": {
-		"images/weeb/animatedEvilSchool_low": 1,
-		"images/weeb/animatedEvilSchool": 2,
+		"images/weeb/evilSchoolBG": 3,
+		"images/weeb/evilSchoolFG": 3,
 		"images/weeb/bgGhouls": 2
 	},
 

@@ -10,7 +10,13 @@ class BaseGameSubState extends BaseOptionsMenu {
 			'vsliceFreeplayColors',
 			BOOL);
 		addOption(option);
-
+		#if sys
+		var option:Option = new Option('Logging type',
+			'Controls verbosity of the game\'s logs',
+			'loggingType',
+			STRING,["None","Console","File"]);
+		addOption(option);
+		#end
 		var option:Option = new Option('Use results screen',
 			'If disabled will skip showing the result screen',
 			'vsliceResults',
@@ -19,6 +25,11 @@ class BaseGameSubState extends BaseOptionsMenu {
 		var option:Option = new Option('Smooth health bar',
 			'If enabled makes health bar move more smoothly',
 			'vsliceSmoothBar',
+			BOOL,);
+		addOption(option);
+		var option:Option = new Option('Use legacy bar',
+			'Makes health bar and score text much simpler',
+			'vsliceLegacyBar',
 			BOOL,);
 		addOption(option);
 		var option:Option = new Option('Special freeplay cards',

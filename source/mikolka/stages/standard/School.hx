@@ -1,20 +1,24 @@
 package mikolka.stages.standard;
 
+import mikolka.stages.cutscenes.SchoolDoof;
+import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych;
+import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych.DialogueFile;
 import mikolka.compatibility.VsliceOptions;
 
 #if !LEGACY_PSYCH
 import substates.GameOverSubstate;
-import cutscenes.DialogueBox;
 #end
 import openfl.utils.Assets as OpenFlAssets;
 
 class School extends BaseStage
 {
 	var bgGirls:BackgroundGirls;
+	var dialogue:DialogueFile;
 	override function create()
 	{
 		var _song = PlayState.SONG;
 		#if LEGACY_PSYCH
+		PlayState.SONG.splashSkin = "pixelNoteSplash";
 		GameOverSubstate.deathSoundName = 'fnf_loss_sfx-pixel';
 		GameOverSubstate.loopSoundName = 'gameOver-pixel';
 		GameOverSubstate.endSoundName = 'gameOverEnd-pixel';
@@ -32,7 +36,7 @@ class School extends BaseStage
 
 		var repositionShit = -200;
 
-		var bgSchool:BGSprite = new BGSprite('weeb/weebSchool', repositionShit, 0, 0.6, 0.90);
+		var bgSchool:BGSprite = new BGSprite('weeb/weebSchool', repositionShit, 0, 0.75, 0.75);
 		add(bgSchool);
 		bgSchool.antialiasing = false;
 
@@ -92,9 +96,9 @@ class School extends BaseStage
 		}
 		if(isStoryMode && !seenCutscene)
 		{
-			if(songName == 'roses' || songName == "roses-erect") FlxG.sound.play(Paths.sound('ANGRY'));
-			initDoof();
-			setStartCallback(schoolIntro);
+			var cutscene = new SchoolDoof(songName);
+			if(songName == 'roses' || songName == "roses-erect") setStartCallback(cutscene.doAngryIntro);
+			setStartCallback(cutscene.doSchoolIntro);
 		}
 	}
 
@@ -111,67 +115,5 @@ class School extends BaseStage
 			case "BG Freaks Expression":
 				if(bgGirls != null) bgGirls.swapDanceType();
 		}
-	}
-
-	var doof:DialogueBox = null;
-	function initDoof()
-	{
-		#if LEGACY_PSYCH
-		var file:String = Paths.txt('$songName/${songName}Dialogue'); //Checks for vanilla/Senpai dialogue
-		#else
-		var file:String = Paths.txt('$songName/${songName}Dialogue_${ClientPrefs.data.language}'); //Checks for vanilla/Senpai dialogue
-		#end
-		#if MODS_ALLOWED
-		if (!FileSystem.exists(file))
-		#else
-		if (!OpenFlAssets.exists(file))
-		#end
-		{
-			file = Paths.txt('$songName/${songName}Dialogue');
-		}
-
-		#if MODS_ALLOWED
-		if (!FileSystem.exists(file))
-		#else
-		if (!OpenFlAssets.exists(file))
-		#end
-		{
-			startCountdown();
-			return;
-		}
-
-		doof = new DialogueBox(false, CoolUtil.coolTextFile(file));
-		doof.cameras = [camHUD];
-		doof.scrollFactor.set();
-		doof.finishThing = startCountdown;
-		@:privateAccess{
-			doof.nextDialogueThing = PlayState.instance.startNextDialogue;
-			doof.skipDialogueThing = PlayState.instance.skipDialogue;
-		}
-	}
-	
-	function schoolIntro():Void
-	{
-		inCutscene = true;
-		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
-		black.scrollFactor.set();
-		if(songName == 'senpai') add(black);
-
-		new FlxTimer().start(0.3, function(tmr:FlxTimer)
-		{
-			black.alpha -= 0.15;
-
-			if (black.alpha <= 0)
-			{
-				if (doof != null)
-					add(doof);
-				else
-					startCountdown();
-
-				remove(black);
-				black.destroy();
-			}
-			else tmr.reset(0.3);
-		});
 	}
 }

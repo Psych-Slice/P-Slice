@@ -10,7 +10,7 @@
     "gf": ["gfSticker1", "gfSticker2", "gfSticker3"]
   },
   "stickerPacks": {
-    "bf-gf": ["bf", "gf"],
+    "tutorial": ["bf", "gf"],
     "parents": ["dad", "mom"],
     "all": ["bf", "gf", "dad", "mom", "monster", "pico"]
   }

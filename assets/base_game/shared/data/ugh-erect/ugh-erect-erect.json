@@ -3653,8 +3653,7 @@
 				[
 					77647.0588235294,
 					0,
-					308.823529411765,
-					"Alt Animation"
+					308.823529411765
 				],
 				[
 					78000,
@@ -3704,7 +3703,7 @@
 	"song": "Ugh Erect",
 	"generatedBy": "P-Slice converter",
 	"format": "psych_v1_convert",
-	"stage": "tank",
+	"stage": "tankmanBattlefieldErect",
 	"bpm": 170,
 	"artist": "Kawai Sprite",
 	"speed": 2.4

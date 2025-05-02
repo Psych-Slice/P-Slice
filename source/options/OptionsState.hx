@@ -1,7 +1,7 @@
 package options;
 
 import mikolka.vslice.components.crash.UserErrorSubstate;
-import states.MainMenuState;
+
 import backend.StageData;
 import flixel.FlxObject;
 #if (target.threaded)
@@ -46,8 +46,8 @@ class OptionsState extends MusicBeatState
 				if (controls.mobileC)
 				{
 					funnyCam.visible = persistentUpdate = true;
-					openSubState(new UserErrorSubstate("Unsupported controls", 
-					"You don't need to go there on mobile!\n\nIf you wish to go there anyway\nSet 'Mobile Controls Opacity' to 0%"));
+					UserErrorSubstate.makeMessage("Unsupported controls", 
+					"You don't need to go there on mobile!\n\nIf you wish to go there anyway\nSet 'Mobile Controls Opacity' to 0%");
 				}
 				else
 					openSubState(new options.ControlsSubState());
@@ -65,8 +65,10 @@ class OptionsState extends MusicBeatState
 			case 'Mobile Options':
 				openSubState(new mobile.options.MobileOptionsSubState());
 			#end
+			#if TRANSLATIONS_ALLOWED
 			case 'Language':
 				openSubState(new options.LanguageSubState());
+			#end
 		}
 	}
 
@@ -171,7 +173,7 @@ class OptionsState extends MusicBeatState
 				if(grpOptions.members.length > 6) {
 					thing = grpOptions.members.length * 2;
 				}
-				camFollow.setPosition(635, item.getGraphicMidpoint().y + 100 - thing);
+				camFollow.setPosition(635, item.y + 100 - thing);
 			}
 		}
 

@@ -1,5 +1,6 @@
 package states;
 
+import states.editors.ChartingState;
 import backend.WeekData;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -14,7 +15,6 @@ import openfl.display.BitmapData;
 import shaders.ColorSwap;
 import states.StoryMenuState;
 import states.OutdatedState;
-import states.MainMenuState;
 import mikolka.vslice.components.ScreenshotPlugin;
 #if VIDEOS_ALLOWED
 import mikolka.vslice.AttractState;

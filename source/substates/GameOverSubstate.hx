@@ -10,7 +10,7 @@ import flixel.FlxSubState;
 import flixel.math.FlxPoint;
 
 import states.StoryMenuState;
-import substates.StickerSubState;
+import mikolka.vslice.StickerSubState;
 
 class GameOverSubstate extends MusicBeatSubstate
 {
@@ -153,19 +153,28 @@ class GameOverSubstate extends MusicBeatSubstate
 			{
 				switch(PlayState.SONG.stage)
 				{
-					case 'tank':
+					case 'tank'|'tankmanBattlefieldErect':
 						coolStartDeath(0.2);
-						
-						var exclude:Array<Int> = [];
-						//if(!ClientPrefs.cursing) exclude = [1, 3, 8, 13, 17, 21];
-	
-						FlxG.sound.play(Paths.sound('jeffGameover/jeffGameover-' + FlxG.random.int(1, 25, exclude)), 1, false, null, true, function() {
+						var onEnd = function() {
 							if(!isEnding)
 							{
 								FlxG.sound.music.fadeIn(0.2, 1, 4);
 							}
-						});
-
+						};
+						switch (PlayState.SONG.player1){
+							case "bf-holding-bf"|"bf":{
+								var exclude:Array<Int> = [];
+								//if(!ClientPrefs.cursing) exclude = [1, 3, 8, 13, 17, 21];
+								FlxG.sound.play(Paths.sound('jeffGameover/jeffGameover-' + FlxG.random.int(1, 25, exclude)), 1, false, null, true,onEnd);
+							}
+							case "pico-playable"|"pico-holding-nene":{
+								FlxG.sound.play(Paths.sound('jeffGameover-pico/jeffGameover-' + FlxG.random.int(1, 9)), 1, false, null, true,onEnd);
+							}
+							default:{
+								FlxG.sound.play(Paths.sound('jeffGameover-pico/jeffGameover-10'), 1, false, null, true,onEnd);
+							}
+						};
+ 					//? Another hardcoding lol
 					default:
 						coolStartDeath();
 				}

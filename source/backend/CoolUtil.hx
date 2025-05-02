@@ -21,11 +21,7 @@ class CoolUtil
 	inline public static function coolTextFile(path:String):Array<String>
 	{
 		var daList:String = null;
-		#if (sys && MODS_ALLOWED)
-		if(FileSystem.exists(path)) daList = File.getContent(path);
-		#else
-		if(Assets.exists(path)) daList = Assets.getText(path);
-		#end
+		if(NativeFileSystem.exists(path)) daList = NativeFileSystem.getContent(path);
 		return daList != null ? listFromString(daList) : [];
 	}
 
@@ -66,12 +62,7 @@ class CoolUtil
 		if(decimals < 1)
 			return Math.floor(value);
 
-		var tempMult:Float = 1;
-		for (i in 0...decimals)
-			tempMult *= 10;
-
-		var newValue:Float = Math.floor(value * tempMult);
-		return newValue / tempMult;
+		return Math.floor(value * Math.pow(10, decimals)) / Math.pow(10, decimals);
 	}
 	#if linux
 	public static function sortAlphabetically(list:Array<String>):Array<String> {

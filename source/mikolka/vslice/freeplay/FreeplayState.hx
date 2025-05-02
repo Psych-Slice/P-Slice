@@ -1,10 +1,11 @@
 package mikolka.vslice.freeplay;
 
+import mikolka.vslice.ui.MainMenuState;
+import mikolka.vslice.freeplay.backcards.LuaCard;
 import mikolka.vslice.freeplay.obj.CapsuleOptionsMenu;
-import mikolka.compatibility.FunkinControls;
+import mikolka.compatibility.funkin.FunkinControls;
 import mikolka.vslice.charSelect.CharSelectSubState;
 import openfl.filters.ShaderFilter;
-import mikolka.vslice.freeplay.backcards.PicoCard;
 import mikolka.vslice.freeplay.backcards.NewCharacterCard;
 import mikolka.vslice.freeplay.backcards.PicoCard;
 import mikolka.funkin.freeplay.FreeplayStyleRegistry;
@@ -15,12 +16,11 @@ import mikolka.vslice.freeplay.backcards.BackingCard;
 import mikolka.vslice.freeplay.DJBoyfriend.FreeplayDJ;
 import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.VsliceOptions;
-import mikolka.compatibility.FunkinCamera;
+import mikolka.compatibility.funkin.FunkinCamera;
 import mikolka.vslice.freeplay.pslice.BPMCache;
-import mikolka.vslice.freeplay.pslice.FreeplayColorTweener;
-import mikolka.compatibility.FreeplaySongData;
-import mikolka.compatibility.FreeplayHelpers;
-import mikolka.compatibility.FunkinPath as Paths;
+import mikolka.compatibility.freeplay.FreeplaySongData;
+import mikolka.compatibility.freeplay.FreeplayHelpers;
+import mikolka.compatibility.funkin.FunkinPath as Paths;
 import mikolka.funkin.custom.VsliceSubState as MusicBeatSubstate;
 import openfl.utils.AssetCache;
 import mikolka.funkin.AtlasText;
@@ -29,19 +29,15 @@ import shaders.HSVShader;
 import shaders.StrokeShader;
 import shaders.AngleMask;
 import mikolka.funkin.IntervalShake;
-import substates.StickerSubState;
+import mikolka.vslice.StickerSubState;
 import mikolka.funkin.Scoring.ScoringRank;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxCamera;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
-import flixel.input.touch.FlxTouch;
-import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
 import openfl.display.BlendMode;
-import flixel.system.debug.watch.Tracker.TrackerProfile;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -176,7 +172,6 @@ class FreeplayState extends MusicBeatSubstate
 	var curPlaying:Bool = false;
 
 	var dj:Null<FreeplayDJ> = null;
-	var djTouchHitbox:FlxSprite = new FlxSprite(78, 308);
 
 	var ostName:FlxText;
 	var albumRoll:AlbumRoll;
@@ -276,6 +271,10 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			switch (currentCharacterId)
 			{
+				#if (!LEGACY_PSYCH && HSCRIPT_ALLOWED)
+				case (LuaCard.hasCustomCard(currentCharacterId)) => true:
+					backingCard = new LuaCard(currentCharacter,currentCharacterId,stickerSubState == null);
+				#end
 				case(PlayerRegistry.instance.hasNewCharacter()) => true:
 					backingCard = new NewCharacterCard(currentCharacter);
 				case 'bf':
@@ -404,11 +403,6 @@ class FreeplayState extends MusicBeatSubstate
 			});
 		}
 
-		djTouchHitbox = djTouchHitbox.makeGraphic(250, 250, FlxColor.TRANSPARENT);
-		djTouchHitbox.cameras = dj.cameras;
-		djTouchHitbox.active = false;
-		add(djTouchHitbox);
-
 		bgDad.shader = angleMaskShader;
 		bgDad.visible = false;
 
@@ -523,7 +517,7 @@ class FreeplayState extends MusicBeatSubstate
 		charSelectHint.alignment = CENTER;
 		charSelectHint.font = "5by7";
 		charSelectHint.color = 0xFF5F5F5F;
-		charSelectHint.text = controls.mobileC ? 'Touch on the DJ to change characters' : 'Press [ TAB ] to change characters'; // ?! ${controls.getDialogueNameFromControl(FREEPLAY_CHAR_SELECT, true)}
+		charSelectHint.text = controls.mobileC ? 'Touch [ X ] to change characters' : 'Press [ ${FunkinControls.FREEPLAY_CHAR_name()} ] to change characters'; // ?! ${controls.getDialogueNameFromControl(FREEPLAY_CHAR_SELECT, true)}
 		charSelectHint.y -= 100;
 		FlxTween.tween(charSelectHint, {y: charSelectHint.y + 100}, 0.8, {ease: FlxEase.quartOut});
 
@@ -632,10 +626,9 @@ class FreeplayState extends MusicBeatSubstate
 		add(fnfFreeplay);
 		add(ostName);
 
-		if (PlayerRegistry.instance.hasNewCharacter() == true)
-		{
+		#if (BASE_GAME_FILES || MODS_ALLOWED)
 			add(charSelectHint);
-		}
+		#end
 
 		// be careful not to "add()" things in here unless it's to a group that's already added to the state
 		// otherwise it won't be properly attatched to funnyCamera (relavent code should be at the bottom of create())
@@ -753,7 +746,7 @@ class FreeplayState extends MusicBeatSubstate
 		}
 
 		#if TOUCH_CONTROLS_ALLOWED
-		addTouchPad('UP_DOWN', 'A_B_F_X_Y');
+		addTouchPad('UP_DOWN', 'A_B_C_X_Y_F');
 		addTouchPadCamera();
 		if (prepForNewRank)
 		{
@@ -837,7 +830,8 @@ class FreeplayState extends MusicBeatSubstate
 		currentFilteredSongs = tempSongs;
 		curSelected = 0;
 
-		var hsvShader:HSVShader = new HSVShader();
+		var hsvShader:HSVShader = null; //? make this disablable
+		if(VsliceOptions.SHADERS) hsvShader = new HSVShader();
 
 		var randomCapsule:SongMenuItem = grpCapsules.recycle(SongMenuItem);
 		randomCapsule.init(FlxG.width, 0, null, styleData);
@@ -1280,10 +1274,14 @@ class FreeplayState extends MusicBeatSubstate
 		
 		controls.isInSubstate = true;
 		#if TOUCH_CONTROLS_ALLOWED
+		#if LEGACY_PSYCH
+		MusicBeatSubstate.instance = this;
+		#else
 		backend.MusicBeatSubstate.instance = this;
+		#end
 		persistentUpdate = true;
 		removeTouchPad();
-		addTouchPad('UP_DOWN', 'A_B_F_X_Y');
+		addTouchPad('UP_DOWN', 'A_B_C_X_Y_F');
 		addTouchPadCamera();
 		#end
 	}
@@ -1447,7 +1445,11 @@ class FreeplayState extends MusicBeatSubstate
 			}
 			#if TOUCH_CONTROLS_ALLOWED
 			touchPad.alpha = 0;
+			#if LEGACY_PSYCH
+			FlxTween.tween(touchPad, {alpha: ClientPrefs.controlsAlpha}, 0.8, {ease: FlxEase.backIn});
+			#else
 			FlxTween.tween(touchPad, {alpha: ClientPrefs.data.controlsAlpha}, 0.8, {ease: FlxEase.backIn});
+			#end
 			#end
 		}
 	}
@@ -1518,12 +1520,11 @@ class FreeplayState extends MusicBeatSubstate
 
 		if (!busy)
 		{
-			if ((FunkinControls.FREEPLAY_CHAR
-				|| (TouchUtil.overlapsComplex(djTouchHitbox) && TouchUtil.justReleased && !SwipeUtil.swipeAny)))
+			if (FunkinControls.FREEPLAY_CHAR #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonX.justPressed #end)
 			{
 				tryOpenCharSelect();
 			} //? Those are new too
-			else if (FlxG.keys.justPressed.CONTROL #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonX.justPressed #end)
+			else if (FlxG.keys.justPressed.CONTROL #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonC.justPressed #end)
 			{
 				persistentUpdate = false;
 				#if TOUCH_CONTROLS_ALLOWED
@@ -2239,7 +2240,7 @@ class FreeplayState extends MusicBeatSubstate
 			// ? psych dir setting
 			var songData = daSongCapsule.songData;
 			ModsHelper.loadModDir(songData.folder);
-			FunkinSound.playMusic(daSongCapsule.songData.songId, {
+			FunkinSound.playMusic(daSongCapsule.songData.getNativeSongId(), {
 				startingVolume: 0.0,
 				overrideExisting: true,
 				restartTrack: false,

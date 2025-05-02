@@ -91,6 +91,10 @@ class BaseStage extends FlxBasic
 	public function eventPushed(event:EventNote) {}
 	public function eventPushedUnique(event:EventNote) {}
 
+	//Dialogue
+	public function startNextDialogue(dialogueCount:Int) {}
+	public function onSkipDialogue(dialogueCount:Int) {}
+
 	// Note Hit/Miss
 	public function goodNoteHit(note:Note) {}
 	public function opponentNoteHit(note:Note) {}
@@ -188,7 +192,7 @@ class BaseStage extends FlxBasic
 		return game.defaultCamZoom;
 	}
 	inline private function get_camFollow():FlxObject return game.camFollow;
-	inline private function camFollow_set(x:Float,y:Float) {
+	inline public function camFollow_set(x:Float,y:Float) {
 		camFollow.setPosition(x,y);
 	}
 }

@@ -1,221 +1,695 @@
 {
 	"events": [
 		[
+			4200,
+			[
+				[
+					"Play Animation",
+					"hey",
+					"bf"
+				]
+			]
+		],
+		[
+			4800,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			9000,
+			[
+				[
+					"Play Animation",
+					"hey",
+					"bf"
+				]
+			]
+		],
+		[
+			9600,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			12000,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			14400,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			16800,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			18600,
+			[
+				[
+					"Play Animation",
+					"hey",
+					"bf"
+				]
+			]
+		],
+		[
 			19050,
 			[
-				["SetCameraBop", "1", "0.6"]
+				[
+					"Set Camera Bopping",
+					1,
+					0.6
+				]
+			]
+		],
+		[
+			19200,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			24000,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			26400,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			28200,
+			[
+				[
+					"Play Animation",
+					"hey",
+					"bf"
+				]
+			]
+		],
+		[
+			28800,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			31200,
+			[
+				[
+					"Target Camera",
+					1,
+					"200,80,4,CLASSIC"
+				]
 			]
 		],
 		[
 			31275,
 			[
-				["ZoomCamera", "16,0.75", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.75",
+					"expoOut"
+				]
 			]
 		],
 		[
-			31350,
+			33600,
 			[
-				["Camera Follow Pos", "400", "400"]
-			]
-		],
-		[
-			33450,
-			[
-				["Camera Follow Pos", "", ""]
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			33675,
 			[
-				["ZoomCamera", "16,0.85", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.85",
+					"expoOut"
+				]
+			]
+		],
+		[
+			37200,
+			[
+				[
+					"Target Camera",
+					1,
+					"200,80,4,CLASSIC"
+				]
 			]
 		],
 		[
 			37275,
 			[
-				["ZoomCamera", "16,0.75", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.75",
+					"expoOut"
+				]
+			]
+		],
+		[
+			37800,
+			[
+				[
+					"Play Animation",
+					"hey",
+					"bf"
+				]
 			]
 		],
 		[
 			38250,
 			[
-				["SetCameraBop", "20", "0.6"]
+				[
+					"Set Camera Bopping",
+					20,
+					0.6
+				]
+			]
+		],
+		[
+			38400,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			38475,
 			[
-				["ZoomCamera", "16,0.85", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.85",
+					"expoOut"
+				]
 			]
 		],
 		[
 			40650,
 			[
-				["SetCameraBop", "1", "0.7"]
+				[
+					"Set Camera Bopping",
+					1,
+					0.7
+				]
+			]
+		],
+		[
+			40800,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			42600,
+			[
+				[
+					"Play Animation",
+					"hey",
+					"bf"
+				]
 			]
 		],
 		[
 			43200,
 			[
-				["Camera Follow Pos", "400", "400"]
+				[
+					"Target Camera",
+					1,
+					"200,80,4,CLASSIC"
+				]
 			]
 		],
 		[
 			43275,
 			[
-				["ZoomCamera", "16,0.75", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.75",
+					"expoOut"
+				]
 			]
 		],
 		[
-			45150,
+			45600,
 			[
-				["Camera Follow Pos", "", ""]
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			45675,
 			[
-				["ZoomCamera", "16,0.85", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.85",
+					"expoOut"
+				]
+			]
+		],
+		[
+			47400,
+			[
+				[
+					"Play Animation",
+					"hey",
+					"bf"
+				]
+			]
+		],
+		[
+			48000,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			50400,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			52800,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			55200,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			57450,
 			[
-				["SetCameraBop", "1", "0.6"]
+				[
+					"Set Camera Bopping",
+					1,
+					0.6
+				]
+			]
+		],
+		[
+			57600,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			58500,
+			[
+				[
+					"Target Camera",
+					1,
+					"200,80,4,CLASSIC"
+				]
 			]
 		],
 		[
 			58575,
 			[
-				["ZoomCamera", "16,0.75", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.75",
+					"expoOut"
+				]
 			]
 		],
 		[
-			58650,
+			60000,
 			[
-				["Camera Follow Pos", "400", "400"]
-			]
-		],
-		[
-			59850,
-			[
-				["Camera Follow Pos", "", ""]
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			60075,
 			[
-				["ZoomCamera", "16,0.9", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.9",
+					"expoOut"
+				]
+			]
+		],
+		[
+			62400,
+			[
+				[
+					"Target Camera",
+					1,
+					"200,80,4,CLASSIC"
+				]
 			]
 		],
 		[
 			62475,
 			[
-				["ZoomCamera", "16,0.75", "expoOut"]
-			]
-		],
-		[
-			62550,
-			[
-				["Camera Follow Pos", "400", "400"]
-			]
-		],
-		[
-			64650,
-			[
-				["SetCameraBop", "1", "0.4"]
+				[
+					"Zoom Camera",
+					"16,0.75",
+					"expoOut"
+				]
 			]
 		],
 		[
 			64650,
 			[
-				["Camera Follow Pos", "", ""]
+				[
+					"Set Camera Bopping",
+					1,
+					0.4
+				]
+			]
+		],
+		[
+			64800,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			64875,
 			[
-				["ZoomCamera", "16,0.9", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.9",
+					"expoOut"
+				]
 			]
 		],
 		[
-			66900,
+			66600,
 			[
-				["Camera Follow Pos", "400", "400"]
+				[
+					"Play Animation",
+					"hey",
+					"bf"
+				]
 			]
 		],
 		[
 			67050,
 			[
-				["SetCameraBop", "1", "0.6"]
+				[
+					"Set Camera Bopping",
+					1,
+					0.6
+				]
+			]
+		],
+		[
+			67200,
+			[
+				[
+					"Target Camera",
+					1,
+					"200,80,4,CLASSIC"
+				]
 			]
 		],
 		[
 			67275,
 			[
-				["ZoomCamera", "16,0.75", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.75",
+					"expoOut"
+				]
 			]
 		],
 		[
-			69450,
+			69600,
 			[
-				["Camera Follow Pos", "", ""]
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			69675,
 			[
-				["ZoomCamera", "16,0.9", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.9",
+					"expoOut"
+				]
 			]
 		],
 		[
 			72000,
 			[
-				["Camera Follow Pos", "400", "400"]
+				[
+					"Target Camera",
+					1,
+					"200,80,4,CLASSIC"
+				]
 			]
 		],
 		[
 			72075,
 			[
-				["ZoomCamera", "16,0.75", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.75",
+					"expoOut"
+				]
 			]
 		],
 		[
-			74250,
+			74400,
 			[
-				["Camera Follow Pos", "", ""]
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
 			]
 		],
 		[
 			74475,
 			[
-				["ZoomCamera", "16,0.9", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.9",
+					"expoOut"
+				]
 			]
 		],
 		[
 			76200,
 			[
-				["ZoomCamera", "16,0.85", "expoOut"]
+				[
+					"Play Animation",
+					"hey",
+					"bf"
+				]
+			]
+		],
+		[
+			76200,
+			[
+				[
+					"Zoom Camera",
+					"16,0.85",
+					"expoOut"
+				]
+			]
+		],
+		[
+			77100,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			79200,
+			[
+				[
+					"Target Camera",
+					1,
+					"200,80,4,CLASSIC"
+				]
 			]
 		],
 		[
 			79275,
 			[
-				["ZoomCamera", "16,0.8", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.75",
+					"expoOut"
+				]
 			]
 		],
 		[
 			79500,
 			[
-				["SetCameraBop", "10", "0.4"]
+				[
+					"Set Camera Bopping",
+					10,
+					0.4
+				]
 			]
 		],
 		[
 			80100,
 			[
-				["ZoomCamera", "16,0.75", "expoOut"]
+				[
+					"Zoom Camera",
+					"16,0.7",
+					"expoOut"
+				]
+			]
+		],
+		[
+			57000,
+			[
+				[
+					"Play Animation",
+					"hey",
+					"bf"
+				]
+			]
+		],
+		[
+			21600,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			7200,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			2400,
+			[
+				[
+					"Target Camera",
+					0,
+					"0,0,4,CLASSIC"
+				]
+			]
+		],
+		[
+			0,
+			[
+				[
+					"Target Camera",
+					1,
+					"0,0,4,CLASSIC"
+				]
 			]
 		]
 	],
-	"format": "psych_v1"
+	"format": "psych_v1_convert"
 }
