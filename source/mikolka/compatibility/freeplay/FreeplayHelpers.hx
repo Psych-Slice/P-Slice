@@ -74,6 +74,8 @@ class FreeplayHelpers {
 					PlayState.altInstrumentals = targetInstId;
 				}
 				else{
+					@:privateAccess
+					state.capsuleOptionsMenu.busy = false;
 					UserErrorSubstate.makeMessage("Missing instrumentals",
 					'Couldn\'t find Inst in \nsongs/${instPath}\nMake sure that there is a Inst.ogg file'
 					);
