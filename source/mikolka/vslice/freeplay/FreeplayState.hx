@@ -1833,7 +1833,7 @@ class FreeplayState extends MusicBeatSubstate
 								return "freakyMenu";
 						}
 					}
-					var bahsong:String = songChose()
+					var bahsong:String = songChose();
 					FunkinSound.playMusic(bahsong, {
 						overrideExisting: true,
 						restartTrack: false
