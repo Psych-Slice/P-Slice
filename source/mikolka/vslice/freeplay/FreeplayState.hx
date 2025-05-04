@@ -20,6 +20,7 @@ import mikolka.compatibility.funkin.FunkinCamera;
 import mikolka.vslice.freeplay.pslice.BPMCache;
 import mikolka.compatibility.freeplay.FreeplaySongData;
 import mikolka.compatibility.freeplay.FreeplayHelpers;
+import backend.Paths as FilePath;
 import mikolka.compatibility.funkin.FunkinPath as Paths;
 import mikolka.funkin.custom.VsliceSubState as MusicBeatSubstate;
 import openfl.utils.AssetCache;
@@ -1822,7 +1823,18 @@ class FreeplayState extends MusicBeatSubstate
 				FlxTransitionableState.skipNextTransOut = true;
 				if (Type.getClass(_parentState) == MainMenuState)
 				{
-					FunkinSound.playMusic('freakyMenu', {
+					function songChose() {
+						switch (ClientPrefs.data.menuMusic) {
+							case "Artistic Expression":
+								return "artistic-Expression";
+							case "Between the Graves and Stars":
+								return "Between-the-Graves-and-Stars";
+							default:
+								return "freakyMenu";
+						}
+					}
+					var bahsong:String = songChose()
+					FunkinSound.playMusic(bahsong, {
 						overrideExisting: true,
 						restartTrack: false
 					});

@@ -62,7 +62,7 @@ class TitleState extends MusicBeatState
 
 	#if TITLE_SCREEN_EASTER_EGG
 	final easterEggKeys:Array<String> = [
-		'SHADOW', 'RIVEREN', 'BBPANZU', 'PESSY'
+		'SHADOW', 'RIVEREN', 'BBPANZU', 'PESSY', 'NORMAL'
 	];
 	final allowedKeys:String = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 	var easterEggKeysBuffer:String = '';
@@ -168,14 +168,38 @@ class TitleState extends MusicBeatState
 	var titleText:FlxSprite;
 	var swagShader:ColorSwap = null;
 
+
+	function changeMenuMusic():String
+	{
+		switch (ClientPrefs.data.menuMusic) {
+			case "Freaky Menu": 
+				return "freakyMenu";
+			case "Artistic Expression": 
+				return "Artistic Expression";
+			case "Between the Gravestones and Stars":
+				return "Between the Gravestones and Stars";
+			default: 
+				return "freakyMenu"; //fallback
+		};
+		trace("Menu music: " + ClientPrefs.data.menuMusic);
+		trace("Chosen Song: " + changeMenuMusic());
+	}
+	
 	function startIntro()
 	{
 		persistentUpdate = true;
 		if (!initialized && FlxG.sound.music == null)
-			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+			FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.menuMusic)), 0);
 
 		loadJsonData();
 		#if TITLE_SCREEN_EASTER_EGG easterEggData(); #end
+
+		if (ClientPrefs.data.menuMusic == "Artistic Expression") {
+			musicBPM = 137;
+		} else if (ClientPrefs.data.menuMusic == "Between the Gravestones and Stars") {
+			musicBPM = 130;
+		}
+
 		Conductor.bpm = musicBPM;
 
 		logoBl = new FlxSprite(logoPosition.x, logoPosition.y);
@@ -299,7 +323,10 @@ class TitleState extends MusicBeatState
 	var enterPosition:FlxPoint = FlxPoint.get(100, 576);
 	
 	var useIdle:Bool = false;
+
 	var musicBPM:Float = 102;
+
+	//var musicBPM:Float = 102;
 	var danceLeftFrames:Array<Int> = [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
 	var danceRightFrames:Array<Int> = [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
@@ -372,6 +399,13 @@ class TitleState extends MusicBeatState
 				gfPosition.y += 60;
 				danceLeftFrames = [29, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 				danceRightFrames = [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28];
+			case 'NORMAL':
+				characterImage = 'gfDanceTitle';
+				animationName = ' gfDance';
+				gfPosition.x += 165;
+				gfPosition.y += 60;
+				danceLeftFrames = [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+				danceRightFrames = [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
 		}
 	}
 
@@ -481,7 +515,7 @@ class TitleState extends MusicBeatState
 					{
 						if (cheatActive)
 						{
-							FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+							FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.menuMusic)), 0);
 							FlxG.sound.music.fadeIn(4, 0, 0.7);
 						}
 						FlxTransitionableState.skipNextTransIn = true;
@@ -643,7 +677,7 @@ class TitleState extends MusicBeatState
 			{
 				case 1:
 					// FlxG.sound.music.stop();
-					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+					FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.menuMusic)), 0);
 					#if VIDEOS_ALLOWED
 						FlxG.sound.music.onComplete = moveToAttract;
 					#end
@@ -718,7 +752,7 @@ class TitleState extends MusicBeatState
 						FlxG.camera.flash(FlxColor.WHITE, 2);
 						skippedIntro = true;
 
-						FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+						FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.menuMusic)), 0);
 						FlxG.sound.music.fadeIn(4, 0, 0.7);
 						return;
 				}
@@ -741,7 +775,7 @@ class TitleState extends MusicBeatState
 					FlxG.camera.flash(FlxColor.WHITE, 3);
 					sound.onComplete = function()
 					{
-						FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+						FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.menuMusic)), 0);
 						FlxG.sound.music.fadeIn(4, 0, 0.7);
 						transitioning = false;
 						if(easteregg == 'PESSY')

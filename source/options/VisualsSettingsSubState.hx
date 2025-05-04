@@ -9,6 +9,7 @@ import options.Option;
 class VisualsSettingsSubState extends BaseOptionsMenu
 {
 	public static var pauseMusics:Array<String> = ['None', 'Tea Time', 'Breakfast', 'Breakfast (Pico)'];
+	public static var menuMusics:Array<String> = ['FreakyMenu', 'Artistic Expression', 'Between the Graves and Stars'];
 	var noteOptionID:Int = -1;
 	var notes:FlxTypedGroup<StrumNote>;
 	var splashes:FlxTypedGroup<NoteSplash>;
@@ -173,6 +174,14 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 		addOption(option);
 		#end
 		
+		var option:Option = new Option('Menu Music:',
+			"Which menu theme do you want?",
+			'menuMusic',
+			STRING,
+			menuMusics);
+		addOption(option);
+		option.onChange = onChangeMenuMusic;
+
 		var option:Option = new Option('Pause Music:',
 			"What song do you prefer for the Pause Screen?",
 			'pauseMusic',
@@ -250,6 +259,12 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 
 		changedMusic = true;
 	}
+	function onChangeMenuMusic()
+	{
+		FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.menuMusic)));
+		changedMusic = true;	
+	}
+
 
 	function onChangeNoteSkin()
 	{
@@ -325,7 +340,7 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 	
 		override function destroy()
 		{
-			if(changedMusic && !OptionsState.onPlayState) FlxG.sound.playMusic(Paths.music('freakyMenu'), 1, true);
+			if(changedMusic && !OptionsState.onPlayState) FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.menuMusic)), 1, true);
 			Note.globalRgbShaders = [];
 			super.destroy();
 		}
