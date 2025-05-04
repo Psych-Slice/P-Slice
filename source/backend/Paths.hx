@@ -442,15 +442,20 @@ class Paths
 		//trace('precaching sound: $file');
 		if(!currentTrackedSounds.exists(file))
 		{
+			var isTrackingSound = false;
 			#if sys
-			if(FileSystem.exists(file))
+			if(FileSystem.exists(file)){
 				currentTrackedSounds.set(file, Sound.fromFile(file));
+				isTrackingSound = true;
+			}
 			#end
 			#if OPENFL_LOOKUP
-			if(OpenFlAssets.exists(file, SOUND))
+			if(OpenFlAssets.exists(file, SOUND) && !isTrackingSound){
 				currentTrackedSounds.set(file, OpenFlAssets.getSound(file));
+				isTrackingSound = true;
+			}
 			#end
-			else if(beepOnNull)
+			else if(beepOnNull && !isTrackingSound)
 			{
 				trace('SOUND NOT FOUND: $key, PATH: $path');
 				FlxG.log.error('SOUND NOT FOUND: $key, PATH: $path');
