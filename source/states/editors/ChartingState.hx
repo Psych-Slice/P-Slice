@@ -1281,12 +1281,14 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			selectionBox.visible = true;
 			updateSelectionBox();
 		}
+		if(FlxG.mouse.justPressed && (FlxG.mouse.overlaps(mainBox,camUI) || FlxG.mouse.overlaps(infoBox,camUI)))
+			ignoreClickForThisFrame = true;
 		#if TOUCH_CONTROLS_ALLOWED
 		if (controls.mobileC)
 		{
 			for (touch in FlxG.touches.list)
 			{
-				if(touch.justPressed && (touch.overlaps(mainBox.bg) || touch.overlaps(infoBox.bg)))
+				if(touch.justPressed && (touch.overlaps(mainBox,camUI) || touch.overlaps(infoBox,camUI)))
 					ignoreClickForThisFrame = true;
 		
 				var minX:Float = gridBg.x;
@@ -1511,8 +1513,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			}
 		} else {
 		#end
-			if(FlxG.mouse.justPressed && (FlxG.mouse.overlaps(mainBox.bg) || FlxG.mouse.overlaps(infoBox.bg)))
-				ignoreClickForThisFrame = true;
+			
 	
 			var minX:Float = gridBg.x;
 			if(SHOW_EVENT_COLUMN && lockedEvents) minX += GRID_SIZE;
@@ -1728,8 +1729,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			}
 			else if(!ignoreClickForThisFrame)
 			{
-				if(FlxG.mouse.justPressed)
+				if(FlxG.mouse.justPressed){
 					resetSelectedNotes();
+				}
 	
 				dummyArrow.visible = false;
 			}

@@ -789,10 +789,10 @@ class LoadingState extends MusicBeatState
 		{
 			var sound:Sound = null;
 			#if OPENFL_LOOKUP
-			if(OpenFlAssets.exists(file, SOUND)) sound = OpenFlAssets.getSound(file, false);
+			if(OpenFlAssets.exists(file, SOUND)&& sound == null) sound = OpenFlAssets.getSound(file, false);
 			#end
-			#if sys
-			if(NativeFileSystem.exists(file) ) sound = Sound.fromFile(file);
+			#if NATIVE_LOOKUP
+			if(sys.FileSystem.exists(file) && sound == null) sound = Sound.fromFile(file);
 			#end
 			if (sound != null)
 			{
@@ -827,10 +827,10 @@ class LoadingState extends MusicBeatState
 				var file:String = Paths.getPath(requestKey, IMAGE);
 				var bitmap:BitmapData = null;
 				#if OPENFL_LOOKUP
-				if(OpenFlAssets.exists(file, IMAGE)) bitmap = OpenFlAssets.getBitmapData(file, false);
+				if(OpenFlAssets.exists(file, IMAGE) && bitmap == null) bitmap = OpenFlAssets.getBitmapData(file, false);
 				#end
-				#if sys
-				if(NativeFileSystem.exists(file) ) bitmap = BitmapData.fromFile(file);
+				#if NATIVE_LOOKUP
+				if(sys.FileSystem.exists(file) && bitmap == null ) bitmap = BitmapData.fromFile(file);
 				#end
 				if (bitmap != null)
 				{

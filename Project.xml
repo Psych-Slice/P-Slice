@@ -61,7 +61,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<define name="MULTITHREADED_LOADING" if="cpp" /> <!-- UNCOMMENTING THIS LINE WILL ENABLE MULTITHREADED LOADING, WHICH IMPROVES LOADING TIMES, BUT WITH A LOW CHANCE FOR THE GAME FREEZE ON SONG LOAD -->
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN -->
 	<define name="TITLE_SCREEN_EASTER_EGG"/>
-	<define name="COPYSTATE_ALLOWED" if="MODS_ALLOWED mobile"/>
+	<!-- <define name="COPYSTATE_ALLOWED" if="MODS_ALLOWED mobile"/> -->
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
