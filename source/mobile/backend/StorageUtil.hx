@@ -28,6 +28,7 @@ import android.os.Environment;
 import lime.system.System as LimeSystem;
 import haxe.io.Path;
 import haxe.Exception;
+import sys.FileSystem;
 
 /**
  * A storage class for mobile.
@@ -44,7 +45,7 @@ class StorageUtil
 	{
 		var daPath:String = '';
 		#if android
-		if (!NativeFileSystem.exists(rootDir + 'storagetype.txt'))
+		if (!FileSystem.exists(rootDir + 'storagetype.txt'))
 			File.saveContent(rootDir + 'storagetype.txt', ClientPrefs.data.storageType);
 		var curStorageType:String = File.getContent(rootDir + 'storagetype.txt');
 		daPath = force ? StorageType.fromStrForce(curStorageType) : StorageType.fromStr(curStorageType);
