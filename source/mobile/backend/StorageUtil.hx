@@ -101,8 +101,8 @@ class StorageUtil
 		trace("Checking game directory...");
 		try
 		{
-			if (!NativeFileSystem.exists(StorageUtil.getStorageDirectory()))
-				NativeFileSystem.createDirectory(StorageUtil.getStorageDirectory());
+			if (!FileSystem.exists(StorageUtil.getStorageDirectory()))
+				FileSystem.createDirectory(StorageUtil.getStorageDirectory());
 		}
 		catch (e:Dynamic)
 		{

@@ -30,7 +30,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<define name="OPENFL_LOOKUP"/>
 
 	<!-- Adds the ability to use NativeFileSystem on the computer to acsess files  -->
-	<define name="NATIVE_LOOKUP" unless="debug || MODS_ALLOWED"/>
+	<define name="NATIVE_LOOKUP" if="MODS_ALLOWED" />
 
 	<!-- Adds support for Psych's lua/HScript files-->
 	<define name="HSCRIPT_ALLOWED" if="desktop || mobile"/>
