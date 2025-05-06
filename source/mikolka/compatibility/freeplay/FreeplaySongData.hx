@@ -1,5 +1,6 @@
 package mikolka.compatibility.freeplay;
 
+import mikolka.vslice.freeplay.obj.SngCapsuleData;
 import mikolka.vslice.freeplay.pslice.BPMCache;
 import mikolka.funkin.Scoring.ScoringRank;
 import backend.Highscore;
@@ -11,58 +12,12 @@ using mikolka.funkin.utils.ArrayTools;
 /**
  * Data about a specific song in the freeplay menu. Very heaviely dependent on exact engine
  */
-class FreeplaySongData
+class FreeplaySongData extends SngCapsuleData
 {
-	/**
-	 * Whether or not the song has been favorited.
-	 */
-	public var isFav:Bool = false;
-
-	public var allowErect:Bool = false;
-	public var metaSngId:String = "";
-
-	public var isNew:Bool = false;
-	public var folder:String = "";
-	public var color:Int = -7179779;
-
-	public var levelId(default, null):Int = 0;
-	public var levelName(default, null):String = "";
-	public var songId(default, null):String = '';
-
-	public var songDifficulties(default, null):Array<String> = [];
-
-	public var songName(default, null):String = '';
-	public var songCharacter(default, null):String = '';
-	public var songStartingBpm(default, null):Float = 0;
-	public var difficultyRating(default, null):Int = 0;
-	public var albumId(default, null):Null<String> = null;
-	public var songPlayer(default, null):String = '';
-
-	public var freeplayPrevStart(default, null):Float = 0;
-	public var freeplayPrevEnd(default, null):Float = 0;
-	public var currentDifficulty(default, set):String = "normal";
-	public var instVariants:Array<String>;
-
-	public var scoringRank:Null<ScoringRank> = null;
-
-	function set_currentDifficulty(value:String):String
-	{
-		currentDifficulty = value;
-		updateValues();
-		updateMeta();
-		return value;
-	}
 
 	public function new(levelId:Int, songId:String, songCharacter:String, color:FlxColor)
 	{
-		this.levelId = levelId;
-		this.songName = songId.replace("-", " ");
-		this.songCharacter = songCharacter;
-		this.color = color;
-		this.songId = songId;
-		updateMeta();
-		updateValues();
-
+		super(levelId,songId,songCharacter,color);
 		this.isFav = ClientPrefs.data.favSongIds.contains(songId + this.levelName); // Save.instance.isSongFavorited(songId);
 	}
 
@@ -85,25 +40,6 @@ class FreeplaySongData
 		return isFav;
 	}
 
-	function updateMeta()
-	{
-		var potentiallyErect:String = (allowErect && (currentDifficulty == "erect") || (currentDifficulty == "nightmare")) ? "-erect" : "";
-		var newSngId = songId + potentiallyErect;
-		if (metaSngId == newSngId)
-			return;
-		metaSngId = newSngId;
-		var meta = FreeplayMeta.getMeta(metaSngId);
-		difficultyRating = meta.songRating;
-
-		isNew = meta.allowNewTag;
-		allowErect = meta.allowErectVariants;
-		freeplayPrevStart = meta.freeplayPrevStart / meta.freeplaySongLength;
-		freeplayPrevEnd = meta.freeplayPrevEnd / meta.freeplaySongLength;
-		albumId = meta.albumId;
-		instVariants = meta.altInstrumentalSongs.split(",");
-		songPlayer = meta.freeplayCharacter;
-	}
-
 	function updateValues():Void
 	{
 		var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[levelId]);
@@ -114,7 +50,7 @@ class FreeplaySongData
 
 		Mods.currentModDirectory = this.folder;
 		var fileSngName = Paths.formatToSongPath(getNativeSongId());
-		var sngDataPath = Paths.getSharedPath("data/" + fileSngName);
+		var sngDataPath = Paths.getPath("data/" + fileSngName);
 
 		#if MODS_ALLOWED
 		var mod_path = Paths.modFolders("data/" + fileSngName);
@@ -149,7 +85,7 @@ class FreeplaySongData
 			}
 		}
         var fileSngName = Paths.formatToSongPath(getNativeSongId());
-		var sngDataPath = Paths.getSharedPath("data/" + fileSngName);
+		var sngDataPath = Paths.getPath("data/" + fileSngName);
 		if (allowErect && !hasErectSong())
 		{
 			trace('$songName is missing variant in $sngDataPath');
@@ -193,18 +129,11 @@ class FreeplaySongData
 		return Difficulty.list.findIndex(s -> s.trim().toLowerCase() == currentDifficulty);
 	}
 
-	// Gets real song id (potenctally to erect variant)
-	public function getNativeSongId():String
-	{
-		if (!allowErect)
-			return songId;
-		var potentiallyErect:String = (currentDifficulty == "erect") || (currentDifficulty == "nightmare") ? "-erect" : "";
-		return songId + potentiallyErect;
-	}
+
     public function hasErectSong():Bool
         {
             var fileSngName = Paths.formatToSongPath(songId+"-erect");
-		    var sngDataPath = Paths.getSharedPath("data/" + fileSngName);
+		    var sngDataPath = Paths.getPath("data/" + fileSngName);
             return NativeFileSystem.exists(sngDataPath);
         }
 }

@@ -1,7 +1,5 @@
 package backend;
 
-import openfl.utils.Assets;
-import lime.utils.Assets as LimeAssets;
 
 #if cpp
 @:cppFileCode('#include <thread>')
