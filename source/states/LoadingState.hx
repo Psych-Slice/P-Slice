@@ -112,7 +112,7 @@ class LoadingState extends MusicBeatState
 		if(Mods.currentModDirectory != null && Mods.currentModDirectory.trim().length > 0)
 		{
 			var scriptPath:String = 'mods/${Mods.currentModDirectory}/data/LoadingScreen.hx'; //mods/My-Mod/data/LoadingScreen.hx
-			if(FileSystem.exists(scriptPath))
+			if(NativeFileSystem.exists(scriptPath))
 			{
 				try
 				{
@@ -493,7 +493,7 @@ class LoadingState extends MusicBeatState
 
 				#if MODS_ALLOWED
 				var moddyFile:String = Paths.modsJson('$folder/preload');
-				if (FileSystem.exists(moddyFile)) json = Json.parse(File.getContent(moddyFile));
+				if (NativeFileSystem.exists(moddyFile)) json = Json.parse(File.getContent(moddyFile));
 				else json = Json.parse(File.getContent(path));
 				#else
 				json = Json.parse(Assets.getText(path));
@@ -642,7 +642,7 @@ class LoadingState extends MusicBeatState
 			{
 				for (subfolder in Mods.directoriesWithFile(Paths.getSharedPath(), '$prefix/$nam'))
 				{
-					for (file in FileSystem.readDirectory(subfolder))
+					for (file in NativeFileSystem.readDirectory(subfolder))
 					{
 						if(file.endsWith(ext))
 						{
@@ -737,7 +737,7 @@ class LoadingState extends MusicBeatState
 			img = img.trim();
 			#if flxanimate
 			var animToFind:String = Paths.getPath('images/$img/Animation.json', TEXT);
-			if (#if MODS_ALLOWED FileSystem.exists(animToFind) || #end Assets.exists(animToFind))
+			if (#if MODS_ALLOWED NativeFileSystem.exists(animToFind) || #end Assets.exists(animToFind))
 				isAnimateAtlas = true;
 			#end
 
@@ -792,7 +792,7 @@ class LoadingState extends MusicBeatState
 			if(OpenFlAssets.exists(file, SOUND)) sound = OpenFlAssets.getSound(file, false);
 			#end
 			#if sys
-			if(FileSystem.exists(file) ) sound = Sound.fromFile(file);
+			if(NativeFileSystem.exists(file) ) sound = Sound.fromFile(file);
 			#end
 			if (sound != null)
 			{
@@ -830,7 +830,7 @@ class LoadingState extends MusicBeatState
 				if(OpenFlAssets.exists(file, IMAGE)) bitmap = OpenFlAssets.getBitmapData(file, false);
 				#end
 				#if sys
-				if(FileSystem.exists(file) ) bitmap = BitmapData.fromFile(file);
+				if(NativeFileSystem.exists(file) ) bitmap = BitmapData.fromFile(file);
 				#end
 				if (bitmap != null)
 				{

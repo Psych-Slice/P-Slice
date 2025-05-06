@@ -177,11 +177,11 @@ class StickerSubState extends MusicBeatSubstate
       #else
       var modStickerDir = Paths.getPath('images/transitionSwag/$STICKER_SET',TEXT,null);
       #end
-      if(!FileSystem.exists(modStickerDir)){
+      if(!NativeFileSystem.exists(modStickerDir)){
         UserErrorSubstate.makeMessage("Missing sticker_set",'Couldn\'t find sticker set "$STICKER_SET"\n\nin $modStickerDir');
         
       }
-      else if(!FileSystem.exists('$modStickerDir/stickers.json')){
+      else if(!NativeFileSystem.exists('$modStickerDir/stickers.json')){
         UserErrorSubstate.makeMessage("Missing manifest",'Sticker set $STICKER_SET doesn\'t contain a "stickers.json" file\n\nin $modStickerDir/stickers.json');
       }
       else{

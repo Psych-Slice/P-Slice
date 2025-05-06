@@ -59,8 +59,8 @@ class CrashHandler
 	{
 		try
 		{
-			if (!FileSystem.exists('logs'))
-				FileSystem.createDirectory('logs');
+			if (!NativeFileSystem.exists('logs'))
+				NativeFileSystem.createDirectory('logs');
 
 			File.saveContent('logs/'
 				+ Date.now().toString().replace(' ', '-').replace(':', "'")

@@ -23,11 +23,9 @@ class FileUtil
 
 	public static function doesFileExist(path:String):Bool
 	{
-		#if sys
-		return sys.FileSystem.exists(path);
-		#else
-		return false;
-		#end
+
+		return NativeFileSystem.exists(path);
+
 	}
     public static function openFolder(pathFolder:String)
         {

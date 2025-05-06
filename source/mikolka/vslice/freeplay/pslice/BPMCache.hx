@@ -45,7 +45,7 @@ class BPMCache {
     }
     private function exists(path:String) {
         #if MODS_ALLOWED
-        return FileSystem.exists(path);
+        return NativeFileSystem.exists(path);
         #else
         @:privateAccess
         for (entry in lime.utils.Assets.libraries.get("default").types.keys()){

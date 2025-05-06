@@ -146,7 +146,7 @@ class Song
 		_lastPath = Paths.json('$formattedFolder/$formattedSong');
 
 		#if MODS_ALLOWED
-		if(FileSystem.exists(_lastPath))
+		if(NativeFileSystem.exists(_lastPath))
 			rawData = File.getContent(_lastPath);
 		else
 		#end

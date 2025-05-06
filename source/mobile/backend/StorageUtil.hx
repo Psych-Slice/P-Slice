@@ -44,7 +44,7 @@ class StorageUtil
 	{
 		var daPath:String = '';
 		#if android
-		if (!FileSystem.exists(rootDir + 'storagetype.txt'))
+		if (!NativeFileSystem.exists(rootDir + 'storagetype.txt'))
 			File.saveContent(rootDir + 'storagetype.txt', ClientPrefs.data.storageType);
 		var curStorageType:String = File.getContent(rootDir + 'storagetype.txt');
 		daPath = force ? StorageType.fromStrForce(curStorageType) : StorageType.fromStr(curStorageType);
@@ -101,8 +101,8 @@ class StorageUtil
 		trace("Checking game directory...");
 		try
 		{
-			if (!FileSystem.exists(StorageUtil.getStorageDirectory()))
-				FileSystem.createDirectory(StorageUtil.getStorageDirectory());
+			if (!NativeFileSystem.exists(StorageUtil.getStorageDirectory()))
+				NativeFileSystem.createDirectory(StorageUtil.getStorageDirectory());
 		}
 		catch (e:Dynamic)
 		{

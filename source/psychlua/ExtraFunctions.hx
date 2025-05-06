@@ -201,9 +201,9 @@ class ExtraFunctions
 		// File management
 		Lua_helper.add_callback(lua, "checkFileExists", function(filename:String, ?absolute:Bool = false) {
 			#if MODS_ALLOWED
-			if(absolute) return FileSystem.exists(filename);
+			if(absolute) return NativeFileSystem.exists(filename);
 
-			return FileSystem.exists(Paths.getPath(filename, TEXT));
+			return NativeFileSystem.exists(Paths.getPath(filename, TEXT));
 
 			#else
 			if(absolute) return Assets.exists(filename, TEXT);
@@ -248,7 +248,7 @@ class ExtraFunctions
 		Lua_helper.add_callback(lua, "directoryFileList", function(folder:String) {
 			var list:Array<String> = [];
 			#if sys
-			if(FileSystem.exists(folder)) {
+			if(NativeFileSystem.exists(folder)) {
 				for (folder in NativeFileSystem.readDirectory(folder)) {
 					if (!list.contains(folder)) {
 						list.push(folder);

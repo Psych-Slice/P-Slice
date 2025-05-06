@@ -50,7 +50,7 @@ class MenuCharacter extends FlxSprite
 
 				var path:String = Paths.getPath(characterPath, TEXT);
 				#if MODS_ALLOWED
-				if (!FileSystem.exists(path))
+				if (!NativeFileSystem.exists(path))
 				#else
 				if (!Assets.exists(path))
 				#end

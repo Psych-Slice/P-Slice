@@ -19,10 +19,10 @@ class FunkinPath {
 
         for (name in modsToCheck){
             var testPath = #if mobile Sys.getCwd() + #end 'mods/$name/$path';
-            if(FileSystem.exists(testPath))
+            if(NativeFileSystem.exists(testPath))
                 return testPath;
         }
-        if (FileSystem.exists(#if mobile Sys.getCwd() + #end 'mods/$path')) return #if mobile Sys.getCwd() + #end 'mods/$path';
+        if (NativeFileSystem.exists(#if mobile Sys.getCwd() + #end 'mods/$path')) return #if mobile Sys.getCwd() + #end 'mods/$path';
         else 
         #end
         return Paths.getSharedPath(path);

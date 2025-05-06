@@ -118,7 +118,7 @@ class FreeplaySongData
 
 		#if MODS_ALLOWED
 		var mod_path = Paths.modFolders("data/" + fileSngName);
-		if (FileSystem.exists(mod_path))
+		if (NativeFileSystem.exists(mod_path))
 			sngDataPath = mod_path;
 		#end
 

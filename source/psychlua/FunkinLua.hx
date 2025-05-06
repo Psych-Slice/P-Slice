@@ -1254,7 +1254,7 @@ class FunkinLua {
 			#if TRANSLATIONS_ALLOWED
 			path = Paths.getPath('data/$songPath/${dialogueFile}_${ClientPrefs.data.language}.json', TEXT);
 			#if MODS_ALLOWED
-			if(!FileSystem.exists(path))
+			if(!NativeFileSystem.exists(path))
 			#else
 			if(!Assets.exists(path, TEXT))
 			#end
@@ -1264,7 +1264,7 @@ class FunkinLua {
 			luaTrace('startDialogue: Trying to load dialogue: ' + path);
 
 			#if MODS_ALLOWED
-			if(FileSystem.exists(path))
+			if(NativeFileSystem.exists(path))
 			#else
 			if(Assets.exists(path, TEXT))
 			#end
@@ -1290,7 +1290,7 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "startVideo", function(videoFile:String, ?canSkip:Bool = true, ?forMidSong:Bool = false, ?shouldLoop:Bool = false, ?playOnLoad:Bool = true) {
 			#if VIDEOS_ALLOWED
-			if(FileSystem.exists(Paths.video(videoFile)))
+			if(NativeFileSystem.exists(Paths.video(videoFile)))
 			{
 				if(game.videoCutscene != null)
 				{
@@ -1589,7 +1589,7 @@ class FunkinLua {
 		}
 
 		try{
-			var isString:Bool = !FileSystem.exists(scriptName);
+			var isString:Bool = !NativeFileSystem.exists(scriptName);
 			var result:Dynamic = null;
 			if(!isString)
 				result = LuaL.dofile(lua, scriptName);
@@ -1777,7 +1777,7 @@ class FunkinLua {
 		if(!scriptFile.endsWith(ext)) scriptFile += ext;
 		var path:String = Paths.getPath(scriptFile, TEXT);
 		#if MODS_ALLOWED
-		if(FileSystem.exists(path))
+		if(NativeFileSystem.exists(path))
 		#else
 		if(Assets.exists(path, TEXT))
 		#end
@@ -1785,7 +1785,7 @@ class FunkinLua {
 			return path;
 		}
 		#if MODS_ALLOWED
-		else if(FileSystem.exists(scriptFile))
+		else if(NativeFileSystem.exists(scriptFile))
 		#else
 		else if(Assets.exists(scriptFile, TEXT))
 		#end
@@ -1847,19 +1847,19 @@ class FunkinLua {
 
 		for (folder in foldersToCheck)
 		{
-			if(FileSystem.exists(folder))
+			if(NativeFileSystem.exists(folder))
 			{
 				var frag:String = folder + name + '.frag';
 				var vert:String = folder + name + '.vert';
 				var found:Bool = false;
-				if(FileSystem.exists(frag))
+				if(NativeFileSystem.exists(frag))
 				{
 					frag = File.getContent(frag);
 					found = true;
 				}
 				else frag = null;
 
-				if(FileSystem.exists(vert))
+				if(NativeFileSystem.exists(vert))
 				{
 					vert = File.getContent(vert);
 					found = true;

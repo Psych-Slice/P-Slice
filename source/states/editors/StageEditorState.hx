@@ -652,8 +652,8 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 
 		var folderList:Array<String> = [''];
 		#if sys
-		for (folder in FileSystem.readDirectory('assets/'))
-			if (FileSystem.isDirectory('assets/$folder') && folder != 'shared' && !Mods.ignoreModFolders.contains(folder))
+		for (folder in NativeFileSystem.readDirectory('assets/'))
+			if (NativeFileSystem.isDirectory('assets/$folder') && folder != 'shared' && !Mods.ignoreModFolders.contains(folder))
 				folderList.push(folder);
 		#end
 
@@ -1194,7 +1194,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 			var characterPath:String = 'stages/$selected.json';
 			var path:String = Paths.getPath(characterPath, TEXT, null, true);
 			#if MODS_ALLOWED
-			if (FileSystem.exists(path))
+			if (NativeFileSystem.exists(path))
 			#else
 			if (Assets.exists(path))
 			#end
@@ -1930,11 +1930,11 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 						var p1:String = '$pathNoExt.$ext';
 						var p2:String = modFolder + '$fileName.$ext';
 						trace(p1, p2);
-						if (FileSystem.exists(p1))
+						if (NativeFileSystem.exists(p1))
 							File.saveBytes(p2, File.getBytes(p1));
 					}
 
-					FileSystem.createDirectory(modFolder);
+					NativeFileSystem.createDirectory(modFolder);
 					saveFile('png');
 					saveFile('xml');
 					saveFile('txt');
