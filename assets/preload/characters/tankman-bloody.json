@@ -30,7 +30,7 @@
 			"fps": 24,
 			"anim": "singLEFT",
 			"loop": false,
-			"name": "Tankman Right Note bloody0"
+			"name": "Tankman Left Note bloody0"
 		},
 		{
 			"offsets": [62, -105],
@@ -38,7 +38,7 @@
 			"fps": 24,
 			"anim": "singRIGHT",
 			"loop": false,
-			"name": "Tankman DOWN note bloody0"
+			"name": "Tankman Right note bloody0"
 		},
 		{
 			"offsets": [0, 90],

@@ -63,6 +63,35 @@
 			"anim": "lowerKnife",
 			"loop": false,
 			"name": "KnifeLower0"
+		},
+		{
+			"loop": true,
+			"offsets": [
+				0,
+				0
+			],
+			"fps": 24,
+			"anim": "hairBlow",
+			"indices": [
+				0,
+				1,
+				2,
+				3
+			],
+			"name": "HairBlow0"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				0
+			],
+			"fps": 24,
+			"anim": "hairFall",
+			"indices": [
+				0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+			  ],
+			"name": "HairBlow0"
 		}
 	],
 	"vocals_file": "",

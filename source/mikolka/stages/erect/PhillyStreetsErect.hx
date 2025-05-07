@@ -223,8 +223,8 @@ class PhillyStreetsErect extends BaseStage
             add(mist2);
     
             carSndAmbience = new FlxSound().loadEmbedded(Paths.sound("ambience/car"), true);
-            FlxG.sound.list.add(carSndAmbience);
             carSndAmbience.volume = 0.01;
+            FlxG.sound.list.add(carSndAmbience);
             carSndAmbience.play(false, FlxG.random.float(0, carSndAmbience.length));
     
             if (VsliceOptions.SHADERS)

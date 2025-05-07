@@ -101,6 +101,11 @@ class School extends BaseStage
 			setStartCallback(cutscene.doSchoolIntro);
 		}
 	}
+	override function createPost() {
+		super.createPost();
+		camFollow_set(800, 500);
+		camGame.snapToTarget();
+	}
 
 	override function beatHit()
 	{

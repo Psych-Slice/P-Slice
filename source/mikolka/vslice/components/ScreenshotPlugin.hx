@@ -671,10 +671,16 @@ class ScreenshotPlugin extends FlxBasic
 
     super.destroy();
 
-    @:privateAccess
-    for (parent in [flashSprite, previewSprite])
-      for (child in parent.__children)
-        parent.removeChild(child);
+    try{
+
+      @:privateAccess
+      for (parent in [flashSprite, previewSprite])
+        for (child in parent.__children)
+          parent.removeChild(child);
+    }
+    catch(x:Dynamic){
+      trace("We caught an exception while trying to remove the screenshot plugin!");
+    }
 
     flashSprite = null;
     flashBitmap = null;
