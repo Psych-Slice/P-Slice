@@ -58,7 +58,7 @@ class NativeFileSystem {
 
         Depends a lot on the target system!
     **/
-    private inline static function addCwd(directory:String):String{
+    public inline static function addCwd(directory:String):String{
         var cwd = StorageUtil.getStorageDirectory();
         var test_cwd = haxe.io.Path.removeTrailingSlashes(cwd);
         if(directory.startsWith(test_cwd)) return directory;

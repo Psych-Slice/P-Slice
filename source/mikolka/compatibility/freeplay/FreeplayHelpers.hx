@@ -1,5 +1,6 @@
 package mikolka.compatibility.freeplay;
 
+import haxe.Exception;
 import backend.StageData;
 import options.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
@@ -117,11 +118,11 @@ class FreeplayHelpers {
 
 				trace('CURRENT WEEK: ' + WeekData.getWeekFileName());
 			}
-			catch (e:Dynamic)
+			catch (e:Exception)
 			{
 				trace('ERROR! $e');
 				UserErrorSubstate.makeMessage("Failed to load a song",
-					'$e'
+					'${e.message}\n\n${e.details()}'
 					);
                 @:privateAccess{
                     state.busy = false;

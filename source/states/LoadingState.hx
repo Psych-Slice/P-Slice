@@ -792,7 +792,8 @@ class LoadingState extends MusicBeatState
 			if(OpenFlAssets.exists(file, SOUND)&& sound == null) sound = OpenFlAssets.getSound(file, false);
 			#end
 			#if NATIVE_LOOKUP
-			if(sys.FileSystem.exists(file) && sound == null) sound = Sound.fromFile(file);
+			var sys_file = NativeFileSystem.addCwd(file);
+			if(sys.FileSystem.exists(sys_file) && sound == null) sound = Sound.fromFile(sys_file);
 			#end
 			if (sound != null)
 			{
@@ -830,7 +831,8 @@ class LoadingState extends MusicBeatState
 				if(OpenFlAssets.exists(file, IMAGE) && bitmap == null) bitmap = OpenFlAssets.getBitmapData(file, false);
 				#end
 				#if NATIVE_LOOKUP
-				if(sys.FileSystem.exists(file) && bitmap == null ) bitmap = BitmapData.fromFile(file);
+				var sys_file = NativeFileSystem.addCwd(file);
+				if(sys.FileSystem.exists(sys_file) && bitmap == null ) bitmap = BitmapData.fromFile(sys_file);
 				#end
 				if (bitmap != null)
 				{

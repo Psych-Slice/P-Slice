@@ -88,8 +88,8 @@ class StorageUtil
 
 		if (!AndroidEnvironment.isExternalStorageManager())
 		{
-			if (AndroidVersion.SDK_INT >= AndroidVersionCode.S)
-				AndroidSettings.requestSetting('REQUEST_MANAGE_MEDIA');
+			// if (AndroidVersion.SDK_INT >= AndroidVersionCode.S)
+			// 	AndroidSettings.requestSetting('REQUEST_MANAGE_MEDIA');
 			AndroidSettings.requestSetting('MANAGE_APP_ALL_FILES_ACCESS_PERMISSION');
 		}
 		var has_MANAGE_EXTERNAL_STORAGE = Environment.isExternalStorageManager();

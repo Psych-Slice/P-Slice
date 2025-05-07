@@ -162,7 +162,7 @@ class Paths
 			if (parentfolder != null) customFile = '$parentfolder/$file';
 
 			var modded:String = modFolders(customFile);
-			if(sys.FileSystem.exists(modded)) return modded;
+			if(sys.FileSystem.exists(NativeFileSystem.addCwd(modded))) return modded;
 		}
 		#end
 		if(parentfolder == "mobile")
@@ -253,8 +253,9 @@ class Paths
 		{
 			var file:String = getPath(key, IMAGE, parentFolder, true);
 			#if NATIVE_LOOKUP
-			if (sys.FileSystem.exists(file))
-				bitmap = BitmapData.fromFile(file); 
+			var sys_path = NativeFileSystem.addCwd(file);
+			if (sys.FileSystem.exists(sys_path))
+				bitmap = BitmapData.fromFile(sys_path); 
 			#end 
 			#if OPENFL_LOOKUP
 			if (bitmap == null && OpenFlAssets.exists(file, IMAGE))
@@ -439,8 +440,9 @@ class Paths
 		{
 			var isTrackingSound = false;
 			#if NATIVE_LOOKUP
-			if(sys.FileSystem.exists(file)){
-				currentTrackedSounds.set(file, Sound.fromFile(file));
+			var sys_file = NativeFileSystem.addCwd(file);
+			if(sys.FileSystem.exists(sys_file)){
+				currentTrackedSounds.set(file, Sound.fromFile(sys_file));
 				isTrackingSound = true;
 			}
 			#end
