@@ -1,5 +1,6 @@
 package backend;
 
+import haxe.io.Path;
 import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
@@ -17,6 +18,7 @@ import lime.utils.Assets;
 import flash.media.Sound;
 
 import haxe.Json;
+import mikolka.funkin.custom.NativeFileSystem;
 
 
 #if MODS_ALLOWED
@@ -573,12 +575,28 @@ class Paths
 	#if flxanimate
 	public static function loadAnimateAtlas(spr:FlxAnimate, folderOrImg:Dynamic, spriteJson:Dynamic = null, animationJson:Dynamic = null)
 	{
-		#if sys
-		// We actually DO sypport system in Animate!
+		if(folderOrImg is String){
+			var isDir = NativeFileSystem.isDirectory(folderOrImg);
+			var dir = isDir ? folderOrImg : Path.directory(folderOrImg);
+			// We actually DO sypport system in Animate!
+			if(spriteJson == null){
+				if( NativeFileSystem.exists(Path.join([dir,"spritemap1.json"])) )
+					spriteJson = NativeFileSystem.getContent(Path.join([dir,"spritemap1.json"]));
+				else {
+					trace(Path.join([dir,"spritemap1.json"])+" is missing!!");
+					return;
+				}
+			}
+			if(animationJson == null){
+				if( NativeFileSystem.exists(Path.join([dir,"Animation.json"])) )
+					animationJson = NativeFileSystem.getContent(Path.join([dir,"Animation.json"]));
+				else {
+					trace(Path.join([dir,"Animation.json"])+" is missing!!");
+					return;
+				}
+			}
+		}
 		spr.loadAtlasEx(folderOrImg, spriteJson, animationJson);
-		#else
-		spr.loadAtlas(folderOrImg);
-		#end
 	}
 	#end
 }
