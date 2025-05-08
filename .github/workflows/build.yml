@@ -96,6 +96,7 @@ jobs:
         with:
           artifacts: ${{ inputs.artifactPath }}
           draft: true
+          tag: "fixme!"
       - name: Clearing already existing cache
         uses: actions/github-script@v6
         with:
