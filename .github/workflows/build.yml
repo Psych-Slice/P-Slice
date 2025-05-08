@@ -84,13 +84,6 @@ jobs:
           mkdir Payload
           mv *.app Payload
           zip -r ${{ env.PROJECT_NAME }}.ipa Payload
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@main
-        with:
-          name: ${{ inputs.artifactName }}
-          path: ${{ inputs.artifactPath }}
-          if-no-files-found: error   
       - name: Archive Release
         uses: thedoctor0/zip-release@0.7.5
         with:
@@ -98,6 +91,12 @@ jobs:
           path: ${{ inputs.artifactPath }}
           filename: 'release.zip'
           exclusions: '*.git* .editorconfig'   
+      - name: Upload Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{ inputs.artifactName }}
+          path: 'release.zip'
+          if-no-files-found: error   
       - name: Scaffold a pre-release
         uses: ncipollo/release-action@v1
         with:
