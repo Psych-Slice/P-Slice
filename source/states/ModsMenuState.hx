@@ -1,16 +1,10 @@
 package states;
 
-import backend.WeekData;
-import backend.Mods;
-import flixel.FlxBasic;
-import flixel.graphics.FlxGraphic;
-import flash.geom.Rectangle;
-import haxe.Json;
-import flixel.util.FlxSpriteUtil;
-import objects.AttachedSprite;
-import options.ModSettingsSubState;
 import openfl.display.BitmapData;
-import lime.utils.Assets;
+import backend.Mods;
+import flixel.graphics.FlxGraphic;
+import flixel.util.FlxSpriteUtil;
+import options.ModSettingsSubState;
 
 class ModsMenuState extends MusicBeatState
 {
@@ -942,7 +936,7 @@ class ModItem extends FlxSpriteGroup
 
 		var bmp:BitmapData = null;
 		if (NativeFileSystem.exists(file))
-			bmp = BitmapData.fromFile(file);
+			bmp = BitmapData.fromFile(NativeFileSystem.addCwd(file));
 		else
 			isPixel = false;
 
