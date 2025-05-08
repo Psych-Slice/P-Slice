@@ -26,7 +26,7 @@ class ModsHelper {
 	}
 	public static function getModsWithPlayersRegistry():Array<String> {
 		#if MODS_ALLOWED
-		return Mods.parseList().enabled.filter(s ->FileSystem.exists(Paths.mods(s)+'/registry/players'));
+		return Mods.parseList().enabled.filter(s ->NativeFileSystem.exists(Paths.mods(s)+'/registry/players'));
 		#else
 		return [];
 		#end
@@ -61,11 +61,11 @@ class ModsHelper {
 	public inline static function collectVideos():String{
 		var dirsToList = new Array<String>();
 		dirsToList.push('assets/videos/commercials/');
-		if(FileSystem.exists('mods/videos/commercials'))dirsToList.push('mods/videos/commercials/');
+		if(NativeFileSystem.exists('mods/videos/commercials'))dirsToList.push('mods/videos/commercials/');
 		Mods.loadTopMod();
 		var modsToSearch = Mods.getGlobalMods();
 		modsToSearch.pushUnique(Mods.currentModDirectory);
-		modsToSearch = modsToSearch.filter(s -> FileSystem.exists('mods/$s/videos/commercials')).map(s -> 'mods/$s/videos/commercials');
+		modsToSearch = modsToSearch.filter(s -> NativeFileSystem.exists('mods/$s/videos/commercials')).map(s -> 'mods/$s/videos/commercials');
 		
 		dirsToList = dirsToList.concat(modsToSearch);
 		var commercialsToSelect = new Array<String>();

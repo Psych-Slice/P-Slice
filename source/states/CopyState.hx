@@ -115,8 +115,8 @@
 				 if (failedFiles.length > 0)
 				 {
 					 CoolUtil.showPopUp(failedFiles.join('\n'), 'Failed To Copy ${failedFiles.length} File.');
-					 if (!FileSystem.exists('logs'))
-						 FileSystem.createDirectory('logs');
+					 if (!NativeFileSystem.exists('logs'))
+						 NativeFileSystem.createDirectory('logs');
 					 File.saveContent('logs/' + Date.now().toString().replace(' ', '-').replace(':', "'") + '-CopyState' + '.txt', failedFilesStack.join('\n'));
 				 }
 				 
@@ -142,11 +142,11 @@
  
 	 public function copyAsset(file:String)
 	 {
-		 if (!FileSystem.exists(file))
+		 if (!NativeFileSystem.exists(file))
 		 {
 			 var directory = Path.directory(file);
-			 if (!FileSystem.exists(directory))
-				 FileSystem.createDirectory(directory);
+			 if (!NativeFileSystem.exists(directory))
+				 NativeFileSystem.createDirectory(directory);
 			 try
 			 {
 				 if (OpenFLAssets.exists(getFile(file)))
@@ -179,8 +179,8 @@
 			 var fileData:String = OpenFLAssets.getText(getFile(file));
 			 if (fileData == null)
 				 fileData = '';
-			 if (!FileSystem.exists(directory))
-				 FileSystem.createDirectory(directory);
+			 if (!NativeFileSystem.exists(directory))
+				 NativeFileSystem.createDirectory(directory);
 			 File.saveContent(Path.join([directory, fileName]), fileData);
 		 }
 		 catch (e:haxe.Exception)
@@ -224,7 +224,7 @@
 		 var assets = locatedFiles.filter(folder -> folder.startsWith('assets/'));
 		 var mods = locatedFiles.filter(folder -> folder.startsWith('mods/'));
 		 locatedFiles = assets.concat(mods);
-		 locatedFiles = locatedFiles.filter(file -> !FileSystem.exists(file));
+		 locatedFiles = locatedFiles.filter(file -> !NativeFileSystem.exists(file));
  
 		 var filesToRemove:Array<String> = [];
  

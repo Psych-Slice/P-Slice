@@ -112,7 +112,7 @@ class LoadingState extends MusicBeatState
 		if(Mods.currentModDirectory != null && Mods.currentModDirectory.trim().length > 0)
 		{
 			var scriptPath:String = 'mods/${Mods.currentModDirectory}/data/LoadingScreen.hx'; //mods/My-Mod/data/LoadingScreen.hx
-			if(FileSystem.exists(scriptPath))
+			if(NativeFileSystem.exists(scriptPath))
 			{
 				try
 				{
@@ -491,13 +491,9 @@ class LoadingState extends MusicBeatState
 				var path:String = Paths.json('$folder/preload');
 				var json:Dynamic = null;
 
-				#if MODS_ALLOWED
 				var moddyFile:String = Paths.modsJson('$folder/preload');
-				if (FileSystem.exists(moddyFile)) json = Json.parse(File.getContent(moddyFile));
-				else json = Json.parse(File.getContent(path));
-				#else
-				json = Json.parse(Assets.getText(path));
-				#end
+				if (NativeFileSystem.exists(moddyFile)) json = Json.parse(NativeFileSystem.getContent(moddyFile));
+				else json = Json.parse(NativeFileSystem.getContent(path));
 
 				if(json != null)
 				{
@@ -642,7 +638,7 @@ class LoadingState extends MusicBeatState
 			{
 				for (subfolder in Mods.directoriesWithFile(Paths.getSharedPath(), '$prefix/$nam'))
 				{
-					for (file in FileSystem.readDirectory(subfolder))
+					for (file in NativeFileSystem.readDirectory(subfolder))
 					{
 						if(file.endsWith(ext))
 						{
@@ -737,7 +733,7 @@ class LoadingState extends MusicBeatState
 			img = img.trim();
 			#if flxanimate
 			var animToFind:String = Paths.getPath('images/$img/Animation.json', TEXT);
-			if (#if MODS_ALLOWED FileSystem.exists(animToFind) || #end Assets.exists(animToFind))
+			if (#if MODS_ALLOWED NativeFileSystem.exists(animToFind) || #end Assets.exists(animToFind))
 				isAnimateAtlas = true;
 			#end
 
@@ -789,10 +785,11 @@ class LoadingState extends MusicBeatState
 		{
 			var sound:Sound = null;
 			#if OPENFL_LOOKUP
-			if(OpenFlAssets.exists(file, SOUND)) sound = OpenFlAssets.getSound(file, false);
+			if(OpenFlAssets.exists(file, SOUND)&& sound == null) sound = OpenFlAssets.getSound(file, false);
 			#end
-			#if sys
-			if(FileSystem.exists(file) ) sound = Sound.fromFile(file);
+			#if NATIVE_LOOKUP
+			var sys_file = NativeFileSystem.addCwd(file);
+			if(sys.FileSystem.exists(sys_file) && sound == null) sound = Sound.fromFile(sys_file);
 			#end
 			if (sound != null)
 			{
@@ -827,10 +824,11 @@ class LoadingState extends MusicBeatState
 				var file:String = Paths.getPath(requestKey, IMAGE);
 				var bitmap:BitmapData = null;
 				#if OPENFL_LOOKUP
-				if(OpenFlAssets.exists(file, IMAGE)) bitmap = OpenFlAssets.getBitmapData(file, false);
+				if(OpenFlAssets.exists(file, IMAGE) && bitmap == null) bitmap = OpenFlAssets.getBitmapData(file, false);
 				#end
-				#if sys
-				if(FileSystem.exists(file) ) bitmap = BitmapData.fromFile(file);
+				#if NATIVE_LOOKUP
+				var sys_file = NativeFileSystem.addCwd(file);
+				if(sys.FileSystem.exists(sys_file) && bitmap == null ) bitmap = BitmapData.fromFile(sys_file);
 				#end
 				if (bitmap != null)
 				{

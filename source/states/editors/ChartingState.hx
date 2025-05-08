@@ -732,7 +732,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 				var dataToSave:String = haxe.Json.stringify(songCopy);
 				//trace(chartName, dataToSave);
 				#if sys
-				if(!FileSystem.isDirectory('backups')) FileSystem.createDirectory('backups');
+				if(!NativeFileSystem.isDirectory('backups')) NativeFileSystem.createDirectory('backups');
 				File.saveContent('backups/$chartName.$BACKUP_EXT', dataToSave);
 
 				if(backupLimit > 0)
@@ -774,7 +774,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 							//trace('removed $file');
 							try
 							{
-								FileSystem.deleteFile('backups/$file');
+								NativeFileSystem.deleteFile('backups/$file');
 							}
 							catch(e:Exception) {}
 						}
@@ -1281,12 +1281,14 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			selectionBox.visible = true;
 			updateSelectionBox();
 		}
+		if(FlxG.mouse.justPressed && (FlxG.mouse.overlaps(mainBox,camUI) || FlxG.mouse.overlaps(infoBox,camUI)))
+			ignoreClickForThisFrame = true;
 		#if TOUCH_CONTROLS_ALLOWED
 		if (controls.mobileC)
 		{
 			for (touch in FlxG.touches.list)
 			{
-				if(touch.justPressed && (touch.overlaps(mainBox.bg) || touch.overlaps(infoBox.bg)))
+				if(touch.justPressed && (touch.overlaps(mainBox,camUI) || touch.overlaps(infoBox,camUI)))
 					ignoreClickForThisFrame = true;
 		
 				var minX:Float = gridBg.x;
@@ -1511,8 +1513,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			}
 		} else {
 		#end
-			if(FlxG.mouse.justPressed && (FlxG.mouse.overlaps(mainBox.bg) || FlxG.mouse.overlaps(infoBox.bg)))
-				ignoreClickForThisFrame = true;
+			
 	
 			var minX:Float = gridBg.x;
 			if(SHOW_EVENT_COLUMN && lockedEvents) minX += GRID_SIZE;
@@ -1728,8 +1729,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			}
 			else if(!ignoreClickForThisFrame)
 			{
-				if(FlxG.mouse.justPressed)
+				if(FlxG.mouse.justPressed){
 					resetSelectedNotes();
+				}
 	
 				dummyArrow.visible = false;
 			}
@@ -3802,7 +3804,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			upperBox.isMinimized = true;
 			upperBox.bg.visible = false;
 
-			if(!FileSystem.exists('backups/'))
+			if(!NativeFileSystem.exists('backups/'))
 			{
 				showOutput('The "backups" folder does not exist.', true);
 				return;
@@ -3841,7 +3843,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 						var path:String = 'backups/$autosaveName';
 						state.close();
 
-						if(FileSystem.exists(path))
+						if(NativeFileSystem.exists(path))
 						{
 							try
 							{
@@ -3858,7 +3860,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	
 								var func:Void->Void = function()
 								{
-									Song.chartPath = FileSystem.exists(originalPath) ? originalPath : null;
+									Song.chartPath = NativeFileSystem.exists(originalPath) ? originalPath : null;
 									loadChart(loadedChart);
 									reloadNotesDropdowns();
 									prepareReload();
@@ -4040,7 +4042,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 					return;
 				}
 	
-				if(FileSystem.exists(Song.chartPath))
+				if(NativeFileSystem.exists(Song.chartPath))
 				{
 					try
 					{
@@ -4200,7 +4202,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 									{
 										var diffPostfix:String = (diff != defaultDiff) ? '-$diff' : '';
 										var chartToFind:String = parentFolder + songName + diffPostfix + '.json';
-										if(FileSystem.exists(chartToFind))
+										if(NativeFileSystem.exists(chartToFind))
 										{
 											var diffChart:SwagSong = Song.parseJSON(File.getContent(chartToFind), songName + diffPostfix);
 											if(diffChart != null)
@@ -4220,7 +4222,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 									}
 									
 									var chartToFind:String = parentFolder + 'events.json';
-									if(FileSystem.exists(chartToFind))
+									if(NativeFileSystem.exists(chartToFind))
 									{
 										var eventsChart:SwagSong = Song.parseJSON(File.getContent(chartToFind), 'events');
 										if(eventsChart != null)
@@ -5308,10 +5310,10 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		#if MODS_ALLOWED
 		for (directory in Mods.directoriesWithFile(Paths.getSharedPath(), mainFolder))
 		{
-			for (file in FileSystem.readDirectory(directory))
+			for (file in NativeFileSystem.readDirectory(directory))
 			{
 				var path = haxe.io.Path.join([directory, file.trim()]);
-				if (!FileSystem.isDirectory(path) && !file.startsWith('readme.'))
+				if (!NativeFileSystem.isDirectory(path) && !file.startsWith('readme.'))
 				{
 					for (fileType in fileTypes)
 					{
@@ -5352,7 +5354,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	#if sys
 	function overwriteCheck(savePath:String, overwriteName:String, saveData:String, continueFunc:Void->Void = null, ?continueOnCancel:Bool = false)
 	{
-		if(FileSystem.exists(savePath))
+		if(NativeFileSystem.exists(savePath))
 		{
 			openSubState(new Prompt('Overwrite: "$overwriteName"?', function()
 			{

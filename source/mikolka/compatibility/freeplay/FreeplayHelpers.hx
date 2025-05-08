@@ -1,5 +1,6 @@
 package mikolka.compatibility.freeplay;
 
+import haxe.Exception;
 import backend.StageData;
 import options.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
@@ -87,7 +88,7 @@ class FreeplayHelpers {
 			var songLowercase:String = Paths.formatToSongPath(cap.getNativeSongId());
 			var poop:String = Highscore.formatSong(songLowercase, diffId); // TODO //currentDifficulty);
 			/*#if MODS_ALLOWED
-				if(!FileSystem.exists(Paths.modsJson(songLowercase + '/' + poop)) && !FileSystem.exists(Paths.json(songLowercase + '/' + poop))) {
+				if(!NativeFileSystem.exists(Paths.modsJson(songLowercase + '/' + poop)) && !NativeFileSystem.exists(Paths.json(songLowercase + '/' + poop))) {
 				#else
 				if(!OpenFlAssets.exists(Paths.json(songLowercase + '/' + poop))) {
 				#end
@@ -117,11 +118,11 @@ class FreeplayHelpers {
 
 				trace('CURRENT WEEK: ' + WeekData.getWeekFileName());
 			}
-			catch (e:Dynamic)
+			catch (e:Exception)
 			{
 				trace('ERROR! $e');
 				UserErrorSubstate.makeMessage("Failed to load a song",
-					'$e'
+					'${e.message}\n\n${e.details()}'
 					);
                 @:privateAccess{
                     state.busy = false;

@@ -194,8 +194,8 @@ class ModSettingsSubState extends BaseOptionsMenu
 			for(option in settingsJson)
 				option.value = save.get(option.save);
 
-			if(FileSystem.exists(settingsPath))
-				FileSystem.deleteFile(settingsPath);
+			if(NativeFileSystem.exists(settingsPath))
+				NativeFileSystem.deleteFile(settingsPath);
 
 			File.saveContent(settingsPath, Json.stringify(settingsJson, '\t'));
 		} catch(e:Dynamic) trace('exploded: $e');
