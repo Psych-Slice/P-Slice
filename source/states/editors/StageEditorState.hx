@@ -1193,11 +1193,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 		{
 			var characterPath:String = 'stages/$selected.json';
 			var path:String = Paths.getPath(characterPath, TEXT, null, true);
-			#if MODS_ALLOWED
 			if (NativeFileSystem.exists(path))
-			#else
-			if (Assets.exists(path))
-			#end
 			{
 				stageJson = StageData.getStageFile(selected);
 				lastLoadedStage = selected;

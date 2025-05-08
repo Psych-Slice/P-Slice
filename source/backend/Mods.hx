@@ -148,11 +148,7 @@ class Mods
 		var path = Paths.mods(folder + '/pack.json');
 		if(NativeFileSystem.exists(path)) {
 			try {
-				#if sys
-				var rawJson:String = File.getContent(path);
-				#else
-				var rawJson:String = Assets.getText(path);
-				#end
+				var rawJson:String = NativeFileSystem.getContent(path);
 				if(rawJson != null && rawJson.length > 0) return tjson.TJSON.parse(rawJson);
 			} catch(e:Dynamic) {
 				trace(e);
