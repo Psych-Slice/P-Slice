@@ -80,7 +80,7 @@ class FlxAtlasSprite extends PsychFlxAnimate
       super.loadAtlas(path);
       return;
     }
-    #if sys
+    #if NATIVE_LOOKUP
     try{
       trace(path);
       super.loadAtlasEx(ModsHelper.loadabsoluteGraphic('$path/spritemap1.png'),

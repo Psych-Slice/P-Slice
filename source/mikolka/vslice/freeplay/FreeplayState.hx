@@ -1888,7 +1888,7 @@ class FreeplayState extends MusicBeatSubstate
 			var songScore:Int = Highscore.getScore(daSong.getNativeSongId(),
 				diffId); // Save.instance.getSongScore(grpCapsules.members[curSelected].songData.songId, suffixedDifficulty);
 			intendedScore = songScore ?? 0;
-			intendedCompletion = Highscore.getRating(daSong.songId, diffId);
+			intendedCompletion = Highscore.getRating(daSong.getNativeSongId(), diffId);
 			rememberedDifficulty = currentDifficulty;
 		}
 		else

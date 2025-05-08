@@ -336,8 +336,8 @@ class AlphaCharacter extends FlxSprite
 	var parent:Alphabet;
 	public var alignOffset:Float = 0; //Don't change this
 	public var letterOffset:Array<Float> = [0, 0];
-	public var spawnPos:FlxPoint = new FlxPoint();
-	public var spawnScale:FlxPoint = new FlxPoint();
+	public var spawnPos:FlxPoint = FlxPoint.get();
+	public var spawnScale:FlxPoint = FlxPoint.get();
 
 	public var row:Int = 0;
 	public var rowWidth:Float = 0;
@@ -429,6 +429,11 @@ class AlphaCharacter extends FlxSprite
 		return name;
 	}
 
+	override function destroy() {
+		spawnPos.put();
+		spawnScale.put();
+		super.destroy();
+	}
 	public function updateLetterOffset()
 	{
 		if (animation.curAnim == null) return;

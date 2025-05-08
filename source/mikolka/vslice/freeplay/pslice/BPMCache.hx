@@ -14,7 +14,7 @@ class BPMCache {
             return bpmMap[sngDataPath];
         }
         bpmMap[sngDataPath] = 0;
-        if(!exists(sngDataPath)){
+        if(!NativeFileSystem.exists(sngDataPath)){
             trace('Missing data folder for $fileSngName in $sngDataPath for BPM scrapping!!'); //TODO
             return 0;
         }
@@ -25,9 +25,9 @@ class BPMCache {
         
         
 		
-		if(exists(chosenChartToScrap)){
+		if(NativeFileSystem.exists(chosenChartToScrap)){
 			var bpmFinder = ~/"bpm": *([0-9]+)/g; //TODO fix this regex
-			var cleanChart = ~/"notes": *\[.*\]/gs.replace(getContent(chosenChartToScrap),"");
+			var cleanChart = ~/"notes": *\[.*\]/gs.replace(NativeFileSystem.getContent(chosenChartToScrap),"");
 			if(bpmFinder.match(cleanChart)){
                 bpmMap[sngDataPath] = Std.parseInt(bpmFinder.matched(1));
             } 
@@ -42,23 +42,5 @@ class BPMCache {
     }
     public function clearCache() {
         bpmMap.clear();
-    }
-    private function exists(path:String) {
-        #if MODS_ALLOWED
-        return FileSystem.exists(path);
-        #else
-        @:privateAccess
-        for (entry in lime.utils.Assets.libraries.get("default").types.keys()){
-            if(entry.startsWith(path)) return true;
-        }
-        return false;
-        #end
-    }
-    function getContent(path:String) {
-        #if MODS_ALLOWED
-        return File.getContent(path);
-        #else
-        return lime.utils.Assets.getText("default:"+path);
-        #end
     }
 }
