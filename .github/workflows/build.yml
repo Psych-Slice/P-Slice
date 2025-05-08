@@ -97,12 +97,6 @@ jobs:
           name: ${{ inputs.artifactName }}
           path: 'release.zip'
           if-no-files-found: error   
-      - name: Scaffold a pre-release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: 'release.zip'
-          draft: true
-          tag: "fixme!"
       - name: Clearing already existing cache
         uses: actions/github-script@v6
         with:
