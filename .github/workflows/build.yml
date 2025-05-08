@@ -90,11 +90,18 @@ jobs:
         with:
           name: ${{ inputs.artifactName }}
           path: ${{ inputs.artifactPath }}
-          if-no-files-found: error      
+          if-no-files-found: error   
+      - name: Archive Release
+        uses: thedoctor0/zip-release@0.7.5
+        with:
+          type: 'zip'
+          path: ${{ inputs.artifactPath }}
+          filename: 'release.zip'
+          exclusions: '*.git* .editorconfig'   
       - name: Scaffold a pre-release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: ${{ inputs.artifactPath }}
+          artifacts: 'release.zip'
           draft: true
           tag: "fixme!"
       - name: Clearing already existing cache
