@@ -335,8 +335,8 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 	function onChangeVSync()
 	{
 		var file:String = StorageUtil.rootDir + "vsync.txt";
-		if(FileSystem.exists(file))
-			FileSystem.deleteFile(file);
+		if(NativeFileSystem.exists(file))
+			NativeFileSystem.deleteFile(file);
 		File.saveContent(file, Std.string(ClientPrefs.data.vsync));
 	}
 	#end
