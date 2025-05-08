@@ -84,19 +84,13 @@ jobs:
           mkdir Payload
           mv *.app Payload
           zip -r ${{ env.PROJECT_NAME }}.ipa Payload
-      - name: Archive Release
-        uses: thedoctor0/zip-release@0.7.5
-        with:
-          type: 'zip'
-          path: ${{ inputs.artifactPath }}
-          filename: 'release.zip'
-          exclusions: '*.git* .editorconfig'   
+
       - name: Upload Artifact
         uses: actions/upload-artifact@main
         with:
           name: ${{ inputs.artifactName }}
-          path: 'release.zip'
-          if-no-files-found: error   
+          path: ${{ inputs.artifactPath }}
+          if-no-files-found: error      
       - name: Clearing already existing cache
         uses: actions/github-script@v6
         with:
