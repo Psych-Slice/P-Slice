@@ -1854,14 +1854,14 @@ class FunkinLua {
 				var found:Bool = false;
 				if(NativeFileSystem.exists(frag))
 				{
-					frag = File.getContent(frag);
+					frag = NativeFileSystem.getContent(frag);
 					found = true;
 				}
 				else frag = null;
 
 				if(NativeFileSystem.exists(vert))
 				{
-					vert = File.getContent(vert);
+					vert = NativeFileSystem.getContent(vert);
 					found = true;
 				}
 				else vert = null;
