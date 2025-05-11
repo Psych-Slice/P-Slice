@@ -130,7 +130,7 @@ class LuaUtils
 			if(settings == null || !settings.exists(saveTag))
 			{
 				if(settings == null) settings = new Map<String, Dynamic>();
-				var data:String = File.getContent(path);
+				var data:String = NativeFileSystem.getContent(path);
 				try
 				{
 					//FunkinLua.luaTrace('getModSetting: Trying to find default value for "$saveTag" in Mod: "$modName"');

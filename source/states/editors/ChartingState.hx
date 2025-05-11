@@ -4046,7 +4046,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 				{
 					try
 					{
-						var reloadedChart:SwagSong = Song.parseJSON(File.getContent(Song.chartPath));
+						var reloadedChart:SwagSong = Song.parseJSON(NativeFileSystem.getContent(Song.chartPath));
 						loadChart(reloadedChart);
 						reloadNotesDropdowns();
 						prepareReload();
@@ -4204,7 +4204,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 										var chartToFind:String = parentFolder + songName + diffPostfix + '.json';
 										if(NativeFileSystem.exists(chartToFind))
 										{
-											var diffChart:SwagSong = Song.parseJSON(File.getContent(chartToFind), songName + diffPostfix);
+											var diffChart:SwagSong = Song.parseJSON(NativeFileSystem.getContent(chartToFind), songName + diffPostfix);
 											if(diffChart != null)
 											{
 												var subpack:VSlicePackage = VSlice.export(diffChart);

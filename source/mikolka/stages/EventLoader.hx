@@ -42,7 +42,6 @@ class EventLoader extends BaseStage {
         var addNene = true;
         if(VsliceOptions.LEGACY_BAR) new LegacyScoreBars();
         new VSliceEvents();
-        if(addNene && PicoCapableStage.instance == null) new PicoCapableStage();
         switch (name)
 		{
 			case 'stage': new StageWeek1(); 						//Week 1
@@ -70,6 +69,12 @@ class EventLoader extends BaseStage {
 			case 'phillyStreetsErect': new PhillyStreetsErect(); 	//Weekend 1 Special 
             default: addNene = false;
 		}
+        if(addNene && PicoCapableStage.instance == null) {
+            var pico = new PicoCapableStage();
+            var game = PlayState.instance;
+            game.stages.remove(pico);
+            game.stages.insert(game.stages.length-2,pico);
+        }
         
     } 
 }

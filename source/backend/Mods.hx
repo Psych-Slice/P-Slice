@@ -124,16 +124,7 @@ class Mods
 			{
 				var folder:String = Paths.mods(Mods.currentModDirectory + '/' + fileToFind);
 				if(NativeFileSystem.exists(folder) && !foldersToCheck.contains(folder)) foldersToCheck.push(folder);
-				#if linux
-				else{
-					@:privateAccess
-					folder = Paths.findFile(fileToFind);
-					if(folder != null){
-						if(NativeFileSystem.isDirectory(folder)) folder += '/';
-						if(NativeFileSystem.exists(folder) &&!foldersToCheck.contains(folder)) foldersToCheck.push(folder);
-					}
-				}
-				#end
+
 			}
 		}
 		#end
