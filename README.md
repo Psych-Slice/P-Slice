@@ -27,7 +27,7 @@
     <img src="art/banner.png" alt="Logo" width="300" height="200">
   </a>
 
-<h3 align="center">T-Slice Engine</h3>
+<h3 align="center">P-Slice Engine</h3>
 
   <p align="center">
     Crossover between Psych Engine and newer versions of FNF (also known as V-Slice)
