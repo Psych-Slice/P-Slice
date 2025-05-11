@@ -1589,10 +1589,11 @@ class FunkinLua {
 		}
 
 		try{
-			var isString:Bool = !NativeFileSystem.exists(scriptName);
+			var realName = NativeFileSystem.getPathLike(scriptName);
+			var isString = realName == null;
 			var result:Dynamic = null;
 			if(!isString)
-				result = LuaL.dofile(lua, scriptName);
+				result = LuaL.dofile(lua, realName);
 			else
 				result = LuaL.dostring(lua, scriptName);
 
@@ -1854,14 +1855,14 @@ class FunkinLua {
 				var found:Bool = false;
 				if(NativeFileSystem.exists(frag))
 				{
-					frag = File.getContent(frag);
+					frag = NativeFileSystem.getContent(frag);
 					found = true;
 				}
 				else frag = null;
 
 				if(NativeFileSystem.exists(vert))
 				{
-					vert = File.getContent(vert);
+					vert = NativeFileSystem.getContent(vert);
 					found = true;
 				}
 				else vert = null;

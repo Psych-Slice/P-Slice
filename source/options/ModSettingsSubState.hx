@@ -190,7 +190,7 @@ class ModSettingsSubState extends BaseOptionsMenu
 		try {
 			var modPath:String = ModsMenuState.modsGroup.members[ModsMenuState.curSelectedMod].folder;
 			var settingsPath:String = Paths.mods('$modPath/data/settings.json');
-			var settingsJson:Array<Dynamic> = Json.parse(File.getContent(settingsPath));
+			var settingsJson:Array<Dynamic> = Json.parse(NativeFileSystem.getContent(settingsPath));
 			for(option in settingsJson)
 				option.value = save.get(option.save);
 

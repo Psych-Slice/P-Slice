@@ -3526,7 +3526,7 @@ class PlayState extends MusicBeatState
 			//trace('BEAT HIT: ' + curBeat + ', LAST HIT: ' + lastBeatHit);
 			return;
 		}
-
+		//? Camera zoom - V-Slice condition (based on zoom freq)
 		if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.data.camZooms && (curBeat % camZoomingFrequency) == 0)
 			{
 				FlxG.camera.zoom += 0.015 * camZoomingMult;
@@ -3575,6 +3575,15 @@ class PlayState extends MusicBeatState
 		{
 			if (generatedMusic && !endingSong && !isCameraOnForcedPos)
 				moveCameraSection();
+
+			//? Camera zoom - Psych condition (based on section length)
+			var vsliceCondition = (curBeat % camZoomingFrequency) == 0;
+			if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.data.camZooms && !vsliceCondition)
+			{
+				FlxG.camera.zoom += 0.015 * camZoomingMult;
+				camHUD.zoom += 0.03 * camZoomingMult;
+				
+			}
 
 			if (SONG.notes[curSection].changeBPM)
 			{
@@ -3922,14 +3931,14 @@ class PlayState extends MusicBeatState
 			var found:Bool = false;
 			if(NativeFileSystem.exists(frag))
 			{
-				frag = File.getContent(frag);
+				frag = NativeFileSystem.getContent(frag);
 				found = true;
 			}
 			else frag = null;
 
 			if(NativeFileSystem.exists(vert))
 			{
-				vert = File.getContent(vert);
+				vert = NativeFileSystem.getContent(vert);
 				found = true;
 			}
 			else vert = null;

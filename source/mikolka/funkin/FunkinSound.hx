@@ -88,7 +88,9 @@ class FunkinSound extends FlxSound
 				instPath = 'assets/songs/${Paths.formatToSongPath(key)}/Inst.${Paths.SOUND_EXT}';
 				#if MODS_ALLOWED
 				var modsInstPath = Paths.modFolders('songs/${Paths.formatToSongPath(key)}/Inst.${Paths.SOUND_EXT}');
-				if(NativeFileSystem.exists(modsInstPath)) instPath = modsInstPath;
+				var real_modSngPath = NativeFileSystem.getPathLike(modsInstPath);
+				if(real_modSngPath != null) instPath = real_modSngPath;
+
 				#end
 				
 				var future = FlxPartialSound.partialLoadFromFile(instPath,params.partialParams.start,params.partialParams.end);
