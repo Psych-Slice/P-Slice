@@ -1589,10 +1589,11 @@ class FunkinLua {
 		}
 
 		try{
-			var isString:Bool = !NativeFileSystem.exists(scriptName);
+			var realName = NativeFileSystem.getPathLike(scriptName);
+			var isString = realName == null;
 			var result:Dynamic = null;
 			if(!isString)
-				result = LuaL.dofile(lua, scriptName);
+				result = LuaL.dofile(lua, realName);
 			else
 				result = LuaL.dostring(lua, scriptName);
 

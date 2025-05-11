@@ -30,7 +30,7 @@ class NativeFileSystem
 		#end
 
 		#if NATIVE_LOOKUP
-		var sys_path = getPathLike(addCwd(path));
+		var sys_path = getPathLike(path);
 		var sys_res = sys_path != null ? File.getContent(sys_path) : null;
 		if (sys_res != null)
 			return sys_res;
@@ -43,7 +43,7 @@ class NativeFileSystem
     public static function getBitmap(path:String):Null<BitmapData> {
 
 		#if NATIVE_LOOKUP
-		var sys_path = getPathLike(addCwd(path));
+		var sys_path = getPathLike(path);
 		if (sys_path != null)
 			return BitmapData.fromFile(sys_path); 
 		#end
@@ -57,7 +57,7 @@ class NativeFileSystem
 
 	public static function getSound(path:String):Null<Sound> {
 		#if NATIVE_LOOKUP
-		var sys_path = getPathLike(addCwd(path));
+		var sys_path = getPathLike(path);
 		if (sys_path != null)
 			return Sound.fromFile(sys_path);
 		
@@ -73,7 +73,7 @@ class NativeFileSystem
 	public static function exists(path:String)
 	{
 		#if NATIVE_LOOKUP
-        if (getPathLike(addCwd(path)) != null)
+        if (getPathLike(path) != null)
             return true;
 		#end
 
@@ -93,7 +93,7 @@ class NativeFileSystem
 	#if NATIVE_LOOKUP
 	private static function readDirectory_sys(directory:String):Null<Array<String>>
 	{
-        var testdir = getPathLike(addCwd(directory));
+        var testdir = getPathLike(directory);
 		if (testdir == null)
 			return null;
 
@@ -106,7 +106,7 @@ class NativeFileSystem
 
 		Depends a lot on the target system!
 	**/
-	public static function addCwd(directory:String):String
+	private static function addCwd(directory:String):String
 	{
 		#if desktop
 		return directory;
@@ -252,8 +252,8 @@ class NativeFileSystem
 	 * @return Null<String>
 	 */
 	 public static function getPathLike(path:String):Null<String> {
-
-		if(sys.FileSystem.exists(path)) return path;
+		var cwd_path = addCwd(path);
+		if(sys.FileSystem.exists(cwd_path)) return cwd_path;
 		return null;
 	}
 	#end
