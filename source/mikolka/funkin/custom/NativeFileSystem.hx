@@ -23,13 +23,17 @@ class NativeFileSystem
 {
 	public static function getContent(path:String):Null<String>
 	{
+		var isModded = path.startsWith("mods");
 		#if OPENFL_LOOKUP
-		var openfl_content = (OpenFlAssets.exists(path, TEXT)) ? Assets.getText(path) : null;
-		if (openfl_content != null)
-			return openfl_content;
+		if(!isModded){
+			var openfl_content = (OpenFlAssets.exists(path, TEXT)) ? Assets.getText(path) : null;
+			if (openfl_content != null)
+				return openfl_content;
+		}
 		#end
 
 		#if NATIVE_LOOKUP
+		#if OPENFL_LOOKUP if(!isModded) return null; #end
 		var sys_path = getPathLike(path);
 		var sys_res = sys_path != null ? File.getContent(sys_path) : null;
 		if (sys_res != null)
@@ -42,13 +46,17 @@ class NativeFileSystem
 	// Loads a given bitmap. Returns null if it doesn't exist
     public static function getBitmap(path:String):Null<BitmapData> {
 
+		var isModded = path.startsWith("mods");
 		#if NATIVE_LOOKUP
-		var sys_path = getPathLike(path);
-		if (sys_path != null)
-			return BitmapData.fromFile(sys_path); 
+		if( #if OPENFL_LOOKUP isModded #else true #end){
+			var sys_path = getPathLike(path);
+			if (sys_path != null)
+				return BitmapData.fromFile(sys_path); 
+		}
 		#end
 
 		#if OPENFL_LOOKUP
+		#if NATIVE_LOOKUP if(isModded) return null; #end
 		if ( OpenFlAssets.exists(path, IMAGE))
 			return OpenFlAssets.getBitmapData(path);
 		#end
@@ -56,75 +64,56 @@ class NativeFileSystem
     }
 
 	public static function getSound(path:String):Null<Sound> {
+		var isModded = path.startsWith("mods");
+
+		#if OPENFL_LOOKUP
+		if(!isModded){
+			if(OpenFlAssets.exists(path, SOUND))
+				return OpenFlAssets.getSound(path);
+		}
+		#end
+
 		#if NATIVE_LOOKUP
+		#if OPENFL_LOOKUP if(!isModded) return null; #end
 		var sys_path = getPathLike(path);
 		if (sys_path != null)
 			return Sound.fromFile(sys_path);
 		
 		#end
-		#if OPENFL_LOOKUP
-		if(OpenFlAssets.exists(path, SOUND))
-			return OpenFlAssets.getSound(path);
-			
-		#end
+
 		return null;
     }
     //Check if the file exists
 	public static function exists(path:String)
 	{
+		var isModded = path.startsWith("mods");
+		#if OPENFL_LOOKUP
+		if(!isModded){
+			var isFile = OpenFlAssets.exists(path, TEXT);
+			if (!isFile)
+			{
+				var isDir = Assets.list().filter(folder -> folder.startsWith(path)).length > 0;
+				return isDir;
+			}
+			return isFile;
+		}
+		#end
+
 		#if NATIVE_LOOKUP
+
+		#if OPENFL_LOOKUP if(!isModded) return false; #end
         if (getPathLike(path) != null)
             return true;
 		#end
-
-		#if OPENFL_LOOKUP
-		var isFile = OpenFlAssets.exists(path, TEXT);
-		if (!isFile)
-		{
-			var isDir = Assets.list().filter(folder -> folder.startsWith(path)).length > 0;
-			return isDir;
-		}
-		return isFile;
-		#else
 		return false;
-		#end
-	}
-
-	#if NATIVE_LOOKUP
-	private static function readDirectory_sys(directory:String):Null<Array<String>>
-	{
-        var testdir = getPathLike(directory);
-		if (testdir == null)
-			return null;
-
-		return FileSystem.readDirectory(testdir);
-	}
-	#end
-
-	/**
-		Adds the current root dir to the path.
-
-		Depends a lot on the target system!
-	**/
-	private static function addCwd(directory:String):String
-	{
-		#if desktop
-		return directory;
-		#else
-		var cwd = StorageUtil.getStorageDirectory();
-		var test_cwd = haxe.io.Path.removeTrailingSlashes(cwd);
-		if (directory.startsWith(test_cwd))
-			return directory;
-		return haxe.io.Path.addTrailingSlash(cwd) + directory;
-		#end
 	}
 
 	public static function readDirectory(directory:String):Array<String>
 	{
 		#if NATIVE_LOOKUP
-		var result = readDirectory_sys(directory);
-		if (result != null)
-			return result;
+		var testdir = getPathLike(directory);
+		if (testdir != null)
+			return FileSystem.readDirectory(testdir);
 		#end
 
 		#if OPENFL_LOOKUP
@@ -150,16 +139,24 @@ class NativeFileSystem
 		return null;
 		#end
 	}
-
-    // Checks if the given path is a valid directory
-	public static function isDirectory(directory:String)
+	/**
+	 * Checks if the given path is a valid directory.
+	 * @param directory A path **relative** to the working directory 
+	 * @return Bool Is it a valid directory
+	 */
+    // 
+	public static function isDirectory(directory:String):Bool
 	{
 		var result = false;
+		var isModded = directory.startsWith("mods");
+
 		#if OPENFL_LOOKUP
-		if (!result)
+		if (!result && !isModded)
 			result = Assets.list().filter(folder -> folder.startsWith(directory) && folder != directory).length > 0;
 		#end
+
 		#if NATIVE_LOOKUP
+		#if OPENFL_LOOKUP if(!isModded) return false; #end
 		if (!result)
 			result = sys.FileSystem.isDirectory(addCwd(directory));
 		#end
@@ -186,6 +183,23 @@ class NativeFileSystem
 		#end
 	}
 
+		/**
+		Adds the current root dir to the path.
+
+		Depends a lot on the target system!
+	**/
+	private static function addCwd(directory:String):String
+		{
+			#if desktop
+			return directory;
+			#else
+			var cwd = StorageUtil.getStorageDirectory();
+			var test_cwd = haxe.io.Path.removeTrailingSlashes(cwd);
+			if (directory.startsWith(test_cwd))
+				return directory;
+			return haxe.io.Path.addTrailingSlash(cwd) + directory;
+			#end
+		}
 	#if linux
 		/**
 	 * Returns a path to the existing file similar to the given one.
