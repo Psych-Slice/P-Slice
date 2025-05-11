@@ -173,7 +173,7 @@ class Paths
 		if (currentLevel != null && currentLevel != 'shared')
 		{
 			var levelPath = getFolderPath(file, currentLevel);
-			if (openfl.utils.Assets.exists(levelPath, type))
+			if (NativeFileSystem.exists(levelPath))
 				return levelPath;
 		}
 		return getSharedPath(file);
