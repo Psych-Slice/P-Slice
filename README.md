@@ -30,7 +30,7 @@
 <h3 align="center">T-Slice Engine</h3>
 
   <p align="center">
-    T-slice also known as Tweaked-Slice is a soft fork of P-slice for minor fixes
+    Crossover between Psych Engine and newer versions of FNF (also known as V-Slice)
     <br />
     <a href="https://github.com/Psych-Slice/P-Slice/wiki"><strong>Explore the Wiki »</strong></a>
     <br />
