@@ -68,14 +68,6 @@ jobs:
             artifactName: P-Slice.1.0.android
             cachePath: cache-build-android
             artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
-          - name: Android
-            os: macos-15
-            exportPath: android
-            buildArgs: "android -DPROFILE_BUILD"
-            setupScript: sh ./setup/mobile.sh
-            artifactName: P-Slice.1.0.android
-            cachePath: cache-build-android-profile
-            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
           - name: iOS
             os: macos-15
             buildArgs: "ios -nosign"
@@ -85,6 +77,30 @@ jobs:
             artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
             cachePath: cache-build-ios
     uses: ./.github/workflows/build.yml
+    with:
+      name: ${{ matrix.name }}
+      os: ${{ matrix.os }}
+      buildArgs: ${{ matrix.buildArgs }}
+      setupScript: ${{ matrix.setupScript }}
+      exportPath: ${{ matrix.exportPath }}
+      artifactName: ${{ matrix.artifactName }}
+      artifactPath: ${{ matrix.artifactPath }}
+      cachePath: ${{matrix.cachePath}}
+  Export:
+    permissions: write-all
+    name: ${{ matrix.name }}
+    strategy:
+      matrix:
+        include:
+          - name: Android
+            os: macos-15
+            exportPath: android
+            buildArgs: "android -DPROFILE_BUILD"
+            setupScript: sh ./setup/mobile.sh
+            artifactName: P-Slice.1.0.android
+            cachePath: cache-build-android-profile
+            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
+    uses: ./.github/workflows/export.yml
     with:
       name: ${{ matrix.name }}
       os: ${{ matrix.os }}
