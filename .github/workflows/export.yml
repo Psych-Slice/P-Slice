@@ -50,8 +50,9 @@ jobs:
         uses: actions/cache@v3
         with:
           # not caching the bin folder to prevent asset duplication and stuff like that
-          key: ${{ inputs.cachePath }}
-          path: .haxelib/
+          key: ${{inputs.cachePath}}
+          path: |
+            .haxelib/
           restore-keys: |
             ${{ inputs.cachePath }}
             
