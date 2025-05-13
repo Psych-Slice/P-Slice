@@ -50,11 +50,12 @@ jobs:
         uses: actions/cache@v3
         with:
           # not caching the bin folder to prevent asset duplication and stuff like that
-          key: ${{inputs.cachePath}}
+          key: cache-build-android-profile
           path: |
             .haxelib/
-          restore-keys: |
-            ${{ inputs.cachePath }}
+            export/release/${{ inputs.exportPath }}/haxe/
+            export/release/${{ inputs.exportPath }}/obj/
+          restore-keys: cache-build-android-profile
             
       - name: Install libVLC
         if: inputs.name == 'Linux'
