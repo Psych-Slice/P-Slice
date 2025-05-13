@@ -19,6 +19,7 @@ jobs:
             exportPath: windows
             artifactName: P-Slice.1.0.windows
             setupScript: .\"setup/windows.bat"
+            cachePath: cache-build-windows
             artifactPath: export\release\windows\bin\*
           - name: Linux
             os: ubuntu-22.04
@@ -26,6 +27,7 @@ jobs:
             exportPath: linux
             setupScript: sh ./setup/unix.sh
             artifactName: P-Slice.1.0.linux
+            cachePath: cache-build-linux
             artifactPath: export/release/linux/bin/*
           # - name: macOS x86_64
           #   os: macos-14
@@ -38,6 +40,7 @@ jobs:
             os: macos-15
             buildArgs: mac
             exportPath: macos
+            cachePath: cache-build-macos
             setupScript: sh ./setup/mobile.sh
             artifactName: P-Slice.1.0.macosarm64
             artifactPath: export/release/macos/bin/*
@@ -50,6 +53,7 @@ jobs:
       exportPath: ${{ matrix.exportPath }}
       artifactName: ${{ matrix.artifactName }}
       artifactPath: ${{ matrix.artifactPath }}
+      cachePath: ${{matrix.cachePath}}
   BuildMobile:
     permissions: write-all
     name: ${{ matrix.name }}
@@ -62,6 +66,15 @@ jobs:
             buildArgs: "android"
             setupScript: sh ./setup/mobile.sh
             artifactName: P-Slice.1.0.android
+            cachePath: cache-build-android
+            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
+          - name: Android
+            os: macos-15
+            exportPath: android
+            buildArgs: "android -DPROFILE_BUILD"
+            setupScript: sh ./setup/mobile.sh
+            artifactName: P-Slice.1.0.android
+            cachePath: cache-build-android-profile
             artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
           - name: iOS
             os: macos-15
@@ -70,6 +83,7 @@ jobs:
             setupScript: sh ./setup/mobile.sh
             artifactName: P-Slice.1.0.ios
             artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
+            cachePath: cache-build-ios
     uses: ./.github/workflows/build.yml
     with:
       name: ${{ matrix.name }}
@@ -79,3 +93,4 @@ jobs:
       exportPath: ${{ matrix.exportPath }}
       artifactName: ${{ matrix.artifactName }}
       artifactPath: ${{ matrix.artifactPath }}
+      cachePath: ${{matrix.cachePath}}

@@ -21,6 +21,9 @@ on:
       artifactPath:
         required: true
         type: string
+      cacheName:
+        required: true
+        type: string
       exportPath:
         required: true
         type: string
@@ -47,8 +50,7 @@ jobs:
         uses: actions/cache@v3
         with:
           # not caching the bin folder to prevent asset duplication and stuff like that
-          key: cache-build-${{ inputs.exportPath }}
-          path: |
+          key: ${{ inputs.cacheName }}
             .haxelib/
             export/release/${{ inputs.exportPath }}/haxe/
             export/release/${{ inputs.exportPath }}/obj/
@@ -113,7 +115,7 @@ jobs:
       - name: Uploading new cache
         uses: actions/cache@v3
         with:
-          key: cache-build-${{ inputs.exportPath }}
+          key: ${{ inputs.cacheName }}
           path: |
             .haxelib/
             export/release/${{ inputs.exportPath }}/haxe/

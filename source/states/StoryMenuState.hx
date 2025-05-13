@@ -1,10 +1,10 @@
 package states;
 
+import mikolka.compatibility.freeplay.FreeplayHelpers;
 import mikolka.compatibility.ui.StoryModeHooks;
 import mikolka.compatibility.ModsHelper;
 import backend.WeekData;
 import backend.Highscore;
-import backend.Song;
 
 import flixel.group.FlxGroup;
 import flixel.graphics.FlxGraphic;
@@ -16,7 +16,6 @@ import options.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
 import mikolka.vslice.StickerSubState;
 
-import backend.StageData;
 
 class StoryMenuState extends MusicBeatState
 {
@@ -125,7 +124,7 @@ class StoryMenuState extends MusicBeatState
 		for (i in 0...WeekData.weeksList.length)
 		{
 			var weekFile:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
-			var isLocked:Bool = weekIsLocked(WeekData.weeksList[i]);
+			var isLocked:Bool = FreeplayHelpers.weekIsLocked(WeekData.weeksList[i]);
 			if(!isLocked || !weekFile.hiddenUntilUnlocked)
 			{
 				loadedWeeks.push(weekFile);
@@ -343,7 +342,7 @@ class StoryMenuState extends MusicBeatState
 
 	function selectWeek()
 	{
-		if (!weekIsLocked(loadedWeeks[curWeek].fileName))
+		if (!FreeplayHelpers.weekIsLocked(loadedWeeks[curWeek].fileName))
 		{
 			var succsess = StoryModeHooks.prepareWeek(this);
 			if(!succsess) return;
@@ -418,7 +417,7 @@ class StoryMenuState extends MusicBeatState
 		txtWeekTitle.text = leName.toUpperCase();
 		txtWeekTitle.x = FlxG.width - (txtWeekTitle.width + 10);
 
-		var unlocked:Bool = !weekIsLocked(leWeek.fileName);
+		var unlocked:Bool = !FreeplayHelpers.weekIsLocked(leWeek.fileName);
 		for (num => item in grpWeekText.members)
 		{
 			item.alpha = 0.6;
@@ -450,12 +449,6 @@ class StoryMenuState extends MusicBeatState
 			curDifficulty = newPos;
 		}
 		updateText();
-	}
-
-	function weekIsLocked(name:String):Bool {
-		var leWeek:WeekData = WeekData.weeksLoaded.get(name);
-		if(leWeek.weekBefore == null) leWeek.weekBefore = "";
-		return (!leWeek.startUnlocked && leWeek.weekBefore.length > 0 && (!weekCompleted.exists(leWeek.weekBefore) || !weekCompleted.get(leWeek.weekBefore)));
 	}
 
 	function updateText()

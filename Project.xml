@@ -27,11 +27,13 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- Compiles mod support for P-Slice. Feel free to disable if you're making a source mod -->
 	<define name="MODS_ALLOWED" if="desktop || mobile" />
 
-	<!-- Adds the ability to use OpenFL asset lookup (defaults to sys if disabled)  -->
-	<define name="OPENFL_LOOKUP" unless="debug || desktop"/>
+	<section unless="debug">
+		<!-- Adds the ability to use OpenFL asset lookup (defaults to sys if disabled)  -->
+		<define name="OPENFL_LOOKUP" unless="desktop"/>
 
-	<!-- Adds the ability to use NativeFileSystem on the computer to acsess files  -->
-	<define name="NATIVE_LOOKUP" if="MODS_ALLOWED" />
+		<!-- Adds the ability to use NativeFileSystem on the computer to acsess files  -->
+		<define name="NATIVE_LOOKUP" if="MODS_ALLOWED" />
+	</section>
 
 	<!-- Adds support for Psych's lua/HScript files-->
 	<define name="HSCRIPT_ALLOWED" if="desktop || mobile"/>
@@ -63,6 +65,21 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN -->
 	<define name="TITLE_SCREEN_EASTER_EGG"/>
 	<!-- <define name="COPYSTATE_ALLOWED" if="MODS_ALLOWED mobile"/> -->
+	 <!-- Flags for the profile builds (used for assessing performance and such)-->
+	<section if="PROFILE_BUILD">
+		<define name="nativesys_profile" />
+	</section>
+	<!-- Debug utilities (useful when testing the game)-->
+	<section if="debug">
+		<!-- For testing file access times-->
+		<define name="nativesys_profile" />
+		<define name="OPENFL_LOOKUP" />
+		<!-- <define name="NATIVE_LOOKUP" /> -->
+
+		<define name="IRIS_DEBUG"/>
+		<haxedef name="HXVLC_VERBOSE" value="2" />
+		<haxedef name="HXVLC_LOGGING" />
+	</section>
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
@@ -175,8 +192,6 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 		<haxelib name="hxcpp-debug-server" />
 		<haxelib name="flixel-studio" />
 		<haxelib name="hscript"/>
-		<haxedef name="HXVLC_VERBOSE" value="2" />
-		<haxedef name="HXVLC_LOGGING" />
 	</section>
 	
 	<define name="x86_BUILD" if="32bits" />
@@ -239,7 +254,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<haxeflag name="--macro" value="addMetadata('@:build(mikolka.FlxMacro.buildFlxBasic())', 'flixel.FlxBasic')" />
 
 	<!-- more verbose HScript-->
-	<define name="IRIS_DEBUG" if="debug"/>
+	
 	<haxedef name="hscriptPos" if="HSCRIPT_ALLOWED"/>
 
 	<!-- _________________________________ Custom _______________________________ -->

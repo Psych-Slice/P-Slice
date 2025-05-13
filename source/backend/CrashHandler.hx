@@ -4,7 +4,6 @@ import mikolka.vslice.components.crash.CrashState;
 import haxe.CallStack;
 import openfl.events.UncaughtErrorEvent;
 #if sys
-import sys.FileSystem;
 import sys.io.File;
 #end
 
