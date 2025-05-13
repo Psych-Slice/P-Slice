@@ -13,7 +13,7 @@ import openfl.Assets;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import shaders.ColorSwap;
-import states.StoryMenuState;
+
 import states.OutdatedState;
 import mikolka.vslice.components.ScreenshotPlugin;
 #if VIDEOS_ALLOWED

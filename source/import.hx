@@ -83,7 +83,6 @@ import objects.BGSprite;
 
 import states.PlayState;
 import mikolka.vslice.ui.*;
-import states.StoryMenuState;
 import states.LoadingState;
 
 #if flxanimate

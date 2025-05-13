@@ -11,7 +11,7 @@ import mikolka.vslice.freeplay.pslice.BPMCache;
 import mikolka.vslice.freeplay.FreeplayState;
 import backend.Song;
 import backend.Highscore;
-import states.StoryMenuState;
+
 import backend.WeekData;
 
 class FreeplayHelpers {
@@ -24,7 +24,7 @@ class FreeplayHelpers {
 		return Conductor.bpm;
 	}
 
-    public static function loadSongs(){
+    public static function loadSongs():Array<FreeplaySongData>{
         var songs = [];
         WeekData.reloadWeekFiles(false);
 		// programmatically adds the songs via LevelRegistry and SongRegistry

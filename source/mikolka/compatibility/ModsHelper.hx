@@ -15,6 +15,12 @@ class ModsHelper {
     public inline static function loadModDir(directory:String) {
 		Mods.currentModDirectory = directory;
 	}
+	public static function setDirectoryFromWeek(?data:backend.WeekData = null) {
+		loadModDir('');
+		if(data != null && data.folder != null && data.folder.length > 0) {
+			loadModDir(data.folder);
+		}
+	}
 	public inline static function getActiveMod():String {
 		return Mods.currentModDirectory;
 	}
