@@ -79,5 +79,5 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: cache-libs
-          path: .haxelib/
+          path: /Users/runner/work/P-Slice/P-Slice/.haxelib
           if-no-files-found: error      
