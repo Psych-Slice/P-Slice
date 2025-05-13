@@ -52,12 +52,9 @@ jobs:
           # not caching the bin folder to prevent asset duplication and stuff like that
           key: ${{ inputs.cachePath }}
           path: .haxelib/
-            export/release/${{ inputs.exportPath }}/haxe/
-            export/release/${{ inputs.exportPath }}/obj/
           restore-keys: |
-            cache-build-${{ inputs.exportPath }}
+            ${{ inputs.cachePath }}
             
-
       - name: Install libVLC
         if: inputs.name == 'Linux'
         run: sudo apt install libvlc-dev libvlccore-dev
