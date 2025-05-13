@@ -1,5 +1,7 @@
-package states;
+package mikolka.vslice.ui;
 
+import mikolka.vslice.components.crash.UserErrorSubstate;
+import states.editors.MasterEditorMenu;
 import mikolka.compatibility.freeplay.FreeplayHelpers;
 import mikolka.compatibility.ui.StoryModeHooks;
 import mikolka.compatibility.ModsHelper;
@@ -89,9 +91,8 @@ class StoryMenuState extends MusicBeatState
 		{
 			FlxTransitionableState.skipNextTransIn = true;
 			persistentUpdate = false;
-			MusicBeatState.switchState(new ErrorState("NO LEVELS ADDED FOR STORY MODE\n\nPress " + accept + " to go to the Week Editor Menu.\nPress " + reject + " to return to Main Menu.",
-				function() MusicBeatState.switchState(new states.editors.WeekEditorState()),
-				function() MusicBeatState.switchState(new MainMenuState())));
+			UserErrorSubstate.makeMessage("NO LEVELS ADDED FOR STORY MODE","\n\nPress " + accept + " to go to the Week Editor Menu.");
+			subStateClosed.addOnce(s -> FlxG.switchState(new MasterEditorMenu()));
 			return;
 		}
 
@@ -128,7 +129,7 @@ class StoryMenuState extends MusicBeatState
 			if(!isLocked || !weekFile.hiddenUntilUnlocked)
 			{
 				loadedWeeks.push(weekFile);
-				WeekData.setDirectoryFromWeek(weekFile);
+				ModsHelper.setDirectoryFromWeek(weekFile);
 				var weekThing:MenuItem = new MenuItem(0, bgSprite.y + 396, WeekData.weeksList[i]);
 				weekThing.y += ((weekThing.height + 20) * num);
 				weekThing.ID = num;
@@ -154,7 +155,7 @@ class StoryMenuState extends MusicBeatState
 			}
 		}
 
-		WeekData.setDirectoryFromWeek(loadedWeeks[0]);
+		ModsHelper.setDirectoryFromWeek(loadedWeeks[0]);
 		var charArray:Array<String> = loadedWeeks[0].weekCharacters;
 		for (char in 0...3)
 		{
@@ -374,7 +375,7 @@ class StoryMenuState extends MusicBeatState
 		if (curDifficulty >= Difficulty.list.length)
 			curDifficulty = 0;
 
-		WeekData.setDirectoryFromWeek(loadedWeeks[curWeek]);
+		ModsHelper.setDirectoryFromWeek(loadedWeeks[curWeek]);
 
 		var diff:String = Difficulty.getString(curDifficulty, false);
 		var newImage:FlxGraphic = Paths.image('menudifficulties/' + Paths.formatToSongPath(diff));
@@ -411,7 +412,7 @@ class StoryMenuState extends MusicBeatState
 			curWeek = loadedWeeks.length - 1;
 
 		var leWeek:WeekData = loadedWeeks[curWeek];
-		WeekData.setDirectoryFromWeek(leWeek);
+		ModsHelper.setDirectoryFromWeek(leWeek);
 
 		var leName:String = Language.getPhrase('storyname_${leWeek.fileName}', leWeek.storyName);
 		txtWeekTitle.text = leName.toUpperCase();

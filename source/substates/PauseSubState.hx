@@ -8,7 +8,6 @@ import backend.Song;
 import flixel.util.FlxStringUtil;
 import flixel.addons.transition.FlxTransitionableState;
 
-import states.StoryMenuState;
 import mikolka.vslice.StickerSubState;
 import options.OptionsState;
 
