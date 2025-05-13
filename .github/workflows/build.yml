@@ -1,98 +1,127 @@
-name: Build the game
-
 on:
-  push:
-    branches: [master-dev]
-  pull_request:
-    branches: [master-dev]
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      name:
+        required: true
+        type: string
+      os:
+        required: true
+        type: string
+      buildArgs:
+        required: true
+        type: string
+      artifactName:
+        required: true
+        type: string
+      artifactPath:
+        required: true
+        type: string
+      cachePath:
+        required: true
+        type: string
+      cacheLibrariesPath:
+        required: true
+        type: string
+      exportPath:
+        required: true
+        type: string
+
+env:
+  HAXE_VERSION: 4.3.6
+  PROJECT_NAME: PSliceEngine
+
 jobs:
-  BuildDesktop:
-    name: ${{ matrix.name }}
-    permissions: write-all
-    strategy:
-      matrix:
-        include:
-          - name: Windows
-            os: windows-2022
-            buildArgs: windows
-            exportPath: windows
-            artifactName: P-Slice.1.0.windows
-            cacheLibrariesPath: P-Slice.1.0.desktop-cache
-            cachePath: P-Slice.1.0.build-windows
-            artifactPath: export\release\windows\bin\*
-          - name: Linux
-            os: ubuntu-22.04
-            buildArgs: linux
-            exportPath: linux
-            artifactName: P-Slice.1.0.linux
-            cachePath: P-Slice.1.0.build-linux
-            cacheLibrariesPath: P-Slice.1.0.desktop-cache
-            artifactPath: export/release/linux/bin/*
-          - name: macOS x86_64
-            os: macos-14
-            buildArgs: "mac -64 -D HXCPP_M64"
-            cachePath: P-Slice.1.0.build-macos_m64
-            exportPath: macos
-            cacheLibrariesPath: P-Slice.1.0.mobile-cache
-            artifactName: P-Slice.1.0.macosx64
-            artifactPath: export/release/macos/bin/*
+  build:
+    name: Build
+    runs-on: ${{ inputs.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: ${{ env.HAXE_VERSION }}
+        
+      - name: Restore Libraries for compilation
+        id: load-lib-cache
+        uses: actions/cache@v3
+        with:
+          # not caching the bin folder to prevent asset duplication and stuff like that
+          key: ${{ inputs.cacheLibrariesPath }}
+          fail-on-cache-miss: true
+          enableCrossOsArchive: true
+          path: |
+            .haxelib/
+          restore-keys: |
+            ${{ inputs.cacheLibrariesPath }}
+      - name: Restore existing build cache for faster compilation
+        id: load-cache
+        uses: actions/cache@v3
+        with:
+          # not caching the bin folder to prevent asset duplication and stuff like that
+          key: ${{ inputs.cachePath }}
+          path: |
+            export/release/${{ inputs.exportPath }}/haxe/
+            export/release/${{ inputs.exportPath }}/obj/
+          restore-keys: |
+            cache-build-${{ inputs.exportPath }}
             
-          - name: macOS AArch64
-            os: macos-15
-            buildArgs: mac
-            exportPath: macos
-            cachePath: P-Slice.1.0.build-macos
-            cacheLibrariesPath: P-Slice.1.0.mobile-cache
-            artifactName: P-Slice.1.0.macosarm64
-            artifactPath: export/release/macos/bin/*
-    uses: ./.github/workflows/build.yml
-    with:
-      name: ${{ matrix.name }}
-      os: ${{ matrix.os }}
-      buildArgs: ${{ matrix.buildArgs }}
-      cacheLibrariesPath: ${{ matrix.cacheLibrariesPath }}
-      exportPath: ${{ matrix.exportPath }}
-      artifactName: ${{ matrix.artifactName }}
-      artifactPath: ${{ matrix.artifactPath }}
-      cachePath: ${{matrix.cachePath}}
-  BuildMobile:
-    permissions: write-all
-    name: ${{ matrix.name }}
-    strategy:
-      matrix:
-        include:
-          - name: Android
-            os: macos-15
-            exportPath: android
-            buildArgs: "android"
-            cacheLibrariesPath: P-Slice.1.0.mobile-cache
-            artifactName: P-Slice.1.0.android
-            cachePath: P-Slice.1.0.build-android
-            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
-          - name: Android-profiled
-            os: macos-15
-            exportPath: android
-            buildArgs: "android -DPROFILE_BUILD"
-            cacheLibrariesPath: P-Slice.1.0.mobile-cache
-            artifactName: P-Slice.1.0.android-audited
-            cachePath: P-Slice.1.0.build-android-profile
-            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
-          - name: iOS
-            os: macos-15
-            buildArgs: "ios -nosign"
-            exportPath: ios
-            cacheLibrariesPath: P-Slice.1.0.mobile-cache
-            artifactName: P-Slice.1.0.ios
-            artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
-            cachePath: P-Slice.1.0.build-ios
-    uses: ./.github/workflows/build.yml
-    with:
-      name: ${{ matrix.name }}
-      os: ${{ matrix.os }}
-      buildArgs: ${{ matrix.buildArgs }}
-      exportPath: ${{ matrix.exportPath }}
-      artifactName: ${{ matrix.artifactName }}
-      cacheLibrariesPath: ${{ matrix.cacheLibrariesPath }}
-      artifactPath: ${{ matrix.artifactPath }}
-      cachePath: ${{matrix.cachePath}}
+
+      - name: Install libVLC
+        if: inputs.exportPath == 'linux'
+        run: sudo apt install libvlc-dev libvlccore-dev
+
+      - name: Configure Android
+        if: inputs.exportPath == 'android'
+        run: |
+          haxelib run lime config ANDROID_SDK $ANDROID_HOME
+          haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_LATEST_HOME
+          haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
+          haxelib run lime config ANDROID_SETUP true
+
+      - name: Compile
+        run: haxelib run lime build ${{ inputs.buildArgs }}
+
+      - name: Make IPA
+        if: inputs.name == 'iOS'
+        run: |
+          cd export/release/ios/build/Release-iphoneos
+          mkdir Payload
+          mv *.app Payload
+          zip -r ${{ env.PROJECT_NAME }}.ipa Payload
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{ inputs.artifactName }}
+          path: ${{ inputs.artifactPath }}
+          if-no-files-found: error      
+      - name: Clearing already existing cache
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const caches = await github.rest.actions.getActionsCacheList({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            for (const cache of caches.data.actions_caches) {
+              if (cache.key == "${{ inputs.cachePath }}") {
+                console.log('Clearing ' + cache.key + '...')
+                await github.rest.actions.deleteActionsCacheById({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  cache_id: cache.id,
+                })
+                console.log("Cache cleared.")
+              }
+            }
+      - name: Uploading new cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ inputs.cachePath }}
+          path: |
+            export/release/${{ inputs.exportPath }}/haxe/
+            export/release/${{ inputs.exportPath }}/obj/
+          restore-keys: |
+            ${{ inputs.cachePath }}
