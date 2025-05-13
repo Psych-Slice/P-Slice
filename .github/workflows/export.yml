@@ -79,5 +79,6 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: cache-libs
+          include-hidden-files: true
           path: /Users/runner/work/P-Slice/P-Slice/.haxelib
           if-no-files-found: error      
