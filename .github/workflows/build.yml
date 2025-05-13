@@ -51,7 +51,7 @@ jobs:
         with:
           # not caching the bin folder to prevent asset duplication and stuff like that
           key: ${{ inputs.cachePath }}
-            .haxelib/
+          path:  .haxelib/
             export/release/${{ inputs.exportPath }}/haxe/
             export/release/${{ inputs.exportPath }}/obj/
           restore-keys: |
