@@ -50,7 +50,7 @@ class FlxShader extends OriginalFlxShader
 	{
 		@:privateAccess
 		var gl = __context.gl;
-		#if (js && html5)
+		#if ((js && html5) || macos)
 		var prefix = "";
 		#else
 			#if lime_opengles

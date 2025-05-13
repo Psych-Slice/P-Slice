@@ -45,56 +45,75 @@ class NativeFileSystem
 
 	// Loads a given bitmap. Returns null if it doesn't exist
     public static function getBitmap(path:String):Null<BitmapData> {
-
+		#if nativesys_profile var timeStart = Sys.time();#end
 		var isModded = path.startsWith("mods");
-		#if NATIVE_LOOKUP
-		if( #if OPENFL_LOOKUP isModded #else true #end){
-			var sys_path = getPathLike(path);
-			if (sys_path != null)
-				return BitmapData.fromFile(sys_path); 
+
+		#if OPENFL_LOOKUP
+
+		if (#if NATIVE_LOOKUP !isModded && #end OpenFlAssets.exists(path, IMAGE)){
+			var result = OpenFlAssets.getBitmapData(path);
+			#if nativesys_profile trace("Getting native image took: ", Sys.time()-timeStart);#end
+			return result;
 		}
 		#end
 
-		#if OPENFL_LOOKUP
-		#if NATIVE_LOOKUP if(isModded) return null; #end
-		if ( OpenFlAssets.exists(path, IMAGE))
-			return OpenFlAssets.getBitmapData(path);
+		#if NATIVE_LOOKUP
+		#if OPENFL_LOOKUP if (!isModded) return null; #end
+		var sys_path = getPathLike(path);
+		if (sys_path != null){
+			var result = BitmapData.fromFile(sys_path); 
+			#if nativesys_profile trace("Getting system image took: ", Sys.time()-timeStart);#end
+			return result;
+		}
+		
 		#end
+
 		return null;
     }
 
 	public static function getSound(path:String):Null<Sound> {
 		var isModded = path.startsWith("mods");
+		#if nativesys_profile var timeStart = Sys.time();#end
 
 		#if OPENFL_LOOKUP
 		if(!isModded){
-			if(OpenFlAssets.exists(path, SOUND))
-				return OpenFlAssets.getSound(path);
+			if(OpenFlAssets.exists(path, SOUND)){
+				var result =  OpenFlAssets.getSound(path);
+				#if nativesys_profile trace("Getting native sound took: ", Sys.time()-timeStart);#end
+				return result;
+			}
 		}
 		#end
 
 		#if NATIVE_LOOKUP
 		#if OPENFL_LOOKUP if(!isModded) return null; #end
 		var sys_path = getPathLike(path);
-		if (sys_path != null)
-			return Sound.fromFile(sys_path);
+		if (sys_path != null){
+			var result = Sound.fromFile(sys_path);
+			#if nativesys_profile trace("Getting system sound took: ", Sys.time()-timeStart);#end
+			return result;
+		}
 		
 		#end
-
+		#if nativesys_profile trace("Getting sound failed in: ", Sys.time()-timeStart);#end
 		return null;
     }
     //Check if the file exists
 	public static function exists(path:String)
 	{
 		var isModded = path.startsWith("mods");
+		#if nativesys_profile var timeStart = Sys.time(); #end
+
 		#if OPENFL_LOOKUP
 		if(!isModded){
 			var isFile = OpenFlAssets.exists(path, TEXT);
 			if (!isFile)
 			{
 				var isDir = Assets.list().filter(folder -> folder.startsWith(path)).length > 0;
+				#if nativesys_profile trace("Getting native exist took: ", Sys.time()-timeStart);#end
 				return isDir;
 			}
+			#if nativesys_profile trace("Getting native exist took: ", Sys.time()-timeStart);#end
 			return isFile;
 		}
 		#end
@@ -102,18 +121,20 @@ class NativeFileSystem
 		#if NATIVE_LOOKUP
 
 		#if OPENFL_LOOKUP if(!isModded) return false; #end
-        if (getPathLike(path) != null)
+        if (getPathLike(path) != null){
+			#if nativesys_profile trace("Getting system exist took: ", Sys.time()-timeStart);#end
             return true;
+		}
 		#end
+		#if nativesys_profile trace("Getting exist failed in: ", Sys.time()-timeStart);#end
 		return false;
 	}
 
 	public static function readDirectory(directory:String):Array<String>
 	{
-		#if NATIVE_LOOKUP
-		var testdir = getPathLike(directory);
-		if (testdir != null)
-			return FileSystem.readDirectory(testdir);
+		#if nativesys_profile 
+		var timeStart = Sys.time();
+		trace("Reading ",directory);
 		#end
 
 		#if OPENFL_LOOKUP
@@ -134,10 +155,21 @@ class NativeFileSystem
 				}
 			}
 		}
-		return dirs;
-		#else
-		return null;
+		#if nativesys_profile trace("Getting native directory took: ", Sys.time()-timeStart);#end
+		if(dirs.length > 0) return dirs;
 		#end
+
+		#if NATIVE_LOOKUP
+		var testdir = getPathLike(directory);
+		if (testdir != null){
+			var result =  FileSystem.readDirectory(testdir);
+			#if nativesys_profile trace("Getting system directory took: ", Sys.time()-timeStart);#end
+			return result;
+		}
+		#end
+
+		#if nativesys_profile trace("Getting directory failed in: ", Sys.time()-timeStart);#end
+		return [];
 	}
 	/**
 	 * Checks if the given path is a valid directory.
@@ -149,21 +181,29 @@ class NativeFileSystem
 	{
 		var result = false;
 		var isModded = directory.startsWith("mods");
+		#if nativesys_profile 
+		var timeStart = Sys.time();
+		trace("Checking if it directory: ",directory);
+		#end
 
 		#if OPENFL_LOOKUP
-		if (!result && !isModded)
+		if (!result && !isModded){
 			result = Assets.list().filter(folder -> folder.startsWith(directory) && folder != directory).length > 0;
+			#if nativesys_profile trace("Checking native directory took: ", Sys.time()-timeStart);#end
+		}
 		#end
 
 		#if NATIVE_LOOKUP
 		#if OPENFL_LOOKUP if(!isModded) return false; #end
-		if (!result)
+		if (!result){
 			result = sys.FileSystem.isDirectory(addCwd(directory));
+			#if nativesys_profile trace("Checking system directory took: ", Sys.time()-timeStart);#end
+		}
 		#end
 		return result;
 	}
 
-	// Not avaliable without sys
+	// Not available without sys
 	public static function createDirectory(modFolder:String)
 	{
 		#if NATIVE_LOOKUP
@@ -173,7 +213,7 @@ class NativeFileSystem
 		#end
 	}
 
-	// Not avaliable without sys
+	// Not available without sys
 	public static function deleteFile(s:String)
 	{
 		#if NATIVE_LOOKUP

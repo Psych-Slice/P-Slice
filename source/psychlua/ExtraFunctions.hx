@@ -232,9 +232,9 @@ class ExtraFunctions
 			try {
 				var lePath:String = path;
 				if(!absolute) lePath = Paths.getPath(path, TEXT, !ignoreModFolders);
-				if(FileSystem.exists(lePath))
+				if(NativeFileSystem.exists(lePath))
 				{
-					FileSystem.deleteFile(lePath);
+					NativeFileSystem.deleteFile(lePath);
 					return true;
 				}
 			} catch (e:Dynamic) {
