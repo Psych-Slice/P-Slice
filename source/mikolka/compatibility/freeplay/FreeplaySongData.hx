@@ -88,7 +88,8 @@ class FreeplaySongData extends SngCapsuleData
 		var sngDataPath = Paths.getPath("data/" + fileSngName);
 		if (allowErect && !hasErectSong())
 		{
-			trace('$songName is missing variant in $sngDataPath');
+			//? nvm. it clutters logs a lot for no reason
+			//trace('$songName is missing variant in $sngDataPath');
 			this.songDifficulties.remove("erect");
 			this.songDifficulties.remove("nightmare");
 		}

@@ -7,6 +7,10 @@ import mikolka.vslice.freeplay.backcards.BoyfriendCard;
 // Made this static so that it isn't tied with freeplay as much
 class FreeplayColorTweener
 {
+	private static final twnOptions:TweenOptions = {
+		startDelay: 0.2,
+		ease: FlxEase.circIn
+	};
 	private var targetState:BoyfriendCard;
 	private var intendedColor:Null<FlxColor>;
 	var tweens:List<FlxTween>;
@@ -54,7 +58,7 @@ class FreeplayColorTweener
 	{
 		var realColor = FlxColor.fromRGB(addClrComp(intendedColor.red, offset[0]), addClrComp(intendedColor.green, offset[1]),
 			addClrComp(intendedColor.blue, offset[2]));
-		return FlxTween.color(sprite, 1, sprite.color, realColor);
+		return FlxTween.color(sprite, 1, sprite.color, realColor,twnOptions);
 	}
 
 	private function twnText(sprite:BGScrollingText, offset:Array<Int>)
@@ -62,7 +66,7 @@ class FreeplayColorTweener
 		var textCurColor = sprite.funnyColor;
 		var realColor = FlxColor.fromRGB(addClrComp(intendedColor.red, offset[0]), addClrComp(intendedColor.green, offset[1]),
 			addClrComp(intendedColor.blue, offset[2]));
-		return FlxTween.num(0, 1, 1, null, f ->
+		return FlxTween.num(0, 1, 1, twnOptions, f ->
 		{
 			sprite.funnyColor = FlxColor.interpolate(textCurColor, realColor, f);
 		});

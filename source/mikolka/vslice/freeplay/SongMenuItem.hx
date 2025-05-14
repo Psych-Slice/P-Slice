@@ -1,5 +1,6 @@
 package mikolka.vslice.freeplay;
 
+import mikolka.compatibility.VsliceOptions;
 import mikolka.funkin.freeplay.FreeplayStyle;
 import mikolka.vslice.freeplay.obj.PixelatedIcon;
 import mikolka.compatibility.ModsHelper;
@@ -79,6 +80,23 @@ class SongMenuItem extends FlxSpriteGroup
 
   var sparkleTimer:FlxTimer;
 
+  var currentFpStyle:Null<FreeplayStyle> = null;
+
+  static var gaussianBlur:GaussianBlurShader = null;
+  static var gaussianBlur_12:GaussianBlurShader = null;
+  public static var static_hsvShader:HSVShader = null;
+  public static function reloadGlobalItemData() {
+		if(VsliceOptions.SHADERS) {
+    static_hsvShader = new HSVShader();
+    gaussianBlur = new GaussianBlurShader(1);
+    gaussianBlur_12 = new GaussianBlurShader(1.2);
+  }
+  else{
+    static_hsvShader = null;
+    gaussianBlur = null;
+    gaussianBlur_12 = null;
+  }
+  }
   public function new(x:Float, y:Float)
   {
     super(x, y);
@@ -143,7 +161,7 @@ class SongMenuItem extends FlxSpriteGroup
     add(fakeRanking);
 
     fakeBlurredRanking = new FreeplayRank(fakeRanking.x, fakeRanking.y);
-    fakeBlurredRanking.shader = new GaussianBlurShader(1);
+    fakeBlurredRanking.shader = gaussianBlur;
     add(fakeBlurredRanking);
 
     fakeRanking.visible = false;
@@ -153,7 +171,7 @@ class SongMenuItem extends FlxSpriteGroup
     add(ranking);
 
     blurredRanking = new FreeplayRank(ranking.x, ranking.y);
-    blurredRanking.shader = new GaussianBlurShader(1);
+    blurredRanking.shader = gaussianBlur;
     add(blurredRanking);
 
     sparkle = new FlxSprite(ranking.x, ranking.y);
@@ -209,7 +227,7 @@ class SongMenuItem extends FlxSpriteGroup
 
     favIconBlurred.setGraphicSize(50, 50);
     favIconBlurred.blend = BlendMode.ADD;
-    favIconBlurred.shader = new GaussianBlurShader(1.2);
+    favIconBlurred.shader = gaussianBlur_12;
     favIconBlurred.visible = false;
     add(favIconBlurred);
 
@@ -534,14 +552,16 @@ class SongMenuItem extends FlxSpriteGroup
     // im so mad i have to do this but im pretty sure with the capsules recycling i cant call the new function properly :/
     // if thats possible someone Please change the new function to be something like
     // capsule.frames = Paths.getSparrowAtlas(styleData == null ? 'freeplay/freeplayCapsule/capsule/freeplayCapsule' : styleData.getCapsuleAssetKey()); thank u luv u
-    if (styleData != null)
+    if (styleData != null && styleData != currentFpStyle)
     {
+      currentFpStyle = styleData;
+
       capsule.frames = Paths.getSparrowAtlas(styleData.getCapsuleAssetKey());
-      //! TODO remove this shit
+      // This applies new style in case we change it
       capsule.animation.addByPrefix('selected', 'mp3 capsule w backing0', 24);
       capsule.animation.addByPrefix('unselected', 'mp3 capsule w backing NOT SELECTED', 24);
       songText.applyStyle(styleData);
-      //!
+      //
     }
 
     updateScoringRank(songData?.scoringRank);
