@@ -272,7 +272,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<section if="PROFILE_BUILD">
 		<assets path='art/icon16.png' rename='icon.png' if="linux" />
-		<icon path="art/icon.png"/>
+		<icon path="art/icon16.png"/>
 	</section>
 	<section unless="PROFILE_BUILD">
 		<assets path='art/iconOG.png' rename='icon.png' if="linux" />
