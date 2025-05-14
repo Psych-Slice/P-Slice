@@ -66,6 +66,19 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<define name="TITLE_SCREEN_EASTER_EGG"/>
 	<!-- <define name="COPYSTATE_ALLOWED" if="MODS_ALLOWED mobile"/> -->
 
+		<!-- Debug utilities (useful when testing the game)-->
+	<section if="debug">
+		<!-- For testing file access times-->
+		<define name="OPENFL_LOOKUP" />
+		<define name="NATIVE_LOOKUP" />
+
+		<define name="IRIS_DEBUG"/>
+		<define name="PROFILE_BUILD"/>
+		<haxedef name="HXVLC_VERBOSE" value="2" />
+		<haxedef name="HXVLC_LOGGING" />
+	</section>
+
+
 	 <!-- Flags for the profile builds (used for assessing performance and such)-->
 	<section if="PROFILE_BUILD">
 		<app title="P-Slice Engine Profiling build" 
@@ -76,17 +89,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 			version="3.0.3"  
 			company="mikolka9144" />
 		<define name="nativesys_profile" />
-	</section>
-	<!-- Debug utilities (useful when testing the game)-->
-	<section if="debug">
-		<!-- For testing file access times-->
-		<define name="nativesys_profile" />
-		<define name="OPENFL_LOOKUP" />
-		<!-- <define name="NATIVE_LOOKUP" /> -->
-
-		<define name="IRIS_DEBUG"/>
-		<haxedef name="HXVLC_VERBOSE" value="2" />
-		<haxedef name="HXVLC_LOGGING" />
+		<define name="freeplay_profile" />
 	</section>
 
 	<!-- ____________________________ Window Settings ___________________________ -->
@@ -267,10 +270,16 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<!-- _________________________________ Custom _______________________________ -->
 
-	<assets path='art/iconOG.png' rename='icon.png' if="linux" />
-	
-	<icon path="art/icon16.png" size='16'/>
-	<icon path="art/icon32.png" size='32'/>
-	<icon path="art/icon64.png" size='64'/>
-	<icon path="art/iconOG.png" />
+	<section if="PROFILE_BUILD">
+		<assets path='art/icon16.png' rename='icon.png' if="linux" />
+		<icon path="art/icon.png"/>
+	</section>
+	<section unless="PROFILE_BUILD">
+		<assets path='art/iconOG.png' rename='icon.png' if="linux" />
+		<icon path="art/icon16.png" size='16'/>
+		<icon path="art/icon32.png" size='32'/>
+		<icon path="art/icon64.png" size='64'/>
+		<icon path="art/iconOG.png" />
+	</section>
+
 </project>
