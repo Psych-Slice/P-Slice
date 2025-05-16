@@ -67,7 +67,9 @@ class ResultState extends MusicBeatSubState
     {
       sprite:FlxAtlasSprite,
       delay:Float,
-      forceLoop:Bool
+      forceLoop:Bool,
+      startFrameLabel:String,
+      sound:String
     }> = [];
   var characterSparrowAnimations:Array<
     {
@@ -203,12 +205,27 @@ class ResultState extends MusicBeatSubState
     {
       if (animData == null) continue;
 
-      var animPath:String = Paths.stripLibrary(animData.assetPath);
-      var animLibrary:String = "";//Paths.getLibrary(animData.assetPath); Libraries aren't used in P-Slice
-      var offsets = animData.offsets ?? [0, 0];
+      //? Rework available flags
+      switch (animData.filter){
+        case ""|"both"|null: // Do nothing 
+        case "naughty":
+          if(!VsliceOptions.NAUGHTYNESS) continue;        
+        case "safe":
+          if(VsliceOptions.NAUGHTYNESS) continue;
+        default: 
+          trace(animData.filter+" is not a valid filter!");
+          continue; 
+      }
 
-      
-      
+      var animPath:String = "";
+      var animLibrary:String = "";
+
+      if (animData.assetPath != null)
+      {
+        animPath = Paths.stripLibrary(animData.assetPath);
+        animLibrary = "";
+      }
+      var offsets = animData.offsets ?? [0, 0];
       switch (animData.renderType)
       {
         case 'animateatlas':
@@ -262,7 +279,9 @@ class ResultState extends MusicBeatSubState
             {
               sprite: animation,
               delay: animData.delay ?? 0.0,
-              forceLoop: (animData.loopFrame ?? -1) == 0
+              forceLoop: (animData.loopFrame ?? -1) == 0,
+              startFrameLabel: (animData.startFrameLabel ?? ""),
+              sound: (animData.sound ?? "")
             });
           // Add to the scene.
           add(animation);
@@ -618,7 +637,14 @@ class ResultState extends MusicBeatSubState
       new FlxTimer().start(atlas.delay, _ -> {
         if (atlas.sprite == null) return;
         atlas.sprite.visible = true;
-        atlas.sprite.playAnimation('');
+        atlas.sprite.playAnimation(atlas.startFrameLabel);
+        if (atlas.sound != "")
+        {
+          var sndPath:String = Paths.stripLibrary(atlas.sound);
+          var sndLibrary:String = "";
+
+          FunkinSound.playOnce(Paths.sound(sndPath), 1.0);
+        }
       });
     }
 
@@ -703,34 +729,6 @@ class ResultState extends MusicBeatSubState
 
   override function update(elapsed:Float):Void
   {
-    // if(FlxG.keys.justPressed.R){
-    //   FlxG.switchState(() -> new funkin.play.ResultState(
-    //   {
-    //     storyMode: false,
-    //     title: "Cum Song Erect by Kawai Sprite",
-    //     songId: "cum",
-    //     difficultyId: "nightmare",
-    //     isNewHighscore: true,
-    //     scoreData:
-    //       {
-    //         score: 1_234_567,
-    //         tallies:
-    //           {
-    //             sick: 200,
-    //             good: 0,
-    //             bad: 0,
-    //             shit: 0,
-    //             missed: 0,
-    //             combo: 0,
-    //             maxCombo: 69,
-    //             totalNotesHit: 200,
-    //             totalNotes: 200 // 0,
-    //           }
-    //       },
-    //   }));
-    // }
-
-    // maskShaderSongName.swagSprX = songName.x; //! monitor this
     maskShaderDifficulty.swagSprX = difficulty.x;
 
     if (movingSongStuff)
