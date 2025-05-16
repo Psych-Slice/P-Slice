@@ -1,7 +1,7 @@
 {
 	"animations": [
 		{
-			"offsets": [0, 0],
+			"offsets": [0, -20],
 			"indices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
 			"fps": 24,
 			"anim": "danceLeft",
@@ -9,7 +9,7 @@
 			"name": "idle"
 		},
 		{
-			"offsets": [0, 0],
+			"offsets": [0, -20],
 			"indices": [14,15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27],
 			"fps": 24,
 			"anim": "danceRight",
@@ -17,7 +17,7 @@
 			"name": "idle"
 		},
 		{
-			"offsets": [0, 10],
+			"offsets": [0, -10],
 			"indices": [],
 			"fps": 24,
 			"anim": "raiseKnife",
@@ -25,7 +25,7 @@
 			"name": "raise"
 		},
 		{
-			"offsets": [-19, 10],
+			"offsets": [-19, -10],
 			"indices": [],
 			"fps": 24,
 			"anim": "idleKnife",
@@ -33,7 +33,7 @@
 			"name": "blink"
 		},
 		{
-			"offsets": [0, 10],
+			"offsets": [0, -10],
 			"indices":  [0, 1, 2, 3, 4, 5],
 			"fps": 24,
 			"anim": "lowerKnife",
