@@ -65,7 +65,7 @@ class ResultsAtlasSprite extends FlxAtlasSprite implements IResultsSprite
 		timer?.cancel();
 		visible = false;
 		timer = FlxTimer.wait(data.delay,() ->{
-			playAnimation(''); 
+			playAnimation(data.startFrameLabel ?? ''); 
 			visible = true;
 		});
 	}

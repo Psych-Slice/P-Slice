@@ -231,7 +231,7 @@ class ResultsDialogBox extends PsychUIBox {
 		tab.add(resultsObjectControls_labels);
         selectedName = 'General';
     }
-	public function addOffset(x:Int,y:Int) {
+	public function addOffset(x:Float,y:Float) {
 		if(selected_prop?.data == null) return;
 		selected_prop.data.offsets[0] += x;
 		selected_prop.data.offsets[1] += y;
@@ -258,6 +258,8 @@ class ResultsDialogBox extends PsychUIBox {
 			}
 		var data:PlayerResultsAnimationData = {
 			renderType: kind,
+			filter: "",
+			sound: "",
 			assetPath: "none",
 			zIndex: host.propSystem.sprites[host.propSystem.sprites.length-1].zIndex,
 			offsets: [500,500],

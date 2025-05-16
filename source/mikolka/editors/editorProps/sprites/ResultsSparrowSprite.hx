@@ -36,7 +36,7 @@ class ResultsSparrowSprite extends FlxSprite implements IResultsSprite
 		return SPARROW;
 	}
 
-	public function startAnimation()
+	public function startAnimation():Void
 	{
 		timer?.cancel();
 		visible = false;
