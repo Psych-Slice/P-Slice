@@ -18,11 +18,11 @@ class FunkinPath {
         if(curMod != null && curMod != '') modsToCheck.insert(0,curMod);
 
         for (name in modsToCheck){
-            var testPath = #if mobile Sys.getCwd() + #end 'mods/$name/$path';
+            var testPath = 'mods/$name/$path';
             if(NativeFileSystem.exists(testPath))
                 return testPath;
         }
-        if (NativeFileSystem.exists(#if mobile Sys.getCwd() + #end 'mods/$path')) return #if mobile Sys.getCwd() + #end 'mods/$path';
+        if (NativeFileSystem.exists( 'mods/$path')) return 'mods/$path';
         else 
         #end
         return Paths.getSharedPath(path);
