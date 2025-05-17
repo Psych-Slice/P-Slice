@@ -56,7 +56,7 @@ class ResultsAtlasSprite extends FlxAtlasSprite implements IResultsSprite
 	override function pauseAnimation() {
 		sound?.pause();
 		super.pauseAnimation();
-		if (timer != null) timer?.active = false;
+		if (timer != null) timer.active = false;
 	}
 	override function resumeAnimation() {
 		super.resumeAnimation();
@@ -78,17 +78,22 @@ class ResultsAtlasSprite extends FlxAtlasSprite implements IResultsSprite
 		});
 	}
 
-	public function resetAnimation()
+	public function resetAnimation(activeFilter:String)
 	{
-		visible = true;
-		sound.loadEmbedded(Paths.sound(data.sound));
+		if(data.sound != "" && data.sound != null) sound.loadEmbedded(Paths.sound(FunkinPath.stripLibrary(data.sound)));
 		timer?.cancel();
 		timer = null;
 		//animation.curAnim = animation.getByName("");
-		if (data.loopFrame != null && data.looped)
-			anim.curFrame = data.loopFrame;
-		else
-			anim.curFrame = anim.curSymbol.length-1;//animation.curAnim.numFrames - 1;
+		var canShow = data.filter == "" || data.filter == "both";
+		if(data.filter == activeFilter) canShow = true;
+		if(canShow){
+
+			visible = true;
+			if (data.loopFrame != null && data.looped)
+				anim.curFrame = data.loopFrame;
+			else
+				anim.curFrame = anim.curSymbol.length-1;//animation.curAnim.numFrames - 1;
+		} else visible = false;
 	}
 
 	public function set_offset(x:Float,y:Float) {

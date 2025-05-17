@@ -8,8 +8,9 @@ using mikolka.editors.PsychUIUtills;
 
 class ResultsDialogBox extends PsychUIBox {
 	public var selected_prop:ResultsProp;
+	public var selected_filter:String = "none";
 	private inline static final selectedColor:FlxColor = 0x9E2929;
-	private static final FILTERS = ["naughty","safe","none","both"];
+	private static final FILTERS = ["none","naughty","safe","both"];
 	
 	//PAGERS
     public var resultsObjectControls_empty:FlxText;
@@ -49,7 +50,14 @@ class ResultsDialogBox extends PsychUIBox {
 			host.reloadprops([PERFECT_GOLD, PERFECT, EXCELLENT, GREAT, GOOD, SHIT][index]);
 			showEmptyObject();
 		});
-		list_previewFilterSelector = new PsychUIDropDownMenu(100,240,FILTERS,(index,item) -> {});
+		list_previewFilterSelector = new PsychUIDropDownMenu(100,200,FILTERS,(index,item) -> {
+			FlxG.sound.play(Paths.sound('cancelMenu'));
+			@:privateAccess
+			host.wasReset = true;
+			host.propSystem.resetAll(item);
+			selected_filter = item;
+			FlxG.sound.music?.pause();
+		});
 		//FilterType.
 		list_objSelector = new PsychUIDropDownMenu(140, 20, [], (index, name) -> {
 			if(selected_prop?.sprite != null) selected_prop.sprite.color = 0xFFFFFF;
@@ -69,7 +77,8 @@ class ResultsDialogBox extends PsychUIBox {
 			btn_removeObject.visible = true;
 
 			input_imagePath.text = selected_prop.data.assetPath;
-			list_filterSelector.selectedLabel = selected_prop.data.filter ?? "none";
+			if(selected_prop.data.filter == null || selected_prop.data.filter == "") list_filterSelector.selectedLabel =  "none";
+			else list_filterSelector.selectedLabel =  selected_prop.data.filter;
 			input_soundPath.text = selected_prop.data.sound;
 			stepper_scale.value = selected_prop.data.scale ?? 1;
 			stepper_loopFrame.value = selected_prop.data.loopFrame ?? 0;
@@ -173,7 +182,7 @@ class ResultsDialogBox extends PsychUIBox {
 			host.propSystem.reloadProp(selected_prop);
 			@:privateAccess
 			host.wasReset = true;
-			host.propSystem.resetAll();
+			host.propSystem.resetAll(list_filterSelector.selectedLabel);
 			if(selected_prop?.sprite != null) selected_prop.sprite.color = selectedColor;
 		});
 		input_imagePath.onChange = (old,cur) ->{

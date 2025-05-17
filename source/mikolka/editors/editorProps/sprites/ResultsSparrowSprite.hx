@@ -59,16 +59,24 @@ class ResultsSparrowSprite extends FlxSprite implements IResultsSprite
 		if (timer != null) timer.active = false;
 	}
 
-	public function resetAnimation()
+	public function resetAnimation(activeFilter:String)
 	{
 		timer?.cancel();
 		timer = null;
-		visible = true;
-		animation.curAnim = animation.getByName("idle");
-		if (data.loopFrame != null && data.looped)
-			animation.frameIndex = data.loopFrame;
-		else
-			animation.frameIndex = animation.curAnim.numFrames - 1;
+
+		if(data.sound != "" && data.sound != null) sound.loadEmbedded(Paths.sound(FunkinPath.stripLibrary(data.sound)));
+
+		var canShow = data.filter == "" || data.filter == "both";
+		if(data.filter == activeFilter) canShow = true;
+		if(canShow){
+			visible = true;
+			animation.curAnim = animation.getByName("idle");
+			if (data.loopFrame != null && data.looped)
+				animation.frameIndex = data.loopFrame;
+			else
+				animation.frameIndex = animation.curAnim.numFrames - 1;
+		}
+		else visible = false;
 	}
 
 	public function resumeAnimation()

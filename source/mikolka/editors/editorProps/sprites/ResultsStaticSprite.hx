@@ -18,7 +18,7 @@ class ResultsStaticSprite implements IResultsSprite {
     public function resumeAnimation():Void{
 
     }
-    public function resetAnimation():Void{
+    public function resetAnimation(activeFilter:String):Void{
 
     }
     public function set_offset(x:Float,y:Float) {
