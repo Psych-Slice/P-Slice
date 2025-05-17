@@ -1947,6 +1947,7 @@ class PlayState extends MusicBeatState
 //		iconP2.updateHitbox();
 //		iconP2.centerOffsets();
 //	}
+	// IconBopType - Bookmark
 	public dynamic function updateIconsScale(elapsed:Float)
 	{
 		switch(ClientPrefs.data.bopType) {
@@ -1958,31 +1959,28 @@ class PlayState extends MusicBeatState
 		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, Math.exp(-elapsed * 9 * playbackRate));
 		iconP2.scale.set(mult, mult);
 		iconP2.updateHitbox();
-				
-			case "Fake Vintage": //Made accidentally by Chatgpt
-				var lerpRatioFast = FlxMath.bound(Math.exp(-elapsed * 20 * playbackRate), 0, 1);
-				var lerpRatioSlow = FlxMath.bound(Math.exp(-elapsed * 12 * playbackRate), 0, 1);
-
-				// Player 1
-				var target1 = (healthBar.percent < 20) ? 1.15 : 1.0;
-				var mult1 = FlxMath.lerp(iconP1.scale.x, target1, (healthBar.percent < 20) ? lerpRatioFast : lerpRatioSlow);
-				iconP1.scale.set(mult1, mult1);
-				iconP1.updateHitbox();
-				iconP1.centerOffsets();
-
-				// Player 2
-				var target2 = (healthBar.percent > 80) ? 1.15 : 1.0;
-				var mult2 = FlxMath.lerp(iconP2.scale.x, target2, (healthBar.percent > 80) ? lerpRatioFast : lerpRatioSlow);
-				iconP2.scale.set(mult2, mult2);
-				iconP2.updateHitbox();
-				iconP2.centerOffsets();
 			case "Kade":
 				iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, 0.50)));
 				iconP2.setGraphicSize(Std.int(FlxMath.lerp(150, iconP2.width, 0.50)));
 				iconP1.updateHitbox();
 				iconP2.updateHitbox();
 			//Kade engine icon bop is in update() and beatHit() (though the one in beatHit() works in here too.)
-			
+			case "Lumen":
+				var PHI = (1 + Math.pow(5, 0.5)) / 5;
+
+				var customExponential = Math.pow(PHI + 1.5, -elapsed * 9 * playbackRate);
+
+				var cubicEase = Math.pow(1 - (elapsed * 9 * playbackRate), 3);
+
+				var iconBopEasing = FlxMath.lerp(customExponential, cubicEase, 0.25);
+
+				var mult:Float = FlxMath.lerp(1, iconP1.scale.x, iconBopEasing);
+				iconP1.scale.set(mult, mult);
+				iconP1.updateHitbox();
+
+				var mult:Float = FlxMath.lerp(1, iconP2.scale.x, iconBopEasing);
+				iconP2.scale.set(mult, mult);
+				iconP2.updateHitbox();
 		}
 		
 	}

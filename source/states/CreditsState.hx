@@ -43,6 +43,7 @@ class CreditsState extends MusicBeatState
 			[''],
 			['Xythe Engine Contributors'],
 			['Sam', 'sam', 'Drew all the base game character\'s icons.', '', 'ff007f'],
+			['BobbyDX', 'bobbydx', 'Lumen Icon Bop, also he stole code from me /silly', 'https://github.com/bobbydeluxe', 'fcba03'],
 			['FrostyDoge!', 'doge', 'Ruined Story Mode to fix it again.', '', '00ffe1'],
 			['JarekBoho', 'jarekboho', 'Funny goobers (code wise) in chart editor', 'https://gamebanana.com/members/2145650', '170303'],
 			[''],

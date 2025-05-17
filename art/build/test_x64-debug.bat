@@ -1,6 +1,6 @@
 @echo off
 color 0a
-cd ..
+cd ../..
 echo BUILDING GAME
 lime test windows -debug
 echo.
