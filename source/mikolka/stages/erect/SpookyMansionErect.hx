@@ -203,6 +203,7 @@ class SpookyMansionErect extends BaseStage
 	{
 		
 		var bfName = PlayState.instance.boyfriend.curCharacter.split("-")[0]; 
+		var dadName = PlayState.instance.dad.curCharacter.split("-")[0]; 
 		if(bfName == "pico") bfName = "pico-playable";
 
 		var gfMode = PlayState.instance.gf.curCharacter.split("-")[0];
@@ -216,7 +217,7 @@ class SpookyMansionErect extends BaseStage
 		game.add(boyfriendGhost);
 		boyfriendGhost.dance();
 
-		dadGhost = new Character(game.dad.x, game.dad.y, 'spooky', true);
+		dadGhost = new Character(game.dad.x, game.dad.y, dadName, true);
 		dadGhost.flipX = false;
 		game.add(dadGhost);
 		dadGhost.dance();

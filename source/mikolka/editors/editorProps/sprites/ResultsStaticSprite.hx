@@ -9,7 +9,7 @@ class ResultsStaticSprite implements IResultsSprite {
     public function getSpriteType():SpriteType{
         return STATIC;
     }
-    public function startAnimation():Void{
+    public function startAnimation(activeFilter:String):Void{
 
     }
     public function pauseAnimation():Void{

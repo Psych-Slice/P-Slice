@@ -177,7 +177,7 @@ class ResultsScreenEdit extends VsliceSubState
 					playingAnimations = true;
 					resultsDialogBox.kill();
 					if(wasReset) {
-						propSystem.playAll();
+						propSystem.playAll(resultsDialogBox.list_filterSelector.selectedLabel);
 						var key = resultsDialogBox.input_musicPath.text;
 						if(Paths.fileExists("music/"+key+"/"+key+"."+Paths.SOUND_EXT,MUSIC)){
 							FunkinSound.playMusic(key,
@@ -227,6 +227,7 @@ class ResultsScreenEdit extends VsliceSubState
 		else
 			FunkinControls.disableVolume();
 	}
+
 	private function flushResultsData() {
 		//TODO
 		for (prop in propSystem.sprites) if(prop.data != null) {

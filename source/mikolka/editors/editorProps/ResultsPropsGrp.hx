@@ -72,7 +72,7 @@ class ResultsPropsGrp extends FlxTypedSpriteGroup<FlxSprite> {
             else data.zIndex = sprites[index-1].zIndex+1;
         }
     }
-    public function playAll() for (prop in sprites) prop.prop?.startAnimation();
+    public function playAll(activeFilter:String) for (prop in sprites) prop.prop?.startAnimation(activeFilter);
     public function pauseAll() for (prop in sprites) prop.prop?.pauseAnimation();
     public function resumeAll() for (prop in sprites) prop.prop?.resumeAnimation();
     public function resetAll() for (prop in sprites) prop.prop?.resetAnimation();
