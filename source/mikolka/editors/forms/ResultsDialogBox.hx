@@ -50,7 +50,7 @@ class ResultsDialogBox extends PsychUIBox {
 			host.reloadprops([PERFECT_GOLD, PERFECT, EXCELLENT, GREAT, GOOD, SHIT][index]);
 			showEmptyObject();
 		});
-		list_previewFilterSelector = new PsychUIDropDownMenu(100,200,FILTERS,(index,item) -> {
+		list_previewFilterSelector = new PsychUIDropDownMenu(140,160,FILTERS,(index,item) -> {
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			@:privateAccess
 			host.wasReset = true;
@@ -72,18 +72,18 @@ class ResultsDialogBox extends PsychUIBox {
 			else resultsObjectControls_labels.visible = false;
 			resultsObjectControls.visible = true;
 			resultsObjectControls_empty.visible = false;
-			btn_moveUp.visible = true;
-			btn_moveDown.visible = true;
+			btn_moveUp.visible = btn_moveUp.active = 
+			btn_moveDown.visible = btn_moveDown.active = 
 			btn_removeObject.visible = true;
 
 			input_imagePath.text = selected_prop.data.assetPath;
-			if(selected_prop.data.filter == null || selected_prop.data.filter == "") list_filterSelector.selectedLabel =  "none";
+			if(selected_prop.data.filter == null || selected_prop.data.filter == "") list_filterSelector.selectedLabel =  "both";
 			else list_filterSelector.selectedLabel =  selected_prop.data.filter;
 			input_soundPath.text = selected_prop.data.sound;
 			stepper_scale.value = selected_prop.data.scale ?? 1;
 			stepper_loopFrame.value = selected_prop.data.loopFrame ?? 0;
-			stepper_offsetY.value = selected_prop.data.offsets[1];
-			stepper_offsetX.value = selected_prop.data.offsets[0];
+			stepper_offsetY.value = Math.round(selected_prop.data.offsets[1]);
+			stepper_offsetX.value = Math.round(selected_prop.data.offsets[0]);
 			stepper_delay.value = selected_prop.data.delay;
 			chkBox_loopable.checked = selected_prop.data.looped ?? true;
 			input_labelStart.text = selected_prop.data.startFrameLabel ?? "";
@@ -136,8 +136,6 @@ class ResultsDialogBox extends PsychUIBox {
 			host.propSystem.refresh();
 			list_objSelector.selectedIndex = curIndex+1;
 		}, 100);
-		btn_moveDown.visible = false;
-		btn_moveUp.visible = false;
 		var btn_newSparrow = new PsychUIButton(10, 90, "New sparrow", () -> spawnNewObject("sparrow",host), 100);
 		var btn_newAtlas = new PsychUIButton(10, 120, "New atlas", () -> spawnNewObject("animateatlas",host), 100);
 		btn_removeObject = new PsychUIButton(10, 150, "Remove object", () -> {
@@ -148,7 +146,11 @@ class ResultsDialogBox extends PsychUIBox {
 			list_objSelector.selectedIndex = FlxMath.minInt(curIndex,list_objSelector.list.length-1);
 			list_objSelector.onSelect(list_objSelector.selectedIndex,list_objSelector.selectedLabel);
 		}, 100);
+		btn_moveUp.visible = btn_moveUp.active = 
+		btn_moveDown.visible = btn_moveDown.active = 
 		btn_removeObject.visible = false;
+
+		///////////////////
 		selectedName = 'General';
 		var tab = getTab('General').menu;
 		tab.add(input_musicPath.makeLabel("Rank music path:"));
@@ -156,6 +158,7 @@ class ResultsDialogBox extends PsychUIBox {
 		tab.add(btn_moveUp);
 		tab.add(btn_moveDown);
 		tab.add(list_previewFilterSelector);
+		tab.add(list_previewFilterSelector.makeLabel("Preview filter:"));
 		tab.add(btn_newSparrow);
 		tab.add(btn_newAtlas);
 		tab.add(btn_removeObject);
@@ -169,16 +172,16 @@ class ResultsDialogBox extends PsychUIBox {
 		resultsObjectControls = new FlxSpriteGroup();
 		resultsObjectControls.visible = false;
 
-		input_imagePath = new PsychUIInputText(10,20,250);
-		input_soundPath = new PsychUIInputText(10,220,250);
-		list_filterSelector = new PsychUIDropDownMenu(100,200,FILTERS,(index,item) ->{
+		input_imagePath = new PsychUIInputText(60,170,250);
+		input_soundPath = new PsychUIInputText(10,50,100);
+		list_filterSelector = new PsychUIDropDownMenu(180,50,FILTERS,(index,item) ->{
 			selected_prop.data.filter = item;
-		});
-		stepper_scale = new PsychUINumericStepper(90,130,0.1,1,0,10,3);
+		},40);
+		stepper_scale = new PsychUINumericStepper(100,130,0.1,1,0,10,3);
 		stepper_offsetX = new PsychUINumericStepper(25,60,1,0,-999,9999);
 		stepper_offsetY = new PsychUINumericStepper(25,90,1,0,-999,9999);
 		stepper_delay = new PsychUINumericStepper(10,130,0.1,0,0,20,1);
-		btn_reload = new PsychUIButton(10, 150, "Reload", () -> {
+		btn_reload = new PsychUIButton(10, 160, "Reload", () -> {
 			host.propSystem.reloadProp(selected_prop);
 			@:privateAccess
 			host.wasReset = true;
@@ -255,12 +258,12 @@ class ResultsDialogBox extends PsychUIBox {
 		tab.add(resultsObjectControls_labels);
         selectedName = 'General';
     }
-	public function addOffset(x:Float,y:Float) {
+	public function addOffset(x:Int,y:Int) {
 		if(selected_prop?.data == null) return;
 		selected_prop.data.offsets[0] += x;
 		selected_prop.data.offsets[1] += y;
-		stepper_offsetX.value = selected_prop.data.offsets[0];
-		stepper_offsetY.value = selected_prop.data.offsets[1];
+		stepper_offsetX.value = Math.round(selected_prop.data.offsets[0]);
+		stepper_offsetY.value = Math.round(selected_prop.data.offsets[1]);
 		if(selected_prop?.prop == null) return;
 		selected_prop.prop.set_offset(selected_prop.data.offsets[0],selected_prop.data.offsets[1]);
 	}
