@@ -9,7 +9,8 @@ import mikolka.funkin.players.PlayerData.PlayerResultsAnimationData;
 class ResultsSparrowSprite extends FlxSprite implements IResultsSprite
 {
 	var data:PlayerResultsAnimationData;
-	var timer:FlxTimer;
+	var timer:Null<FlxTimer>;
+	var sound:FlxSound = new FlxSound();
 
 	public function new(animData:PlayerResultsAnimationData)
 	{
@@ -36,25 +37,32 @@ class ResultsSparrowSprite extends FlxSprite implements IResultsSprite
 		return SPARROW;
 	}
 
-	public function startAnimation():Void
+	public function startAnimation(activeFilter:String):Void
 	{
+		var canShow = data.filter == "" || data.filter == "both";
+		if(data.filter == activeFilter) canShow = true;
 		timer?.cancel();
 		visible = false;
+
+		if(!canShow) return;
 		timer = FlxTimer.wait(data.delay,() ->{
-			visible = true;
 			animation.play('idle', true);
+			sound?.play();
+			visible = true;
 		});
 	}
 
 	public function pauseAnimation()
 	{
 		animation.pause();
-		timer.active = false;
+		sound?.pause();
+		if (timer != null) timer.active = false;
 	}
 
 	public function resetAnimation()
 	{
 		timer?.cancel();
+		timer = null;
 		visible = true;
 		animation.curAnim = animation.getByName("idle");
 		if (data.loopFrame != null && data.looped)
@@ -66,7 +74,8 @@ class ResultsSparrowSprite extends FlxSprite implements IResultsSprite
 	public function resumeAnimation()
 	{
 		animation.resume();
-		timer.active = true;
+		sound?.resume();
+		if (timer != null) timer.active = true;
 	}
 
 	public function set_offset(x:Float, y:Float)

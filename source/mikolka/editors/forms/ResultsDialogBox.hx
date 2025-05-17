@@ -9,6 +9,7 @@ using mikolka.editors.PsychUIUtills;
 class ResultsDialogBox extends PsychUIBox {
 	public var selected_prop:ResultsProp;
 	private inline static final selectedColor:FlxColor = 0x9E2929;
+	private static final FILTERS = ["naughty","safe","none","both"];
 	
 	//PAGERS
     public var resultsObjectControls_empty:FlxText;
@@ -17,12 +18,15 @@ class ResultsDialogBox extends PsychUIBox {
 
 	// GENERAL
 	public var list_objSelector:PsychUIDropDownMenu;
+	public var list_previewFilterSelector:PsychUIDropDownMenu;
 	public var input_musicPath:PsychUIInputText;
 	public var btn_moveUp:PsychUIButton;
 	public var btn_moveDown:PsychUIButton;
 	public var btn_removeObject:PsychUIButton;
 	//PROPERTIES
+	public var list_filterSelector:PsychUIDropDownMenu;
 	public var input_imagePath:PsychUIInputText;
+	public var input_soundPath:PsychUIInputText;
 	public var stepper_scale:PsychUINumericStepper;
 	public var stepper_offsetY:PsychUINumericStepper;
 	public var chkBox_loopable:PsychUICheckBox;
@@ -45,7 +49,8 @@ class ResultsDialogBox extends PsychUIBox {
 			host.reloadprops([PERFECT_GOLD, PERFECT, EXCELLENT, GREAT, GOOD, SHIT][index]);
 			showEmptyObject();
 		});
-
+		list_previewFilterSelector = new PsychUIDropDownMenu(100,240,FILTERS,(index,item) -> {});
+		//FilterType.
 		list_objSelector = new PsychUIDropDownMenu(140, 20, [], (index, name) -> {
 			if(selected_prop?.sprite != null) selected_prop.sprite.color = 0xFFFFFF;
 			selected_prop = host.propSystem.sprites[index];
@@ -64,6 +69,8 @@ class ResultsDialogBox extends PsychUIBox {
 			btn_removeObject.visible = true;
 
 			input_imagePath.text = selected_prop.data.assetPath;
+			list_filterSelector.selectedLabel = selected_prop.data.filter ?? "none";
+			input_soundPath.text = selected_prop.data.sound;
 			stepper_scale.value = selected_prop.data.scale ?? 1;
 			stepper_loopFrame.value = selected_prop.data.loopFrame ?? 0;
 			stepper_offsetY.value = selected_prop.data.offsets[1];
@@ -139,6 +146,7 @@ class ResultsDialogBox extends PsychUIBox {
 		tab.add(input_musicPath);
 		tab.add(btn_moveUp);
 		tab.add(btn_moveDown);
+		tab.add(list_previewFilterSelector);
 		tab.add(btn_newSparrow);
 		tab.add(btn_newAtlas);
 		tab.add(btn_removeObject);
@@ -153,6 +161,10 @@ class ResultsDialogBox extends PsychUIBox {
 		resultsObjectControls.visible = false;
 
 		input_imagePath = new PsychUIInputText(10,20,250);
+		input_soundPath = new PsychUIInputText(10,220,250);
+		list_filterSelector = new PsychUIDropDownMenu(100,200,FILTERS,(index,item) ->{
+			selected_prop.data.filter = item;
+		});
 		stepper_scale = new PsychUINumericStepper(90,130,0.1,1,0,10,3);
 		stepper_offsetX = new PsychUINumericStepper(25,60,1,0,-999,9999);
 		stepper_offsetY = new PsychUINumericStepper(25,90,1,0,-999,9999);
@@ -189,8 +201,11 @@ class ResultsDialogBox extends PsychUIBox {
 			selected_prop.data.looped = chkBox_loopable.checked;
 		});
 		stepper_loopFrame = new PsychUINumericStepper(100,100);
+		resultsObjectControls.add(list_filterSelector);
 		resultsObjectControls.add(input_imagePath);
 		resultsObjectControls.add(input_imagePath.makeLabel("Image path"));
+		resultsObjectControls.add(input_soundPath);
+		resultsObjectControls.add(input_soundPath.makeLabel("Sound path"));
 		resultsObjectControls.add(new FlxText(10, 47, 100, "Offsets"));
 		resultsObjectControls.add(new FlxText(10, 60, 100, "x:"));
 		resultsObjectControls.add(stepper_offsetX);
