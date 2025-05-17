@@ -1823,21 +1823,13 @@ class FreeplayState extends MusicBeatSubstate
 				FlxTransitionableState.skipNextTransOut = true;
 				if (Type.getClass(_parentState) == MainMenuState)
 				{
-					function songChose() {
-						switch (ClientPrefs.data.menuMusic) {
-							case "Artistic Expression":
-								return "artistic-Expression";
-							case "Between the Graves and Stars":
-								return "Between-the-Graves-and-Stars";
-							default:
-								return "freakyMenu";
-						}
-					}
-					var bahsong:String = songChose();
-					FunkinSound.playMusic(bahsong, {
-						overrideExisting: true,
-						restartTrack: false
-					});
+					
+					
+					//FunkinSound.playMusic(bahsong, {
+					//	overrideExisting: true,
+					//	restartTrack: false
+					//});
+					FlxG.sound.playMusic(Paths.music(FilePath.formatToSongPath(ClientPrefs.data.menuMusic)));
 					FlxG.sound.music.fadeIn(4.0, 0.0, 1.0);
 					close();
 				}

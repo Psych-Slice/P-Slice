@@ -137,7 +137,7 @@ class CharSelectEditor extends MusicBeatState
 
 			if (controls.BACK)
 			{
-				FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.menuMusic)));
 				FlxG.mouse.visible = false;
 				persistentUpdate = false;
 				#if LEGACY_PSYCH

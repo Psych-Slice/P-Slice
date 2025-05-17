@@ -162,7 +162,7 @@ class AttractState extends MusicBeatSubstate
       close();
     }
     else{
-      FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.7);
+      FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.menuMusic)), 0.7);
       #if LEGACY_PSYCH
       FlxG.switchState(new TitleState());
       #else

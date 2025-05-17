@@ -67,7 +67,7 @@ class ResultPreviewMenu extends MusicBeatState
 
 		if (controls.BACK)
 		{
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.menuMusic)));
 			MusicBeatState.switchState(new MasterEditorMenu());
 		}
 

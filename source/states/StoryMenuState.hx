@@ -69,7 +69,7 @@ class StoryMenuState extends MusicBeatState
 			  openSubState(stickerSubState);
 			  ModsHelper.clearStoredWithoutStickers();
 			  stickerSubState.degenStickers();
-			  FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			  FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.menuMusic)));
 			}
 		else Paths.clearStoredMemory();
 

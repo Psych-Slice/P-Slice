@@ -84,7 +84,7 @@ class StickerTest extends MusicBeatState {
                 FunkinControls.enableVolume();
 
                 if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonB.justPressed || #end controls.BACK){
-                    FlxG.sound.playMusic(Paths.music('freakyMenu'));
+                    FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.menuMusic)));
                     FlxG.mouse.visible = false;
                     #if LEGACY_PSYCH
                     MusicBeatState.switchState(new MasterEditorMenu());

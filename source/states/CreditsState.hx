@@ -38,6 +38,22 @@ class CreditsState extends MusicBeatState
 		#end
 
 		var defaultList:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
+			['Xythe Engine Team'],
+			['TheWolfLovers',	'ace',	 'Learning Haxe and making an engine don\'t bode well together', 'https://thewolflovers.bsky.social', 'ffee00'],
+			[''],
+			['Xythe Engine Contributors'],
+			['Sam', 'sam', 'Drew all the base game character\'s icons.', '', 'ff007f'],
+			['FrostyDoge!', 'doge', 'Ruined Story Mode to fix it again.', '', '00ffe1'],
+			['JarekBoho', 'jarekboho', 'Funny goobers (code wise) in chart editor', 'https://gamebanana.com/members/2145650', '170303'],
+			[''],
+			['Menu Music Credits'],
+			['KGSBlue', 'Bluey', 'Between the Graves and Stars', 'https://www.youtube.com/@kgsblue1571', '0051ff'],
+			['Timber', 'glac', 'Swore to Protect, Go get em Lare, The Final Shot.', 'https://www.youtube.com/@Sam0003t', '00a7d1'],
+			[''],
+			['Shout Outs'],
+			['KGSBlue', 'Bluey', 'Heaven\'s Rift has forever been immortalised! -Ace', 'https://www.youtube.com/@kgsblue1571', '0051ff'],
+			['Mikolka9144',			'mikolka',			'Made the best Psych Engine fork EVER.',								 'https://gamebanana.com/members/3329541',									'2ebcfa'],
+			[''],
 			['P-Slice Engine Team'],
 			['Mikolka9144',			'mikolka',			'The lead for the mod',								 'https://gamebanana.com/members/3329541',									'2ebcfa'],
 			[""],
