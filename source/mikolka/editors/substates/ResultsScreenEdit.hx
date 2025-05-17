@@ -177,7 +177,7 @@ class ResultsScreenEdit extends VsliceSubState
 					playingAnimations = true;
 					resultsDialogBox.kill();
 					if(wasReset) {
-						propSystem.playAll(resultsDialogBox.list_filterSelector.selectedLabel);
+						propSystem.playAll(resultsDialogBox.selected_filter);
 						var key = resultsDialogBox.input_musicPath.text;
 						if(Paths.fileExists("music/"+key+"/"+key+"."+Paths.SOUND_EXT,MUSIC)){
 							FunkinSound.playMusic(key,
@@ -198,7 +198,7 @@ class ResultsScreenEdit extends VsliceSubState
 				{
 					FlxG.sound.play(Paths.sound('cancelMenu'));
 					wasReset = true;
-					propSystem.resetAll();
+					propSystem.resetAll(resultsDialogBox.selected_filter);
 					FlxG.sound.music?.pause();
 				}
 				else if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonZ.pressed || #end FlxG.keys.pressed.SHIFT){

@@ -12,5 +12,5 @@ interface IResultsSprite  {
     function startAnimation(activeFilter:String):Void;
     function pauseAnimation():Void;
     function resumeAnimation():Void;
-    function resetAnimation():Void;
+    function resetAnimation(activeFilter:String):Void;
 }
