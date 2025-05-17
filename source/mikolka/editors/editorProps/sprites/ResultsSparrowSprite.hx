@@ -39,7 +39,7 @@ class ResultsSparrowSprite extends FlxSprite implements IResultsSprite
 
 	public function startAnimation(activeFilter:String):Void
 	{
-		var canShow = data.filter == "" || data.filter == "both";
+		var canShow = data.filter == null || data.filter == "" || data.filter == "both";
 		if(data.filter == activeFilter) canShow = true;
 		timer?.cancel();
 		visible = false;
@@ -66,7 +66,7 @@ class ResultsSparrowSprite extends FlxSprite implements IResultsSprite
 
 		if(data.sound != "" && data.sound != null) sound.loadEmbedded(Paths.sound(FunkinPath.stripLibrary(data.sound)));
 
-		var canShow = data.filter == "" || data.filter == "both";
+		var canShow = data.filter == null || data.filter == "" || data.filter == "both";
 		if(data.filter == activeFilter) canShow = true;
 		if(canShow){
 			visible = true;

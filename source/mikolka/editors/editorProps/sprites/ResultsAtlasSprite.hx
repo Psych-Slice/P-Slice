@@ -65,7 +65,7 @@ class ResultsAtlasSprite extends FlxAtlasSprite implements IResultsSprite
 	}
 	public function startAnimation(activeFilter:String)
 	{
-		var canShow = data.filter == "" || data.filter == "both";
+		var canShow = data.filter == null || data.filter == "" || data.filter == "both";
 		if(data.filter == activeFilter) canShow = true;
 		timer?.cancel();
 		visible = false;
@@ -84,7 +84,7 @@ class ResultsAtlasSprite extends FlxAtlasSprite implements IResultsSprite
 		timer?.cancel();
 		timer = null;
 		//animation.curAnim = animation.getByName("");
-		var canShow = data.filter == "" || data.filter == "both";
+		var canShow = data.filter == null || data.filter == "" || data.filter == "both";
 		if(data.filter == activeFilter) canShow = true;
 		if(canShow){
 
