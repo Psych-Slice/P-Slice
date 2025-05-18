@@ -48,6 +48,7 @@ class ResultsDialogBox extends PsychUIBox {
 		var rankSelector = new PsychUIDropDownMenu(10, 20, ["PERFECT_GOLD", "PERFECT", "EXCELLENT", "GREAT", "GOOD", "SHIT"], (index, name) ->
 		{
 			host.reloadprops([PERFECT_GOLD, PERFECT, EXCELLENT, GREAT, GOOD, SHIT][index]);
+			list_previewFilterSelector.selectedLabel = "none";
 			showEmptyObject();
 		});
 		list_previewFilterSelector = new PsychUIDropDownMenu(140,160,FILTERS,(index,item) -> {
@@ -172,10 +173,11 @@ class ResultsDialogBox extends PsychUIBox {
 		resultsObjectControls = new FlxSpriteGroup();
 		resultsObjectControls.visible = false;
 
-		input_imagePath = new PsychUIInputText(60,170,250);
-		input_soundPath = new PsychUIInputText(10,50,100);
+		input_imagePath = new PsychUIInputText(10,10,250);
+		input_soundPath = new PsychUIInputText(80,160,100);
 		list_filterSelector = new PsychUIDropDownMenu(180,50,FILTERS,(index,item) ->{
 			selected_prop.data.filter = item;
+			selected_prop.prop.resetAnimation(item);
 		},40);
 		stepper_scale = new PsychUINumericStepper(100,130,0.1,1,0,10,3);
 		stepper_offsetX = new PsychUINumericStepper(25,60,1,0,-999,9999);
@@ -213,7 +215,6 @@ class ResultsDialogBox extends PsychUIBox {
 			selected_prop.data.looped = chkBox_loopable.checked;
 		});
 		stepper_loopFrame = new PsychUINumericStepper(100,100);
-		resultsObjectControls.add(list_filterSelector);
 		resultsObjectControls.add(input_imagePath);
 		resultsObjectControls.add(input_imagePath.makeLabel("Image path"));
 		resultsObjectControls.add(input_soundPath);
@@ -231,6 +232,8 @@ class ResultsDialogBox extends PsychUIBox {
 		resultsObjectControls.add(stepper_loopFrame.makeLabel("Loop frame"));
 		resultsObjectControls.add(stepper_loopFrame);
 		resultsObjectControls.add(btn_reload);
+		resultsObjectControls.add(list_filterSelector);
+		resultsObjectControls.add(list_filterSelector.makeLabel("Filter"));
 
 		resultsObjectControls_labels = new FlxSpriteGroup();
 
@@ -253,9 +256,9 @@ class ResultsDialogBox extends PsychUIBox {
 		resultsObjectControls_empty.alignment = CENTER;
 		resultsObjectControls_empty.size = 10;
 
+		tab.add(resultsObjectControls_labels);
 		tab.add(resultsObjectControls);
 		tab.add(resultsObjectControls_empty);
-		tab.add(resultsObjectControls_labels);
         selectedName = 'General';
     }
 	public function addOffset(x:Int,y:Int) {
