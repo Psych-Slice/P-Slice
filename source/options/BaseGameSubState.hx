@@ -17,6 +17,11 @@ class BaseGameSubState extends BaseOptionsMenu {
 			STRING,["None","Console","File"]);
 		addOption(option);
 		#end
+		var option:Option = new Option('Naughtyness',
+			'If disabled, some "raunchy content" (such as swearing, etc.) will be disabled',
+			'vsliceNaughtyness',
+			BOOL);
+		addOption(option);
 		var option:Option = new Option('Use results screen',
 			'If disabled will skip showing the result screen',
 			'vsliceResults',
