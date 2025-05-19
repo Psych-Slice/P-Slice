@@ -5,6 +5,7 @@ import mikolka.vslice.StickerSubState;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.stages.standard.*;
 import mikolka.stages.objects.*;
+import mikolka.stages.scripts.*;
 import mikolka.stages.erect.*;
 import haxe.ds.List;
 #if !LEGACY_PSYCH
@@ -52,7 +53,9 @@ class EventLoader extends BaseStage {
 			case 'mallEvil': new MallEvil();						//Week 5 - Winter Horrorland
 			case 'school': new School();							//Week 6 - Senpai, Roses
 			case 'schoolEvil': new SchoolEvil();					//Week 6 - Thorns
-			case 'tank': new Tank();								//Week 7 - Ugh, Guns, Stress
+			case 'tank': 
+                new TankmanStagesAddons();
+                new Tank();								            //Week 7 - Ugh, Guns, Stress
             #if !LEGACY_PSYCH
 			case 'phillyStreets': new PhillyStreets(); 				//Weekend 1 - Darnell, Lit Up, 2Hot
 			case 'phillyBlazin': new PhillyBlazin();				//Weekend 1 - Blazin
@@ -65,7 +68,9 @@ class EventLoader extends BaseStage {
 			case 'schoolErect': new SchoolErect();					//Week 6 Special - Erect Mode
 			case 'schoolPico': new SchoolErect();					//Week 6 Special - Pico
 			case 'schoolEvilErect': new SchoolEvilErect();			//Week 6 Special - Thorns
-			case 'tankmanBattlefieldErect': new TankErect();		//Week 7 Special
+			case 'tankmanBattlefieldErect': 
+                new TankmanStagesAddons();
+                new TankErect();		                            //Week 7 Special
 			case 'phillyStreetsErect': new PhillyStreetsErect(); 	//Weekend 1 Special 
             default: addNene = false;
 		}

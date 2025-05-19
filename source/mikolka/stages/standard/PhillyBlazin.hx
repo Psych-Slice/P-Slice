@@ -1,7 +1,7 @@
 package mikolka.stages.standard;
 
 import mikolka.vslice.StickerSubState;
-import mikolka.stages.objects.PicoCapableStage;
+import mikolka.stages.scripts.PicoCapableStage;
 import mikolka.compatibility.VsliceOptions;
 import openfl.filters.ShaderFilter;
 import shaders.RainShader;

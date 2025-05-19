@@ -1,6 +1,6 @@
 package mikolka.stages.erect;
 
-import mikolka.stages.objects.PicoCapableStage;
+import mikolka.stages.scripts.PicoCapableStage;
 import flixel.FlxSubState;
 import mikolka.stages.objects.PhillyLights;
 import mikolka.stages.objects.PicoDopplegangerSprite;
@@ -160,9 +160,12 @@ class PhillyTrainErect extends BaseStage
 		pico.antialiasing = VsliceOptions.ANTIALIASING;
 		cutsceneHandler.push(pico);
 
-		bloodPool = new FlxAnimate(0, 0);
-		bloodPool.visible = false;
-		Paths.loadAnimateAtlas(bloodPool, "philly/erect/cutscenes/bloodPool");
+		if(VsliceOptions.NAUGHTYNESS){
+
+			bloodPool = new FlxAnimate(0, 0);
+			bloodPool.visible = false;
+			Paths.loadAnimateAtlas(bloodPool, "philly/erect/cutscenes/bloodPool");
+		}
 
 		cigarette = new FlxSprite();
 		cigarette.frames = Paths.getSparrowAtlas('philly/erect/cutscenes/cigarette');
@@ -281,7 +284,7 @@ class PhillyTrainErect extends BaseStage
 		{
 			playerShoots = false;
 		}
-		if (FlxG.random.bool(8))
+		if (#if pico_always_kill true #else FlxG.random.bool(8) #end)
 		{
 			explode = true;
 		}
@@ -305,12 +308,12 @@ class PhillyTrainErect extends BaseStage
 			cigarette.flipX = true;
 
 			addBehindBF(cigarette);
-			addBehindBF(bloodPool);
+			if(VsliceOptions.NAUGHTYNESS) addBehindBF(bloodPool);
 			addBehindBF(imposterPico);
 			addBehindBF(pico);
 
 			cigarette.setPosition(boyfriend.x - 143.5, boyfriend.y + 210);
-			bloodPool.setPosition(dad.x - 1487, dad.y - 173);
+			if(VsliceOptions.NAUGHTYNESS) bloodPool.setPosition(dad.x - 1487, dad.y - 173);
 
 			shooterPos = cameraPos(boyfriend, game.boyfriendCameraOffset);
 			cigarettePos = cameraPos(dad, [250, 0]);
@@ -318,10 +321,10 @@ class PhillyTrainErect extends BaseStage
 		else
 		{
 			addBehindDad(cigarette);
-			addBehindDad(bloodPool);
+			if(VsliceOptions.NAUGHTYNESS) addBehindDad(bloodPool);
 			addBehindDad(pico);
 			addBehindDad(imposterPico);
-			bloodPool.setPosition(boyfriend.x - 788.5, boyfriend.y - 173);
+			if(VsliceOptions.NAUGHTYNESS) bloodPool.setPosition(boyfriend.x - 788.5, boyfriend.y - 173);
 			cigarette.setPosition(boyfriend.x - 478.5, boyfriend.y + 205);
 
 			cigarettePos = cameraPos(boyfriend, game.boyfriendCameraOffset);
@@ -341,7 +344,7 @@ class PhillyTrainErect extends BaseStage
 			{
 				pico.shader = colorShader;
 				imposterPico.shader = colorShader;
-				bloodPool.shader = colorShader;
+				if(VsliceOptions.NAUGHTYNESS) bloodPool.shader = colorShader;
 			});
 		}
 
@@ -364,7 +367,7 @@ class PhillyTrainErect extends BaseStage
 
 		cutsceneHandler.timer(11.2, () ->
 		{
-			if (explode == true)
+			if (explode == true && VsliceOptions.NAUGHTYNESS)
 			{
 				bloodPool.visible = true;
 				bloodPool.anim.play("bloodPool", true);

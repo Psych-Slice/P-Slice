@@ -1,6 +1,6 @@
 package mikolka.stages.erect;
 
-import mikolka.stages.objects.PicoCapableStage;
+import mikolka.stages.scripts.PicoCapableStage;
 import mikolka.compatibility.freeplay.FreeplayHelpers;
 #if !LEGACY_PSYCH
 import objects.Note.EventNote;

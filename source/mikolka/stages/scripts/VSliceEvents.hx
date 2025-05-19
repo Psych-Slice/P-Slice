@@ -1,4 +1,4 @@
-package mikolka.stages.objects;
+package mikolka.stages.scripts;
 
 class VSliceEvents extends BaseStage {
     private var zoomTween:FlxTween;

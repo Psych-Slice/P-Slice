@@ -1,5 +1,6 @@
 package backend;
 
+import substates.GameOverSubstate;
 import flixel.FlxBasic;
 import flixel.FlxObject;
 import flixel.FlxSubState;
@@ -84,6 +85,7 @@ class BaseStage extends FlxBasic
 
 	// Substate close/open, for pausing Tweens/Timers
 	public function closeSubState() {}
+	public function gameOverStart(SubState:GameOverSubstate) {}
 	public function openSubState(SubState:FlxSubState) {}
 
 	// Events

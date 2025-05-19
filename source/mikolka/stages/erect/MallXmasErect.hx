@@ -1,6 +1,6 @@
 package mikolka.stages.erect;
 
-import mikolka.stages.objects.PicoCapableStage;
+import mikolka.stages.scripts.PicoCapableStage;
 import flixel.system.debug.watch.Tracker;
 import mikolka.compatibility.funkin.FunkinPath;
 import shaders.AdjustColorShader;
