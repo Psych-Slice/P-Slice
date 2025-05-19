@@ -1,4 +1,4 @@
-package mikolka.stages.objects;
+package mikolka.stages.scripts;
 
 import flixel.util.FlxStringUtil;
 

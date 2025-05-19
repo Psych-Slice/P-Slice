@@ -262,6 +262,7 @@ class FreeplayState extends MusicBeatSubstate
 	override function create():Void
 	{
 		// ? Psych might've reloaded the mod list. Make sure we select current character's mod for the style
+		SongMenuItem.reloadGlobalItemData();
 		var saveBox = VsliceOptions.LAST_MOD;
 		if (ModsHelper.isModDirEnabled(saveBox.mod_dir))
 			ModsHelper.loadModDir(saveBox.mod_dir);
@@ -791,6 +792,10 @@ class FreeplayState extends MusicBeatSubstate
 	 */
 	public function generateSongList(filterStuff:Null<SongFilter>, force:Bool = false, onlyIfChanged:Bool = true):Void
 	{
+		#if freeplay_profile
+		trace('Generating song list');
+		var timeStart = Sys.time();
+		#end
 		var tempSongs:Array<Null<FreeplaySongData>> = songs;
 
 		if (filterStuff != null)
@@ -830,9 +835,6 @@ class FreeplayState extends MusicBeatSubstate
 		currentFilteredSongs = tempSongs;
 		curSelected = 0;
 
-		var hsvShader:HSVShader = null; //? make this disablable
-		if(VsliceOptions.SHADERS) hsvShader = new HSVShader();
-
 		var randomCapsule:SongMenuItem = grpCapsules.recycle(SongMenuItem);
 		randomCapsule.init(FlxG.width, 0, null, styleData);
 		randomCapsule.onConfirm = function()
@@ -847,6 +849,7 @@ class FreeplayState extends MusicBeatSubstate
 		randomCapsule.favIconBlurred.visible = false;
 		randomCapsule.ranking.visible = false;
 		randomCapsule.blurredRanking.visible = false;
+		randomCapsule.hsvShader = SongMenuItem.static_hsvShader;
 		if (fromCharSelect == false)
 		{
 			randomCapsule.initJumpIn(0, force);
@@ -855,7 +858,6 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			randomCapsule.forcePosition();
 		}
-		randomCapsule.hsvShader = hsvShader;
 		grpCapsules.add(randomCapsule);
 
 		for (i in 0...tempSongs.length)
@@ -878,7 +880,7 @@ class FreeplayState extends MusicBeatSubstate
 			funnyMenu.songText.visible = false;
 			funnyMenu.favIcon.visible = tempSong.isFav;
 			funnyMenu.favIconBlurred.visible = tempSong.isFav;
-			funnyMenu.hsvShader = hsvShader;
+			funnyMenu.hsvShader = SongMenuItem.static_hsvShader;
 
 			funnyMenu.newText.animation.curAnim.curFrame = 45 - ((i * 4) % 45);
 			funnyMenu.checkClip();
@@ -893,6 +895,10 @@ class FreeplayState extends MusicBeatSubstate
 
 		changeSelection();
 		changeDiff(0, true);
+		#if freeplay_profile
+		trace('Initing songs took ${Sys.time()-timeStart}');
+		//var timeStart = Sys.time();
+		#end
 	}
 
 	/**

@@ -11,7 +11,7 @@ import mikolka.stages.cutscenes.VideoCutscene;
 import mikolka.stages.cutscenes.PicoTankman;
 import openfl.filters.ShaderFilter;
 import shaders.DropShadowScreenspace;
-import mikolka.stages.objects.PicoCapableStage;
+import mikolka.stages.scripts.PicoCapableStage;
 import mikolka.compatibility.VsliceOptions;
 import shaders.DropShadowShader;
 
