@@ -1,22 +1,24 @@
 package mikolka.vslice.ui;
 
 import mikolka.vslice.components.crash.UserErrorSubstate;
-import states.editors.MasterEditorMenu;
 import mikolka.compatibility.freeplay.FreeplayHelpers;
 import mikolka.compatibility.ui.StoryModeHooks;
 import mikolka.compatibility.ModsHelper;
-import backend.WeekData;
-import backend.Highscore;
+import mikolka.vslice.StickerSubState;
 
 import flixel.group.FlxGroup;
 import flixel.graphics.FlxGraphic;
+#if !LEGACY_PSYCH
+import states.editors.MasterEditorMenu;
+import backend.WeekData;
+import backend.Highscore;
 
 import objects.MenuItem;
 import objects.MenuCharacter;
 
 import options.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
-import mikolka.vslice.StickerSubState;
+#end
 
 
 class StoryMenuState extends MusicBeatState

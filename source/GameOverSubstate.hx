@@ -1,6 +1,5 @@
 package;
 
-import mikolka.stages.objects.PicoCapableStage;
 import mikolka.vslice.StickerSubState;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -15,6 +14,7 @@ import flixel.tweens.FlxTween;
 class GameOverSubstate extends MusicBeatSubstate
 {
 	public var boyfriend:Boyfriend;
+	public var onCoolDeath:Void -> Void;
 	var camFollow:FlxPoint;
 	var camFollowPos:FlxObject;
 	var updateCamera:Bool = false;
@@ -41,12 +41,11 @@ class GameOverSubstate extends MusicBeatSubstate
 	override function create()
 	{
 		instance = this;
+		onCoolDeath = () -> coolStartDeath();
 		if (ClientPrefs.vibrating)
 			lime.ui.Haptic.vibrate(0, 500);
 		PlayState.instance.callOnLuas('onGameOverStart', []);
-
-		//? pico code
-		PicoCapableStage.playPicoDeath(this);
+		PlayState.instance.stagesFunc(function(stage:BaseStage) stage.gameOverStart(this));
 		
 		super.create();
 	}
@@ -131,33 +130,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 			if (boyfriend.animation.curAnim.finished && !playingDeathSound)
 			{
-				switch(PlayState.SONG.stage)
-				{
-					case 'tank'|'tankmanBattlefieldErect':
-						coolStartDeath(0.2);
-						var onEnd = function() {
-							if(!isEnding)
-							{
-								FlxG.sound.music.fadeIn(0.2, 1, 4);
-							}
-						};
-						switch (PlayState.SONG.player1){
-							case "bf-holding-bf"|"bf":{
-								var exclude:Array<Int> = [];
-								//if(!ClientPrefs.cursing) exclude = [1, 3, 8, 13, 17, 21];
-								FlxG.sound.play(Paths.sound('jeffGameover/jeffGameover-' + FlxG.random.int(1, 25, exclude)), 1, false, null, true,onEnd);
-							}
-							case "pico-playable"|"pico-holding-nene":{
-								FlxG.sound.play(Paths.sound('jeffGameover-pico/jeffGameover-' + FlxG.random.int(1, 9)), 1, false, null, true,onEnd);
-							}
-							default:{
-								FlxG.sound.play(Paths.sound('jeffGameover-pico/jeffGameover-10'), 1, false, null, true,onEnd);
-							}
-						};
- 					//? Another hardcoding lol
-					default:
-						coolStartDeath();
-				}
+				onCoolDeath();
 				boyfriend.startedDeath = true;
 			}
 		}
