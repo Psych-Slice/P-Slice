@@ -117,9 +117,11 @@ class Main extends Sprite
 		#if mobile
 		FlxG.game.addChild(fpsVar);
 	  	#else
-		var border = new GameBorder();
-		addChild(border);
-		Lib.current.stage.window.onResize.add(border.updateGameSize);
+		#if !debug 
+		  var border = new GameBorder();
+		  addChild(border);
+		  Lib.current.stage.window.onResize.add(border.updateGameSize);
+	  	#end
 		addChild(fpsVar);
 		#end
 		Lib.current.stage.align = "tl";
@@ -143,6 +145,10 @@ class Main extends Sprite
 		}
 		#end
 		
+		#if (debug)
+		flixel.addons.studio.FlxStudio.create();
+		#end
+
 		#if html5
 		FlxG.autoPause = false;
 		FlxG.mouse.visible = false;

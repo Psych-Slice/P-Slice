@@ -44,7 +44,7 @@
 	<classpath name="source" />
 	
 	<!-- PSYCH ENGINE CUSTOMIZATION -->
-	<define name="OPENFL_LOOKUP"/>
+	<!-- <define name="OPENFL_LOOKUP"/> -->
 	<define name="NATIVE_LOOKUP"/>
 	
 
@@ -158,6 +158,7 @@
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
 	<haxelib name="faxe" if='switch'/>
 	<haxelib name="flxanimate"/>
+	<haxelib name="flixel-studio" if="debug"/>
 	<haxelib name="grig.audio"/>
 	<haxelib name="funkin.vis"/>
 	<!--<haxelib name="polymod"/> -->
