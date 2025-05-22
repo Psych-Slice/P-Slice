@@ -255,7 +255,11 @@ class StoryMenuState extends MusicBeatState
 			lerpScore = Math.floor(FlxMath.lerp(intendedScore, lerpScore, Math.exp(-elapsed * 30)));
 			if(Math.abs(intendedScore - lerpScore) < 10) lerpScore = intendedScore;
 	
+			#If LEGACY_PSYCH
+			scoreText.text = 'LEVEL SCORE: ${lerpScore}';
+			#else
 			scoreText.text = Language.getPhrase('week_score', 'LEVEL SCORE: {1}', [lerpScore]);
+			#end
 		}
 
 		// FlxG.watch.addQuick('font', scoreText.font);
@@ -416,7 +420,11 @@ class StoryMenuState extends MusicBeatState
 		var leWeek:WeekData = loadedWeeks[curWeek];
 		ModsHelper.setDirectoryFromWeek(leWeek);
 
+		#if LEGACY_PSYCH
+		var leName:String = leWeek.storyName;
+		#else
 		var leName:String = Language.getPhrase('storyname_${leWeek.fileName}', leWeek.storyName);
+		#end
 		txtWeekTitle.text = leName.toUpperCase();
 		txtWeekTitle.x = FlxG.width - (txtWeekTitle.width + 10);
 
