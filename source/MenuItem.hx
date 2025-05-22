@@ -19,7 +19,7 @@ class MenuItem extends FlxSprite
 		antialiasing = ClientPrefs.globalAntialiasing;
 	}
 
-	private var isFlashing:Bool = false;
+	public var isFlashing:Bool = false;
 
 	public function startFlashing():Void
 	{

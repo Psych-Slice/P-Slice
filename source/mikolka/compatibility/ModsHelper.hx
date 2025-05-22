@@ -86,4 +86,8 @@ class ModsHelper {
 		return FlxG.random.getObject(commercialsToSelect);
 	  }
 	#end
+
+	public static inline function setDirectoryFromWeek(leWeek:WeekData) {
+		WeekData.setDirectoryFromWeek(leWeek);
+	}
 }
