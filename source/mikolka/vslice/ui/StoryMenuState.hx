@@ -1,22 +1,27 @@
 package mikolka.vslice.ui;
 
+import mikolka.compatibility.VsliceOptions;
 import mikolka.vslice.components.crash.UserErrorSubstate;
-import states.editors.MasterEditorMenu;
 import mikolka.compatibility.freeplay.FreeplayHelpers;
 import mikolka.compatibility.ui.StoryModeHooks;
 import mikolka.compatibility.ModsHelper;
-import backend.WeekData;
-import backend.Highscore;
+import mikolka.vslice.StickerSubState;
 
 import flixel.group.FlxGroup;
 import flixel.graphics.FlxGraphic;
+#if !LEGACY_PSYCH
+import states.editors.MasterEditorMenu;
+import backend.WeekData;
+import backend.Highscore;
 
 import objects.MenuItem;
 import objects.MenuCharacter;
 
 import options.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
-import mikolka.vslice.StickerSubState;
+#else
+import editors.MasterEditorMenu;
+#end
 
 
 class StoryMenuState extends MusicBeatState
@@ -98,7 +103,11 @@ class StoryMenuState extends MusicBeatState
 
 		if(curWeek >= WeekData.weeksList.length) curWeek = 0;
 
+		#if LEGACY_PSYCH
+		scoreText = new FlxText(10, 10, 0, 'LEVEL SCORE: '+lerpScore, 36);
+		#else
 		scoreText = new FlxText(10, 10, 0, Language.getPhrase('week_score', 'LEVEL SCORE: {1}', [lerpScore]), 36);
+		#end
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32);
 
 		txtWeekTitle = new FlxText(FlxG.width * 0.7, 10, 0, "", 32);
@@ -108,6 +117,7 @@ class StoryMenuState extends MusicBeatState
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
 		var bgYellow:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 386, 0xFFF9CF51);
 		bgSprite = new FlxSprite(0, 56);
+		bgSprite.antialiasing =  VsliceOptions.ANTIALIASING;
 
 		grpWeekText = new FlxTypedGroup<MenuItem>();
 		add(grpWeekText);
@@ -144,7 +154,7 @@ class StoryMenuState extends MusicBeatState
 				if (isLocked)
 				{
 					var lock:FlxSprite = new FlxSprite(weekThing.width + 10 + weekThing.x);
-					lock.antialiasing = ClientPrefs.data.antialiasing;
+					lock.antialiasing = VsliceOptions.ANTIALIASING;
 					lock.frames = ui_tex;
 					lock.animation.addByPrefix('lock', 'lock');
 					lock.animation.play('lock');
@@ -168,26 +178,26 @@ class StoryMenuState extends MusicBeatState
 		add(difficultySelectors);
 
 		leftArrow = new FlxSprite(850, grpWeekText.members[0].y + 10);
-		leftArrow.antialiasing = ClientPrefs.data.antialiasing;
+		leftArrow.antialiasing = VsliceOptions.ANTIALIASING;
 		leftArrow.frames = ui_tex;
 		leftArrow.animation.addByPrefix('idle', "arrow left");
 		leftArrow.animation.addByPrefix('press', "arrow push left");
 		leftArrow.animation.play('idle');
 		difficultySelectors.add(leftArrow);
 
-		Difficulty.resetList();
+		StoryModeHooks.resetDiffList();
 		if(lastDifficultyName == '')
 		{
-			lastDifficultyName = Difficulty.getDefault();
+			lastDifficultyName = StoryModeHooks.DEFAULT_DIFF;
 		}
-		curDifficulty = Math.round(Math.max(0, Difficulty.defaultList.indexOf(lastDifficultyName)));
+		curDifficulty = Math.round(Math.max(0, StoryModeHooks.DEFAULT_DIFFICULTIES.indexOf(lastDifficultyName)));
 		
 		sprDifficulty = new FlxSprite(0, leftArrow.y);
-		sprDifficulty.antialiasing = ClientPrefs.data.antialiasing;
+		sprDifficulty.antialiasing = VsliceOptions.ANTIALIASING;
 		difficultySelectors.add(sprDifficulty);
 
 		rightArrow = new FlxSprite(leftArrow.x + 376, leftArrow.y);
-		rightArrow.antialiasing = ClientPrefs.data.antialiasing;
+		rightArrow.antialiasing = VsliceOptions.ANTIALIASING;
 		rightArrow.frames = ui_tex;
 		rightArrow.animation.addByPrefix('idle', 'arrow right');
 		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
@@ -200,7 +210,7 @@ class StoryMenuState extends MusicBeatState
 		add(grpWeekCharacters);
 
 		var tracksSprite:FlxSprite = new FlxSprite(FlxG.width * 0.07 + 100, bgSprite.y + 425).loadGraphic(Paths.image('Menu_Tracks'));
-		tracksSprite.antialiasing = ClientPrefs.data.antialiasing;
+		tracksSprite.antialiasing = VsliceOptions.ANTIALIASING;
 		tracksSprite.x -= tracksSprite.width/2;
 		add(tracksSprite);
 
@@ -253,7 +263,11 @@ class StoryMenuState extends MusicBeatState
 			lerpScore = Math.floor(FlxMath.lerp(intendedScore, lerpScore, Math.exp(-elapsed * 30)));
 			if(Math.abs(intendedScore - lerpScore) < 10) lerpScore = intendedScore;
 	
+			#if LEGACY_PSYCH
+			scoreText.text = 'LEVEL SCORE: ${lerpScore}';
+			#else
 			scoreText.text = Language.getPhrase('week_score', 'LEVEL SCORE: {1}', [lerpScore]);
+			#end
 		}
 
 		// FlxG.watch.addQuick('font', scoreText.font);
@@ -371,13 +385,13 @@ class StoryMenuState extends MusicBeatState
 		curDifficulty += change;
 
 		if (curDifficulty < 0)
-			curDifficulty = Difficulty.list.length-1;
-		if (curDifficulty >= Difficulty.list.length)
+			curDifficulty = StoryModeHooks.DIFFICULTIES.length-1;
+		if (curDifficulty >= StoryModeHooks.DIFFICULTIES.length)
 			curDifficulty = 0;
 
 		ModsHelper.setDirectoryFromWeek(loadedWeeks[curWeek]);
 
-		var diff:String = Difficulty.getString(curDifficulty, false);
+		var diff:String = StoryModeHooks.getDifficultyString(curDifficulty);//Difficulty.getString(curDifficulty, false);
 		var newImage:FlxGraphic = Paths.image('menudifficulties/' + Paths.formatToSongPath(diff));
 		//trace(Mods.currentModDirectory + ', menudifficulties/' + Paths.formatToSongPath(diff));
 
@@ -414,7 +428,11 @@ class StoryMenuState extends MusicBeatState
 		var leWeek:WeekData = loadedWeeks[curWeek];
 		ModsHelper.setDirectoryFromWeek(leWeek);
 
+		#if LEGACY_PSYCH
+		var leName:String = leWeek.storyName;
+		#else
 		var leName:String = Language.getPhrase('storyname_${leWeek.fileName}', leWeek.storyName);
+		#end
 		txtWeekTitle.text = leName.toUpperCase();
 		txtWeekTitle.x = FlxG.width - (txtWeekTitle.width + 10);
 
@@ -435,15 +453,15 @@ class StoryMenuState extends MusicBeatState
 		}
 		PlayState.storyWeek = curWeek;
 
-		Difficulty.loadFromWeek();
+		StoryModeHooks.loadDifficultiesFromWeek();
 		difficultySelectors.visible = unlocked;
 
-		if(Difficulty.list.contains(Difficulty.getDefault()))
-			curDifficulty = Math.round(Math.max(0, Difficulty.defaultList.indexOf(Difficulty.getDefault())));
+		if(StoryModeHooks.DIFFICULTIES.contains(StoryModeHooks.DEFAULT_DIFF))
+			curDifficulty = Math.round(Math.max(0, StoryModeHooks.DEFAULT_DIFFICULTIES.indexOf(StoryModeHooks.DEFAULT_DIFF)));
 		else
 			curDifficulty = 0;
 
-		var newPos:Int = Difficulty.list.indexOf(lastDifficultyName);
+		var newPos:Int = StoryModeHooks.DIFFICULTIES.indexOf(lastDifficultyName);
 		//trace('Pos of ' + lastDifficultyName + ' is ' + newPos);
 		if(newPos > -1)
 		{

@@ -59,12 +59,12 @@ class FlxGraphicsShader extends GraphicsShader
 	", true)
     public var custom:Bool = false;
 	public var save:Bool = true;
+	private static var glslVersion:Null<Int> = null;
 
 	public override function new(?save:Bool)
 	{
 		if (save != null)
 			this.save = save;
-
 		super();
 	}
 
@@ -99,10 +99,18 @@ class FlxGraphicsShader extends GraphicsShader
 	{
 		@:privateAccess
 		var gl = __context.gl;
+
+		if(glslVersion == null) {
+			var version_str = gl.getParameter(gl.SHADING_LANGUAGE_VERSION);
+			glslVersion = Std.parseInt(StringTools.replace(version_str.split(" ")[0],".",""));
+		}
+		
 		#if lime_opengles
 			var prefix = "#version 300 es\n";
 		#else
-			var prefix = "#version 330\n";
+		var prefix = "";
+		if(glslVersion>=330) prefix = '#version 330\n';
+		else prefix = '#version 130\n';
 		#end
 		#if ((js && html5) || macos)
 			prefix = "";
