@@ -2,9 +2,9 @@ package mikolka.stages.cutscenes;
 
 #if !LEGACY_PSYCH
 import objects.Character;
+import cutscenes.CutsceneHandler;
 #end
 import mikolka.compatibility.VsliceOptions;
-import cutscenes.CutsceneHandler;
 import mikolka.stages.objects.PicoDopplegangerSprite;
 import mikolka.stages.erect.PhillyTrainErect;
 
@@ -115,7 +115,7 @@ class TwoPicos {
 					game.camZooming = true;
 					#if LEGACY_PSYCH
 					game.vocals = new FlxSound();
-					switch(songName.toLowerCase()){
+					switch(host.songName.toLowerCase()){
 						case "blammed-(pico-mix)":
 							game.vocals.loadEmbedded(Paths.sound("blammed_solo"));
 						case "pico-(pico-mix)":

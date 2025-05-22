@@ -1,10 +1,14 @@
 package mikolka.stages.scripts;
 
 import mikolka.compatibility.VsliceOptions;
-import substates.GameOverSubstate;
 import mikolka.stages.objects.TankmenBG;
+#if !LEGACY_PSYCH
+import substates.GameOverSubstate;
 import backend.Song;
 import objects.Character;
+#else
+import Song.SwagSong;
+#end
 
 class TankmanStagesAddons extends BaseStage {
     public var animationNotes:Array<Dynamic> = [];
@@ -35,7 +39,11 @@ class TankmanStagesAddons extends BaseStage {
 					game.gf.playAnim('shoot' + noteData, true);
 					animationNotes.shift();
 				}
+                #if LEGACY_PSYCH
+				if(game.gf.animation.curAnim.finished) game.gf.playAnim(game.gf.animation.curAnim.name, false, false, game.gf.animation.curAnim.frames.length - 3);
+                #else
 				if(game.gf.isAnimationFinished()) game.gf.playAnim(game.gf.getAnimationName(), false, false, game.gf.animation.curAnim.frames.length - 3);
+                #end
 		}
     }
     override function gameOverStart(SubState:GameOverSubstate) {
@@ -69,7 +77,11 @@ class TankmanStagesAddons extends BaseStage {
         {
             try
             {
+                #if LEGACY_PSYCH
+                var songData:SwagSong = Song.loadFromJson('picospeaker', Paths.formatToSongPath(PlayState.SONG.song));
+                #else
                 var songData:SwagSong = Song.getChart('picospeaker', Paths.formatToSongPath(Song.loadedSongName));
+                #end
                 if(songData != null)
                     for (section in songData.notes)
                         for (songNotes in section.sectionNotes)

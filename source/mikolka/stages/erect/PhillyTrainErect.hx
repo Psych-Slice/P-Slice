@@ -16,7 +16,7 @@ class PhillyTrainErect extends BaseStage
 	var curLight:Int = -1;
 
 	var curLightEvent:Int = -1;
-	public var colorShader:AdjustColorShader;
+	var colorShader:AdjustColorShader;
 
 	override function create()
 	{
