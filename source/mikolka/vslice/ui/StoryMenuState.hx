@@ -117,6 +117,7 @@ class StoryMenuState extends MusicBeatState
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
 		var bgYellow:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 386, 0xFFF9CF51);
 		bgSprite = new FlxSprite(0, 56);
+		bgSprite.antialiasing =  VsliceOptions.ANTIALIASING;
 
 		grpWeekText = new FlxTypedGroup<MenuItem>();
 		add(grpWeekText);
@@ -262,7 +263,7 @@ class StoryMenuState extends MusicBeatState
 			lerpScore = Math.floor(FlxMath.lerp(intendedScore, lerpScore, Math.exp(-elapsed * 30)));
 			if(Math.abs(intendedScore - lerpScore) < 10) lerpScore = intendedScore;
 	
-			#If LEGACY_PSYCH
+			#if LEGACY_PSYCH
 			scoreText.text = 'LEVEL SCORE: ${lerpScore}';
 			#else
 			scoreText.text = Language.getPhrase('week_score', 'LEVEL SCORE: {1}', [lerpScore]);

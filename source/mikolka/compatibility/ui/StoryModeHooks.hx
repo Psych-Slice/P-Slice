@@ -43,7 +43,9 @@ class StoryModeHooks {
 			{
 				CoolUtil.difficulties = diffs;
 			}
+			else resetDiffList();
 		}
+		else resetDiffList();
     }
     public static function moveWeekToPlayState(){
         var directory = StageData.forceNextDirectory;
@@ -51,7 +53,7 @@ class StoryModeHooks {
 
 
 			trace('CHANGED MOD DIRECTORY, RELOADING STUFF');
-			Paths.clearUnusedMemory();
+			//Paths.clearUnusedMemory();
 
 			//LoadingState.prepareToSong();
 			new FlxTimer().start(1, function(tmr:FlxTimer)
@@ -93,8 +95,7 @@ class StoryModeHooks {
                     host.selectedWeek = true;
                 }
 	
-	
-				Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
+				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
 				PlayState.campaignScore = 0;
 				PlayState.campaignMisses = 0;
                 return true;
