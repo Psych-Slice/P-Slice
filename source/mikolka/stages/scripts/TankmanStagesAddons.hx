@@ -2,12 +2,12 @@ package mikolka.stages.scripts;
 
 import mikolka.compatibility.VsliceOptions;
 import mikolka.stages.objects.TankmenBG;
-#if LEGACY_PSYCH
-import Song.SwagSong;
-#else
+#if !LEGACY_PSYCH
 import substates.GameOverSubstate;
 import backend.Song;
 import objects.Character;
+#else
+import Song.SwagSong;
 #end
 
 class TankmanStagesAddons extends BaseStage {

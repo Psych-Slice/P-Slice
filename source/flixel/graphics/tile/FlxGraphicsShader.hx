@@ -1,23 +1,70 @@
-package shaders.flixel.system;
+package flixel.graphics.tile;
 
-import flixel.system.FlxAssets.FlxShader as OriginalFlxShader;
+import openfl.display.GraphicsShader;
 
-using StringTools;
-
-/**
- * A modded FlxShader that allows using GLSL Es 300 and GLSL 330
- * @author Mihai Alexandru (M.A. Jigsaw)
- */
-class FlxShader extends OriginalFlxShader
+class FlxGraphicsShader extends GraphicsShader
 {
-	public var custom:Bool = false;
+	@:glVertexHeader("
+		attribute float alpha;
+		attribute vec4 colorMultiplier;
+		attribute vec4 colorOffset;
+		uniform bool hasColorTransform;
+	", true)
+	@:glVertexBody("
+		openfl_Alphav = openfl_Alpha * alpha;
+		
+		if (hasColorTransform)
+		{
+			if (openfl_HasColorTransform)
+			{
+				openfl_ColorOffsetv = (openfl_ColorOffsetv * colorMultiplier) + (colorOffset / 255.0);
+				openfl_ColorMultiplierv *= colorMultiplier;
+			}
+			else
+			{
+				openfl_ColorOffsetv = colorOffset / 255.0;
+				openfl_ColorMultiplierv = colorMultiplier;
+			}
+		}
+	", true)
+	@:glFragmentHeader("
+		uniform bool hasTransform;  // TODO: Is this still needed? Apparently, yes!
+		uniform bool hasColorTransform;
+		vec4 flixel_texture2D(sampler2D bitmap, vec2 coord)
+		{
+			vec4 color = texture2D(bitmap, coord);
+			if (!(hasTransform || openfl_HasColorTransform))
+				return color;
+			
+			if (color.a == 0.0)
+				return vec4(0.0, 0.0, 0.0, 0.0);
+			
+			if (openfl_HasColorTransform || hasColorTransform)
+			{
+				color = vec4 (color.rgb / color.a, color.a);
+				vec4 mult = vec4 (openfl_ColorMultiplierv.rgb, 1.0);
+				color = clamp (openfl_ColorOffsetv + (color * mult), 0.0, 1.0);
+				
+				if (color.a == 0.0)
+					return vec4 (0.0, 0.0, 0.0, 0.0);
+				
+				return vec4 (color.rgb * color.a * openfl_Alphav, color.a * openfl_Alphav);
+			}
+			
+			return color * openfl_Alphav;
+		}
+	", true)
+	@:glFragmentBody("
+		gl_FragColor = flixel_texture2D(bitmap, openfl_TextureCoordv);
+	", true)
+    public var custom:Bool = false;
 	public var save:Bool = true;
+	private static var glslVersion:Null<Int> = null;
 
 	public override function new(?save:Bool)
 	{
 		if (save != null)
 			this.save = save;
-
 		super();
 	}
 
@@ -53,10 +100,20 @@ class FlxShader extends OriginalFlxShader
 		@:privateAccess
 		var gl = __context.gl;
 
+		if(glslVersion == null) {
+			var version_str = gl.getParameter(gl.SHADING_LANGUAGE_VERSION);
+			glslVersion = Std.parseInt(StringTools.replace(version_str.split(" ")[0],".",""));
+		}
+		
 		#if lime_opengles
-		var prefix = "#version 300 es\n";
+			var prefix = "#version 300 es\n";
 		#else
-		var prefix = "#version 330\n";
+		var prefix = "";
+		if(glslVersion>=330) prefix = '#version 330\n';
+		else prefix = '#version 130\n';
+		#end
+		#if ((js && html5) || macos)
+			prefix = "";
 		#end
 
 		#if (js && html5)

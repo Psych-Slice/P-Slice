@@ -1,6 +1,6 @@
 package shaders;
 
-import shaders.flixel.system.FlxShader;
+
 
 class AngleMask extends FlxShader
 {

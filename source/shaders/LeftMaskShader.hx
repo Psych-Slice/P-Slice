@@ -1,7 +1,7 @@
 package shaders;
 
 import flixel.math.FlxRect;
-import shaders.flixel.system.FlxShader;
+
 
 class LeftMaskShader extends FlxShader
 {
