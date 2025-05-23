@@ -139,10 +139,13 @@ class ResultState extends MusicBeatSubState
     if(sngMeta.freeplayCharacter != '' ){
       playerCharacterId = sngMeta.freeplayCharacter;
     }
-    else{
+    else if (!PlayState.isStoryMode){
       var mod_char = VsliceOptions.LAST_MOD;
       playerCharacterId = mod_char.char_name;
       ModsHelper.loadModDir(mod_char.mod_dir);
+    }
+    else{
+      playerCharacterId = "bf";
     }
     //? moved this line so we can edit it in debug options
   }

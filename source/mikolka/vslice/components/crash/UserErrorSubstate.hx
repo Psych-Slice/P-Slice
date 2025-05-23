@@ -189,18 +189,30 @@ class UserErrorSubstate extends MusicBeatSubstate
 
 	function printError(error:CrashData)
 	{
+		//43
 		var star = #if (CHECK_FOR_UPDATES || debug) "" #else "*" #end;
 		printToTrace('P-SLICE ${MainMenuState.pSliceVersion}$star  (${error.message})');
 		textNextY += 35;
 		FlxTimer.wait(1 / 24, () ->
 		{
 			printSpaceToTrace();
+			var linesPrinted = 0;
 			for (line in error.trace)
 			{
+				linesPrinted += 1;
 				switch (line.length)
 				{
 					case 1:
-						printToTrace(line[0]);
+						if(line[0].length>43){
+							var remText = line[0];
+							while(remText.length>43){
+								printToTrace(remText.substr(0,43));
+								linesPrinted += 1;
+								remText = remText.substr(42);
+							}
+							printToTrace(remText);
+						}
+						else printToTrace(line[0]);
 					case 2:
 						var first_line = line[0].rpad(" ", 33).replace("_", "");
 						printToTrace('${first_line}${line[1]}');
@@ -208,7 +220,7 @@ class UserErrorSubstate extends MusicBeatSubstate
 						printToTrace(" ");
 				}
 			}
-			var remainingLines = 11 - error.trace.length;
+			var remainingLines = 11 - linesPrinted;
 			if (remainingLines > 0)
 			{
 				for (x in 0...remainingLines)
