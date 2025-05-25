@@ -166,9 +166,6 @@
 	<haxelib name="hxcpp" if="desktop"/>
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 
-	<!-- Android Specific-->
-	<haxelib name="extension-androidtools" if="android" />
-
 	<!-- <haxelib name="markdown" /> -->
 	<!-- <haxelib name="HtmlParser" /> -->
 
