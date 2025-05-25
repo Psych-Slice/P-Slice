@@ -25,7 +25,6 @@ jobs:
             os: ubuntu-22.04
             buildArgs: linux
             exportPath: linux
-            setupScript: sh ./setup/unix.sh
             artifactName: P-Slice.1.0.linux
             cachePath: P-Slice.1.0.build-linux
             cacheLibrariesPath: P-Slice.1.0.desktop-cache
@@ -38,6 +37,7 @@ jobs:
             cacheLibrariesPath: P-Slice.1.0.mobile-cache
             artifactName: P-Slice.1.0.macosx64
             artifactPath: export/release/macos/bin/*
+            
           - name: macOS AArch64
             os: macos-15
             buildArgs: mac
@@ -66,7 +66,7 @@ jobs:
             os: macos-15
             exportPath: android
             buildArgs: "android"
-            setupScript: sh ./setup/mobile.sh
+            cacheLibrariesPath: P-Slice.1.0.mobile-cache
             artifactName: P-Slice.1.0.android
             cachePath: P-Slice.1.0.build-android
             artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
