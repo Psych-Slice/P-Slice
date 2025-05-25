@@ -61,6 +61,7 @@ jobs:
         uses: actions/cache@v3
         with:
           key: ${{ inputs.CACHE_NAME }}
+          enableCrossOsArchive: true
           path: |
             .haxelib/
           restore-keys: |

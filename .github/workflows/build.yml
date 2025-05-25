@@ -50,6 +50,7 @@ jobs:
           # not caching the bin folder to prevent asset duplication and stuff like that
           key: ${{ inputs.cacheLibrariesPath }}
           fail-on-cache-miss: true
+          enableCrossOsArchive: true
           path: |
             .haxelib/
           restore-keys: |
