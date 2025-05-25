@@ -27,7 +27,6 @@ jobs:
             exportPath: linux
             artifactName: P-Slice.0.6.3.linux
             cachePath: P-Slice.0.6.3.build-linux
-            cacheLibrariesPath: P-Slice.0.6.3.desktop-cache
             artifactPath: export/PE0.6.3/release/linux/bin/*
 
     uses: ./.github/workflows/build.yml
@@ -54,7 +53,6 @@ jobs:
             artifactName: P-Slice.0.6.3.android
             cachePath: P-Slice.0.6.3.build-android
             artifactPath: "export/PE0.6.3/release/android/bin/app/build/outputs/apk/release/*.apk"
-
           - name: iOS
             os: macos-15
             buildArgs: "ios -nosign"
