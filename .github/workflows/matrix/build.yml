@@ -9,9 +9,6 @@ on:
       os:
         required: true
         type: string
-      setupScript:
-        required: true
-        type: string
       buildArgs:
         required: true
         type: string
@@ -22,6 +19,9 @@ on:
         required: true
         type: string
       cachePath:
+        required: true
+        type: string
+      cacheLibrariesPath:
         required: true
         type: string
       exportPath:
@@ -45,6 +45,17 @@ jobs:
         with:
           haxe-version: ${{ env.HAXE_VERSION }}
         
+      - name: Restore Libraries for compilation
+        id: load-lib-cache
+        uses: actions/cache@v3
+        with:
+          # not caching the bin folder to prevent asset duplication and stuff like that
+          key: ${{ inputs.cacheLibrariesPath }}
+          fail-on-cache-miss: true
+          path: |
+            .haxelib/
+          restore-keys: |
+            ${{ inputs.cacheLibrariesPath }}
       - name: Restore existing build cache for faster compilation
         id: load-cache
         uses: actions/cache@v3
@@ -52,7 +63,6 @@ jobs:
           # not caching the bin folder to prevent asset duplication and stuff like that
           key: ${{ inputs.cachePath }}
           path: |
-            .haxelib/
             export/release/${{ inputs.exportPath }}/haxe/
             export/release/${{ inputs.exportPath }}/obj/
           restore-keys: |
@@ -62,12 +72,6 @@ jobs:
       - name: Install libVLC
         if: inputs.exportPath == 'linux'
         run: sudo apt install libvlc-dev libvlccore-dev
-
-      - name: Setup haxelib
-        run: haxelib newrepo    
-      - name: Install Libraries
-        run: ${{ inputs.setupScript }}
-        if: ${{ ! steps.load-cache.outputs.cache-hit }}
 
       - name: Configure Android
         if: inputs.exportPath == 'android'
@@ -103,7 +107,7 @@ jobs:
               repo: context.repo.repo,
             })
             for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache-build-${{ inputs.exportPath }}") {
+              if (cache.key == "${{ inputs.cachePath }}") {
                 console.log('Clearing ' + cache.key + '...')
                 await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
@@ -118,8 +122,7 @@ jobs:
         with:
           key: ${{ inputs.cachePath }}
           path: |
-            .haxelib/
             export/release/${{ inputs.exportPath }}/haxe/
             export/release/${{ inputs.exportPath }}/obj/
           restore-keys: |
-            cache-build-${{ inputs.exportPath }}
+            ${{ inputs.cachePath }}
