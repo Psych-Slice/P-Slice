@@ -29,14 +29,6 @@ jobs:
             cachePath: P-Slice.0.6.3.build-linux
             cacheLibrariesPath: P-Slice.0.6.3.desktop-cache
             artifactPath: export/release/linux/bin/*
-          - name: macOS x86_64
-            os: macos-14
-            buildArgs: "mac -64 -D HXCPP_M64"
-            cachePath: P-Slice.0.6.3.build-macos_m64
-            exportPath: macos
-            cacheLibrariesPath: P-Slice.0.6.3.mobile-cache
-            artifactName: P-Slice.0.6.3.macosx64
-            artifactPath: export/release/macos/bin/*
             
           - name: macOS AArch64
             os: macos-15
@@ -70,14 +62,7 @@ jobs:
             artifactName: P-Slice.0.6.3.android
             cachePath: P-Slice.0.6.3.build-android
             artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
-          - name: Android-profiled
-            os: macos-15
-            exportPath: android
-            buildArgs: "android -DPROFILE_BUILD"
-            cacheLibrariesPath: P-Slice.0.6.3.mobile-cache
-            artifactName: P-Slice.0.6.3.android-audited
-            cachePath: P-Slice.0.6.3.build-android-profile
-            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
+
           - name: iOS
             os: macos-15
             buildArgs: "ios -nosign"
