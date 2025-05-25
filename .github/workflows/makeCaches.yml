@@ -10,8 +10,8 @@ jobs:
       matrix:
         include:
           - name: Windows
-            os: windows-latest
-            setupScript: .\"setup/windows.bat"
+            os: ubuntu-latest
+            setupScript: sh ./setup/linux.sh
             CACHE_NAME: P-Slice.0.6.3.desktop-cache
 
           - name: Mobile
