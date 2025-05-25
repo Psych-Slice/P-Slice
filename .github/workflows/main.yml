@@ -29,6 +29,7 @@ jobs:
             cachePath: P-Slice.0.6.3.build-linux
             cacheLibrariesPath: P-Slice.0.6.3.desktop-cache
             artifactPath: export/PE0.6.3/release/linux/bin/*
+
     uses: ./.github/workflows/build.yml
     with:
       name: ${{ matrix.name }}
