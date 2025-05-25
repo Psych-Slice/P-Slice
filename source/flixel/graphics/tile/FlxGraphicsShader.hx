@@ -102,10 +102,12 @@ class FlxGraphicsShader extends GraphicsShader
 
 		if(glslVersion == null) {
 			var version_str = gl.getParameter(gl.SHADING_LANGUAGE_VERSION);
+			Sys.println("Supported Gl version: "+version_str);
 			glslVersion = Std.parseInt(StringTools.replace(version_str.split(" ")[0],".",""));
 		}
 		
 		#if lime_opengles
+			// "OpenGL ES GLSL ES 1.00" When unsupported
 			var prefix = "#version 300 es\n";
 		#else
 		var prefix = "";
