@@ -44,6 +44,7 @@ import mikolka.compatibility.ui.*;
 import mikolka.funkin.utils.*;
 import mikolka.funkin.players.*;
 import mikolka.funkin.custom.*;
+import mikolka.vslice.ui.StoryMenuState;
 import mikolka.compatibility.stages.misc.BaseStage;
 import flxanimate.PsychFlxAnimate as FlxAnimate;
 
@@ -67,6 +68,7 @@ import flixel.system.FlxSound;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
+import flixel.system.FlxAssets.FlxShader;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;

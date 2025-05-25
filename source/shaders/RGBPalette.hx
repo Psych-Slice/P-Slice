@@ -1,6 +1,6 @@
 package shaders;
 
-import shaders.flixel.system.FlxShader;
+
 import Note;
 
 class RGBPalette {

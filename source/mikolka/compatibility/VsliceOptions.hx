@@ -33,6 +33,10 @@ class VsliceOptions {
     public static var LEGACY_BAR(get,never):Bool;    
     public static function get_LEGACY_BAR():Bool {
         return ClientPrefs.vsliceLegacyBar;
+    }    
+    public static var NAUGHTYNESS(get,never):Bool;    
+    public static function get_NAUGHTYNESS():Bool {
+        return ClientPrefs.vsliceLegacyBar;
     }
     public static var LOGGING(get,never):String;    
     public static function get_LOGGING():String {

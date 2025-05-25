@@ -85,7 +85,7 @@ class ClientPrefs {
 	public static var lastFreeplayMod:String = "||bf";
 	public static var psliceLogging:String = "None";
 	public static var vsliceSpecialCards:Bool = true;
-
+	public static var vsliceNaughtyness:Bool = #if mobile false #else true #end;
 	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
 		//Key Bind, Name for ControlsSubState
@@ -181,6 +181,7 @@ class ClientPrefs {
 		FlxG.save.data.vsliceLegacyBar = vsliceLegacyBar;
 		FlxG.save.data.vsliceForceNewTag = vsliceForceNewTag;
 		FlxG.save.data.vsliceSpecialCards = vsliceSpecialCards;
+		FlxG.save.data.vsliceNaughtyness = vsliceNaughtyness;
 		FlxG.save.data.favSongIds = favSongIds;
 		FlxG.save.data.lastFreeplayMod = lastFreeplayMod;
 		FlxG.save.data.psliceLogging = psliceLogging;
@@ -355,6 +356,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.vsliceSpecialCards != null) {
 			vsliceSpecialCards = FlxG.save.data.vsliceSpecialCards;
+		}		
+		if(FlxG.save.data.vsliceNaughtyness != null) {
+			vsliceNaughtyness = FlxG.save.data.vsliceNaughtyness;
 		}
 		if(FlxG.save.data.favSongIds != null) {
 			favSongIds = FlxG.save.data.favSongIds;

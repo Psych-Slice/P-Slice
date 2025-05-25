@@ -1,14 +1,18 @@
 package mikolka.editors.forms;
 
 import mikolka.vslice.components.crash.UserErrorSubstate;
-#if !LEGACY_PSYCH  import states.editors.content.FileDialogHandler; 
+#if !LEGACY_PSYCH  import states.editors.content.FileDialogHandler; #end
+import mikolka.editors.editorProps.CharJson;
+import mikolka.editors.substates.ResultsScreenEdit;
+import mikolka.editors.substates.FreeplayEditSubstate;
+
+#if !LEGACY_PSYCH  
+import states.editors.content.FileDialogHandler; 
 #else
 import openfl.net.FileReference;
 import openfl.events.IOErrorEvent;
 #end
-import mikolka.editors.editorProps.CharJson;
-import mikolka.editors.substates.ResultsScreenEdit;
-import mikolka.editors.substates.FreeplayEditSubstate;
+
 using mikolka.editors.PsychUIUtills;
 
 class CharSelectDialogBox extends PsychUIBox

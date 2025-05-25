@@ -1,0 +1,127 @@
+on:
+  workflow_call:
+    inputs:
+      name:
+        required: true
+        type: string
+      os:
+        required: true
+        type: string
+      buildArgs:
+        required: true
+        type: string
+      artifactName:
+        required: true
+        type: string
+      artifactPath:
+        required: true
+        type: string
+      cachePath:
+        required: true
+        type: string
+      cacheLibrariesPath:
+        required: true
+        type: string
+      exportPath:
+        required: true
+        type: string
+
+env:
+  HAXE_VERSION: 4.3.6
+  PROJECT_NAME: PSliceEngine
+
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ inputs.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: ${{ env.HAXE_VERSION }}
+        
+      - name: Restore Libraries for compilation
+        id: load-lib-cache
+        uses: actions/cache@v3
+        with:
+          # not caching the bin folder to prevent asset duplication and stuff like that
+          key: ${{ inputs.cacheLibrariesPath }}
+          fail-on-cache-miss: true
+          enableCrossOsArchive: true
+          path: |
+            .haxelib/
+          restore-keys: |
+            ${{ inputs.cacheLibrariesPath }}
+      - name: Restore existing build cache for faster compilation
+        id: load-cache
+        uses: actions/cache@v3
+        with:
+          # not caching the bin folder to prevent asset duplication and stuff like that
+          key: ${{ inputs.cachePath }}
+          path: |
+            export/release/${{ inputs.exportPath }}/haxe/
+            export/release/${{ inputs.exportPath }}/obj/
+          restore-keys: |
+            cache-build-${{ inputs.exportPath }}
+            
+
+      - name: Install libVLC
+        if: inputs.exportPath == 'linux'
+        run: sudo apt install libvlc-dev libvlccore-dev
+
+      - name: Configure Android
+        if: inputs.exportPath == 'android'
+        run: |
+          haxelib run lime config ANDROID_SDK $ANDROID_HOME
+          haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_LATEST_HOME
+          haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
+          haxelib run lime config ANDROID_SETUP true
+
+      - name: Compile
+        run: haxelib run lime build ${{ inputs.buildArgs }}
+
+      - name: Make IPA
+        if: inputs.name == 'iOS'
+        run: |
+          cd export/release/ios/build/Release-iphoneos
+          mkdir Payload
+          mv *.app Payload
+          zip -r ${{ env.PROJECT_NAME }}.ipa Payload
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{ inputs.artifactName }}
+          path: ${{ inputs.artifactPath }}
+          if-no-files-found: error      
+      - name: Clearing already existing cache
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const caches = await github.rest.actions.getActionsCacheList({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            for (const cache of caches.data.actions_caches) {
+              if (cache.key == "${{ inputs.cachePath }}") {
+                console.log('Clearing ' + cache.key + '...')
+                await github.rest.actions.deleteActionsCacheById({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  cache_id: cache.id,
+                })
+                console.log("Cache cleared.")
+              }
+            }
+      - name: Uploading new cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ inputs.cachePath }}
+          path: |
+            export/release/${{ inputs.exportPath }}/haxe/
+            export/release/${{ inputs.exportPath }}/obj/
+          restore-keys: |
+            ${{ inputs.cachePath }}

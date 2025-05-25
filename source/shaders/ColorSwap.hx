@@ -1,6 +1,6 @@
 package shaders;
 
-import shaders.flixel.system.FlxShader;
+
 
 class ColorSwap {
 	public var shader(default, null):ColorSwapShader = new ColorSwapShader();

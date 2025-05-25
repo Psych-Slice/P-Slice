@@ -36,7 +36,7 @@ class ResultsPropsGrp extends FlxTypedSpriteGroup<FlxSprite> {
         if(sprite != null){
             prop_data.sprite.zIndex = data.zIndex;
             add(prop_data.sprite);
-            prop_data.prop.resetAnimation();
+            prop_data.prop.resetAnimation("");
             return true;
         }
         return false;
@@ -72,10 +72,10 @@ class ResultsPropsGrp extends FlxTypedSpriteGroup<FlxSprite> {
             else data.zIndex = sprites[index-1].zIndex+1;
         }
     }
-    public function playAll() for (prop in sprites) prop.prop?.startAnimation();
+    public function playAll(activeFilter:String) for (prop in sprites) prop.prop?.startAnimation(activeFilter);
     public function pauseAll() for (prop in sprites) prop.prop?.pauseAnimation();
     public function resumeAll() for (prop in sprites) prop.prop?.resumeAnimation();
-    public function resetAll() for (prop in sprites) prop.prop?.resetAnimation();
+    public function resetAll(activeFilter:String) for (prop in sprites) prop.prop?.resetAnimation(activeFilter);
     
     /**
         Internally removed props for the selected result 

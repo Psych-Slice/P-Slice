@@ -1,6 +1,6 @@
 package mikolka.stages.erect;
 
-import mikolka.stages.objects.PicoCapableStage;
+import mikolka.stages.scripts.PicoCapableStage;
 import mikolka.vslice.StickerSubState;
 import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.funkin.FunkinControls;

@@ -1,6 +1,6 @@
 package shaders;
 
-import shaders.flixel.system.FlxShader;
+
 import flixel.util.FlxColor;
 
 class PureColor extends FlxShader

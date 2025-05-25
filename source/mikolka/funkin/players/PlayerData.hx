@@ -301,6 +301,11 @@ typedef PlayerResultsAnimationData =
 
 	var assetPath:String;
 
+	var filter:String;
+
+	// We can now play sounds apparently
+	var sound:String;
+
 	@:default([0, 0])
 	var offsets:Array<Float>;
 

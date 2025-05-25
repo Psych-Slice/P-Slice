@@ -1,4 +1,4 @@
-package mikolka.stages.objects;
+package mikolka.stages.scripts;
 
 import flixel.util.FlxSignal;
 import flixel.graphics.tile.FlxGraphicsShader;
@@ -295,7 +295,7 @@ class PicoCapableStage extends BaseStage
 		}
 	}
 
-	public static function playPicoDeath(state:GameOverSubstate)
+	override function gameOverStart(state:GameOverSubstate)
 	{
 		if (['pico-dead', 'pico-christmas-dead'].contains(GameOverSubstate.characterName))
 		{

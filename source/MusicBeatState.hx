@@ -272,7 +272,7 @@ class MusicBeatState extends FlxUIState
 		return val == null ? 4 : val;
 	}
 	public var stages:Array<BaseStage> = [];
-	function stagesFunc(func:BaseStage->Void)
+	public function stagesFunc(func:BaseStage->Void)
 		{
 			for (stage in stages)
 				if(stage != null && stage.exists && stage.active)

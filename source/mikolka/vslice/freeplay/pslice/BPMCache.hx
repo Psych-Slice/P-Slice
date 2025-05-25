@@ -2,10 +2,34 @@ package mikolka.vslice.freeplay.pslice;
 
 //? no psych. uses sys
 class BPMCache {
-    private var bpmMap:Map<String,Int> = [];
+    private static final DEFAULT_BPM_MAP:Map<String,Int> = [
+        "tutorial" => 100,
+        "bopeebo" => 100,
+        "fresh" => 120,
+        "dad-battle" => 180,
+        "spookeez" => 150,
+        "south" => 165,
+        "monster" => 95,
+        "pico" => 150,
+        "philly-nice" => 175,
+        "blammed" => 165,
+        "satin-panties" => 110,
+        "high" => 125,
+        "milf" => 180,
+        "cocoa" => 100,
+        "eggnog" => 150,
+        "winter-horrorland" => 159,
+        "senpai" => 144,
+        "roses" => 120,
+        "thorns" => 190,
+        "ugh" => 160,
+        "guns" => 125,
+        "stress" => 178,
+    ];
+    private var bpmMap:Map<String,Int> ;
     public static var instance = new BPMCache();
     public function new() {
-        
+        bpmMap = DEFAULT_BPM_MAP.copy();
     }
 
     public function getBPM(sngDataPath:String, fileSngName:String):Int {
@@ -41,6 +65,6 @@ class BPMCache {
         return bpmMap[sngDataPath];
     }
     public function clearCache() {
-        bpmMap.clear();
+        bpmMap = DEFAULT_BPM_MAP.copy();
     }
 }

@@ -7,19 +7,18 @@ import mikolka.compatibility.funkin.FunkinPath;
 class ResultsAtlasSprite extends FlxAtlasSprite implements IResultsSprite
 {
 	var data:PlayerResultsAnimationData;
-	var timer:FlxTimer;
+	var timer:Null<FlxTimer>;
+	var sound:FlxSound = new FlxSound();
 
 	public function new(animData:PlayerResultsAnimationData)
 	{
 		data = animData;
 		var offsets = animData.offsets ?? [0, 0];
-		// ? Scaling offsets because Pico decided to be annoying
-		var xDiff = offsets[0] - (offsets[0] * (animData.scale ?? 1.0));
-		var yDiff = offsets[1] - (offsets[1] * (animData.scale ?? 1.0));
-		offsets[0] -= xDiff * 1.8;
-		offsets[1] -= yDiff * 1.8;
+		var l_scale = animData.scale ?? 1.0;
+		var xDiff = -(offsets[0] - (offsets[0] * l_scale)) * 1.8;
+		var yDiff = -(offsets[1] - (offsets[1] * l_scale)) * 1.8;
 
-		super(offsets[0], offsets[1], FunkinPath.animateAtlas(FunkinPath.stripLibrary(animData.assetPath)));
+		super(offsets[0]+xDiff, offsets[1]+yDiff, FunkinPath.animateAtlas(FunkinPath.stripLibrary(animData.assetPath)));
 		zIndex = animData.zIndex ?? 500;
 		scale.set(animData.scale ?? 1.0, animData.scale ?? 1.0);
 
@@ -53,41 +52,54 @@ class ResultsAtlasSprite extends FlxAtlasSprite implements IResultsSprite
 	}
 
 	override function pauseAnimation() {
+		sound?.pause();
 		super.pauseAnimation();
-		timer.active = false;
+		if (timer != null) timer.active = false;
 	}
 	override function resumeAnimation() {
 		super.resumeAnimation();
-		timer.active = true;
+		sound?.resume();
+		if (timer != null) timer.active = true;
 	}
-	public function startAnimation()
+	public function startAnimation(activeFilter:String)
 	{
+		var canShow = data.filter == null || data.filter == "" || data.filter == "both";
+		if(data.filter == activeFilter) canShow = true;
 		timer?.cancel();
 		visible = false;
+
+		if(!canShow) return;
 		timer = FlxTimer.wait(data.delay,() ->{
-			playAnimation(''); 
+			playAnimation(data.startFrameLabel ?? ''); 
+			sound?.play();
 			visible = true;
 		});
 	}
 
-	public function resetAnimation()
+	public function resetAnimation(activeFilter:String)
 	{
-		visible = true;
+		if(data.sound != "" && data.sound != null) sound.loadEmbedded(Paths.sound(FunkinPath.stripLibrary(data.sound)));
 		timer?.cancel();
+		timer = null;
 		//animation.curAnim = animation.getByName("");
-		if (data.loopFrame != null && data.looped)
-			anim.curFrame = data.loopFrame;
-		else
-			anim.curFrame = anim.curSymbol.length-1;//animation.curAnim.numFrames - 1;
+		var canShow = data.filter == null || data.filter == "" || data.filter == "both";
+		if(data.filter == activeFilter) canShow = true;
+		if(canShow){
+
+			visible = true;
+			if (data.loopFrame != null && data.looped)
+				anim.curFrame = data.loopFrame;
+			else
+				anim.curFrame = anim.curSymbol.length-1;//animation.curAnim.numFrames - 1;
+		} else visible = false;
 	}
 
 	public function set_offset(x:Float,y:Float) {
 		var offsets = [x,y];
 		// ? Scaling offsets because Pico decided to be annoying
-		var xDiff = offsets[0] - (offsets[0] * (data.scale ?? 1.0));
-		var yDiff = offsets[1] - (offsets[1] * (data.scale ?? 1.0));
-		offsets[0] -= xDiff * 1.8;
-		offsets[1] -= yDiff * 1.8;
-		setPosition(offsets[0],offsets[1]);
+		var l_scale = data.scale ?? 1.0;
+		var xDiff = -(offsets[0] - (offsets[0] * l_scale)) * 1.8;
+		var yDiff = -(offsets[1] - (offsets[1] * l_scale)) * 1.8;
+		setPosition(offsets[0]+xDiff,offsets[1]+yDiff);
 	}
 }
