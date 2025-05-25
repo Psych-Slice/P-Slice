@@ -1,4 +1,4 @@
-name: Build the game (0.6.3)
+name: Build the game
 
 on:
   push:
