@@ -1,9 +1,9 @@
 name: Build deps
-
 on:
   workflow_dispatch:
+
 jobs:
-  BuildDesktop:
+  BuildCaches:
     name: ${{ matrix.name }}
     permissions: write-all
     strategy:
