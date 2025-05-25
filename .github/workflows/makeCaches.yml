@@ -11,7 +11,7 @@ jobs:
         include:
           - name: Windows
             os: ubuntu-latest
-            setupScript: sh ./setup/linux.sh
+            setupScript: sh ./setup/unix.sh
             CACHE_NAME: P-Slice.0.6.3.desktop-cache
 
           - name: Mobile
