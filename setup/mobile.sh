@@ -1,6 +1,5 @@
 #!/bin/bash
 echo Making the haxelib and setuping folder in same time...
-haxelib newrepo
 echo Installing dependencies...
 echo This might take a few moments depending on your internet speed.
 haxelib install hscript 2.5.0 --quiet
