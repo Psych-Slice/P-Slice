@@ -46,7 +46,7 @@ jobs:
             cacheLibrariesPath: P-Slice.1.0.mobile-cache
             artifactName: P-Slice.1.0.macosarm64
             artifactPath: export/release/macos/bin/*
-    uses: ./.github/workflows/matrix/build.yml
+    uses: ./.github/workflows/build.yml
     with:
       name: ${{ matrix.name }}
       os: ${{ matrix.os }}
@@ -86,7 +86,7 @@ jobs:
             artifactName: P-Slice.1.0.ios
             artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
             cachePath: P-Slice.1.0.build-ios
-    uses: ./.github/workflows/matrix/build.yml
+    uses: ./.github/workflows/build.yml
     with:
       name: ${{ matrix.name }}
       os: ${{ matrix.os }}
