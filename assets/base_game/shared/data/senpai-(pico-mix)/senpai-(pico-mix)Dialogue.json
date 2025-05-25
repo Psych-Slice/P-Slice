@@ -126,7 +126,7 @@
 			"speed": 0.07,
 			"portrait": "nene-pixel",
 			"boxState": "peeved",
-			"expression": "idle",
+			"expression": "peeved",
 			"text": "..."
 		},
 						{
@@ -134,7 +134,7 @@
 			"speed": 0.07,
 			"portrait": "pico-pixel",
 			"boxState": "peeved",
-			"expression": "idle",
+			"expression": "peeved",
 			"text": "..."
 		}
 	]
