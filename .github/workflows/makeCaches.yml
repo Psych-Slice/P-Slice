@@ -1,0 +1,25 @@
+name: Build deps
+on:
+  workflow_dispatch:
+
+jobs:
+  BuildCaches:
+    name: ${{ matrix.name }}
+    permissions: write-all
+    strategy:
+      matrix:
+        include:
+          - name: Linux
+            os: ubuntu-latest
+            setupScript: sh ./setup/unix.sh
+            CACHE_NAME: P-Slice.1.0.desktop-cache
+
+          - name: Mobile
+            os: macos-latest
+            setupScript: sh ./setup/mobile.sh
+            CACHE_NAME: P-Slice.1.0.mobile-cache
+    uses: ./.github/workflows/dependencies.yml
+    with:
+      os: ${{ matrix.os }}
+      CACHE_NAME: ${{ matrix.CACHE_NAME }}
+      setupScript: ${{ matrix.setupScript }}
