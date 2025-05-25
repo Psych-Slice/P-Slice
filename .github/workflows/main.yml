@@ -1,10 +1,10 @@
-name: Main
+name: Build the game (0.6.3)
 
 on:
   push:
-    branches: [pe-0.6.3-dev]
+    branches: [master-dev]
   pull_request:
-    branches: [pe-0.6.3-dev]
+    branches: [master-dev]
   workflow_dispatch:
 jobs:
   BuildDesktop:
@@ -18,39 +18,40 @@ jobs:
             buildArgs: windows
             exportPath: windows
             artifactName: P-Slice.0.6.3.windows
-            setupScript: .\"setup/windows.bat"
-            cachePath: cache-build-windows-legacy
-            artifactPath: export\PE0.6.3\release\windows\bin\*
+            cacheLibrariesPath: P-Slice.0.6.3.desktop-cache
+            cachePath: P-Slice.0.6.3.build-windows
+            artifactPath: export\release\windows\bin\*
           - name: Linux
             os: ubuntu-22.04
             buildArgs: linux
             exportPath: linux
-            setupScript: sh ./setup/unix.sh
             artifactName: P-Slice.0.6.3.linux
-            cachePath: cache-build-linux-legacy
-            artifactPath: export/PE0.6.3/release/linux/bin/*
+            cachePath: P-Slice.0.6.3.build-linux
+            cacheLibrariesPath: P-Slice.0.6.3.desktop-cache
+            artifactPath: export/release/linux/bin/*
           - name: macOS x86_64
             os: macos-14
             buildArgs: "mac -64 -D HXCPP_M64"
-            cachePath: cache-build-macos_m64-legacy
+            cachePath: P-Slice.0.6.3.build-macos_m64
             exportPath: macos
-            setupScript: sh ./setup/mobile.sh
+            cacheLibrariesPath: P-Slice.0.6.3.mobile-cache
             artifactName: P-Slice.0.6.3.macosx64
-            artifactPath: export/PE0.6.3/release/macos/bin/*
+            artifactPath: export/release/macos/bin/*
+            
           - name: macOS AArch64
             os: macos-15
             buildArgs: mac
             exportPath: macos
-            cachePath: cache-build-macos-legacy
-            setupScript: sh ./setup/mobile.sh
+            cachePath: P-Slice.0.6.3.build-macos
+            cacheLibrariesPath: P-Slice.0.6.3.mobile-cache
             artifactName: P-Slice.0.6.3.macosarm64
-            artifactPath: export/PE0.6.3/release/macos/bin/*
+            artifactPath: export/release/macos/bin/*
     uses: ./.github/workflows/build.yml
     with:
       name: ${{ matrix.name }}
       os: ${{ matrix.os }}
       buildArgs: ${{ matrix.buildArgs }}
-      setupScript: ${{ matrix.setupScript }}
+      cacheLibrariesPath: ${{ matrix.cacheLibrariesPath }}
       exportPath: ${{ matrix.exportPath }}
       artifactName: ${{ matrix.artifactName }}
       artifactPath: ${{ matrix.artifactPath }}
@@ -65,25 +66,33 @@ jobs:
             os: macos-15
             exportPath: android
             buildArgs: "android"
-            setupScript: sh ./setup/mobile.sh
+            cacheLibrariesPath: P-Slice.0.6.3.mobile-cache
             artifactName: P-Slice.0.6.3.android
-            cachePath: cache-build-android-legacy
-            artifactPath: "export/PE0.6.3/release/android/bin/app/build/outputs/apk/release/*.apk"
+            cachePath: P-Slice.0.6.3.build-android
+            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
+          - name: Android-profiled
+            os: macos-15
+            exportPath: android
+            buildArgs: "android -DPROFILE_BUILD"
+            cacheLibrariesPath: P-Slice.0.6.3.mobile-cache
+            artifactName: P-Slice.0.6.3.android-audited
+            cachePath: P-Slice.0.6.3.build-android-profile
+            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
           - name: iOS
             os: macos-15
             buildArgs: "ios -nosign"
             exportPath: ios
-            setupScript: sh ./setup/mobile.sh
+            cacheLibrariesPath: P-Slice.0.6.3.mobile-cache
             artifactName: P-Slice.0.6.3.ios
-            artifactPath: "export/PE0.6.3/release/ios/build/Release-iphoneos/*.ipa"
-            cachePath: cache-build-ios
+            artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
+            cachePath: P-Slice.0.6.3.build-ios
     uses: ./.github/workflows/build.yml
     with:
       name: ${{ matrix.name }}
       os: ${{ matrix.os }}
       buildArgs: ${{ matrix.buildArgs }}
-      setupScript: ${{ matrix.setupScript }}
       exportPath: ${{ matrix.exportPath }}
       artifactName: ${{ matrix.artifactName }}
+      cacheLibrariesPath: ${{ matrix.cacheLibrariesPath }}
       artifactPath: ${{ matrix.artifactPath }}
       cachePath: ${{matrix.cachePath}}

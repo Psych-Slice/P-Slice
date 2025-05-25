@@ -1,0 +1,68 @@
+on:
+  workflow_call:
+    inputs:
+      CACHE_NAME:
+        required: true
+        type: string
+      os:
+        required: true
+        type: string
+      setupScript:
+        required: true
+        type: string
+# PE10-Desktop_Cache
+env:
+  HAXE_VERSION: 4.3.6
+  PROJECT_NAME: PSliceEngine
+
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ inputs.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: ${{ env.HAXE_VERSION }}
+
+      - name: Setup haxelib
+        run: haxelib newrepo    
+
+      - name: Install Libraries
+        run: ${{ inputs.setupScript }}
+
+      - name: Install hxvlc for windows
+        run: haxelib install hxvlc 1.8.2 --quiet
+        if: inputs.os == 'ubuntu-latest'
+   
+      - name: Clearing already existing cache
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const caches = await github.rest.actions.getActionsCacheList({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            for (const cache of caches.data.actions_caches) {
+              if (cache.key == "${{ inputs.CACHE_NAME }}") {
+                console.log('Clearing ' + cache.key + '...')
+                await github.rest.actions.deleteActionsCacheById({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  cache_id: cache.id,
+                })
+                console.log("Cache cleared.")
+              }
+            }
+      - name: Uploading new cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ inputs.CACHE_NAME }}
+          enableCrossOsArchive: true
+          path: |
+            .haxelib/
+          restore-keys: |
+            ${{ inputs.CACHE_NAME }}
