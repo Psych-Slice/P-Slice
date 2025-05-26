@@ -353,12 +353,12 @@ class Character extends FlxSprite
 		specialAnim = false;
 		if(!isAnimateAtlas)
 		{
-			animation.play(AnimName, Force, Reversed, Frame);
+			animation?.play(AnimName, Force, Reversed, Frame);
 		}
 		else
 		{
-			atlas.anim.play(AnimName, Force, Reversed, Frame);
-			atlas.update(0);
+			atlas?.anim?.play(AnimName, Force, Reversed, Frame);
+			atlas?.update(0);
 		}
 		_lastPlayedAnimation = AnimName;
 
