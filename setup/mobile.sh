@@ -4,7 +4,7 @@ echo Making the haxelib and setuping folder in same time...
 echo Installing dependencies...
 echo This might take a few moments depending on your internet speed.
 haxelib git hxcpp https://github.com/Psych-Slice/hxcpp-mobile.git  --quiet
-haxelib git lime https://github.com/Psych-Slice/lime-mobile.git --quiet 608f3f7196b2b58df19afff4aedec5bdda107301
+haxelib git lime https://github.com/Psych-Slice/lime-mobile.git --quiet 
 haxelib install flixel 6.0.0 --quiet --skip-dependencies
 haxelib install openfl  9.4.1 --quiet --skip-dependencies
 haxelib install flixel-addons 3.3.2 --quiet --skip-dependencies
