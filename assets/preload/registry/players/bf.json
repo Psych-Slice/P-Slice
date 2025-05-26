@@ -47,7 +47,7 @@
       {
         "name": "idleEasterEgg",
         "prefix": "bf dj afk",
-        "offsets": [1274,418]
+        "offsets": [1274.5, 418.5]
       },
       {
         "name": "confirm",
@@ -101,10 +101,10 @@
     "perfectGold": [
       {
         "renderType": "animateatlas",
-        "assetPath": "shared:resultScreen/results-bf/resultsPERFECT",
+        "assetPath": "shared:resultScreen/results-bf/resultsPERFECT/bed",
         "zIndex": 500,
         "offsets": [1342, 370],
-        "loopFrame": 137
+        "loopFrameLabel": "LOOP START"
       },
       {
         "renderType": "animateatlas",
@@ -113,23 +113,66 @@
         "delay": 4.41,
         "offsets": [1342, 370],
         "loopFrame": 43
+      },
+      {
+        "renderType": "animateatlas",
+        "assetPath": "shared:resultScreen/results-bf/resultsPERFECT/bed",
+        "startFrameLabel": "INTRO 2",
+        "filter": "safe",
+        "zIndex": 500,
+        "offsets": [1342, 370],
+        "loopFrameLabel": "LOOP 2"
+      },
+      {
+        "renderType": "animateatlas",
+        "assetPath": "shared:resultScreen/results-bf/resultsPERFECT/tickleFight",
+        "filter": "safe",
+        "zIndex": 501,
+        "delay": 4.41,
+        "offsets": [2387,1146],
+        "scale": 0.6,
+        "sound": "shared:tickleFight",
+        "loopFrameLabel": "LOOP"
       }
     ],
     "perfect": [
       {
         "renderType": "animateatlas",
-        "assetPath": "shared:resultScreen/results-bf/resultsPERFECT",
+        "assetPath": "shared:resultScreen/results-bf/resultsPERFECT/bed",
+        "startFrameLabel": "INTRO",
+        "filter": "naughty",
         "zIndex": 500,
         "offsets": [1342, 370],
-        "loopFrame": 137
+        "loopFrameLabel": "LOOP START"
       },
       {
         "renderType": "animateatlas",
         "assetPath": "shared:resultScreen/results-bf/resultsPERFECT/hearts",
+        "filter": "naughty",
         "zIndex": 501,
         "delay": 4.41,
         "offsets": [1342, 370],
         "loopFrame": 43
+      },
+      {
+        "renderType": "animateatlas",
+        "assetPath": "shared:resultScreen/results-bf/resultsPERFECT/bed",
+        "startFrameLabel": "INTRO 2",
+        "filter": "safe",
+        "zIndex": 500,
+        "offsets": [1342, 370],
+        "loopFrameLabel": "LOOP 2"
+      },
+      {
+        "renderType": "animateatlas",
+        "assetPath": "shared:resultScreen/results-bf/resultsPERFECT/tickleFight",
+        "filter": "safe",
+        "zIndex": 501,
+        "delay": 4.41,
+        "offsets": [2387,1146],
+        "scale": 0.6,
+        "sound": "shared:tickleFight",
+        "loopFrameLabel": "LOOP"
       }
     ],
     "excellent": [

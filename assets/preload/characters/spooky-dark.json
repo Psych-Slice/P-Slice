@@ -17,9 +17,9 @@
 				0,
 				0
 			],
-			"anim": "cheer",
+			"anim": "hey",
 			"fps": 24,
-			"name": "Cheer",
+			"name": "cheer",
 			"indices": []
 		},
 		{

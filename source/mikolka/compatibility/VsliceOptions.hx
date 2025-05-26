@@ -36,7 +36,7 @@ class VsliceOptions {
     }    
     public static var NAUGHTYNESS(get,never):Bool;    
     public static function get_NAUGHTYNESS():Bool {
-        return ClientPrefs.vsliceLegacyBar;
+        return ClientPrefs.vsliceNaughtyness;
     }
     public static var LOGGING(get,never):String;    
     public static function get_LOGGING():String {

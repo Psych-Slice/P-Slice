@@ -73,6 +73,54 @@
 			"indices": []
 		},
 		{
+			"offsets": [256, 232],
+			"indices": [],
+			"fps": 24,
+			"anim": "shoot",
+			"loop": false,
+			"name": "Pico Shoot Hip Full0"
+		},
+		{
+			"offsets": [0, 0],
+			"indices": [],
+			"fps": 24,
+			"anim": "shootMISS",
+			"loop": false,
+			"name": "Pico Hit Can0"
+		},
+		{
+			"offsets": [0, 0],
+			"indices": [],
+			"fps": 24,
+			"anim": "cock",
+			"loop": false,
+			"name": "Pico Reload0"
+		},
+		{
+			"offsets": [60, 0],
+			"indices": [],
+			"fps": 24,
+			"anim": "intro1",
+			"loop": false,
+			"name": "Pico Gets Pissed0"
+		},
+		{
+			"offsets": [0, 0],
+			"indices": [],
+			"fps": 24,
+			"anim": "cockCutscene",
+			"loop": false,
+			"name": "cutscene cock0"
+		},
+		{
+			"offsets": [255, 231],
+			"indices": [],
+			"fps": 24,
+			"anim": "intro2",
+			"loop": false,
+			"name": "shoot and return0"
+		},
+		{
 		"anim": "burpSmile",
 		"loop": false,
 		"indices": [],
@@ -89,54 +137,55 @@
 		"offsets": [0, -3]
 		},
 		{
-			"anim": "singRIGHT-alt",
-			"loop": false,
-			  "indices": [],
-			  "fps": 24,
-			"name": "pico swear right",
-			"offsets": [-50, 1]
-		  },
-		  {
-			"anim": "singDOWN-alt",
-			"loop": false,
-			  "indices": [],
-			  "fps": 24,
-			"name": "pico swear down",
-			"offsets": [84, -77]
-		  },
-		  {
-			"anim": "singUP-alt",
-			"loop": false,
-			  "indices": [],
-			  "fps": 24,
-			"name": "pico swear up",
-			"offsets": [21, 28]
-		  },
-		  {
-			"anim": "singLEFT-alt",
-			"loop": false,
-			  "indices": [],
-			  "fps": 24,
-			"name": "pico swear left",
-			"offsets": [84, -11]
-		  },    {
-			"anim": "hey",
-			"loop": false,
-			"fps": 24,
-			"name": "Pico HEY!!0",
-			"offsets": [0, 0]
-		  },
-		  {
-			"anim": "cheer",
-			"loop": false,
-			"fps": 24,
-			"name": "Pico YEAH cheer0",
-			"offsets": [0, 0]
-		  }
+      "anim": "singRIGHT-alt",
+      "loop": false,
+		"indices": [],
+		"fps": 24,
+      "name": "pico swear right",
+      "offsets": [-50, 1]
+    },
+    {
+      "anim": "singDOWN-alt",
+      "loop": false,
+		"indices": [],
+		"fps": 24,
+      "name": "pico swear down",
+      "offsets": [84, -77]
+    },
+    {
+      "anim": "singUP-alt",
+      "loop": false,
+		"indices": [],
+		"fps": 24,
+      "name": "pico swear up",
+      "offsets": [21, 28]
+    },
+    {
+      "anim": "singLEFT-alt",
+      "loop": false,
+		"indices": [],
+		"fps": 24,
+      "name": "pico swear left",
+      "offsets": [84, -11]
+    },
+    {
+      "anim": "hey",
+      "loop": false,
+	  "fps": 24,
+      "name": "Pico HEY!!0",
+      "offsets": [38, 2]
+    },
+    {
+      "anim": "cheer",
+      "loop": false,
+	  "fps": 24,
+      "name": "Pico YEAH cheer0",
+      "offsets": [0, 0]
+    }
 	],
 	"vocals_file": "",
 	"no_antialiasing": false,
-	"image": "characters/pico-erect",
+	"image": "characters/pico-erect, characters/picoAnims/Pico_Intro, characters/picoAnims/Pico_Shooting",
 	"position": [0, 300],
 	"healthicon": "pico",
 	"flip_x": true,
