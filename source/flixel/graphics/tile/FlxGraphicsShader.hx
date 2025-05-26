@@ -59,7 +59,11 @@ class FlxGraphicsShader extends GraphicsShader
 	", true)
     public var custom:Bool = false;
 	public var save:Bool = true;
-	private static var glslVersion:Null<Int> = null;
+	/**
+	 * Hold the result of checking if the current device supports
+	 * latest OpenGL (OpenGL 3.3/OPenGL ES 3.00)
+	 */
+	private static var useNewerRendering:Null<Bool> = null;
 
 	public override function new(?save:Bool)
 	{
@@ -100,23 +104,39 @@ class FlxGraphicsShader extends GraphicsShader
 		@:privateAccess
 		var gl = __context.gl;
 
-		if(glslVersion == null) {
+		if(useNewerRendering == null) {
 			var version_str = gl.getParameter(gl.SHADING_LANGUAGE_VERSION);
 			Sys.println("Supported Gl version: "+version_str);
-			glslVersion = Std.parseInt(StringTools.replace(version_str.split(" ")[0],".",""));
+			trace("Supported Gl version: "+version_str);
+			useNewerRendering = false;
+			#if lime_opengles
+				var version_part = StringTools.replace(version_str,"OpenGL ES GLSL ES ","");
+				var glslVersion = Std.parseInt(StringTools.replace(version_part,".",""));
+				useNewerRendering = glslVersion >= 300;
+			#else
+				var glslVersion = Std.parseInt(StringTools.replace(version_str.split(" ")[0],".",""));
+				useNewerRendering = glslVersion >= 330;
+			#end
+			if(useNewerRendering){
+				Sys.println("Using newer rendering for OpenGL 3");
+				trace("Using newer rendering for OpenGL 3");
+			}
+			else{
+				Sys.println("Using legacy rendering. Some shaders may not work on your device!");
+				trace("Using legacy rendering. Some shaders may not work on your device!");
+			}
 		}
-		
-		#if lime_opengles
-			// "OpenGL ES GLSL ES 1.00" When unsupported
-			var prefix = "#version 300 es\n";
-		#else
+
 		var prefix = "";
-		if(glslVersion>=330) prefix = '#version 330\n';
-		else prefix = '#version 130\n';
-		#end
-		#if ((js && html5) || macos)
-			prefix = "";
-		#end
+		if(useNewerRendering){
+			#if lime_opengles
+			// "OpenGL ES GLSL ES 1.00" When unsupported
+			// OpenGL ES GLSL ES 3.20 on supported
+			prefix = "#version 300 es\n";
+			#else
+			prefix = '#version 330\n';
+			#end
+		}
 
 		#if (js && html5)
 		prefix += (precisionHint == FULL ? "precision mediump float;\n" : "precision lowp float;\n");
@@ -130,17 +150,35 @@ class FlxGraphicsShader extends GraphicsShader
 			+ "#endif\n\n";
 		#end
 
+		var vertex = prefix + glVertexSource;
+		var fragment = prefix + glFragmentSource;
+
 		#if lime_opengles
-		prefix += 'out vec4 output_FragColor;\n';
-		var vertex = prefix
-			+ glVertexSource.replace("attribute", "in")
+		if(useNewerRendering){
+			prefix += 'out vec4 output_FragColor;\n';
+			var vertex = vertex
+				.replace("attribute", "in")
 				.replace("varying", "out")
 				.replace("texture2D", "texture")
 				.replace("gl_FragColor", "output_FragColor");
-		var fragment = prefix + glFragmentSource.replace("varying", "in").replace("texture2D", "texture").replace("gl_FragColor", "output_FragColor");
-		#else
-		var vertex = prefix + glVertexSource;
-		var fragment = prefix + glFragmentSource;
+			var fragment = fragment
+				.replace("varying", "in")
+				.replace("texture2D", "texture")
+				.replace("gl_FragColor", "output_FragColor");
+		}
+		else{
+			prefix += 'out vec4 output_FragColor;\n';
+			var vertex = vertex
+				.replace("out", "varying")
+				.replace("in", "attribute")
+				.replace("texture", "texture2D")
+				.replace("output_FragColor", "gl_FragColor");
+			var fragment = fragment
+				.replace("in", "attribute")
+				.replace("texture", "texture2D")
+				.replace("output_FragColor", "gl_FragColor");
+		}
+
 		#end
 
 		var id = vertex + fragment;
