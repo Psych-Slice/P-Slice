@@ -20,7 +20,7 @@ jobs:
             artifactName: P-Slice.0.6.3.windows
             cacheLibrariesPath: P-Slice.0.6.3.desktop-cache
             cachePath: P-Slice.0.6.3.build-windows
-            artifactPath: export\release\windows\bin\*
+            artifactPath: export\PE0.6.3\release\windows\bin\*
           - name: Linux
             os: ubuntu-22.04
             buildArgs: linux
@@ -28,7 +28,7 @@ jobs:
             artifactName: P-Slice.0.6.3.linux
             cachePath: P-Slice.0.6.3.build-linux
             cacheLibrariesPath: P-Slice.0.6.3.desktop-cache
-            artifactPath: export/release/linux/bin/*
+            artifactPath: export/PE0.6.3/release/linux/bin/*
     uses: ./.github/workflows/build.yml
     with:
       name: ${{ matrix.name }}
@@ -52,7 +52,7 @@ jobs:
             cacheLibrariesPath: P-Slice.0.6.3.mobile-cache
             artifactName: P-Slice.0.6.3.android
             cachePath: P-Slice.0.6.3.build-android
-            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
+            artifactPath: "export/PE0.6.3/release/android/bin/app/build/outputs/apk/release/*.apk"
 
           - name: iOS
             os: macos-15
@@ -60,7 +60,7 @@ jobs:
             exportPath: ios
             cacheLibrariesPath: P-Slice.0.6.3.mobile-cache
             artifactName: P-Slice.0.6.3.ios
-            artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
+            artifactPath: "export/PE0.6.3/release/ios/build/Release-iphoneos/*.ipa"
             cachePath: P-Slice.0.6.3.build-ios
     uses: ./.github/workflows/build.yml
     with:
