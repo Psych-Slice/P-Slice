@@ -150,36 +150,49 @@ class FlxGraphicsShader extends GraphicsShader
 			+ "#endif\n\n";
 		#end
 
-		var vertex = prefix + glVertexSource;
-		var fragment = prefix + glFragmentSource;
+		
+		var new_prefix = prefix;
+		var vertex = glVertexSource;
+		var fragment = glFragmentSource;
+		new_prefix += 'varying vec4 output_FragColor;\n';
 
 		#if lime_opengles
 		if(useNewerRendering){
-			prefix += 'out vec4 output_FragColor;\n';
-			var vertex = vertex
+			new_prefix = new_prefix
 				.replace("attribute", "in")
 				.replace("varying", "out")
 				.replace("texture2D", "texture")
 				.replace("gl_FragColor", "output_FragColor");
-			var fragment = fragment
+			vertex = vertex
+				.replace("attribute", "in")
+				.replace("varying", "out")
+				.replace("texture2D", "texture")
+				.replace("gl_FragColor", "output_FragColor");
+			fragment = fragment
 				.replace("varying", "in")
 				.replace("texture2D", "texture")
 				.replace("gl_FragColor", "output_FragColor");
 		}
 		else{
-			prefix += 'out vec4 output_FragColor;\n';
-			var vertex = vertex
+			vertex = vertex
 				.replace("out", "varying")
 				.replace("in", "attribute")
 				.replace("texture", "texture2D")
 				.replace("output_FragColor", "gl_FragColor");
-			var fragment = fragment
+			new_prefix = new_prefix
+				.replace("out", "varying")
+				.replace("in", "attribute")
+				.replace("texture", "texture2D")
+				.replace("output_FragColor", "gl_FragColor");
+			fragment = fragment
 				.replace("in", "attribute")
 				.replace("texture", "texture2D")
 				.replace("output_FragColor", "gl_FragColor");
 		}
-
 		#end
+		
+		vertex = new_prefix+vertex;
+		fragment = new_prefix+fragment;
 
 		var id = vertex + fragment;
 
