@@ -28,6 +28,7 @@ jobs:
             artifactName: P-Slice.0.6.3.linux
             cachePath: P-Slice.0.6.3.build-linux
             artifactPath: export/PE0.6.3/release/linux/bin/*
+            cacheLibrariesPath: P-Slice.0.6.3.desktop-cache
 
     uses: ./.github/workflows/build.yml
     with:
