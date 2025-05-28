@@ -62,8 +62,8 @@ jobs:
           # not caching the bin folder to prevent asset duplication and stuff like that
           key: ${{ inputs.cachePath }}
           path: |
-            export/release/${{ inputs.exportPath }}/haxe/
-            export/release/${{ inputs.exportPath }}/obj/
+            export/PE0.6.3/release/${{ inputs.exportPath }}/haxe/
+            export/PE0.6.3/release/${{ inputs.exportPath }}/obj/
           restore-keys: |
             cache-build-${{ inputs.exportPath }}
             
@@ -86,7 +86,7 @@ jobs:
       - name: Make IPA
         if: inputs.name == 'iOS'
         run: |
-          cd export/release/ios/build/Release-iphoneos
+          cd export/PE0.6.3/release/ios/build/Release-iphoneos
           mkdir Payload
           mv *.app Payload
           zip -r ${{ env.PROJECT_NAME }}.ipa Payload
@@ -121,7 +121,7 @@ jobs:
         with:
           key: ${{ inputs.cachePath }}
           path: |
-            export/release/${{ inputs.exportPath }}/haxe/
-            export/release/${{ inputs.exportPath }}/obj/
+            export/PE0.6.3/release/${{ inputs.exportPath }}/haxe/
+            export/PE0.6.3/release/${{ inputs.exportPath }}/obj/
           restore-keys: |
             ${{ inputs.cachePath }}
