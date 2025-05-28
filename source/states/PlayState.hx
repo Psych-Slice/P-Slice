@@ -57,6 +57,7 @@ import psychlua.LuaUtils;
 #end
 
 #if HSCRIPT_ALLOWED
+import psychlua.HScript;
 import psychlua.HScript.HScriptInfos;
 import crowplexus.iris.Iris;
 import crowplexus.hscript.Expr.Error as IrisError;
