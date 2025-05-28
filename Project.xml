@@ -77,8 +77,6 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 		<haxedef name="HXVLC_VERBOSE" value="2" />
 		<haxedef name="HXVLC_LOGGING" />
 	</section>
-	
-	<define name="PROFILE_BUILD"/>
 
 	 <!-- Flags for the profile builds (used for assessing performance and such)-->
 	<section if="PROFILE_BUILD">
