@@ -295,7 +295,9 @@ class Paths
 		var folderKey:String = Language.getFileTranslation('fonts/$key');
 		#if MODS_ALLOWED
 		var file:String = modFolders(folderKey);
-		if(NativeFileSystem.exists(file)) return file;
+		// THose paths are used directly in flixel components
+		var absolutePath = NativeFileSystem.getPathLike(file);
+		if(absolutePath != null) return absolutePath;
 		#end
 		return 'assets/$folderKey';
 	}
