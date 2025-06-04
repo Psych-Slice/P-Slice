@@ -319,7 +319,7 @@ class Character extends FlxSprite
 			heyTimer -= elapsed * PlayState.instance.playbackRate;
 			if (heyTimer <= 0)
 			{
-				if (specialAnim && animation.curAnim.name == 'hey' || animation.curAnim.name == 'cheer')
+				if (specialAnim && getAnimationName() == 'hey' || getAnimationName() == 'cheer')
 				{
 					specialAnim = false;
 					dance();
@@ -327,7 +327,7 @@ class Character extends FlxSprite
 				heyTimer = 0;
 			}
 		}
-		else if (specialAnim && animation.curAnim.finished)
+		else if (specialAnim && isAnimationFinished())
 		{
 			specialAnim = false;
 			dance();
@@ -335,7 +335,7 @@ class Character extends FlxSprite
 
 		if (!isPlayer)
 		{
-			if (animation.curAnim.name.startsWith('sing'))
+			if (getAnimationName().startsWith('sing'))
 			{
 				holdTimer += elapsed;
 			}
@@ -347,9 +347,9 @@ class Character extends FlxSprite
 			}
 		}
 
-		if (animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
+		if (isAnimationFinished() && hasAnimation(getAnimationName() + '-loop'))
 		{
-			playAnim(animation.curAnim.name + '-loop');
+			playAnim(getAnimationName() + '-loop');
 		}
 
 		super.update(elapsed);
@@ -373,7 +373,7 @@ class Character extends FlxSprite
 				else
 					playAnim('danceLeft' + idleSuffix);
 			}
-			else if (animation.getByName('idle' + idleSuffix) != null)
+			else if (hasAnimation('idle' + idleSuffix))
 			{
 				playAnim('idle' + idleSuffix);
 			}
@@ -392,7 +392,7 @@ class Character extends FlxSprite
 			atlas?.anim?.play(AnimName, Force, Reversed, Frame);
 			atlas?.update(0);
 		}
-
+		_lastPlayedAnimation = AnimName;
 		var daOffset = animOffsets.get(AnimName);
 		if (animOffsets.exists(AnimName))
 		{
@@ -431,7 +431,7 @@ class Character extends FlxSprite
 	public function recalculateDanceIdle()
 	{
 		var lastDanceIdle:Bool = danceIdle;
-		danceIdle = (animation.getByName('danceLeft' + idleSuffix) != null && animation.getByName('danceRight' + idleSuffix) != null);
+		danceIdle = (hasAnimation('danceLeft' + idleSuffix) && hasAnimation('danceRight' + idleSuffix));
 
 		if (settingCharacterUp)
 		{
@@ -460,9 +460,33 @@ class Character extends FlxSprite
 		animation.addByPrefix(name, anim, 24, false);
 	}
 
+	public function hasAnimation(anim:String):Bool
+	{
+		return animOffsets.exists(anim);
+	}
+
+	inline public function isAnimationNull():Bool
+	{
+		return !isAnimateAtlas ? (animation.curAnim == null) : (atlas.anim.curInstance == null || atlas.anim.curSymbol == null);
+	}
+
+	var _lastPlayedAnimation:String;
+
+	inline public function getAnimationName():String
+	{
+		return _lastPlayedAnimation;
+	}
+
+	public function isAnimationFinished():Bool
+	{
+		if (isAnimationNull())
+			return false;
+		return !isAnimateAtlas ? animation.curAnim.finished : atlas.anim.finished;
+	}
+
 	// Atlas support
 	// special thanks ne_eo for the references, you're the goat!!
-	@:allow(states.editors.CharacterEditorState)
+	@:allow(editors.CharacterEditorState)
 	public var isAnimateAtlas(default, null):Bool = false;
 	#if flxanimate
 	public var atlas:FlxAnimate;
@@ -471,11 +495,6 @@ class Character extends FlxSprite
 	{
 		var lastAlpha:Float = alpha;
 		var lastColor:FlxColor = color;
-		if (missingCharacter)
-		{
-			alpha *= 0.6;
-			color = FlxColor.BLACK;
-		}
 
 		if (isAnimateAtlas)
 		{
@@ -485,24 +504,10 @@ class Character extends FlxSprite
 				atlas.draw();
 				alpha = lastAlpha;
 				color = lastColor;
-				if (missingCharacter && visible)
-				{
-					missingText.x = getMidpoint().x - 150;
-					missingText.y = getMidpoint().y - 10;
-					missingText.draw();
-				}
 			}
 			return;
 		}
 		super.draw();
-		if (missingCharacter && visible)
-		{
-			alpha = lastAlpha;
-			color = lastColor;
-			missingText.x = getMidpoint().x - 150;
-			missingText.y = getMidpoint().y - 10;
-			missingText.draw();
-		}
 	}
 
 	public function copyAtlasValues()
