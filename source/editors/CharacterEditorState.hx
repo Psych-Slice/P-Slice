@@ -841,7 +841,7 @@ class CharacterEditorState extends MusicBeatState
 
 	function reloadCharacterImage() {
 		var lastAnim:String = '';
-		character.isAnimateAtlas = false;
+		char.isAnimateAtlas = false;
 		if(char.animation.curAnim != null) {
 			lastAnim = char.animation.curAnim.name;
 		}

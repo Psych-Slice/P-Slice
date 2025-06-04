@@ -329,6 +329,30 @@ class Paths
 		return FlxAtlasFrames.fromSparrow(image(key, library), file('images/$key.xml', library));
 		#end
 	}
+	static public function getMultiAtlas(keys:Array<String>, ?parentFolder:String = null):FlxAtlasFrames
+		{
+			function addAtlas(base:FlxAtlasFrames,collection:FlxAtlasFrames)
+				{
+					for (frame in collection.frames)
+						base.pushFrame(frame);
+					
+					return base;
+				}
+			var parentFrames:FlxAtlasFrames = Paths.getSparrowAtlas(keys[0].trim());
+			if(keys.length > 1)
+			{
+				var original:FlxAtlasFrames = parentFrames;
+				parentFrames = new FlxAtlasFrames(parentFrames.parent);
+				addAtlas(parentFrames,original);
+				for (i in 1...keys.length)
+				{
+					var extraFrames:FlxAtlasFrames = Paths.getSparrowAtlas(keys[i].trim(), parentFolder);
+					if(extraFrames != null)
+						addAtlas(parentFrames,extraFrames);
+				}
+			}
+			return parentFrames;
+		}
 
 	inline static public function getPackerAtlas(key:String, ?library:String)
 	{
