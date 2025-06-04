@@ -675,7 +675,8 @@ class CharacterEditorState extends MusicBeatState
 				if(animationInputText.text == anim.anim) {
 					lastOffsets = anim.offsets;
 					if(char.animation.getByName(animationInputText.text) != null) {
-						char.animation.remove(animationInputText.text);
+						if(!char.isAnimateAtlas) char.animation.remove(animationInputText.text);
+						else @:privateAccess char.atlas.anim.animsMap.remove(animationInputText.text);
 					}
 					char.animationsArray.remove(anim);
 				}
@@ -730,7 +731,8 @@ class CharacterEditorState extends MusicBeatState
 					if(char.animation.curAnim != null && anim.anim == char.animation.curAnim.name) resetAnim = true;
 
 					if(char.animation.getByName(anim.anim) != null) {
-						char.animation.remove(anim.anim);
+						if(!char.isAnimateAtlas) char.animation.remove(anim.anim);
+						else @:privateAccess char.atlas.anim.animsMap.remove(anim.anim);
 					}
 					if(char.animOffsets.exists(anim.anim)) {
 						char.animOffsets.remove(anim.anim);
@@ -839,16 +841,29 @@ class CharacterEditorState extends MusicBeatState
 
 	function reloadCharacterImage() {
 		var lastAnim:String = '';
+		character.isAnimateAtlas = false;
 		if(char.animation.curAnim != null) {
 			lastAnim = char.animation.curAnim.name;
 		}
 		var anims:Array<AnimArray> = char.animationsArray.copy();
-		if(Paths.fileExists('images/' + char.imageFile + '/Animation.json', TEXT)) {
-			char.frames = AtlasFrameMaker.construct(char.imageFile);
-		} else if(Paths.fileExists('images/' + char.imageFile + '.txt', TEXT)) {
+		if(Paths.fileExists('images/' + char.imageFile + '/Animation.json', TEXT))
+			{
+				char.atlas = new FlxAnimate();
+				char.atlas.showPivot = false;
+				try
+				{
+					Paths.loadAnimateAtlas(char.atlas, char.imageFile);
+				}
+				catch(e:Dynamic)
+				{
+					FlxG.log.warn('Could not load atlas ${char.imageFile}: $e');
+				}
+				char.isAnimateAtlas = true;
+			}
+		else if(Paths.fileExists('images/' + char.imageFile + '.txt', TEXT)) {
 			char.frames = Paths.getPackerAtlas(char.imageFile);
 		} else {
-			char.frames = Paths.getSparrowAtlas(char.imageFile);
+			char.frames = Paths.getMultiAtlas(char.imageFile.split(','));
 		}
 
 
