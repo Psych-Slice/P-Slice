@@ -1,6 +1,7 @@
 package states;
 
 
+import backend.PsychCamera;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.stages.EventLoader;
 import mikolka.vslice.StickerSubState;
@@ -322,8 +323,8 @@ class PlayState extends MusicBeatState
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = initPsychCamera();
-		camHUD = new FlxCamera();
-		camOther = new FlxCamera();
+		camHUD = new PsychCamera();
+		camOther = new PsychCamera();
 		luaTpadCam = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
 		camOther.bgColor.alpha = 0;
