@@ -1,5 +1,6 @@
 package mikolka.vslice.results;
 
+import haxe.Exception;
 import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.funkin.FlxAtlasSprite;
@@ -139,10 +140,13 @@ class ResultState extends MusicBeatSubState
     if(sngMeta.freeplayCharacter != '' ){
       playerCharacterId = sngMeta.freeplayCharacter;
     }
-    else{
+    else if (!PlayState.isStoryMode){
       var mod_char = VsliceOptions.LAST_MOD;
       playerCharacterId = mod_char.char_name;
       ModsHelper.loadModDir(mod_char.mod_dir);
+    }
+    else{
+      playerCharacterId = "bf";
     }
     //? moved this line so we can edit it in debug options
   }
@@ -226,6 +230,9 @@ class ResultState extends MusicBeatSubState
         animLibrary = "";
       }
       var offsets = animData.offsets ?? [0, 0];
+      try{
+
+      
       switch (animData.renderType)
       {
         case 'animateatlas':
@@ -309,6 +316,11 @@ class ResultState extends MusicBeatSubState
             });
           // Add to the scene.
           add(animation);
+      }
+      }
+      catch(error:Exception){
+        trace("Failed to load "+animPath);
+        trace(error);
       }
     }
 
