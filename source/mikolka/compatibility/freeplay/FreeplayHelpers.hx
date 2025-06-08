@@ -34,7 +34,8 @@ class FreeplayHelpers {
 				continue;
 
 			var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]); // TODO tweak this
-
+			if(leWeek == null) continue;
+			
 			WeekData.setDirectoryFromWeek(leWeek);
 			for (song in leWeek.songs)
 			{
