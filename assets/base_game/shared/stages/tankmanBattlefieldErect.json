@@ -17,7 +17,8 @@
 		"images/tank3": 2,
 		"images/tank4": 2,
 		"images/tank5": 3,
-		"images/erect/": 3
+		"images/erect/": 3,
+		"images/erect/masks/": 3
 	},
 
 	"_editorMeta": {
