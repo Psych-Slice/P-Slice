@@ -41,7 +41,9 @@ class HelpSubstate extends MusicBeatSubstate {
     ];
 	public static var RESULTS_EDIT_TEXT:Array<String> = [
         "Results editor controls:",
-        	"Up/Down - Change active animation",
+			"DPad arrows move the currently selected prop",
+			"Hold C to make moving faster",
+			"",
 			"Space - Starts/pauses playback of the result animations",
 			"R - Resets the playbcack",
 			"",
@@ -49,7 +51,9 @@ class HelpSubstate extends MusicBeatSubstate {
     ];
     public static var RESULTS_EDIT_TEXT_MOBILE:Array<String> = [
         "Results editor controls:",
-        	"Up/Down - Change active animation",
+        	"Up/Down/Left/Right - Move the currently selected prop",
+			"Hold Shift to make moving faster",
+			"",
 			"A - Starts/pauses playback of the result animations",
 			"C - Resets the playbcack",
 			"",
