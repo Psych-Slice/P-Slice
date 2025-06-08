@@ -136,7 +136,7 @@ class StoryMenuState extends MusicBeatState
 		{
 			var weekFile:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
 			var isLocked:Bool = FreeplayHelpers.weekIsLocked(WeekData.weeksList[i]);
-			if(!isLocked || !weekFile.hiddenUntilUnlocked)
+			if((!isLocked || !weekFile.hiddenUntilUnlocked) && weekFile != null)
 			{
 				loadedWeeks.push(weekFile);
 				ModsHelper.setDirectoryFromWeek(weekFile);
