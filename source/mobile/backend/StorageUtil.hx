@@ -89,10 +89,11 @@ class StorageUtil
 			if (!FileSystem.exists(StorageUtil.getStorageDirectory()))
 				FileSystem.createDirectory(StorageUtil.getStorageDirectory());
 		}
-		catch (e:Dynamic)
+		catch (e:Exception)
 		{
-			CoolUtil.showPopUp('Please create directory to\n' + StorageUtil.getStorageDirectory(true) + '\nPress OK to close the game', 'Error!');
-			LimeSystem.exit(1);
+			trace(e);
+			CoolUtil.showPopUp(e.message+'\nPlease create directory to\n' + StorageUtil.getStorageDirectory(true) + '\nPress OK to close the game', 'Error!');
+			//LimeSystem.exit(1);
 		}
 	}
 
