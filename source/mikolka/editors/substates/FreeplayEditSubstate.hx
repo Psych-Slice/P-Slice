@@ -1,5 +1,6 @@
 package mikolka.editors.substates;
 
+import mikolka.compatibility.funkin.FunkinPath;
 import mikolka.editors.forms.FreeplayDialogBox;
 import mikolka.editors.editorProps.DJAnimPreview;
 import mikolka.compatibility.funkin.FunkinControls;
@@ -80,7 +81,13 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		ostName.visible = false;
 		add(ostName);
 
-		dj = new FlxAtlasSprite(640, 366, data.getFreeplayDJData().getAtlasPath());
+		try{
+			dj = new FlxAtlasSprite(640, 366, data.getFreeplayDJData().getAtlasPath());
+		}
+		catch(x){
+			trace(x);
+			dj = new FlxAtlasSprite(640, 366, FunkinPath.animateAtlas("freeplay/freeplay-boyfriend"));
+		}
 		add(dj);
 		dj.playAnimation(data.getFreeplayDJData().getAnimationPrefix("idle"));
 		dj_anim = new DJAnimPreview(true,100, 100);

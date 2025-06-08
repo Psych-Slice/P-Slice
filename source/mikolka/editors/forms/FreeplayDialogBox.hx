@@ -1,5 +1,7 @@
 package mikolka.editors.forms;
 
+import haxe.Exception;
+import mikolka.vslice.components.crash.UserErrorSubstate;
 import mikolka.vslice.freeplay.BGScrollingText;
 import mikolka.editors.substates.FreeplayEditSubstate;
 using mikolka.editors.PsychUIUtills;
@@ -52,12 +54,21 @@ class FreeplayDialogBox extends PsychUIBox
 
 		btn_reload = new PsychUIButton(180, 20, "Reload", () ->
 		{
-			host.dj_anim.saveAnimations();
-			host.remove(host.dj);
-			host.dj.destroy();
-			host.dj = new FlxAtlasSprite(640, 366, data.getFreeplayDJData().getAtlasPath());
-			host.dj_anim.attachSprite(host.dj);
-			host.add(host.dj);
+			try{
+				var sprite = new FlxAtlasSprite(640, 366, data.getFreeplayDJData().getAtlasPath());
+				host.dj_anim.saveAnimations();
+				host.remove(host.dj);
+				host.dj.destroy();
+				host.dj = sprite;
+				host.dj_anim.attachSprite(host.dj);
+				host.add(host.dj);
+			}
+			catch(x:Exception){
+				UserErrorSubstate.makeMessage("Could not make the sprite",
+				x.details()
+				);
+			}
+
 		});
 
 		@:privateAccess {
