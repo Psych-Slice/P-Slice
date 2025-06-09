@@ -1,5 +1,6 @@
 package mikolka.vslice.results;
 
+import haxe.Exception;
 import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.funkin.FlxAtlasSprite;
@@ -229,6 +230,9 @@ class ResultState extends MusicBeatSubState
         animLibrary = "";
       }
       var offsets = animData.offsets ?? [0, 0];
+      try{
+
+      
       switch (animData.renderType)
       {
         case 'animateatlas':
@@ -312,6 +316,11 @@ class ResultState extends MusicBeatSubState
             });
           // Add to the scene.
           add(animation);
+      }
+      }
+      catch(error:Exception){
+        trace("Failed to load "+animPath);
+        trace(error);
       }
     }
 

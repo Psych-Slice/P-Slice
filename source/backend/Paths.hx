@@ -338,7 +338,7 @@ class Paths
 			var myJson:Dynamic = getPath('images/$key.json', TEXT, parentFolder, true);
 			if(NativeFileSystem.exists(myJson))
 			{
-				return FlxAtlasFrames.fromTexturePackerJson(imageLoaded, File.getContent(myJson));
+				return FlxAtlasFrames.fromTexturePackerJson(imageLoaded, NativeFileSystem.getContent(myJson));
 			}
 		}
 		return getPackerAtlas(key, parentFolder);

@@ -430,7 +430,7 @@ class LoadingState extends MusicBeatState
 	static var dontPreloadDefaultVoices:Bool = false;
 	static function _startPool()
 	{
-		threadPool = new FixedThreadPool(#if MULTITHREADED_LOADING #if cpp getCPUThreadsCount() #else 8 #end #else 1 #end);
+		threadPool = new FixedThreadPool( ClientPrefs.data.cacheOnCPU ?  #if cpp getCPUThreadsCount() #else 4 #end : 1);
 	}
 
 	public static function prepareToSong()
@@ -846,7 +846,8 @@ class LoadingState extends MusicBeatState
 	@:noCompletion
     	public static function getCPUThreadsCount():Int
     	{
-        	return -1;
+			trace("Running base implementation. Did the cpp code break?");
+        	return 2;
     	}
     	#end
 }

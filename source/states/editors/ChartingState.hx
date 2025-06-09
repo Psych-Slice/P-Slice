@@ -510,7 +510,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			"Hold Y to Increase/Decrease move by 4x",
 			"",
 			"C - Preview Chart",
-			"A - Playtest Chart",
+			"A - Playtest Chart (hold Y to play from current position)",
 			"X - Stop/Resume Song",
 			"",
 			"Hold H and touch to Select Note(s)",
@@ -527,7 +527,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			"Hold Shift/Alt to Increase/Decrease move by 4x",
 			"",
 			"F12 - Preview Chart",
-			"Enter - Playtest Chart",
+			"Enter - Playtest Chart (hold Shift to play from current position)",
 			"Space - Stop/Resume song",
 			"",
 			"Alt + Click - Select Note(s)",
@@ -1276,8 +1276,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		}
 		else if(FlxG.mouse.pressedRight && (FlxG.mouse.deltaScreenX != 0 || FlxG.mouse.deltaScreenY != 0))
 		{
-			selectionBox.setPosition(FlxG.mouse.screenX, FlxG.mouse.screenY);
-			selectionStart.set(FlxG.mouse.screenX, FlxG.mouse.screenY);
+			selectionBox.setPosition(FlxG.mouse.viewX, FlxG.mouse.viewY);
+			selectionStart.set(FlxG.mouse.viewX, FlxG.mouse.viewY);
 			selectionBox.visible = true;
 			updateSelectionBox();
 		}
@@ -1942,8 +1942,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 	function updateSelectionBox()
 	{
-		var diffX:Float = FlxG.mouse.screenX - selectionStart.x;
-		var diffY:Float = FlxG.mouse.screenY - selectionStart.y;
+		var diffX:Float = FlxG.mouse.viewX - selectionStart.x;
+		var diffY:Float = FlxG.mouse.viewY - selectionStart.y;
 		selectionBox.setPosition(selectionStart.x, selectionStart.y);
 
 		if(diffX < 0) //Fixes negative X scale
@@ -5254,11 +5254,17 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		FlxG.mouse.visible = false;
 		chartEditorSave.flush();
 
+		//? pulling key presses
+		var pressed_SHIFT = FlxG.keys.pressed.SHIFT;
+		#if TOUCH_CONTROLS_ALLOWED
+		pressed_SHIFT = pressed_SHIFT || touchPad.buttonY.pressed;
+		#end
+
 		setSongPlaying(false);
 		updateChartData();
 		StageData.loadDirectory(PlayState.SONG);
 		PlayState.altInstrumentals = null; // don't persist alt inst
-		PlayState.startOnTime = FlxG.sound.music.time;
+		if (pressed_SHIFT) PlayState.startOnTime = FlxG.sound.music.time;
 		LoadingState.loadAndSwitchState(new PlayState());
 		ClientPrefs.toggleVolumeKeys(true);
 	}
