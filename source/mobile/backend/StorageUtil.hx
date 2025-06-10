@@ -157,14 +157,22 @@ enum abstract StorageType(String) from String to String
 
 	public static function fromStr(str:String):StorageType
 	{
-		final EXTERNAL_DATA = AndroidContext.getExternalFilesDir();
-		final EXTERNAL = AndroidEnvironment.getExternalStorageDirectory() + '/.' + lime.app.Application.current.meta.get('file');
-
-		return switch (str)
-		{
-			case "EXTERNAL_DATA": EXTERNAL_DATA;
-			case "EXTERNAL": EXTERNAL;
-			default: StorageUtil.getExternalDirectory(str) + '.' + fileLocal;
+		try{
+			return switch (str)
+			{
+				case "EXTERNAL_DATA": 
+					final EXTERNAL_DATA = AndroidContext.getExternalFilesDir();
+					EXTERNAL_DATA;
+				case "EXTERNAL": 
+					final EXTERNAL = AndroidEnvironment.getExternalStorageDirectory() + '/.' + lime.app.Application.current.meta.get('file');
+					EXTERNAL;
+				default: StorageUtil.getExternalDirectory(str) + '.' + fileLocal;
+			}
+		}
+		catch(x:Exception){
+			trace("Failed to read storage. Forcing paths!");
+			trace(x);
+			return fromStrForce(str);
 		}
 	}
 
