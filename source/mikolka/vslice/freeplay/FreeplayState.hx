@@ -272,6 +272,8 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			switch (currentCharacterId)
 			{
+				case (VsliceOptions.LOW_QUALITY) => true:
+					backingCard = null;
 				#if (!LEGACY_PSYCH && HSCRIPT_ALLOWED)
 				case (LuaCard.hasCustomCard(currentCharacterId)) => true:
 					backingCard = new LuaCard(currentCharacter,currentCharacterId,stickerSubState == null);
@@ -306,7 +308,7 @@ class FreeplayState extends MusicBeatSubstate
 		ostName = new FlxText(8, 8, FlxG.width - 8 - 8, 'OFFICIAL OST', 48);
 		charSelectHint = new FlxText(-40, 18, FlxG.width - 8 - 8, 'Press [ LOL ] to change characters', 32);
 
-		bgDad = new FlxSprite(backingCard.pinkBack.width * 0.74, 0).loadGraphic(styleData == null ? 'freeplay/freeplayBGdad' : styleData.getBgAssetGraphic());
+		bgDad = new FlxSprite((backingCard?.pinkBack.width ?? 0) * 0.74, 0).loadGraphic(styleData == null ? 'freeplay/freeplayBGdad' : styleData.getBgAssetGraphic());
 
 		BPMCache.instance.clearCache(); // for good measure
 		// ? end of init
@@ -391,20 +393,24 @@ class FreeplayState extends MusicBeatSubstate
 		if (currentCharacter?.getFreeplayDJData() != null)
 		{
 			ModsHelper.loadModDir(VsliceOptions.LAST_MOD.mod_dir); // ? make sure to load a mod dir of this character!
-			dj = new FreeplayDJ(640, 366, currentCharacter);
-			exitMovers.set([dj], {
-				x: -dj.width * 1.6,
-				speed: 0.5
-			});
-			add(dj);
-			exitMoversCharSel.set([dj], {
-				y: -175,
-				speed: 0.8,
-				wait: 0.1
-			});
+			//? Low quality. why we need him again?
+			if(!VsliceOptions.LOW_QUALITY){
+				dj = new FreeplayDJ(640, 366, currentCharacter);
+				exitMovers.set([dj], {
+					x: -dj.width * 1.6,
+					speed: 0.5
+				});
+				add(dj);
+				exitMoversCharSel.set([dj], {
+					y: -175,
+					speed: 0.8,
+					wait: 0.1
+				});
+			}
 		}
 
-		bgDad.shader = angleMaskShader;
+
+		if (!VsliceOptions.LOW_QUALITY) bgDad.shader = angleMaskShader;
 		bgDad.visible = false;
 
 		var blackOverlayBullshitLOLXD:FlxSprite = new FlxSprite(FlxG.width, 0, Paths.image("back"));
@@ -412,7 +418,9 @@ class FreeplayState extends MusicBeatSubstate
 		add(blackOverlayBullshitLOLXD); // used to mask the text lol!
 
 		// this makes the texture sizes consistent, for the angle shader
-		bgDad.setGraphicSize(0, FlxG.height);
+		//? For low qualiit it's the entire background
+		if (VsliceOptions.LOW_QUALITY) bgDad.setGraphicSize(FlxG.width, FlxG.height);
+		else bgDad.setGraphicSize(0, FlxG.height);
 		blackOverlayBullshitLOLXD.setGraphicSize(0, FlxG.height);
 
 		bgDad.updateHitbox();
@@ -432,7 +440,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		add(bgDad);
 		// ? changed offset
-		FlxTween.tween(blackOverlayBullshitLOLXD, {x: (backingCard.pinkBack.width * 0.74)}, 0.7, {ease: FlxEase.quintOut});
+		FlxTween.tween(blackOverlayBullshitLOLXD, {x: ((backingCard?.pinkBack.width ?? 0) * 0.74)}, 0.7, {ease: FlxEase.quintOut});
 
 		blackOverlayBullshitLOLXD.shader = bgDad.shader;
 
@@ -715,7 +723,7 @@ class FreeplayState extends MusicBeatSubstate
 		}
 		else
 		{
-			onDJIntroDone();
+			FlxTimer.wait(0.2,() -> onDJIntroDone());
 		}
 		currentDifficulty = rememberedDifficulty; // ? use last difficulty to create this list
 		generateSongList(null, false);
@@ -2260,7 +2268,7 @@ class FreeplayState extends MusicBeatSubstate
 				onLoad: function()
 				{
 					// ? onLoad doesn't start plaing music automatically here
-					var endVolume = dj.playingCartoon ? 0.1 : FADE_IN_END_VOLUME;
+					var endVolume = dj?.playingCartoon ? 0.1 : FADE_IN_END_VOLUME;
 					FlxG.sound.music.fadeIn(FADE_IN_DURATION, FADE_IN_START_VOLUME, endVolume);
 					// ? set BPMs
 					var newBPM = daSongCapsule.songData.songStartingBpm;
