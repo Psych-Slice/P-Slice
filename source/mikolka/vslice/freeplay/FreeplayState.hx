@@ -723,7 +723,7 @@ class FreeplayState extends MusicBeatSubstate
 		}
 		else
 		{
-			FlxTimer.wait(2,() -> onDJIntroDone());
+			FlxTimer.wait(1,() -> onDJIntroDone());
 		}
 		currentDifficulty = rememberedDifficulty; // ? use last difficulty to create this list
 		generateSongList(null, false);
