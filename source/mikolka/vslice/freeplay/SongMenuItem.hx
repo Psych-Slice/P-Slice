@@ -214,7 +214,7 @@ class SongMenuItem extends FlxSpriteGroup
     grpHide.add(songText);
 
     // TODO: Use value from metadata instead of random.
-    updateDifficultyRating(FlxG.random.int(0, 20));
+    updateDifficultyRating(0);
     //? changed offsets
     pixelIcon = new PixelatedIcon(60,14);
     add(pixelIcon);

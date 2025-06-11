@@ -88,6 +88,11 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 			version="3.0.3"  
 			company="mikolka9144" />
 		<define name="nativesys_profile" />
+		<!-- Telemetry config -->
+		<haxedef name="HXCPP_TELEMETRY"/>
+		<haxedef name="telemetry"/>
+		<haxelib name="hxtelemetry"/>
+		<!-- <config:hxtelemetry host="localhost"/> -->
 		<define name="pico_always_kill" />
 		<define name="freeplay_profile" />
 	</section>
@@ -234,7 +239,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
 	
 	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
-	<haxedef name="FLX_NO_DEBUG" unless="debug" />
+	<haxedef name="FLX_NO_DEBUG" unless="PROFILE_BUILD" />
 
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
