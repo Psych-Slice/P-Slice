@@ -681,12 +681,6 @@ class PlayState extends MusicBeatState
 		cachePopUpScore();
 
 		if(eventNotes.length < 1) checkEventNote();
-
-		for (i in 0...unspawnNotes.length) {
-        	if (unspawnNotes[i].isSustainNote) {
-            	    unspawnNotes[i].noAnimation = true;
-		    }
-		}
 	}
 
 	function set_songSpeed(value:Float):Float
@@ -3318,12 +3312,6 @@ class PlayState extends MusicBeatState
 		spawnHoldSplashOnNote(note);
 
 		if (!note.isSustainNote) invalidateNote(note);
-
-		if (note.gfNote || note.noteType == 'GF Sing') {
-            	    gf.holdTimer = 0;
-        	} else {
-            	    dad.holdTimer = 0;
-		}
 	}
 
 	public function goodNoteHit(note:Note):Void
@@ -3432,12 +3420,6 @@ class PlayState extends MusicBeatState
 		if(result != LuaUtils.Function_Stop && result != LuaUtils.Function_StopHScript && result != LuaUtils.Function_StopAll) callOnHScript('goodNoteHit', [note]);
 		spawnHoldSplashOnNote(note);
 		if(!note.isSustainNote) invalidateNote(note);
-
-		if (note.gfNote || note.noteType == 'GF Sing') {
-            	    gf.holdTimer = 0;
-        	} else {
-           	    boyfriend.holdTimer = 0;
-		}
 	}
 
 	public function invalidateNote(note:Note):Void {
