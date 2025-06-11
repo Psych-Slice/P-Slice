@@ -88,11 +88,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 			version="3.0.3"  
 			company="mikolka9144" />
 		<define name="nativesys_profile" />
-		<!-- Telemetry config -->
-		<haxedef name="HXCPP_TELEMETRY"/>
-		<haxedef name="telemetry"/>
-		<haxelib name="hxtelemetry"/>
-		<!-- <config:hxtelemetry host="localhost"/> -->
+
 		<define name="pico_always_kill" />
 		<define name="freeplay_profile" />
 	</section>
