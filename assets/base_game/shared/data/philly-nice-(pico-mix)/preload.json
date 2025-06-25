@@ -1,7 +1,7 @@
 {
-
 	"images/philly/erect/cutscenes/cigarette": 3,
 	"images/philly/erect/cutscenes/pico_doppleganger/spritemap1": 3,
 	"images/philly/erect/cutscenes/bloodPool/spritemap1": 3,
-	"sounds/cutscene/": 3
+	"sounds/cutscene/": 3,
+	"music/cutscene/": 3
 }
