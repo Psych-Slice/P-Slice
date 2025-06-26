@@ -64,7 +64,6 @@ import flixel.effects.particles.FlxEmitter;
 import flixel.effects.particles.FlxParticle;
 import flixel.util.FlxSave;
 import flixel.animation.FlxAnimationController;
-import animateatlas.AtlasFrameMaker;
 import Achievements;
 import StageData;
 import FunkinLua;
@@ -2961,7 +2960,7 @@ class PlayState extends MusicBeatState
 		callOnLuas('onEvent', [eventName, value1, value2]);
 	}
 
-	function moveCameraSection():Void
+	public function moveCameraSection():Void
 	{
 		if (SONG.notes[curSection] == null)
 			return;

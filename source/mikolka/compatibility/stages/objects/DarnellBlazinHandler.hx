@@ -1,7 +1,5 @@
-package stages.objects;
+package mikolka.compatibility.stages.objects;
 
-import objects.Note;
-import objects.Character;
 
 class DarnellBlazinHandler
 {

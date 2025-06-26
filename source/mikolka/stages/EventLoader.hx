@@ -56,10 +56,8 @@ class EventLoader extends BaseStage {
 			case 'tank': 
                 new TankmanStagesAddons();
                 new Tank();								            //Week 7 - Ugh, Guns, Stress
-            #if !LEGACY_PSYCH
 			case 'phillyStreets': new PhillyStreets(); 				//Weekend 1 - Darnell, Lit Up, 2Hot
 			case 'phillyBlazin': new PhillyBlazin();				//Weekend 1 - Blazin
-            #end
 			case 'mainStageErect': new MainStageErect();			//Week 1 Special 
 			case 'spookyMansionErect': new SpookyMansionErect();	//Week 2 Special 
 			case 'phillyTrainErect': new PhillyTrainErect();  		//Week 3 Special 

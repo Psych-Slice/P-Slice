@@ -1,6 +1,5 @@
 package;
 
-import animateatlas.AtlasFrameMaker;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.effects.FlxTrail;
@@ -141,6 +140,8 @@ class Character extends FlxSprite
 			spriteType = "packer";
 		}
 
+		// ATLAS SUPPORT
+		isAnimateAtlas = false;
 		#if MODS_ALLOWED
 		var modAnimToFind:String = Paths.modFolders('images/' + json.image + '/Animation.json');
 		var animToFind:String = Paths.getPath('images/' + json.image + '/Animation.json', TEXT);
@@ -153,16 +154,16 @@ class Character extends FlxSprite
 		if (Assets.exists(Paths.getPath('images/' + json.image + '/Animation.json', TEXT)))
 		#end
 		{
-			spriteType = "texture";
+			spriteType = "atlas";
+			isAnimateAtlas = true;
 		}
 
-		isAnimateAtlas = false;
+		
 		#if flxanimate
 		var animToFind:String = Paths.getPath('images/' + json.image + '/Animation.json', TEXT);
 		if (#if MODS_ALLOWED NativeFileSystem.exists(animToFind) || #end Assets.exists(animToFind))
 		{
-			spriteType = "atlas";
-			isAnimateAtlas = true;
+			
 		}
 		#end
 
@@ -174,8 +175,8 @@ class Character extends FlxSprite
 			case "sparrow":
 				frames = Paths.getMultiAtlas(json.image.split(','));
 
-			case "texture":
-				frames = AtlasFrameMaker.construct(json.image);
+			// case "texture":
+			// 	frames = AtlasFrameMaker.construct(json.image);
 			case "atlas":
 				atlas = new FlxAnimate();
 				atlas.showPivot = false;
