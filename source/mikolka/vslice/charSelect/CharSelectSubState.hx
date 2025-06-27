@@ -132,7 +132,7 @@ class CharSelectSubState extends MusicBeatSubState
     bg.scrollFactor.set(0.1, 0.1);
     add(bg);
 
-    var crowd:FlxAtlasSprite = new FlxAtlasSprite(0, 0, Paths.animateAtlas("charSelect/crowd"));
+    var crowd:FlxAtlasSprite = new FlxAtlasSprite(0, 0,"charSelect/crowd");
     crowd.anim.play();
     crowd.anim.onComplete.add(function() {
       crowd.anim.play();
@@ -151,7 +151,7 @@ class CharSelectSubState extends MusicBeatSubState
     curtains.scrollFactor.set(1.4, 1.4);
     add(curtains);
 
-    barthing = new FlxAtlasSprite(0, 0, Paths.animateAtlas("charSelect/barThing"));
+    barthing = new FlxAtlasSprite(0, 0, "charSelect/barThing");
     barthing.anim.play("");
     barthing.anim.onComplete.add(function() {
       barthing.anim.play("");
@@ -184,7 +184,7 @@ class CharSelectSubState extends MusicBeatSubState
     playerChill.switchChar(curChar); //? Set to current character
     add(playerChill);
 
-    var speakers:FlxAtlasSprite = new FlxAtlasSprite(0, 0, Paths.animateAtlas("charSelect/charSelectSpeakers"));
+    var speakers:FlxAtlasSprite = new FlxAtlasSprite(0, 0,"charSelect/charSelectSpeakers");
     speakers.anim.play("");
     speakers.anim.onComplete.add(function() {
       speakers.anim.play("");
