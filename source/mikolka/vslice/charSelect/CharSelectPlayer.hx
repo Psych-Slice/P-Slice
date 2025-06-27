@@ -8,7 +8,7 @@ class CharSelectPlayer extends FlxAtlasSprite
 {
   public function new(x:Float, y:Float)
   {
-    super(x, y, Paths.animateAtlas("charSelect/bfChill"));
+    super(x, y, "charSelect/bfChill");
 
     onAnimationComplete.add(function(animLabel:String) { //? changed the hook here
       switch (animLabel)
@@ -67,7 +67,7 @@ class CharSelectPlayer extends FlxAtlasSprite
     switch str
     {
       default:
-        loadAtlas(Paths.animateAtlas("charSelect/" + str + "Chill"));
+        loadAtlas("charSelect/" + str + "Chill");
     }
 
     playAnimation("slidein", true, false, false);

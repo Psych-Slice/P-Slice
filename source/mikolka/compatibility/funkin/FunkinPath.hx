@@ -6,9 +6,6 @@ import flixel.graphics.frames.FlxAtlasFrames;
 
 class FunkinPath {
 
-    public static function animateAtlas(path:String,lib:String = "preload"):String {
-        return getPath("images/"+path);
-    }
     public static function getPath(path:String,forceNative:Bool = false):String {
         #if MODS_ALLOWED
         if(forceNative) return Paths.getSharedPath(path);
