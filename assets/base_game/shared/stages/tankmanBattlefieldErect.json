@@ -11,14 +11,10 @@
 	"camera_girlfriend": [0, 0],
 
 	"preload": {
-		"images/tank0": 3,
-		"images/tank1": 2,
-		"images/tank2": 3,
-		"images/tank3": 2,
-		"images/tank4": 2,
-		"images/tank5": 3,
 		"images/erect/": 3,
-		"images/erect/masks/": 3
+		"sounds/jeffGameover-pico/": 3,
+		"images/erect/masks/tankmanCaptainBloody_mask": 3,
+		"images/erect/masks/gfTankmen_mask": 3
 	},
 
 	"_editorMeta": {
