@@ -86,7 +86,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		}
 		catch(x){
 			trace(x);
-			dj = new FlxAtlasSprite(640, 366, FunkinPath.animateAtlas("freeplay/freeplay-boyfriend"));
+			dj = new FlxAtlasSprite(640, 366, "freeplay/freeplay-boyfriend");
 		}
 		add(dj);
 		dj.playAnimation(data.getFreeplayDJData().getAnimationPrefix("idle"));

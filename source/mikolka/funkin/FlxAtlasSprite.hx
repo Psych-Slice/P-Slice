@@ -3,6 +3,7 @@ package mikolka.funkin;
 import mikolka.compatibility.VsliceOptions;
 import flixel.util.FlxSignal.FlxTypedSignal;
 import flxanimate.FlxAnimate.Settings;
+import mikolka.compatibility.ModsHelper;
 import flixel.graphics.frames.FlxFrame;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import openfl.display.BitmapData;
