@@ -1,6 +1,9 @@
 {
 	"songs": [
-		["Darnell", "darnell", [65, 60, 174]]
+		["Darnell", "darnell", [65, 60, 174]],
+		["Lit Up", "darnell", [65, 60, 174]],
+		["2Hot", "darnell", [65, 60, 174]],
+		["Blazin", "darnell", [65, 60, 174]]
 	],
 
 	"weekCharacters": [
@@ -15,7 +18,7 @@
 	"weekName": "Weekend 1",
 	"startUnlocked": true,
 
-	"hideStoryMode": true,
+	"hideStoryMode": false,
 	"hideFreeplay": false,
-	"difficulties": "Erect,Nightmare"
+	"difficulties": "Easy,Normal,Hard,Erect,Nightmare"
 }
