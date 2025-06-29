@@ -8,7 +8,7 @@ import shaders.RainShader;
 import flixel.addons.display.FlxTiledSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import mikolka.compatibility.VsliceOptions;
-using source.mikolka.stages.cutscenes.DarnellStart;
+import mikolka.stages.cutscenes.DarnellStart;
 #if !LEGACY_PSYCH
 import substates.PauseSubState;
 import substates.GameOverSubstate;
@@ -390,6 +390,13 @@ class PhillyStreets extends BaseStage
 	var carInterruptable:Bool = true;
 	var car2Interruptable:Bool = true;
 
+	override function gameOverStart(SubState:GameOverSubstate) {
+		#if LEGACY_PSYCH
+		FlxG.camera.setFilters([]);
+		#else
+		FlxG.camera.filters = [];
+		#end
+	}
 	override function beatHit()
 	{
 		// if(curBeat % 2 == 0) abot.beatHit();
@@ -670,7 +677,7 @@ class PhillyStreets extends BaseStage
 				lightCanSnd.play(true, sndTime - 65);
 				@:privateAccess
 				game.isCameraOnForcedPos = true;
-				game.defaultCamZoom += 0.1;
+				game.defaultCamZoom += #if LEGACY_PSYCH 0.0001 #else 0.1 #end;
 				game.moveCamera(true);
 				game.cameraSpeed = 2;
 				camFollow.x -= 100;
@@ -682,7 +689,7 @@ class PhillyStreets extends BaseStage
 				spraycan.playCanStart();
 				camFollow.x += 250;
 				game.cameraSpeed = 1.5;
-				game.defaultCamZoom -= 0.1;
+				game.defaultCamZoom -= #if LEGACY_PSYCH 0.0001 #else 0.1 #end;
 
 				new FlxTimer().start(1.1, function(_)
 				{
@@ -719,7 +726,11 @@ class PhillyStreets extends BaseStage
 
 				boyfriend.animation.finishCallback = function(name:String)
 				{
+					#if LEGACY_PSYCH
+					if (name == 'shootMISS' && game.health > 0.0 && !game.practiceMode)
+					#else
 					if (name == 'shootMISS' && game.health > 0.0 && !game.practiceMode && game.gameOverTimer == null)
+					#end
 					{
 						// FlxFlicker was crashing so fuck it, FlxTimer all the way
 						picoFlicker = new FlxTimer().start(1 / 30, function(tmr:FlxTimer)

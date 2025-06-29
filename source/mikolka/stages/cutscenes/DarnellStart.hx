@@ -1,4 +1,4 @@
-package source.mikolka.stages.cutscenes;
+package mikolka.stages.cutscenes;
 
 #if !LEGACY_PSYCH
 import cutscenes.CutsceneHandler;
@@ -135,9 +135,9 @@ class DarnellStart {
 			game.startCountdown();
 		};
 		#if LEGACY_PSYCH
-		cutscene.finishCallback2 = function()
+		cutsceneHandler.finishCallback2 = function()
 		#else
-		cutscene.skipCallback = function()
+		cutsceneHandler.skipCallback = function()
 		#end
 		{
 			cutsceneHandler.finishCallback();
