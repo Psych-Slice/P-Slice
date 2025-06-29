@@ -1,6 +1,8 @@
-package source.mikolka.stages.cutscenes;
+package mikolka.stages.cutscenes;
 
+#if !LEGACY_PSYCH
 import cutscenes.CutsceneHandler;
+#end
 import mikolka.stages.standard.PhillyStreets;
 
 class DarnellStart {
@@ -132,7 +134,11 @@ class DarnellStart {
 			game.camHUD.alpha = 1;
 			game.startCountdown();
 		};
+		#if LEGACY_PSYCH
+		cutsceneHandler.finishCallback2 = function()
+		#else
 		cutsceneHandler.skipCallback = function()
+		#end
 		{
 			cutsceneHandler.finishCallback();
 
@@ -141,7 +147,7 @@ class DarnellStart {
 			stage.boyfriend.dance();
 			stage.dad.animation.finishCallback = null;
 			stage.gf.animation.finishCallback = null;
-			
+			@:privateAccess
 			game.moveCameraSection();
 			game.cameraSpeed = 1;
 			FlxTween.cancelTweensOf(FlxG.camera);
