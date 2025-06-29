@@ -205,6 +205,7 @@ class TankErect extends BaseStage
 			case "tankman":
 				{
 					rim.angle = 135;
+					rim.threshold = 0.1;
 					rim.maskThreshold = 1;
 					rim.useAltMask = false;
 
