@@ -206,6 +206,8 @@ class AtlasChar extends FlxSprite
       case '↓': '-down arrow-'; // U+2193
       case "”": '-end quote-'; // U+0022
       case "!": '-exclamation point-'; // U+0021
+      case "¡": '-inverted exclamation point-'; // U+00A1
+      case "¿": '-inverted question mark-'; // U+00BF
       case "/": '-forward slash-'; // U+002F
       case '>': '-greater than-'; // U+003E
       case '♥': '-heart-'; // U+2665
@@ -215,6 +217,7 @@ class AtlasChar extends FlxSprite
       case "*": '-multiply x-';
       case '.': '-period-'; // U+002E
       case "?": '-question mark-';
+      case "\"": '-quote-';
       case '→': '-right arrow-'; // U+2192
       case "“": '-start quote-';
       case '↑': '-up arrow-'; // U+2191
@@ -274,5 +277,6 @@ enum abstract AtlasFont(String) from String to String
 {
   var DEFAULT = "default";
   var BOLD = "bold";
+  var CAPSULE_TEXT = "capsule-text";
   var FREEPLAY_CLEAR = "freeplay-clear";
 }

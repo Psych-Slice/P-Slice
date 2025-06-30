@@ -1624,7 +1624,16 @@ class FreeplayState extends MusicBeatSubstate
 				}
 			}
 		}
-
+		//TODO We should bind those to global controls
+		if (FlxG.keys.justPressed.PAGEUP && !busy)
+		{
+			changeSelection(-curSelected);
+		}
+		
+		if (FlxG.keys.justPressed.PAGEDOWN && !busy)
+		{
+			changeSelection(grpCapsules.countLiving() - curSelected - 1);
+		}
 		lerpScore = MathUtil.smoothLerp(lerpScore, intendedScore, elapsed, 0.5);
 		lerpCompletion = MathUtil.smoothLerp(lerpCompletion, intendedCompletion, elapsed, 0.5);
 
