@@ -14,6 +14,7 @@ class FreeplayMetaJSON {
     public var freeplayCharacter:String = "";
     public var albumId:String = "";
     public var altInstrumentalSongs:String = "";
+    public var freeplayWeekName:String = "week";
 }
 
 class FreeplayMeta {

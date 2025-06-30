@@ -2121,6 +2121,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		characterName.text = songMetadata.freeplayCharacter;
 		chk_allowNew.checked = songMetadata.allowNewTag;
 		chk_hasErect.checked = songMetadata.allowErectVariants;
+		txt_weekName.text = songMetadata.freeplayWeekName;
 
 		txt_altInstSong.text = songMetadata.altInstrumentalSongs;
 		albumName.text = songMetadata.albumId;
@@ -3659,6 +3660,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 	var txt_altVariantSong:PsychUIInputText;
 	var txt_altInstSong:PsychUIInputText;
+	var txt_weekName:PsychUIInputText;
 	
 	var albumName:PsychUIInputText;
 	var exportMetadataBtn:PsychUIButton;
@@ -3675,6 +3677,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		albumName = new PsychUIInputText(180,120,100,"",8);
 		chk_allowNew = new PsychUICheckBox(180,30,"Show \"new\" tag");
 		chk_hasErect = new PsychUICheckBox(180,200,"Has erect variant");
+		txt_weekName = new PsychUIInputText(180,190,100,"");
 		
 		txt_altInstSong = new PsychUIInputText(20,160,250,"",8);
 
@@ -3697,6 +3700,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		tab_group.add(meta_label(txt_altInstSong, 'Song alt vocals (separated with \',\'):'));
 		tab_group.add(txt_altInstSong);
 		tab_group.add(chk_hasErect);
+		tab_group.add(meta_label(txt_weekName,"Card week name")); 
+		tab_group.add(txt_weekName); //freeplayWeekName
 
 		tab_group.add(exportMetadataBtn);
 	}
@@ -3715,6 +3720,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		meta.freeplayCharacter = characterName.text;
 		meta.allowNewTag = chk_allowNew.checked;
 		meta.allowErectVariants = chk_hasErect.checked;
+		meta.freeplayWeekName = txt_weekName.text;
 		meta.freeplaySongLength = FlxG.sound.music.length/1000;
 		
 		var data:String = haxe.Json.stringify(meta, "\t");
