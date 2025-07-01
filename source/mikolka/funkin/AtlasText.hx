@@ -123,7 +123,7 @@ class AtlasText extends FlxTypedSpriteGroup<AtlasChar>
       {
         case " ":
           {
-            xPos += 40;
+            xPos += font.spaceWidth;
           }
         case "\n":
           {
@@ -235,6 +235,7 @@ private class AtlasFontData
 
   public var atlas:FlxAtlasFrames;
   public var maxHeight:Float = 0.0;
+  public var spaceWidth:Float = 40.0;
   public var caseAllowed:Case = Both;
 
   public function new(name:AtlasFont)
@@ -263,6 +264,7 @@ private class AtlasFontData
     }
 
     if (containsUpper != containsLower) caseAllowed = containsUpper ? Upper : Lower;
+    if(name == CAPSULE_TEXT) spaceWidth = 24;
   }
 }
 

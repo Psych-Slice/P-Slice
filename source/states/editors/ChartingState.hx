@@ -3676,8 +3676,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		prevEndInput = new PsychUINumericStepper(20, 120,1,0,0,999,2,80);
 		albumName = new PsychUIInputText(180,120,100,"",8);
 		chk_allowNew = new PsychUICheckBox(180,30,"Show \"new\" tag");
-		chk_hasErect = new PsychUICheckBox(180,200,"Has erect variant");
-		txt_weekName = new PsychUIInputText(180,190,100,"");
+
+		txt_weekName = new PsychUIInputText(180,200,100,"");
+		chk_hasErect = new PsychUICheckBox(180,230,"Has erect variant");
 		
 		txt_altInstSong = new PsychUIInputText(20,160,250,"",8);
 
