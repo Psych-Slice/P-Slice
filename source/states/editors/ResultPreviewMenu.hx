@@ -1,5 +1,9 @@
 package states.editors;
 
+#if TOUCH_CONTROLS_ALLOWED
+import mobile.objects.ScrollableObject;
+#end
+import flixel.math.FlxRect;
 import openfl.events.UncaughtErrorEvent;
 import mikolka.compatibility.VsliceOptions;
 import flixel.math.FlxRandom;
@@ -18,10 +22,12 @@ class ResultPreviewMenu extends MusicBeatState
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
 
-	private var curSelected = 0;
+	private var curSelected:Int = 0;
+	private var curSelectedPartial:Float = 0;
 
 	override function create()
 	{
+		FlxG.mouse.visible = true;
 		FlxG.sound.playMusic(Paths.music('breakfast'));
 
 		FlxG.camera.bgColor = FlxColor.BLACK;
@@ -33,6 +39,18 @@ class ResultPreviewMenu extends MusicBeatState
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
 		bg.scrollFactor.set();
 		add(bg);
+
+		#if TOUCH_CONTROLS_ALLOWED
+		var scroll = new ScrollableObject(-0.01,FlxRect.weak(100,0,FlxG.width-200,FlxG.height));
+		scroll.onPartialScroll.add(delta -> changeSelection(delta,false));
+		scroll.onFullScroll.add(delta -> {
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		});
+		scroll.onTap.add(point ->{
+			if(point.overlaps(grpTexts.members[curSelected])) onAccept();
+		});
+		add(scroll);
+		#end
 
 		grpTexts = new FlxTypedGroup<Alphabet>();
 		add(grpTexts);
@@ -52,17 +70,22 @@ class ResultPreviewMenu extends MusicBeatState
 		addTouchPad("UP_DOWN", "A_B");
 		#end
 		super.create();
+		changeSelection(0,true);
 	}
 
 	override function update(elapsed:Float)
 	{
+		FlxG.watch.addQuick("curSelected", curSelected);
+		FlxG.watch.addQuick("curSelectedPartial", curSelectedPartial);
 		if (controls.UI_UP_P)
 		{
-			changeSelection(-1);
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			changeSelection(-1,true);
 		}
 		if (controls.UI_DOWN_P)
 		{
-			changeSelection(1);
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			changeSelection(1,true);
 		}
 
 		if (controls.BACK)
@@ -71,9 +94,13 @@ class ResultPreviewMenu extends MusicBeatState
 			MusicBeatState.switchState(new MasterEditorMenu());
 		}
 
-		if (controls.ACCEPT)
-		{
-			switch (options[curSelected])
+		if (controls.ACCEPT) onAccept();
+
+		super.update(elapsed);
+	}
+
+	function onAccept() {
+		switch (options[curSelected])
 			{
 				case 'Preview results (perfect)':
 					runResults(200);
@@ -87,18 +114,7 @@ class ResultPreviewMenu extends MusicBeatState
 					runResults(30);
 			}
 			FlxG.sound.music.volume = 0;
-		}
-
-		for (num => item in grpTexts.members)
-		{
-			item.targetY = num - curSelected;
-			item.alpha = 0.6;
-			if (item.targetY == 0)
-				item.alpha = 1;
-		}
-		super.update(elapsed);
 	}
-
 	function runResults(lol:Int)
 	{
 		PlayState.storyDifficultyColor = 0xFFFF0000;
@@ -131,9 +147,21 @@ class ResultPreviewMenu extends MusicBeatState
 		MusicBeatState.switchState(results);
 	}
 
-	function changeSelection(change:Int = 0)
-	{
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-		curSelected = FlxMath.wrap(curSelected + change, 0, options.length - 1);
+	function changeSelection(delta:Float,usePrecision:Bool = false) {
+		if(usePrecision) {
+			curSelected =  FlxMath.wrap(curSelected + Std.int(delta), 0, options.length - 1);
+			curSelectedPartial = curSelected;
+		}
+		else {
+			curSelectedPartial = FlxMath.bound(curSelectedPartial + delta, 0, options.length - 1);
+			curSelected =  Math.round(curSelectedPartial);
+		}
+		for (num => item in grpTexts.members)
+			{
+				item.targetY = num - curSelectedPartial;
+				item.alpha = 0.6;
+				if (num == curSelected)
+					item.alpha = 1;
+			}
 	}
 }

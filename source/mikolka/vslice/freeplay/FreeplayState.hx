@@ -1,5 +1,7 @@
 package mikolka.vslice.freeplay;
 
+import flixel.math.FlxRect;
+import mobile.objects.ScrollableObject;
 import mikolka.vslice.ui.MainMenuState;
 import mikolka.vslice.freeplay.backcards.LuaCard;
 import mikolka.vslice.freeplay.obj.CapsuleOptionsMenu;
@@ -143,6 +145,8 @@ class FreeplayState extends MusicBeatSubstate
 	var diffIdsTotal:Array<String> = ['easy', "normal", "hard"]; // ? forcing this diff order
 
 	var curSelected:Int = 0;
+	// This below track drag for the mobile
+	var curSelectedFractal:Float = 0;
 	var currentDifficulty:String = Constants.DEFAULT_DIFFICULTY;
 
 	var fp:FreeplayScore;
@@ -608,6 +612,7 @@ class FreeplayState extends MusicBeatSubstate
 			{
 				FunkinSound.playOnce(Paths.sound('scrollMenu'), 0.4);
 				curSelected = 1;
+				curSelectedFractal = 1;
 				changeSelection();
 			}
 		};
@@ -779,6 +784,19 @@ class FreeplayState extends MusicBeatSubstate
 				}
 			});
 		}
+		#if !LEGACY_PSYCH
+		
+		var scroll = new ScrollableObject(-0.01,FlxRect.weak(100,-100,FlxG.width-300,FlxG.height));
+		scroll.cameras = [funnyCam];
+		scroll.onPartialScroll.add(delta -> changeSelectionFractal(delta));
+		scroll.onFullScroll.add(delta -> {
+			changeSelection(delta,false);
+		});
+		// scroll.onTap.add(point ->{
+		// 	if(point.overlaps(grpTexts.members[curSelected])) onAcceptKey();
+		// });
+		add(scroll);
+		#end
 		#end
 
 		if (fromCharSelect == true)
@@ -842,6 +860,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		currentFilteredSongs = tempSongs;
 		curSelected = 0;
+		curSelectedFractal = 0;
 
 		var randomCapsule:SongMenuItem = grpCapsules.recycle(SongMenuItem);
 		randomCapsule.init(FlxG.width, 0, null, styleData);
@@ -1625,12 +1644,12 @@ class FreeplayState extends MusicBeatSubstate
 			}
 		}
 		//TODO We should bind those to global controls
-		if (FlxG.keys.justPressed.PAGEUP && !busy)
+		if (FlxG.keys.justPressed.HOME && !busy)
 		{
 			changeSelection(-curSelected);
 		}
 		
-		if (FlxG.keys.justPressed.PAGEDOWN && !busy)
+		if (FlxG.keys.justPressed.END && !busy)
 		{
 			changeSelection(grpCapsules.countLiving() - curSelected - 1);
 		}
@@ -2045,6 +2064,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		// Seeing if I can do an animation...
 		curSelected = grpCapsules.members.indexOf(targetSong);
+		curSelectedFractal = curSelected;
 		changeSelection(0); // Trigger an update.
 
 		// Act like we hit Confirm on that song.
@@ -2170,6 +2190,7 @@ class FreeplayState extends MusicBeatSubstate
 
 			if (curSelected == -1)
 				curSelected = 0;
+			curSelectedFractal = curSelected;
 		}
 
 		if (rememberedDifficulty != null)
@@ -2177,20 +2198,46 @@ class FreeplayState extends MusicBeatSubstate
 			currentDifficulty = rememberedDifficulty;
 		}
 	}
+	//TODO
 
-	function changeSelection(change:Int = 0):Void
+
+	function changeSelectionFractal(change:Float){
+		curSelectedFractal = FlxMath.bound(curSelectedFractal + change, 0, grpCapsules.countLiving() - 1);
+		for (index => capsule in grpCapsules.members)
+			{
+				index += 1;
+	
+				capsule.selected = index == curSelected + 1;
+	
+				capsule.targetPos.y = capsule.intendedY(index - curSelectedFractal);
+				capsule.targetPos.x = 270 + (60 * (Math.sin(index - curSelectedFractal)));
+	
+				if (index < curSelected)
+					capsule.targetPos.y -= 100; // another 100 for good measure
+			}
+	}
+	function changeSelection(change:Int = 0,updateCardPosition:Bool = true):Void
 	{
 		var prevSelected:Int = curSelected;
-
 		curSelected += change;
 
-		if (!prepForNewRank && curSelected != prevSelected)
+		//? Added code here to handle drag changes
+		if (curSelected < 0)
+			if(updateCardPosition) curSelected = grpCapsules.countLiving() - 1;
+			else {
+				curSelected = prevSelected;
+				return;
+			}
+		if (curSelected >= grpCapsules.countLiving())
+			if (updateCardPosition) curSelected = 0;
+			else {
+				curSelected = prevSelected;
+				return;
+			}
+		
+		if (!prepForNewRank && curSelected != prevSelected && change != 0)
 			FunkinSound.playOnce(Paths.sound('scrollMenu'), 0.4);
 
-		if (curSelected < 0)
-			curSelected = grpCapsules.countLiving() - 1;
-		if (curSelected >= grpCapsules.countLiving())
-			curSelected = 0;
 
 		var daSongCapsule:SongMenuItem = grpCapsules.members[curSelected];
 		if (daSongCapsule.songData != null)
@@ -2212,19 +2259,7 @@ class FreeplayState extends MusicBeatSubstate
 			rememberedDifficulty = Constants.DEFAULT_DIFFICULTY;
 			albumRoll.albumId = null;
 		}
-
-		for (index => capsule in grpCapsules.members)
-		{
-			index += 1;
-
-			capsule.selected = index == curSelected + 1;
-
-			capsule.targetPos.y = capsule.intendedY(index - curSelected);
-			capsule.targetPos.x = 270 + (60 * (Math.sin(index - curSelected)));
-
-			if (index < curSelected)
-				capsule.targetPos.y -= 100; // another 100 for good measure
-		}
+		if(updateCardPosition) changeSelectionFractal(change);
 
 		if (grpCapsules.countLiving() > 0 && !prepForNewRank)
 		{

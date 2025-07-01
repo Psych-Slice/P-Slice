@@ -1,11 +1,13 @@
 package states.editors;
 
+#if TOUCH_CONTROLS_ALLOWED
+import flixel.math.FlxRect;
+import mobile.objects.ScrollableObject;
+#end
 import mikolka.vslice.components.crash.UserErrorSubstate;
 import mikolka.editors.CharSelectEditor;
 import mikolka.editors.StickerTest;
-import openfl.events.UncaughtErrorEvent;
 import mikolka.compatibility.VsliceOptions;
-import flixel.math.FlxRandom;
 import backend.WeekData;
 import mikolka.vslice.results.ResultState;
 import objects.Character;
@@ -33,6 +35,7 @@ class MasterEditorMenu extends MusicBeatState
 	private var directories:Array<String> = [null];
 
 	private var curSelected = 0;
+	private var curSelectedPartial:Float = 0;
 	private var curDirectory = 0;
 	private var directoryTxt:FlxText;
 
@@ -81,27 +84,38 @@ class MasterEditorMenu extends MusicBeatState
 			curDirectory = found;
 		changeDirectory();
 		#end
-		changeSelection();
-
+		
 		FlxG.mouse.visible = false;
-
+		
 		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad(#if MODS_ALLOWED 'LEFT_FULL' #else 'UP_DOWN' #end, 'A_B');
-		#end
 		
+		var scroll = new ScrollableObject(-0.01,FlxRect.weak(100,0,FlxG.width-200,FlxG.height));
+		scroll.onPartialScroll.add(delta -> changeSelection(delta,false));
+		scroll.onFullScroll.add(delta -> {
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		});
+		scroll.onTap.add(point ->{
+			if(point.overlaps(grpTexts.members[curSelected])) onAcceptKey();
+		});
+		add(scroll);
+		#end
+		changeSelection(0,true);
 		super.create();
 	}
 
 	override function update(elapsed:Float)
 	{
 		if (controls.UI_UP_P)
-		{
-			changeSelection(-1);
-		}
-		if (controls.UI_DOWN_P)
-		{
-			changeSelection(1);
-		}
+			{
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+				changeSelection(-1,true);
+			}
+			if (controls.UI_DOWN_P)
+			{
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+				changeSelection(1,true);
+			}
 		#if MODS_ALLOWED
 		if (controls.UI_LEFT_P)
 		{
@@ -118,9 +132,13 @@ class MasterEditorMenu extends MusicBeatState
 			MusicBeatState.switchState(new MainMenuState());
 		}
 
-		if (controls.ACCEPT)
-		{
-			switch (options[curSelected])
+		if (controls.ACCEPT) onAcceptKey();
+
+		super.update(elapsed);
+	}
+
+	function onAcceptKey(){
+		switch (options[curSelected])
 			{
 				case 'Chart Editor': // felt it would be cool maybe
 					LoadingState.loadAndSwitchState(new ChartingState(), false);
@@ -150,11 +168,6 @@ class MasterEditorMenu extends MusicBeatState
 						fnc();
 					}
 					fnc();
-					// @:privateAccess
-					// openfl.Lib.current.loaderInfo.uncaughtErrorEvents.dispatchEvent(
-					// 	new UncaughtErrorEvent(
-					// 		openfl.events.UncaughtErrorEvent.UNCAUGHT_ERROR,
-					// 		true,true,new openfl.errors.Error("The devs are too stupid and they write way too long errors")));
 				}
 				case 'Usermess the game':{
 					UserErrorSubstate.makeMessage("The devs are too stupid and they write way too long errors","Skill issue :/");
@@ -164,16 +177,6 @@ class MasterEditorMenu extends MusicBeatState
 					MusicBeatState.switchState(new ResultPreviewMenu());
 			}
 			FlxG.sound.music.volume = 0;
-		}
-
-		for (num => item in grpTexts.members)
-		{
-			item.targetY = num - curSelected;
-			item.alpha = 0.6;
-			if (item.targetY == 0)
-				item.alpha = 1;
-		}
-		super.update(elapsed);
 	}
 
 	function runResults(lol:Int)
@@ -208,10 +211,22 @@ class MasterEditorMenu extends MusicBeatState
 		MusicBeatState.switchState(results);
 	}
 
-	function changeSelection(change:Int = 0)
-	{
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-		curSelected = FlxMath.wrap(curSelected + change, 0, options.length - 1);
+	function changeSelection(delta:Float,usePrecision:Bool = false) {
+		if(usePrecision) {
+			curSelected =  FlxMath.wrap(curSelected + Std.int(delta), 0, options.length - 1);
+			curSelectedPartial = curSelected;
+		}
+		else {
+			curSelectedPartial = FlxMath.bound(curSelectedPartial + delta, 0, options.length - 1);
+			curSelected =  Math.round(curSelectedPartial);
+		}
+		for (num => item in grpTexts.members)
+			{
+				item.targetY = num - curSelectedPartial;
+				item.alpha = 0.6;
+				if (num == curSelected)
+					item.alpha = 1;
+			}
 	}
 
 	#if MODS_ALLOWED
