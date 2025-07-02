@@ -90,13 +90,13 @@ class MasterEditorMenu extends MusicBeatState
 		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad(#if MODS_ALLOWED 'LEFT_FULL' #else 'UP_DOWN' #end, 'A_B');
 		
-		var scroll = new ScrollableObject(-0.01,FlxRect.weak(100,0,FlxG.width-200,FlxG.height));
+		var scroll = new ScrollableObject(-0.005,FlxRect.weak(100,0,FlxG.width-200,FlxG.height));
 		scroll.onPartialScroll.add(delta -> changeSelection(delta,false));
 		scroll.onFullScroll.add(delta -> {
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		});
 		scroll.onTap.add(point ->{
-			if(point.overlaps(grpTexts.members[curSelected])) onAcceptKey();
+			if(point?.overlaps(grpTexts.members[curSelected]) ?? false) onAcceptKey();
 		});
 		add(scroll);
 		#end
