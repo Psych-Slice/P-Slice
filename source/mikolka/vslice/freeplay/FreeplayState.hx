@@ -792,9 +792,10 @@ class FreeplayState extends MusicBeatSubstate
 		scroll.onFullScroll.add(delta -> {
 			changeSelection(delta,false);
 		});
-		// scroll.onTap.add(point ->{
-		// 	if(point.overlaps(grpTexts.members[curSelected])) onAcceptKey();
-		// });
+		scroll.onTap.add(point ->{
+			var daSongCapsule:SongMenuItem = grpCapsules.members[curSelected];
+			if(point?.overlaps(daSongCapsule)) daSongCapsule.onConfirm();
+		});
 		add(scroll);
 		#end
 		#end
@@ -2219,17 +2220,26 @@ class FreeplayState extends MusicBeatSubstate
 	function changeSelection(change:Int = 0,updateCardPosition:Bool = true):Void
 	{
 		var prevSelected:Int = curSelected;
+		if(updateCardPosition) curSelectedFractal = curSelected;
 		curSelected += change;
 
 		//? Added code here to handle drag changes
 		if (curSelected < 0)
-			if(updateCardPosition) curSelected = grpCapsules.countLiving() - 1;
+			if(updateCardPosition) {
+				curSelected = grpCapsules.countLiving() - 1;
+				change = 0;
+				curSelectedFractal = curSelected;
+			}
 			else {
 				curSelected = prevSelected;
 				return;
 			}
 		if (curSelected >= grpCapsules.countLiving())
-			if (updateCardPosition) curSelected = 0;
+			if (updateCardPosition) {
+				curSelected = 0;
+				change = 0;
+				curSelectedFractal = 0;
+			}
 			else {
 				curSelected = prevSelected;
 				return;

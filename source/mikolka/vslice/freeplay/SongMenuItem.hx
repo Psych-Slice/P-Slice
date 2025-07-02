@@ -297,6 +297,16 @@ class SongMenuItem extends FlxSpriteGroup
 
   function updateBPM(newBPM:Int):Void
   {
+    if(newBPM <= 0){
+      for (item in smallNumbers) item.visible = false;
+      bpmText.visible = false;
+      return;
+    }
+    else {
+      for (item in smallNumbers) item.visible = true;
+      bpmText.visible = true;
+    }
+
     var shiftX:Float = 191;
     var tempShift:Float = 0;
 
@@ -423,6 +433,16 @@ class SongMenuItem extends FlxSpriteGroup
 
   function updateDifficultyRating(newRating:Int):Void
   {
+    if(newRating < 0){
+      for (item in bigNumbers) item.visible = false;
+      difficultyText.visible = false;
+      return;
+    }
+    else {
+      for (item in bigNumbers) item.visible = true;
+      difficultyText.visible = true;
+    }
+    
     var ratingPadded:String = newRating < 10 ? '0$newRating' : '$newRating';
 
     for (i in 0...bigNumbers.length)

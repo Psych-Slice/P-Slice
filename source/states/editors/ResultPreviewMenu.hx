@@ -41,7 +41,7 @@ class ResultPreviewMenu extends MusicBeatState
 		add(bg);
 
 		#if TOUCH_CONTROLS_ALLOWED
-		var scroll = new ScrollableObject(-0.01,FlxRect.weak(100,0,FlxG.width-200,FlxG.height));
+		var scroll = new ScrollableObject(-0.005,FlxRect.weak(100,0,FlxG.width-200,FlxG.height));
 		scroll.onPartialScroll.add(delta -> changeSelection(delta,false));
 		scroll.onFullScroll.add(delta -> {
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
