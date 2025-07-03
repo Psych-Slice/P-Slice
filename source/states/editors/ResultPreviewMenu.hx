@@ -1,8 +1,8 @@
 package states.editors;
 
-#if TOUCH_CONTROLS_ALLOWED
-import mobile.objects.ScrollableObject;
-#end
+
+import objects.AlphabetMenu;
+import mikolka.funkin.FunkinSprite;
 import flixel.math.FlxRect;
 import openfl.events.UncaughtErrorEvent;
 import mikolka.compatibility.VsliceOptions;
@@ -20,10 +20,8 @@ class ResultPreviewMenu extends MusicBeatState
 		'Preview results (good)', 
 		'Preview results (shit)'
 	];
-	private var grpTexts:FlxTypedGroup<Alphabet>;
+	var menu:AlphabetMenu;
 
-	private var curSelected:Int = 0;
-	private var curSelectedPartial:Float = 0;
 
 	override function create()
 	{
@@ -35,72 +33,34 @@ class ResultPreviewMenu extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("Result Preview Menu", null);
 		#end
-
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
 		bg.scrollFactor.set();
 		add(bg);
 
-		#if TOUCH_CONTROLS_ALLOWED
-		var scroll = new ScrollableObject(-0.005,FlxRect.weak(100,0,FlxG.width-200,FlxG.height));
-		scroll.onPartialScroll.add(delta -> changeSelection(delta,false));
-		scroll.onFullScroll.add(delta -> {
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-		});
-		scroll.onTap.add(point ->{
-			if(point.overlaps(grpTexts.members[curSelected])) onAccept();
-		});
-		add(scroll);
-		#end
-
-		grpTexts = new FlxTypedGroup<Alphabet>();
-		add(grpTexts);
-
-		for (i in 0...options.length)
-		{
-			var leText:Alphabet = new Alphabet(90, 320, options[i], true);
-			leText.isMenuItem = true;
-			leText.targetY = i;
-			grpTexts.add(leText);
-			leText.snapToPosition();
-			leText.screenCenter();
-		}
+		menu = new AlphabetMenu(options);
+		menu.onSelect.add(onAccept);
+		add(menu);
 
 		FlxG.mouse.visible = false;
 		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad("UP_DOWN", "A_B");
 		#end
 		super.create();
-		changeSelection(0,true);
 	}
 
 	override function update(elapsed:Float)
 	{
-		FlxG.watch.addQuick("curSelected", curSelected);
-		FlxG.watch.addQuick("curSelectedPartial", curSelectedPartial);
-		if (controls.UI_UP_P)
-		{
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-			changeSelection(-1,true);
-		}
-		if (controls.UI_DOWN_P)
-		{
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-			changeSelection(1,true);
-		}
-
 		if (controls.BACK)
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			MusicBeatState.switchState(new MasterEditorMenu());
 		}
 
-		if (controls.ACCEPT) onAccept();
-
 		super.update(elapsed);
 	}
 
-	function onAccept() {
-		switch (options[curSelected])
+	function onAccept(option:String) {
+		switch (option)
 			{
 				case 'Preview results (perfect)':
 					runResults(200);
@@ -147,21 +107,5 @@ class ResultPreviewMenu extends MusicBeatState
 		MusicBeatState.switchState(results);
 	}
 
-	function changeSelection(delta:Float,usePrecision:Bool = false) {
-		if(usePrecision) {
-			curSelected =  FlxMath.wrap(curSelected + Std.int(delta), 0, options.length - 1);
-			curSelectedPartial = curSelected;
-		}
-		else {
-			curSelectedPartial = FlxMath.bound(curSelectedPartial + delta, 0, options.length - 1);
-			curSelected =  Math.round(curSelectedPartial);
-		}
-		for (num => item in grpTexts.members)
-			{
-				item.targetY = num - curSelectedPartial;
-				item.alpha = 0.6;
-				if (num == curSelected)
-					item.alpha = 1;
-			}
-	}
+
 }

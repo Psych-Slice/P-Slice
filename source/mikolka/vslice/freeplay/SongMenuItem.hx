@@ -120,7 +120,7 @@ class SongMenuItem extends FlxSpriteGroup
     difficultyText.setGraphicSize(Std.int(difficultyText.width * 0.9));
     add(difficultyText);
 
-    txtWeek = new AtlasText(298, 91, 'week 69', AtlasFont.CAPSULE_TEXT);
+    txtWeek = new AtlasText(298, 91, '', AtlasFont.CAPSULE_TEXT);
     add(txtWeek);
 
 
@@ -552,7 +552,7 @@ class SongMenuItem extends FlxSpriteGroup
 
     //? Add custom week text here
     //checkWeek(songData?.levelId);
-    txtWeek.text = songData?.songWeekName ?? "Random";
+    txtWeek.text = songData?.songWeekName ?? "";
   }
 
   var frameInTicker:Float = 0;

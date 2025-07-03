@@ -785,18 +785,33 @@ class FreeplayState extends MusicBeatSubstate
 			});
 		}
 		#if !LEGACY_PSYCH
-		
-		var scroll = new ScrollableObject(-0.01,FlxRect.weak(100,-100,FlxG.width-300,FlxG.height));
+		#if debug
+		var button = new flixel.FlxSprite(420,260);
+		FunkinTools.makeSolidColor(button,450,95,FlxColor.PURPLE);
+		button.alpha = 0.5;
+		#else
+		var button = new flixel.FlxObject(420,260  ,450,95);
+		#end
+		button.cameras = [funnyCam];
+
+		var scroll = new ScrollableObject(-0.01,150,60,FlxG.width-400,FlxG.height,button);
 		scroll.cameras = [funnyCam];
-		scroll.onPartialScroll.add(delta -> changeSelectionFractal(delta));
+		scroll.onPartialScroll.add(delta -> {
+			if(busy) return;
+			changeSelectionFractal(delta);
+		});
+		scroll.onFullScrollSnap.add(() -> changeSelectionFractal(curSelected-curSelectedFractal));
 		scroll.onFullScroll.add(delta -> {
+			if(busy) return;
 			changeSelection(delta,false);
 		});
-		scroll.onTap.add(point ->{
+		scroll.onTap.add(() ->{
+			if(busy) return;
 			var daSongCapsule:SongMenuItem = grpCapsules.members[curSelected];
-			if(point?.overlaps(daSongCapsule)) daSongCapsule.onConfirm();
+			daSongCapsule.onConfirm();
 		});
 		add(scroll);
+		add(button);
 		#end
 		#end
 
@@ -874,6 +889,7 @@ class FreeplayState extends MusicBeatSubstate
 		randomCapsule.alpha = 0;
 		randomCapsule.songText.visible = false;
 		randomCapsule.favIcon.visible = false;
+		randomCapsule.txtWeek.text = "Random";
 		randomCapsule.favIconBlurred.visible = false;
 		randomCapsule.ranking.visible = false;
 		randomCapsule.blurredRanking.visible = false;
