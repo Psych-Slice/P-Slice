@@ -145,7 +145,7 @@ class TwoPicos {
 			game.moveCameraSection();
 			FlxG.camera.scroll.set(host.camFollow.x - FlxG.width / 2, host.camFollow.y - FlxG.height / 2);
 			FlxG.camera.zoom = host.defaultCamZoom;
-			if(!explode || playerShoots) game.startCountdown();
+			if(!explode || playerShoots || !seenOutcome) game.startCountdown();
 		};
 		#if LEGACY_PSYCH
 		cutsceneHandler.finishCallback2 = function()
