@@ -264,7 +264,7 @@ private class AtlasFontData
     }
 
     if (containsUpper != containsLower) caseAllowed = containsUpper ? Upper : Lower;
-    if(name == CAPSULE_TEXT) spaceWidth = 24;
+    if(name == CAPSULE_TEXT) spaceWidth = 5;
   }
 }
 

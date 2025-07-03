@@ -6,5 +6,6 @@
 	"freeplayPrevEnd": 20,
 	"altInstrumentalSongs": "pico (Pico Mix)",
 	"allowErectVariants": true,
-	"freeplayPrevStart": 0
+	"freeplayPrevStart": 0,
+	"freeplayWeekName": "bico"
 }

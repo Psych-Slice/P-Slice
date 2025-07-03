@@ -1,9 +1,6 @@
 package states.editors;
 
-#if TOUCH_CONTROLS_ALLOWED
-import flixel.math.FlxRect;
-import mobile.objects.ScrollableObject;
-#end
+import objects.AlphabetMenu;
 import mikolka.vslice.components.crash.UserErrorSubstate;
 import mikolka.editors.CharSelectEditor;
 import mikolka.editors.StickerTest;
@@ -31,11 +28,9 @@ class MasterEditorMenu extends MusicBeatState
 		'Note Splash Editor', 
 		'Result Preview Menu'
 	];
-	private var grpTexts:FlxTypedGroup<Alphabet>;
+	var menu:AlphabetMenu;
 	private var directories:Array<String> = [null];
 
-	private var curSelected = 0;
-	private var curSelectedPartial:Float = 0;
 	private var curDirectory = 0;
 	private var directoryTxt:FlxText;
 
@@ -52,17 +47,9 @@ class MasterEditorMenu extends MusicBeatState
 		bg.color = 0xFF4CAF50;
 		add(bg);
 
-		grpTexts = new FlxTypedGroup<Alphabet>();
-		add(grpTexts);
-
-		for (i in 0...options.length)
-		{
-			var leText:Alphabet = new Alphabet(90, 320, options[i], true);
-			leText.isMenuItem = true;
-			leText.targetY = i;
-			grpTexts.add(leText);
-			leText.snapToPosition();
-		}
+		menu = new AlphabetMenu(options);
+		menu.onSelect.add(onAccept);
+		add(menu);
 
 		#if MODS_ALLOWED
 		var textBG:FlxSprite = new FlxSprite(0, FlxG.height - 42).makeGraphic(FlxG.width, 42, 0xFF000000);
@@ -85,37 +72,18 @@ class MasterEditorMenu extends MusicBeatState
 		changeDirectory();
 		#end
 		
+		
+
 		FlxG.mouse.visible = false;
 		
 		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad(#if MODS_ALLOWED 'LEFT_FULL' #else 'UP_DOWN' #end, 'A_B');
-		
-		var scroll = new ScrollableObject(-0.005,FlxRect.weak(100,0,FlxG.width-200,FlxG.height));
-		scroll.onPartialScroll.add(delta -> changeSelection(delta,false));
-		scroll.onFullScroll.add(delta -> {
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-		});
-		scroll.onTap.add(point ->{
-			if(point?.overlaps(grpTexts.members[curSelected]) ?? false) onAcceptKey();
-		});
-		add(scroll);
 		#end
-		changeSelection(0,true);
 		super.create();
 	}
 
 	override function update(elapsed:Float)
 	{
-		if (controls.UI_UP_P)
-			{
-				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-				changeSelection(-1,true);
-			}
-			if (controls.UI_DOWN_P)
-			{
-				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-				changeSelection(1,true);
-			}
 		#if MODS_ALLOWED
 		if (controls.UI_LEFT_P)
 		{
@@ -132,13 +100,11 @@ class MasterEditorMenu extends MusicBeatState
 			MusicBeatState.switchState(new MainMenuState());
 		}
 
-		if (controls.ACCEPT) onAcceptKey();
-
 		super.update(elapsed);
 	}
 
-	function onAcceptKey(){
-		switch (options[curSelected])
+	function onAccept(option:String) {
+		switch (option)
 			{
 				case 'Chart Editor': // felt it would be cool maybe
 					LoadingState.loadAndSwitchState(new ChartingState(), false);
@@ -209,24 +175,6 @@ class MasterEditorMenu extends MusicBeatState
 		@:privateAccess
 		results.playerCharacterId = VsliceOptions.LAST_MOD.char_name;
 		MusicBeatState.switchState(results);
-	}
-
-	function changeSelection(delta:Float,usePrecision:Bool = false) {
-		if(usePrecision) {
-			curSelected =  FlxMath.wrap(curSelected + Std.int(delta), 0, options.length - 1);
-			curSelectedPartial = curSelected;
-		}
-		else {
-			curSelectedPartial = FlxMath.bound(curSelectedPartial + delta, 0, options.length - 1);
-			curSelected =  Math.round(curSelectedPartial);
-		}
-		for (num => item in grpTexts.members)
-			{
-				item.targetY = num - curSelectedPartial;
-				item.alpha = 0.6;
-				if (num == curSelected)
-					item.alpha = 1;
-			}
 	}
 
 	#if MODS_ALLOWED
