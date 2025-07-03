@@ -50,6 +50,14 @@ class PhillyTrainErect extends BaseStage
 		phillyStreet = new BGSprite('philly/erect/street', -40, 50);
 		add(phillyStreet);
 		
+		if (VsliceOptions.SHADERS)
+			{
+				colorShader = new AdjustColorShader();
+				colorShader.hue = -26;
+				colorShader.saturation = -16;
+				colorShader.contrast = 0;
+				colorShader.brightness = -5;
+			}
 
 		if(!seenCutscene 
 			&& PlayState.SONG.player1 == "pico-playable" 
@@ -64,12 +72,6 @@ class PhillyTrainErect extends BaseStage
 
 		if (VsliceOptions.SHADERS)
 		{
-			colorShader = new AdjustColorShader();
-			colorShader.hue = -26;
-			colorShader.saturation = -16;
-			colorShader.contrast = 0;
-			colorShader.brightness = -5;
-
 			boyfriend.shader = colorShader;
 			dad.shader = colorShader;
 			gf.shader = colorShader;

@@ -123,6 +123,10 @@ class SchoolErect extends BaseStage
 		}
 
 	}
+	override function gameOverStart(SubState:GameOverSubstate) {
+		boyfriend.shader = null;
+		super.gameOverStart(SubState);
+	}
 	override function createPost(){
 		var _song = PlayState.SONG;
 		if(PicoCapableStage.PIXEL_LIST.contains(gf.curCharacter)){
