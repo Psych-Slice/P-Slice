@@ -3,16 +3,13 @@ package objects;
 import flixel.util.FlxSignal.FlxTypedSignal;
 import flixel.math.FlxRect;
 import flixel.group.FlxGroup.FlxGroup;
-#if TOUCH_CONTROLS_ALLOWED
-import mobile.objects.TouchZone;
-import mobile.objects.ScrollableObject;
-#end
+
 
 class AlphabetMenu extends FlxGroup {
     public var onSelect(default,never):FlxTypedSignal<(option:String)->Void> = new FlxTypedSignal();
-    private var grpTexts:FlxTypedGroup<Alphabet>;
+    public var grpTexts(default,never):FlxTypedGroup<Alphabet> = new FlxTypedGroup();
 
-	private var curSelected:Int = 0;
+	public var curSelected:Int = 0;
 	private var curSelectedPartial:Float = 0;
     private var options:Array<String>;
 
@@ -21,7 +18,6 @@ class AlphabetMenu extends FlxGroup {
         this.options = options;
         FlxG.watch.addQuick("curSelected", curSelected);
 		FlxG.watch.addQuick("curSelectedPartial", curSelectedPartial);
-		grpTexts = new FlxTypedGroup();
 		add(grpTexts);
 
 		for (i in 0...options.length)
