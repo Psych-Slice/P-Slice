@@ -24,8 +24,9 @@ import mobile.objects.TouchPad;
 import mobile.objects.TouchButton;
 import mobile.backend.MobileData;
 import mobile.input.MobileInputManager;
+import mobile.objects.TouchZone;
+import mobile.objects.ScrollableObject;
 #end
-
 // Android
 #if android
 import android.content.Context as AndroidContext;

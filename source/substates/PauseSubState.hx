@@ -1,13 +1,15 @@
 package substates;
 
+#if TOUCH_CONTROLS_ALLOWED
+import mobile.objects.TouchZone;
+import mobile.objects.ScrollableObject;
+#end
 import mikolka.vslice.freeplay.FreeplayState;
 import backend.WeekData;
 import backend.Highscore;
 import backend.Song;
-
 import flixel.util.FlxStringUtil;
 import flixel.addons.transition.FlxTransitionableState;
-
 import mikolka.vslice.StickerSubState;
 import options.OptionsState;
 
@@ -26,6 +28,7 @@ class PauseSubState extends MusicBeatSubstate
 	];
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
+	var curSelectedPartial:Float = 0;
 
 	var pauseMusic:FlxSound;
 	var practiceText:FlxText;
@@ -187,6 +190,21 @@ class PauseSubState extends MusicBeatSubstate
 		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad(menuItems.contains('Skip Time') ? 'LEFT_FULL' : 'UP_DOWN', 'A');
 		addTouchPadCamera();
+
+		var button = new TouchZone(85,300,1000,100,FlxColor.PURPLE);
+		
+		var scroll = new ScrollableObject(-0.008,100,0,FlxG.width-200,FlxG.height,button);
+		scroll.onPartialScroll.add(delta -> changeSelection(delta,false));
+		scroll.onFullScroll.add(delta -> {
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		});
+        scroll.onFullScrollSnap.add(() ->changeSelection(0,true));
+		scroll.onTap.add(() ->{
+			var daSelected:String = menuItems[curSelected];
+			onAccept(daSelected);
+		});
+		add(scroll);
+		add(button);
 		#end
 
 		super.create();
@@ -229,11 +247,13 @@ class PauseSubState extends MusicBeatSubstate
 		updateSkipTextStuff();
 		if (controls.UI_UP_P)
 		{
-			changeSelection(-1);
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			changeSelection(-1,true);
 		}
 		if (controls.UI_DOWN_P)
 		{
-			changeSelection(1);
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			changeSelection(1,true);
 		}
 
 		var daSelected:String = menuItems[curSelected];
@@ -252,6 +272,7 @@ class PauseSubState extends MusicBeatSubstate
 					curTime += 1000;
 					holdTime = 0;
 				}
+				if (controls.ACCEPT) onAccept(daSelected);
 
 				if(controls.UI_LEFT || controls.UI_RIGHT)
 				{
@@ -267,7 +288,19 @@ class PauseSubState extends MusicBeatSubstate
 				}
 		}
 
-		if (controls.ACCEPT && (cantUnpause <= 0 || !controls.controllerMode))
+
+		
+		#if TOUCH_CONTROLS_ALLOWED
+		if (touchPad == null) //sometimes it dosent add the tpad, hopefully this fixes it
+		{
+			addTouchPad(PlayState.chartingMode ? 'LEFT_FULL' : 'UP_DOWN', 'A');
+			addTouchPadCamera();
+		}
+		#end
+	}
+
+	function onAccept(selectedOption:String){
+		if (cantUnpause <= 0 || !controls.controllerMode)
 		{
 			if (menuItems == difficultyChoices)
 			{
@@ -275,7 +308,7 @@ class PauseSubState extends MusicBeatSubstate
 				var poop:String = Highscore.formatSong(songLowercase, curSelected);
 				try
 				{
-					if(menuItems.length - 1 != curSelected && difficultyChoices.contains(daSelected))
+					if(menuItems.length - 1 != curSelected && difficultyChoices.contains(selectedOption))
 					{
 						Song.loadFromJson(poop, songLowercase);
 						PlayState.storyDifficulty = curSelected;
@@ -300,7 +333,6 @@ class PauseSubState extends MusicBeatSubstate
 					missingTextBG.visible = true;
 					FlxG.sound.play(Paths.sound('cancelMenu'));
 
-					super.update(elapsed);
 					return;
 				}
 
@@ -309,7 +341,7 @@ class PauseSubState extends MusicBeatSubstate
 				regenMenu();
 			}
 
-			switch (daSelected)
+			switch (selectedOption)
 			{
 				case "Resume":
 					Paths.clearUnusedMemory();
@@ -389,10 +421,10 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.chartingMode = false;
 					FlxG.camera.followLerp = 0;
 				default:
-					if(daSelected == cutscene_skipTxt){
+					if(selectedOption == cutscene_skipTxt){
 						specialAction = SKIP;
 						close();
-					}else if(daSelected == cutscene_resetTxt){
+					}else if(selectedOption == cutscene_resetTxt){
 						if(cutscene_hardReset) restartSong();
 							else{
 								specialAction = RESTART;
@@ -401,16 +433,7 @@ class PauseSubState extends MusicBeatSubstate
 					}
 			}
 		}
-		
-		#if TOUCH_CONTROLS_ALLOWED
-		if (touchPad == null) //sometimes it dosent add the tpad, hopefully this fixes it
-		{
-			addTouchPad(PlayState.chartingMode ? 'LEFT_FULL' : 'UP_DOWN', 'A');
-			addTouchPadCamera();
-		}
-		#end
 	}
-
 	function deleteSkipTimeText()
 	{
 		if(skipTimeText != null)
@@ -444,26 +467,31 @@ class PauseSubState extends MusicBeatSubstate
 		super.destroy();
 	}
 
-	function changeSelection(change:Int = 0):Void
-	{
-		curSelected = FlxMath.wrap(curSelected + change, 0, menuItems.length - 1);
+	function changeSelection(delta:Float,usePrecision:Bool = false) {
+		if(usePrecision) {
+			curSelected =  FlxMath.wrap(curSelected + Std.int(delta), 0, menuItems.length - 1);
+			curSelectedPartial = curSelected;
+		}
+		else {
+			curSelectedPartial = FlxMath.bound(curSelectedPartial + delta, 0, menuItems.length - 1);
+			curSelected =  Math.round(curSelectedPartial);
+		}
 		for (num => item in grpMenuShit.members)
-		{
-			item.targetY = num - curSelected;
-			item.alpha = 0.6;
-			if (item.targetY == 0)
 			{
-				item.alpha = 1;
-				if(item == skipTimeTracker)
-				{
-					curTime = Math.max(0, Conductor.songPosition);
-					updateSkipTimeText();
+				item.targetY = num - curSelectedPartial;
+				item.alpha = 0.6;
+				if (num == curSelected){
+					item.alpha = 1;
+					if(item == skipTimeTracker)
+					{
+						curTime = Math.max(0, Conductor.songPosition);
+						updateSkipTimeText();
+					}
 				}
 			}
-		}
 		missingText.visible = false;
 		missingTextBG.visible = false;
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		
 	}
 
 	function regenMenu():Void {
@@ -495,7 +523,7 @@ class PauseSubState extends MusicBeatSubstate
 			}
 		}
 		curSelected = 0;
-		changeSelection();
+		changeSelection(0,true);
 	}
 	
 	function updateSkipTextStuff()

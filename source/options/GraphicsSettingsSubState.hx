@@ -96,9 +96,9 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		}
 	}
 
-	override function changeSelection(change:Int = 0)
+	override function changeSelection(change:Float,usePrecision:Bool = false) 
 	{
-		super.changeSelection(change);
+		super.changeSelection(change,usePrecision);
 		boyfriend.visible = (antialiasingOption == curSelected);
 	}
 }

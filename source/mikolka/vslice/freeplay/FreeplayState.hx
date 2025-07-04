@@ -785,13 +785,8 @@ class FreeplayState extends MusicBeatSubstate
 			});
 		}
 		#if !LEGACY_PSYCH
-		#if debug
-		var button = new flixel.FlxSprite(420,260);
-		FunkinTools.makeSolidColor(button,450,95,FlxColor.PURPLE);
-		button.alpha = 0.5;
-		#else
-		var button = new flixel.FlxObject(420,260  ,450,95);
-		#end
+
+		var button = new TouchZone(420,260  ,450,95);
 		button.cameras = [funnyCam];
 
 		var scroll = new ScrollableObject(-0.01,150,60,FlxG.width-400,FlxG.height,button);

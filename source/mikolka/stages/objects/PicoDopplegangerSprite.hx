@@ -34,8 +34,6 @@ class PicoDopplegangerSprite extends FlxAtlasSprite
 
     trace('Doppelganger: doAnim(' + suffix + ', ' + shoot + ', ' + explode + ')');
 
-    cutsceneHandler.timer(0.3, () -> {cutsceneSounds = FunkinSound.load(Paths.sound('cutscene/picoGasp'), 1.0, false, true, true);});
-
     if(shoot == true){
       playAnimation("shoot" + suffix, true, false, false);
 

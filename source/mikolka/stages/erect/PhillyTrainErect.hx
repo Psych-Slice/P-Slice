@@ -15,6 +15,8 @@ class PhillyTrainErect extends BaseStage
 	var phillyTrain:PhillyTrain;
 	var curLight:Int = -1;
 
+	var cutsceneObj:TwoPicos;
+
 	var curLightEvent:Int = -1;
 	var colorShader:AdjustColorShader;
 
@@ -49,21 +51,22 @@ class PhillyTrainErect extends BaseStage
 
 		phillyStreet = new BGSprite('philly/erect/street', -40, 50);
 		add(phillyStreet);
-		
-		if (VsliceOptions.SHADERS)
-			{
-				colorShader = new AdjustColorShader();
-				colorShader.hue = -26;
-				colorShader.saturation = -16;
-				colorShader.contrast = 0;
-				colorShader.brightness = -5;
-			}
 
-		if(!seenCutscene 
-			&& PlayState.SONG.player1 == "pico-playable" 
-			&& PlayState.SONG.player2 == "pico") setStartCallback(new TwoPicos(this,colorShader).startCutscene);
-		
-		new PhillyLights(phillyStreet,phillyWindow.x,phillyWindow.y,phillyLightsColors);
+		if (VsliceOptions.SHADERS)
+		{
+			colorShader = new AdjustColorShader();
+			colorShader.hue = -26;
+			colorShader.saturation = -16;
+			colorShader.contrast = 0;
+			colorShader.brightness = -5;
+		}
+
+		if (!seenCutscene && PlayState.SONG.player1 == "pico-playable" && PlayState.SONG.player2 == "pico"){
+			cutsceneObj = new TwoPicos(this, colorShader);
+			setStartCallback(cutsceneObj.startCutscene);
+		}
+
+		new PhillyLights(phillyStreet, phillyWindow.x, phillyWindow.y, phillyLightsColors);
 	}
 
 	override function createPost()
@@ -79,9 +82,13 @@ class PhillyTrainErect extends BaseStage
 			PicoCapableStage.instance?.applyABotShader(colorShader);
 		}
 	}
-	override function eventCalled(eventName:String, value1:String, value2:String, flValue1:Null<Float>, flValue2:Null<Float>, strumTime:Float) {
-		if(eventName == "Change Character" && VsliceOptions.SHADERS){
-			switch(value1.toLowerCase().trim()) {
+
+	override function eventCalled(eventName:String, value1:String, value2:String, flValue1:Null<Float>, flValue2:Null<Float>, strumTime:Float)
+	{
+		if (eventName == "Change Character" && VsliceOptions.SHADERS)
+		{
+			switch (value1.toLowerCase().trim())
+			{
 				case 'gf' | 'girlfriend' | '2':
 					gf.shader = colorShader;
 				case 'dad' | 'opponent' | '1':
@@ -89,6 +96,10 @@ class PhillyTrainErect extends BaseStage
 				default:
 					boyfriend.shader = colorShader;
 			}
+		}
+		else if (eventName == "Philly Glow" && cutsceneObj != null)
+		{
+          cutsceneObj.imposterPico.color = dad.color;
 		}
 	}
 
@@ -109,15 +120,20 @@ class PhillyTrainErect extends BaseStage
 		}
 	}
 
-	override function openSubState(SubState:FlxSubState) {
-		if(phillyTrain.sound?.playing){
+	override function openSubState(SubState:FlxSubState)
+	{
+		if (phillyTrain.sound?.playing)
+		{
 			phillyTrain.sound.pause();
-			PlayState.instance.subStateClosed.addOnce((sub) ->{
-				if (phillyTrain.sound != null) phillyTrain.sound.resume();
+			PlayState.instance.subStateClosed.addOnce((sub) ->
+			{
+				if (phillyTrain.sound != null)
+					phillyTrain.sound.resume();
 			});
 		}
 		super.openSubState(SubState);
 	}
+
 	function doFlash()
 	{
 		var color:FlxColor = FlxColor.WHITE;
@@ -126,5 +142,4 @@ class PhillyTrainErect extends BaseStage
 
 		FlxG.camera.flash(color, 0.15, null, true);
 	}
-
 }
