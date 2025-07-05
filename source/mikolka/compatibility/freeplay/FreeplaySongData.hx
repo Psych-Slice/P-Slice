@@ -72,8 +72,9 @@ using mikolka.funkin.utils.ArrayTools;
 			trace('$songName is missing variant in $sngDataPath');
 			this.songDifficulties.remove("erect");
 			this.songDifficulties.remove("nightmare");
+
 		}
-    if (!this.songDifficulties.contains(currentDifficulty))
+    if (!this.songDifficulties.contains(currentDifficulty) && songDifficulties.length>0)
         currentDifficulty = songDifficulties[0]; // TODO
     
     songStartingBpm = BPMCache.instance.getBPM(sngDataPath,fileSngName);

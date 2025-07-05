@@ -34,7 +34,7 @@ class DifficultyStars extends FlxSpriteGroup
     flames = new FreeplayFlames(0, 0);
     add(flames);
     
-    stars = new FlxAtlasSprite(0, 0, Paths.animateAtlas("freeplay/freeplayStars"));
+    stars = new FlxAtlasSprite(0, 0, "freeplay/freeplayStars");
     stars.anim.play("diff stars");
     add(stars);
     if(VsliceOptions.SHADERS){

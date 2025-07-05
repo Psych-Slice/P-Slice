@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
+-->
+<TextureAtlas imagePath="capsule-text.png" width="134" height="144">
+	<SubTexture name="#0000" x="52" y="106" width="14" height="12" rotated="true" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="$0000" x="85" y="72" width="17" height="11" rotated="true" frameX="-0" frameY="-4" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="(0000" x="123" y="69" width="6" height="22" frameX="-1" frameY="-1" frameWidth="7" frameHeight="24"/>
+	<SubTexture name=")0000" x="127" y="19" width="6" height="22" frameX="-0" frameY="-1" frameWidth="7" frameHeight="24"/>
+	<SubTexture name="-0000" x="123" y="132" width="8" height="4" frameX="-0" frameY="-10" frameWidth="8" frameHeight="24"/>
+	<SubTexture name="-apostrophe-0000" x="123" y="139" width="7" height="4" rotated="true" frameX="-1" frameY="-4" frameWidth="6" frameHeight="24"/>
+	<SubTexture name="-exclamation point-0000" x="12" y="135" width="15" height="5" rotated="true" frameX="-0" frameY="-5" frameWidth="6" frameHeight="24"/>
+	<SubTexture name="-inverted exclamation point-0000" x="48" y="135" width="14" height="5" rotated="true" frameX="-0" frameY="-7" frameWidth="6" frameHeight="24"/>
+	<SubTexture name="-inverted question mark-0000" x="99" y="51" width="11" height="15" frameX="-0" frameY="-7" frameWidth="11" frameHeight="24"/>
+	<SubTexture name="-period-0000" x="91" y="133" width="5" height="6" frameX="-1" frameY="-14" frameWidth="6" frameHeight="24"/>
+	<SubTexture name="-question mark-0000" x="104" y="37" width="15" height="11" rotated="true" frameX="-0" frameY="-5" frameWidth="11" frameHeight="24"/>
+	<SubTexture name="-quote-0000" x="69" y="91" width="7" height="7" frameX="-0" frameY="-4" frameWidth="7" frameHeight="24"/>
+	<SubTexture name="00000" x="44" y="76" width="15" height="12" rotated="true" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="10000" x="1" y="127" width="8" height="15" frameX="-0" frameY="-5" frameWidth="8" frameHeight="24"/>
+	<SubTexture name="20000" x="62" y="76" width="15" height="12" rotated="true" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="30000" x="95" y="86" width="11" height="15" frameX="-1" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="40000" x="1" y="109" width="11" height="15" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="50000" x="18" y="87" width="12" height="15" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="60000" x="80" y="86" width="12" height="15" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="70000" x="105" y="104" width="11" height="15" frameX="-0" frameY="-5" frameWidth="11" frameHeight="24"/>
+	<SubTexture name="80000" x="33" y="91" width="15" height="12" rotated="true" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="90000" x="51" y="91" width="15" height="12" rotated="true" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="@0000" x="1" y="73" width="14" height="15" frameX="-0" frameY="-7" frameWidth="15" frameHeight="24"/>
+	<SubTexture name="A0000" x="81" y="19" width="14" height="15" frameX="-0" frameY="-5" frameWidth="14" frameHeight="24"/>
+	<SubTexture name="B0000" x="1" y="91" width="12" height="15" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="C0000" x="69" y="119" width="15" height="11" rotated="true" frameX="-0" frameY="-5" frameWidth="11" frameHeight="24"/>
+	<SubTexture name="D0000" x="89" y="1" width="14" height="15" frameX="-0" frameY="-5" frameWidth="14" frameHeight="24"/>
+	<SubTexture name="E0000" x="69" y="104" width="15" height="12" rotated="true" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="F0000" x="87" y="104" width="15" height="12" rotated="true" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="G0000" x="63" y="22" width="15" height="15" frameX="-0" frameY="-5" frameWidth="15" frameHeight="24"/>
+	<SubTexture name="H0000" x="87" y="119" width="15" height="11" rotated="true" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="I0000" x="30" y="135" width="15" height="5" rotated="true" frameX="-1" frameY="-5" frameWidth="7" frameHeight="24"/>
+	<SubTexture name="J0000" x="119" y="101" width="10" height="15" frameX="-0" frameY="-5" frameWidth="10" frameHeight="24"/>
+	<SubTexture name="K0000" x="15" y="121" width="15" height="11" rotated="true" frameX="-0" frameY="-5" frameWidth="11" frameHeight="24"/>
+	<SubTexture name="L0000" x="105" y="132" width="15" height="8" rotated="true" frameX="-0" frameY="-5" frameWidth="8" frameHeight="24"/>
+	<SubTexture name="M0000" x="71" y="1" width="15" height="15" frameX="-0" frameY="-5" frameWidth="16" frameHeight="24"/>
+	<SubTexture name="N0000" x="33" y="121" width="15" height="11" rotated="true" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="O0000" x="64" y="40" width="15" height="15" frameX="-0" frameY="-5" frameWidth="15" frameHeight="24"/>
+	<SubTexture name="P0000" x="16" y="106" width="15" height="12" rotated="true" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="Q0000" x="67" y="58" width="15" height="15" frameX="-0" frameY="-5" frameWidth="15" frameHeight="24"/>
+	<SubTexture name="R0000" x="51" y="121" width="15" height="11" rotated="true" frameX="-1" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="S0000" x="34" y="106" width="15" height="12" rotated="true" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="T0000" x="113" y="19" width="11" height="15" frameX="-0" frameY="-5" frameWidth="11" frameHeight="24"/>
+	<SubTexture name="U0000" x="121" y="1" width="11" height="15" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="V0000" x="98" y="19" width="12" height="15" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="W0000" x="45" y="43" width="16" height="15" frameX="-0" frameY="-5" frameWidth="16" frameHeight="24"/>
+	<SubTexture name="X0000" x="105" y="69" width="15" height="11" rotated="true" frameX="-0" frameY="-5" frameWidth="11" frameHeight="24"/>
+	<SubTexture name="Y0000" x="113" y="51" width="11" height="15" frameX="-0" frameY="-5" frameWidth="11" frameHeight="24"/>
+	<SubTexture name="Z0000" x="109" y="83" width="11" height="15" frameX="-1" frameY="-5" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="[0000" x="127" y="44" width="6" height="22" frameX="-2" frameY="-1" frameWidth="8" frameHeight="24"/>
+	<SubTexture name="]0000" x="105" y="122" width="22" height="7" rotated="true" frameX="-0" frameY="-1" frameWidth="8" frameHeight="24"/>
+	<SubTexture name="_0000" x="123" y="94" width="10" height="4" frameX="-0" frameY="-19" frameWidth="10" frameHeight="24"/>
+	<SubTexture name="Ã0000" x="23" y="23" width="19" height="14" rotated="true" frameX="-0" frameY="-1" frameWidth="14" frameHeight="24"/>
+	<SubTexture name="Ã0000" x="37" y="1" width="14" height="19" frameX="-0" frameY="-1" frameWidth="14" frameHeight="24"/>
+	<SubTexture name="Ã0000" x="23" y="40" width="19" height="14" rotated="true" frameX="-0" frameY="-1" frameWidth="14" frameHeight="24"/>
+	<SubTexture name="Ã0000" x="1" y="41" width="19" height="14" rotated="true" frameX="-0" frameY="-1" frameWidth="14" frameHeight="24"/>
+	<SubTexture name="Ã0000" x="54" y="1" width="14" height="18" rotated="true" frameX="-0" frameY="-5" frameWidth="18" frameHeight="23"/>
+	<SubTexture name="Ã0000" x="85" y="51" width="11" height="18" frameX="-0" frameY="-5" frameWidth="11" frameHeight="24"/>
+	<SubTexture name="Ã0000" x="23" y="57" width="19" height="12" rotated="true" frameX="-0" frameY="-1" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="Ã0000" x="1" y="58" width="19" height="12" rotated="true" frameX="-0" frameY="-1" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="Ã0000" x="69" y="133" width="19" height="6" rotated="true" frameX="-1" frameY="-1" frameWidth="7" frameHeight="24"/>
+	<SubTexture name="Ã0000" x="45" y="61" width="19" height="12" rotated="true" frameX="-0" frameY="-1" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="Ã0000" x="1" y="1" width="15" height="19" frameX="-0" frameY="-1" frameWidth="15" frameHeight="24"/>
+	<SubTexture name="Ã0000" x="19" y="1" width="15" height="19" frameX="-0" frameY="-1" frameWidth="15" frameHeight="24"/>
+	<SubTexture name="Ã0000" x="1" y="23" width="19" height="15" rotated="true" frameX="-0" frameY="-1" frameWidth="15" frameHeight="24"/>
+	<SubTexture name="Ã0000" x="45" y="23" width="15" height="17" frameX="-0" frameY="-4" frameWidth="15" frameHeight="24"/>
+	<SubTexture name="Ã0000" x="82" y="37" width="19" height="11" rotated="true" frameX="-0" frameY="-1" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="Ã0000" x="23" y="72" width="18" height="12" rotated="true" frameX="-0" frameY="-2" frameWidth="12" frameHeight="24"/>
+	<SubTexture name="â¬0000" x="106" y="1" width="12" height="15" frameX="-0" frameY="-5" frameWidth="12" frameHeight="24"/>
+</TextureAtlas>

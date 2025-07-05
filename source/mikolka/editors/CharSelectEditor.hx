@@ -169,7 +169,7 @@ class CharSelectEditor extends MusicBeatState
 	public function switchEditorGF(gf:PlayerCharSelectGFData):Void
 	{
 		var gfData = activePlayer?.getCharSelectData()?.gf;
-		currentGFPath = gfData?.assetPath != null ? FunkinPath.animateAtlas(gfData?.assetPath) : null;
+		currentGFPath = gfData?.assetPath != null ? gfData?.assetPath : null;
 
 		// We don't need to update any anims if we didn't change GF
 		trace('currentGFPath(${currentGFPath})');

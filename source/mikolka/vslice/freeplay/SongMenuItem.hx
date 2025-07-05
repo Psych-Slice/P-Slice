@@ -1,5 +1,6 @@
 package mikolka.vslice.freeplay;
 
+import mikolka.funkin.AtlasText.AtlasFont;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.funkin.freeplay.FreeplayStyle;
 import mikolka.vslice.freeplay.obj.PixelatedIcon;
@@ -46,6 +47,7 @@ class SongMenuItem extends FlxSpriteGroup
 
   public var fakeRanking:FreeplayRank;
   public var fakeBlurredRanking:FreeplayRank;
+  public var txtWeek:AtlasText;
 
   var ranks:Array<String> = ["fail", "average", "great", "excellent", "perfect", "perfectsick"];
 
@@ -72,7 +74,7 @@ class SongMenuItem extends FlxSpriteGroup
 
   public var smallNumbers:Array<CapsuleNumber> = [];
 
-  public var weekNumbers:Array<CapsuleNumber> = [];
+  //public var weekNumbers:Array<CapsuleNumber> = [];
 
   var impactThing:FunkinSprite;
 
@@ -112,18 +114,18 @@ class SongMenuItem extends FlxSpriteGroup
     bpmText.setGraphicSize(Std.int(bpmText.width * 0.9));
     add(bpmText);
 
+
+
     difficultyText = new FlxSprite(414, 87).loadGraphic(Paths.image('freeplay/freeplayCapsule/difficultytext'));
     difficultyText.setGraphicSize(Std.int(difficultyText.width * 0.9));
     add(difficultyText);
 
-    weekType = new FlxSprite(291, 87);
-    weekType.frames = Paths.getSparrowAtlas('freeplay/freeplayCapsule/weektypes');
+    txtWeek = new AtlasText(298, 91, '', AtlasFont.CAPSULE_TEXT);
+    add(txtWeek);
 
-    weekType.animation.addByPrefix('WEEK', 'WEEK text instance 1', 24, false);
-    weekType.animation.addByPrefix('WEEKEND', 'WEEKEND text instance 1', 24, false);
 
-    weekType.setGraphicSize(Std.int(weekType.width * 0.9));
-    add(weekType);
+    // weekType.setGraphicSize(Std.int(weekType.width * 0.9));
+    // add(weekType);
 
     newText = new FlxSprite(454, 9);
     newText.frames = Paths.getSparrowAtlas('freeplay/freeplayCapsule/new');
@@ -240,14 +242,14 @@ class SongMenuItem extends FlxSpriteGroup
     favIcon.blend = BlendMode.ADD;
     add(favIcon);
 
-    //? Added another week num. I should really make 3 of them
-    var weekNumber:CapsuleNumber = new CapsuleNumber(355, 88.5, false, 0);
-    var weekNumber2:CapsuleNumber = new CapsuleNumber(365, 88.5, false, 0);
-    add(weekNumber);
-    add(weekNumber2);
+    // //? Added another week num. I should really make 3 of them
+    // var weekNumber:CapsuleNumber = new CapsuleNumber(355, 88.5, false, 0);
+    // var weekNumber2:CapsuleNumber = new CapsuleNumber(365, 88.5, false, 0);
+    // add(weekNumber);
+    // add(weekNumber2);
 
-    weekNumbers.push(weekNumber);
-    weekNumbers.push(weekNumber2);
+    // weekNumbers.push(weekNumber);
+    // weekNumbers.push(weekNumber2);
 
     setVisibleGrp(false);
   }
@@ -258,48 +260,6 @@ class SongMenuItem extends FlxSpriteGroup
     if(sparkle?.animation != null){ //? don't play sparkle anim if it's destroyed
       sparkle.animation.play('sparkle', true);
       sparkleTimer = new FlxTimer().start(FlxG.random.float(1.2, 4.5), sparkleEffect);
-    }
-  }
-
-  // no way to grab weeks rn, so this needs to be done :/
-  //? removed this shit
-  // negative values mean weekends
-  function checkWeek(id:Int):Void
-  {
-    // trace(name);
-    var weekNum:Int = id;
-
-    
-    //? code to handle multiple week digits
-    if (weekNum == 0)
-    {
-      weekType.visible = false;
-      weekNumbers[0].visible = false;
-      weekNumbers[1].visible = false;
-    }
-    else if(weekNum<10)
-    {
-      weekType.visible = true;
-      weekNumbers[0].visible = true;
-      weekNumbers[1].visible = false;
-      weekNumbers[0].digit = Std.int(Math.abs(weekNum));
-    }
-    else 
-    {
-      weekType.visible = true;
-      weekNumbers[0].visible = true;
-      weekNumbers[1].visible = true;
-      weekNumbers[1].digit = Std.int(Math.abs(weekNum%10));
-      weekNumbers[0].digit = Std.int(Math.abs(weekNum/10));
-    }
-    if (weekNum > 0)
-    {
-      weekType.animation.play('WEEK', true);
-    }
-    else
-    {
-      weekType.animation.play('WEEKEND', true);
-      weekNumbers[0].offset.x -= 35;
     }
   }
 
@@ -337,6 +297,16 @@ class SongMenuItem extends FlxSpriteGroup
 
   function updateBPM(newBPM:Int):Void
   {
+    if(newBPM <= 0){
+      for (item in smallNumbers) item.visible = false;
+      bpmText.visible = false;
+      return;
+    }
+    else {
+      for (item in smallNumbers) item.visible = true;
+      bpmText.visible = true;
+    }
+
     var shiftX:Float = 191;
     var tempShift:Float = 0;
 
@@ -463,6 +433,16 @@ class SongMenuItem extends FlxSpriteGroup
 
   function updateDifficultyRating(newRating:Int):Void
   {
+    if(newRating < 0){
+      for (item in bigNumbers) item.visible = false;
+      difficultyText.visible = false;
+      return;
+    }
+    else {
+      for (item in bigNumbers) item.visible = true;
+      difficultyText.visible = true;
+    }
+    
     var ratingPadded:String = newRating < 10 ? '0$newRating' : '$newRating';
 
     for (i in 0...bigNumbers.length)
@@ -570,7 +550,9 @@ class SongMenuItem extends FlxSpriteGroup
 
     refreshDisplay();
 
-    checkWeek(songData?.levelId);
+    //? Add custom week text here
+    //checkWeek(songData?.levelId);
+    txtWeek.text = songData?.songWeekName ?? "";
   }
 
   var frameInTicker:Float = 0;
@@ -723,7 +705,7 @@ class SongMenuItem extends FlxSpriteGroup
     }
   }
 
-  public function intendedY(index:Int):Float
+  public function intendedY(index:Float):Float
   {
     return (index * ((height * realScaled) + 10)) + 120;
   }

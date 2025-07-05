@@ -517,7 +517,7 @@ class Character extends FlxSprite
 		{
 			atlas.cameras = cameras;
 			atlas.scrollFactor = scrollFactor;
-			atlas.scale = scale;
+			atlas.scale.set(jsonScale,jsonScale);
 			atlas.offset = offset;
 			atlas.origin = origin;
 			atlas.x = x;

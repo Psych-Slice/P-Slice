@@ -952,6 +952,7 @@ function loadMetadata() {
 		0,FlxG.sound.music.length/1000);
 	characterName.text = songMetadata.freeplayCharacter;
 	txt_altInstSong.text = songMetadata.altInstrumentalSongs;
+	txt_weekName.text = songMetadata.freeplayWeekName;
 	chk_allowNew.checked = songMetadata.allowNewTag;
 	chk_allowErect.checked = songMetadata.allowErectVariants;
 	albumName.text = songMetadata.albumId;
@@ -963,6 +964,7 @@ var ratingInput:FlxUINumericStepper;
 	var characterName:FlxUIInputText;
 	var albumName:FlxUIInputText;
 	var txt_altInstSong:FlxUIInputText;
+	var txt_weekName:FlxUIInputText;
 	var chk_allowNew:FlxUICheckBox;
 	var chk_allowErect:FlxUICheckBox;
 	var exportMetadataBtn:FlxButton;
@@ -977,6 +979,7 @@ var ratingInput:FlxUINumericStepper;
 		exportMetadataBtn = new FlxButton(20,200,"Export",onMetadataSaveClick.bind());
 		characterName = new FlxUIInputText(180,70,100,"",8);
 		albumName = new FlxUIInputText(180,120,100,"",8);
+		txt_weekName = new FlxUIInputText(180,240,100,"",8);
 		chk_allowNew = new FlxUICheckBox(180,30,null,null,"Show \"new\" tag");
 		chk_allowErect = new FlxUICheckBox(180,200,null,null,"Has erect variant");
 		txt_altInstSong = new FlxUIInputText(20,160,250,"",8);
@@ -1000,6 +1003,10 @@ var ratingInput:FlxUINumericStepper;
 		tab_group.add(new FlxText(albumName.x, albumName.y - 15, 150, 'Song album:'));
 		tab_group.add(albumName);
 		blockPressWhileTypingOn.push(albumName);
+		
+		tab_group.add(new FlxText(txt_weekName.x, txt_weekName.y - 15, 150, 'Week name:'));
+		tab_group.add(txt_weekName);
+		blockPressWhileTypingOn.push(txt_weekName);
 
 		tab_group.add(new FlxText(txt_altInstSong.x, txt_altInstSong.y - 15, 300, 'Song alt vocals (separated with \',\'):'));
 		tab_group.add(txt_altInstSong);
@@ -1023,6 +1030,7 @@ var ratingInput:FlxUINumericStepper;
 		meta.freeplayCharacter = characterName.text;
 		meta.allowNewTag = chk_allowNew.checked;
 		meta.allowErectVariants = chk_allowErect.checked;
+		meta.freeplayWeekName = txt_weekName.text;
 		meta.freeplaySongLength = FlxG.sound.music.length/1000;
 
 		var data:String = haxe.Json.stringify(meta, "\t");

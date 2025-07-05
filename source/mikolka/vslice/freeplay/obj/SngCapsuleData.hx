@@ -27,6 +27,7 @@ abstract class SngCapsuleData{
 	public var difficultyRating(default, null):Int = 0;
 	public var albumId(default, null):Null<String> = null;
 	public var songPlayer(default, null):String = '';
+	public var songWeekName(default, null):String = '';
 
 	public var freeplayPrevStart(default, null):Float = 0;
 	public var freeplayPrevEnd(default, null):Float = 0;
@@ -79,6 +80,7 @@ abstract class SngCapsuleData{
 		albumId = meta.albumId;
 		instVariants = meta.altInstrumentalSongs.split(",");
 		songPlayer = meta.freeplayCharacter;
+		songWeekName = meta.freeplayWeekName;
 	}
 
 	abstract function updateValues():Void;
