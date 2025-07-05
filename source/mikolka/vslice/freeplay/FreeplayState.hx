@@ -1,7 +1,6 @@
 package mikolka.vslice.freeplay;
 
 import flixel.math.FlxRect;
-import mobile.objects.ScrollableObject;
 import mikolka.vslice.ui.MainMenuState;
 import mikolka.vslice.freeplay.backcards.LuaCard;
 import mikolka.vslice.freeplay.obj.CapsuleOptionsMenu;
