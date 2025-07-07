@@ -1,9 +1,7 @@
 package mikolka.vslice.components.crash;
 
 import mikolka.compatibility.VsliceOptions;
-#if !LEGACY_PSYCH
-import states.TitleState;
-#end
+import mikolka.vslice.ui.title.TitleState;
 import mikolka.compatibility.ModsHelper;
 import haxe.CallStack.StackItem;
 import flixel.util.typeLimit.OneOfTwo;

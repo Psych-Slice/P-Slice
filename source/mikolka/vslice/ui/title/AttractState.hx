@@ -1,5 +1,4 @@
-package mikolka.vslice;
-
+package mikolka.vslice.ui.title;
 #if VIDEOS_ALLOWED
 import mikolka.compatibility.ModsHelper;
 #if hxCodec
@@ -8,6 +7,7 @@ import hxcodec.flixel.FlxVideoSprite;
 import hxvlc.flixel.FlxVideoSprite;
 #end
 using mikolka.funkin.utils.ArrayTools;
+import mikolka.vslice.ui.title.TitleState;
 
 /**
  * After about 2 minutes of inactivity on the title screen,
@@ -23,7 +23,7 @@ class AttractState extends MusicBeatSubstate
   var ATTRACT_VIDEO_PATH:String = Paths.video("commercials/"+FlxG.random.getObject([
     'toyCommercial',
     'kickstarterTrailer',
-    'erectSamplers'
+    'boyfriend everywhere'
   ]));
   #else
    var ATTRACT_VIDEO_PATH:String = '';
@@ -166,7 +166,7 @@ class AttractState extends MusicBeatSubstate
       #if LEGACY_PSYCH
       FlxG.switchState(new TitleState());
       #else
-      FlxG.switchState(() -> new states.TitleState());
+      FlxG.switchState(() -> new TitleState());
       #end
     }
   }

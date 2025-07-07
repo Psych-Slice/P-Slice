@@ -1,15 +1,27 @@
-package states;
+package mikolka.vslice.ui.disclaimer;
 
+import flixel.FlxState;
 import flixel.FlxSubState;
 
 import flixel.effects.FlxFlicker;
 import lime.app.Application;
 
-class FlashingState extends MusicBeatState
+class WarningState extends MusicBeatState
 {
-	public static var leftState:Bool = false;
+	public var leftState:Bool = false;
 
 	var warnText:FlxText;
+	var text:String;
+	var onExit:() -> Void;
+	var onAccept:() -> Void;
+	var nextState:FlxState;
+	public function new(text:String,onAccept:() -> Void,onExit:() -> Void,nextState:FlxState) {
+		this.text = text;
+		this.onExit = onExit;
+		this.onAccept = onAccept;
+		this.nextState = nextState;
+		super();
+	}
 	override function create()
 	{
 		controls.isInSubstate = false; // qhar I hate it
@@ -18,16 +30,7 @@ class FlashingState extends MusicBeatState
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
 
-		final enter:String = controls.mobileC ? 'A' : 'ENTER';
-		final escape:String = controls.mobileC ? 'B' : 'ESCAPE';
-
-		warnText = new FlxText(0, 0, FlxG.width,
-			"Hey, watch out!\n
-			This Mod contains some flashing lights!\n
-			Press " + enter + " to disable them now or go to Options Menu.\n
-			Press " + escape + " to ignore this message.\n
-			You've been warned!",
-			32);
+		warnText = new FlxText(0, 0, FlxG.width,text,32);
 		warnText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
 		add(warnText);
@@ -45,19 +48,20 @@ class FlashingState extends MusicBeatState
 				FlxTransitionableState.skipNextTransIn = true;
 				FlxTransitionableState.skipNextTransOut = true;
 				if(!back) {
-					ClientPrefs.data.flashing = false;
-					ClientPrefs.saveSettings();
+					onAccept();
 					FlxG.sound.play(Paths.sound('confirmMenu'));
-					FlxFlicker.flicker(warnText, 1, 0.1, false, true, function(flk:FlxFlicker) {
-						new FlxTimer().start(0.5, function (tmr:FlxTimer) {
-							MusicBeatState.switchState(new TitleState());
-						});
-					});
-				} else {
-					FlxG.sound.play(Paths.sound('cancelMenu'));
-					FlxTween.tween(warnText, {alpha: 0}, 1, {
+					FlxTween.tween(warnText, {alpha: 0}, 0.5, {
 						onComplete: function (twn:FlxTween) {
-							MusicBeatState.switchState(new TitleState());
+							MusicBeatState.switchState(nextState);
+						}
+					});
+
+				} else {
+					onExit();
+					FlxG.sound.play(Paths.sound('cancelMenu'));
+					FlxTween.tween(warnText, {alpha: 0}, 0.5, {
+						onComplete: function (twn:FlxTween) {
+							MusicBeatState.switchState(nextState);
 						}
 					});
 				}

@@ -163,10 +163,12 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		if (controls.UI_UP_P)
 		{
 			changeSelection(-1);
+			FlxG.sound.play(Paths.sound('scrollMenu'));
 		}
 		if (controls.UI_DOWN_P)
 		{
 			changeSelection(1);
+			FlxG.sound.play(Paths.sound('scrollMenu'));
 		}
 
 		if (controls.BACK)

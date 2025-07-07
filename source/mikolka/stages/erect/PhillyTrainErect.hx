@@ -99,7 +99,14 @@ class PhillyTrainErect extends BaseStage
 		}
 		else if (eventName == "Philly Glow" && cutsceneObj != null)
 		{
-          cutsceneObj.imposterPico.color = dad.color;
+        	if(flValue1 == null || flValue1 <= 0) flValue1 = 0;
+            var lightId:Int = Math.round(flValue1);
+            switch(lightId){
+				case 0: //off
+					cutsceneObj.imposterPico.color = 0xFFFFFFFF;
+				case 1: //on
+					cutsceneObj.imposterPico.color = dad.color;
+			}
 		}
 	}
 
