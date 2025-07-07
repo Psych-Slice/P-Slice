@@ -12,6 +12,7 @@ class ModSelector extends FlxTypedSpriteGroup<FlxSprite> {
     private var curDirectory = 0;
     private var directories:Array<String> = [null];
     private var parent:CharSelectSubState;
+    public var allowInput:Bool = false;
 
     public function new(parent:CharSelectSubState) {
         super();
@@ -32,23 +33,24 @@ class ModSelector extends FlxTypedSpriteGroup<FlxSprite> {
 
 		var found:Int = directories.indexOf(ModsHelper.getActiveMod());
 		if (found > -1){
-            #if TOUCH_CONTROLS_ALLOWED
+
+			curDirectory = found;
+        }
+        #if TOUCH_CONTROLS_ALLOWED
             var prevBtn =  new PsychUIButton(20,(FlxG.height - 41),"Previous mod",() -> changeDirectory(-1),140,37);
             prevBtn.normalStyle.bgColor = 0xFF666666;
             var nextBtn =  new PsychUIButton(((FlxG.width - 20) - 140),(FlxG.height - 41),"Next mod", () -> changeDirectory(1),140,37);
             nextBtn.normalStyle.bgColor = 0xFF666666;
             add(prevBtn);
             add(nextBtn);
-            #end
-			curDirectory = found;
-        }
+        #end
 		changeDirectory();
     }
     
     public function changeDirectory(change:Int = 0)
         {
             //FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-    
+            if(!allowInput) return;
             curDirectory += change;
     
             if (curDirectory < 0)
