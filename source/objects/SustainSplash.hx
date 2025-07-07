@@ -19,6 +19,7 @@ class SustainSplash extends FlxSprite
 
 		animation.addByPrefix('hold', 'holdCover0', 24, true);
 		animation.addByPrefix('end', 'holdCoverEnd0', 24, false);
+		if(!animation.getNameList().contains("hold")) trace("Hold splash is missing 'hold' anim!");
 	}
 
 	override function update(elapsed)
@@ -31,7 +32,7 @@ class SustainSplash extends FlxSprite
 			visible = strumNote.visible;
 			alpha = ClientPrefs.data.holdSplashAlpha - (1 - strumNote.alpha);
 
-			if (animation.curAnim.name == "hold" && strumNote.animation.curAnim.name == "static")
+			if (animation.curAnim?.name == "hold" && strumNote.animation.curAnim?.name == "static")
 			{
 				x = -50000;
 				kill();
@@ -48,9 +49,11 @@ class SustainSplash extends FlxSprite
 		var tailEnd:Note = !daNote.isSustainNote ? daNote.tail[daNote.tail.length - 1] : daNote.parent.tail[daNote.parent.tail.length - 1];
 
 		animation.play('hold', true, false, 0);
-		animation.curAnim.frameRate = frameRate;
-		animation.curAnim.looped = true;
-
+		if (animation.curAnim != null)
+		{
+			animation.curAnim.frameRate = frameRate;
+			animation.curAnim.looped = true;
+		}
 		clipRect = new flixel.math.FlxRect(0, !PlayState.isPixelStage ? 0 : -210, frameWidth, frameHeight);
 
 		if (daNote.shader != null)
@@ -76,10 +79,14 @@ class SustainSplash extends FlxSprite
 				{
 					alpha = ClientPrefs.data.holdSplashAlpha - (1 - strumNote.alpha);
 					animation.play('end', true, false, 0);
-					animation.curAnim.looped = false;
-					animation.curAnim.frameRate = 24;
+					if (animation.curAnim != null)
+					{
+						animation.curAnim.looped = false;
+						animation.curAnim.frameRate = 24;
+					}
 					clipRect = null;
-					animation.finishCallback = (idkEither:Dynamic) -> {
+					animation.finishCallback = (idkEither:Dynamic) ->
+					{
 						kill();
 					}
 					return;

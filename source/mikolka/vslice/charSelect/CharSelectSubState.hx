@@ -433,6 +433,7 @@ class CharSelectSubState extends MusicBeatSubState
     #if TOUCH_CONTROLS_ALLOWED
     addTouchPad('LEFT_FULL', 'A_B');
     addTouchPadCamera();
+    // if (allowInput && pressedSelect && controls.BACK) onAcceptPress();
     #end
   }
 
@@ -450,6 +451,9 @@ class CharSelectSubState extends MusicBeatSubState
           restartTrack: true,
           onLoad: function() {
             allowInput = true;
+            #if TOUCH_CONTROLS_ALLOWED
+            modSelector.allowInput = true;
+            #end
 
             @:privateAccess
             gfChill.analyzer = new SpectralAnalyzer(ModsHelper.getSoundChannel(FlxG.sound.music), 7, 0.1);
@@ -595,6 +599,9 @@ class CharSelectSubState extends MusicBeatSubState
               restartTrack: true,
               onLoad: function() {
                 allowInput = true;
+                            #if TOUCH_CONTROLS_ALLOWED
+            modSelector.allowInput = true;
+            #end
 
                 @:privateAccess
                 gfChill.analyzer = new SpectralAnalyzer(ModsHelper.getSoundChannel(FlxG.sound.music), 7, 0.1);
@@ -670,6 +677,7 @@ class CharSelectSubState extends MusicBeatSubState
     //? P-Slice mods
     VsliceOptions.LAST_MOD = {mod_dir: modSelector?.curMod ?? "",char_name: curChar}; //? save selected character
     #if MODS_ALLOWED
+    modSelector.allowInput = false;
     FlxTween.tween(modSelector, {y: modSelector.y + 80}, 0.8, {ease: FlxEase.backIn});
     #end
     //?
@@ -855,29 +863,8 @@ class CharSelectSubState extends MusicBeatSubState
         });
       }
 
-      if (allowInput && pressedSelect && controls.BACK)
-      {
-        cursorConfirmed.visible = false;
-        grpCursors.visible = true;
-
-        FlxTween.globalManager.cancelTweensOf(FlxG.sound.music);
-        FlxTween.tween(FlxG.sound.music, {pitch: 1.0, volume: 1.0}, 1, {ease: FlxEase.quartInOut});
-        playerChill.playAnimation("deselect");
-        gfChill.playAnimation("deselect");
-        pressedSelect = false;
-        FlxTween.tween(FlxG.sound.music, {pitch: 1.0}, 1,
-          {
-            ease: FlxEase.quartInOut,
-            onComplete: (_) -> {
-              if (playerChill.getCurrentAnimation() == "deselect loop start" || playerChill.getCurrentAnimation() == "deselect")
-              {
-                playerChill.playAnimation("idle", true, false, true);
-                gfChill.playAnimation("idle", true, false, true);
-              }
-            }
-          });
-        selectTimer.cancel();
-      }
+      if (allowInput && pressedSelect && controls.BACK) onAcceptPress();
+      
     }
     else if (autoFollow)
     {
@@ -1070,6 +1057,34 @@ class CharSelectSubState extends MusicBeatSubState
     }
   }
 
+  private function onAcceptPress(){
+
+        cursorConfirmed.visible = true;
+        cursorConfirmed.x = chrSelectCursor.x - 2;
+        cursorConfirmed.y = chrSelectCursor.y - 4;
+        cursorConfirmed.animation.play("idle", true);
+
+        grpCursors.visible = false;
+
+        FunkinSound.playOnce(Paths.sound('CS_confirm')); //? replace with FunkinSound call
+
+        FlxTween.tween(FlxG.sound.music, {pitch: 0.1}, 1, {ease: FlxEase.quadInOut});
+        FlxTween.tween(FlxG.sound.music, {volume: 0.0}, 1.5, {ease: FlxEase.quadInOut});
+        playerChill.playAnimation("select");
+        gfChill.playAnimation("confirm", true, false, true);
+        pressedSelect = true;
+        selectTimer.start(1.5, (_) -> {
+           pressedSelect = false;
+          // FlxG.switchState(FreeplayState.build(
+          //   {
+          //     {
+          //       character: curChar
+          //     }
+          //   }));
+          goToFreeplay();
+        });
+      
+  }
   function getCurrentSelected():Int
   {
     var tempX:Int = cursorX + 1;
