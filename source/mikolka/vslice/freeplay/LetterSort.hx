@@ -78,7 +78,6 @@ class LetterSort extends FlxTypedSpriteGroup<FlxSprite>
   override function update(elapsed:Float):Void
   {
     super.update(elapsed);
-
     if (inputEnabled)
     { //? changed controls mapping
       if (Controls.FREEPLAY_LEFT || (TouchUtil.overlaps(swipeBounds) && SwipeUtil.swipeLeft)) changeSelection(-1);
