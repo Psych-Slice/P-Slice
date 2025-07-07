@@ -67,8 +67,17 @@ class MasterEditorMenu extends MusicBeatState
 		}
 
 		var found:Int = directories.indexOf(Mods.currentModDirectory);
-		if (found > -1)
+		if (found > -1){
+		#if TOUCH_CONTROLS_ALLOWED
+		var prevBtn =  new PsychUIButton(20,(FlxG.height - 41),"Previous mod",() -> changeDirectory(-1),140,37);
+		prevBtn.normalStyle.bgColor = 0xFF666666;
+		var nextBtn =  new PsychUIButton(((FlxG.width - 20) - 140),(FlxG.height - 41),"Next mod", () -> changeDirectory(1),140,37);
+		nextBtn.normalStyle.bgColor = 0xFF666666;
+		add(prevBtn);
+		add(nextBtn);
+		#end
 			curDirectory = found;
+		}
 		changeDirectory();
 		#end
 		
@@ -77,7 +86,7 @@ class MasterEditorMenu extends MusicBeatState
 		FlxG.mouse.visible = false;
 		
 		#if TOUCH_CONTROLS_ALLOWED
-		addTouchPad(#if MODS_ALLOWED 'LEFT_FULL' #else 'UP_DOWN' #end, 'A_B');
+		addTouchPad('NONE', 'B_TOP');
 		#end
 		super.create();
 	}
