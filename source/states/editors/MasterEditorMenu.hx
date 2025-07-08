@@ -1,5 +1,6 @@
 package states.editors;
 
+import mikolka.vslice.charSelect.pslice.ModSelector;
 import objects.AlphabetMenu;
 import mikolka.vslice.components.crash.UserErrorSubstate;
 import mikolka.editors.CharSelectEditor;
@@ -29,10 +30,7 @@ class MasterEditorMenu extends MusicBeatState
 		'Result Preview Menu'
 	];
 	var menu:AlphabetMenu;
-	private var directories:Array<String> = [null];
-
-	private var curDirectory = 0;
-	private var directoryTxt:FlxText;
+	private var modDir:ModSelector;
 
 	override function create()
 	{
@@ -52,36 +50,10 @@ class MasterEditorMenu extends MusicBeatState
 		add(menu);
 
 		#if MODS_ALLOWED
-		var textBG:FlxSprite = new FlxSprite(0, FlxG.height - 42).makeGraphic(FlxG.width, 42, 0xFF000000);
-		textBG.alpha = 0.6;
-		add(textBG);
-
-		directoryTxt = new FlxText(textBG.x, textBG.y + 4, FlxG.width, '', 32);
-		directoryTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
-		directoryTxt.scrollFactor.set();
-		add(directoryTxt);
-
-		for (folder in Mods.getModDirectories())
-		{
-			directories.push(folder);
-		}
-
-		var found:Int = directories.indexOf(Mods.currentModDirectory);
-		if (found > -1){
-		#if TOUCH_CONTROLS_ALLOWED
-		var prevBtn =  new PsychUIButton(20,(FlxG.height - 41),"Previous mod",() -> changeDirectory(-1),140,37);
-		prevBtn.normalStyle.bgColor = 0xFF666666;
-		var nextBtn =  new PsychUIButton(((FlxG.width - 20) - 140),(FlxG.height - 41),"Next mod", () -> changeDirectory(1),140,37);
-		nextBtn.normalStyle.bgColor = 0xFF666666;
-		add(prevBtn);
-		add(nextBtn);
+		modDir = new ModSelector(null);
+		modDir.allowInput = true;
+		add(modDir);
 		#end
-			curDirectory = found;
-		}
-		changeDirectory();
-		#end
-		
-		
 
 		FlxG.mouse.visible = false;
 		
@@ -96,11 +68,11 @@ class MasterEditorMenu extends MusicBeatState
 		#if MODS_ALLOWED
 		if (controls.UI_LEFT_P)
 		{
-			changeDirectory(-1);
+			modDir.changeDirectory(-1);
 		}
 		if (controls.UI_RIGHT_P)
 		{
-			changeDirectory(1);
+			modDir.changeDirectory(1);
 		}
 		#end
 
@@ -185,28 +157,4 @@ class MasterEditorMenu extends MusicBeatState
 		results.playerCharacterId = VsliceOptions.LAST_MOD.char_name;
 		MusicBeatState.switchState(results);
 	}
-
-	#if MODS_ALLOWED
-	function changeDirectory(change:Int = 0)
-	{
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-
-		curDirectory += change;
-
-		if (curDirectory < 0)
-			curDirectory = directories.length - 1;
-		if (curDirectory >= directories.length)
-			curDirectory = 0;
-
-		WeekData.setDirectoryFromWeek();
-		if (directories[curDirectory] == null || directories[curDirectory].length < 1)
-			directoryTxt.text = '< No Mod Directory Loaded >';
-		else
-		{
-			Mods.currentModDirectory = directories[curDirectory];
-			directoryTxt.text = '< Loaded Mod Directory: ' + Mods.currentModDirectory + ' >';
-		}
-		directoryTxt.text = directoryTxt.text.toUpperCase();
-	}
-	#end
 }

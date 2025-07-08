@@ -1624,7 +1624,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 						var closeNotes:Array<MetaNote> = curRenderedNotes.members.filter(function(note:MetaNote)
 						{
 							var chartY:Float = FlxG.mouse.y - note.chartY;
-							return ((note.isEvent && noteData < 0) || note.songData[1] == noteData) && chartY >= 0 && chartY < GRID_SIZE;
+							return ((note.isEvent && noteData < -1) ||(note.songData[1] == noteData && !note.isEvent)) && chartY >= 0 && chartY < GRID_SIZE;
 						});
 						closeNotes.sort(function(a:MetaNote, b:MetaNote) return Math.abs(a.strumTime - FlxG.mouse.y) < Math.abs(b.strumTime - FlxG.mouse.y) ? 1 : -1);
 	
