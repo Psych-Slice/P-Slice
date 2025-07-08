@@ -37,20 +37,25 @@ class ModSelector extends FlxTypedSpriteGroup<FlxSprite> {
 			curDirectory = found;
         }
         #if TOUCH_CONTROLS_ALLOWED
-            var prevBtn =  new PsychUIButton(20,(FlxG.height - 41),"Previous mod",() -> changeDirectory(-1),140,37);
-            prevBtn.normalStyle.bgColor = 0xFF666666;
-            var nextBtn =  new PsychUIButton(((FlxG.width - 20) - 140),(FlxG.height - 41),"Next mod", () -> changeDirectory(1),140,37);
-            nextBtn.normalStyle.bgColor = 0xFF666666;
+            var btn_sharedY = (FlxG.height - 90);
+            var prevBtn =  new PsychUIButton(40,btn_sharedY,"<=",() -> changeDirectory(-1),140,50);
+            prevBtn.text.size = 30;
+            prevBtn.text.y -= 10;
+            prevBtn.normalStyle.bgColor = 0xFF888888;
+            var nextBtn =  new PsychUIButton(((FlxG.width - 40) - 140),btn_sharedY,"=>", () -> changeDirectory(1),140,50);
+            nextBtn.text.size = 30;
+            nextBtn.text.y -= 10;
+            nextBtn.normalStyle.bgColor = 0xFF888888;
             add(prevBtn);
             add(nextBtn);
         #end
-		changeDirectory();
+		changeDirectory(0,true);
     }
     
-    public function changeDirectory(change:Int = 0)
+    public function changeDirectory(change:Int = 0,ignoreInputBlock:Bool = false)
         {
             //FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-            if(!allowInput) return;
+            if(!allowInput && !ignoreInputBlock) return;
             curDirectory += change;
     
             if (curDirectory < 0)
@@ -72,7 +77,7 @@ class ModSelector extends FlxTypedSpriteGroup<FlxSprite> {
             }
             directoryTxt.text = directoryTxt.text.toUpperCase();
             @:privateAccess{
-                if(change != 0 && directories.length != 1) {
+                if(change != 0 && directories.length != 1 && parent != null) {
                     parent.remove(parent.grpIcons);
                     //parent.grpIcons.destroy();
                     parent.availableChars.clear();
