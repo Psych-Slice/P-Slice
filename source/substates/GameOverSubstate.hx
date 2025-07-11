@@ -95,7 +95,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		FlxG.sound.music.loadEmbedded(Paths.music(loopSoundName), true);
 
 		#if TOUCH_CONTROLS_ALLOWED
-		addTouchPad('NONE', 'A_B');
+		addTouchPad('NONE', 'B');
 		addTouchPadCamera();
 		#end
 
@@ -122,7 +122,11 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		if(!isEnding)
 		{
+			#if TOUCH_CONTROLS_ALLOWED
+			if (controls.ACCEPT || (TouchUtil.justPressed && !touchPad.buttonB.justTouched))
+			#else
 			if (controls.ACCEPT)
+			#end
 			{
 				endBullshit();
 			}

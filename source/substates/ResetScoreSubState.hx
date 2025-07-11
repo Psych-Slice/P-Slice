@@ -95,9 +95,9 @@ class ResetScoreSubState extends MusicBeatSubstate
 		{
 			if (week == -1)
 				icon.animation.curAnim.curFrame = 0;
-			var noZone = new TouchZone(300, text.y + 150, 100, 50, FlxColor.RED);
+			noZone = new TouchZone(760, text.y + 150, 160, 90, FlxColor.RED);
 			noZone.camera = optionsCam;
-			var yesZone = new TouchZone(100, text.y + 150, 100, 50, FlxColor.BROWN);
+			yesZone = new TouchZone(360, text.y + 150, 160, 90, FlxColor.GREEN);
 			yesZone.camera = optionsCam;
 			add(yesZone);
 			add(noZone);
@@ -128,23 +128,23 @@ class ResetScoreSubState extends MusicBeatSubstate
 			if (TouchUtil.justReleased || FlxG.mouse.justReleased)
 			{
 				#if mobile
-				if (TouchUtil.touch.overlaps(yesZone))
+				if (TouchUtil.overlaps(yesZone))
 				{
 					onYes = true;
 					onAccept();
 				}
-				else if (TouchUtil.touch.overlaps(noZone))
+				else if (TouchUtil.overlaps(noZone))
 				{
 					onYes = false;
 					onAccept();
 				}
 				#else
-				if (FlxG.mouse.overlaps(yesZone))
+				if (FlxG.mouse.overlaps(yesZone,optionsCam))
 				{
 					onYes = true;
 					onAccept();
 				}
-				else if (FlxG.mouse.overlaps(noZone))
+				else if (FlxG.mouse.overlaps(noZone,optionsCam))
 				{
 					onYes = false;
 					onAccept();
