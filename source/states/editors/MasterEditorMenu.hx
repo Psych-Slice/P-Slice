@@ -1,6 +1,6 @@
 package states.editors;
 
-import mikolka.vslice.charSelect.pslice.ModSelector;
+import mikolka.vslice.ui.obj.ModSelector;
 import objects.AlphabetMenu;
 import mikolka.vslice.components.crash.UserErrorSubstate;
 import mikolka.editors.CharSelectEditor;
@@ -53,6 +53,17 @@ class MasterEditorMenu extends MusicBeatState
 		modDir = new ModSelector(null);
 		modDir.allowInput = true;
 		add(modDir);
+            var btn_sharedY = (FlxG.height - 90);
+            var prevBtn =  new PsychUIButton(40,btn_sharedY,"<=",() -> modDir.changeDirectory(-1),140,50);
+            prevBtn.text.size = 30;
+            prevBtn.text.y -= 10;
+            prevBtn.normalStyle.bgColor = 0xFF888888;
+            var nextBtn =  new PsychUIButton(((FlxG.width - 40) - 140),btn_sharedY,"=>", () -> modDir.changeDirectory(1),140,50);
+            nextBtn.text.size = 30;
+            nextBtn.text.y -= 10;
+            nextBtn.normalStyle.bgColor = 0xFF888888;
+            add(prevBtn);
+            add(nextBtn);
 		#end
 
 		FlxG.mouse.visible = false;

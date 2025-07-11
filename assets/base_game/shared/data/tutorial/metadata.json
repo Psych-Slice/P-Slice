@@ -2,10 +2,10 @@
 	"songRating": 1,
 	"albumId": "volume1",
 	"freeplayCharacter": "",
+	"freeplayWeekName": "your love",
 	"freeplaySongLength": 67.2,
 	"freeplayPrevEnd": 20,
 	"altInstrumentalSongs": "",
 	"allowErectVariants": true,
-	"freeplayPrevStart": 0,
-	"freeplayWeekName": "funkin"
+	"freeplayPrevStart": 0
 }

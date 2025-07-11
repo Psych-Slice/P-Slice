@@ -2,6 +2,7 @@
 	"songRating": 5,
 	"albumId": "volume4",
 	"freeplayCharacter": "pico",
+	"freeplayWeekName": "stage exit",
 	"freeplaySongLength": 89.361111,
 	"freeplayPrevEnd": 20,
 	"altInstrumentalSongs": "dad-battle",

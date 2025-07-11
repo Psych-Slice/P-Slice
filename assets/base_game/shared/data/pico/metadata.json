@@ -2,10 +2,10 @@
 	"songRating": 2,
 	"albumId": "volume1",
 	"freeplayCharacter": "",
+	"freeplayWeekName": "asassin",
 	"freeplaySongLength": 84.870839,
 	"freeplayPrevEnd": 20,
 	"altInstrumentalSongs": "pico (Pico Mix)",
 	"allowErectVariants": true,
-	"freeplayPrevStart": 0,
-	"freeplayWeekName": "bico"
+	"freeplayPrevStart": 0
 }
