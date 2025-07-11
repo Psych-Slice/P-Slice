@@ -1,7 +1,7 @@
 package mikolka.vslice.charSelect;
 
 import mikolka.compatibility.ModsHelper;
-import mikolka.vslice.charSelect.pslice.ModSelector;
+import mikolka.vslice.ui.obj.ModSelector;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.compatibility.freeplay.FreeplayHelpers;
 import mikolka.vslice.freeplay.FreeplayState;
@@ -57,6 +57,8 @@ class CharSelectSubState extends MusicBeatSubState
 	var gfChillOut:CharSelectGF;
 	var barthing:FlxAtlasSprite;
 	var dipshitBacking:FlxSprite;
+	var dipshitLeftArrow:FlxSprite;
+	var dipshitRightArrow:FlxSprite;
 	var chooseDipshit:FlxSprite;
 	var dipshitBlur:FlxSprite;
 	var transitionGradient:FlxSprite;
@@ -225,17 +227,56 @@ class CharSelectSubState extends MusicBeatSubState
 
 		chooseDipshit = new FlxSprite(426, -13);
 		chooseDipshit.loadGraphic(Paths.image('charSelect/chooseDipshit'));
-		add(chooseDipshit);
+		add(chooseDipshit);		
+		
+		//? P-SLice code
+		#if MODS_ALLOWED
+		var UICam = new FunkinCamera("special", 0, 0, FlxG.width, FlxG.height);
+		UICam.bgColor = 0x00FFFFFF;
+		FlxG.cameras.add(UICam, false);
+		modSelector = new ModSelector(this);
+		modSelector.camera = UICam;
+		add(modSelector);
+
+		if(modSelector.hasModsAvailable){
+
+			dipshitLeftArrow = new FlxSprite(240, 135);
+			dipshitLeftArrow.loadGraphic(Paths.image('charSelect/charSelectArrow'));
+			dipshitLeftArrow.scale.set(0.4,0.4);
+			add(dipshitLeftArrow);		
+			
+			dipshitRightArrow = new FlxSprite(663, 135);
+			dipshitRightArrow.loadGraphic(Paths.image('charSelect/charSelectArrow'));
+			dipshitRightArrow.scale.set(0.4,0.4);
+			dipshitRightArrow.flipX = true;
+			add(dipshitRightArrow);
+		}
+
+		modSelector.y += 80;
+		FlxTween.tween(modSelector, {y: modSelector.y - 80}, 1.3, {ease: FlxEase.expoOut});
+		#end
+		// ?
+
 
 		chooseDipshit.y += 200;
 		FlxTween.tween(chooseDipshit, {y: chooseDipshit.y - 200}, 1, {ease: FlxEase.expoOut});
 
 		dipshitBlur.y += 220;
-		FlxTween.tween(dipshitBlur, {y: dipshitBlur.y - 220}, 1.2, {ease: FlxEase.expoOut});
+		FlxTween.tween(dipshitBlur, {y: dipshitBlur.y - 220}, 1.2, {ease: FlxEase.expoOut});		
+		
+		if(modSelector.hasModsAvailable){
+			dipshitLeftArrow.y += 200;
+			FlxTween.tween(dipshitLeftArrow, {y: dipshitLeftArrow.y - 200}, 1.2, {ease: FlxEase.expoOut});
+				
+			dipshitRightArrow.y += 200;
+			FlxTween.tween(dipshitRightArrow, {y: dipshitRightArrow.y - 200}, 1.2, {ease: FlxEase.expoOut});
+		}		
 
 		chooseDipshit.scrollFactor.set();
 		dipshitBacking.scrollFactor.set();
 		dipshitBlur.scrollFactor.set();
+		dipshitLeftArrow.scrollFactor.set();
+		dipshitRightArrow.scrollFactor.set();
 
 		nametag = new Nametag(0, 0, curChar); // ? Set to current char
 		add(nametag);
@@ -297,20 +338,6 @@ class CharSelectSubState extends MusicBeatSubState
 		grpCursors.add(cursorDarkBlue);
 		grpCursors.add(cursorBlue);
 		grpCursors.add(chrSelectCursor);
-
-		// ? P-Slice mods
-		#if MODS_ALLOWED
-		var UICam = new FunkinCamera("special", 0, 0, FlxG.width, FlxG.height);
-		UICam.bgColor = 0x00FFFFFF;
-		FlxG.cameras.add(UICam, false);
-		modSelector = new ModSelector(this);
-		modSelector.camera = UICam;
-		add(modSelector);
-
-		modSelector.y += 80;
-		FlxTween.tween(modSelector, {y: modSelector.y - 80}, 1.3, {ease: FlxEase.expoOut});
-		#end
-		// ?
 
 		selectSound = FunkinSound.load(Paths.sound('CS_select'), 0.7); // ? fix loaders
 		selectSound.pitch = 1;
@@ -458,7 +485,11 @@ class CharSelectSubState extends MusicBeatSubState
 		});
 
 		#if TOUCH_CONTROLS_ALLOWED
-		//addTouchPad('LEFT_FULL', 'A_B');
+		#if MODS_ALLOWED
+		addTouchPad('ALT_LEFT_RIGHT', 'NONE');
+		#else
+		addTouchPad('NONE', 'NONE');
+		#end
 		addTouchPadCamera();
 		// if (allowInput && pressedSelect && controls.BACK) onAcceptPress();
 		#end
@@ -725,6 +756,10 @@ class CharSelectSubState extends MusicBeatSubState
 		FlxTween.tween(dipshitBacking, {y: dipshitBacking.y + 210}, 0.8, {ease: FlxEase.backIn});
 		FlxTween.tween(chooseDipshit, {y: chooseDipshit.y + 200}, 0.8, {ease: FlxEase.backIn});
 		FlxTween.tween(dipshitBlur, {y: dipshitBlur.y + 220}, 0.8, {ease: FlxEase.backIn});
+
+		FlxTween.tween(dipshitLeftArrow, {y: dipshitLeftArrow.y + 200}, 0.8, {ease: FlxEase.backIn});
+		FlxTween.tween(dipshitRightArrow, {y: dipshitRightArrow.y + 200}, 0.8, {ease: FlxEase.backIn});
+		
 		for (index => member in grpIcons.members)
 		{
 			// member.y += 300;
@@ -747,6 +782,9 @@ class CharSelectSubState extends MusicBeatSubState
 				}));
 			}
 		});
+		#if TOUCH_CONTROLS_ALLOWED
+		FlxTween.tween(touchPad, {alpha: 0}, 0.8, {ease: FlxEase.expoOut});
+		#end
 	}
 
 	var holdTmrUp:Float = 0;
@@ -772,7 +810,13 @@ class CharSelectSubState extends MusicBeatSubState
 		if (allowInput)
 		{
 			#if TOUCH_CONTROLS_ALLOWED
-			if (TouchUtil.justPressed #if debug || FlxG.mouse.justPressed #end)
+			if(touchPad.buttonL.justPressed){
+				modSelector?.changeDirectory(-1);
+			}
+			else if (touchPad.buttonR.justPressed){
+				modSelector?.changeDirectory(1);
+			}
+			else if (TouchUtil.justPressed #if debug || FlxG.mouse.justPressed #end)
 			{
 				for (index => member in touchKeys)
 				{
@@ -787,7 +831,7 @@ class CharSelectSubState extends MusicBeatSubState
 							else
 								onBackPress();
 						}
-						else
+						else if(!pressedSelect)
 						{
 							cursorY = newCursorY -1;
 							cursorX = newCursorX -1;

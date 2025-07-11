@@ -1,12 +1,17 @@
-package mikolka.vslice.charSelect.pslice;
+package mikolka.vslice.ui.obj;
 
 import mikolka.compatibility.ModsHelper;
+import mikolka.vslice.charSelect.CharSelectSubState;
 
 class ModSelector extends FlxTypedSpriteGroup<FlxSprite> {
 
     public var curMod(get,never):String;
     function get_curMod() {
         return directories[curDirectory] ?? '';
+    }
+    public var hasModsAvailable(get,never):Bool;
+    function get_hasModsAvailable() {
+        return directories.length > 1;
     }
     private var directoryTxt:FlxText;
     private var curDirectory = 0;
@@ -36,19 +41,6 @@ class ModSelector extends FlxTypedSpriteGroup<FlxSprite> {
 
 			curDirectory = found;
         }
-        #if TOUCH_CONTROLS_ALLOWED
-            var btn_sharedY = (FlxG.height - 90);
-            var prevBtn =  new PsychUIButton(40,btn_sharedY,"<=",() -> changeDirectory(-1),140,50);
-            prevBtn.text.size = 30;
-            prevBtn.text.y -= 10;
-            prevBtn.normalStyle.bgColor = 0xFF888888;
-            var nextBtn =  new PsychUIButton(((FlxG.width - 40) - 140),btn_sharedY,"=>", () -> changeDirectory(1),140,50);
-            nextBtn.text.size = 30;
-            nextBtn.text.y -= 10;
-            nextBtn.normalStyle.bgColor = 0xFF888888;
-            add(prevBtn);
-            add(nextBtn);
-        #end
 		changeDirectory(0,true);
     }
     
@@ -64,16 +56,18 @@ class ModSelector extends FlxTypedSpriteGroup<FlxSprite> {
                 curDirectory = 0;
     
             if (directories[curDirectory] == null || directories[curDirectory].length < 1){
+                if(parent != null) visible = false;
                 ModsHelper.loadModDir("");
                 var nxtArrow = directories.length==1 ? '  ' : '=>';
-                directoryTxt.text = '  No Mod Directory Loaded $nxtArrow';
+                var prvArrow = directories.length==1 ? '  ' : '<=';
+                directoryTxt.text = '$prvArrow No Mod Directory Loaded $nxtArrow';
             }
             else
             {
+                if(parent != null) visible = true;
                 var curModDir = directories[curDirectory];
-                var nxtArrow = directories.length-1 == curDirectory ? '   ' : ' =>';
                 ModsHelper.loadModDir(curModDir);
-                directoryTxt.text = '<= Loaded Mod Directory: ' + curModDir + nxtArrow;
+                directoryTxt.text = '<= Loaded Mod Directory: ' + curModDir + " =>";
             }
             directoryTxt.text = directoryTxt.text.toUpperCase();
             @:privateAccess{

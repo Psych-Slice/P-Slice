@@ -2,6 +2,7 @@
 	"songRating": 5,
 	"albumId": "volume4",
 	"freeplayCharacter": "pico",
+	"freeplayWeekName": "???",
 	"freeplaySongLength": 140.432426,
 	"freeplayPrevEnd": 20,
 	"altInstrumentalSongs": "guns",

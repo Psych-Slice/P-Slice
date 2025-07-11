@@ -1,0 +1,18 @@
+{
+  "buttons": [
+    {
+      "button": "buttonL",
+      "graphic": "altleft",
+      "x": 330,
+      "y": 250,
+      "color": "0xFF3C74F7"
+    },
+    {
+      "button": "buttonR",
+      "graphic": "altright",
+      "x": 790,
+      "y": 250,
+      "color": "0xFF14eaaa"
+    }
+  ]
+}

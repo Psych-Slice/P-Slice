@@ -2,9 +2,10 @@
 	"songRating": 4,
 	"albumId": "volume3",
 	"freeplayCharacter": "pico",
+	"freeplayWeekName": "due debts",
 	"freeplaySongLength": 126.96775,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "",
+	"altInstrumentalSongs": "darnell (Pico Mix)",
 	"allowErectVariants": true,
 	"freeplayPrevStart": 0
 }
