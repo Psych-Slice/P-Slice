@@ -1576,7 +1576,7 @@ class FreeplayState extends MusicBeatSubstate
 				#end
 				FreeplayHelpers.openGameplayChanges(this);
 			}
-			else if (controls.RESET #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonY.justPressed #end && curSelected != 0)
+			else if ((controls.RESET #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonY.justPressed #end) && curSelected != 0)
 			{
 				persistentUpdate = false;
 				var curSng = grpCapsules.members[curSelected];
