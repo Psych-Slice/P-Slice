@@ -123,7 +123,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		if(!isEnding)
 		{
 			#if TOUCH_CONTROLS_ALLOWED
-			if (controls.ACCEPT || (TouchUtil.justPressed && !touchPad.buttonB.justTouched))
+			if (controls.ACCEPT || (TouchUtil.justPressed && !touchPad.buttonB.justPressed))
 			#else
 			if (controls.ACCEPT)
 			#end

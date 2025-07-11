@@ -1,0 +1,61 @@
+{
+	"style": "pixel",
+	"dialogue": [
+		{
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "senpai-pixel",
+			"boxState": "normal",
+			"expression": "angry",
+			"text": "You disgusting orange boy and your awful way of 'singing'."
+		},
+		{
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "senpai-pixel",
+			"boxState": "normal",
+			"expression": "angry",
+			"text": "You'll ruin the neighborhood acting like that."
+		},
+		{
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "senpai-pixel",
+			"boxState": "normal",
+			"expression": "angry",
+			"text": "Keep it up and I'll show your girlfriend here a better time tonight than you ever could."
+		},
+		{
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "pico-pixel",
+			"boxState": "normal",
+			"expression": "idle",
+			"text": "She's not my girlfriend, do whatever you want with her."
+		},
+		{
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "senpai-pixel",
+			"boxState": "normal",
+			"expression": "angry",
+			"text": "I'll enjoy watching you both cry like dogs once I tell the authorities you brought a fake gun to school!"
+		},
+		{
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "nene-pixel",
+			"boxState": "normal",
+			"expression": "idle",
+			"text": "Let's kill this guy."
+		},
+		{
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "pico-pixel",
+			"boxState": "normal",
+			"expression": "idle",
+			"text": "Deal."
+		}
+	]
+}
