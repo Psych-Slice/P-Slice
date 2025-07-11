@@ -1,0 +1,28 @@
+{
+	"style": "pixel",
+	"dialogue": [
+		{
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "senpai-pixel",
+			"boxState": "normal",
+			"expression": "idle",
+			"text": "Ah, uma nova donzela veio em busca do verdadeiro amor!"
+		},				{
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "senpai-pixel",
+			"boxState": "normal",
+			"expression": "idle",
+			"text": "Uma serenata entre cavalheiros decidirá onde seu lindo coração deve residir."
+		},
+		{
+			"sound": "pixelText",
+			"speed": 0.045,
+			"portrait": "bf-pixel",
+			"boxState": "normal",
+			"expression": "idle",
+			"text": "Beep bo bop"
+		}
+	]
+}

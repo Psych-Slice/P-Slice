@@ -53,25 +53,26 @@ class AlphabetMenu extends FlxGroup {
     override function update(elapsed:Float)
         {
             if (Controls.instance.UI_UP_P)
-            {
-                FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+            
+                
                 changeSelection(-1,true);
-            }
+            
             if (Controls.instance.UI_DOWN_P)
-            {
-                FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
                 changeSelection(1,true);
-            }
+            
             if (Controls.instance.ACCEPT) onSelect.dispatch((options[curSelected]));
             super.update(elapsed);
         }
     function changeSelection(delta:Float,usePrecision:Bool = false) {
 		if(usePrecision) {
+			if(delta != 0) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 			curSelected =  FlxMath.wrap(curSelected + Std.int(delta), 0, options.length - 1);
 			curSelectedPartial = curSelected;
 		}
 		else {
 			curSelectedPartial = FlxMath.bound(curSelectedPartial + delta, 0, options.length - 1);
+			if(curSelected != Math.round(curSelectedPartial)) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 			curSelected =  Math.round(curSelectedPartial);
 		}
 		for (num => item in grpTexts.members)

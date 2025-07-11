@@ -118,10 +118,9 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 		var scroll = new ScrollableObject(-0.008, 100, 0, FlxG.width - 200, FlxG.height, button);
 		scroll.onPartialScroll.add(delta -> changeSelection(delta, false));
-		scroll.onFullScroll.add(delta ->
-		{
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-		});
+		// scroll.onFullScroll.add(delta ->
+		// {
+		// });
 		scroll.onFullScrollSnap.add(() -> changeSelection(0, true));
 		scroll.onTap.add(() ->
 		{
@@ -162,13 +161,11 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 		if (controls.UI_UP_P)
 		{
-			changeSelection(-1);
-			FlxG.sound.play(Paths.sound('scrollMenu'));
+			changeSelection(-1,true);
 		}
 		if (controls.UI_DOWN_P)
 		{
-			changeSelection(1);
-			FlxG.sound.play(Paths.sound('scrollMenu'));
+			changeSelection(1,true);
 		}
 
 		if (controls.BACK)
@@ -541,12 +538,14 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	{
 		if (usePrecision)
 		{
+			FlxG.sound.play(Paths.sound('scrollMenu'));
 			curSelected = FlxMath.wrap(curSelected + Std.int(delta), 0, optionsArray.length - 1);
 			curSelectedPartial = curSelected;
 		}
 		else
 		{
 			curSelectedPartial = FlxMath.bound(curSelectedPartial + delta, 0, optionsArray.length - 1);
+			if(curSelected != Math.round(curSelectedPartial)) FlxG.sound.play(Paths.sound('scrollMenu'));
 			curSelected = Math.round(curSelectedPartial);
 		}
 		descText.text = optionsArray[curSelected].description;
