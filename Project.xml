@@ -30,7 +30,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<section unless="debug">
 		<!-- Adds the ability to use OpenFL asset lookup (defaults to sys if disabled)  -->
-		<define name="OPENFL_LOOKUP" unless="desktop"/>
+		<define name="OPENFL_LOOKUP"/>
 
 		<!-- Adds the ability to use NativeFileSystem on the computer to acsess files  -->
 		<define name="NATIVE_LOOKUP" if="MODS_ALLOWED" />

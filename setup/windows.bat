@@ -3,7 +3,7 @@ color 0a
 @echo on
 echo Installing dependencies...
 echo This might take a few moments depending on your internet speed.
-haxelib install flixel 6.0.0 --quiet --skip-dependencies
+haxelib git flixel https://github.com/Psych-Slice/p-slice-1.0-flixel.git funkin --quiet --skip-dependencies
 haxelib install lime 8.2.2 --quiet --skip-dependencies
 haxelib install openfl 9.4.1 --quiet --skip-dependencies
 haxelib install flixel-addons 3.3.2 --quiet --skip-dependencies

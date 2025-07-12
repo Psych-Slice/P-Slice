@@ -3086,6 +3086,9 @@ class PlayState extends MusicBeatState
 	#if TOUCH_CONTROLS_ALLOWED
 	private function onHintPress(button:TouchButton):Void
 	{
+		// Ignore hint press if we are pausing
+		if(touchPad?.buttonP.justPressed) return;
+
 		var buttonCode:Int = (button.IDs[0].toString().startsWith('HITBOX')) ? button.IDs[1] : button.IDs[0];
 		callOnScripts('onHintPressPre', [buttonCode]);
 		if (button.justPressed) keyPressed(buttonCode);

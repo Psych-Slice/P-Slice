@@ -34,7 +34,7 @@ class SchoolDoof
 			#end
 		}
 
-		if (!NativeFileSystem.exists(file))
+		if (VsliceOptions.NAUGHTYNESS || !NativeFileSystem.exists(file))
 		{
 			#if LEGACY_PSYCH
 			file = Paths.json('$songName/${songName}Dialogue'); // Checks for vanilla/Senpai dialogue
