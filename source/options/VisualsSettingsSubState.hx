@@ -202,10 +202,13 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 	}
 
 	var notesShown:Bool = false;
+	var lastSelected:Int = -1;
 	override function changeSelection(change:Float,usePrecision:Bool = false)
 	{
 		super.changeSelection(change,usePrecision);
-		
+		if(lastSelected == curSelected) return;
+		else lastSelected = curSelected;
+
 		switch(curOption.variable)
 		{
 			case 'noteSkin', 'splashSkin', 'splashAlpha':

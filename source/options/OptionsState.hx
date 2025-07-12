@@ -17,7 +17,7 @@ class OptionsState extends MusicBeatState
 		'Graphics',
 		'Visuals',
 		'Gameplay',
-		'V-Slice Options',
+		'P-Slice Options',
 		#if TRANSLATIONS_ALLOWED  'Language', #end
 		#if (TOUCH_CONTROLS_ALLOWED || mobile)'Mobile Options' #end
 	];
@@ -59,7 +59,7 @@ class OptionsState extends MusicBeatState
 				openSubState(new options.GameplaySettingsSubState());
 			case 'Adjust Delay and Combo':
 				MusicBeatState.switchState(new options.NoteOffsetState());
-			case 'V-Slice Options':
+			case 'P-Slice Options':
 				openSubState(new BaseGameSubState());
 			#if (TOUCH_CONTROLS_ALLOWED || mobile)
 			case 'Mobile Options':
@@ -133,9 +133,9 @@ class OptionsState extends MusicBeatState
 		
 		var scroll = new ScrollableObject(-0.01,100,0,FlxG.width-200,FlxG.height,button);
 		scroll.onPartialScroll.add(delta -> changeSelection(delta,false));
-		scroll.onFullScroll.add(delta -> {
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-		});
+		// scroll.onFullScroll.add(delta -> {
+		// 	FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		// });
         scroll.onFullScrollSnap.add(() ->changeSelection(0,true));
 		scroll.onTap.add(() ->{
 			openSelectedSubstate(options[curSelected]);
@@ -197,12 +197,14 @@ class OptionsState extends MusicBeatState
 	
 	function changeSelection(delta:Float,usePrecision:Bool = false) {
 		if(usePrecision) {
+			if(delta != 0) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 			curSelected =  FlxMath.wrap(curSelected + Std.int(delta), 0, options.length - 1);
 			curSelectedPartial = curSelected;
 		}
 		else {
 			curSelectedPartial = FlxMath.bound(curSelectedPartial + delta, 0, options.length - 1);
-			curSelected =  Math.round(curSelectedPartial);
+			if(curSelected != Math.round(curSelectedPartial)) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			curSelected = Math.round(curSelectedPartial);
 		}
 		for (num => item in grpOptions.members)
 		{
