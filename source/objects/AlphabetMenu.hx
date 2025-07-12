@@ -36,9 +36,9 @@ class AlphabetMenu extends FlxGroup {
 		
 		var scroll = new ScrollableObject(-0.008,100,0,FlxG.width-200,FlxG.height,button);
 		scroll.onPartialScroll.add(delta -> changeSelection(delta,false));
-		scroll.onFullScroll.add(delta -> {
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-		});
+		// scroll.onFullScroll.add(delta -> {
+		// 	FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		// });
         scroll.onFullScrollSnap.add(() ->changeSelection(0,true));
 		scroll.onTap.add(() ->{
 			onSelect.dispatch((options[curSelected]));
@@ -73,7 +73,7 @@ class AlphabetMenu extends FlxGroup {
 		else {
 			curSelectedPartial = FlxMath.bound(curSelectedPartial + delta, 0, options.length - 1);
 			if(curSelected != Math.round(curSelectedPartial)) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-			curSelected =  Math.round(curSelectedPartial);
+			curSelected = Math.round(curSelectedPartial);
 		}
 		for (num => item in grpTexts.members)
 			{
