@@ -14,8 +14,10 @@ class ResetScoreSubState extends MusicBeatSubstate
 	var icon:HealthIcon;
 	var onYes:Bool = false;
 	var yesText:Alphabet;
+	#if TOUCH_CONTROLS_ALLOWED
 	var yesZone:TouchZone;
 	var noZone:TouchZone;
+	#end
 	var noText:Alphabet;
 
 	var song:String;

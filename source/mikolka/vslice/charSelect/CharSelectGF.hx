@@ -1,5 +1,6 @@
 package mikolka.vslice.charSelect;
 
+import haxe.Exception;
 import mikolka.funkin.FlxAtlasSprite;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
@@ -96,7 +97,8 @@ class CharSelectGF extends FlxAtlasSprite
 
   function drawFFT()
   {
-    if (enableVisualizer)
+    try{
+          if (enableVisualizer)
     {
       var levels = analyzer.getLevels();
       var frame = anim.curSymbol.timeline.get("VIZ_bars").get(anim.curFrame);
@@ -120,6 +122,10 @@ class CharSelectGF extends FlxAtlasSprite
 
         elements[i].symbol.firstFrame = animFrame;
       }
+    }
+    }
+    catch(x:Exception){
+      // tracing this would waste CPU
     }
   }
 
