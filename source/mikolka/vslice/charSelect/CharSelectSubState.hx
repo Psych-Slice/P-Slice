@@ -57,8 +57,8 @@ class CharSelectSubState extends MusicBeatSubState
 	var gfChillOut:CharSelectGF;
 	var barthing:FlxAtlasSprite;
 	var dipshitBacking:FlxSprite;
-	var dipshitLeftArrow:FlxSprite;
-	var dipshitRightArrow:FlxSprite;
+	var dipshitLeftArrow:Null<FlxSprite>;
+	var dipshitRightArrow:Null<FlxSprite>;
 	var chooseDipshit:FlxSprite;
 	var dipshitBlur:FlxSprite;
 	var transitionGradient:FlxSprite;
@@ -264,10 +264,11 @@ class CharSelectSubState extends MusicBeatSubState
 		dipshitBlur.y += 220;
 		FlxTween.tween(dipshitBlur, {y: dipshitBlur.y - 220}, 1.2, {ease: FlxEase.expoOut});		
 		
-		if(modSelector.hasModsAvailable){
+		if(dipshitLeftArrow != null){
 			dipshitLeftArrow.y += 200;
 			FlxTween.tween(dipshitLeftArrow, {y: dipshitLeftArrow.y - 200}, 1.2, {ease: FlxEase.expoOut});
-				
+		}
+		if(dipshitRightArrow != null){
 			dipshitRightArrow.y += 200;
 			FlxTween.tween(dipshitRightArrow, {y: dipshitRightArrow.y - 200}, 1.2, {ease: FlxEase.expoOut});
 		}		
@@ -275,8 +276,8 @@ class CharSelectSubState extends MusicBeatSubState
 		chooseDipshit.scrollFactor.set();
 		dipshitBacking.scrollFactor.set();
 		dipshitBlur.scrollFactor.set();
-		dipshitLeftArrow.scrollFactor.set();
-		dipshitRightArrow.scrollFactor.set();
+		dipshitLeftArrow?.scrollFactor.set();
+		dipshitRightArrow?.scrollFactor.set();
 
 		nametag = new Nametag(0, 0, curChar); // ? Set to current char
 		add(nametag);
@@ -757,8 +758,10 @@ class CharSelectSubState extends MusicBeatSubState
 		FlxTween.tween(chooseDipshit, {y: chooseDipshit.y + 200}, 0.8, {ease: FlxEase.backIn});
 		FlxTween.tween(dipshitBlur, {y: dipshitBlur.y + 220}, 0.8, {ease: FlxEase.backIn});
 
-		FlxTween.tween(dipshitLeftArrow, {y: dipshitLeftArrow.y + 200}, 0.8, {ease: FlxEase.backIn});
-		FlxTween.tween(dipshitRightArrow, {y: dipshitRightArrow.y + 200}, 0.8, {ease: FlxEase.backIn});
+		if(dipshitLeftArrow != null) 
+			FlxTween.tween(dipshitLeftArrow, {y: dipshitLeftArrow.y + 200}, 0.8, {ease: FlxEase.backIn});
+		if(dipshitRightArrow != null) 
+			FlxTween.tween(dipshitRightArrow, {y: dipshitRightArrow.y + 200}, 0.8, {ease: FlxEase.backIn});
 		
 		for (index => member in grpIcons.members)
 		{
@@ -807,7 +810,7 @@ class CharSelectSubState extends MusicBeatSubState
 
 		syncAudio(elapsed);
 
-		if (allowInput)
+		if (!pressedSelect && allowInput)
 		{
 			#if TOUCH_CONTROLS_ALLOWED
 			if(touchPad.buttonL.justPressed){
@@ -816,33 +819,8 @@ class CharSelectSubState extends MusicBeatSubState
 			else if (touchPad.buttonR.justPressed){
 				modSelector?.changeDirectory(1);
 			}
-			else if (TouchUtil.justPressed #if debug || FlxG.mouse.justPressed #end)
-			{
-				for (index => member in touchKeys)
-				{
-					if (TouchUtil.overlaps(member) #if debug || FlxG.mouse.overlaps(member) #end)
-					{
-						var newCursorY = (Math.floor(index / 3));
-						var newCursorX = (index % 3 );
-						if (cursorX == newCursorX-1 && cursorY == newCursorY-1)
-						{
-							if (!pressedSelect)
-								onAcceptPress();
-							else
-								onBackPress();
-						}
-						else if(!pressedSelect)
-						{
-							cursorY = newCursorY -1;
-							cursorX = newCursorX -1;
-							cursorDenied.visible = false;
-							holdTmrDown = 0;
-							selectSound.play(true);
-						}
-					}
-				}
-			}
 			#end
+
 			if (controls.UI_UP)
 				holdTmrUp += elapsed;
 			if (controls.UI_UP_R)
@@ -938,6 +916,34 @@ class CharSelectSubState extends MusicBeatSubState
 			cursorY = -1;
 		}
 
+		#if TOUCH_CONTROLS_ALLOWED
+		if (TouchUtil.justPressed #if debug || FlxG.mouse.justPressed #end)
+			{
+				for (index => member in touchKeys)
+				{
+					if (TouchUtil.overlaps(member) #if debug || FlxG.mouse.overlaps(member) #end)
+					{
+						var newCursorY = (Math.floor(index / 3));
+						var newCursorX = (index % 3 );
+						if (cursorX == newCursorX-1 && cursorY == newCursorY-1)
+						{
+							if (!pressedSelect)
+								onAcceptPress();
+							else
+								onBackPress();
+						}
+						else if(!pressedSelect)
+						{
+							cursorY = newCursorY -1;
+							cursorX = newCursorX -1;
+							cursorDenied.visible = false;
+							holdTmrDown = 0;
+							selectSound.play(true);
+						}
+					}
+				}
+			}
+		#end
 		if (controls.ACCEPT)
 			onAcceptPress();
 		if (controls.BACK)
