@@ -131,7 +131,7 @@ class OptionsState extends MusicBeatState
 
 		var button = new TouchZone(90,270,1090,100,FlxColor.PURPLE);
 		
-		var scroll = new ScrollableObject(-0.01,100,0,FlxG.width-200,FlxG.height,button);
+		var scroll = new ScrollableObject(-0.01,100,0,FlxG.width-200,FlxG.height,button,touchPad);
 		scroll.onPartialScroll.add(delta -> changeSelection(delta,false));
 		// scroll.onFullScroll.add(delta -> {
 		// 	FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);

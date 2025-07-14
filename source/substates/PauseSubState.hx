@@ -203,7 +203,7 @@ class PauseSubState extends MusicBeatSubstate
 
 		var button = new TouchZone(85, 300, 1000, 100, FlxColor.PURPLE);
 		button.cameras = cameras;
-		var scroll = new ScrollableObject(-0.008, 100, 0, FlxG.width - 200, FlxG.height, button);
+		var scroll = new ScrollableObject(-0.008, 100, 0, FlxG.width - 200, FlxG.height, button,touchPad);
 		scroll.cameras = cameras;
 		scroll.onPartialScroll.add(delta -> changeSelection(delta, false));
 		scroll.onFullScroll.add(delta ->

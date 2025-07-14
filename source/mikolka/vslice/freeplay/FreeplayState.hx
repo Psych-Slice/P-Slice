@@ -788,7 +788,7 @@ class FreeplayState extends MusicBeatSubstate
 		var button = new TouchZone(420,260  ,450,95);
 		button.cameras = [funnyCam];
 
-		var scroll = new ScrollableObject(-0.01,150,100,FlxG.width-400,FlxG.height,button);
+		var scroll = new ScrollableObject(-0.01,150,100,FlxG.width-400,FlxG.height,button,touchPad);
 		scroll.cameras = [funnyCam];
 		scroll.onPartialScroll.add(delta -> {
 			if(busy) return;
