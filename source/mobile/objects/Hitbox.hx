@@ -226,7 +226,7 @@
 			 shape.graphics.drawRect(0, 0, Width, Height);
 			 shape.graphics.endFill();
 		 }
-		 else // if (ClientPrefs.data.hitboxType == 'Gradient')
+		 else if (ClientPrefs.data.hitboxType == 'Gradient')
 		 {
 			 shape.graphics.lineStyle(3, 0xFFFFFF, 1);
 			 shape.graphics.drawRect(0, 0, Width, Height);
@@ -238,6 +238,11 @@
 			 else
 				 shape.graphics.beginGradientFill(RADIAL, [0xFFFFFF, FlxColor.TRANSPARENT], [1, 0], [0, 255], null, null, null, 0.5);
 			 shape.graphics.drawRect(3, 3, Width - 6, Height - 6);
+			 shape.graphics.endFill();
+		 }
+		 else if (ClientPrefs.data.hitboxType == "Bars only" && isLane){
+			 shape.graphics.lineStyle(10, 0xFFFFFF, 1);
+			 shape.graphics.drawRect(0, 0, Width, Height);
 			 shape.graphics.endFill();
 		 }
  

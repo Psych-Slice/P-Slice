@@ -232,7 +232,7 @@ class StoryMenuState extends MusicBeatState
 
 		var button = new TouchZone(415, 470, 420, 160, FlxColor.PURPLE);
 
-		var scroll = new ScrollableObject(-0.01, 370, 0, 500, FlxG.height, button);
+		var scroll = new ScrollableObject(-0.01, 370, 0, 500, FlxG.height, button,touchPad);
 		scroll.onPartialScroll.add(delta -> changeWeek(delta, false));
 		// scroll.onFullScroll.add(delta -> {
 		// 	FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);

@@ -34,7 +34,7 @@ class AlphabetMenu extends FlxGroup {
 
 		var button = new TouchZone(85,300,1000,100,FlxColor.PURPLE);
 		
-		var scroll = new ScrollableObject(-0.008,100,0,FlxG.width-200,FlxG.height,button);
+		var scroll = new ScrollableObject(-0.008,100,0,FlxG.width-200,FlxG.height,button,MusicBeatState.getState()?.touchPad);
 		scroll.onPartialScroll.add(delta -> changeSelection(delta,false));
 		// scroll.onFullScroll.add(delta -> {
 		// 	FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
