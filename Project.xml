@@ -272,7 +272,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	</section>
 	<section unless="PROFILE_BUILD">
 		<section if="mobile">
-			<icon path="art/mobile/iconAdaptive.png" />
+			<icon path="art/mobile/iconAdaptive.png" if="android" />
+			<icon path="art/mobile/iconMobile.png" unless="android" />
 			<icon path="art/mobile/icon32.png" size='32'/>
 			<icon path="art/mobile/icon64.png" size='64'/>
 			<icon path="art/mobile/icon128.png" size='128'/>
