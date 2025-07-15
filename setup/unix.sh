@@ -5,9 +5,9 @@
 echo Makking the main haxelib and setuping folder in same time..
 echo Installing dependencies...
 echo This might take a few moments depending on your internet speed.
+haxelib install openfl 9.4.1 --quiet --skip-dependencies
 haxelib git flixel https://github.com/Psych-Slice/p-slice-1.0-flixel.git 9b1192a23fcfb456123efa14c63c8506ded20e5e --quiet --skip-dependencies
 haxelib install lime 8.1.3 --quiet --skip-dependencies
-haxelib install openfl 9.4.1 --quiet --skip-dependencies
 haxelib install flixel-addons 3.3.2 --quiet --skip-dependencies
 haxelib install flixel-tools 1.5.1 --quiet --skip-dependencies
 haxelib install hscript-iris 1.1.3 --quiet
