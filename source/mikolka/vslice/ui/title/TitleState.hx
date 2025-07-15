@@ -1,5 +1,6 @@
 package mikolka.vslice.ui.title;
 
+import mikolka.compatibility.VsliceOptions;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.frames.FlxFrame;
@@ -16,6 +17,8 @@ import mikolka.vslice.components.ScreenshotPlugin;
 #if VIDEOS_ALLOWED
 import mikolka.vslice.ui.title.AttractState;
 #end
+
+using StringTools;
 
 typedef TitleData =
 {
@@ -78,16 +81,16 @@ class TitleState extends MusicBeatState
 
 		logoBl = new FlxSprite(logoPosition.x, logoPosition.y);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
-		logoBl.antialiasing = ClientPrefs.data.antialiasing;
+		logoBl.antialiasing = VsliceOptions.ANTIALIASING;
 
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
 
 		gfDance = new FlxSprite(gfPosition.x, gfPosition.y);
-		gfDance.antialiasing = ClientPrefs.data.antialiasing;
+		gfDance.antialiasing = VsliceOptions.ANTIALIASING;
 
-		if (ClientPrefs.data.shaders)
+		if (VsliceOptions.SHADERS)
 		{
 			swagShader = new ColorSwap();
 			gfDance.shader = swagShader.shader;
@@ -119,7 +122,7 @@ class TitleState extends MusicBeatState
 		if (newTitle = animFrames.length > 0)
 		{
 			titleText.animation.addByPrefix('idle', "ENTER IDLE", 24);
-			titleText.animation.addByPrefix('press', ClientPrefs.data.flashing ? "ENTER PRESSED" : "ENTER FREEZE", 24);
+			titleText.animation.addByPrefix('press', VsliceOptions.FLASHBANG ? "ENTER PRESSED" : "ENTER FREEZE", 24);
 		}
 		else
 		{
@@ -137,7 +140,7 @@ class TitleState extends MusicBeatState
 		}
 
 		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('logo'));
-		logo.antialiasing = ClientPrefs.data.antialiasing;
+		logo.antialiasing = VsliceOptions.ANTIALIASING;
 		logo.screenCenter();
 
 		add(gfDance);
@@ -177,7 +180,11 @@ class TitleState extends MusicBeatState
 			{
 				try
 				{
+					#if LEGACY_PSYCH
+					var titleJSON:TitleData = Json.parse(titleRaw);
+					#else
 					var titleJSON:TitleData = tjson.TJSON.parse(titleRaw);
+					#end
 					gfPosition.set(titleJSON.gfx, titleJSON.gfy);
 					logoPosition.set(titleJSON.titlex, titleJSON.titley);
 					enterPosition.set(titleJSON.startx, titleJSON.starty);
@@ -194,7 +201,7 @@ class TitleState extends MusicBeatState
 					if (titleJSON.backgroundSprite != null && titleJSON.backgroundSprite.trim().length > 0)
 					{
 						var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image(titleJSON.backgroundSprite));
-						bg.antialiasing = ClientPrefs.data.antialiasing;
+						bg.antialiasing = VsliceOptions.ANTIALIASING;
 						add(bg);
 					}
 				}
@@ -318,7 +325,7 @@ class TitleState extends MusicBeatState
 				if (titleText != null)
 					titleText.animation.play('press');
 
-				FlxG.camera.flash(ClientPrefs.data.flashing ? FlxColor.WHITE : 0x4CFFFFFF, 1);
+				FlxG.camera.flash(VsliceOptions.FLASHBANG ? FlxColor.WHITE : 0x4CFFFFFF, 1);
 				FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 
 				transitioning = true;
@@ -603,8 +610,15 @@ class TitleState extends MusicBeatState
 	 * After sitting on the title screen for a while, transition to the attract screen.
 	 */
 	function moveToAttract():Void
-	{#if VIDEOS_ALLOWED if (!Std.isOfType(FlxG.state, TitleState))
-		return;
-		FlxG.switchState(() -> new AttractState()); #end
+	{
+		#if VIDEOS_ALLOWED 
+		if (!Std.isOfType(FlxG.state, TitleState))
+			return;
+		#if LEGACY_PSYCH
+		FlxG.switchState(new AttractState()); 
+		#else
+		FlxG.switchState(() -> new AttractState()); 
+		#end
+		#end
 	}
 }

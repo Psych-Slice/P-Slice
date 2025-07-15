@@ -52,6 +52,9 @@ class Main extends Sprite
 
 	public static function main():Void
 	{
+		#if (windows && cpp && !LEGACY_PSYCH)
+		backend.Native.__init__();
+		#end
 		Lib.current.addChild(new Main());
 	}
 
@@ -68,7 +71,7 @@ class Main extends Sprite
 		trace("CWD IS "+StorageUtil.getStorageDirectory());
 		#end
 		backend.CrashHandler.init();
-
+		trace("Crash handler is up!");
 		#if (cpp && windows)
 		backend.Native.fixScaling();
 		#end
@@ -98,6 +101,7 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
+		trace("Starting game setup");
 		#if (openfl <= "9.2.0")
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
@@ -114,6 +118,7 @@ class Main extends Sprite
 			game.zoom = 1.0;
 		#end
 
+		trace("Pushing global mods");
 		#if LUA_ALLOWED
 		Mods.pushGlobalMods();
 		#end
@@ -122,6 +127,8 @@ class Main extends Sprite
 		FlxG.save.bind('funkin', CoolUtil.getSavePath());
 
 		Highscore.load();
+
+
 
 		#if HSCRIPT_ALLOWED
 		Iris.warn = function(x, ?pos:haxe.PosInfos) {
@@ -191,6 +198,7 @@ class Main extends Sprite
 		});
 		#end
 
+		trace("Loading game objest...");
 		var gameObject = new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen);
 		// FlxG.game._customSoundTray wants just the class, it calls new from
     	// create() in there, which gets called when it's added to stage

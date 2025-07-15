@@ -32,7 +32,11 @@ class FlashingState extends WarningState{
 			Press " + escape + " to ignore this message.\n
 			You've been warned!";
 		super(text,() ->{
+			#if LEGACY_PSYCH
+			ClientPrefs.flashing = false;
+			#else
 			ClientPrefs.data.flashing = false;
+			#end
 			ClientPrefs.saveSettings();
 		},() ->{},nextState);
 	}

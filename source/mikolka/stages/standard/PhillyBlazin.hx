@@ -128,8 +128,11 @@ class PhillyBlazin extends BaseStage
 		GameOverSubstate.deathDelay = 0.15; //? There's like 90% change this breaks something on 0.6.3
 		#end
 
-		
+		#if LEGACY_PSYCH
+		FlxG.camera.focusOn(get_camFollow());
+		#else
 		FlxG.camera.focusOn(camFollow.getPosition());
+		#end
 		FlxG.camera.fade(FlxColor.BLACK, 1.5, true, null, true);
 
 		for (character in boyfriendGroup.members)

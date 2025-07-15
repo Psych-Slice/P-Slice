@@ -57,7 +57,7 @@ class InitState extends MusicBeatState
         #end
 		else
 		{
-			new FlxTimer().start(0.5, function(tmr:FlxTimer)
+			new FlxTimer().start(0.15, function(tmr:FlxTimer)
 			{
 				#if FREEPLAY
 				MusicBeatState.switchState(new FreeplayState());
