@@ -326,6 +326,18 @@ class PauseSubState extends MusicBeatSubstate
 			if (menuItems == difficultyChoices)
 			{
 				var songLowercase:String = Paths.formatToSongPath(PlayState.SONG.song);
+				var useErect = FreeplayMeta.getMeta(songLowercase).allowErectVariants;
+				if(useErect){
+					var curDiffText = selectedOption;
+					if(songLowercase.endsWith("-erect") && curDiffText != "Erect" && curDiffText != "Nightmare"){
+						//not nightmare anymore
+						songLowercase = songLowercase.substring(0,songLowercase.length-1-"-erect".length);
+					}
+					else if(!songLowercase.endsWith("-erect") && (curDiffText == "Erect" || curDiffText == "Nightmare")){
+						//now it's nightmare
+						songLowercase = songLowercase+"-erect";
+					}
+				}
 				var poop:String = Highscore.formatSong(songLowercase, curSelected);
 				try
 				{

@@ -917,7 +917,7 @@ class CharSelectSubState extends MusicBeatSubState
 		}
 
 		#if TOUCH_CONTROLS_ALLOWED
-		if (TouchUtil.justPressed #if debug || FlxG.mouse.justPressed #end)
+		if (TouchUtil.pressed #if debug || FlxG.mouse.pressed #end)
 			{
 				for (index => member in touchKeys)
 				{
@@ -925,7 +925,8 @@ class CharSelectSubState extends MusicBeatSubState
 					{
 						var newCursorY = (Math.floor(index / 3));
 						var newCursorX = (index % 3 );
-						if (cursorX == newCursorX-1 && cursorY == newCursorY-1)
+						if (cursorX == newCursorX-1 && cursorY == newCursorY-1 
+							&& (TouchUtil.justPressed #if debug || FlxG.mouse.justPressed #end))
 						{
 							if (!pressedSelect)
 								onAcceptPress();
