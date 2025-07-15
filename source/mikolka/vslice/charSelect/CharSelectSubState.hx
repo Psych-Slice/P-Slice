@@ -935,11 +935,11 @@ class CharSelectSubState extends MusicBeatSubState
 						}
 						else if(!pressedSelect)
 						{
+							if(cursorX != newCursorX-1 || cursorY != newCursorY-1 )selectSound.play(true);
 							cursorY = newCursorY -1;
 							cursorX = newCursorX -1;
 							cursorDenied.visible = false;
 							holdTmrDown = 0;
-							selectSound.play(true);
 						}
 					}
 				}
