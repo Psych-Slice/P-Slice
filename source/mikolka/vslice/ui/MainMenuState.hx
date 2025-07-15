@@ -2,8 +2,8 @@ package mikolka.vslice.ui;
 
 import mikolka.compatibility.ui.MainMenuHooks;
 import mikolka.compatibility.VsliceOptions;
+import mikolka.vslice.ui.title.TitleState;
 #if !LEGACY_PSYCH
-import states.TitleState;
 #if MODS_ALLOWED
 import states.ModsMenuState;
 #end

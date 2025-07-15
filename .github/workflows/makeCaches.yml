@@ -14,10 +14,10 @@ jobs:
             setupScript: sh ./setup/unix.sh
             CACHE_NAME: P-Slice.0.6.3.desktop-cache
 
-          - name: Mobile
-            os: macos-latest
-            setupScript: sh ./setup/mobile.sh
-            CACHE_NAME: P-Slice.0.6.3.mobile-cache
+          # - name: Mobile
+          #   os: macos-latest
+          #   setupScript: sh ./setup/mobile.sh
+          #   CACHE_NAME: P-Slice.0.6.3.mobile-cache
     uses: ./.github/workflows/dependencies.yml
     with:
       os: ${{ matrix.os }}

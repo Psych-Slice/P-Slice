@@ -788,7 +788,7 @@ class FreeplayState extends MusicBeatSubstate
 		var button = new TouchZone(420,260  ,450,95);
 		button.cameras = [funnyCam];
 
-		var scroll = new ScrollableObject(-0.01,150,60,FlxG.width-400,FlxG.height,button);
+		var scroll = new ScrollableObject(-0.01,150,100,FlxG.width-400,FlxG.height,button,touchPad);
 		scroll.cameras = [funnyCam];
 		scroll.onPartialScroll.add(delta -> {
 			if(busy) return;
@@ -1576,7 +1576,7 @@ class FreeplayState extends MusicBeatSubstate
 				#end
 				FreeplayHelpers.openGameplayChanges(this);
 			}
-			else if (controls.RESET #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonY.justPressed #end && curSelected != 0)
+			else if ((controls.RESET #if TOUCH_CONTROLS_ALLOWED || touchPad?.buttonY.justPressed #end) && curSelected != 0)
 			{
 				persistentUpdate = false;
 				var curSng = grpCapsules.members[curSelected];
@@ -2301,7 +2301,7 @@ class FreeplayState extends MusicBeatSubstate
 		if (daSongCapsule == null)
 			daSongCapsule = grpCapsules.members[curSelected];
 
-		if (curSelected == 0)
+		if (curSelected == 0 || daSongCapsule.songData == null)
 		{
 			FunkinSound.playMusic('freeplayRandom', {
 				startingVolume: 0.0,
