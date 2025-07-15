@@ -1,5 +1,6 @@
 package mikolka.vslice.ui.title;
 
+import mikolka.compatibility.VsliceOptions;
 import flixel.group.FlxGroup;
 
 class IntroSubstate extends MusicBeatSubstate
@@ -49,7 +50,7 @@ class IntroSubstate extends MusicBeatSubstate
 		}
 		ngSpr.updateHitbox();
 		ngSpr.screenCenter(X);
-		ngSpr.antialiasing = ClientPrefs.data.antialiasing;
+		ngSpr.antialiasing = VsliceOptions.FLASHBANG;
 		ngSpr.visible = false;
 
         add(credGroup);
@@ -99,8 +100,10 @@ class IntroSubstate extends MusicBeatSubstate
 	{
 		for (i in 0...textArray.length)
 		{
+			#if !LEGACY_PSYCH
 			if (ClientPrefs.data.vibrating)
 				lime.ui.Haptic.vibrate(100, 100);
+			#end
 
 			var money:Alphabet = new Alphabet(0, 0, textArray[i], true);
 			money.screenCenter(X);
@@ -137,10 +140,10 @@ class IntroSubstate extends MusicBeatSubstate
 
 	function getIntroTextShit():Array<Array<String>>
 	{
-		#if MODS_ALLOWED
+		#if (MODS_ALLOWED && !LEGACY_PSYCH)
 		var firstArray:Array<String> = Mods.mergeAllTextsNamed('data/introText.txt');
 		#else
-		var fullText:String = Assets.getText(Paths.txt('introText'));
+		var fullText:String = lime.utils.Assets.getText(Paths.txt('introText'));
 		var firstArray:Array<String> = fullText.split('\n');
 		#end
 		var swagGoodArray:Array<Array<String>> = [];
