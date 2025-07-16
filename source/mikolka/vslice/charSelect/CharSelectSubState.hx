@@ -512,9 +512,7 @@ class CharSelectSubState extends MusicBeatSubState
 				onLoad: function()
 				{
 					allowInput = true;
-					#if TOUCH_CONTROLS_ALLOWED
-					modSelector.allowInput = true;
-					#end
+					modSelector?.allowInput = true;
 
 					@:privateAccess
 					gfChill.analyzer = new SpectralAnalyzer(ModsHelper.getSoundChannel(FlxG.sound.music), 7, 0.1);
@@ -664,9 +662,7 @@ class CharSelectSubState extends MusicBeatSubState
 						onLoad: function()
 						{
 							allowInput = true;
-							#if TOUCH_CONTROLS_ALLOWED
-							modSelector.allowInput = true;
-							#end
+							modSelector?.allowInput = true;
 
 							@:privateAccess
 							gfChill.analyzer = new SpectralAnalyzer(ModsHelper.getSoundChannel(FlxG.sound.music), 7, 0.1);
@@ -917,9 +913,8 @@ class CharSelectSubState extends MusicBeatSubState
 		}
 
 		#if TOUCH_CONTROLS_ALLOWED
-		if ((TouchUtil.pressed && !TouchUtil.justReleased) #if debug || (FlxG.mouse.pressed && !FlxG.mouse.justReleased) #end)
+		if (TouchUtil.pressed #if debug || FlxG.mouse.pressed #end)
 			{
-
 				for (index => member in touchKeys)
 				{
 					if (TouchUtil.overlaps(member) #if debug || FlxG.mouse.overlaps(member) #end)
@@ -1170,13 +1165,8 @@ class CharSelectSubState extends MusicBeatSubState
 						{
 							case "idle":
 								lock.playAnimation("selected");
-							case "selected" | "clicked":{
-								var tile = touchKeys[cursorX+1+((cursorY+1)*3)];
-								if (controls.ACCEPT || 
-									(TouchUtil.overlaps(tile) && TouchUtil.justPressed) 
-									#if debug || (FlxG.mouse.justPressed && FlxG.mouse.overlaps(tile)) #end) 
-										lock.playAnimation("clicked", true);
-							}
+							case "selected" | "clicked":
+								if (controls.ACCEPT || TouchUtil.justPressed #if debug || FlxG.mouse.justPressed #end) lock.playAnimation("clicked", true);
 						}
 					}
 					else
