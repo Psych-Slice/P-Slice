@@ -52,9 +52,6 @@ class Main extends Sprite
 
 	public static function main():Void
 	{
-		#if (windows && cpp && !LEGACY_PSYCH)
-		backend.Native.__init__();
-		#end
 		Lib.current.addChild(new Main());
 	}
 
@@ -73,6 +70,7 @@ class Main extends Sprite
 		backend.CrashHandler.init();
 		trace("Crash handler is up!");
 		#if (cpp && windows)
+		trace("Fixing DPI aware:");
 		backend.Native.fixScaling();
 		#end
 
@@ -87,6 +85,7 @@ class Main extends Sprite
 		#if hxvlc
 		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0") ['--no-lua'] #end);
 		#end
+		trace("Main done it's code");
 	}
 
 	private function init(?E:Event):Void
