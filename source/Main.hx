@@ -121,15 +121,32 @@ class Main extends Sprite
 		#if LUA_ALLOWED
 		Mods.pushGlobalMods();
 		#end
+		trace("Pushing top mod");
 		Mods.loadTopMod();
 
-		FlxG.save.bind('funkin', CoolUtil.getSavePath());
+		trace("Initializing save .sol");
+		FlxG.save.bind('funkin', CoolUtil.getSavePath(),(rawSave,error) ->{
+			trace("Couldn't load main save. Attempting to extract");
+			try{
+				var badSave = File.write(StorageUtil.getStorageDirectory()+"/funkin.sol.bad");
+				badSave.writeString(rawSave);
+				badSave.close();
+				trace("Extracted bad save to funkin.sol.bad. Creating new save..");
+			}
+			catch (x){
+				trace(x);
+				trace("Failed to backup. Discarding..");
+			}
+			return {};
+		});
 
+		trace("Loading scores..");
 		Highscore.load();
 
 
 
 		#if HSCRIPT_ALLOWED
+		trace("Hooking up the Iris log functions");
 		Iris.warn = function(x, ?pos:haxe.PosInfos) {
 			Iris.logLevel(WARN, x, pos);
 			var newPos:HScriptInfos = cast pos;
@@ -186,7 +203,12 @@ class Main extends Sprite
 		}
 		#end
 
-		#if LUA_ALLOWED Lua.set_callbacks_function(cpp.Callable.fromStaticFunction(psychlua.CallbackHandler.call)); #end
+		#if LUA_ALLOWED 
+		trace("Hooking up Lua");
+		Lua.set_callbacks_function(cpp.Callable.fromStaticFunction(psychlua.CallbackHandler.call)); 
+		#end
+
+		trace("Loading controls");
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
 		#if ACHIEVEMENTS_ALLOWED Achievements.load(); #end
@@ -207,6 +229,7 @@ class Main extends Sprite
 
 		addChild(gameObject);
 
+		trace("Finishing up..");
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
 		#if mobile
 		FlxG.game.addChild(fpsVar);

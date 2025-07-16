@@ -20,7 +20,7 @@ class CrashHandler
 	{
 		trace("hooking openfl crash handler");
 		openfl.Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
-		#if (cpp && !windows)
+		#if cpp 
 		trace("hooking hxcpp crash handler");
 		untyped __global__.__hxcpp_set_critical_error_handler(onError);
 		#elseif hl
