@@ -52,6 +52,9 @@ class Main extends Sprite
 
 	public static function main():Void
 	{
+		#if (windows && cpp && !LEGACY_PSYCH)
+		backend.Native.__init__();
+		#end
 		Lib.current.addChild(new Main());
 	}
 
@@ -69,6 +72,9 @@ class Main extends Sprite
 		#end
 		backend.CrashHandler.init();
 		trace("Crash handler is up!");
+		#if (cpp && windows)
+		backend.Native.fixScaling();
+		#end
 
 		if (stage != null)
 		{
