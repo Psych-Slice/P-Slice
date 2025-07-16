@@ -147,7 +147,7 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 		#if TOUCH_CONTROLS_ALLOWED
 		var button = new TouchZone(90, 335, 1050, 100, FlxColor.PURPLE);
 		button.camera = optionsCam;
-		var scroll = new ScrollableObject(-0.008, 100, 0, FlxG.width - 200, FlxG.height, button,touchPad);
+		var scroll = new ScrollableObject(-0.008, 100, 0, FlxG.width - 200, FlxG.height, button);
 		scroll.camera = optionsCam;
 		scroll.onPartialScroll.add(delta -> changeSelection(delta, false));
 		scroll.onFullScroll.add(delta ->

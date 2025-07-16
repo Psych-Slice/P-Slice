@@ -17,12 +17,10 @@ class ScrollableObject extends TouchZone {
     private var partialScrollTracker:Float = 0;
     private var scrollScale:Float = 0;
     private var clickButton:FlxObject;
-    private var curDpad:TouchPad;
 
-    public function new(scrollScale:Float,x:Float, y:Float, width:Float, height:Float,clickButton:FlxObject,curDpad:TouchPad) {
+    public function new(scrollScale:Float,x:Float, y:Float, width:Float, height:Float,clickButton:FlxObject) {
         this.scrollScale = scrollScale;
         this.clickButton = clickButton;
-        this.curDpad = curDpad;
         super(x,y,width,height);
     }
     override function update(elapsed:Float) {
@@ -51,6 +49,7 @@ class ScrollableObject extends TouchZone {
             else if(isDragging) {
                 onFullScrollSnap.dispatch();
                 isDragging = false;
+                var curDpad = Controls.instance.isInSubstate ? MusicBeatSubstate.instance.touchPad : MusicBeatState.getState().touchPad;
                 if(curDpad != null) curDpad.active = true;
             }
             else return;
@@ -61,7 +60,8 @@ class ScrollableObject extends TouchZone {
             {
                 if(isTapping){
                     isDragging = true;
-                    if(curDpad != null) curDpad.active = false;
+                var curDpad = Controls.instance.isInSubstate ? MusicBeatSubstate.instance.touchPad : MusicBeatState.getState().touchPad;
+                if(curDpad != null) curDpad.active = false;
                     isTapping = false;
                 }
                 else if(!isDragging) return;
