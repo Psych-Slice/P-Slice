@@ -97,7 +97,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	public static var GRID_COLUMNS_PER_PLAYER = 4;
 	public static var GRID_PLAYERS = 2;
 	public static var GRID_SIZE = 40;
-	final BACKUP_EXT = '.bkp';
+	final BACKUP_EXT = 'bkp';
 
 	public var quantizations:Array<Int> = [
 		4,
@@ -733,7 +733,14 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 				//trace(chartName, dataToSave);
 				#if sys
 				if(!NativeFileSystem.isDirectory('backups')) NativeFileSystem.createDirectory('backups');
-				File.saveContent('backups/$chartName.$BACKUP_EXT', dataToSave);
+				try{
+
+					File.saveContent('backups/$chartName.$BACKUP_EXT', dataToSave);
+				}
+				catch(x){
+					trace('Failed to save $chartName.$BACKUP_EXT');
+					trace(x);
+				}
 
 				if(backupLimit > 0)
 				{
