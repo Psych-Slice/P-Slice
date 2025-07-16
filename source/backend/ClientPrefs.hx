@@ -185,7 +185,7 @@ class ClientPrefs {
 
 		'accept'		=> [A],
 		'back'			=> [B],
-		'pause'			=> [#if android NONE #else P #end],
+		'pause'			=> [P],
 		'screenshot'    => [NONE],
 		'reset'			=> [NONE]
 	];
