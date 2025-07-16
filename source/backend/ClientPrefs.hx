@@ -287,7 +287,10 @@ class ClientPrefs {
 
 		// controls on a separate save file
 		var save:FlxSave = new FlxSave();
-		save.bind('controls_v3', CoolUtil.getSavePath());
+		save.bind('controls_v3', CoolUtil.getSavePath(),(rawSave,error) ->{
+			trace("Couldn't load controls. Discarding..");
+			return {};
+		});
 		if(save != null)
 		{
 			if(save.data.keyboard != null)
