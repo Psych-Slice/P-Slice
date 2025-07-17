@@ -904,7 +904,7 @@ class CharSelectSubState extends MusicBeatSubState
 		{
 			cursorX = -1;
 			#if MODS_ALLOWED
-			modSelector?.changeDirectory(1);
+			modSelector.changeDirectory(1);
 			#end
 		}
 		if (cursorY < -1)
