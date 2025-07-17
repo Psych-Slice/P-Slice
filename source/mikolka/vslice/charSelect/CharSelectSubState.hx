@@ -512,7 +512,7 @@ class CharSelectSubState extends MusicBeatSubState
 				onLoad: function()
 				{
 					allowInput = true;
-					modSelector?.allowInput = true;
+					if(modSelector != null) modSelector.allowInput = true;
 
 					@:privateAccess
 					gfChill.analyzer = new SpectralAnalyzer(ModsHelper.getSoundChannel(FlxG.sound.music), 7, 0.1);
@@ -662,7 +662,7 @@ class CharSelectSubState extends MusicBeatSubState
 						onLoad: function()
 						{
 							allowInput = true;
-							modSelector?.allowInput = true;
+							if(modSelector != null) modSelector.allowInput = true;
 
 							@:privateAccess
 							gfChill.analyzer = new SpectralAnalyzer(ModsHelper.getSoundChannel(FlxG.sound.music), 7, 0.1);
