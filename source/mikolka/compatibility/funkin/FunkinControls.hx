@@ -21,9 +21,9 @@ class FunkinControls {
         return InputFormatter.getKeyName(ClientPrefs.keyBinds.get("char_select")[0]);
     }
     public static function enableVolume(){
-		FlxG.sound.muteKeys = TitleState.muteKeys;
-		FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
-		FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
+		FlxG.sound.muteKeys = InitState.muteKeys;
+		FlxG.sound.volumeDownKeys = InitState.volumeDownKeys;
+		FlxG.sound.volumeUpKeys = InitState.volumeUpKeys;
     }
     public static function disableVolume(){
         FlxG.sound.muteKeys = [];

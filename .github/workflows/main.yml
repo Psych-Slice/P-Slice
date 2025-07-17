@@ -27,9 +27,8 @@ jobs:
             exportPath: linux
             artifactName: P-Slice.0.6.3.linux
             cachePath: P-Slice.0.6.3.build-linux
-            artifactPath: export/PE0.6.3/release/linux/bin/*
             cacheLibrariesPath: P-Slice.0.6.3.desktop-cache
-
+            artifactPath: export/PE0.6.3/release/linux/bin/*
     uses: ./.github/workflows/build.yml
     with:
       name: ${{ matrix.name }}
@@ -40,36 +39,36 @@ jobs:
       artifactName: ${{ matrix.artifactName }}
       artifactPath: ${{ matrix.artifactPath }}
       cachePath: ${{matrix.cachePath}}
-  BuildMobile:
-    permissions: write-all
-    name: ${{ matrix.name }}
-    strategy:
-      matrix:
-        include:
-          - name: Android
-            os: macos-15
-            exportPath: android
-            buildArgs: "android"
-            cacheLibrariesPath: P-Slice.0.6.3.mobile-cache
-            artifactName: P-Slice.0.6.3.android
-            cachePath: P-Slice.0.6.3.build-android
-            artifactPath: "export/PE0.6.3/release/android/bin/app/build/outputs/apk/release/*.apk"
+  # BuildMobile:
+  #   permissions: write-all
+  #   name: ${{ matrix.name }}
+  #   strategy:
+  #     matrix:
+  #       include:
+  #         - name: Android
+  #           os: macos-15
+  #           exportPath: android
+  #           buildArgs: "android"
+  #           cacheLibrariesPath: P-Slice.0.6.3.mobile-cache
+  #           artifactName: P-Slice.0.6.3.android
+  #           cachePath: P-Slice.0.6.3.build-android
+  #           artifactPath: "export/PE0.6.3/release/android/bin/app/build/outputs/apk/release/*.apk"
 
-          - name: iOS
-            os: macos-15
-            buildArgs: "ios -nosign"
-            exportPath: ios
-            cacheLibrariesPath: P-Slice.0.6.3.mobile-cache
-            artifactName: P-Slice.0.6.3.ios
-            artifactPath: "export/PE0.6.3/release/ios/build/Release-iphoneos/*.ipa"
-            cachePath: P-Slice.0.6.3.build-ios
-    uses: ./.github/workflows/build.yml
-    with:
-      name: ${{ matrix.name }}
-      os: ${{ matrix.os }}
-      buildArgs: ${{ matrix.buildArgs }}
-      exportPath: ${{ matrix.exportPath }}
-      artifactName: ${{ matrix.artifactName }}
-      cacheLibrariesPath: ${{ matrix.cacheLibrariesPath }}
-      artifactPath: ${{ matrix.artifactPath }}
-      cachePath: ${{matrix.cachePath}}
+  #         - name: iOS
+  #           os: macos-15
+  #           buildArgs: "ios -nosign"
+  #           exportPath: ios
+  #           cacheLibrariesPath: P-Slice.0.6.3.mobile-cache
+  #           artifactName: P-Slice.0.6.3.ios
+  #           artifactPath: "export/PE0.6.3/release/ios/build/Release-iphoneos/*.ipa"
+  #           cachePath: P-Slice.0.6.3.build-ios
+  #   uses: ./.github/workflows/build.yml
+  #   with:
+  #     name: ${{ matrix.name }}
+  #     os: ${{ matrix.os }}
+  #     buildArgs: ${{ matrix.buildArgs }}
+  #     exportPath: ${{ matrix.exportPath }}
+  #     artifactName: ${{ matrix.artifactName }}
+  #     cacheLibrariesPath: ${{ matrix.cacheLibrariesPath }}
+  #     artifactPath: ${{ matrix.artifactPath }}
+  #     cachePath: ${{matrix.cachePath}}

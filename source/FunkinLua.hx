@@ -13,7 +13,6 @@ import llua.State;
 import llua.Convert;
 #end
 
-import animateatlas.AtlasFrameMaker;
 import flixel.FlxG;
 import flixel.addons.effects.FlxTrail;
 import flixel.input.keyboard.FlxKey;
@@ -3411,11 +3410,11 @@ class FunkinLua {
 		switch(spriteType.toLowerCase().trim())
 		{
 			case "texture" | "textureatlas" | "tex":
-				spr.frames = AtlasFrameMaker.construct(image);
-
+				throw "Please report! (removed legacy atlases)";
+				//spr.frames = AtlasFrameMaker.construct(image);
 			case "texture_noaa" | "textureatlas_noaa" | "tex_noaa":
-				spr.frames = AtlasFrameMaker.construct(image, null, true);
-
+				//spr.frames = AtlasFrameMaker.construct(image, null, true);
+				throw "Please report! (removed legacy aa atlases)";
 			case "packer" | "packeratlas" | "pac":
 				spr.frames = Paths.getPackerAtlas(image);
 

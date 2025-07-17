@@ -45,6 +45,7 @@ import mikolka.funkin.utils.*;
 import mikolka.funkin.players.*;
 import mikolka.funkin.custom.*;
 import mikolka.vslice.ui.StoryMenuState;
+import mikolka.vslice.ui.title.TitleState;
 import mikolka.compatibility.stages.misc.BaseStage;
 import flxanimate.PsychFlxAnimate as FlxAnimate;
 

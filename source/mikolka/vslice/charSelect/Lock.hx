@@ -14,7 +14,7 @@ class Lock extends FlxAtlasSprite
 
   public function new(x:Float = 0, y:Float = 0, index:Int)
   {
-    super(x, y, Paths.animateAtlas("charSelect/lock"));
+    super(x, y, "charSelect/lock");
 
     var tint:FlxTint = new FlxTint(colors[index], 1);
 

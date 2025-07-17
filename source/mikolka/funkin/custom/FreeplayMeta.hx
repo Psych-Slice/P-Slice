@@ -5,7 +5,7 @@ using mikolka.funkin.custom.FunkinTools;
 
 class FreeplayMetaJSON {
     public function new() {}
-    public var songRating:Int = 0;
+    public var songRating:Int = -1;
     public var allowNewTag:Bool = false;
     public var allowErectVariants:Bool = false;
     public var freeplayPrevStart:Float = 0; // those are in seconds btw
@@ -14,6 +14,7 @@ class FreeplayMetaJSON {
     public var freeplayCharacter:String = "";
     public var albumId:String = "";
     public var altInstrumentalSongs:String = "";
+    public var freeplayWeekName:String = "";
 }
 
 class FreeplayMeta {

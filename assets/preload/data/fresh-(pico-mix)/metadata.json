@@ -2,6 +2,7 @@
 	"songRating": 4,
 	"albumId": "volume4",
 	"freeplayCharacter": "pico",
+	"freeplayWeekName": "week 1",
 	"freeplaySongLength": 84.098957,
 	"freeplayPrevEnd": 20,
 	"altInstrumentalSongs": "fresh",

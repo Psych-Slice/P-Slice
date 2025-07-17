@@ -2,9 +2,10 @@
 	"songRating": 5,
 	"albumId": "volume3",
 	"freeplayCharacter": "pico",
+	"freeplayWeekName": "weekend 1",
 	"freeplaySongLength": 120,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "2hot (Pico Mix)",
+	"altInstrumentalSongs": "",
 	"allowErectVariants": true,
 	"freeplayPrevStart": 0
 }
