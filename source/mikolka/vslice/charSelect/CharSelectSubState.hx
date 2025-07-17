@@ -486,11 +486,10 @@ class CharSelectSubState extends MusicBeatSubState
 		});
 
 		#if TOUCH_CONTROLS_ALLOWED
-		#if MODS_ALLOWED
-		addTouchPad('ALT_LEFT_RIGHT', 'NONE');
-		#else
-		addTouchPad('NONE', 'NONE');
-		#end
+
+		if(modSelector?.hasModsAvailable ?? false) addTouchPad('ALT_LEFT_RIGHT', 'NONE');
+		else addTouchPad('NONE', 'NONE');
+
 		addTouchPadCamera();
 		// if (allowInput && pressedSelect && controls.BACK) onAcceptPress();
 		#end
