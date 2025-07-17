@@ -441,7 +441,11 @@ class FunkinPreloader extends FlxBasePreloader
               'mobile/images/touchpad/LEFT.png',
               'mobile/images/touchpad/RIGHT.png',
               #end
-              "images/freeplay/albumRoll/expansion1-text.png", 
+              "images/fonts/capsule-text.png", 
+              "images/fonts/freeplay-clear.png", 
+              "images/back.png", 
+              "images/charSelect/lockedChill/spritemap1.png", 
+              "images/freeplay/albumRoll/expansion1-text.png",
               "images/freeplay/albumRoll/expansion1.png",               
               "images/freeplay/albumRoll/expansion2-text.png", 
               "images/freeplay/albumRoll/expansion2.png",               
