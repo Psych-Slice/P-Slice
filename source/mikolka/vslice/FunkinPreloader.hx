@@ -1,5 +1,7 @@
 package mikolka.vslice;
 
+import openfl.utils.Promise;
+import lime.app.Future;
 #if sys import mikolka.vslice.components.crash.Logger; #end
 import openfl.events.MouseEvent;
 import flash.display.Bitmap;
@@ -391,6 +393,7 @@ class FunkinPreloader extends FlxBasePreloader
         {
           initializingScriptsPercent = 0.0;
 
+          //? THis loads mods
           /*
             var future:Future<Array<String>> = []; // PolymodHandler.loadNoModsAsync();
 
@@ -402,6 +405,12 @@ class FunkinPreloader extends FlxBasePreloader
               trace('Completed initializing scripts: ' + result);
             });
            */
+          trace("Pushing global mods");
+          #if LUA_ALLOWED
+          Mods.pushGlobalMods();
+          #end
+          trace("Pushing top mod");
+          Mods.loadTopMod();
 
           initializingScriptsPercent = 1.0;
           currentState = FunkinPreloaderState.CachingGraphics;
@@ -415,22 +424,65 @@ class FunkinPreloader extends FlxBasePreloader
         {
           cachingGraphicsPercent = 0.0;
           cachingGraphicsStartTime = elapsed;
+            //? P-Slice precache commonly used graphics
+            //* FIles here won't be editable by mods
+            var assetsToCache:Array<String> = [
+              //"images/cursor-default.png", 
+              #if TOUCH_CONTROLS_ALLOWED
+              'mobile/images/touchpad/bg.png',
+              'mobile/images/touchpad/A.png',
+              'mobile/images/touchpad/B.png',
+              'mobile/images/touchpad/BACK.png',
+              'mobile/images/touchpad/PAUSE.png',
+              'mobile/images/touchpad/X.png',
+              'mobile/images/touchpad/Y.png',
+              'mobile/images/touchpad/UP.png',
+              'mobile/images/touchpad/DOWN.png',
+              'mobile/images/touchpad/LEFT.png',
+              'mobile/images/touchpad/RIGHT.png',
+              #end
+              "images/freeplay/albumRoll/expansion1-text.png", 
+              "images/freeplay/albumRoll/expansion1.png",               
+              "images/freeplay/albumRoll/expansion2-text.png", 
+              "images/freeplay/albumRoll/expansion2.png",               
+              "images/freeplay/albumRoll/volume2-text.png", 
+              "images/freeplay/albumRoll/volume2.png",                
+              "images/freeplay/albumRoll/volume1-text.png", 
+              "images/freeplay/albumRoll/volume1.png",                
+              "images/freeplay/albumRoll/volume3-text.png", 
+              "images/freeplay/albumRoll/volume3.png",               
+              "images/freeplay/albumRoll/volume4-text.png", 
+              "images/freeplay/albumRoll/volume4.png"
+              //"images/ui/cursor.png" 
+            ]; // Assets.listGraphics('core');
 
-          /*
-            var assetsToCache:Array<String> = []; // Assets.listGraphics('core');
+            var promise = new Promise<Any>();
+            new Future(() ->{
+              for (index => item in assetsToCache){
+                if(backend.Paths.cacheBitmap(item) != null){
+                  #if debug trace("Cached: "+item); #end
+                  backend.Paths.excludeAsset(item);
+                }
+                else{
+                  trace("Failed to cache: "+item);
+                }
+                promise.progress(index+1,assetsToCache.length);
+              }
+              promise.complete(null);
+            },true); // Assets.cacheAssets(assetsToCache);
 
-            var future:Future<Array<String>> = []; // Assets.cacheAssets(assetsToCache);
-            future.onProgress((loaded:Int, total:Int) -> {
+            promise.future.onProgress((loaded:Int, total:Int) -> {
               cachingGraphicsPercent = loaded / total;
             });
-            future.onComplete((_result) -> {
+            promise.future.onComplete((_result) -> {
+              cachingGraphicsComplete = true;
               trace('Completed caching graphics.');
             });
-           */
+           
 
           // TODO: Reimplement this.
-          cachingGraphicsPercent = 1.0;
-          cachingGraphicsComplete = true;
+          //cachingGraphicsPercent = 1.0;
+          
           return 0.0;
         }
         else if (0.0 > 0)

@@ -117,12 +117,7 @@ class Main extends Sprite
 			game.zoom = 1.0;
 		#end
 
-		trace("Pushing global mods");
-		#if LUA_ALLOWED
-		Mods.pushGlobalMods();
-		#end
-		trace("Pushing top mod");
-		Mods.loadTopMod();
+
 
 		trace("Initializing save .sol");
 		FlxG.save.bind('funkin', CoolUtil.getSavePath(),(rawSave,error) ->{

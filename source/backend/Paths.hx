@@ -37,19 +37,7 @@ class Paths
 
 	//TODO make this more customisable
 	public static var dumpExclusions:Array<String> = [
-		'assets/shared/music/freakyMenu.$SOUND_EXT',
-		"assets/shared/images/cursor-default.png", 
-		'assets/shared/mobile/touchpad/bg.png',
-		'assets/shared/mobile/touchpad/bg.png',
-		'assets/shared/mobile/touchpad/A.png',
-		'assets/shared/mobile/touchpad/B.png',
-		'assets/shared/mobile/touchpad/BACK.png',
-		'assets/shared/mobile/touchpad/X.png',
-		'assets/shared/mobile/touchpad/Y.png',
-		'assets/shared/mobile/touchpad/UP.png',
-		'assets/shared/mobile/touchpad/DOWN.png',
-		'assets/shared/mobile/touchpad/LEFT.png',
-		'assets/shared/mobile/touchpad/RIGHT.png'
+		'music/freakyMenu.$SOUND_EXT'
 	];
 	// haya I love you for the base cache dump I took to the max
 	public static function clearUnusedMemory()
