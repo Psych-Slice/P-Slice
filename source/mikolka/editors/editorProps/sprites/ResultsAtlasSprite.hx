@@ -18,7 +18,7 @@ class ResultsAtlasSprite extends FlxAtlasSprite implements IResultsSprite
 		var xDiff = -(offsets[0] - (offsets[0] * l_scale)) * 1.8;
 		var yDiff = -(offsets[1] - (offsets[1] * l_scale)) * 1.8;
 
-		super(offsets[0]+xDiff, offsets[1]+yDiff, FunkinPath.animateAtlas(FunkinPath.stripLibrary(animData.assetPath)));
+		super(offsets[0]+xDiff, offsets[1]+yDiff, FunkinPath.stripLibrary(animData.assetPath));
 		zIndex = animData.zIndex ?? 500;
 		scale.set(animData.scale ?? 1.0, animData.scale ?? 1.0);
 

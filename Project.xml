@@ -5,11 +5,12 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/xsd/project-1.0.4.xsd">
 	<!-- _________________________ Application Settings _________________________ -->
 	
-	<app unless="PROFILE_BUILD" title="Friday Night Funkin': P-Slice Engine" file="PSliceEngine" packageName="com.mikolka9144.pslice" package="com.mikolka9144.pslice" main="Main" version="3.1"  company="mikolka9144" />
-
+	<app unless="PROFILE_BUILD || mobile" title="Friday Night Funkin': P-Slice Engine" file="PSliceEngine" packageName="com.mikolka9144.pslice" package="com.mikolka9144.pslice" main="Main" version="3.2"  company="mikolka9144" />
+	<app if="PROFILE_BUILD" title="P-Slice Engine Profiling build" file="PSliceEngine" packageName="com.mikolka9144.testPslice" package="com.mikolka9144.testPslice" main="Main" version="3.2"  company="mikolka9144" />
+	<app if="mobile" unless="PROFILE_BUILD" title="P-Slice Engine" file="PSliceEngine" packageName="com.mikolka9144.pslice" package="com.mikolka9144.pslice" main="Main" version="3.2"  company="mikolka9144" />
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
-	<meta build-number="303"/>
+	<meta build-number="320"/>
 
 	<!-- NOTE TO SELF: DISABLE THIS IF ISSUES ARE FOUND -->
 	<haxedef name="LINC_LUA_RELATIVE_DYNAMIC_LIB"/> <!-- stable luas PUT AFTER FIRST LINE WITH APP NAME AND ETC -->
@@ -29,7 +30,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<section unless="debug">
 		<!-- Adds the ability to use OpenFL asset lookup (defaults to sys if disabled)  -->
-		<define name="OPENFL_LOOKUP" unless="desktop"/>
+		<define name="OPENFL_LOOKUP"/>
 
 		<!-- Adds the ability to use NativeFileSystem on the computer to acsess files  -->
 		<define name="NATIVE_LOOKUP" if="MODS_ALLOWED" />
@@ -64,7 +65,6 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<define name="MULTITHREADED_LOADING" if="cpp" /> <!-- UNCOMMENTING THIS LINE WILL ENABLE MULTITHREADED LOADING, WHICH IMPROVES LOADING TIMES, BUT WITH A LOW CHANCE FOR THE GAME FREEZE ON SONG LOAD -->
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN -->
 	<define name="TITLE_SCREEN_EASTER_EGG"/>
-	<!-- <define name="COPYSTATE_ALLOWED" if="MODS_ALLOWED mobile"/> -->
 
 		<!-- Debug utilities (useful when testing the game)-->
 	<section if="debug">
@@ -80,13 +80,6 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	 <!-- Flags for the profile builds (used for assessing performance and such)-->
 	<section if="PROFILE_BUILD">
-		<app title="P-Slice Engine Profiling build" 
-			file="PSliceEngine" 
-			packageName="com.mikolka9144.testPslice" 
-			package="com.mikolka9144.testPslice" 
-			main="Main" 
-			version="3.0.3"  
-			company="mikolka9144" />
 		<define name="nativesys_profile" />
 
 		<define name="pico_always_kill" />
@@ -274,15 +267,25 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- _________________________________ Custom _______________________________ -->
 
 	<section if="PROFILE_BUILD">
-		<assets path='art/icon16.png' rename='icon.png' if="linux" />
-		<icon path="art/icon16.png"/>
+		<assets path='art/desktop/icon16.png' rename='icon.png' if="linux" />
+		<icon path="art/desktop/icon16.png"/>
 	</section>
 	<section unless="PROFILE_BUILD">
-		<assets path='art/iconOG.png' rename='icon.png' if="linux" />
-		<icon path="art/icon16.png" size='16'/>
-		<icon path="art/icon32.png" size='32'/>
-		<icon path="art/icon64.png" size='64'/>
-		<icon path="art/iconOG.png" />
+		<section if="mobile">
+			<icon path="art/mobile/iconAdaptive.png" if="android" />
+			<icon path="art/mobile/iconMobile.png" unless="android" />
+			<icon path="art/mobile/icon32.png" size='32'/>
+			<icon path="art/mobile/icon64.png" size='64'/>
+			<icon path="art/mobile/icon128.png" size='128'/>
+		</section>
+		<section unless="mobile">
+
+			<assets path='art/desktop/iconOG.png' rename='icon.png' if="linux" />
+			<icon path="art/desktop/icon16.png" size='16'/>
+			<icon path="art/desktop//icon32.png" size='32'/>
+			<icon path="art/desktop//icon64.png" size='64'/>
+			<icon path="art/desktop//iconOG.png" />
+		</section>
 	</section>
 
 </project>

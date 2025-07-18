@@ -8,10 +8,11 @@ import mikolka.compatibility.VsliceOptions;
 import mikolka.stages.objects.PicoDopplegangerSprite;
 import mikolka.stages.erect.PhillyTrainErect;
 
-class TwoPicos {
-    	// Cutscenes
+class TwoPicos
+{
+	// Cutscenes
 	var cutsceneHandler:CutsceneHandler;
-	var imposterPico:PicoDopplegangerSprite;
+	public var imposterPico:PicoDopplegangerSprite;
 	var pico:PicoDopplegangerSprite;
 	var bloodPool:FlxAnimate;
 	var cigarette:FlxSprite;
@@ -23,7 +24,8 @@ class TwoPicos {
 	var host:BaseStage;
 	var shader:FlxShader;
 
-	public function new(host:BaseStage,shader:FlxShader) {
+	public function new(host:BaseStage, shader:FlxShader)
+	{
 		this.host = host;
 		this.shader = shader;
 	}
@@ -47,8 +49,8 @@ class TwoPicos {
 		pico.antialiasing = VsliceOptions.ANTIALIASING;
 		cutsceneHandler.push(pico);
 
-		if(VsliceOptions.NAUGHTYNESS){
-
+		if (VsliceOptions.NAUGHTYNESS)
+		{
 			bloodPool = new FlxAnimate(0, 0);
 			bloodPool.visible = false;
 			Paths.loadAnimateAtlas(bloodPool, "philly/erect/cutscenes/bloodPool");
@@ -62,32 +64,37 @@ class TwoPicos {
 		cutsceneHandler.finishCallback = function()
 		{
 			host.seenCutscene = true;
-			//Restore camera
+			// Restore camera
 			var timeForStuff:Float = Conductor.crochet / 1000 * 4.5;
 			FlxG.sound.music.fadeOut(timeForStuff);
 			FlxTween.tween(FlxG.camera, {zoom: host.defaultCamZoom}, timeForStuff, {ease: FlxEase.quadInOut});
 
-			//Show still alive chars
-			if (explode)
-				{
-					if (playerShoots) host.boyfriend.visible = true;
-					else host.dad.visible = true;
-				}
-			else host.boyfriend.visible = host.dad.visible = true;
-			
-			host.camHUD.visible = true;
-
-			//Crear callbacks
-			host.boyfriend.animation.finishCallback = null;
-			host.gf.animation.finishCallback = null;
-	
-			if (audioPlaying != null) audioPlaying.stop();
-			pico.cancelSounds();
-			imposterPico.cancelSounds();
-			
+			// Show still alive chars
 			if (explode)
 			{
-				if(playerShoots){
+				if (playerShoots)
+					host.boyfriend.visible = true;
+				else
+					host.dad.visible = true;
+			}
+			else
+				host.boyfriend.visible = host.dad.visible = true;
+
+			host.camHUD.visible = true;
+
+			// Crear callbacks
+			host.boyfriend.animation.finishCallback = null;
+			host.gf.animation.finishCallback = null;
+
+			if (audioPlaying != null)
+				audioPlaying.stop();
+			pico.cancelSounds();
+			imposterPico.cancelSounds();
+
+			if (explode)
+			{
+				if (playerShoots)
+				{
 					if (seenOutcome)
 						imposterPico.playAnimation("loopOpponent", true, true, true);
 					else
@@ -98,24 +105,28 @@ class TwoPicos {
 						host.dad.visible = true;
 					}
 				}
-				else{
-
-					if(seenOutcome){
+				else
+				{
+					if (seenOutcome)
+					{
 						pico.playAnimation("loopPlayer", true, true, true);
 						game.endSong();
 					}
-					else{
+					else
+					{
 						pico.kill();
 						game.remove(pico);
 						pico.destroy();
 						host.boyfriend.visible = true;
 					}
 				}
-				if(seenOutcome && playerShoots){
+				if (seenOutcome && playerShoots)
+				{
 					game.camZooming = true;
 					#if LEGACY_PSYCH
 					game.vocals = new FlxSound();
-					switch(host.songName.toLowerCase()){
+					switch (host.songName.toLowerCase())
+					{
 						case "blammed-(pico-mix)":
 							game.vocals.loadEmbedded(Paths.sound("blammed_solo"));
 						case "pico-(pico-mix)":
@@ -126,15 +137,16 @@ class TwoPicos {
 					#else
 					game.opponentVocals = new FlxSound();
 					#end
-					for (note in game.unspawnNotes){
+					for (note in game.unspawnNotes)
+					{
 						if (!note.mustPress && note.eventName == "")
-							{
-								note.ignoreNote = true;
-							}
-					} 
+						{
+							note.ignoreNote = true;
+						}
+					}
 				}
 			}
-			//Dance!
+			// Dance!
 			host.dad.dance();
 			host.boyfriend.dance();
 			host.gf.dance();
@@ -145,7 +157,8 @@ class TwoPicos {
 			game.moveCameraSection();
 			FlxG.camera.scroll.set(host.camFollow.x - FlxG.width / 2, host.camFollow.y - FlxG.height / 2);
 			FlxG.camera.zoom = host.defaultCamZoom;
-			if(!explode || playerShoots) game.startCountdown();
+			if (!explode || playerShoots || !seenOutcome)
+				game.startCountdown();
 		};
 		#if LEGACY_PSYCH
 		cutsceneHandler.finishCallback2 = function()
@@ -153,7 +166,9 @@ class TwoPicos {
 		cutsceneHandler.skipCallback = function()
 		#end
 		{
-			#if !LEGACY_PSYCH cutsceneHandler.finishCallback(); #end
+			#if !LEGACY_PSYCH
+			cutsceneHandler.finishCallback();
+			#end
 		};
 		host.camFollow_set(host.dad.x + 280, host.dad.y + 170);
 	}
@@ -197,12 +212,14 @@ class TwoPicos {
 			cigarette.flipX = true;
 
 			host.addBehindBF(cigarette);
-			if(VsliceOptions.NAUGHTYNESS) host.addBehindBF(bloodPool);
+			if (VsliceOptions.NAUGHTYNESS)
+				host.addBehindBF(bloodPool);
 			host.addBehindBF(imposterPico);
 			host.addBehindBF(pico);
 
 			cigarette.setPosition(host.boyfriend.x - 143.5, host.boyfriend.y + 210);
-			if(VsliceOptions.NAUGHTYNESS) bloodPool.setPosition(host.dad.x - 1487, host.dad.y - 173);
+			if (VsliceOptions.NAUGHTYNESS)
+				bloodPool.setPosition(host.dad.x - 1487, host.dad.y - 173);
 
 			shooterPos = cameraPos(host.boyfriend, game.boyfriendCameraOffset);
 			cigarettePos = cameraPos(host.dad, [250, 0]);
@@ -210,10 +227,12 @@ class TwoPicos {
 		else
 		{
 			host.addBehindDad(cigarette);
-			if(VsliceOptions.NAUGHTYNESS) host.addBehindDad(bloodPool);
+			if (VsliceOptions.NAUGHTYNESS)
+				host.addBehindDad(bloodPool);
 			host.addBehindDad(pico);
 			host.addBehindDad(imposterPico);
-			if(VsliceOptions.NAUGHTYNESS) bloodPool.setPosition(host.boyfriend.x - 788.5, host.boyfriend.y - 173);
+			if (VsliceOptions.NAUGHTYNESS)
+				bloodPool.setPosition(host.boyfriend.x - 788.5, host.boyfriend.y - 173);
 			cigarette.setPosition(host.boyfriend.x - 478.5, host.boyfriend.y + 205);
 
 			cigarettePos = cameraPos(host.boyfriend, game.boyfriendCameraOffset);
@@ -233,9 +252,14 @@ class TwoPicos {
 			{
 				pico.shader = shader;
 				imposterPico.shader = shader;
-				if(VsliceOptions.NAUGHTYNESS) bloodPool.shader = shader;
+				if (VsliceOptions.NAUGHTYNESS)
+					bloodPool.shader = shader;
 			});
 		}
+		cutsceneHandler.timer(0.3, () ->
+		{
+			FunkinSound.load(Paths.sound('cutscene/picoGasp'), 1.0, false, true, true);
+		});
 
 		cutsceneHandler.timer(4, () ->
 		{

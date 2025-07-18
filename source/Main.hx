@@ -1,5 +1,6 @@
 package;
 
+import states.InitState;
 import mikolka.vslice.components.crash.Logger;
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
@@ -18,13 +19,9 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.app.Application;
-import states.TitleState;
 
 #if (linux || mac)
 import lime.graphics.Image;
-#end
-#if COPYSTATE_ALLOWED
-import states.CopyState;
 #end
 #if mobile
 import mobile.backend.MobileScaleMode;
@@ -40,7 +37,7 @@ class Main extends Sprite
 	public static final game = {
 		width: 1280, // WINDOW width
 		height: 720, // WINDOW height
-		initialState: TitleState, // initial game state
+		initialState: InitState, // initial game state
 		zoom: -1.0, // game state bounds
 		framerate: 60, // default framerate
 		skipSplash: true, // if the default flixel splash screen should be skipped
@@ -62,17 +59,15 @@ class Main extends Sprite
 	{
 		super();
 		#if mobile
-		#if android
-		StorageUtil.requestPermissions();
-		#end
 		Sys.setCwd(StorageUtil.getStorageDirectory());
 		#end
 		#if sys Logger.startLogging(); 
 		trace("CWD IS "+StorageUtil.getStorageDirectory());
 		#end
 		backend.CrashHandler.init();
-
+		trace("Crash handler is up!");
 		#if (cpp && windows)
+		trace("Fixing DPI aware:");
 		backend.Native.fixScaling();
 		#end
 
@@ -87,6 +82,7 @@ class Main extends Sprite
 		#if hxvlc
 		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0") ['--no-lua'] #end);
 		#end
+		trace("Main done it's code");
 	}
 
 	private function init(?E:Event):Void
@@ -101,6 +97,7 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
+		trace("Starting game setup");
 		#if (openfl <= "9.2.0")
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
@@ -117,16 +114,31 @@ class Main extends Sprite
 			game.zoom = 1.0;
 		#end
 
-		#if LUA_ALLOWED
-		Mods.pushGlobalMods();
-		#end
-		Mods.loadTopMod();
 
-		FlxG.save.bind('funkin', CoolUtil.getSavePath());
 
+		trace("Initializing save .sol");
+		FlxG.save.bind('funkin', CoolUtil.getSavePath(),(rawSave,error) ->{
+			trace("Couldn't load main save. Attempting to extract");
+			try{
+				var badSave = File.write(StorageUtil.getStorageDirectory()+"/funkin.sol.bad");
+				badSave.writeString(rawSave);
+				badSave.close();
+				trace("Extracted bad save to funkin.sol.bad. Creating new save..");
+			}
+			catch (x){
+				trace(x);
+				trace("Failed to backup. Discarding..");
+			}
+			return {};
+		});
+
+		trace("Loading scores..");
 		Highscore.load();
 
+
+
 		#if HSCRIPT_ALLOWED
+		trace("Hooking up the Iris log functions");
 		Iris.warn = function(x, ?pos:haxe.PosInfos) {
 			Iris.logLevel(WARN, x, pos);
 			var newPos:HScriptInfos = cast pos;
@@ -183,7 +195,12 @@ class Main extends Sprite
 		}
 		#end
 
-		#if LUA_ALLOWED Lua.set_callbacks_function(cpp.Callable.fromStaticFunction(psychlua.CallbackHandler.call)); #end
+		#if LUA_ALLOWED 
+		trace("Hooking up Lua");
+		Lua.set_callbacks_function(cpp.Callable.fromStaticFunction(psychlua.CallbackHandler.call)); 
+		#end
+
+		trace("Loading controls");
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
 		#if ACHIEVEMENTS_ALLOWED Achievements.load(); #end
@@ -194,7 +211,8 @@ class Main extends Sprite
 		});
 		#end
 
-		var gameObject = new FlxGame(game.width, game.height, #if COPYSTATE_ALLOWED !CopyState.checkExistingFiles() ? CopyState : #end game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen);
+		trace("Loading game objest...");
+		var gameObject = new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen);
 		// FlxG.game._customSoundTray wants just the class, it calls new from
     	// create() in there, which gets called when it's added to stage
     	// which is why it needs to be added before addChild(game) here
@@ -203,6 +221,7 @@ class Main extends Sprite
 
 		addChild(gameObject);
 
+		trace("Finishing up..");
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
 		#if mobile
 		FlxG.game.addChild(fpsVar);

@@ -202,10 +202,13 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 	}
 
 	var notesShown:Bool = false;
-	override function changeSelection(change:Int = 0)
+	var lastSelected:Int = -1;
+	override function changeSelection(change:Float,usePrecision:Bool = false)
 	{
-		super.changeSelection(change);
-		
+		super.changeSelection(change,usePrecision);
+		if(lastSelected == curSelected) return;
+		else lastSelected = curSelected;
+
 		switch(curOption.variable)
 		{
 			case 'noteSkin', 'splashSkin', 'splashAlpha':
@@ -316,12 +319,12 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 			}
 		}
 	
-		override function destroy()
-		{
-			if(changedMusic && !OptionsState.onPlayState) FlxG.sound.playMusic(Paths.music('freakyMenu'), 1, true);
-			Note.globalRgbShaders = [];
-			super.destroy();
-		}
+	override function destroy()
+	{
+		if(changedMusic && !OptionsState.onPlayState) FlxG.sound.playMusic(Paths.music('freakyMenu'), 1, true);
+		Note.globalRgbShaders = [];
+		super.destroy();
+	}
 
 	function onChangeFPSCounter()
 	{

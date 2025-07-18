@@ -2,8 +2,8 @@ package mikolka.vslice.ui;
 
 import mikolka.compatibility.ui.MainMenuHooks;
 import mikolka.compatibility.VsliceOptions;
+import mikolka.vslice.ui.title.TitleState;
 #if !LEGACY_PSYCH
-import states.TitleState;
 #if MODS_ALLOWED
 import states.ModsMenuState;
 #end
@@ -28,7 +28,7 @@ class MainMenuState extends MusicBeatState
 	#else
 	public static var psychEngineVersion:String = '0.6.3'; // This is also used for Discord RPC
 	#end
-	public static var pSliceVersion:String = '3.1.1'; 
+	public static var pSliceVersion:String = '3.2'; 
 	public static var funkinVersion:String = '0.6.3'; // Version of funkin' we are emulationg
 	public static var curSelected:Int = 0;
 
@@ -265,7 +265,7 @@ class MainMenuState extends MusicBeatState
 
 	function changeItem(huh:Int = 0)
 	{
-		FlxG.sound.play(Paths.sound('scrollMenu'));
+		if(huh != 0) FlxG.sound.play(Paths.sound('scrollMenu'));
 		menuItems.members[curSelected].animation.play('idle');
 		menuItems.members[curSelected].updateHitbox();
 		menuItems.members[curSelected].screenCenter(X);

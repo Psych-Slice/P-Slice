@@ -243,6 +243,7 @@ class PhillyStreetsErect extends BaseStage
                 boyfriend.shader = colorShader;
                 dad.shader = colorShader;
                 gf.shader = colorShader;
+                spraycanPile.shader = colorShader;
                 PicoCapableStage.instance?.applyABotShader(colorShader);
             }
         }

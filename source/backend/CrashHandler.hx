@@ -18,12 +18,16 @@ class CrashHandler
 {
 	public static function init():Void
 	{
+		trace("hooking openfl crash handler");
 		openfl.Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
-		#if cpp
+		#if cpp 
+		trace("hooking hxcpp crash handler");
 		untyped __global__.__hxcpp_set_critical_error_handler(onError);
 		#elseif hl
+		trace("hooking hashlink crash handler");
 		hl.Api.setErrorHandler(onError);
 		#end
+		trace("done with crash handler");
 	}
 
 	private static function onUncaughtError(e:UncaughtErrorEvent):Void

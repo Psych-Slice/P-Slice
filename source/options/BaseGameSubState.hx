@@ -3,8 +3,8 @@ import options.Option;
 
 class BaseGameSubState extends BaseOptionsMenu {
     public function new() {
-        title = Language.getPhrase("vslice_menu","V-Slice settings");
-        rpcTitle = "V-Slice settings menu";
+        title = Language.getPhrase("vslice_menu","P-Slice settings");
+        rpcTitle = "P-Slice settings menu";
         var option:Option = new Option('Freeplay dynamic coloring',
 			'Enables dynamic freeplay background color. Disable this if you prefer original V-slice freeplay menu colors',
 			'vsliceFreeplayColors',

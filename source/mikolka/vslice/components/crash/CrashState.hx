@@ -3,9 +3,7 @@ package mikolka.vslice.components.crash;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.compatibility.ModsHelper;
 import flixel.FlxState;
-#if !LEGACY_PSYCH
-import states.TitleState;
-#end
+import mikolka.vslice.ui.title.TitleState;
 import openfl.events.ErrorEvent;
 import openfl.display.BitmapData;
 // crash handler stuff

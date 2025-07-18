@@ -20,7 +20,7 @@ class PicoTankman {
     	shader.angle = 45;
 		shader.threshold = 0.3;
 		shaderCamera = new ShaderFilter(shader);
-		tankmanEnding = new FlxAtlasSprite(520,350,"assets/week7/images/erect/cutscene/tankmanEnding");
+		tankmanEnding = new FlxAtlasSprite(520,350,"erect/cutscene/tankmanEnding");
 		cutsceneSounds = new FlxSound().loadEmbedded(Paths.sound('erect/endCutscene'));
 		bgSprite = new FunkinSprite(0, 0);
 		bgSprite.makeSolidColor(2000, 2500, 0xFF000000);

@@ -97,7 +97,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	public static var GRID_COLUMNS_PER_PLAYER = 4;
 	public static var GRID_PLAYERS = 2;
 	public static var GRID_SIZE = 40;
-	final BACKUP_EXT = '.bkp';
+	final BACKUP_EXT = 'bkp';
 
 	public var quantizations:Array<Int> = [
 		4,
@@ -243,7 +243,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		FlxG.cameras.add(camUI, false);
 
 		chartEditorSave = new FlxSave();
-		chartEditorSave.bind('chart_editor_data', CoolUtil.getSavePath());
+		chartEditorSave.bind('chart_editor_data', CoolUtil.getSavePath(),(raw,err) -> {});
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
@@ -733,7 +733,14 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 				//trace(chartName, dataToSave);
 				#if sys
 				if(!NativeFileSystem.isDirectory('backups')) NativeFileSystem.createDirectory('backups');
-				File.saveContent('backups/$chartName.$BACKUP_EXT', dataToSave);
+				try{
+
+					File.saveContent('backups/$chartName.$BACKUP_EXT', dataToSave);
+				}
+				catch(x){
+					trace('Failed to save $chartName.$BACKUP_EXT');
+					trace(x);
+				}
 
 				if(backupLimit > 0)
 				{
@@ -1624,7 +1631,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 						var closeNotes:Array<MetaNote> = curRenderedNotes.members.filter(function(note:MetaNote)
 						{
 							var chartY:Float = FlxG.mouse.y - note.chartY;
-							return ((note.isEvent && noteData < 0) || note.songData[1] == noteData) && chartY >= 0 && chartY < GRID_SIZE;
+							return ((note.isEvent && noteData < -1) ||(note.songData[1] == noteData && !note.isEvent)) && chartY >= 0 && chartY < GRID_SIZE;
 						});
 						closeNotes.sort(function(a:MetaNote, b:MetaNote) return Math.abs(a.strumTime - FlxG.mouse.y) < Math.abs(b.strumTime - FlxG.mouse.y) ? 1 : -1);
 	
@@ -2121,6 +2128,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		characterName.text = songMetadata.freeplayCharacter;
 		chk_allowNew.checked = songMetadata.allowNewTag;
 		chk_hasErect.checked = songMetadata.allowErectVariants;
+		txt_weekName.text = songMetadata.freeplayWeekName;
 
 		txt_altInstSong.text = songMetadata.altInstrumentalSongs;
 		albumName.text = songMetadata.albumId;
@@ -3659,6 +3667,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 	var txt_altVariantSong:PsychUIInputText;
 	var txt_altInstSong:PsychUIInputText;
+	var txt_weekName:PsychUIInputText;
 	
 	var albumName:PsychUIInputText;
 	var exportMetadataBtn:PsychUIButton;
@@ -3674,7 +3683,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		prevEndInput = new PsychUINumericStepper(20, 120,1,0,0,999,2,80);
 		albumName = new PsychUIInputText(180,120,100,"",8);
 		chk_allowNew = new PsychUICheckBox(180,30,"Show \"new\" tag");
-		chk_hasErect = new PsychUICheckBox(180,200,"Has erect variant");
+
+		txt_weekName = new PsychUIInputText(180,200,100,"");
+		chk_hasErect = new PsychUICheckBox(180,230,"Has erect variant");
 		
 		txt_altInstSong = new PsychUIInputText(20,160,250,"",8);
 
@@ -3697,6 +3708,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		tab_group.add(meta_label(txt_altInstSong, 'Song alt vocals (separated with \',\'):'));
 		tab_group.add(txt_altInstSong);
 		tab_group.add(chk_hasErect);
+		tab_group.add(meta_label(txt_weekName,"Card week name")); 
+		tab_group.add(txt_weekName); //freeplayWeekName
 
 		tab_group.add(exportMetadataBtn);
 	}
@@ -3715,6 +3728,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		meta.freeplayCharacter = characterName.text;
 		meta.allowNewTag = chk_allowNew.checked;
 		meta.allowErectVariants = chk_hasErect.checked;
+		meta.freeplayWeekName = txt_weekName.text;
 		meta.freeplaySongLength = FlxG.sound.music.length/1000;
 		
 		var data:String = haxe.Json.stringify(meta, "\t");

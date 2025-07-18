@@ -2,9 +2,10 @@
 	"songRating": 6,
 	"albumId": "expansion2",
 	"freeplayCharacter": "",
+	"freeplayWeekName": "weekend 1",
 	"freeplaySongLength": 135,
 	"freeplayPrevEnd": 20,
-	"altInstrumentalSongs": "",
+	"altInstrumentalSongs": "lit-up",
 	"allowErectVariants": true,
 	"freeplayPrevStart": 0
 }
