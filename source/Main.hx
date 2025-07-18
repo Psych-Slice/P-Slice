@@ -90,7 +90,7 @@ class Main extends Sprite
 		
 
 		#if hxvlc
-		trace("Starting hxvlc..")
+		trace("Starting hxvlc..");
 		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0") ['--no-lua'] #end);
 		#end
 	}
