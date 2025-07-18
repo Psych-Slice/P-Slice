@@ -29,7 +29,7 @@ class ModsHelper {
 	public inline static function loadabsoluteGraphic(path:String):FlxGraphic {
 		return FlxGraphic.fromBitmapData(BitmapData.fromFile(path)); //! I hate this, but at least it doesn't crash
 	}
-	private static function getEnabledMods(){
+	public static function getEnabledMods(){
 		var folders = [];
 		var path:String = 'modsList.txt';
 		if(FileSystem.exists(path))
