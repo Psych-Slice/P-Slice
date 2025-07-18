@@ -405,6 +405,9 @@ class FunkinPreloader extends FlxBasePreloader
               trace('Completed initializing scripts: ' + result);
             });
            */
+          #if android
+          StorageUtil.requestPermissions();
+          #end
           trace("Pushing global mods");
           #if LUA_ALLOWED
           Mods.pushGlobalMods();
