@@ -18,13 +18,22 @@ class InitState extends MusicBeatState
 	override function create()
 	{
 		super.create();
+
 		persistentUpdate = true;
 		persistentDraw = true;
 		FlxG.mouse.visible = false;
+
+		#if (cpp && windows)
+		trace("Fixing DPI aware:");
+		backend.Native.fixScaling();
+		#end
+
 		trace("Loading game settings");
 		ClientPrefs.loadPrefs();
+
 		trace("Loading translations");
 		Language.reloadPhrases();
+
 		trace("Setting some save related values");
 		if (FlxG.save.data != null && FlxG.save.data.fullscreen)
 		{
@@ -35,6 +44,7 @@ class InitState extends MusicBeatState
 		{
 			StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
 		}
+		
 		#if TOUCH_CONTROLS_ALLOWED
 		trace("Loading mobile data");
 		MobileData.init();

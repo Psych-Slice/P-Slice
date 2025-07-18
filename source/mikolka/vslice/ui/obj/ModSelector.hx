@@ -31,10 +31,19 @@ class ModSelector extends FlxTypedSpriteGroup<FlxSprite> {
 		directoryTxt.scrollFactor.set();
 		add(directoryTxt);
 
-		for (folder in ModsHelper.getModsWithPlayersRegistry())
-		{
-			directories.push(folder);
-		}
+        if(parent == null){
+            #if !LEGACY_PSYCH
+            for (folder in Mods.parseList().enabled)
+            #else
+            for (folder in ModsHelper.getEnabledMods())
+            #end
+                directories.push(folder);
+        }
+        else{ // char select
+            for (folder in ModsHelper.getModsWithPlayersRegistry())
+                directories.push(folder);
+        }
+		
 
 		var found:Int = directories.indexOf(ModsHelper.getActiveMod());
 		if (found > -1){
