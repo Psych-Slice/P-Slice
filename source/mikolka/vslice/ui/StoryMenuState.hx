@@ -160,7 +160,7 @@ class StoryMenuState extends MusicBeatState
 					lock.frames = ui_tex;
 					lock.animation.addByPrefix('lock', 'lock');
 					lock.animation.play('lock');
-					lock.ID = i;
+					lock.ID = num;
 					grpLocks.add(lock);
 				}
 				num++;
@@ -234,9 +234,9 @@ class StoryMenuState extends MusicBeatState
 
 		var scroll = new ScrollableObject(-0.01, 370, 0, 500, FlxG.height, button);
 		scroll.onPartialScroll.add(delta -> changeWeek(delta, false));
-		// scroll.onFullScroll.add(delta -> {
-		// 	FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-		// });
+		scroll.onFullScroll.add(delta -> {
+				changeDifficulty();
+		});
 		scroll.onFullScrollSnap.add(() -> changeWeek(0, true));
 		scroll.onTap.add(() ->
 		{
@@ -492,6 +492,7 @@ class StoryMenuState extends MusicBeatState
 			curSelectedPartial = FlxMath.bound(curSelectedPartial + change, 0, loadedWeeks.length - 1);
 			if (curWeek != Math.round(curSelectedPartial))
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			
 			curWeek = Math.round(curSelectedPartial);
 		}
 
