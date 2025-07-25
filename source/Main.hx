@@ -1,5 +1,6 @@
 package;
 
+
 import states.InitState;
 import mikolka.vslice.components.crash.Logger;
 #if HSCRIPT_ALLOWED
@@ -19,7 +20,6 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.app.Application;
-
 #if (linux || mac)
 import lime.graphics.Image;
 #end
@@ -31,7 +31,6 @@ import mobile.backend.MobileScaleMode;
 @:cppInclude('./external/gamemode_client.h')
 @:cppFileCode('#define GAMEMODE_AUTO')
 #end
-
 class Main extends Sprite
 {
 	public static final game = {
@@ -48,6 +47,54 @@ class Main extends Sprite
 	public static var memoryCounter:MemoryCounter;
 	public static final platform:String = #if mobile "Phones" #else "PCs" #end;
 
+	// Game pre-flixel init code
+	// ? This runs before we attempt to precache things
+	public static function loadGameEarly()
+	{
+		#if (linux || mac) // fix the app icon not showing up on the Linux Panel 
+		var icon = lime.graphics.Image.fromFile("icon.png");
+		Lib.current.stage.window.setIcon(icon);
+		#end
+
+		#if TITLE_SCREEN_EASTER_EGG
+		if(Date.now().getMonth() == 0 && Date.now().getDate() == 14) Lib.current.stage.window.title = "Friday Night Funkin': Mikolka's Engine";
+		#end
+
+		// This requests file access on android (otherwise we will crash later)
+		#if android
+		StorageUtil.requestPermissions();
+		#end
+
+		#if mobile
+		Sys.setCwd(StorageUtil.getStorageDirectory());
+		#end
+		
+		#if sys
+		Logger.startLogging();
+		trace("CWD IS " + StorageUtil.getStorageDirectory());
+		#end
+		backend.CrashHandler.init();
+		trace("Crash handler is up!");
+
+		// This initialises mods
+		try
+		{
+			trace("Pushing global mods");
+			#if LUA_ALLOWED
+			Mods.pushGlobalMods();
+			#end
+			trace("Pushing top mod");
+			Mods.loadTopMod();
+		}
+		catch (x:Exception) trace("Something went wrong with mod code: " + x.message);
+		
+
+		#if hxvlc
+		trace("Starting hxvlc..");
+		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0") ['--no-lua'] #end);
+		#end
+	}
+
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
 	public static function main():Void
@@ -58,19 +105,6 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
-		#if mobile
-		Sys.setCwd(StorageUtil.getStorageDirectory());
-		#end
-		#if sys Logger.startLogging(); 
-		trace("CWD IS "+StorageUtil.getStorageDirectory());
-		#end
-		backend.CrashHandler.init();
-		trace("Crash handler is up!");
-		#if (cpp && windows)
-		trace("Fixing DPI aware:");
-		backend.Native.fixScaling();
-		#end
-
 		if (stage != null)
 		{
 			init();
@@ -79,9 +113,7 @@ class Main extends Sprite
 		{
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
-		#if hxvlc
-		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0") ['--no-lua'] #end);
-		#end
+
 		trace("Main done it's code");
 	}
 
@@ -114,79 +146,92 @@ class Main extends Sprite
 			game.zoom = 1.0;
 		#end
 
-
-
 		trace("Initializing save .sol");
-		FlxG.save.bind('funkin', CoolUtil.getSavePath(),(rawSave,error) ->{
+		FlxG.save.bind('funkin', CoolUtil.getSavePath(), (rawSave, error) ->
+		{
 			trace("Couldn't load main save. Attempting to extract");
-			try{
-				var badSave = File.write(StorageUtil.getStorageDirectory()+"/funkin.sol.bad");
+			try
+			{
+				var badSave = File.write(StorageUtil.getStorageDirectory() + "/funkin.sol.bad");
 				badSave.writeString(rawSave);
 				badSave.close();
 				trace("Extracted bad save to funkin.sol.bad. Creating new save..");
 			}
-			catch (x){
+			catch (x)
+			{
 				trace(x);
 				trace("Failed to backup. Discarding..");
 			}
-			return {};
+			return
+			{
+			};
 		});
 
 		trace("Loading scores..");
 		Highscore.load();
 
-
-
 		#if HSCRIPT_ALLOWED
 		trace("Hooking up the Iris log functions");
-		Iris.warn = function(x, ?pos:haxe.PosInfos) {
+		Iris.warn = function(x, ?pos:haxe.PosInfos)
+		{
 			Iris.logLevel(WARN, x, pos);
 			var newPos:HScriptInfos = cast pos;
-			if (newPos.showLine == null) newPos.showLine = true;
-			var msgInfo:String = (newPos.funcName != null ? '(${newPos.funcName}) - ' : '')  + '${newPos.fileName}:';
+			if (newPos.showLine == null)
+				newPos.showLine = true;
+			var msgInfo:String = (newPos.funcName != null ? '(${newPos.funcName}) - ' : '') + '${newPos.fileName}:';
 			#if LUA_ALLOWED
-			if (newPos.isLua == true) {
+			if (newPos.isLua == true)
+			{
 				msgInfo += 'HScript:';
 				newPos.showLine = false;
 			}
 			#end
-			if (newPos.showLine == true) {
+			if (newPos.showLine == true)
+			{
 				msgInfo += '${newPos.lineNumber}:';
 			}
 			msgInfo += ' $x';
 			if (PlayState.instance != null)
 				PlayState.instance.addTextToDebug('WARNING: $msgInfo', FlxColor.YELLOW);
 		}
-		Iris.error = function(x, ?pos:haxe.PosInfos) {
+		Iris.error = function(x, ?pos:haxe.PosInfos)
+		{
 			Iris.logLevel(ERROR, x, pos);
 			var newPos:HScriptInfos = cast pos;
-			if (newPos.showLine == null) newPos.showLine = true;
-			var msgInfo:String = (newPos.funcName != null ? '(${newPos.funcName}) - ' : '')  + '${newPos.fileName}:';
+			if (newPos.showLine == null)
+				newPos.showLine = true;
+			var msgInfo:String = (newPos.funcName != null ? '(${newPos.funcName}) - ' : '') + '${newPos.fileName}:';
 			#if LUA_ALLOWED
-			if (newPos.isLua == true) {
+			if (newPos.isLua == true)
+			{
 				msgInfo += 'HScript:';
 				newPos.showLine = false;
 			}
 			#end
-			if (newPos.showLine == true) {
+			if (newPos.showLine == true)
+			{
 				msgInfo += '${newPos.lineNumber}:';
 			}
 			msgInfo += ' $x';
 			if (PlayState.instance != null)
 				PlayState.instance.addTextToDebug('ERROR: $msgInfo', FlxColor.RED);
 		}
-		Iris.fatal = function(x, ?pos:haxe.PosInfos) {
+		Iris.fatal = function(x, ?pos:haxe.PosInfos)
+		{
 			Iris.logLevel(FATAL, x, pos);
 			var newPos:HScriptInfos = cast pos;
-			if (newPos.showLine == null) newPos.showLine = true;
-			var msgInfo:String = (newPos.funcName != null ? '(${newPos.funcName}) - ' : '')  + '${newPos.fileName}:';
+			if (newPos.showLine == null)
+				newPos.showLine = true;
+			var msgInfo:String = (newPos.funcName != null ? '(${newPos.funcName}) - ' : '') + '${newPos.fileName}:';
 			#if LUA_ALLOWED
-			if (newPos.isLua == true) {
+			if (newPos.isLua == true)
+			{
 				msgInfo += 'HScript:';
 				newPos.showLine = false;
 			}
 			#end
-			if (newPos.showLine == true) {
+			if (newPos.showLine == true)
+			{
 				msgInfo += '${newPos.lineNumber}:';
 			}
 			msgInfo += ' $x';
@@ -195,29 +240,31 @@ class Main extends Sprite
 		}
 		#end
 
-		#if LUA_ALLOWED 
+		#if LUA_ALLOWED
 		trace("Hooking up Lua");
-		Lua.set_callbacks_function(cpp.Callable.fromStaticFunction(psychlua.CallbackHandler.call)); 
+		Lua.set_callbacks_function(cpp.Callable.fromStaticFunction(psychlua.CallbackHandler.call));
 		#end
 
 		trace("Loading controls");
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
 		#if ACHIEVEMENTS_ALLOWED Achievements.load(); #end
-		
+
 		#if mobile
-		FlxG.signals.postGameStart.addOnce(() -> {
+		FlxG.signals.postGameStart.addOnce(() ->
+		{
 			FlxG.scaleMode = new MobileScaleMode();
 		});
 		#end
 
 		trace("Loading game objest...");
-		var gameObject = new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen);
+		var gameObject = new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate,
+			game.skipSplash, game.startFullscreen);
 		// FlxG.game._customSoundTray wants just the class, it calls new from
-    	// create() in there, which gets called when it's added to stage
-    	// which is why it needs to be added before addChild(game) here
-    	@:privateAccess
-    	gameObject._customSoundTray = mikolka.vslice.components.FunkinSoundTray;
+		// create() in there, which gets called when it's added to stage
+		// which is why it needs to be added before addChild(game) here
+		@:privateAccess
+		gameObject._customSoundTray = mikolka.vslice.components.FunkinSoundTray;
 
 		addChild(gameObject);
 
@@ -225,17 +272,17 @@ class Main extends Sprite
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
 		#if mobile
 		FlxG.game.addChild(fpsVar);
-	  	#else
-		#if !debug 
-			var border = new GameBorder();
-			addChild(border);
-			Lib.current.stage.window.onResize.add(border.updateGameSize);
+		#else
+		#if !debug
+		var border = new GameBorder();
+		addChild(border);
+		Lib.current.stage.window.onResize.add(border.updateGameSize);
 		#end
 		addChild(fpsVar);
 		#end
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
-		
+
 		if (fpsVar != null)
 		{
 			fpsVar.visible = ClientPrefs.data.showFPS;
@@ -246,7 +293,7 @@ class Main extends Sprite
 		memoryCounter = new MemoryCounter(10, 13, 0xFFFFFF);
 		#if mobile
 		FlxG.game.addChild(memoryCounter);
-	  	#else
+		#else
 		addChild(memoryCounter);
 		#end
 		if (memoryCounter != null)
@@ -254,8 +301,6 @@ class Main extends Sprite
 			memoryCounter.visible = ClientPrefs.data.showFPS;
 		}
 		#end
-
-		
 
 		#if (debug)
 		flixel.addons.studio.FlxStudio.create();
@@ -278,7 +323,6 @@ class Main extends Sprite
 		DiscordClient.prepare();
 		#end
 
-		
 		#if mobile
 		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
 		lime.system.System.allowScreenTimeout = ClientPrefs.data.screensaver;

@@ -1,4 +1,7 @@
 #if !macro
+
+import haxe.Exception;
+
 //Discord API
 #if DISCORD_ALLOWED
 import backend.Discord;

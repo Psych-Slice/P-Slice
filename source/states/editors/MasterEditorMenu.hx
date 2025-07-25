@@ -53,7 +53,9 @@ class MasterEditorMenu extends MusicBeatState
 		modDir = new ModSelector(null);
 		modDir.allowInput = true;
 		add(modDir);
-            var btn_sharedY = (FlxG.height - 90);
+		if(controls.mobileC){
+
+			var btn_sharedY = (FlxG.height - 90);
             var prevBtn =  new PsychUIButton(40,btn_sharedY,"<=",() -> modDir.changeDirectory(-1),140,50);
             prevBtn.text.size = 30;
             prevBtn.text.y -= 10;
@@ -64,6 +66,7 @@ class MasterEditorMenu extends MusicBeatState
             nextBtn.normalStyle.bgColor = 0xFF888888;
             add(prevBtn);
             add(nextBtn);
+		}
 		#end
 
 		FlxG.mouse.visible = false;
