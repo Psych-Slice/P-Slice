@@ -1,10 +1,6 @@
 {
       "lime.buildTypes": [
     {
-      "label": "Debug",
-      "args": ["-debug", "-DFEATURE_DEBUG_FUNCTIONS"]
-    },
-    {
       "label": "Debug (Profile)",
       "args": ["-debug", "-DPROFILE_BUILD", "-DFEATURE_DEBUG_FUNCTIONS"]
     },
