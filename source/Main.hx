@@ -1,6 +1,5 @@
 package;
 
-
 import states.InitState;
 import mikolka.vslice.components.crash.Logger;
 #if HSCRIPT_ALLOWED
@@ -51,13 +50,14 @@ class Main extends Sprite
 	// ? This runs before we attempt to precache things
 	public static function loadGameEarly()
 	{
-		#if (linux || mac) // fix the app icon not showing up on the Linux Panel 
+		#if (linux || mac) // fix the app icon not showing up on the Linux Panel
 		var icon = lime.graphics.Image.fromFile("icon.png");
 		Lib.current.stage.window.setIcon(icon);
 		#end
 
 		#if TITLE_SCREEN_EASTER_EGG
-		if(Date.now().getMonth() == 0 && Date.now().getDate() == 14) Lib.current.stage.window.title = "Friday Night Funkin': Mikolka's Engine";
+		if (Date.now().getMonth() == 0 && Date.now().getDate() == 14)
+			Lib.current.stage.window.title = "Friday Night Funkin': Mikolka's Engine";
 		#end
 
 		// This requests file access on android (otherwise we will crash later)
@@ -68,7 +68,7 @@ class Main extends Sprite
 		#if mobile
 		Sys.setCwd(StorageUtil.getStorageDirectory());
 		#end
-		
+
 		#if sys
 		Logger.startLogging();
 		trace("CWD IS " + StorageUtil.getStorageDirectory());
@@ -86,8 +86,8 @@ class Main extends Sprite
 			trace("Pushing top mod");
 			Mods.loadTopMod();
 		}
-		catch (x:Exception) trace("Something went wrong with mod code: " + x.message);
-		
+		catch (x:Exception)
+			trace("Something went wrong with mod code: " + x.message);
 
 		#if hxvlc
 		trace("Starting hxvlc..");
@@ -127,8 +127,16 @@ class Main extends Sprite
 		setupGame();
 	}
 
+
+
 	private function setupGame():Void
 	{
+
+		#if HXCPP_TRACY
+		cpp.vm.tracy.TracyProfiler.messageAppInfo(backend.Native.buildSystemInfo());
+		cpp.vm.tracy.TracyProfiler.setThreadName("main");
+		#end
+
 		trace("Starting game setup");
 		#if (openfl <= "9.2.0")
 		var stageWidth:Int = Lib.current.stage.stageWidth;

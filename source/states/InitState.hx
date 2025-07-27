@@ -1,5 +1,6 @@
 package states;
 
+import openfl.Assets;
 import mikolka.vslice.ui.title.TitleState;
 import flixel.input.keyboard.FlxKey;
 import mikolka.vslice.ui.disclaimer.TextWarnings.FlashingState;
@@ -15,6 +16,7 @@ class InitState extends MusicBeatState
     var mustUpdate:Bool = false;
 	public static var updateVersion:String = '';
 
+
 	override function create()
 	{
 		super.create();
@@ -23,11 +25,14 @@ class InitState extends MusicBeatState
 		persistentDraw = true;
 		FlxG.mouse.visible = false;
 
+
 		#if (cpp && windows)
 		trace("Fixing DPI aware:");
 		backend.Native.fixScaling();
 		#end
 
+		mikolka.funkin.custom.NativeFileSystem.openFlAssets = Assets.list();
+		
 		trace("Loading game settings");
 		ClientPrefs.loadPrefs();
 
