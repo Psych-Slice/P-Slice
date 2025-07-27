@@ -1532,14 +1532,6 @@ class FreeplayState extends MusicBeatSubstate
 		}
 
 		#if FEATURE_DEBUG_FUNCTIONS
-		if (FlxG.keys.justPressed.P)
-		{
-			FlxG.switchState(() -> FreeplayState.build({
-				{
-					character: currentCharacterId == "pico" ? Constants.DEFAULT_CHARACTER : "pico",
-				}
-			}));
-		}
 
 		if (FlxG.keys.justPressed.T)
 		{

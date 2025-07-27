@@ -14,13 +14,16 @@ import sys.FileSystem as FileSystem;
 #end
 
 /**
-	**Works only on paths relative to game's root dorectory*
-
-	Basically NativeFileSystem, but we can emulate it on OpenFL.
-	It can either 
-**/
-class NativeFileSystem
-{
+ **Works only on paths relative to game's root dorectory*
+ 
+ Basically NativeFileSystem, but we can emulate it on OpenFL.
+ It can either 
+ **/
+ class NativeFileSystem
+ {
+	
+	public  static var openFlAssets:Array<String> = null;
+	
 	public static function getContent(path:String):Null<String>
 	{
 		var isModded = path.startsWith("mods");
@@ -145,7 +148,7 @@ class NativeFileSystem
 			var isFile = OpenFlAssets.exists(path, TEXT);
 			if (!isFile)
 			{
-				var isDir = Assets.list().filter(folder -> folder.startsWith(path)).length > 0;
+				var isDir = openFlAssets.filter(folder -> folder.startsWith(path)).length > 0;
 				return isDir;
 			}
 			return isFile;
@@ -179,7 +182,7 @@ class NativeFileSystem
 			var dirs:Array<String> = [];
 			if (!directory.endsWith("/"))
 				directory += '/';
-			for (dir in Assets.list().filter(folder -> folder.startsWith(directory)))
+			for (dir in openFlAssets.filter(folder -> folder.startsWith(directory)))
 			{
 				@:privateAccess
 				for (library in lime.utils.Assets.libraries.keys())
@@ -242,7 +245,7 @@ class NativeFileSystem
 		#if OPENFL_LOOKUP
 		if (!result && !isModded)
 		{
-			result = Assets.list().filter(folder -> folder.startsWith(directory) && folder != directory).length > 0;
+			result = openFlAssets.filter(folder -> folder.startsWith(directory) && folder != directory).length > 0;
 			#if nativesys_profile
 			var timeEnd = Sys.cpuTime() - timeStart;
 			if (timeEnd > 1.2)
