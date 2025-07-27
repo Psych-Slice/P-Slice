@@ -30,8 +30,6 @@ class InitState extends MusicBeatState
 		trace("Fixing DPI aware:");
 		backend.Native.fixScaling();
 		#end
-
-		mikolka.funkin.custom.NativeFileSystem.openFlAssets = Assets.list();
 		
 		trace("Loading game settings");
 		ClientPrefs.loadPrefs();
