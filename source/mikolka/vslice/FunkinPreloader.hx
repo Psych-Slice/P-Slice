@@ -1,14 +1,18 @@
 package mikolka.vslice;
 
+import mikolka.funkin.custom.NativeFileSystem;
+import mikolka.vslice.freeplay.DifficultyStars;
+#if sys import mikolka.vslice.components.crash.Logger; #end
+import mikolka.funkin.utils.MathUtil;
+
+import openfl.Assets;
 import openfl.utils.Promise;
 import lime.app.Future;
-#if sys import mikolka.vslice.components.crash.Logger; #end
 import openfl.events.MouseEvent;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.Lib;
 import flixel.system.FlxBasePreloader;
-import mikolka.funkin.utils.MathUtil;
 import openfl.display.Sprite;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
@@ -585,7 +589,17 @@ class FunkinPreloader extends FlxBasePreloader
 
           var assetsToCache:Array<String> = [];
           var sparrowFramesToCache:Array<String> = [];
-
+ 
+          trace("Load misc");
+          //? Some misc caching
+          // Cache assets list for future use
+          NativeFileSystem.openFlAssets = Assets.list();
+          // load 6.4MB json file
+          var text = NativeFileSystem.getContent("assets/shared/images/freeplay/freeplayStars/Animation.json");
+          @:privateAccess
+          DifficultyStars.FREEPLAY_STAR_ANIM = haxe.Json.parse(text);
+          //? end
+          trace("done");
           // Core files
           // assetsToCache = assetsToCache.concat(Assets.listText('core'));
           // assetsToCache = assetsToCache.concat(Assets.listJSON('core'));
