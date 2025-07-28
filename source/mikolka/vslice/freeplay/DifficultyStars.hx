@@ -9,11 +9,6 @@ class DifficultyStars extends FlxSpriteGroup
 {
 
   /**
-   * Loaded json for animations (it's 7.4 MB in V-Slice 0.7.3)
-   */
-  static var FREEPLAY_STAR_ANIM:Dynamic = null;
-
-  /**
    * Internal handler var for difficulty... ranges from 0... to 15
    * 0 is 1 star... 15 is 0 stars!
    */
@@ -40,8 +35,7 @@ class DifficultyStars extends FlxSpriteGroup
     add(flames);
     
     //? Using base FlxAnimate to sideload JSON obj "freeplay/freeplayStars
-    stars = new FlxAnimate(0, 0, "");
-    Paths.loadAnimateAtlas(stars,"freeplay/freeplayStars",null,FREEPLAY_STAR_ANIM);
+    stars = new FlxAtlasSprite(0, 0, "freeplay/freeplayStars");
 
     stars.anim.play("diff stars");
     add(stars);

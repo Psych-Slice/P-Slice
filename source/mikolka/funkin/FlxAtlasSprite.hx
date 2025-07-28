@@ -16,6 +16,11 @@ import flxanimate.animate.FlxKeyFrame;
  */
 class FlxAtlasSprite extends PsychFlxAnimate
 {
+  /**
+   * A list of precached "animation.json" files in case they're used a lot
+   */
+  public static final ANIMATION_OBJECTS = new Map<String,Dynamic>();
+
   static final SETTINGS:Settings =
     {
       // ?ButtonSettings:Map<String, flxanimate.animate.FlxAnim.ButtonSettings>,
@@ -42,8 +47,6 @@ class FlxAtlasSprite extends PsychFlxAnimate
 
   var canPlayOtherAnims:Bool = true;
 
-  var isPathAbsolute:Bool = false;
-
   public function new(x:Float, y:Float, ?path:String, ?settings:Settings)
   {
     if (settings == null) settings = SETTINGS;
@@ -53,8 +56,7 @@ class FlxAtlasSprite extends PsychFlxAnimate
       throw 'Null path specified for FlxAtlasSprite!';
     }
     else if (path.startsWith("assets") || path.startsWith("mods")){
-      isPathAbsolute = true;
-      FlxG.log.warn('$path is an absolute path. This is discouraged!');
+      throw '$path is an absolute path. This is discouraged!';
     }
 
 
@@ -77,36 +79,7 @@ class FlxAtlasSprite extends PsychFlxAnimate
   }
   //? P-Slice fix for mods
   override function loadAtlas(path:String) {
-    if(isPathAbsolute){
-      //TODO Deprecated
-      if(Assets.exists('$path/Animation.json')) {
-        super.loadAtlas(path);
-        return;
-      }
-      
-      #if NATIVE_LOOKUP
-      try{
-        trace(path);
-        if(isPathAbsolute){
-          super.loadAtlasEx(ModsHelper.loadabsoluteGraphic('$path/spritemap1.png'),
-          File.getContent('$path/spritemap1.json'),
-          File.getContent('$path/Animation.json')
-          );
-        }
-        else{
-          Paths.loadAnimateAtlas(this,path);
-        }
-      }
-      catch(x){
-        FlxG.log.error('Failed to load "$path" via EXtended loader: $x');
-        trace('Failed to load "$path" via EXtended loader: $x');
-      }
-      #end
-    }
-    else{
-      Paths.loadAnimateAtlas(this,path);
-    }
-    
+      Paths.loadAnimateAtlas(this,path,null,ANIMATION_OBJECTS.get(path));
   }
   /**
    * @return A list of all the animations this sprite has available.

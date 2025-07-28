@@ -62,7 +62,6 @@ class Native
 		registerDPIAware();
 	}
 
-		#if HXCPP_TRACY
 	public static function buildSystemInfo():String
 	{
 		var fullContents = 'System timestamp: ${DateUtil.generateTimestamp()}\n';
@@ -100,10 +99,8 @@ class Native
 		#else
 		var result:String = 'Unknown GC';
 		#end
-
 		return fullContents;
 	}
-	#end
 
 	public static function registerDPIAware():Void
 	{
