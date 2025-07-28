@@ -1,4 +1,5 @@
 [general]
+channels=stereo
 sample-type=float32
 stereo-mode=speakers
 stereo-encoding=panpot
