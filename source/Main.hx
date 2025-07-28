@@ -132,7 +132,9 @@ class Main extends Sprite
 	private function setupGame():Void
 	{
 
+		trace(backend.Native.buildSystemInfo());
 		#if HXCPP_TRACY
+		trace("Starting tracy");
 		cpp.vm.tracy.TracyProfiler.messageAppInfo(backend.Native.buildSystemInfo());
 		cpp.vm.tracy.TracyProfiler.setThreadName("main");
 		#end
