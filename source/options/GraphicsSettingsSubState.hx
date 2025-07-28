@@ -46,11 +46,21 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 			BOOL);
 		addOption(option);
 
+		#if MULTITHREADED_LOADING
 		var option:Option = new Option('Multithreaded Caching', //Name
 		"If checked, enables multithreaded loading, which improves loading times but with a low chance for the game to freeze while loading a song.", //Description
 		'cacheOnCPU',
 		BOOL);
 		addOption(option);
+		#end
+
+		#if STRICT_LOADING_SCREEN
+		var option:Option = new Option('Strict Loading Screen', //Name
+		"If checked, the game will unload the UI assets first, and then preload the song data (useful for low-memory devices)", //Description
+		'strictLoadingScreen',
+		BOOL);
+		addOption(option);
+		#end
 
 		#if !html5 //Apparently other framerates isn't correctly supported on Browser? Probably it has some V-Sync shit enabled by default, idk
 		var option:Option = new Option('Framerate',
