@@ -61,7 +61,13 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- Other stuff -->
 	<define name="ACHIEVEMENTS_ALLOWED" />
 	<define name="TRANSLATIONS_ALLOWED" unless="web" />
+
+	<!-- Allows the game to display a loading screen when loading songs-->
 	<define name="SHOW_LOADING_SCREEN" />
+
+	<!-- Forces the game to unload UI assets before loading the song assets -->
+	<define name="STRICT_LOADING_SCREEN" if="mobile SHOW_LOADING_SCREEN" />
+
 	<define name="MULTITHREADED_LOADING" if="cpp" /> <!-- UNCOMMENTING THIS LINE WILL ENABLE MULTITHREADED LOADING, WHICH IMPROVES LOADING TIMES, BUT WITH A LOW CHANCE FOR THE GAME FREEZE ON SONG LOAD -->
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN -->
 	<define name="TITLE_SCREEN_EASTER_EGG"/>
@@ -84,7 +90,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 		<define name="HXCPP_TELEMETRY" />
 		<define name="HXCPP_TRACY_MEMORY" />
 		<define name="HXCPP_TRACY_ON_DEMAND" />
-
+		<define name="STRICT_LOADING_SCREEN" />
 		<!-- <define name="HXCPP_TRACY_INCLUDE_CALLSTACKS" /> -->
 		
 		<!-- Pico will always kill the other (unless you skip the cutscene) -->
@@ -244,7 +250,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!--Used for crash handler-->
 	<section if="cpp">
 		<haxedef name="HXCPP_CHECK_POINTER" />
-		<haxedef name="HXCPP_GC_MOVING" />
+		<haxedef name="HXCPP_GC_MOVING" unless="HXCPP_TRACY_MEMORY"/>
 
 		<haxedef name="HXCPP_STACK_LINE" />
 		<haxedef name="HXCPP_STACK_TRACE" />

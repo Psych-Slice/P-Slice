@@ -92,6 +92,14 @@ class LoadingState extends MusicBeatState
 	#end
 	override function create()
 	{
+		#if STRICT_LOADING_SCREEN
+        if(backend.ClientPrefs.data.strictLoadingScreen){	
+			Paths.clearStoredMemory();
+			Paths.clearUnusedMemory();
+			LoadingState.prepareToSong();
+		}
+		#end
+
 		persistentUpdate = true;
 		barGroup = new FlxSpriteGroup();
 		add(barGroup);
@@ -399,6 +407,7 @@ class LoadingState extends MusicBeatState
 
 		if(intrusive)
 			return new LoadingState(target, stopMusic);
+		
 		
 		if (stopMusic && FlxG.sound.music != null)
 			FlxG.sound.music.stop();
