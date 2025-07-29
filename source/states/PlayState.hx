@@ -288,8 +288,8 @@ class PlayState extends MusicBeatState
 		#if !STRICT_LOADING_SCREEN
 		if(!backend.ClientPrefs.data.strictLoadingScreen){
 			
-			Paths.clearUnusedMemory();
 			Paths.clearStoredMemory();
+			Paths.clearUnusedMemory();
 		}
 		#end
 		if(nextReloadAll)
