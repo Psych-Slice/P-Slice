@@ -1,5 +1,6 @@
 package backend;
 
+import flixel.util.FlxArrayUtil;
 import haxe.io.Path;
 import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -45,6 +46,7 @@ class Paths
 		// clear non local assets in the tracked assets list
 		for (key in currentTrackedAssets.keys())
 		{
+			//trace(key);
 			// if it is not currently contained within the used local assets
 			if (!localTrackedAssets.contains(key) && !dumpExclusions.contains(key))
 			{
@@ -53,7 +55,12 @@ class Paths
 			}
 		}
 		
-		// run the garbage collector for good measure lmfao
+		// trace("-- Cache dump start --");
+		// @:privateAccess
+		// for(x in FlxG.bitmap._cache.keys()) trace(x);
+		// // run the garbage collector for good measure lmfao
+		// trace("-- END --");
+
 		System.gc();
 		#if cpp
 		cpp.NativeGc.run(true);
@@ -83,6 +90,7 @@ class Paths
 				currentTrackedSounds.remove(key);
 			}
 		}
+
 		// flags everything to be cleared out next unused memory clear
 		localTrackedAssets = [];
 		#if !html5 openfl.Assets.cache.clear("songs"); #end
