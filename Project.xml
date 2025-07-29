@@ -66,7 +66,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<define name="SHOW_LOADING_SCREEN" />
 
 	<!-- Forces the game to unload UI assets before loading the song assets -->
-	<define name="STRICT_LOADING_SCREEN" if="mobile SHOW_LOADING_SCREEN" />
+	<define name="STRICT_LOADING_SCREEN" />
+	<!-- <define name="STRICT_LOADING_SCREEN" if="mobile SHOW_LOADING_SCREEN" /> -->
 
 	<define name="MULTITHREADED_LOADING" if="cpp" /> <!-- UNCOMMENTING THIS LINE WILL ENABLE MULTITHREADED LOADING, WHICH IMPROVES LOADING TIMES, BUT WITH A LOW CHANCE FOR THE GAME FREEZE ON SONG LOAD -->
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN -->
@@ -117,7 +118,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- _____________________________ Path Settings ____________________________ -->
 
 	<set name="BUILD_DIR" value="export/debug" if="debug" />
-	<set name="BUILD_DIR" value="export/release" unless="debug" />
+	<set name="BUILD_DIR" value="export/tracy" if="HXCPP_TRACY" />
+	<set name="BUILD_DIR" value="export/release" unless="debug || HXCPP_TRACY" />
 	<set name="BUILD_DIR" value="export/32bit" if="32bits" />
 
 	<classpath name="source" />
@@ -179,6 +181,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-addons" version="3.3.2"/>
+	<haxelib name="hxcpp" version="4.3.2" unless="HXCPP_TRACY"/>
 	<haxelib name="tjson" version="1.4.0"/>
 	<haxelib name="FlxPartialSound" version="git"/>
 	<haxelib name="grig.audio" />
@@ -250,7 +253,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!--Used for crash handler-->
 	<section if="cpp">
 		<haxedef name="HXCPP_CHECK_POINTER" />
-		<haxedef name="HXCPP_GC_MOVING" unless="HXCPP_TRACY_MEMORY"/>
+		<!-- <haxedef name="HXCPP_GC_MOVING" unless="HXCPP_TRACY_MEMORY"/> -->
 
 		<haxedef name="HXCPP_STACK_LINE" />
 		<haxedef name="HXCPP_STACK_TRACE" />

@@ -51,7 +51,7 @@ class SongMenuItem extends FlxSpriteGroup
 
   var ranks:Array<String> = ["fail", "average", "great", "excellent", "perfect", "perfectsick"];
 
-  public var targetPos:FlxPoint = new FlxPoint();
+  public var targetPos:FlxPoint = FlxPoint.get();
   public var doLerp:Bool = false;
   public var doJumpIn:Bool = false;
 
@@ -87,6 +87,7 @@ class SongMenuItem extends FlxSpriteGroup
   static var gaussianBlur:GaussianBlurShader = null;
   static var gaussianBlur_12:GaussianBlurShader = null;
   public static var static_hsvShader:HSVShader = null;
+
   public static function reloadGlobalItemData() {
 		if(VsliceOptions.SHADERS) {
     static_hsvShader = new HSVShader();
@@ -688,11 +689,16 @@ class SongMenuItem extends FlxSpriteGroup
     {
       x = MathUtil.smoothLerp(x, targetPos.x,elapsed, 0.3); //? update lerping for lower FPS
       y = MathUtil.smoothLerp(y, targetPos.y,elapsed, 0.4); //? kinda cool tbh
+      // TODO capsule.visible = songData?.isFav;
     }
 
     super.update(elapsed);
   }
 
+  override function destroy() {
+    targetPos.put();
+    super.destroy();
+  }
   /**
    * Play any animations associated with selecting this song.
    */
@@ -707,9 +713,12 @@ class SongMenuItem extends FlxSpriteGroup
 
   public function intendedY(index:Float):Float
   {
-    return (index * ((height * realScaled) + 10)) + 120;
+    return index * ((height * realScaled) + 10) + 120;
   }
-
+  public function intendedX(index:Float):Float
+  {
+    return 270 + (60 * (FlxMath.fastSin(index)));
+  }
   function set_selected(value:Bool):Bool
   {
     // cute one liners, lol!

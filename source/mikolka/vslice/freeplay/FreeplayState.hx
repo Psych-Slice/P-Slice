@@ -2213,7 +2213,7 @@ class FreeplayState extends MusicBeatSubstate
 				capsule.selected = index == curSelected + 1;
 	
 				capsule.targetPos.y = capsule.intendedY(index - curSelectedFractal);
-				capsule.targetPos.x = 270 + (60 * (Math.sin(index - curSelectedFractal)));
+				capsule.targetPos.x = capsule.intendedX(index - curSelectedFractal);
 	
 				if (index < curSelected)
 					capsule.targetPos.y -= 100; // another 100 for good measure
@@ -2277,7 +2277,7 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			if (daSongCapsule.songData != null)
 				FreeplayHelpers.loadDiffsFromWeek(daSongCapsule.songData);
-
+ 
 			FlxG.sound.music.pause(); // muting previous track must be done NOW
 			FlxTimer.wait(FADE_IN_DELAY, playCurSongPreview.bind(daSongCapsule)); // Wait a little before trying to pull a Inst file
 

@@ -65,7 +65,6 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
-		Paths.clearUnusedMemory();
 
 		if (stickerSubState != null)
 		{
@@ -79,6 +78,7 @@ class StoryMenuState extends MusicBeatState
 		}
 		else
 			Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
 
 		persistentUpdate = persistentDraw = true;
 		PlayState.isStoryMode = true;

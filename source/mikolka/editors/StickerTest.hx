@@ -28,7 +28,6 @@ class StickerTest extends MusicBeatState {
     override function create() {
         FlxG.sound.music?.pause();
         FlxG.mouse.visible = true;
-        Paths.clearUnusedMemory();
         if (stickerSubState != null)
 			{
               ModsHelper.clearStoredWithoutStickers();
@@ -36,7 +35,6 @@ class StickerTest extends MusicBeatState {
 			  stickerSubState.degenStickers();
 			}
 		else Paths.clearStoredMemory();
-        
 
         var BG = new FlxSprite(0,0,Paths.image("freeplay/freeplayBGdad"));
         BG.setGraphicSize(FlxG.width,FlxG.height);

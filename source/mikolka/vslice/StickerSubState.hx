@@ -150,6 +150,8 @@ class StickerSubState extends MusicBeatSubstate
         {
           switchingState = false;
           FlxTransitionableState.skipNextTransIn = false;
+          trace("Dump stickers");
+          Paths.clearUnusedMemory();
           close();
         }
       });
