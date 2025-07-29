@@ -62,6 +62,7 @@ class ModsHelper {
 		) Paths.currentTrackedAssets.set(key,val);
 		}
 		Paths.clearStoredMemory();
+		Paths.currentTrackedAssets.clear();
 	}
 	#if sys
 	public inline static function collectVideos():String{
