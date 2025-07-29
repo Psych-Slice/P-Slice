@@ -181,7 +181,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-addons" version="3.3.2"/>
-	<haxelib name="hxcpp" version="4.3.2" unless="HXCPP_TRACY"/>
+	<haxelib name="hxcpp" unless="HXCPP_TRACY"/>
 	<haxelib name="tjson" version="1.4.0"/>
 	<haxelib name="FlxPartialSound" version="git"/>
 	<haxelib name="grig.audio" />
