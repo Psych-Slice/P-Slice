@@ -1,6 +1,6 @@
 package mikolka.stages.erect;
 
-import mikolka.stages.objects.PicoCapableStage;
+import mikolka.stages.scripts.PicoCapableStage;
 import flixel.system.debug.watch.Tracker;
 import mikolka.compatibility.funkin.FunkinPath;
 import shaders.AdjustColorShader;
@@ -57,8 +57,8 @@ class MallXmasErect extends BaseStage
 		setDefaultGF('gf-christmas');
 
 		if(songName == "eggnog-erect" || songName == "eggnog-(pico-mix)"){
-			erectSanta = new FlxAtlasSprite(-840 +380, 150 +347,"assets/week5/images/christmas/santa_speaks_assets");
-			erectParents = new FlxAtlasSprite(100 -620, 100 + 401,"assets/week5/images/christmas/parents_shoot_assets");	
+			erectSanta = new FlxAtlasSprite(-840 +380, 150 +347,"christmas/santa_speaks_assets");
+			erectParents = new FlxAtlasSprite(100 -620, 100 + 401,"christmas/parents_shoot_assets");	
 			setEndCallback(eggnogEndCutscene);
 		}
 	}

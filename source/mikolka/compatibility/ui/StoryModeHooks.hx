@@ -5,6 +5,27 @@ import backend.Song;
 using mikolka.funkin.custom.FunkinTools;
 
 class StoryModeHooks {
+	public static var DEFAULT_DIFFICULTIES(get,null):Array<String>;
+    public static function get_DEFAULT_DIFFICULTIES() {
+        return Difficulty.defaultList.copy();
+    }
+    public static var DEFAULT_DIFF(get,null):String;
+    public static function get_DEFAULT_DIFF() {
+        return Difficulty.getDefault();
+    }
+    public static var DIFFICULTIES(get,null):Array<String>;
+    public static function get_DIFFICULTIES() {
+        return Difficulty.list;
+    }
+    public static inline function resetDiffList() {
+        Difficulty.resetList();
+    }
+    public static inline function getDifficultyString(curDifficulty:Int):String {
+        return Difficulty.getString(curDifficulty, false);
+    }
+    public static function loadDifficultiesFromWeek() {
+        Difficulty.loadFromWeek();
+    }
     public static function moveWeekToPlayState(){
         var directory = StageData.forceNextDirectory;
 			LoadingState.loadNextDirectory();

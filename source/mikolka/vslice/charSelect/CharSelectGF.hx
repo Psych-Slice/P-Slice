@@ -1,5 +1,6 @@
 package mikolka.vslice.charSelect;
 
+import haxe.Exception;
 import mikolka.funkin.FlxAtlasSprite;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
@@ -31,7 +32,7 @@ class CharSelectGF extends FlxAtlasSprite
 
   public function new()
   {
-    super(0, 0, Paths.animateAtlas("charSelect/gfChill"));
+    super(0, 0, "charSelect/gfChill");
 
     list = anim.curSymbol.getFrameLabelNames();
 
@@ -96,7 +97,8 @@ class CharSelectGF extends FlxAtlasSprite
 
   function drawFFT()
   {
-    if (enableVisualizer)
+    try{
+          if (enableVisualizer)
     {
       var levels = analyzer.getLevels();
       var frame = anim.curSymbol.timeline.get("VIZ_bars").get(anim.curFrame);
@@ -120,6 +122,10 @@ class CharSelectGF extends FlxAtlasSprite
 
         elements[i].symbol.firstFrame = animFrame;
       }
+    }
+    }
+    catch(x:Exception){
+      // tracing this would waste CPU
     }
   }
 
@@ -178,7 +184,7 @@ class CharSelectGF extends FlxAtlasSprite
     }
     var bfObj = PlayerRegistry.instance.fetchEntry(bf);
     var gfData = bfObj?.getCharSelectData()?.gf;
-    currentGFPath = gfData?.assetPath != null ? Paths.animateAtlas(gfData?.assetPath) : null;
+    currentGFPath = gfData?.assetPath != null ? gfData?.assetPath : null;
 
     // We don't need to update any anims if we didn't change GF
     trace('currentGFPath(${currentGFPath})');

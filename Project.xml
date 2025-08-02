@@ -9,6 +9,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
+	<meta build-number="320"/>
 
 	<!-- NOTE TO SELF: DISABLE THIS IF ISSUES ARE FOUND -->
 	<haxedef name="LINC_LUA_RELATIVE_DYNAMIC_LIB"/> <!-- stable luas PUT AFTER FIRST LINE WITH APP NAME AND ETC -->
@@ -26,10 +27,15 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- Compiles mod support for P-Slice. Feel free to disable if you're making a source mod -->
 	<define name="MODS_ALLOWED" if="desktop || mobile" />
 
-	<!-- Adds the ability to use OpenFL asset lookup (defaults to sys if disabled)  -->
-	<define name="OPENFL_LOOKUP"/>
+	<section unless="debug">
+		<!-- Adds the ability to use OpenFL asset lookup (defaults to sys if disabled)  -->
+		<define name="OPENFL_LOOKUP"/>
 
-	<!-- Adds support for Psuch's lua/HScript files-->
+		<!-- Adds the ability to use NativeFileSystem on the computer to acsess files  -->
+		<define name="NATIVE_LOOKUP" if="MODS_ALLOWED" />
+	</section>
+
+	<!-- Adds support for Psych's lua/HScript files-->
 	<define name="HSCRIPT_ALLOWED" if="desktop || mobile"/>
 	<define name="LUA_ALLOWED" if="cpp" />
 
@@ -43,10 +49,10 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<define name="TOUCH_CONTROLS_ALLOWED" if="mobile || web || debug" />
 
 	<!-- Do you want to check for P-Slice updates?-->
-	<define name="CHECK_FOR_UPDATES" unless="web"/>
+	<define name="CHECK_FOR_UPDATES" unless="web || hl"/>
 
 	<!-- Do you want to support playing videos in your build?-->
-	<define name="VIDEOS_ALLOWED" if="desktop || mobile" unless="32bits"/> 
+	<define name="VIDEOS_ALLOWED" if="desktop || mobile" unless="32bits || hl"/> 
 	
 	<!-- Displays a "Touch here to play" screen-->
 	<define name="TOUCH_HERE_TO_PLAY" if="TOUCH_CONTROLS_ALLOWED"/>
@@ -58,7 +64,26 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<define name="MULTITHREADED_LOADING" if="cpp" /> <!-- UNCOMMENTING THIS LINE WILL ENABLE MULTITHREADED LOADING, WHICH IMPROVES LOADING TIMES, BUT WITH A LOW CHANCE FOR THE GAME FREEZE ON SONG LOAD -->
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN -->
 	<define name="TITLE_SCREEN_EASTER_EGG"/>
-	<define name="COPYSTATE_ALLOWED" if="MODS_ALLOWED mobile"/>
+
+		<!-- Debug utilities (useful when testing the game)-->
+	<section if="debug">
+		<!-- For testing file access times-->
+		<define name="OPENFL_LOOKUP" />
+		<define name="NATIVE_LOOKUP" />
+
+		<define name="IRIS_DEBUG"/>
+		<define name="PROFILE_BUILD"/>
+		<haxedef name="HXVLC_VERBOSE" value="2" />
+		<haxedef name="HXVLC_LOGGING" />
+	</section>
+
+	 <!-- Flags for the profile builds (used for assessing performance and such)-->
+	<section if="PROFILE_BUILD">
+		<define name="nativesys_profile" />
+
+		<define name="pico_always_kill" />
+		<define name="freeplay_profile" />
+	</section>
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
@@ -171,8 +196,6 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 		<haxelib name="hxcpp-debug-server" />
 		<haxelib name="flixel-studio" />
 		<haxelib name="hscript"/>
-		<haxedef name="HXVLC_VERBOSE" value="2" />
-		<haxedef name="HXVLC_LOGGING" />
 	</section>
 	
 	<define name="x86_BUILD" if="32bits" />
@@ -204,7 +227,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
 	
 	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
-	<haxedef name="FLX_NO_DEBUG" unless="debug" />
+	<haxedef name="FLX_NO_DEBUG" unless="PROFILE_BUILD" />
 
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
@@ -219,7 +242,9 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	</section>
 	
 	<!--Disable deprecated warnings-->
-	<haxedef name='no-deprecation-warnings' />
+	<haxedef name='no-deprecation-warnings' />	
+	<!--Disable deprecated warnings-->
+	<haxedef name='no_ssl' if="hl" />
 
 	<!-- Haxe 4.3.0+: Enable pretty syntax errors and stuff. -->
 	<!-- pretty (haxeflixel default), indent, classic (haxe compiler default) -->
@@ -235,15 +260,31 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<haxeflag name="--macro" value="addMetadata('@:build(mikolka.FlxMacro.buildFlxBasic())', 'flixel.FlxBasic')" />
 
 	<!-- more verbose HScript-->
-	<define name="IRIS_DEBUG" if="debug"/>
+	
 	<haxedef name="hscriptPos" if="HSCRIPT_ALLOWED"/>
 
 	<!-- _________________________________ Custom _______________________________ -->
 
-	<assets path='art/iconOG.png' rename='icon.png' if="linux" />
-	
-	<icon path="art/icon16.png" size='16'/>
-	<icon path="art/icon32.png" size='32'/>
-	<icon path="art/icon64.png" size='64'/>
-	<icon path="art/iconOG.png" />
+	<section if="PROFILE_BUILD">
+		<assets path='art/desktop/icon16.png' rename='icon.png' if="linux" />
+		<icon path="art/desktop/icon16.png"/>
+	</section>
+	<section unless="PROFILE_BUILD">
+		<section if="mobile">
+			<icon path="art/mobile/iconAdaptive.png" if="android" />
+			<icon path="art/mobile/iconMobile.png" unless="android" />
+			<icon path="art/mobile/icon32.png" size='32'/>
+			<icon path="art/mobile/icon64.png" size='64'/>
+			<icon path="art/mobile/icon128.png" size='128'/>
+		</section>
+		<section unless="mobile">
+
+			<assets path='art/desktop/iconOG.png' rename='icon.png' if="linux" />
+			<icon path="art/desktop/icon16.png" size='16'/>
+			<icon path="art/desktop//icon32.png" size='32'/>
+			<icon path="art/desktop//icon64.png" size='64'/>
+			<icon path="art/desktop//iconOG.png" />
+		</section>
+	</section>
+
 </project>

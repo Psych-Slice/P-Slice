@@ -5,6 +5,7 @@ import mikolka.vslice.StickerSubState;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.stages.standard.*;
 import mikolka.stages.objects.*;
+import mikolka.stages.scripts.*;
 import mikolka.stages.erect.*;
 import haxe.ds.List;
 #if !LEGACY_PSYCH
@@ -15,6 +16,7 @@ import mikolka.vslice.components.crash.UserErrorSubstate;
 #end
 
 class EventLoader extends BaseStage {
+    public static var currentStage:BaseStage = null;
     #if LUA_ALLOWED
     public static function implement(funk:FunkinLua)
         {
@@ -40,10 +42,13 @@ class EventLoader extends BaseStage {
     #end
     public static function addstage(name:String) {
         var addNene = true;
+        currentStage = null;
+
         if(VsliceOptions.LEGACY_BAR) new LegacyScoreBars();
         new VSliceEvents();
-        if(addNene && PicoCapableStage.instance == null) new PicoCapableStage();
-        switch (name)
+        if(name == "tank" || name == "tankmanBattlefieldErect") new TankmanStagesAddons();
+
+        currentStage = switch (name)
 		{
 			case 'stage': new StageWeek1(); 						//Week 1
 			case 'spooky': new Spooky();							//Week 2
@@ -54,10 +59,8 @@ class EventLoader extends BaseStage {
 			case 'school': new School();							//Week 6 - Senpai, Roses
 			case 'schoolEvil': new SchoolEvil();					//Week 6 - Thorns
 			case 'tank': new Tank();								//Week 7 - Ugh, Guns, Stress
-            #if !LEGACY_PSYCH
 			case 'phillyStreets': new PhillyStreets(); 				//Weekend 1 - Darnell, Lit Up, 2Hot
 			case 'phillyBlazin': new PhillyBlazin();				//Weekend 1 - Blazin
-            #end
 			case 'mainStageErect': new MainStageErect();			//Week 1 Special 
 			case 'spookyMansionErect': new SpookyMansionErect();	//Week 2 Special 
 			case 'phillyTrainErect': new PhillyTrainErect();  		//Week 3 Special 
@@ -68,8 +71,16 @@ class EventLoader extends BaseStage {
 			case 'schoolEvilErect': new SchoolEvilErect();			//Week 6 Special - Thorns
 			case 'tankmanBattlefieldErect': new TankErect();		//Week 7 Special
 			case 'phillyStreetsErect': new PhillyStreetsErect(); 	//Weekend 1 Special 
-            default: addNene = false;
-		}
+            default: null;
+		};
+        if(currentStage == null) addNene = false;
+
+        if(addNene && PicoCapableStage.instance == null) {
+            var pico = new PicoCapableStage();
+            var game = PlayState.instance;
+            game.stages.remove(pico);
+            game.stages.insert(game.stages.length-2,pico);
+        }
         
     } 
 }

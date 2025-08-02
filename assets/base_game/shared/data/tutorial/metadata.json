@@ -2,6 +2,7 @@
 	"songRating": 1,
 	"albumId": "volume1",
 	"freeplayCharacter": "",
+	"freeplayWeekName": "tutorial",
 	"freeplaySongLength": 67.2,
 	"freeplayPrevEnd": 20,
 	"altInstrumentalSongs": "",

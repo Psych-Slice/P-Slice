@@ -54,7 +54,6 @@ class Character extends FlxSprite
 	public var holdTimer:Float = 0;
 	public var heyTimer:Float = 0;
 	public var specialAnim:Bool = false;
-	public var animationNotes:Array<Dynamic> = [];
 	public var stunned:Bool = false;
 	public var singDuration:Float = 4; //Multiplier of how long a character holds the sing pose
 	public var idleSuffix:String = '';
@@ -92,10 +91,6 @@ class Character extends FlxSprite
 		
 		switch(curCharacter)
 		{
-			case 'pico-speaker'|'otis-speaker':
-				skipDance = true;
-				loadMappedAnims();
-				playAnim("shoot1");
 			case 'pico-blazin', 'darnell-blazin':
 				skipDance = true;
 		}
@@ -138,7 +133,7 @@ class Character extends FlxSprite
 
 		#if flxanimate
 		var animToFind:String = Paths.getPath('images/' + json.image + '/Animation.json', TEXT);
-		if (#if MODS_ALLOWED FileSystem.exists(animToFind) || #end Assets.exists(animToFind))
+		if (#if MODS_ALLOWED NativeFileSystem.exists(animToFind) || #end Assets.exists(animToFind))
 			isAnimateAtlas = true;
 		#end
 
@@ -265,21 +260,6 @@ class Character extends FlxSprite
 			finishAnimation();
 		}
 
-		switch(curCharacter)
-		{
-			case 'pico-speaker'|'otis-speaker':
-				if(animationNotes.length > 0 && Conductor.songPosition > animationNotes[0][0])
-				{
-					var noteData:Int = 1;
-					if(animationNotes[0][1] > 2) noteData = 3;
-
-					noteData += FlxG.random.int(0, 1);
-					playAnim('shoot' + noteData, true);
-					animationNotes.shift();
-				}
-				if(isAnimationFinished()) playAnim(getAnimationName(), false, false, animation.curAnim.frames.length - 3);
-		}
-
 		if (getAnimationName().startsWith('sing')) holdTimer += elapsed;
 		else if(isPlayer) holdTimer = 0;
 
@@ -373,12 +353,12 @@ class Character extends FlxSprite
 		specialAnim = false;
 		if(!isAnimateAtlas)
 		{
-			animation.play(AnimName, Force, Reversed, Frame);
+			animation?.play(AnimName, Force, Reversed, Frame);
 		}
 		else
 		{
-			atlas.anim.play(AnimName, Force, Reversed, Frame);
-			atlas.update(0);
+			atlas?.anim?.play(AnimName, Force, Reversed, Frame);
+			atlas?.update(0);
 		}
 		_lastPlayedAnimation = AnimName;
 
@@ -400,22 +380,6 @@ class Character extends FlxSprite
 			if (AnimName == 'singUP' || AnimName == 'singDOWN')
 				danced = !danced;
 		}
-	}
-
-	function loadMappedAnims():Void
-	{
-		try
-		{
-			var songData:SwagSong = Song.getChart('picospeaker', Paths.formatToSongPath(Song.loadedSongName));
-			if(songData != null)
-				for (section in songData.notes)
-					for (songNotes in section.sectionNotes)
-						animationNotes.push(songNotes);
-
-			TankmenBG.animationNotes = animationNotes;
-			animationNotes.sort(sortAnims);
-		}
-		catch(e:Dynamic) {}
 	}
 
 	function sortAnims(Obj1:Array<Dynamic>, Obj2:Array<Dynamic>):Int

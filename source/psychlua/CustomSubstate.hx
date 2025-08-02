@@ -30,7 +30,8 @@ class CustomSubstate extends MusicBeatSubstate
 				PlayState.instance.vocals.pause();
 			}
 		}
-		PlayState.instance.openSubState(new CustomSubstate(name));
+		instance = new CustomSubstate(name);
+		PlayState.instance.openSubState(instance);
 	}
 
 	public static function closeCustomSubstate()
@@ -38,6 +39,7 @@ class CustomSubstate extends MusicBeatSubstate
 		if(instance != null)
 		{
 			PlayState.instance.closeSubState();
+			instance = null;
 			return true;
 		}
 		return false;

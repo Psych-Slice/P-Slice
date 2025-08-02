@@ -78,7 +78,6 @@ class LetterSort extends FlxTypedSpriteGroup<FlxSprite>
   override function update(elapsed:Float):Void
   {
     super.update(elapsed);
-
     if (inputEnabled)
     { //? changed controls mapping
       if (Controls.FREEPLAY_LEFT || (TouchUtil.overlaps(swipeBounds) && SwipeUtil.swipeLeft)) changeSelection(-1);
@@ -186,7 +185,7 @@ class FreeplayLetter extends FlxAtlasSprite
 
   public function new(x:Float, y:Float, ?letterInd:Int)
   {
-    super(x, y, Paths.animateAtlas("freeplay/sortedLetters"));
+    super(x, y, "freeplay/sortedLetters");
 
     // this is used for the regex
     // /^[OR].*/gi doesn't work for showing the song Pico, so now it's
@@ -209,6 +208,9 @@ class FreeplayLetter extends FlxAtlasSprite
       this.anim.play(animLetters[letterInd] + " move");
       this.anim.pause();
       curLetter = letterInd;
+      this.anim.onComplete.add(function() {
+        this.anim.play(animLetters[curLetter] + " move");
+      });
     }
   }
 
@@ -236,7 +238,7 @@ class FreeplayLetter extends FlxAtlasSprite
         animName = "T move";
     }
 
-    this.anim.play(animName);
+    this.anim.play(animName, true);
     if (curSelection != curLetter)
     {
       this.anim.pause();

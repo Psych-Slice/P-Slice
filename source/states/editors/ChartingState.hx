@@ -97,7 +97,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	public static var GRID_COLUMNS_PER_PLAYER = 4;
 	public static var GRID_PLAYERS = 2;
 	public static var GRID_SIZE = 40;
-	final BACKUP_EXT = '.bkp';
+	final BACKUP_EXT = 'bkp';
 
 	public var quantizations:Array<Int> = [
 		4,
@@ -247,7 +247,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		FlxG.cameras.add(camUI, false);
 
 		chartEditorSave = new FlxSave();
-		chartEditorSave.bind('chart_editor_data', CoolUtil.getSavePath());
+		chartEditorSave.bind('chart_editor_data', CoolUtil.getSavePath(),(raw,err) -> {});
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
@@ -546,7 +546,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			"Hold Y to Increase/Decrease move by 4x",
 			"",
 			"C - Preview Chart",
-			"A - Playtest Chart",
+			"A - Playtest Chart (hold Y to play from current position)",
 			"X - Stop/Resume Song",
 			"",
 			"Hold H and touch to Select Note(s)",
@@ -563,7 +563,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			"Hold Shift/Alt to Increase/Decrease move by 4x",
 			"",
 			"F12 - Preview Chart",
-			"Enter - Playtest Chart",
+			"Enter - Playtest Chart (hold Shift to play from current position)",
 			"Space - Stop/Resume song",
 			"",
 			"Alt + Click - Select Note(s)",
@@ -772,8 +772,15 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 				var dataToSave:String = haxe.Json.stringify(songCopy);
 				//trace(chartName, dataToSave);
 				#if sys
-				if(!FileSystem.isDirectory('backups')) FileSystem.createDirectory('backups');
-				File.saveContent('backups/$chartName.$BACKUP_EXT', dataToSave);
+				if(!NativeFileSystem.isDirectory('backups')) NativeFileSystem.createDirectory('backups');
+				try{
+
+					File.saveContent('backups/$chartName.$BACKUP_EXT', dataToSave);
+				}
+				catch(x){
+					trace('Failed to save $chartName.$BACKUP_EXT');
+					trace(x);
+				}
 
 				if(backupLimit > 0)
 				{
@@ -814,7 +821,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 							//trace('removed $file');
 							try
 							{
-								FileSystem.deleteFile('backups/$file');
+								NativeFileSystem.deleteFile('backups/$file');
 							}
 							catch(e:Exception) {}
 						}
@@ -1352,17 +1359,19 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		}
 		else if(FlxG.mouse.pressedRight && (FlxG.mouse.deltaScreenX != 0 || FlxG.mouse.deltaScreenY != 0))
 		{
-			selectionBox.setPosition(FlxG.mouse.screenX, FlxG.mouse.screenY);
-			selectionStart.set(FlxG.mouse.screenX, FlxG.mouse.screenY);
+			selectionBox.setPosition(FlxG.mouse.viewX, FlxG.mouse.viewY);
+			selectionStart.set(FlxG.mouse.viewX, FlxG.mouse.viewY);
 			selectionBox.visible = true;
 			updateSelectionBox();
 		}
+		if(FlxG.mouse.justPressed && (FlxG.mouse.overlaps(mainBox,camUI) || FlxG.mouse.overlaps(infoBox,camUI)))
+			ignoreClickForThisFrame = true;
 		#if TOUCH_CONTROLS_ALLOWED
 		if (controls.mobileC)
 		{
 			for (touch in FlxG.touches.list)
 			{
-				if(touch.justPressed && (touch.overlaps(mainBox.bg) || touch.overlaps(infoBox.bg)))
+				if(touch.justPressed && (touch.overlaps(mainBox,camUI) || touch.overlaps(infoBox,camUI)))
 					ignoreClickForThisFrame = true;
 		
 				var minX:Float = gridBg.x;
@@ -1587,8 +1596,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			}
 		} else {
 		#end
-			if(FlxG.mouse.justPressed && (FlxG.mouse.overlaps(mainBox.bg) || FlxG.mouse.overlaps(infoBox.bg)))
-				ignoreClickForThisFrame = true;
+			
 	
 			var minX:Float = gridBg.x;
 			if(SHOW_EVENT_COLUMN && lockedEvents) minX += GRID_SIZE;
@@ -1699,7 +1707,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 						var closeNotes:Array<MetaNote> = curRenderedNotes.members.filter(function(note:MetaNote)
 						{
 							var chartY:Float = FlxG.mouse.y - note.chartY;
-							return ((note.isEvent && noteData < 0) || note.songData[1] == noteData) && chartY >= 0 && chartY < GRID_SIZE;
+							return ((note.isEvent && noteData < -1) ||(note.songData[1] == noteData && !note.isEvent)) && chartY >= 0 && chartY < GRID_SIZE;
 						});
 						closeNotes.sort(function(a:MetaNote, b:MetaNote) return Math.abs(a.strumTime - FlxG.mouse.y) < Math.abs(b.strumTime - FlxG.mouse.y) ? 1 : -1);
 	
@@ -1804,8 +1812,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			}
 			else if(!ignoreClickForThisFrame)
 			{
-				if(FlxG.mouse.justPressed)
+				if(FlxG.mouse.justPressed){
 					resetSelectedNotes();
+				}
 	
 				dummyArrow.visible = false;
 			}
@@ -2028,8 +2037,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 	function updateSelectionBox()
 	{
-		var diffX:Float = FlxG.mouse.screenX - selectionStart.x;
-		var diffY:Float = FlxG.mouse.screenY - selectionStart.y;
+		var diffX:Float = FlxG.mouse.viewX - selectionStart.x;
+		var diffY:Float = FlxG.mouse.viewY - selectionStart.y;
 		selectionBox.setPosition(selectionStart.x, selectionStart.y);
 
 		if(diffX < 0) //Fixes negative X scale
@@ -2207,6 +2216,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		characterName.text = songMetadata.freeplayCharacter;
 		chk_allowNew.checked = songMetadata.allowNewTag;
 		chk_hasErect.checked = songMetadata.allowErectVariants;
+		txt_weekName.text = songMetadata.freeplayWeekName;
 
 		txt_altInstSong.text = songMetadata.altInstrumentalSongs;
 		albumName.text = songMetadata.albumId;
@@ -3748,6 +3758,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 	var txt_altVariantSong:PsychUIInputText;
 	var txt_altInstSong:PsychUIInputText;
+	var txt_weekName:PsychUIInputText;
 	
 	var albumName:PsychUIInputText;
 	var exportMetadataBtn:PsychUIButton;
@@ -3763,7 +3774,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		prevEndInput = new PsychUINumericStepper(20, 120,1,0,0,999,2,80);
 		albumName = new PsychUIInputText(180,120,100,"",8);
 		chk_allowNew = new PsychUICheckBox(180,30,"Show \"new\" tag");
-		chk_hasErect = new PsychUICheckBox(180,200,"Has erect variant");
+
+		txt_weekName = new PsychUIInputText(180,200,100,"");
+		chk_hasErect = new PsychUICheckBox(180,230,"Has erect variant");
 		
 		txt_altInstSong = new PsychUIInputText(20,160,250,"",8);
 
@@ -3786,6 +3799,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		tab_group.add(meta_label(txt_altInstSong, 'Song alt vocals (separated with \',\'):'));
 		tab_group.add(txt_altInstSong);
 		tab_group.add(chk_hasErect);
+		tab_group.add(meta_label(txt_weekName,"Card week name")); 
+		tab_group.add(txt_weekName); //freeplayWeekName
 
 		tab_group.add(exportMetadataBtn);
 	}
@@ -3804,6 +3819,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		meta.freeplayCharacter = characterName.text;
 		meta.allowNewTag = chk_allowNew.checked;
 		meta.allowErectVariants = chk_hasErect.checked;
+		meta.freeplayWeekName = txt_weekName.text;
 		meta.freeplaySongLength = FlxG.sound.music.length/1000;
 		
 		var data:String = haxe.Json.stringify(meta, "\t");
@@ -3893,7 +3909,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			upperBox.isMinimized = true;
 			upperBox.bg.visible = false;
 
-			if(!FileSystem.exists('backups/'))
+			if(!NativeFileSystem.exists('backups/'))
 			{
 				showOutput('The "backups" folder does not exist.', true);
 				return;
@@ -3932,7 +3948,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 						var path:String = 'backups/$autosaveName';
 						state.close();
 
-						if(FileSystem.exists(path))
+						if(NativeFileSystem.exists(path))
 						{
 							try
 							{
@@ -3949,7 +3965,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	
 								var func:Void->Void = function()
 								{
-									Song.chartPath = FileSystem.exists(originalPath) ? originalPath : null;
+									Song.chartPath = NativeFileSystem.exists(originalPath) ? originalPath : null;
 									loadChart(loadedChart);
 									reloadNotesDropdowns();
 									prepareReload();
@@ -4131,11 +4147,11 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 					return;
 				}
 	
-				if(FileSystem.exists(Song.chartPath))
+				if(NativeFileSystem.exists(Song.chartPath))
 				{
 					try
 					{
-						var reloadedChart:SwagSong = Song.parseJSON(File.getContent(Song.chartPath));
+						var reloadedChart:SwagSong = Song.parseJSON(NativeFileSystem.getContent(Song.chartPath));
 						loadChart(reloadedChart);
 						reloadNotesDropdowns();
 						prepareReload();
@@ -4291,9 +4307,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 									{
 										var diffPostfix:String = (diff != defaultDiff) ? '-$diff' : '';
 										var chartToFind:String = parentFolder + songName + diffPostfix + '.json';
-										if(FileSystem.exists(chartToFind))
+										if(NativeFileSystem.exists(chartToFind))
 										{
-											var diffChart:SwagSong = Song.parseJSON(File.getContent(chartToFind), songName + diffPostfix);
+											var diffChart:SwagSong = Song.parseJSON(NativeFileSystem.getContent(chartToFind), songName + diffPostfix);
 											if(diffChart != null)
 											{
 												var subpack:VSlicePackage = VSlice.export(diffChart);
@@ -4311,7 +4327,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 									}
 									
 									var chartToFind:String = parentFolder + 'events.json';
-									if(FileSystem.exists(chartToFind))
+									if(NativeFileSystem.exists(chartToFind))
 									{
 										var eventsChart:SwagSong = Song.parseJSON(File.getContent(chartToFind), 'events');
 										if(eventsChart != null)
@@ -5346,11 +5362,17 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		FlxG.mouse.visible = false;
 		chartEditorSave.flush();
 
+		//? pulling key presses
+		var pressed_SHIFT = FlxG.keys.pressed.SHIFT;
+		#if TOUCH_CONTROLS_ALLOWED
+		pressed_SHIFT = pressed_SHIFT || touchPad.buttonY.pressed;
+		#end
+
 		setSongPlaying(false);
 		updateChartData();
 		StageData.loadDirectory(PlayState.SONG);
 		PlayState.altInstrumentals = null; // don't persist alt inst
-		PlayState.startOnTime = FlxG.sound.music.time;
+		if (pressed_SHIFT) PlayState.startOnTime = FlxG.sound.music.time;
 		LoadingState.loadAndSwitchState(new PlayState());
 		ClientPrefs.toggleVolumeKeys(true);
 	}
@@ -5402,10 +5424,10 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		#if MODS_ALLOWED
 		for (directory in Mods.directoriesWithFile(Paths.getSharedPath(), mainFolder))
 		{
-			for (file in FileSystem.readDirectory(directory))
+			for (file in NativeFileSystem.readDirectory(directory))
 			{
 				var path = haxe.io.Path.join([directory, file.trim()]);
-				if (!FileSystem.isDirectory(path) && !file.startsWith('readme.'))
+				if (!NativeFileSystem.isDirectory(path) && !file.startsWith('readme.'))
 				{
 					for (fileType in fileTypes)
 					{
@@ -5446,7 +5468,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	#if sys
 	function overwriteCheck(savePath:String, overwriteName:String, saveData:String, continueFunc:Void->Void = null, ?continueOnCancel:Bool = false)
 	{
-		if(FileSystem.exists(savePath))
+		if(NativeFileSystem.exists(savePath))
 		{
 			openSubState(new Prompt('Overwrite: "$overwriteName"?', function()
 			{

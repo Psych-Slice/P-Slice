@@ -2,6 +2,7 @@
 	"songRating": 5,
 	"albumId": "volume4",
 	"freeplayCharacter": "pico",
+	"freeplayWeekName": "week 1",
 	"freeplaySongLength": 89.361111,
 	"freeplayPrevEnd": 20,
 	"altInstrumentalSongs": "dad-battle",

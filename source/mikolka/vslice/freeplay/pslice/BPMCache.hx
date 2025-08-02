@@ -2,10 +2,34 @@ package mikolka.vslice.freeplay.pslice;
 
 //? no psych. uses sys
 class BPMCache {
-    private var bpmMap:Map<String,Int> = [];
+    private static final DEFAULT_BPM_MAP:Map<String,Int> = [
+        "tutorial" => 100,
+        "bopeebo" => 100,
+        "fresh" => 120,
+        "dad-battle" => 180,
+        "spookeez" => 150,
+        "south" => 165,
+        "monster" => 95,
+        "pico" => 150,
+        "philly-nice" => 175,
+        "blammed" => 165,
+        "satin-panties" => 110,
+        "high" => 125,
+        "milf" => 180,
+        "cocoa" => 100,
+        "eggnog" => 150,
+        "winter-horrorland" => 159,
+        "senpai" => 144,
+        "roses" => 120,
+        "thorns" => 190,
+        "ugh" => 160,
+        "guns" => 125,
+        "stress" => 178,
+    ];
+    private var bpmMap:Map<String,Int> ;
     public static var instance = new BPMCache();
     public function new() {
-        
+        bpmMap = DEFAULT_BPM_MAP.copy();
     }
 
     public function getBPM(sngDataPath:String, fileSngName:String):Int {
@@ -14,7 +38,7 @@ class BPMCache {
             return bpmMap[sngDataPath];
         }
         bpmMap[sngDataPath] = 0;
-        if(!exists(sngDataPath)){
+        if(!NativeFileSystem.exists(sngDataPath)){
             trace('Missing data folder for $fileSngName in $sngDataPath for BPM scrapping!!'); //TODO
             return 0;
         }
@@ -25,9 +49,9 @@ class BPMCache {
         
         
 		
-		if(exists(chosenChartToScrap)){
+		if(NativeFileSystem.exists(chosenChartToScrap)){
 			var bpmFinder = ~/"bpm": *([0-9]+)/g; //TODO fix this regex
-			var cleanChart = ~/"notes": *\[.*\]/gs.replace(getContent(chosenChartToScrap),"");
+			var cleanChart = ~/"notes": *\[.*\]/gs.replace(NativeFileSystem.getContent(chosenChartToScrap),"");
 			if(bpmFinder.match(cleanChart)){
                 bpmMap[sngDataPath] = Std.parseInt(bpmFinder.matched(1));
             } 
@@ -41,24 +65,6 @@ class BPMCache {
         return bpmMap[sngDataPath];
     }
     public function clearCache() {
-        bpmMap.clear();
-    }
-    private function exists(path:String) {
-        #if MODS_ALLOWED
-        return FileSystem.exists(path);
-        #else
-        @:privateAccess
-        for (entry in lime.utils.Assets.libraries.get("default").types.keys()){
-            if(entry.startsWith(path)) return true;
-        }
-        return false;
-        #end
-    }
-    function getContent(path:String) {
-        #if MODS_ALLOWED
-        return File.getContent(path);
-        #else
-        return lime.utils.Assets.getText("default:"+path);
-        #end
+        bpmMap = DEFAULT_BPM_MAP.copy();
     }
 }

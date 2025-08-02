@@ -6,9 +6,6 @@ import flixel.graphics.frames.FlxAtlasFrames;
 
 class FunkinPath {
 
-    public static function animateAtlas(path:String,lib:String = "preload"):String {
-        return getPath("images/"+path);
-    }
     public static function getPath(path:String,forceNative:Bool = false):String {
         #if MODS_ALLOWED
         if(forceNative) return Paths.getSharedPath(path);
@@ -18,11 +15,11 @@ class FunkinPath {
         if(curMod != null && curMod != '') modsToCheck.insert(0,curMod);
 
         for (name in modsToCheck){
-            var testPath = #if mobile Sys.getCwd() + #end 'mods/$name/$path';
-            if(FileSystem.exists(testPath))
+            var testPath = 'mods/$name/$path';
+            if(NativeFileSystem.exists(testPath))
                 return testPath;
         }
-        if (FileSystem.exists(#if mobile Sys.getCwd() + #end 'mods/$path')) return #if mobile Sys.getCwd() + #end 'mods/$path';
+        if (NativeFileSystem.exists( 'mods/$path')) return 'mods/$path';
         else 
         #end
         return Paths.getSharedPath(path);

@@ -116,6 +116,15 @@ class ExtraFunctions
 				case 'down': return PlayState.instance.controls.NOTE_DOWN_P;
 				case 'up': return PlayState.instance.controls.NOTE_UP_P;
 				case 'right': return PlayState.instance.controls.NOTE_RIGHT_P;
+				case "space":
+					var space = Reflect.getProperty(FlxG.keys.justPressed, 'SPACE');
+					var mobileShit:Bool = false;
+					#if TOUCH_CONTROLS_ALLOWED
+					if (Controls.instance.mobileC)
+						if (MusicBeatState.getState().hitbox != null)
+							mobileShit = MusicBeatState.getState().hitbox.buttonExtra.justReleased;
+					#end
+					return space || mobileShit;
 				default: return PlayState.instance.controls.justPressed(name);
 			}
 			return false;
@@ -127,6 +136,15 @@ class ExtraFunctions
 				case 'down': return PlayState.instance.controls.NOTE_DOWN;
 				case 'up': return PlayState.instance.controls.NOTE_UP;
 				case 'right': return PlayState.instance.controls.NOTE_RIGHT;
+				case "space":
+					var space = Reflect.getProperty(FlxG.keys.pressed, 'SPACE');
+					var mobileShit:Bool = false;
+					#if TOUCH_CONTROLS_ALLOWED
+					if (Controls.instance.mobileC)
+						if (MusicBeatState.getState().hitbox != null)
+							mobileShit = MusicBeatState.getState().hitbox.buttonExtra.justReleased;
+					#end
+					return space || mobileShit;
 				default: return PlayState.instance.controls.pressed(name);
 			}
 			return false;
@@ -139,6 +157,15 @@ class ExtraFunctions
 				case 'up': return PlayState.instance.controls.NOTE_UP_R;
 				case 'right': return PlayState.instance.controls.NOTE_RIGHT_R;
 				default: return PlayState.instance.controls.justReleased(name);
+				case "space":
+					var space = Reflect.getProperty(FlxG.keys.justReleased, 'SPACE');
+					var mobileShit:Bool = false;
+					#if TOUCH_CONTROLS_ALLOWED
+					if (Controls.instance.mobileC)
+						if (MusicBeatState.getState().hitbox != null)
+							mobileShit = MusicBeatState.getState().hitbox.buttonExtra.justReleased;
+					#end
+					return space || mobileShit;
 			}
 			return false;
 		});
@@ -201,9 +228,9 @@ class ExtraFunctions
 		// File management
 		Lua_helper.add_callback(lua, "checkFileExists", function(filename:String, ?absolute:Bool = false) {
 			#if MODS_ALLOWED
-			if(absolute) return FileSystem.exists(filename);
+			if(absolute) return NativeFileSystem.exists(filename);
 
-			return FileSystem.exists(Paths.getPath(filename, TEXT));
+			return NativeFileSystem.exists(Paths.getPath(filename, TEXT));
 
 			#else
 			if(absolute) return Assets.exists(filename, TEXT);
@@ -232,9 +259,9 @@ class ExtraFunctions
 			try {
 				var lePath:String = path;
 				if(!absolute) lePath = Paths.getPath(path, TEXT, !ignoreModFolders);
-				if(FileSystem.exists(lePath))
+				if(NativeFileSystem.exists(lePath))
 				{
-					FileSystem.deleteFile(lePath);
+					NativeFileSystem.deleteFile(lePath);
 					return true;
 				}
 			} catch (e:Dynamic) {
@@ -248,7 +275,7 @@ class ExtraFunctions
 		Lua_helper.add_callback(lua, "directoryFileList", function(folder:String) {
 			var list:Array<String> = [];
 			#if sys
-			if(FileSystem.exists(folder)) {
+			if(NativeFileSystem.exists(folder)) {
 				for (folder in NativeFileSystem.readDirectory(folder)) {
 					if (!list.contains(folder)) {
 						list.push(folder);

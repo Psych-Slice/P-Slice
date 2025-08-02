@@ -13,7 +13,7 @@ class PicoDopplegangerSprite extends FlxAtlasSprite
 
   public function new(x:Float, y:Float)
   {
-    super(x, y, 'assets/week3/images/philly/erect/cutscenes/pico_doppleganger', {
+    super(x, y, 'philly/erect/cutscenes/pico_doppleganger', {
       FrameRate: 24.0,
       Reversed: false,
       // ?OnComplete:Void -> Void,
@@ -33,8 +33,6 @@ class PicoDopplegangerSprite extends FlxAtlasSprite
     suffix = _suffix;
 
     trace('Doppelganger: doAnim(' + suffix + ', ' + shoot + ', ' + explode + ')');
-
-    cutsceneHandler.timer(0.3, () -> {cutsceneSounds = FunkinSound.load(Paths.sound('cutscene/picoGasp'), 1.0, false, true, true);});
 
     if(shoot == true){
       playAnimation("shoot" + suffix, true, false, false);

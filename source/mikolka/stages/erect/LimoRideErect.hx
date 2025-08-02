@@ -1,6 +1,6 @@
 package mikolka.stages.erect;
 
-import mikolka.stages.objects.PicoCapableStage;
+import mikolka.stages.scripts.PicoCapableStage;
 import mikolka.compatibility.freeplay.FreeplayHelpers;
 #if !LEGACY_PSYCH
 import objects.Note.EventNote;
@@ -206,11 +206,11 @@ class LimoRideErect extends BaseStage
 				limoBgMetalPole.shader = colorShader;
 				fastCar.shader = colorShader;
 				grpLimoParticles.forEach(s -> s.shader = colorShader);
+				limoLight.shader = colorShader;
+				limoBglight.shader = colorShader;
 			}
 
-			limoLight.shader = colorShader;
 
-			limoBglight.shader = colorShader;
 
 			gf.shader = colorShader;
 			dad.shader = colorShader;

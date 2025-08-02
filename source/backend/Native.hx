@@ -90,6 +90,7 @@ class Native
 		fixedScaling = true;
 
 		#if (cpp && windows)
+		trace("running haxe code for scale fix");
 		final display:Null<Display> = System.getDisplay(0);
 		if (display != null)
 		{
@@ -100,7 +101,7 @@ class Native
 			Application.current.window.x = Std.int((Application.current.window.display.bounds.width - Application.current.window.width) / 2);
 			Application.current.window.y = Std.int((Application.current.window.display.bounds.height - Application.current.window.height) / 2);
 		}
-
+		trace("running cpp code for scale fix");
 		untyped __cpp__('
 			getHandle();
 			if (curHandle != (HWND)0) {
@@ -112,5 +113,6 @@ class Native
 			}
 		');
 		#end
+		trace("done fixing scale issue");
 	}
 }

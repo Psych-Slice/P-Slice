@@ -2,8 +2,8 @@ package mikolka.vslice.ui;
 
 import mikolka.compatibility.ui.MainMenuHooks;
 import mikolka.compatibility.VsliceOptions;
+import mikolka.vslice.ui.title.TitleState;
 #if !LEGACY_PSYCH
-import states.TitleState;
 #if MODS_ALLOWED
 import states.ModsMenuState;
 #end
@@ -270,7 +270,7 @@ class MainMenuState extends MusicBeatState
 
 	function changeItem(huh:Int = 0)
 	{
-		FlxG.sound.play(Paths.sound('scrollMenu'));
+		if(huh != 0) FlxG.sound.play(Paths.sound('scrollMenu'));
 		menuItems.members[curSelected].animation.play('idle');
 		menuItems.members[curSelected].updateHitbox();
 		menuItems.members[curSelected].screenCenter(X);

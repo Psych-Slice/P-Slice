@@ -5,11 +5,12 @@ enum SpriteType {
     SPARROW;
     ATLAS;
 }
+
 interface IResultsSprite  {
     function getSpriteType():SpriteType;
     function set_offset(x:Float,y:Float):Void;
-    function startAnimation():Void;
+    function startAnimation(activeFilter:String):Void;
     function pauseAnimation():Void;
     function resumeAnimation():Void;
-    function resetAnimation():Void;
+    function resetAnimation(activeFilter:String):Void;
 }

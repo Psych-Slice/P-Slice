@@ -1,5 +1,6 @@
 package mikolka.vslice.results;
 
+import haxe.Exception;
 import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.funkin.FlxAtlasSprite;
@@ -67,7 +68,9 @@ class ResultState extends MusicBeatSubState
     {
       sprite:FlxAtlasSprite,
       delay:Float,
-      forceLoop:Bool
+      forceLoop:Bool,
+      startFrameLabel:String,
+      sound:String
     }> = [];
   var characterSparrowAnimations:Array<
     {
@@ -137,10 +140,13 @@ class ResultState extends MusicBeatSubState
     if(sngMeta.freeplayCharacter != '' ){
       playerCharacterId = sngMeta.freeplayCharacter;
     }
-    else{
+    else if (!PlayState.isStoryMode){
       var mod_char = VsliceOptions.LAST_MOD;
       playerCharacterId = mod_char.char_name;
       ModsHelper.loadModDir(mod_char.mod_dir);
+    }
+    else{
+      playerCharacterId = "bf";
     }
     //? moved this line so we can edit it in debug options
   }
@@ -203,11 +209,29 @@ class ResultState extends MusicBeatSubState
     {
       if (animData == null) continue;
 
-      var animPath:String = Paths.stripLibrary(animData.assetPath);
-      var animLibrary:String = "";//Paths.getLibrary(animData.assetPath); Libraries aren't used in P-Slice
-      var offsets = animData.offsets ?? [0, 0];
+      //? Rework available flags
+      switch (animData.filter){
+        case ""|"both"|null: // Do nothing 
+        case "naughty":
+          if(!VsliceOptions.NAUGHTYNESS) continue;        
+        case "safe":
+          if(VsliceOptions.NAUGHTYNESS) continue;
+        default: 
+          trace(animData.filter+" is not a valid filter!");
+          continue; 
+      }
 
-      
+      var animPath:String = "";
+      var animLibrary:String = "";
+
+      if (animData.assetPath != null)
+      {
+        animPath = Paths.stripLibrary(animData.assetPath);
+        animLibrary = "";
+      }
+      var offsets = animData.offsets ?? [0, 0];
+      try{
+
       
       switch (animData.renderType)
       {
@@ -218,7 +242,7 @@ class ResultState extends MusicBeatSubState
           offsets[0] -= xDiff*1.8;
           offsets[1] -= yDiff*1.8;
 
-          var animation:FlxAtlasSprite = new FlxAtlasSprite(offsets[0], offsets[1], Paths.animateAtlas(animPath, animLibrary));
+          var animation:FlxAtlasSprite = new FlxAtlasSprite(offsets[0], offsets[1], animPath);
           animation.zIndex = animData.zIndex ?? 500;
           animation.scale.set(animData.scale ?? 1.0, animData.scale ?? 1.0);
 
@@ -262,7 +286,9 @@ class ResultState extends MusicBeatSubState
             {
               sprite: animation,
               delay: animData.delay ?? 0.0,
-              forceLoop: (animData.loopFrame ?? -1) == 0
+              forceLoop: (animData.loopFrame ?? -1) == 0,
+              startFrameLabel: (animData.startFrameLabel ?? ""),
+              sound: (animData.sound ?? "")
             });
           // Add to the scene.
           add(animation);
@@ -290,6 +316,11 @@ class ResultState extends MusicBeatSubState
             });
           // Add to the scene.
           add(animation);
+      }
+      }
+      catch(error:Exception){
+        trace("Failed to load "+animPath);
+        trace(error);
       }
     }
 
@@ -618,7 +649,14 @@ class ResultState extends MusicBeatSubState
       new FlxTimer().start(atlas.delay, _ -> {
         if (atlas.sprite == null) return;
         atlas.sprite.visible = true;
-        atlas.sprite.playAnimation('');
+        atlas.sprite.playAnimation(atlas.startFrameLabel);
+        if (atlas.sound != "")
+        {
+          var sndPath:String = Paths.stripLibrary(atlas.sound);
+          var sndLibrary:String = "";
+
+          FunkinSound.playOnce(Paths.sound(sndPath), 1.0);
+        }
       });
     }
 
@@ -703,34 +741,6 @@ class ResultState extends MusicBeatSubState
 
   override function update(elapsed:Float):Void
   {
-    // if(FlxG.keys.justPressed.R){
-    //   FlxG.switchState(() -> new funkin.play.ResultState(
-    //   {
-    //     storyMode: false,
-    //     title: "Cum Song Erect by Kawai Sprite",
-    //     songId: "cum",
-    //     difficultyId: "nightmare",
-    //     isNewHighscore: true,
-    //     scoreData:
-    //       {
-    //         score: 1_234_567,
-    //         tallies:
-    //           {
-    //             sick: 200,
-    //             good: 0,
-    //             bad: 0,
-    //             shit: 0,
-    //             missed: 0,
-    //             combo: 0,
-    //             maxCombo: 69,
-    //             totalNotesHit: 200,
-    //             totalNotes: 200 // 0,
-    //           }
-    //       },
-    //   }));
-    // }
-
-    // maskShaderSongName.swagSprX = songName.x; //! monitor this
     maskShaderDifficulty.swagSprX = difficulty.x;
 
     if (movingSongStuff)

@@ -64,7 +64,7 @@ class CapsuleOptionsMenu extends FlxSpriteGroup
       return;
     }
     @:privateAccess
-    if (parent.controls.BACK && !busy)
+    if ((parent.controls.BACK #if TOUCH_CONTROLS_ALLOWED || parent.touchPad?.buttonB.justPressed #end)&& !busy)
     {
       busy = true;
       close();
@@ -102,7 +102,7 @@ class CapsuleOptionsMenu extends FlxSpriteGroup
         if (currentInstrumental.text == '') currentInstrumental.text = 'Default';
     }
 
-    if (parent.getControls().ACCEPT && !busy)
+    if ((parent.getControls().ACCEPT #if TOUCH_CONTROLS_ALLOWED || parent.touchPad?.buttonA.justPressed #end) && !busy)
     {
       busy = true;
       onConfirm(instrumentalIds[currentInstrumentalIndex] ?? '');

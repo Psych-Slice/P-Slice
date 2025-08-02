@@ -1,5 +1,6 @@
 package mikolka.compatibility.freeplay;
 
+import haxe.Exception;
 import backend.StageData;
 import options.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
@@ -10,7 +11,7 @@ import mikolka.vslice.freeplay.pslice.BPMCache;
 import mikolka.vslice.freeplay.FreeplayState;
 import backend.Song;
 import backend.Highscore;
-import states.StoryMenuState;
+
 import backend.WeekData;
 
 class FreeplayHelpers {
@@ -23,7 +24,7 @@ class FreeplayHelpers {
 		return Conductor.bpm;
 	}
 
-    public static function loadSongs(){
+    public static function loadSongs():Array<FreeplaySongData>{
         var songs = [];
         WeekData.reloadWeekFiles(false);
 		// programmatically adds the songs via LevelRegistry and SongRegistry
@@ -33,7 +34,8 @@ class FreeplayHelpers {
 				continue;
 
 			var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]); // TODO tweak this
-
+			if(leWeek == null) continue;
+			
 			WeekData.setDirectoryFromWeek(leWeek);
 			for (song in leWeek.songs)
 			{
@@ -87,7 +89,7 @@ class FreeplayHelpers {
 			var songLowercase:String = Paths.formatToSongPath(cap.getNativeSongId());
 			var poop:String = Highscore.formatSong(songLowercase, diffId); // TODO //currentDifficulty);
 			/*#if MODS_ALLOWED
-				if(!FileSystem.exists(Paths.modsJson(songLowercase + '/' + poop)) && !FileSystem.exists(Paths.json(songLowercase + '/' + poop))) {
+				if(!NativeFileSystem.exists(Paths.modsJson(songLowercase + '/' + poop)) && !NativeFileSystem.exists(Paths.json(songLowercase + '/' + poop))) {
 				#else
 				if(!OpenFlAssets.exists(Paths.json(songLowercase + '/' + poop))) {
 				#end
@@ -117,11 +119,11 @@ class FreeplayHelpers {
 
 				trace('CURRENT WEEK: ' + WeekData.getWeekFileName());
 			}
-			catch (e:Dynamic)
+			catch (e:Exception)
 			{
 				trace('ERROR! $e');
 				UserErrorSubstate.makeMessage("Failed to load a song",
-					'$e'
+					'${e.message}\n\n${e.details()}'
 					);
                 @:privateAccess{
                     state.busy = false;
@@ -140,7 +142,7 @@ class FreeplayHelpers {
 			#end
     }
 
-    static function weekIsLocked(name:String):Bool
+    public static function weekIsLocked(name:String):Bool
         {
             var leWeek:WeekData = WeekData.weeksLoaded.get(name);
             return (!leWeek.startUnlocked

@@ -11,7 +11,7 @@ import mikolka.stages.cutscenes.VideoCutscene;
 import mikolka.stages.cutscenes.PicoTankman;
 import openfl.filters.ShaderFilter;
 import shaders.DropShadowScreenspace;
-import mikolka.stages.objects.PicoCapableStage;
+import mikolka.stages.scripts.PicoCapableStage;
 import mikolka.compatibility.VsliceOptions;
 import shaders.DropShadowShader;
 
@@ -178,7 +178,7 @@ class TankErect extends BaseStage
 				{
 					rim.setAdjustColor(-42, -10, 5, -25);
 					rim.distance = 3;
-					rim.threshold = 0.3;
+					rim.threshold = 0.1;
 					rim.altMaskImage = Paths.image("erect/masks/gfTankmen_mask").bitmap;
 					rim.maskThreshold = 1;
 					rim.useAltMask = true;
@@ -194,7 +194,7 @@ class TankErect extends BaseStage
 					rim.angle = 135;
 					rim.altMaskImage = Paths.image("erect/masks/tankmanCaptainBloody_mask").bitmap;
 					rim.maskThreshold = 1;
-					rim.threshold = 0.3;
+					rim.threshold = 0.1;
 					rim.useAltMask = true;
 
 					sprite.animation.callback = function(anim, frame, index)
@@ -205,6 +205,7 @@ class TankErect extends BaseStage
 			case "tankman":
 				{
 					rim.angle = 135;
+					rim.threshold = 0.1;
 					rim.maskThreshold = 1;
 					rim.useAltMask = false;
 
@@ -215,7 +216,7 @@ class TankErect extends BaseStage
 				}
 			case "nene":
 				{
-					rim.threshold = 0.3;
+					rim.threshold = 0.1;
 					rim.angle = 90;
 					sprite.animation.callback = function(anim, frame, index)
 					{

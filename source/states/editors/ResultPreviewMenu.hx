@@ -1,5 +1,9 @@
 package states.editors;
 
+
+import objects.AlphabetMenu;
+import mikolka.funkin.FunkinSprite;
+import flixel.math.FlxRect;
 import openfl.events.UncaughtErrorEvent;
 import mikolka.compatibility.VsliceOptions;
 import flixel.math.FlxRandom;
@@ -16,12 +20,12 @@ class ResultPreviewMenu extends MusicBeatState
 		'Preview results (good)', 
 		'Preview results (shit)'
 	];
-	private var grpTexts:FlxTypedGroup<Alphabet>;
+	var menu:AlphabetMenu;
 
-	private var curSelected = 0;
 
 	override function create()
 	{
+		FlxG.mouse.visible = true;
 		FlxG.sound.playMusic(Paths.music('breakfast'));
 
 		FlxG.camera.bgColor = FlxColor.BLACK;
@@ -29,23 +33,13 @@ class ResultPreviewMenu extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("Result Preview Menu", null);
 		#end
-
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
 		bg.scrollFactor.set();
 		add(bg);
 
-		grpTexts = new FlxTypedGroup<Alphabet>();
-		add(grpTexts);
-
-		for (i in 0...options.length)
-		{
-			var leText:Alphabet = new Alphabet(90, 320, options[i], true);
-			leText.isMenuItem = true;
-			leText.targetY = i;
-			grpTexts.add(leText);
-			leText.snapToPosition();
-			leText.screenCenter();
-		}
+		menu = new AlphabetMenu(options);
+		menu.onSelect.add(onAccept);
+		add(menu);
 
 		FlxG.mouse.visible = false;
 		#if TOUCH_CONTROLS_ALLOWED
@@ -56,24 +50,17 @@ class ResultPreviewMenu extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		if (controls.UI_UP_P)
-		{
-			changeSelection(-1);
-		}
-		if (controls.UI_DOWN_P)
-		{
-			changeSelection(1);
-		}
-
 		if (controls.BACK)
 		{
 			FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.menuMusic)));
 			MusicBeatState.switchState(new MasterEditorMenu());
 		}
 
-		if (controls.ACCEPT)
-		{
-			switch (options[curSelected])
+		super.update(elapsed);
+	}
+
+	function onAccept(option:String) {
+		switch (option)
 			{
 				case 'Preview results (perfect)':
 					runResults(200);
@@ -87,18 +74,7 @@ class ResultPreviewMenu extends MusicBeatState
 					runResults(30);
 			}
 			FlxG.sound.music.volume = 0;
-		}
-
-		for (num => item in grpTexts.members)
-		{
-			item.targetY = num - curSelected;
-			item.alpha = 0.6;
-			if (item.targetY == 0)
-				item.alpha = 1;
-		}
-		super.update(elapsed);
 	}
-
 	function runResults(lol:Int)
 	{
 		PlayState.storyDifficultyColor = 0xFFFF0000;
@@ -131,9 +107,5 @@ class ResultPreviewMenu extends MusicBeatState
 		MusicBeatState.switchState(results);
 	}
 
-	function changeSelection(change:Int = 0)
-	{
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-		curSelected = FlxMath.wrap(curSelected + change, 0, options.length - 1);
-	}
+
 }

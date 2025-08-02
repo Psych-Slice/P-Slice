@@ -1,5 +1,7 @@
 package mikolka.vslice;
 
+import openfl.utils.Promise;
+import lime.app.Future;
 #if sys import mikolka.vslice.components.crash.Logger; #end
 import openfl.events.MouseEvent;
 import flash.display.Bitmap;
@@ -145,13 +147,8 @@ class FunkinPreloader extends FlxBasePreloader
     this._height = Lib.current.stage.stageHeight;
 
     // Tux icon!!!
-    #if (linux || mac) // fix the app icon not showing up on the Linux Panel 
-		var icon = lime.graphics.Image.fromFile("icon.png");
-		Lib.current.stage.window.setIcon(icon);
-		#end
-    #if TITLE_SCREEN_EASTER_EGG
-    if(Date.now().getMonth() == 0 && Date.now().getDate() == 14) Lib.current.stage.window.title = "Friday Night Funkin': Mikolka's Engine";
-    #end
+    Main.loadGameEarly();
+
     // Scale assets to the screen size.
     ratio = this._width / BASE_WIDTH / 2.0;
 
@@ -391,6 +388,7 @@ class FunkinPreloader extends FlxBasePreloader
         {
           initializingScriptsPercent = 0.0;
 
+          //? THis loads mods
           /*
             var future:Future<Array<String>> = []; // PolymodHandler.loadNoModsAsync();
 
@@ -402,6 +400,7 @@ class FunkinPreloader extends FlxBasePreloader
               trace('Completed initializing scripts: ' + result);
             });
            */
+
 
           initializingScriptsPercent = 1.0;
           currentState = FunkinPreloaderState.CachingGraphics;
@@ -415,22 +414,74 @@ class FunkinPreloader extends FlxBasePreloader
         {
           cachingGraphicsPercent = 0.0;
           cachingGraphicsStartTime = elapsed;
+            //? P-Slice precache commonly used graphics
+            //* FIles here won't be editable by mods
+            var assetsToCache:Array<String> = [
+              //"images/cursor-default.png", 
+              #if TOUCH_CONTROLS_ALLOWED
+              'mobile/images/touchpad/bg.png',
+              'mobile/images/touchpad/A.png',
+              'mobile/images/touchpad/B.png',
+              'mobile/images/touchpad/BACK.png',
+              'mobile/images/touchpad/PAUSE.png',
+              'mobile/images/touchpad/X.png',
+              'mobile/images/touchpad/Y.png',
+              'mobile/images/touchpad/UP.png',
+              'mobile/images/touchpad/DOWN.png',
+              'mobile/images/touchpad/LEFT.png',
+              'mobile/images/touchpad/RIGHT.png',
+              #end
+              "images/fonts/capsule-text.png", 
+              "images/fonts/freeplay-clear.png", 
+              "images/back.png", 
+              "images/charSelect/lockedChill/spritemap1.png", 
+              "images/freeplay/albumRoll/expansion1-text.png",
+              "images/freeplay/albumRoll/expansion1.png",               
+              "images/freeplay/albumRoll/expansion2-text.png", 
+              "images/freeplay/albumRoll/expansion2.png",               
+              "images/freeplay/albumRoll/volume2-text.png", 
+              "images/freeplay/albumRoll/volume2.png",                
+              "images/freeplay/albumRoll/volume1-text.png", 
+              "images/freeplay/albumRoll/volume1.png",                
+              "images/freeplay/albumRoll/volume3-text.png", 
+              "images/freeplay/albumRoll/volume3.png",               
+              "images/freeplay/albumRoll/volume4-text.png", 
+              "images/freeplay/albumRoll/volume4.png"
+              //"images/ui/cursor.png" 
+            ]; // Assets.listGraphics('core');
 
-          /*
-            var assetsToCache:Array<String> = []; // Assets.listGraphics('core');
+            var promise = new Promise<Any>();
+            new Future(() ->{
+              for (index => item in assetsToCache){
+                try{
 
-            var future:Future<Array<String>> = []; // Assets.cacheAssets(assetsToCache);
-            future.onProgress((loaded:Int, total:Int) -> {
+                
+                if(backend.Paths.cacheBitmap(item) != null){
+                  #if debug trace("Cached: "+item); #end
+                  backend.Paths.excludeAsset(item);
+                }
+                else{
+                  trace("Failed to cache: "+item);
+                }
+                		}
+		            catch (x:Exception) trace("Exception when caching: " + x.message);
+                promise.progress(index+1,assetsToCache.length);
+              }
+              promise.complete(null);
+            },true); // Assets.cacheAssets(assetsToCache);
+
+            promise.future.onProgress((loaded:Int, total:Int) -> {
               cachingGraphicsPercent = loaded / total;
             });
-            future.onComplete((_result) -> {
+            promise.future.onComplete((_result) -> {
+              cachingGraphicsComplete = true;
               trace('Completed caching graphics.');
             });
-           */
+           
 
           // TODO: Reimplement this.
-          cachingGraphicsPercent = 1.0;
-          cachingGraphicsComplete = true;
+          //cachingGraphicsPercent = 1.0;
+          
           return 0.0;
         }
         else if (0.0 > 0)
@@ -917,44 +968,44 @@ class FunkinPreloader extends FlxBasePreloader
       // case FunkinPreloaderState.NotStarted:
       default:
         updateProgressLeftText('Loading \n0/$TOTAL_STEPS $ellipsis');
-        trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
+        // trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
       case FunkinPreloaderState.DownloadingAssets:
         updateProgressLeftText('Downloading assets \n1/$TOTAL_STEPS $ellipsis');
-        trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
+        // trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
       case FunkinPreloaderState.PreloadingPlayAssets:
         updateProgressLeftText('Preloading assets \n2/$TOTAL_STEPS $ellipsis');
-        trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
+        // trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
       case FunkinPreloaderState.InitializingScripts:
         updateProgressLeftText('Initializing scripts \n3/$TOTAL_STEPS $ellipsis');
-        trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
+        // trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
       case FunkinPreloaderState.CachingGraphics:
         updateProgressLeftText('Caching graphics \n4/$TOTAL_STEPS $ellipsis');
-        trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
+        // trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
       case FunkinPreloaderState.CachingAudio:
         updateProgressLeftText('Caching audio \n5/$TOTAL_STEPS $ellipsis');
-        trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
+        // trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
       case FunkinPreloaderState.CachingData:
         updateProgressLeftText('Caching data \n6/$TOTAL_STEPS $ellipsis');
-        trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
+        // trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
       case FunkinPreloaderState.ParsingSpritesheets:
         updateProgressLeftText('Parsing spritesheets \n7/$TOTAL_STEPS $ellipsis');
-        trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
+        // trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
       case FunkinPreloaderState.ParsingStages:
         updateProgressLeftText('Parsing stages \n8/$TOTAL_STEPS $ellipsis');
-        trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
+        // trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
       case FunkinPreloaderState.ParsingCharacters:
         updateProgressLeftText('Parsing characters \n9/$TOTAL_STEPS $ellipsis');
-        trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
+        // trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
       case FunkinPreloaderState.ParsingSongs:
         updateProgressLeftText('Parsing songs \n10/$TOTAL_STEPS $ellipsis');
-        trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
+        // trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
       case FunkinPreloaderState.Complete:
         updateProgressLeftText('Finishing up \n$TOTAL_STEPS/$TOTAL_STEPS $ellipsis');
-        // trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
+        // // trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
       #if TOUCH_HERE_TO_PLAY
       case FunkinPreloaderState.TouchHereToPlay:
         updateProgressLeftText(null);
-        // trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
+        // // trace('Preloader state: ' + currentState + ' (' + percentage + '%, ' + elapsed + 's)');
       #end
     }
 

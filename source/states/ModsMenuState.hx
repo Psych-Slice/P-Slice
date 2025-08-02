@@ -1,16 +1,11 @@
 package states;
 
-import backend.WeekData;
-import backend.Mods;
-import flixel.FlxBasic;
-import flixel.graphics.FlxGraphic;
-import flash.geom.Rectangle;
-import haxe.Json;
-import flixel.util.FlxSpriteUtil;
-import objects.AttachedSprite;
-import options.ModSettingsSubState;
 import openfl.display.BitmapData;
-import lime.utils.Assets;
+import backend.Mods;
+import flixel.graphics.FlxGraphic;
+import flixel.util.FlxSpriteUtil;
+import options.ModSettingsSubState;
+import mikolka.vslice.ui.title.TitleState;
 
 class ModsMenuState extends MusicBeatState
 {
@@ -116,10 +111,10 @@ class ModsMenuState extends MusicBeatState
 		var myY = buttonReload.y + buttonReload.bg.height + 20;
 		/*buttonModFolder = new MenuButton(buttonX, myY, buttonWidth, buttonHeight, "MODS FOLDER", function() {
 				var modFolder = Paths.mods();
-				if(!FileSystem.exists(modFolder))
+				if(!NativeFileSystem.exists(modFolder))
 				{
 					trace('created missing folder');
-					FileSystem.createDirectory(modFolder);
+					NativeFileSystem.createDirectory(modFolder);
 				}
 				CoolUtil.openFolder(modFolder);
 			});
@@ -902,7 +897,7 @@ class ModItem extends FlxSpriteGroup
 		pack = Mods.getPack(folder);
 
 		var path:String = Paths.mods('$folder/data/settings.json');
-		if (FileSystem.exists(path))
+		if (NativeFileSystem.exists(path))
 		{
 			try
 			{
@@ -934,26 +929,24 @@ class ModItem extends FlxSpriteGroup
 
 		var isPixel = false;
 		var file:String = Paths.mods('$folder/pack.png');
-		if (!FileSystem.exists(file))
+		if (!NativeFileSystem.exists(file))
 		{
 			file = Paths.mods('$folder/pack-pixel.png');
 			isPixel = true;
 		}
 
-		var bmp:BitmapData = null;
-		if (FileSystem.exists(file))
-			bmp = BitmapData.fromFile(file);
-		else
-			isPixel = false;
+		var bmp:BitmapData = NativeFileSystem.getBitmap(file);	
 
-		if (FileSystem.exists(file))
+		if (bmp != null)
 		{
 			icon.loadGraphic(Paths.cacheBitmap(file, bmp), true, 150, 150);
 			if (isPixel)
 				icon.antialiasing = false;
 		}
-		else
+		else{
+			isPixel = false;
 			icon.loadGraphic(Paths.image('unknownMod'), true, 150, 150);
+		}
 		icon.scale.set(0.5, 0.5);
 		icon.updateHitbox();
 

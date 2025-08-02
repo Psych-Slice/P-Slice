@@ -2,6 +2,7 @@
 	"songRating": 3,
 	"albumId": "volume4",
 	"freeplayCharacter": "pico",
+	"freeplayWeekName": "week 2",
 	"freeplaySongLength": 97.6,
 	"freeplayPrevEnd": 20,
 	"altInstrumentalSongs": "spookeez",

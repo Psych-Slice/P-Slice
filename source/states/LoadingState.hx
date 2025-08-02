@@ -112,7 +112,7 @@ class LoadingState extends MusicBeatState
 		if(Mods.currentModDirectory != null && Mods.currentModDirectory.trim().length > 0)
 		{
 			var scriptPath:String = 'mods/${Mods.currentModDirectory}/data/LoadingScreen.hx'; //mods/My-Mod/data/LoadingScreen.hx
-			if(FileSystem.exists(scriptPath))
+			if(NativeFileSystem.exists(scriptPath))
 			{
 				try
 				{
@@ -430,7 +430,7 @@ class LoadingState extends MusicBeatState
 	static var dontPreloadDefaultVoices:Bool = false;
 	static function _startPool()
 	{
-		threadPool = new FixedThreadPool(#if MULTITHREADED_LOADING #if cpp getCPUThreadsCount() #else 8 #end #else 1 #end);
+		threadPool = new FixedThreadPool( ClientPrefs.data.cacheOnCPU ?  #if cpp getCPUThreadsCount() #else 4 #end : 1);
 	}
 
 	public static function prepareToSong()
@@ -491,13 +491,9 @@ class LoadingState extends MusicBeatState
 				var path:String = Paths.json('$folder/preload');
 				var json:Dynamic = null;
 
-				#if MODS_ALLOWED
 				var moddyFile:String = Paths.modsJson('$folder/preload');
-				if (FileSystem.exists(moddyFile)) json = Json.parse(File.getContent(moddyFile));
-				else json = Json.parse(File.getContent(path));
-				#else
-				json = Json.parse(Assets.getText(path));
-				#end
+				if (NativeFileSystem.exists(moddyFile)) json = Json.parse(NativeFileSystem.getContent(moddyFile));
+				else json = Json.parse(NativeFileSystem.getContent(path));
 
 				if(json != null)
 				{
@@ -642,7 +638,7 @@ class LoadingState extends MusicBeatState
 			{
 				for (subfolder in Mods.directoriesWithFile(Paths.getSharedPath(), '$prefix/$nam'))
 				{
-					for (file in FileSystem.readDirectory(subfolder))
+					for (file in NativeFileSystem.readDirectory(subfolder))
 					{
 						if(file.endsWith(ext))
 						{
@@ -737,7 +733,7 @@ class LoadingState extends MusicBeatState
 			img = img.trim();
 			#if flxanimate
 			var animToFind:String = Paths.getPath('images/$img/Animation.json', TEXT);
-			if (#if MODS_ALLOWED FileSystem.exists(animToFind) || #end Assets.exists(animToFind))
+			if (#if MODS_ALLOWED NativeFileSystem.exists(animToFind) || #end Assets.exists(animToFind))
 				isAnimateAtlas = true;
 			#end
 
@@ -787,13 +783,7 @@ class LoadingState extends MusicBeatState
 		//trace('precaching sound: $file');
 		if(!Paths.currentTrackedSounds.exists(file))
 		{
-			var sound:Sound = null;
-			#if OPENFL_LOOKUP
-			if(OpenFlAssets.exists(file, SOUND)) sound = OpenFlAssets.getSound(file, false);
-			#end
-			#if sys
-			if(FileSystem.exists(file) ) sound = Sound.fromFile(file);
-			#end
+			var sound:Sound = NativeFileSystem.getSound(file);
 			if (sound != null)
 			{
 				mutex.acquire();
@@ -825,13 +815,7 @@ class LoadingState extends MusicBeatState
 			if (!Paths.currentTrackedAssets.exists(requestKey))
 			{
 				var file:String = Paths.getPath(requestKey, IMAGE);
-				var bitmap:BitmapData = null;
-				#if OPENFL_LOOKUP
-				if(OpenFlAssets.exists(file, IMAGE)) bitmap = OpenFlAssets.getBitmapData(file, false);
-				#end
-				#if sys
-				if(FileSystem.exists(file) ) bitmap = BitmapData.fromFile(file);
-				#end
+				var bitmap:BitmapData = NativeFileSystem.getBitmap(file);
 				if (bitmap != null)
 				{
 
@@ -862,7 +846,8 @@ class LoadingState extends MusicBeatState
 	@:noCompletion
     	public static function getCPUThreadsCount():Int
     	{
-        	return -1;
+			trace("Running base implementation. Did the cpp code break?");
+        	return 2;
     	}
     	#end
 }

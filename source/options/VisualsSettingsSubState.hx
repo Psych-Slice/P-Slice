@@ -218,10 +218,13 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 	}
 
 	var notesShown:Bool = false;
-	override function changeSelection(change:Int = 0)
+	var lastSelected:Int = -1;
+	override function changeSelection(change:Float,usePrecision:Bool = false)
 	{
-		super.changeSelection(change);
-		
+		super.changeSelection(change,usePrecision);
+		if(lastSelected == curSelected) return;
+		else lastSelected = curSelected;
+
 		switch(curOption.variable)
 		{
 			case 'noteSkin', 'splashSkin', 'splashAlpha':
@@ -357,8 +360,8 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 	function onChangeVSync()
 	{
 		var file:String = StorageUtil.rootDir + "vsync.txt";
-		if(FileSystem.exists(file))
-			FileSystem.deleteFile(file);
+		if(NativeFileSystem.exists(file))
+			NativeFileSystem.deleteFile(file);
 		File.saveContent(file, Std.string(ClientPrefs.data.vsync));
 	}
 	#end

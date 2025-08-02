@@ -83,7 +83,7 @@ class FlxFrame implements IFlxDestroyable
             //? Let's try common prefixes omnited in "prefix"
             final nameSub = nameSub.replace("instance 1","");
             final num:Null<Int> = Std.parseInt(nameSub);
-            if (num == null) FlxG.log.warn('Could not parse frame number of "$nameSub" in frame named "$name"');
+            #if debug if (num == null) FlxG.log.warn('Could not parse frame number of "$nameSub" in frame named "$name"'); #end
         }
 		else if (num < 0)
 			FlxG.log.warn('Found negative frame number "$nameSub" in frame named "$name"');

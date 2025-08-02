@@ -1,4 +1,7 @@
 #if !macro
+
+import haxe.Exception;
+
 //Discord API
 #if DISCORD_ALLOWED
 import backend.Discord;
@@ -24,8 +27,9 @@ import mobile.objects.TouchPad;
 import mobile.objects.TouchButton;
 import mobile.backend.MobileData;
 import mobile.input.MobileInputManager;
+import mobile.objects.TouchZone;
+import mobile.objects.ScrollableObject;
 #end
-
 // Android
 #if android
 import android.content.Context as AndroidContext;
@@ -47,14 +51,17 @@ import js.html.*;
 #end
 
 //P-Slice
+import mikolka.funkin.custom.NativeFileSystem as NativeFileSystem;
 import mikolka.funkin.*;
 import mikolka.funkin.utils.*;
 import mikolka.funkin.custom.*;
 import mikolka.funkin.players.*;
 
+//P-Slice Dialouges
 import mikolka.stages.cutscenes.dialogueBox.*;
 import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych.DialogueFile;
 import mikolka.stages.cutscenes.dialogueBox.styles.*;
+
 // Stage imports (for compatibility)
 import states.stages.objects.*;
 
@@ -80,7 +87,6 @@ import objects.BGSprite;
 
 import states.PlayState;
 import mikolka.vslice.ui.*;
-import states.StoryMenuState;
 import states.LoadingState;
 
 #if flxanimate
@@ -107,7 +113,7 @@ import flixel.tweens.FlxTween;
 import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.addons.transition.FlxTransitionableState;
-import shaders.flixel.system.FlxShader;
+import flixel.system.FlxAssets.FlxShader;
 
 using StringTools;
 #end

@@ -2,7 +2,7 @@ package mikolka.stages.erect;
 
 import mikolka.stages.cutscenes.SchoolDoof;
 import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych;
-import mikolka.stages.objects.PicoCapableStage;
+import mikolka.stages.scripts.PicoCapableStage;
 import mikolka.compatibility.VsliceOptions;
 import shaders.AdjustColorShader;
 import shaders.ColorSwap;
@@ -122,6 +122,10 @@ class SchoolErect extends BaseStage
 			FlxG.sound.music.pause();
 		}
 
+	}
+	override function gameOverStart(SubState:GameOverSubstate) {
+		boyfriend.shader = null;
+		super.gameOverStart(SubState);
 	}
 	override function createPost(){
 		var _song = PlayState.SONG;
