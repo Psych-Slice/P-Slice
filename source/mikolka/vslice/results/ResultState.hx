@@ -1,5 +1,6 @@
 package mikolka.vslice.results;
 
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 import haxe.Exception;
 import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.VsliceOptions;
@@ -101,7 +102,7 @@ class ResultState extends MusicBeatSubState
     // This prevents having to do `null` checks everywhere.
 
     var fontLetters:String = "AaBbCcDdEeFfGgHhiIJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz:1234567890";
-    songName = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.get(49, 62)));
+    songName = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.weak(49 , 62)));
     songName.text = params.title;
     songName.letterSpacing = -15;
     songName.angle = -4.4;
@@ -110,7 +111,7 @@ class ResultState extends MusicBeatSubState
     var fractal = difColor.redFloat*0.33;
     difColor.greenFloat = Math.max(difColor.greenFloat,fractal);
 
-    difficulty = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.get(49, 62)));
+    difficulty = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.weak(49 + MobileScaleMode.gameNotchSize.x, 62)));
     difficulty.text = FreeplayHelpers.getDifficultyName();
     difficulty.color = difColor;
     difficulty.letterSpacing = -11; //!!!
@@ -123,15 +124,15 @@ class ResultState extends MusicBeatSubState
 
     bgFlash = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [0xFFFFF1A6, 0xFFFFF1BE], 90);
 
-    resultsAnim = FunkinSprite.createSparrow(-200, -10, "resultScreen/results");
+    resultsAnim = FunkinSprite.createSparrow(-200+ MobileScaleMode.gameNotchSize.x, -10, "resultScreen/results");
 
-    ratingsPopin = FunkinSprite.createSparrow(-135, 135, "resultScreen/ratingsPopin");
+    ratingsPopin = FunkinSprite.createSparrow(-135+ MobileScaleMode.gameNotchSize.x, 135, "resultScreen/ratingsPopin");
 
-    scorePopin = FunkinSprite.createSparrow(-180, 515, "resultScreen/scorePopin");
+    scorePopin = FunkinSprite.createSparrow(-180+ MobileScaleMode.gameNotchSize.x, 515, "resultScreen/scorePopin");
 
-    highscoreNew = new FlxSprite(44, 557);
+    highscoreNew = new FlxSprite(44+ MobileScaleMode.gameNotchSize.x, 557);
 
-    score = new ResultScore(35, 305, 10, params.scoreData.score);
+    score = new ResultScore(35+ MobileScaleMode.gameNotchSize.x, 305, 10, params.scoreData.score);
 
     rankBg = new FunkinSprite(0, 0);
 
@@ -185,7 +186,7 @@ class ResultState extends MusicBeatSubState
     add(bgFlash);
 
     // The sound system which falls into place behind the score text. Plays every time!
-    var soundSystem:FlxSprite = FunkinSprite.createSparrow(-15, -180, 'resultScreen/soundSystem');
+    var soundSystem:FlxSprite = FunkinSprite.createSparrow(-15+ MobileScaleMode.gameNotchSize.x, -180, 'resultScreen/soundSystem');
     soundSystem.animation.addByPrefix("idle", "sound system", 24, false);
     soundSystem.visible = false;
     new FlxTimer().start(8 / 24, _ -> {
@@ -237,12 +238,13 @@ class ResultState extends MusicBeatSubState
       {
         case 'animateatlas':
           //? Scaling offsets because Pico decided to be annoying
-          var xDiff = offsets[0] - (offsets[0]* (animData.scale ?? 1.0));
-          var yDiff = offsets[1] - (offsets[1]* (animData.scale ?? 1.0));
-          offsets[0] -= xDiff*1.8;
-          offsets[1] -= yDiff*1.8;
 
-          var animation:FlxAtlasSprite = new FlxAtlasSprite(offsets[0], offsets[1], animPath);
+          // var xDiff = offsets[0] - (offsets[0]* (animData.scale ?? 1.0));
+          // var yDiff = offsets[1] - (offsets[1]* (animData.scale ?? 1.0));
+          // offsets[0] -= xDiff*1.8;
+          // offsets[1] -= yDiff*1.8;
+
+          var animation:FlxAtlasSprite = new FlxAtlasSprite(offsets[0] + MobileScaleMode.gameNotchSize.x, offsets[1], animPath);
           animation.zIndex = animData.zIndex ?? 500;
           animation.scale.set(animData.scale ?? 1.0, animData.scale ?? 1.0);
 
@@ -293,7 +295,7 @@ class ResultState extends MusicBeatSubState
           // Add to the scene.
           add(animation);
         case 'sparrow':
-          var animation:FunkinSprite = FunkinSprite.createSparrow(offsets[0], offsets[1], animPath);
+          var animation:FunkinSprite = FunkinSprite.createSparrow(offsets[0] + MobileScaleMode.gameNotchSize.x, offsets[1], animPath);
           animation.animation.addByPrefix('idle', '', 24, false, false, false);
 
           if (animData.loopFrame != null)
