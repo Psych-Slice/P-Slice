@@ -22,7 +22,6 @@
 
 package mobile.options;
 
-import mobile.backend.MobileScaleMode;
 import flixel.input.keyboard.FlxKey;
 import options.BaseOptionsMenu;
 import options.Option;
@@ -71,11 +70,6 @@ class MobileOptionsSubState extends BaseOptionsMenu
 		option.onChange = () -> lime.system.System.allowScreenTimeout = curOption.getValue();
 		addOption(option);
 
-		option = new Option('Wide Screen Mode',
-			'If checked, The game will stetch to fill your whole screen. (WARNING: Can result in bad visuals & break some mods that resizes the game/cameras)',
-			'wideScreen', BOOL);
-		option.onChange = () -> FlxG.scaleMode = new MobileScaleMode();
-		addOption(option);
 		#end
 
 		option = new Option('Hitbox Design', 'Choose how your hitbox should look like.', 'hitboxType', STRING, hintOptions);

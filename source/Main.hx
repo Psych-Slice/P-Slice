@@ -1,5 +1,6 @@
 package;
 
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 import states.InitState;
 import mikolka.vslice.components.crash.Logger;
 #if HSCRIPT_ALLOWED
@@ -260,12 +261,6 @@ class Main extends Sprite
 		ClientPrefs.loadDefaultKeys();
 		#if ACHIEVEMENTS_ALLOWED Achievements.load(); #end
 
-		#if mobile
-		FlxG.signals.postGameStart.addOnce(() ->
-		{
-			FlxG.scaleMode = new MobileScaleMode();
-		});
-		#end
 
 		trace("Loading game objest...");
 		var gameObject = new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate,
@@ -336,7 +331,6 @@ class Main extends Sprite
 		#if mobile
 		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
 		lime.system.System.allowScreenTimeout = ClientPrefs.data.screensaver;
-		FlxG.scaleMode = new MobileScaleMode();
 		Application.current.window.vsync = ClientPrefs.data.vsync;
 		#end
 

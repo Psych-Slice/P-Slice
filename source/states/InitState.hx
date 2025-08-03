@@ -1,5 +1,6 @@
 package states;
 
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 import openfl.Assets;
 import mikolka.vslice.ui.title.TitleState;
 import flixel.input.keyboard.FlxKey;
@@ -53,6 +54,9 @@ class InitState extends MusicBeatState
 		MobileData.init();
 		#end
 
+		FlxG.scaleMode = new MobileScaleMode(ClientPrefs.data.wideScreen); 
+
+		trace("Init plugins:");
 		//* FIRST INIT! iNITIALISE IMPORTED PLUGINS
 		ScreenshotPlugin.initialize();
 

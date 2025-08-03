@@ -7,8 +7,8 @@ import flixel.util.FlxTimer;
 
 class Nametag extends FlxSprite
 {
-  var midpointX(default, set):Float = 1008;
-  var midpointY(default, set):Float = 100;
+  public var midpointX(default, set):Float = 1008;
+  public var midpointY(default, set):Float = 100;
   var mosaicShader:MosaicEffect;
 
   public function new(?x:Float = 0, ?y:Float = 0,initialChar:String)

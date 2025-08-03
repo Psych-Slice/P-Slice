@@ -1,5 +1,7 @@
 package options;
 
+import flixel.system.scaleModes.RatioScaleMode;
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 import objects.Character;
 import options.Option;
 
@@ -44,6 +46,12 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 			"If checked, allows the GPU to be used for caching textures, decreasing RAM usage.\nDon't turn this on if you have a shitty Graphics Card.", //Description
 			'cacheOnGPU',
 			BOOL);
+		addOption(option);
+
+		option = new Option('Wide Screen Mode',
+			'If checked, The game will stetch to fill your whole screen. (WARNING: Can result in bad visuals & break some mods that resizes the game/cameras)',
+			'wideScreen', BOOL);
+		option.onChange = () -> MobileScaleMode.enabled = ClientPrefs.data.wideScreen;
 		addOption(option);
 
 		#if MULTITHREADED_LOADING
