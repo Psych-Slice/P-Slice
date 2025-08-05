@@ -123,6 +123,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<set name="BUILD_DIR" value="export/32bit" if="32bits" />
 
 	<classpath name="source" />
+	<java if="android" path="source/mobile/external/android/java" />
 
 	<!-- __________________________ Game Assets & Etc. __________________________ -->
 
@@ -181,7 +182,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-addons" version="3.3.2"/>
-	<haxelib name="hxcpp" unless="HXCPP_TRACY"/>
+	<haxelib name="hxcpp"/>
 	<haxelib name="tjson" version="1.4.0"/>
 	<haxelib name="FlxPartialSound" version="git"/>
 	<haxelib name="grig.audio" />
@@ -242,7 +243,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
 	
 	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
-	<haxedef name="FLX_NO_DEBUG" unless="PROFILE_BUILD" />
+	<haxedef name="FLX_NO_DEBUG" unless="PROFILE_BUILD || debug" />
 
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />

@@ -127,32 +127,17 @@ class ResetScoreSubState extends MusicBeatSubstate
 		#if TOUCH_CONTROLS_ALLOWED
 		if (controls.mobileC)
 		{
-			if (TouchUtil.justReleased || FlxG.mouse.justReleased)
-			{
-				#if mobile
-				if (TouchUtil.overlaps(yesZone))
+
+				if (yesZone.justPressed)
 				{
 					onYes = true;
 					onAccept();
 				}
-				else if (TouchUtil.overlaps(noZone))
+				else if (noZone.justPressed)
 				{
 					onYes = false;
 					onAccept();
 				}
-				#else
-				if (FlxG.mouse.overlaps(yesZone,optionsCam))
-				{
-					onYes = true;
-					onAccept();
-				}
-				else if (FlxG.mouse.overlaps(noZone,optionsCam))
-				{
-					onYes = false;
-					onAccept();
-				}
-				#end
-			}
 			super.update(elapsed);
 			return;
 		}

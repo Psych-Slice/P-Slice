@@ -329,7 +329,7 @@ class TypedTouchButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 		{
 			currentInput = null;
 		}
-		else if (overlapsPoint(pointer.getWorldPosition(camera, _point), true, camera))
+		else if (camera.scroll != null && overlapsPoint(pointer.getWorldPosition(camera, _point), true, camera))
 		{
 			updateStatus(input);
 			return true;

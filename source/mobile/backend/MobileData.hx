@@ -72,7 +72,7 @@ class MobileData
 	public static function readDirectory(folder:String, map:Dynamic)
 	{
 		folder = folder.contains(':') ? folder.split(':')[1] : folder;
-		Sys.println("PP:"+folder);
+
 		#if MODS_ALLOWED if (NativeFileSystem.exists(folder)) #end
 		for (file in NativeFileSystem.readDirectory(folder))
 		{

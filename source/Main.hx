@@ -23,9 +23,6 @@ import lime.app.Application;
 #if (linux || mac)
 import lime.graphics.Image;
 #end
-#if mobile
-import mobile.backend.MobileScaleMode;
-#end
 
 #if (linux && !debug)
 @:cppInclude('./external/gamemode_client.h')

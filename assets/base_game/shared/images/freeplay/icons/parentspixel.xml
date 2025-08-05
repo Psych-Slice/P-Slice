@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TextureAtlas imagePath="parents-christmaspixel.png" width="181" height="87">
+<TextureAtlas imagePath="parentspixel.png" width="181" height="87">
   <SubTexture name="idle0001" x="0" y="43"  width="57" height="44" frameX="-7" frameY="-3" frameWidth="72" frameHeight="50"/>
 
   <SubTexture name="confirm0001" x="0" y="43"  width="57" height="44" frameX="-7" frameY="-3" frameWidth="72" frameHeight="50"/>

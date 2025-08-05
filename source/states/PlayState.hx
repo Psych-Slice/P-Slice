@@ -1616,7 +1616,8 @@ class PlayState extends MusicBeatState
 				{
 					babyArrow.x += 310;
 					if(i > 1) { //Up and Right
-						babyArrow.x += FlxG.width / 2 + 25;
+						babyArrow.x = FlxG.width-310 -25 -70;
+						//babyArrow.x += FlxG.width / 2 + 25;
 					}
 				}
 				opponentStrums.add(babyArrow);

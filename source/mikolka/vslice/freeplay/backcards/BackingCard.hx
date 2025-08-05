@@ -2,19 +2,10 @@ package mikolka.vslice.freeplay.backcards;
 
 import mikolka.compatibility.VsliceOptions;
 import mikolka.vslice.freeplay.FreeplayState;
-import flixel.FlxCamera;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
-import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
-import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import flixel.util.FlxColor;
-import flixel.util.FlxSpriteUtil;
-import flixel.util.FlxTimer;
 import mikolka.funkin.players.PlayableCharacter;
 import openfl.display.BlendMode;
 import flixel.group.FlxSpriteGroup;
@@ -45,14 +36,20 @@ class BackingCard extends FlxSpriteGroup
 
     if (_instance != null) instance = _instance;
 
-    cardGlow = new FlxSprite(-30, -30).loadGraphic(Paths.image('freeplay/cardGlow'));
-    confirmGlow = new FlxSprite(-30, 240).loadGraphic(Paths.image('freeplay/confirmGlow'));
-    confirmTextGlow = new FlxSprite(-8, 115).loadGraphic(Paths.image('freeplay/glowingText'));
-    pinkBack = FunkinSprite.create('freeplay/pinkBack');
+    var bitmap = BitmapUtil.scalePartByWidth(Paths.noGpuImage('freeplay/cardGlow').bitmap, FreeplayState.CUTOUT_WIDTH);
+    cardGlow = new FlxSprite(-30, -30).loadGraphic(bitmap);
+
+    confirmGlow = new FlxSprite((FreeplayState.CUTOUT_WIDTH * FreeplayState.DJ_POS_MULTI)-30, 240).loadGraphic(Paths.image('freeplay/confirmGlow'));
+    confirmTextGlow = new FlxSprite((FreeplayState.CUTOUT_WIDTH * FreeplayState.DJ_POS_MULTI) -8, 115).loadGraphic(Paths.image('freeplay/glowingText'));
+
+    var bitmap = BitmapUtil.scalePartByWidth(Paths.noGpuImage('freeplay/pinkBack').bitmap, FreeplayState.CUTOUT_WIDTH);
+    pinkBack = new FunkinSprite();
+    pinkBack.loadGraphic(bitmap);
+
     orangeBackShit = new FunkinSprite(84, 440).makeSolidColor(Std.int(pinkBack.width), 75, 0xFFFEDA00);
     alsoOrangeLOL = new FunkinSprite(0, orangeBackShit.y).makeSolidColor(100, Std.int(orangeBackShit.height), 0xFFFFD400);
     confirmGlow2 = new FlxSprite(confirmGlow.x, confirmGlow.y).loadGraphic(Paths.image('freeplay/confirmGlow2'));
-    backingTextYeah = new FlxAtlasSprite(640, 370, "freeplay/backing-text-yeah",
+    backingTextYeah = new FlxAtlasSprite((FreeplayState.CUTOUT_WIDTH * FreeplayState.DJ_POS_MULTI)+640, 370, "freeplay/backing-text-yeah",
       {
         FrameRate: 24.0,
         Reversed: false,
@@ -192,10 +189,10 @@ class BackingCard extends FlxSpriteGroup
     confirmGlow2.alpha = 0;
     confirmGlow.alpha = 0;
 
-    FlxTween.color(instance.bgDad, 0.5, 0xFFA8A8A8, 0xFF646464,
+    FlxTween.color(instance.backingImage, 0.5, 0xFFA8A8A8, 0xFF646464,
       {
         onUpdate: function(_) {
-          instance.angleMaskShader.extraColor = instance.bgDad.color;
+          instance.angleMaskShader.extraColor = instance.backingImage.color;
         }
       });
     FlxTween.tween(confirmGlow2, {alpha: 0.5}, 0.33,
@@ -208,11 +205,11 @@ class BackingCard extends FlxSpriteGroup
           confirmTextGlow.alpha = 1;
           FlxTween.tween(confirmTextGlow, {alpha: 0.4}, 0.5);
           FlxTween.tween(confirmGlow, {alpha: 0}, 0.5);
-          FlxTween.color(instance.bgDad, 2, 0xFFCDCDCD, 0xFF555555,
+          FlxTween.color(instance.backingImage, 2, 0xFFCDCDCD, 0xFF555555,
             {
               ease: FlxEase.expoOut,
               onUpdate: function(_) {
-                instance.angleMaskShader.extraColor = instance.bgDad.color;
+                instance.angleMaskShader.extraColor = instance.backingImage.color;
               }
             });
         }
