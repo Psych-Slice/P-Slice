@@ -1,5 +1,6 @@
 package substates;
 
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 #if TOUCH_CONTROLS_ALLOWED
 import mobile.objects.TouchZone;
 import mobile.objects.ScrollableObject;
@@ -546,10 +547,10 @@ class PauseSubState extends MusicBeatSubstate
 			grpMenuShit.remove(obj, true);
 			obj.destroy();
 		}
-
+		var cutoutSize = MobileScaleMode.gameCutoutSize.x / 2;
 		for (num => str in menuItems)
 		{
-			var item = new Alphabet(90, 320, Language.getPhrase('pause_$str', str), true);
+			var item = new Alphabet(cutoutSize+90, 320, Language.getPhrase('pause_$str', str), true);
 			item.isMenuItem = true;
 			item.targetY = num;
 			grpMenuShit.add(item);

@@ -129,7 +129,7 @@ class MobileScaleMode extends BaseScaleMode
     updateDeviceSize(Width, Height);
     updateDeviceCutout(Width, Height);
     #if mobile
-    updateDeviceNotch(funkin.mobile.util.ScreenUtil.getNotchRect());
+    updateDeviceNotch(mobile.backend.ScreenUtil.getNotchRect());
     #end
     updateScaleOffset();
     updateGamePosition();
@@ -404,8 +404,8 @@ class MobileScaleMode extends BaseScaleMode
   private static function set_enabled(Value:Bool):Bool
   {
     if (ratioAxis == FlxAxes.X #if android
-      && (extension.androidtools.os.Build.VERSION.SDK_INT >= extension.androidtools.os.Build.VERSION_CODES.P
-        || extension.androidtools.Tools.isTablet()) #end)
+      && (AndroidVersion.SDK_INT  >= android.os.Build.VERSION_CODES.P
+        || android.Tools.isTablet()) #end)
     {
       enabled = Value;
       active = Value;

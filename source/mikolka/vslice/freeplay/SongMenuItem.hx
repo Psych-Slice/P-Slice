@@ -49,7 +49,6 @@ class SongMenuItem extends FlxSpriteGroup
   public var fakeBlurredRanking:FreeplayRank;
   public var txtWeek:AtlasText;
 
-  var ranks:Array<String> = ["fail", "average", "great", "excellent", "perfect", "perfectsick"];
 
   public var targetPos:FlxPoint = FlxPoint.get();
   public var doLerp:Bool = false;
@@ -189,28 +188,7 @@ class SongMenuItem extends FlxSpriteGroup
 
     add(sparkle);
 
-    // ranking.loadGraphic(Paths.image('freeplay/ranks/' + rank));
-    // ranking.scale.x = ranking.scale.y = realScaled;
-    // ranking.alpha = 0.75;
-    // ranking.visible = false;
-    // ranking.origin.set(capsule.origin.x - ranking.x, capsule.origin.y - ranking.y);
-    // add(ranking);
-    // grpHide.add(ranking);
-
-    // switch (rank)
-    // {
-    //   case 'perfect':
-    //     ranking.x -= 10;
-    // }
-
     grayscaleShader = new Grayscale(1);
-
-    // diffRatingSprite = new FlxSprite(145, 90).loadGraphic(Paths.image('freeplay/diffRatings/diff00'));
-    // diffRatingSprite.shader = grayscaleShader;
-    // diffRatingSprite.origin.set(capsule.origin.x - diffRatingSprite.x, capsule.origin.y - diffRatingSprite.y);
-    // TODO: Readd once ratings are fully implemented
-    // add(diffRatingSprite);
-    // grpHide.add(diffRatingSprite);
 
     songText = new CapsuleText(capsule.width * 0.26, 45, 'Random', Std.int(40 * realScaled));
     add(songText);
@@ -697,6 +675,7 @@ class SongMenuItem extends FlxSpriteGroup
 
   override function destroy() {
     targetPos.put();
+    txtWeek.text = "";
     super.destroy();
   }
   /**

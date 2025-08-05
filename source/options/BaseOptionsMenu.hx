@@ -1,5 +1,6 @@
 package options;
 
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 import mobile.objects.TouchZone;
 import flixel.input.keyboard.FlxKey;
 import flixel.input.gamepad.FlxGamepad;
@@ -77,9 +78,10 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		descText.borderSize = 2.4;
 		add(descText);
 
+		var cutoutSize = MobileScaleMode.gameCutoutSize.x / 2;
 		for (i in 0...optionsArray.length)
 		{
-			var optionText:Alphabet = new Alphabet(220, 260, optionsArray[i].name, false);
+			var optionText:Alphabet = new Alphabet(cutoutSize+220, 260, optionsArray[i].name, false);
 			optionText.isMenuItem = true;
 			/*optionText.forceX = 300;
 				optionText.yMult = 90; */

@@ -91,6 +91,7 @@ class CharSelectSubState extends MusicBeatSubState
 	var bopInfo:FramesJSFLInfo;
 	var blackScreen:FunkinSprite;
 	var cutoutSize:Float = 0;
+
 	public function new()
 	{
 		super();
@@ -130,7 +131,8 @@ class CharSelectSubState extends MusicBeatSubState
 
 	var fadeShader:BlueFade = new BlueFade();
 
-	override public function create():Void {
+	override public function create():Void
+	{
 		super.create();
 
 		cutoutSize = MobileScaleMode.gameCutoutSize.x / 2;
@@ -146,7 +148,8 @@ class CharSelectSubState extends MusicBeatSubState
 		var crowd:FlxAtlasSprite = new FlxAtlasSprite(cutoutSize, 0, "charSelect/crowd");
 
 		crowd.anim.play();
-		crowd.anim.onComplete.add(function() {
+		crowd.anim.onComplete.add(function()
+		{
 			crowd.anim.play();
 		});
 		crowd.scrollFactor.set(0.3, 0.3);
@@ -154,7 +157,8 @@ class CharSelectSubState extends MusicBeatSubState
 
 		var stageSpr:FlxAtlasSprite = new FlxAtlasSprite(cutoutSize + -2, 1, "charSelect/charSelectStage");
 		stageSpr.anim.play("");
-		stageSpr.anim.onComplete.add(function() {
+		stageSpr.anim.onComplete.add(function()
+		{
 			stageSpr.anim.play("");
 		});
 		add(stageSpr);
@@ -167,7 +171,8 @@ class CharSelectSubState extends MusicBeatSubState
 		barthing = new FlxAtlasSprite(0, 0, "charSelect/barThing");
 
 		barthing.anim.play("");
-		barthing.anim.onComplete.add(function() {
+		barthing.anim.onComplete.add(function()
+		{
 			barthing.anim.play("");
 		});
 		barthing.blend = BlendMode.MULTIPLY;
@@ -186,7 +191,8 @@ class CharSelectSubState extends MusicBeatSubState
 		charLightGF.loadGraphic(Paths.image('charSelect/charLight'));
 		add(charLightGF);
 
-		function setupPlayerChill(character:String) {
+		function setupPlayerChill(character:String)
+		{
 			gfChill = new CharSelectGF();
 			gfChill.switchGF(character);
 			gfChill.x += cutoutSize;
@@ -204,21 +210,26 @@ class CharSelectSubState extends MusicBeatSubState
 
 		// I think I can do the character preselect thing here? This better work
 		// Edit: [UH-OH!] yes! It does!
-		if (curChar != null && curChar != Constants.DEFAULT_CHARACTER) {
+		if (curChar != null && curChar != Constants.DEFAULT_CHARACTER)
+		{
 			setupPlayerChill(curChar);
-			for (pos => charId in availableChars) {
-				if (charId == curChar) {
+			for (pos => charId in availableChars)
+			{
+				if (charId == curChar)
+				{
 					setCursorPosition(pos);
 					break;
 				}
 			}
-			//@:bypassAccessor curChar = rememberedChar;
-		} else
+			// @:bypassAccessor curChar = rememberedChar;
+		}
+		else
 			setupPlayerChill(Constants.DEFAULT_CHARACTER);
 
 		var speakers:FlxAtlasSprite = new FlxAtlasSprite(cutoutSize - 10, 0, "charSelect/charSelectSpeakers");
 		speakers.anim.play("");
-		speakers.anim.onComplete.add(function() {
+		speakers.anim.onComplete.add(function()
+		{
 			speakers.anim.play("");
 		});
 		speakers.scrollFactor.set(1.8, 1.8);
@@ -265,12 +276,12 @@ class CharSelectSubState extends MusicBeatSubState
 
 		if (modSelector.hasModsAvailable)
 		{
-			dipshitLeftArrow = new FlxSprite(240+cutoutSize, 135);
+			dipshitLeftArrow = new FlxSprite(240 + cutoutSize, 135);
 			dipshitLeftArrow.loadGraphic(Paths.image('charSelect/charSelectArrow'));
 			dipshitLeftArrow.scale.set(0.4, 0.4);
 			add(dipshitLeftArrow);
 
-			dipshitRightArrow = new FlxSprite(663+cutoutSize, 135);
+			dipshitRightArrow = new FlxSprite(663 + cutoutSize, 135);
 			dipshitRightArrow.loadGraphic(Paths.image('charSelect/charSelectArrow'));
 			dipshitRightArrow.scale.set(0.4, 0.4);
 			dipshitRightArrow.flipX = true;
@@ -308,26 +319,17 @@ class CharSelectSubState extends MusicBeatSubState
 		nametag = new Nametag(curChar);
 		nametag.midpointX += cutoutSize;
 		add(nametag);
+		@:privateAccess
+		{
+			nametag.midpointY += 200;
+			FlxTween.tween(nametag, {midpointY: nametag.midpointY - 200}, 1, {ease: FlxEase.expoOut});
+		}
 
 		nametag.scrollFactor.set();
 
 		FlxG.debugger.addTrackerProfile(new TrackerProfile(FlxSprite, ["x", "y", "alpha", "scale", "blend"]));
 		FlxG.debugger.addTrackerProfile(new TrackerProfile(FlxAtlasSprite, ["x", "y"]));
 		FlxG.debugger.addTrackerProfile(new TrackerProfile(FlxSound, ["pitch", "volume"]));
-
-		// FlxG.debugger.track(crowd);
-		// FlxG.debugger.track(stageSpr, "stageSpr");
-		// FlxG.debugger.track(bfChill, "bf chill");
-		// FlxG.debugger.track(playerChill, "player");
-		// FlxG.debugger.track(nametag, "nametag");
-		// FlxG.debugger.track(selectSound, "selectSound");
-		// FlxG.debugger.track(chooseDipshit, "choose dipshit");
-		// FlxG.debugger.track(barthing, "barthing");
-		// FlxG.debugger.track(fgBlur, "fgBlur");
-		// FlxG.debugger.track(dipshitBlur, "dipshitBlur");
-		// FlxG.debugger.track(dipshitBacking, "dipshitBacking");
-		// FlxG.debugger.track(charLightGF, "charLight");
-		// FlxG.debugger.track(gfChill, "gfChill");
 
 		grpCursors = new FlxTypedGroup<FlxSprite>();
 		add(grpCursors);
@@ -452,7 +454,8 @@ class CharSelectSubState extends MusicBeatSubState
 		fadeShader.fade(0.0, 1.0, 0.8, {ease: FlxEase.quadOut});
 		FlxTween.tween(camFollow, {y: camFollow.y + 150}, 1.5, {
 			ease: FlxEase.expoOut,
-			onComplete: function(_) {
+			onComplete: function(_)
+			{
 				autoFollow = true;
 				FlxG.camera.follow(camFollow, LOCKON, 0.01);
 			}
@@ -476,7 +479,7 @@ class CharSelectSubState extends MusicBeatSubState
 			var posX:Float = (index % 3);
 			var posY:Float = Math.floor(index / 3);
 
-			var finalX = (posX * grpXSpread) + 450 + 16;
+			var finalX = (posX * grpXSpread) + cutoutSize + 450 + 16;
 			var finalY = (posY * grpYSpread) + 120 + 20;
 
 			var touch = new TouchZone(finalX, finalY, 100, 100, FlxColor.PURPLE);
@@ -618,10 +621,12 @@ class CharSelectSubState extends MusicBeatSubState
 
 		nonLocks.shift();
 
-		selectTimer.start(0.5, function(_) {
+		selectTimer.start(0.5, function(_)
+		{
 			var lock:Lock = cast grpIcons.group.members[index];
 
-			lock.anim.getFrameLabel("unlockAnim").add(function() {
+			lock.anim.getFrameLabel("unlockAnim").add(function()
+			{
 				playerChillOut.playAnimation("death");
 			});
 
@@ -705,10 +710,12 @@ class CharSelectSubState extends MusicBeatSubState
 		});
 	}
 
-	function updateIconPositions() {
+	function updateIconPositions()
+	{
 		grpIcons.x = cutoutSize + 450;
 		grpIcons.y = 120;
-		for (index => member in grpIcons.members) {
+		for (index => member in grpIcons.members)
+		{
 			var posX:Float = (index % 3);
 			var posY:Float = Math.floor(index / 3);
 
@@ -767,6 +774,7 @@ class CharSelectSubState extends MusicBeatSubState
 		FlxTween.tween(cursorConfirmed, {alpha: 0}, 0.8, {ease: FlxEase.expoOut});
 
 		FlxTween.tween(barthing, {y: barthing.y + 80}, 0.8, {ease: FlxEase.backIn});
+		FlxTween.tween(nametag, {y: nametag.y + 80}, 0.8, {ease: FlxEase.backIn});
 		FlxTween.tween(dipshitBacking, {y: dipshitBacking.y + 210}, 0.8, {ease: FlxEase.backIn});
 		FlxTween.tween(chooseDipshit, {y: chooseDipshit.y + 200}, 0.8, {ease: FlxEase.backIn});
 		FlxTween.tween(dipshitBlur, {y: dipshitBlur.y + 220}, 0.8, {ease: FlxEase.backIn});
@@ -940,13 +948,11 @@ class CharSelectSubState extends MusicBeatSubState
 		{
 			for (index => member in touchKeys)
 			{
-				if (TouchUtil.overlaps(member) #if debug || FlxG.mouse.overlaps(member) #end)
+				if (member.pressed)
 				{
 					var newCursorY = (Math.floor(index / 3));
 					var newCursorX = (index % 3);
-					if (cursorX == newCursorX - 1
-						&& cursorY == newCursorY - 1
-						&& (TouchUtil.justPressed #if debug || FlxG.mouse.justPressed #end))
+					if (cursorX == newCursorX - 1 && cursorY == newCursorY - 1 && member.justPressed)
 					{
 						if (!pressedSelect)
 							onAcceptPress();
@@ -1250,11 +1256,13 @@ class CharSelectSubState extends MusicBeatSubState
 	}
 
 	// Moved this code into a function because is now used twice
-	function setCursorPosition(index:Int) {
+	function setCursorPosition(index:Int)
+	{
 		var copy = 3;
 		var yThing = -1;
 
-		while ((index + 1) > copy) {
+		while ((index + 1) > copy)
+		{
 			yThing++;
 			copy += 3;
 		}
@@ -1266,7 +1274,8 @@ class CharSelectSubState extends MusicBeatSubState
 		cursorX = xThing;
 	}
 
-	function set_curChar(value:String):String {
+	function set_curChar(value:String):String
+	{
 		if (curChar == value)
 			return value;
 

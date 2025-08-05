@@ -141,7 +141,7 @@ class MainMenuState extends MusicBeatState
 		super.create();
 
 		FlxG.camera.follow(camFollow, null, 0.06);
-		FlxG.camera.bgColor = 0xfffde871;
+		//FlxG.camera.bgColor = 0xfffde871;
 	}
 
 	var selectedSomethin:Bool = false;
