@@ -276,9 +276,9 @@ class Main extends Sprite
 		FlxG.game.addChild(fpsVar);
 		#else
 		#if !debug
-		var border = new GameBorder();
-		addChild(border);
-		Lib.current.stage.window.onResize.add(border.updateGameSize);
+		// var border = new GameBorder();
+		// addChild(border);
+		// Lib.current.stage.window.onResize.add(border.updateGameSize);
 		#end
 		addChild(fpsVar);
 		#end

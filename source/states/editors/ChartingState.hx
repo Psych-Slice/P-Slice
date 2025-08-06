@@ -247,6 +247,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
+		bg.setGraphicSize(Std.int(bg.width * 1.175));
 		bg.scrollFactor.set();
 		add(bg);
 

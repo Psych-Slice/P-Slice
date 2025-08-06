@@ -45,10 +45,12 @@ class SongMenuItem extends FlxSpriteGroup
   public var ranking:FreeplayRank;
   public var blurredRanking:FreeplayRank;
 
-  public var fakeRanking:FreeplayRank;
-  public var fakeBlurredRanking:FreeplayRank;
-  public var txtWeek:AtlasText;
+   var fakeRankingInited:Bool = false; 
+   var fakeRanking:FreeplayRank;
+   var fakeBlurredRanking:FreeplayRank;
 
+
+  public var txtWeek:AtlasText;
 
   public var targetPos:FlxPoint = FlxPoint.get();
   public var doLerp:Bool = false;
@@ -159,16 +161,6 @@ class SongMenuItem extends FlxSpriteGroup
     // doesn't get added, simply is here to help with visibility of things for the pop in!
     grpHide = new FlxGroup();
 
-    fakeRanking = new FreeplayRank(420, 41);
-    add(fakeRanking);
-
-    fakeBlurredRanking = new FreeplayRank(fakeRanking.x, fakeRanking.y);
-    fakeBlurredRanking.shader = gaussianBlur;
-    add(fakeBlurredRanking);
-
-    fakeRanking.visible = false;
-    fakeBlurredRanking.visible = false;
-
     ranking = new FreeplayRank(420, 41);
     add(ranking);
 
@@ -233,6 +225,24 @@ class SongMenuItem extends FlxSpriteGroup
     setVisibleGrp(false);
   }
 
+  public function setFakeRanking(oldRank:Null<ScoringRank>){
+    if(!fakeRankingInited){
+      var index = members.indexOf(ranking);
+      fakeRankingInited = true;
+
+      fakeRanking = new FreeplayRank(420, 41);
+      insert(index,fakeRanking);
+
+      fakeBlurredRanking = new FreeplayRank(fakeRanking.x, fakeRanking.y);
+      fakeBlurredRanking.shader = gaussianBlur;
+      insert(index,fakeBlurredRanking);
+
+      fakeRanking.visible = false;
+      fakeBlurredRanking.visible = false;
+    }
+    	fakeRanking.rank = oldRank;
+			fakeBlurredRanking.rank = oldRank;
+  }
   function sparkleEffect(timer:FlxTimer):Void
   {
     sparkle.setPosition(FlxG.random.float(ranking.x - 20, ranking.x + 3), FlxG.random.float(ranking.y - 29, ranking.y + 4));
@@ -410,8 +420,12 @@ class SongMenuItem extends FlxSpriteGroup
       updateSelected();
     }
 
+  var prevRating:Int = -1;
   function updateDifficultyRating(newRating:Int):Void
   {
+    if(prevRating == newRating) return;
+    else prevRating = newRating;
+
     if(newRating < 0){
       for (item in bigNumbers) item.visible = false;
       difficultyText.visible = false;

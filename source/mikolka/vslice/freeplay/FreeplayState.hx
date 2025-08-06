@@ -452,10 +452,12 @@ class FreeplayState extends MusicBeatSubstate
 			wait: 0.1
 		});
 
+		if(VsliceOptions.LOW_QUALITY) add(backingImage);
+
 		grpDifficulties = new FlxTypedSpriteGroup<DifficultySprite>(-300, 80);
 		add(grpDifficulties);
 
-		add(backingImage);
+		if(!VsliceOptions.LOW_QUALITY) add(backingImage);
 		// ? changed offset
 
 		blackOverlayBullshitLOLXD.shader = backingImage.shader;
@@ -1071,8 +1073,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		if (fromResults.oldRank != null)
 		{
-			grpCapsules.members[curSelected].fakeRanking.rank = fromResults.oldRank;
-			grpCapsules.members[curSelected].fakeBlurredRanking.rank = fromResults.oldRank;
+			grpCapsules.members[curSelected].setFakeRanking(fromResults.oldRank);
 
 			sparks.frames = Paths.getSparrowAtlas('freeplay/sparks');
 			sparks.animation.addByPrefix('sparks', 'sparks', 24, false);
@@ -1165,8 +1166,7 @@ class FreeplayState extends MusicBeatSubstate
 		{
 			if (fromResults?.oldRank != null)
 			{
-				grpCapsules.members[curSelected].fakeRanking.visible = false;
-				grpCapsules.members[curSelected].fakeBlurredRanking.visible = false;
+				grpCapsules.members[curSelected].setFakeRanking(null);
 
 				sparks.visible = true;
 				sparksADD.visible = true;
@@ -1578,6 +1578,7 @@ class FreeplayState extends MusicBeatSubstate
 				playRankAnim: true,
 				newRank: PERFECT_GOLD,
 				songId: "tutorial",
+				oldRank: SHIT,
 				difficultyId: "hard"
 			});
 		}
@@ -2016,7 +2017,7 @@ class FreeplayState extends MusicBeatSubstate
 				{
 					songCapsule.songData.currentDifficulty = currentDifficulty;
 					songCapsule.init(null, null, songCapsule.songData);
-					songCapsule.checkClip();
+					//songCapsule.checkClip();
 				}
 				else
 				{
