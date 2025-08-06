@@ -1,12 +1,13 @@
 package mobile.backend;
 
 #if ios
+import lime.system.System;
+import lime.system.Orientation;
 import mobile.external.ios.ScreenUtil as NativeScreenUtil;
 #elseif android
 import mobile.external.android.ScreenUtil as NativeScreenUtil;
 #end
 import lime.math.Rectangle;
-import lime.system.System;
 
 /**
  * A Utility class to get mobile screen related informations.
@@ -52,6 +53,7 @@ class ScreenUtil
         }
       }
     }
+    
     #elseif ios
     var topInset:Float = -1;
     var leftInset:Float = -1;
@@ -59,7 +61,7 @@ class ScreenUtil
     var bottomInset:Float = -1;
     var deviceWidth:Float = -1;
     var deviceHeight:Float = -1;
-    var displayOrientation:DisplayOrientation = System.getDisplayOrientation(0);
+    var displayOrientation:Orientation = System.getDisplay(0).orientation;
 
     NativeScreenUtil.getSafeAreaInsets(cpp.RawPointer.addressOf(topInset), cpp.RawPointer.addressOf(bottomInset), cpp.RawPointer.addressOf(leftInset),
       cpp.RawPointer.addressOf(rightInset));
@@ -76,19 +78,19 @@ class ScreenUtil
     // see: https://developer.apple.com/documentation/uikit/uiview/safeareainsets
     switch (displayOrientation)
     {
-      case DISPLAY_ORIENTATION_LANDSCAPE: // landscape
+      case LANDSCAPE: // landscape
         notchRect.width = leftInset + rightInset;
         notchRect.height = bottomInset - topInset;
         notchRect.y = topInset;
-      case DISPLAY_ORIENTATION_LANDSCAPE_FLIPPED: // landscape
+      case LANDSCAPE_FLIPPED: // landscape
         notchRect.width = leftInset + rightInset;
         notchRect.height = bottomInset - topInset;
         notchRect.y = topInset;
         notchRect.x = deviceWidth - notchRect.width; // move notchRect if we are flipped, notch is at the right of screen
-      case DISPLAY_ORIENTATION_PORTRAIT: // portrait
+      case PORTRAIT: // portrait
         notchRect.width = deviceWidth;
         notchRect.height = topInset;
-      case DISPLAY_ORIENTATION_PORTRAIT_FLIPPED: // portrait
+      case PORTRAIT_FLIPPED: // portrait
         notchRect.width = deviceWidth;
         notchRect.height = bottomInset;
         notchRect.y = deviceHeight - notchRect.height; // move notchRect if we are flipped, the notch is at the bottom of screen
