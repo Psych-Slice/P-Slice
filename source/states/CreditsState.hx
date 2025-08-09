@@ -1,5 +1,6 @@
 package states;
 
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 import objects.AttachedSprite;
 
 class CreditsState extends MusicBeatState
@@ -27,8 +28,10 @@ class CreditsState extends MusicBeatState
 		persistentUpdate = true;
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
-		add(bg);
+		bg.setGraphicSize(Std.int(bg.width * 1.175));
+		bg.updateHitbox();
 		bg.screenCenter();
+		add(bg);
 		
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
@@ -128,7 +131,9 @@ class CreditsState extends MusicBeatState
 		descBox.alpha = 0.6;
 		add(descBox);
 
-		descText = new FlxText(50, FlxG.height + offsetThing - 25, 1180, "", 32);
+		var txtWidthOffset:Float = Math.max(MobileScaleMode.gameCutoutSize.x / 2,50);
+
+		descText = new FlxText(txtWidthOffset, FlxG.height + offsetThing - 25, FlxG.width-(txtWidthOffset*2), "", 32);
 		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER/*, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK*/);
 		descText.scrollFactor.set();
 		//descText.borderSize = 2.4;
@@ -259,6 +264,7 @@ class CreditsState extends MusicBeatState
 	
 			descBox.setGraphicSize(Std.int(descText.width + 20), Std.int(descText.height + 25));
 			descBox.updateHitbox();
+			
 		}
 		else descText.visible = descBox.visible = false;
 	}
