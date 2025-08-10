@@ -1,5 +1,6 @@
 package mikolka.vslice.ui.title;
 
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 import mikolka.compatibility.VsliceOptions;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -75,11 +76,12 @@ class TitleState extends MusicBeatState
 		if (!initialized && FlxG.sound.music == null)
 			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 
+		var cutout_size = MobileScaleMode.gameCutoutSize.x / 2.5;
 		loadJsonData();
 		#if TITLE_SCREEN_EASTER_EGG easterEggData(); #end
 		Conductor.bpm = musicBPM;
 
-		logoBl = new FlxSprite(logoPosition.x, logoPosition.y);
+		logoBl = new FlxSprite(logoPosition.x+cutout_size, logoPosition.y);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		logoBl.antialiasing = VsliceOptions.ANTIALIASING;
 
@@ -87,7 +89,7 @@ class TitleState extends MusicBeatState
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
 
-		gfDance = new FlxSprite(gfPosition.x, gfPosition.y);
+		gfDance = new FlxSprite(gfPosition.x+cutout_size, gfPosition.y);
 		gfDance.antialiasing = VsliceOptions.ANTIALIASING;
 
 		if (VsliceOptions.SHADERS)
@@ -111,7 +113,7 @@ class TitleState extends MusicBeatState
 		}
 
 		var animFrames:Array<FlxFrame> = [];
-		titleText = new FlxSprite(enterPosition.x, enterPosition.y);
+		titleText = new FlxSprite(enterPosition.x+cutout_size, enterPosition.y);
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
 		@:privateAccess
 		{
