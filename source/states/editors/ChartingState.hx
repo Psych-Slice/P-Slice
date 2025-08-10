@@ -389,7 +389,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		mainBoxPosition.x = (MobileScaleMode.gameCutoutSize.x / 2.5);
 		var upperBoxOffsetX = (MobileScaleMode.gameCutoutSize.x / 2.5);
 		
-		infoBox = new PsychUIBox(infoBoxPosition.x #if mobile - 900 #end, infoBoxPosition.y #if mobile - 250 #end, 220, 220, ['Information']);
+		infoBox = new PsychUIBox(infoBoxPosition.x , infoBoxPosition.y , 220, 220, ['Information']);
 		infoBox.scrollFactor.set();
 		infoBox.cameras = [camUI];
 		infoText = new FlxText(15, 15, 230, '', 16);

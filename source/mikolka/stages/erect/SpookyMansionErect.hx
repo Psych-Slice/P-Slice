@@ -29,8 +29,11 @@ class SpookyMansionErect extends BaseStage
 	}
 	override function create()
 	{
-		halloweenBG = new BGSprite('erect/bgDark', -360, -220);
-		halloweenBGLight = new BGSprite('erect/bgLight', -360, -220);
+		var bg:FlxSprite = FunkinTools.makeSolidColor(new FlxSprite(-300,-500), 2400, 2000, 0xFF242336);
+		add(bg);
+
+		halloweenBG = new BGSprite('erect/bgDark', -560, -220);
+		halloweenBGLight = new BGSprite('erect/bgLight', -560, -220);
 		halloweenBGLight.alpha = 0;
 
 		stairsDark = new BGSprite('erect/stairsDark', 966, -225);

@@ -16,11 +16,11 @@ class MainStageErect extends BaseStage {
 	override function create()
 	{
         new StageSpotlight(200,-50);
-		var bg:BGSprite = new BGSprite('erect/backDark', 729, -170);
+		var bg:FlxSprite = FunkinTools.makeSolidColor(new FlxSprite(-500,-1000), 2400, 2000, 0xFF222026);
 		add(bg);
 
         if(!VsliceOptions.LOW_QUALITY) {
-            peeps = new BGSprite('erect/crowd', 560, 290,0.8,0.8,["Symbol 2 instance 10"],true);
+            peeps = new BGSprite('erect/crowd', 682, 290,0.8,0.8,["idle"],true);
             peeps.animation.curAnim.frameRate = 12;
             add(peeps);
 
@@ -29,10 +29,10 @@ class MainStageErect extends BaseStage {
             add(lightSmol);
         }
 
-		var stageFront:BGSprite = new BGSprite('erect/stage_bg', -603, -187);
+		var stageFront:BGSprite = new BGSprite('erect/bg', -765, -247);
 		add(stageFront);
 
-        var server:BGSprite = new BGSprite('erect/server', -361, 205);
+        var server:BGSprite = new BGSprite('erect/server', -991, 205);
 		add(server);
 
 		if(!VsliceOptions.LOW_QUALITY) {
@@ -44,12 +44,12 @@ class MainStageErect extends BaseStage {
             redLight.blend = BlendMode.ADD;
 			add(redLight);
 
-            var orangeLight:BGSprite = new BGSprite('erect/orangeLight', 189, -195);
+            var orangeLight:BGSprite = new BGSprite('erect/orangeLight', 189, -500);
             orangeLight.blend = BlendMode.ADD;
 			add(orangeLight);
 		}
 
-        var beamLol:BGSprite = new BGSprite('erect/lights', -601, -147,1.2,1.2);
+        var beamLol:BGSprite = new BGSprite('erect/lights', -847, -245,1.2,1.2);
 		add(beamLol);
 
         if(!VsliceOptions.LOW_QUALITY) {
