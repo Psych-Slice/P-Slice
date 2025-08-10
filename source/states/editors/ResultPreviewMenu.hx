@@ -2,14 +2,8 @@ package states.editors;
 
 
 import objects.AlphabetMenu;
-import mikolka.funkin.FunkinSprite;
-import flixel.math.FlxRect;
-import openfl.events.UncaughtErrorEvent;
 import mikolka.compatibility.VsliceOptions;
-import flixel.math.FlxRandom;
-import backend.WeekData;
 import mikolka.vslice.results.ResultState;
-import objects.Character;
 
 class ResultPreviewMenu extends MusicBeatState
 {

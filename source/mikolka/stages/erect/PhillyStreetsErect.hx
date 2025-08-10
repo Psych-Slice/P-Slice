@@ -2,9 +2,6 @@ package mikolka.stages.erect;
 
 import mikolka.stages.scripts.PicoCapableStage;
 import mikolka.vslice.StickerSubState;
-import mikolka.compatibility.ModsHelper;
-import mikolka.compatibility.funkin.FunkinControls;
-import mikolka.compatibility.freeplay.FreeplayHelpers;
 import openfl.filters.BlurFilter;
 import mikolka.compatibility.VsliceOptions;
 import shaders.AdjustColorShader;

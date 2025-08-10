@@ -1,5 +1,6 @@
 package mikolka.stages.standard;
 
+import shaders.OverlayBlend;
 import mikolka.compatibility.freeplay.FreeplayHelpers;
 #if !LEGACY_PSYCH
 import objects.Note.EventNote;
@@ -39,6 +40,14 @@ class Limo extends BaseStage
 	override function create()
 	{
 		var skyBG:BGSprite = new BGSprite('limo/limoSunset', -120, -50, 0.1, 0.1);
+		if(VsliceOptions.SHADERS) {
+			var skyOverlay:OverlayBlend = new OverlayBlend();
+			var sunOverlay:FlxSprite = new FlxSprite().loadGraphic(Paths.image('limo/limoOverlay'));
+			sunOverlay.setGraphicSize(Std.int(sunOverlay.width * 2));
+			sunOverlay.updateHitbox();
+			skyOverlay.funnyShit.input = sunOverlay.pixels;
+			skyBG.shader = skyOverlay;
+		}
 		add(skyBG);
 
 		if(!VsliceOptions.LOW_QUALITY) {

@@ -796,7 +796,7 @@ class FreeplayState extends MusicBeatSubstate
 		}
 
 		#if TOUCH_CONTROLS_ALLOWED
-		addTouchPad('UP_DOWN', 'A_B_C_X_Y_F');
+		addTouchPad('NONE', 'A_B_C_X_Y_F');
 		addTouchPadCamera();
 		if (prepForNewRank)
 		{
