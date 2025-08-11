@@ -14,7 +14,7 @@ class MallEvil extends BaseStage
 		var evilTree:BGSprite = new BGSprite('christmas/evilTree', 300, -300, 0.2, 0.2);
 		add(evilTree);
 
-		var evilSnow:BGSprite = new BGSprite('christmas/evilSnow', -200, 700);
+		var evilSnow:BGSprite = new BGSprite('christmas/evilSnow', -500, 700);
 		add(evilSnow);
 		setDefaultGF('gf-christmas');
 		
