@@ -3,11 +3,11 @@ echo Making the haxelib and setuping folder in same time...
 #haxelib newrepo
 echo Installing dependencies...
 echo This might take a few moments depending on your internet speed.
-haxelib install openfl 9.4.1 --quiet --skip-dependencies
 haxelib install flixel-addons 3.3.2 --quiet --skip-dependencies
 haxelib install flixel-tools 1.5.1 --quiet --skip-dependencies
 haxelib install hscript-iris 1.1.3 --quiet 
 haxelib install tjson 1.4.0 --quiet 
+haxelib git openfl https://github.com/FunkinCrew/openfl.git a0df7c3afe360c9af59a76e45007dbf4e53b5131 --quiet --skip-dependencies
 haxelib git hxcpp https://github.com/Psych-Slice/hxcpp-mobile.git  --quiet
 haxelib git flixel https://github.com/Psych-Slice/p-slice-1.0-flixel.git 9b1192a23fcfb456123efa14c63c8506ded20e5e --quiet --skip-dependencies
 haxelib git lime https://github.com/Psych-Slice/lime-mobile.git --quiet 

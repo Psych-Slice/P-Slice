@@ -67,6 +67,7 @@ class TankErect extends BaseStage
 			if(!seenCutscene) setStartCallback(VideoCutscene.playVideo.bind('stressPicoCutscene',startCountdown));
 			setEndCallback(cutscene.playCutscene);
 		}
+		
 	}
 
 	override function beatHit()
@@ -104,6 +105,10 @@ class TankErect extends BaseStage
 		}
 		if (!VsliceOptions.LOW_QUALITY)
 		{
+			var bricks:BGSprite = new BGSprite('erect/bricksGround', 375, 640, 1, 1);
+			bricks.scale.set(1.15, 1.15);
+			add(bricks);
+
 			for (daGf in gfGroup)
 			{
 				var gf:Character = cast daGf;
