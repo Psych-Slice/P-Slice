@@ -20,7 +20,8 @@ class Tank extends BaseStage
 
 	override function create()
 	{
-		var sky:BGSprite = new BGSprite('tankSky', -400, -400, 0, 0);
+		var sky:BGSprite = new BGSprite('tankSky', -2000, -400, 0, 0);
+		sky.scale.x = 4;
 		add(sky);
 
 		if(!VsliceOptions.LOW_QUALITY)
@@ -30,18 +31,18 @@ class Tank extends BaseStage
 			clouds.velocity.x = FlxG.random.float(5, 15);
 			add(clouds);
 
-			var mountains:BGSprite = new BGSprite('tankMountains', -300, -20, 0.2, 0.2);
+			var mountains:BGSprite = new BGSprite('tankMountains', -500, -35, 0.2, 0.2);
 			mountains.setGraphicSize(Std.int(1.2 * mountains.width));
 			mountains.updateHitbox();
 			add(mountains);
 
-			var buildings:BGSprite = new BGSprite('tankBuildings', -200, 0, 0.3, 0.3);
+			var buildings:BGSprite = new BGSprite('tankBuildings', -260, -35, 0.3, 0.3);
 			buildings.setGraphicSize(Std.int(1.1 * buildings.width));
 			buildings.updateHitbox();
 			add(buildings);
 		}
 
-		var ruins:BGSprite = new BGSprite('tankRuins',-200,0,.35,.35);
+		var ruins:BGSprite = new BGSprite('tankRuins',-200, 150,0.35,0.35);
 		ruins.setGraphicSize(Std.int(1.1 * ruins.width));
 		ruins.updateHitbox();
 		add(ruins);
@@ -50,10 +51,10 @@ class Tank extends BaseStage
 		{
 			var smokeLeft:BGSprite = new BGSprite('smokeLeft', -200, -100, 0.4, 0.4, ['SmokeBlurLeft'], true);
 			add(smokeLeft);
-			var smokeRight:BGSprite = new BGSprite('smokeRight', 1100, -100, 0.4, 0.4, ['SmokeRight'], true);
+			var smokeRight:BGSprite = new BGSprite('smokeRight', 1050, -35, 0.4, 0.4, ['SmokeRight'], true);
 			add(smokeRight);
 
-			tankWatchtower = new BGSprite('tankWatchtower', 100, 50, 0.5, 0.5, ['watchtower gradient color']);
+			tankWatchtower = new BGSprite('tankWatchtower', -35, 110, 0.5, 0.5, ['watchtower gradient color']);
 			add(tankWatchtower);
 		}
 
@@ -102,6 +103,9 @@ class Tank extends BaseStage
 
 		if(!VsliceOptions.LOW_QUALITY)
 		{
+			var bricks:BGSprite = new BGSprite('bricksGround', 438, 715, 1, 1);
+			bricks.scale.set(1.15, 1.15);
+			add(bricks);
 			for (daGf in gfGroup)
 			{
 				var gf:Character = cast daGf;
