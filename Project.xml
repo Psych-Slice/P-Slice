@@ -54,6 +54,9 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<!-- Do you want to support playing videos in your build?-->
 	<define name="VIDEOS_ALLOWED" if="desktop || mobile" unless="32bits || hl"/> 
+
+	<!-- Do we want to use ATSC compression?-->
+	<define name="ATSC_SUPPORT" if="android"/> 
 	
 	<!-- Displays a "Touch here to play" screen-->
 	<define name="TOUCH_HERE_TO_PLAY" if="TOUCH_CONTROLS_ALLOWED"/>
@@ -158,17 +161,24 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 		<assets path="assets/translations" rename="assets"   unless="web"/>
 	</section>
 
+
+	<assets path="assets/atsc_shared" rename="assets/shared" if="ATSC_SUPPORT" exclude="*.png"/>
+	<assets path="assets/atsc_shared" rename="assets/shared/"  exclude="*.atsc" unless="ATSC_SUPPORT"/>
+
 	<section if="BASE_GAME_FILES">
-		<section if="web">
-			<assets path="assets/base_game/week_data"   rename="assets" include="*.png|*.ogg" embed="false"/>
-			<assets path="assets/base_game/week_data"   rename="assets" include="*.xml|*.json" embed="true"/>
-			<assets path="assets/base_game/characters"   rename="assets/shared/images/characters" include="*.xml|*.json" embed="true"/>
-			<assets path="assets/base_game/characters"   rename="assets/shared/images/characters" include="*.png" embed="false"/>
-			<assets path="assets/base_game/shared" rename="assets/shared" embed="true"/>
+
+		<section if="ATSC_SUPPORT">
+			<assets path="assets/base_game/week_data" rename="assets"   exclude="*.png"/>
+			<assets path="assets/base_game/week_data/week6" rename="assets/week6"   include="*.png"/>
+			<assets path="assets/base_game/characters" rename="assets/shared/images/characters" exclude="*.png"/>
 		</section>
-		<assets path="assets/base_game/week_data" rename="assets"   unless="web"/>
-		<assets path="assets/base_game/characters" rename="assets/shared/images/characters"   unless="web"/>
-		<assets path="assets/base_game/shared" rename="assets/shared"   unless="web"/>
+
+		<section unless="ATSC_SUPPORT">
+			<assets path="assets/base_game/week_data" rename="assets"   exclude="*.atsc"/>
+			<assets path="assets/base_game/characters" rename="assets/shared/images/characters" exclude="*.atsc"/>
+		</section>
+		<assets path="assets/base_game/shared" rename="assets/shared" />
+		<assets path="assets/base_game/characters_pixel" rename="assets/shared/images/characters" />
 	</section>
 
 	<section if="MODS_ALLOWED">

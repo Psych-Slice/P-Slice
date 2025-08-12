@@ -520,7 +520,7 @@ class FreeplayState extends MusicBeatSubstate
 		// ? changed offsets
 		if (fromCharSelect == true)
 		{
-			blackOverlayBullshitLOLXD.x = backingImage.x;
+			blackOverlayBullshitLOLXD.visible = false;
 			overhangStuff.y = -100;
 			backingCard?.skipIntroTween();
 		}
@@ -693,7 +693,10 @@ class FreeplayState extends MusicBeatSubstate
 					onUpdate: function(_)
 					{
 						angleMaskShader.extraColor = backingImage.color;
-					}
+					},
+					onComplete: function(_) {
+              			blackOverlayBullshitLOLXD.visible = false;
+            		}
 				});
 			}
 
