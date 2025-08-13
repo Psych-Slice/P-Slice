@@ -819,12 +819,23 @@ class LoadingState extends MusicBeatState
 		try {
 			var requestKey:String = 'images/$key';
 			#if TRANSLATIONS_ALLOWED requestKey = Language.getFileTranslation(requestKey); #end
+			var baseReqKey = requestKey;
 			if(requestKey.lastIndexOf('.') < 0) requestKey += '.png';
 
 			if (!Paths.currentTrackedAssets.exists(requestKey))
 			{
+				var bitmap:BitmapData = null;
 				var file:String = Paths.getPath(requestKey, IMAGE);
-				var bitmap:BitmapData = NativeFileSystem.getBitmap(file);
+
+				#if ATSC_SUPPORT
+				var atscFile:String = Paths.getPath(baseReqKey+'.astc', IMAGE);
+				bitmap = NativeFileSystem.getBitmap(atscFile);
+				#end
+
+				if(bitmap == null)
+					bitmap = NativeFileSystem.getBitmap(file);
+				
+
 				if (bitmap != null)
 				{
 
