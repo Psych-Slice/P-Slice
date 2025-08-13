@@ -41,14 +41,14 @@ class SchoolErect extends BaseStage
 
 		if (!VsliceOptions.LOW_QUALITY)
 		{
-			var fgTrees:BGSprite = new BGSprite('weeb/erect/weebTreesBack', repositionShit + 260,-20, 0.9, 0.9);
-			fgTrees.setGraphicSize(Std.int(widShit));
+			var fgTrees:BGSprite = new BGSprite('weeb/erect/weebTreesBack', repositionShit + 180,-25, 0.9, 0.9);
+			fgTrees.setGraphicSize(Std.int(widShit * 0.9));
 			fgTrees.updateHitbox();
 			add(fgTrees);
 			fgTrees.antialiasing = false;
 		}
 
-		var bgTrees:FlxSprite = new FlxSprite(repositionShit - 410, -1450);
+		var bgTrees:FlxSprite = new FlxSprite(repositionShit - 690, -1490);
 		bgTrees.frames = Paths.getPackerAtlas('weeb/erect/weebTrees');
 		bgTrees.animation.add('treeLoop', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 12);
 		bgTrees.animation.play('treeLoop');
