@@ -437,19 +437,7 @@ class FunkinPreloader extends FlxBasePreloader
 						#end
 						"images/fonts/capsule-text.png",
 						"images/fonts/freeplay-clear.png",
-						"images/back.png",
 						"images/charSelect/lockedChill/spritemap1.png",
-						"images/freeplay/albumRoll/expansion1-text.png",
-						"images/freeplay/albumRoll/expansion1.png",
-						"images/freeplay/albumRoll/expansion2-text.png",
-						"images/freeplay/albumRoll/expansion2.png",
-						"images/freeplay/albumRoll/volume2-text.png",
-						"images/freeplay/albumRoll/volume2.png",
-						"images/freeplay/albumRoll/volume1-text.png",
-						"images/freeplay/albumRoll/volume1.png",
-						"images/freeplay/albumRoll/volume3-text.png",
-						"images/freeplay/albumRoll/volume3.png",
-						"images/freeplay/albumRoll/volume4-text.png",
 						"images/freeplay/albumRoll/volume4.png" // "images/ui/cursor.png"
 					]; // Assets.listGraphics('core');
 

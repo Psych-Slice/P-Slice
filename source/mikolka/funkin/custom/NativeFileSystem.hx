@@ -29,7 +29,7 @@ class NativeFileSystem
 		#if OPENFL_LOOKUP
 		if (!isModded)
 		{
-			var openfl_content = (OpenFlAssets.exists(path, TEXT)) ? Assets.getText(path) : null;
+			var openfl_content = (openFlAssets.contains(path)) ? Assets.getText(path) : null;
 			if (openfl_content != null)
 				return openfl_content;
 		}
@@ -52,24 +52,19 @@ class NativeFileSystem
 	// Loads a given bitmap. Returns null if it doesn't exist
 	public static function getBitmap(path:String):Null<BitmapData>
 	{
+		#if nativesys_profile var timeStart = Sys.time(); #end
 		var isModded = path.startsWith("mods");
 
 		#if OPENFL_LOOKUP
-		if (!isModded)
+		if (#if NATIVE_LOOKUP !isModded && #end openFlAssets.contains(path))
 		{
-			// A ton of stuff uses .png internally, so we fake it for ATSC
-			#if ATSC_SUPPORT
-			var atscFile:String = Path.withoutExtension(key) + ".atsc";
-			if (openFlAssets.contains(atscFile)){
-				var result = OpenFlAssets.getBitmapData(atscFile);
-				return result;
-			}
+			var result = OpenFlAssets.getBitmapData(path);
+			#if nativesys_profile
+			var timeEnd = Sys.cpuTime() - timeStart;
+			if (timeEnd > 1.2)
+				trace('Getting native bitmap ${path} took: $timeEnd');
 			#end
-
-			if (openFlAssets.contains(path)){
-				var result = OpenFlAssets.getBitmapData(path);
-				return result;
-			}
+			return result;
 		}
 		#end
 
@@ -82,6 +77,11 @@ class NativeFileSystem
 		if (sys_path != null)
 		{
 			var result = BitmapData.fromFile(sys_path);
+			#if nativesys_profile
+			var timeEnd = Sys.cpuTime() - timeStart;
+			if (timeEnd > 1.2)
+				trace('Getting system bitmap ${path} took: $timeEnd');
+			#end
 			return result;
 		}
 		#end
@@ -97,7 +97,7 @@ class NativeFileSystem
 		#if OPENFL_LOOKUP
 		if (!isModded)
 		{
-			if (OpenFlAssets.exists(path, SOUND))
+			if (openFlAssets.contains(path))
 			{
 				var result = OpenFlAssets.getSound(path);
 				#if nativesys_profile
@@ -144,7 +144,7 @@ class NativeFileSystem
 		#if OPENFL_LOOKUP
 		if (!isModded)
 		{
-			var isFile = OpenFlAssets.exists(path, TEXT);
+			var isFile = openFlAssets.contains(path);
 			if (!isFile)
 			{
 				var isDir = openFlAssets.filter(folder -> folder.startsWith(path)).length > 0;
@@ -389,15 +389,6 @@ class NativeFileSystem
 	public static function getPathLike(path:String):Null<String>
 	{
 		var cwd_path = addCwd(path);
-
-		// A ton of stuff uses .png internally, so we fake it for ATSC
-		#if ATSC_SUPPORT
-		if(path.endsWith(".png")){
-			var atscFile:String = Path.withoutExtension(cwd_path) + ".atsc";
-			if (sys.FileSystem.exists(atscFile))
-				return atscFile;	
-		}
-		#end
 		if (sys.FileSystem.exists(cwd_path))
 			return cwd_path;
 		return null;

@@ -19,7 +19,7 @@ class SchoolErect extends BaseStage
 	override function create()
 	{
 		#if LEGACY_PSYCH PlayState.SONG.splashSkin = "pixelNoteSplash"; #end
-		var repositionShit = -600;
+		var repositionShit = -650;
 
 		var bgSky:BGSprite = new BGSprite('weeb/erect/weebSky', -626, -78, 0.2, 0.2);
 		add(bgSky);
@@ -33,7 +33,7 @@ class SchoolErect extends BaseStage
 		add(bgSchool);
 		bgSchool.antialiasing = false;
 
-		var bgStreet:BGSprite = new BGSprite('weeb/erect/weebStreet', repositionShit, 6, 0.95, 0.95);
+		var bgStreet:BGSprite = new BGSprite('weeb/erect/weebStreet', repositionShit, -50, 0.95, 0.95);
 		add(bgStreet);
 		bgStreet.antialiasing = false;
 
@@ -41,14 +41,14 @@ class SchoolErect extends BaseStage
 
 		if (!VsliceOptions.LOW_QUALITY)
 		{
-			var fgTrees:BGSprite = new BGSprite('weeb/erect/weebTreesBack', repositionShit + 15, 6, 0.9, 0.9);
+			var fgTrees:BGSprite = new BGSprite('weeb/erect/weebTreesBack', repositionShit + 260,-20, 0.9, 0.9);
 			fgTrees.setGraphicSize(Std.int(widShit));
 			fgTrees.updateHitbox();
 			add(fgTrees);
 			fgTrees.antialiasing = false;
 		}
 
-		var bgTrees:FlxSprite = new FlxSprite(repositionShit - 410, -1250);
+		var bgTrees:FlxSprite = new FlxSprite(repositionShit - 410, -1450);
 		bgTrees.frames = Paths.getPackerAtlas('weeb/erect/weebTrees');
 		bgTrees.animation.add('treeLoop', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 12);
 		bgTrees.animation.play('treeLoop');

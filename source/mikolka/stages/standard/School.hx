@@ -34,7 +34,7 @@ class School extends BaseStage
 		add(bgSky);
 		bgSky.antialiasing = false;
 
-		var repositionShit = -670;
+		var repositionShit = -700;
 		var widShit = Std.int(bgSky.width * PlayState.daPixelZoom);
 
 		var bgSchool:BGSprite = new BGSprite('weeb/weebSchool', repositionShit, 0, 0.75, 0.75);
@@ -44,14 +44,14 @@ class School extends BaseStage
 		add(bgStreet);
 
 		if(!VsliceOptions.LOW_QUALITY) {
-			var fgTrees:BGSprite = new BGSprite('weeb/weebTreesBack', repositionShit + 170,125, 0.9, 0.9);
-			fgTrees.setGraphicSize(Std.int(widShit * 0.8));
+			var fgTrees:BGSprite = new BGSprite('weeb/weebTreesBack', repositionShit + 260,20, 0.9, 0.9);
+			fgTrees.setGraphicSize(Std.int(widShit * 0.85));
 			fgTrees.updateHitbox();
 			fgTrees.antialiasing = false;
 			add(fgTrees);
 		}
 
-		var bgTrees:FlxSprite = new FlxSprite(repositionShit - 380, -1400);
+		var bgTrees:FlxSprite = new FlxSprite(repositionShit - 270, -1160);
 		bgTrees.frames = Paths.getPackerAtlas('weeb/weebTrees');
 		bgTrees.animation.add('treeLoop', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 12);
 		bgTrees.animation.play('treeLoop');

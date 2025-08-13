@@ -261,13 +261,25 @@ class Paths
 	{
 		if (bitmap == null)
 		{
-			var file:String = getPath(key, IMAGE, parentFolder, true);
-			bitmap = NativeFileSystem.getBitmap(file);
+			// A ton of stuff uses .png internally, so we fake it for ATSC
+			var intarnalFile = Path.withoutExtension(key);
 
-			if (bitmap == null)
-			{
-				trace('Bitmap not found: $file | key: $key');
-				return null;
+			#if ATSC_SUPPORT
+			var extension = ".astc";
+			var file:String = getPath(intarnalFile+extension, IMAGE, parentFolder, true);
+			trace(file);
+			bitmap = NativeFileSystem.getBitmap(file);
+			#end
+
+			if (bitmap == null){
+				var extension = ".png";
+				var file:String = getPath(intarnalFile+extension, IMAGE, parentFolder, true);
+				bitmap = NativeFileSystem.getBitmap(file);
+				if (bitmap == null)
+				{
+					trace('Bitmap not found: $file | key: $key');
+					return null;
+				}
 			}
 		}
 
