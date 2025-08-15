@@ -97,9 +97,11 @@ class ResetScoreSubState extends MusicBeatSubstate
 		{
 			if (week == -1)
 				icon.animation.curAnim.curFrame = 0;
-			noZone = new TouchZone(760, text.y + 150, 160, 90, FlxColor.RED);
+			var centerX = FlxG.width/2;
+			noZone = new TouchZone(centerX+130, text.y + 150, 160, 90, FlxColor.RED);
 			noZone.camera = optionsCam;
-			yesZone = new TouchZone(360, text.y + 150, 160, 90, FlxColor.GREEN);
+
+			yesZone = new TouchZone(centerX-280, text.y + 150, 160, 90, FlxColor.GREEN);
 			yesZone.camera = optionsCam;
 			add(yesZone);
 			add(noZone);
