@@ -35,13 +35,23 @@ class SchoolEvilErect extends BaseStage
 			GameOverSubstate.characterName = 'bf-pixel-dead';
 		#end
 
-		var posX = 410;
-		var posY = 390;
+		var backSpikes = new BGSprite('weeb/erect/evil/weebBackSpikes', -662, -60,0.5,0.5);
+		backSpikes.scale.set(PlayState.daPixelZoom, PlayState.daPixelZoom);
+		backSpikes.updateHitbox();
+		backSpikes.antialiasing = false;
+		add(backSpikes);
 
-		bg = new BGSprite('weeb/erect/evilSchoolBG', posX, posY, 0.8, 0.9);
-		bg.scale.set(PlayState.daPixelZoom, PlayState.daPixelZoom);
-		bg.antialiasing = false;
+		bg = new BGSprite('weeb/erect/evil/weebSchool', -816, -38, 0.75, 0.75);
+		bg.makePixel();
 		add(bg);
+
+		var spike = new BGSprite('weeb/erect/evil/backSpike', 1416, 464,0.85,0.85);
+		spike.makePixel();
+		add(spike);
+
+		var street = new BGSprite('weeb/erect/evil/weebStreet', -662, 6);
+		street.makePixel();
+		add(street);
 
 		setDefaultGF('gf-pixel');
 

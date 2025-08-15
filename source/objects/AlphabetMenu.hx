@@ -1,5 +1,6 @@
 package objects;
 
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 import flixel.util.FlxSignal.FlxTypedSignal;
 import flixel.math.FlxRect;
 import flixel.group.FlxGroup.FlxGroup;
@@ -19,10 +20,11 @@ class AlphabetMenu extends FlxGroup {
         FlxG.watch.addQuick("curSelected", curSelected);
 		FlxG.watch.addQuick("curSelectedPartial", curSelectedPartial);
 		add(grpTexts);
+		var cutoutSize = MobileScaleMode.gameCutoutSize.x / 2;
 
 		for (i in 0...options.length)
 		{
-			var leText:Alphabet = new Alphabet(90, 320, options[i], true);
+			var leText:Alphabet = new Alphabet(90+cutoutSize, 320, options[i], true);
 			leText.isMenuItem = true;
 			leText.targetY = i;
 			grpTexts.add(leText);

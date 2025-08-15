@@ -31,4 +31,9 @@ class BGSprite extends FlxSprite
 			animation.play(idleAnim, forceplay);
 		}
 	}
+	public function makePixel() {
+		scale.set(PlayState.daPixelZoom, PlayState.daPixelZoom);
+		updateHitbox();
+		antialiasing = false;
+	}
 }

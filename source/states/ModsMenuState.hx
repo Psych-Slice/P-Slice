@@ -455,7 +455,7 @@ class ModsMenuState extends MusicBeatState
 						if (holdTime > 0.5 && Math.floor(lastHoldTime * 8) != Math.floor(holdTime * 8))
 							changeSelectedMod(shiftMult * (controls.UI_UP ? -1 : 1));
 					}
-					else if (FlxG.mouse.pressed && !controls.mobileC && !gottaClickAgain)
+					else if (FlxG.mouse.pressed  && !gottaClickAgain) //&& !controls.mobileC
 					{
 						var curMod:ModItem = modsGroup.members[curSelectedMod];
 						if (curMod != null)
@@ -505,7 +505,7 @@ class ModsMenuState extends MusicBeatState
 							}
 						}
 					}
-					else if (FlxG.mouse.justReleased && !controls.mobileC && holdingMod)
+					else if (FlxG.mouse.justReleased && holdingMod) //&& !controls.mobileC 
 					{
 						holdingMod = false;
 						holdingElapsed = 0;

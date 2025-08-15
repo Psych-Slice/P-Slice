@@ -31,18 +31,30 @@ class SchoolEvil extends BaseStage
 		if(_song.gameOverChar == null || _song.gameOverChar.trim().length < 1) GameOverSubstate.characterName = 'bf-pixel-dead';
 		#end
 		
-		var posX = 400+20;
-		var posY = 200+150;
 
-		bg = new BGSprite('weeb/evilSchoolBG', posX, posY, 0.8, 0.9);
+		var trees = new BGSprite('weeb/evil/weebBackTrees', -842, -80, 0.5, 0.5);
+		trees.scale.set(PlayState.daPixelZoom, PlayState.daPixelZoom);
+		trees.updateHitbox();
+		trees.antialiasing = false;
+		add(trees);
+
+		bg = new BGSprite('weeb/evil/weebSchool', -816, -38, 0.75, 0.75);
 		bg.scale.set(PlayState.daPixelZoom, PlayState.daPixelZoom);
+		bg.updateHitbox();
 		bg.antialiasing = false;
 		add(bg);
 
-		var bgStreet:BGSprite = new BGSprite('weeb/evilSchoolFG', 450, 390, 0.95, 0.95);
+		var bgStreet:BGSprite = new BGSprite('weeb/evil/weebStreet', -662, 6, 1,1);
 		bgStreet.scale.set(PlayState.daPixelZoom, PlayState.daPixelZoom);
+		bgStreet.updateHitbox();
 		bgStreet.antialiasing = false;
 		add(bgStreet);
+
+		var bgTrees:BGSprite = new BGSprite('weeb/evil/weebTrees', -662, 6, 1,1);
+		bgTrees.scale.set(PlayState.daPixelZoom, PlayState.daPixelZoom);
+		bgTrees.updateHitbox();
+		bgTrees.antialiasing = false;
+		add(bgTrees);
 
 		setDefaultGF('gf-pixel');
 
