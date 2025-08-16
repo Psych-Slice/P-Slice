@@ -51,7 +51,7 @@ jobs:
         run: ${{ inputs.setupScript }}
 
       - name: Install hxvlc for windows
-        run: haxelib install hxvlc 1.8.2 --quiet
+        run: haxelib install hxvlc 2.2.2 --quiet
         if: inputs.os == 'ubuntu-latest'
    
       - name: Clearing already existing cache

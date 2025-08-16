@@ -463,7 +463,7 @@ class FunkinPreloader extends FlxBasePreloader
 							promise.progress(index + 1, assetsToCache.length);
 						}
 						promise.complete(null);
-					}, true); // Assets.cacheAssets(assetsToCache);
+					}, #if mac false #else true #end); // Assets.cacheAssets(assetsToCache);
 
 					promise.future.onProgress((loaded:Int, total:Int) ->
 					{

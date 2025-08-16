@@ -69,8 +69,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<define name="SHOW_LOADING_SCREEN" />
 
 	<!-- Forces the game to unload UI assets before loading the song assets -->
-	<define name="STRICT_LOADING_SCREEN" />
-	<!-- <define name="STRICT_LOADING_SCREEN" if="mobile SHOW_LOADING_SCREEN" /> -->
+	<!-- <define name="STRICT_LOADING_SCREEN" /> -->
+	<define name="STRICT_LOADING_SCREEN" if="mobile SHOW_LOADING_SCREEN" />
 
 	<define name="MULTITHREADED_LOADING" if="cpp" /> <!-- UNCOMMENTING THIS LINE WILL ENABLE MULTITHREADED LOADING, WHICH IMPROVES LOADING TIMES, BUT WITH A LOW CHANCE FOR THE GAME FREEZE ON SONG LOAD -->
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN -->
@@ -255,7 +255,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
 	<haxedef name="FLX_NO_DEBUG" unless="PROFILE_BUILD || debug" />
 
-	<!--Enable this for Nape release builds for a serious peformance improvement-->
+	<!--Enable this for Nape release builds for a serious performance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
 	<!-- I hate you @superpowers04 for changing commits like that -->
@@ -269,6 +269,10 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 		<haxedef name="HXCPP_STACK_LINE" />
 		<haxedef name="HXCPP_STACK_TRACE" />
 		<haxedef name="HXCPP_CATCH_SEGV" />
+	</section>
+	<section if="ios">
+		<!-- Compile for ARM (hopefully should fix the sim screaming about libs)-->
+		<haxedef name="HXCPP_ARM64" />
 	</section>
 	
 	<!--Disable deprecated warnings-->
