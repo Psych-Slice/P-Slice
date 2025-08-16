@@ -40,6 +40,12 @@ class InitState extends MusicBeatState
 
 		trace("Loading game settings");
 		PlayerSettings.init();
+
+		trace("ACTUALLY load saves");
+		FlxG.save.bind('funkin', 'ninjamuffin99');
+
+		ClientPrefs.loadPrefs();
+		
 		trace("Setting some save related values");
 		if (FlxG.save.data != null && FlxG.save.data.fullscreen)
 		{
