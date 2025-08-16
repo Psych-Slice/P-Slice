@@ -1,0 +1,20 @@
+{
+      "lime.buildTypes": [
+    {
+      "label": "Debug (Profile)",
+      "args": ["-debug", "-DPROFILE_BUILD", "-DFEATURE_DEBUG_FUNCTIONS"]
+    },
+    {
+      "label": "Release (Profile)",
+      "args": ["-release", "-DPROFILE_BUILD", "-DFEATURE_DEBUG_FUNCTIONS"]
+    },
+    {
+      "label": "Release",
+      "args": ["-release"]
+    },
+    {
+      "label": "Release (GitHub Actions)",
+      "args": ["-release", "-DGITHUB_BUILD"]
+    }
+  ],
+}

@@ -110,6 +110,10 @@ class FreeplaySongData extends SngCapsuleData
 
 	public function updateIsNewTag()
 	{
+		if(!metaAllowNew && !ClientPrefs.data.vsliceForceNewTag){
+			isNew = false;
+			return;
+		}
 		var wasCompleted = false;
 		var saveSongName = Paths.formatToSongPath(getNativeSongId());
 		for (x in Highscore.songScores.keys())
@@ -120,7 +124,7 @@ class FreeplaySongData extends SngCapsuleData
 				break;
 			}
 		}
-		isNew = ((ClientPrefs.data.vsliceForceNewTag || isNew) && !wasCompleted);
+		isNew = !wasCompleted;
 	}
 
 	public function loadAndGetDiffId()

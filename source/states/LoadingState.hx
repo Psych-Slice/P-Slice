@@ -92,6 +92,14 @@ class LoadingState extends MusicBeatState
 	#end
 	override function create()
 	{
+		#if STRICT_LOADING_SCREEN
+        if(backend.ClientPrefs.data.strictLoadingScreen){	
+			Paths.clearStoredMemory();
+			Paths.clearUnusedMemory();
+			LoadingState.prepareToSong();
+		}
+		#end
+
 		persistentUpdate = true;
 		barGroup = new FlxSpriteGroup();
 		add(barGroup);
@@ -170,7 +178,7 @@ class LoadingState extends MusicBeatState
 		bg.updateHitbox();
 		addBehindBar(bg);
 	
-		loadingText = new FlxText(520, 600, 400, Language.getPhrase('now_loading', 'Now Loading', ['...']), 32);
+		loadingText = new FlxText((FlxG.width/2)-200, 600, 400, Language.getPhrase('now_loading', 'Now Loading', ['...']), 32);
 		loadingText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, LEFT, OUTLINE_FAST, FlxColor.BLACK);
 		loadingText.borderSize = 2;
 		addBehindBar(loadingText);
@@ -399,6 +407,7 @@ class LoadingState extends MusicBeatState
 
 		if(intrusive)
 			return new LoadingState(target, stopMusic);
+		
 		
 		if (stopMusic && FlxG.sound.music != null)
 			FlxG.sound.music.stop();
@@ -810,12 +819,23 @@ class LoadingState extends MusicBeatState
 		try {
 			var requestKey:String = 'images/$key';
 			#if TRANSLATIONS_ALLOWED requestKey = Language.getFileTranslation(requestKey); #end
+			var baseReqKey = requestKey;
 			if(requestKey.lastIndexOf('.') < 0) requestKey += '.png';
 
 			if (!Paths.currentTrackedAssets.exists(requestKey))
 			{
+				var bitmap:BitmapData = null;
 				var file:String = Paths.getPath(requestKey, IMAGE);
-				var bitmap:BitmapData = NativeFileSystem.getBitmap(file);
+
+				#if ATSC_SUPPORT
+				var atscFile:String = Paths.getPath(baseReqKey+'.astc', IMAGE);
+				bitmap = NativeFileSystem.getBitmap(atscFile);
+				#end
+
+				if(bitmap == null)
+					bitmap = NativeFileSystem.getBitmap(file);
+				
+
 				if (bitmap != null)
 				{
 

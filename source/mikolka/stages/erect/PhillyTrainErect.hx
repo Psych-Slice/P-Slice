@@ -24,11 +24,11 @@ class PhillyTrainErect extends BaseStage
 	{
 		if (!VsliceOptions.LOW_QUALITY)
 		{
-			var bg:BGSprite = new BGSprite('philly/erect/sky', -100, 0, 0.1, 0.1);
+			var bg:BGSprite = new BGSprite('philly/erect/sky', -50, 0, 0.1, 0.1);
 			add(bg);
 		}
 
-		var city:BGSprite = new BGSprite('philly/erect/city', -10, 0, 0.3, 0.3);
+		var city:BGSprite = new BGSprite('philly/erect/city', -255, 45, 0.3, 0.3);
 		city.setGraphicSize(Std.int(city.width * 0.85));
 		city.updateHitbox();
 		add(city);
@@ -42,14 +42,14 @@ class PhillyTrainErect extends BaseStage
 
 		if (!VsliceOptions.LOW_QUALITY)
 		{
-			var streetBehind:BGSprite = new BGSprite('philly/erect/behindTrain', -40, 50);
+			var streetBehind:BGSprite = new BGSprite('philly/erect/behindTrain', -299, 144);
 			add(streetBehind);
 		}
 
 		phillyTrain = new PhillyTrain(2000, 360);
 		add(phillyTrain);
 
-		phillyStreet = new BGSprite('philly/erect/street', -40, 50);
+		phillyStreet = new BGSprite('philly/erect/street', -299, 144);
 		add(phillyStreet);
 
 		if (VsliceOptions.SHADERS)

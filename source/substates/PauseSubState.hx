@@ -1,5 +1,6 @@
 package substates;
 
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 #if TOUCH_CONTROLS_ALLOWED
 import mobile.objects.TouchZone;
 import mobile.objects.ScrollableObject;
@@ -206,10 +207,6 @@ class PauseSubState extends MusicBeatSubstate
 		var scroll = new ScrollableObject(-0.008, 100, 0, FlxG.width - 200, FlxG.height, button);
 		scroll.cameras = cameras;
 		scroll.onPartialScroll.add(delta -> changeSelection(delta, false));
-		scroll.onFullScroll.add(delta ->
-		{
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-		});
 		scroll.onFullScrollSnap.add(() -> changeSelection(0, true));
 		scroll.onTap.add(() ->
 		{
@@ -511,12 +508,14 @@ class PauseSubState extends MusicBeatSubstate
 	{
 		if (usePrecision)
 		{
+			if(delta != 0) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 			curSelected = FlxMath.wrap(curSelected + Std.int(delta), 0, menuItems.length - 1);
 			curSelectedPartial = curSelected;
 		}
 		else
 		{
 			curSelectedPartial = FlxMath.bound(curSelectedPartial + delta, 0, menuItems.length - 1);
+			if(curSelected != Math.round(curSelectedPartial)) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 			curSelected = Math.round(curSelectedPartial);
 		}
 		for (num => item in grpMenuShit.members)
@@ -546,10 +545,10 @@ class PauseSubState extends MusicBeatSubstate
 			grpMenuShit.remove(obj, true);
 			obj.destroy();
 		}
-
+		var cutoutSize = MobileScaleMode.gameCutoutSize.x / 2;
 		for (num => str in menuItems)
 		{
-			var item = new Alphabet(90, 320, Language.getPhrase('pause_$str', str), true);
+			var item = new Alphabet(cutoutSize+90, 320, Language.getPhrase('pause_$str', str), true);
 			item.isMenuItem = true;
 			item.targetY = num;
 			grpMenuShit.add(item);

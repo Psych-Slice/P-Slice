@@ -45,13 +45,14 @@ class SongMenuItem extends FlxSpriteGroup
   public var ranking:FreeplayRank;
   public var blurredRanking:FreeplayRank;
 
-  public var fakeRanking:FreeplayRank;
-  public var fakeBlurredRanking:FreeplayRank;
+   var fakeRankingInited:Bool = false; 
+   var fakeRanking:FreeplayRank;
+   var fakeBlurredRanking:FreeplayRank;
+
+
   public var txtWeek:AtlasText;
 
-  var ranks:Array<String> = ["fail", "average", "great", "excellent", "perfect", "perfectsick"];
-
-  public var targetPos:FlxPoint = new FlxPoint();
+  public var targetPos:FlxPoint = FlxPoint.get();
   public var doLerp:Bool = false;
   public var doJumpIn:Bool = false;
 
@@ -87,6 +88,7 @@ class SongMenuItem extends FlxSpriteGroup
   static var gaussianBlur:GaussianBlurShader = null;
   static var gaussianBlur_12:GaussianBlurShader = null;
   public static var static_hsvShader:HSVShader = null;
+
   public static function reloadGlobalItemData() {
 		if(VsliceOptions.SHADERS) {
     static_hsvShader = new HSVShader();
@@ -159,16 +161,6 @@ class SongMenuItem extends FlxSpriteGroup
     // doesn't get added, simply is here to help with visibility of things for the pop in!
     grpHide = new FlxGroup();
 
-    fakeRanking = new FreeplayRank(420, 41);
-    add(fakeRanking);
-
-    fakeBlurredRanking = new FreeplayRank(fakeRanking.x, fakeRanking.y);
-    fakeBlurredRanking.shader = gaussianBlur;
-    add(fakeBlurredRanking);
-
-    fakeRanking.visible = false;
-    fakeBlurredRanking.visible = false;
-
     ranking = new FreeplayRank(420, 41);
     add(ranking);
 
@@ -188,28 +180,7 @@ class SongMenuItem extends FlxSpriteGroup
 
     add(sparkle);
 
-    // ranking.loadGraphic(Paths.image('freeplay/ranks/' + rank));
-    // ranking.scale.x = ranking.scale.y = realScaled;
-    // ranking.alpha = 0.75;
-    // ranking.visible = false;
-    // ranking.origin.set(capsule.origin.x - ranking.x, capsule.origin.y - ranking.y);
-    // add(ranking);
-    // grpHide.add(ranking);
-
-    // switch (rank)
-    // {
-    //   case 'perfect':
-    //     ranking.x -= 10;
-    // }
-
     grayscaleShader = new Grayscale(1);
-
-    // diffRatingSprite = new FlxSprite(145, 90).loadGraphic(Paths.image('freeplay/diffRatings/diff00'));
-    // diffRatingSprite.shader = grayscaleShader;
-    // diffRatingSprite.origin.set(capsule.origin.x - diffRatingSprite.x, capsule.origin.y - diffRatingSprite.y);
-    // TODO: Readd once ratings are fully implemented
-    // add(diffRatingSprite);
-    // grpHide.add(diffRatingSprite);
 
     songText = new CapsuleText(capsule.width * 0.26, 45, 'Random', Std.int(40 * realScaled));
     add(songText);
@@ -254,6 +225,24 @@ class SongMenuItem extends FlxSpriteGroup
     setVisibleGrp(false);
   }
 
+  public function setFakeRanking(oldRank:Null<ScoringRank>){
+    if(!fakeRankingInited){
+      var index = members.indexOf(ranking);
+      fakeRankingInited = true;
+
+      fakeRanking = new FreeplayRank(420, 41);
+      insert(index,fakeRanking);
+
+      fakeBlurredRanking = new FreeplayRank(fakeRanking.x, fakeRanking.y);
+      fakeBlurredRanking.shader = gaussianBlur;
+      insert(index,fakeBlurredRanking);
+
+      fakeRanking.visible = false;
+      fakeBlurredRanking.visible = false;
+    }
+    	fakeRanking.rank = oldRank;
+			fakeBlurredRanking.rank = oldRank;
+  }
   function sparkleEffect(timer:FlxTimer):Void
   {
     sparkle.setPosition(FlxG.random.float(ranking.x - 20, ranking.x + 3), FlxG.random.float(ranking.y - 29, ranking.y + 4));
@@ -431,8 +420,12 @@ class SongMenuItem extends FlxSpriteGroup
       updateSelected();
     }
 
+  var prevRating:Int = -1;
   function updateDifficultyRating(newRating:Int):Void
   {
+    if(prevRating == newRating) return;
+    else prevRating = newRating;
+
     if(newRating < 0){
       for (item in bigNumbers) item.visible = false;
       difficultyText.visible = false;
@@ -688,11 +681,17 @@ class SongMenuItem extends FlxSpriteGroup
     {
       x = MathUtil.smoothLerp(x, targetPos.x,elapsed, 0.3); //? update lerping for lower FPS
       y = MathUtil.smoothLerp(y, targetPos.y,elapsed, 0.4); //? kinda cool tbh
+      // TODO capsule.visible = songData?.isFav;
     }
 
     super.update(elapsed);
   }
 
+  override function destroy() {
+    targetPos.put();
+    txtWeek.text = "";
+    super.destroy();
+  }
   /**
    * Play any animations associated with selecting this song.
    */
@@ -707,9 +706,12 @@ class SongMenuItem extends FlxSpriteGroup
 
   public function intendedY(index:Float):Float
   {
-    return (index * ((height * realScaled) + 10)) + 120;
+    return index * ((height * realScaled) + 10) + 120;
   }
-
+  public function intendedX(index:Float):Float
+  {
+    return 270 + (60 * (FlxMath.fastSin(index)));
+  }
   function set_selected(value:Bool):Bool
   {
     // cute one liners, lol!

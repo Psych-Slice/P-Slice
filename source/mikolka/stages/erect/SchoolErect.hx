@@ -19,21 +19,21 @@ class SchoolErect extends BaseStage
 	override function create()
 	{
 		#if LEGACY_PSYCH PlayState.SONG.splashSkin = "pixelNoteSplash"; #end
-		var repositionShit = -200;
+		var repositionShit = -650;
 
-		var bgSky:BGSprite = new BGSprite('weeb/erect/weebSky', repositionShit + 38, -78, 0.2, 0.2);
+		var bgSky:BGSprite = new BGSprite('weeb/erect/weebSky', -626, -78, 0.2, 0.2);
 		add(bgSky);
 		bgSky.antialiasing = false;
 
-		var foliage:BGSprite = new BGSprite('weeb/erect/weebBackTrees', repositionShit, -10, 0.5, 0.5);
+		var foliage:BGSprite = new BGSprite('weeb/erect/weebBackTrees', repositionShit, -80, 0.5, 0.5);
 		add(foliage);
 		foliage.antialiasing = false;
 
-		var bgSchool:BGSprite = new BGSprite('weeb/erect/weebSchool', repositionShit, -15, 0.8, 0.90);
+		var bgSchool:BGSprite = new BGSprite('weeb/erect/weebSchool', repositionShit, -38, 0.8, 0.90);
 		add(bgSchool);
 		bgSchool.antialiasing = false;
 
-		var bgStreet:BGSprite = new BGSprite('weeb/erect/weebStreet', repositionShit, 0, 0.95, 0.95);
+		var bgStreet:BGSprite = new BGSprite('weeb/erect/weebStreet', repositionShit, -50, 0.95, 0.95);
 		add(bgStreet);
 		bgStreet.antialiasing = false;
 
@@ -41,14 +41,14 @@ class SchoolErect extends BaseStage
 
 		if (!VsliceOptions.LOW_QUALITY)
 		{
-			var fgTrees:BGSprite = new BGSprite('weeb/erect/weebTreesBack', repositionShit + 15, -15, 0.9, 0.9);
-			fgTrees.setGraphicSize(Std.int(widShit));
+			var fgTrees:BGSprite = new BGSprite('weeb/erect/weebTreesBack', repositionShit + 180,-25, 0.9, 0.9);
+			fgTrees.setGraphicSize(Std.int(widShit * 0.9));
 			fgTrees.updateHitbox();
 			add(fgTrees);
 			fgTrees.antialiasing = false;
 		}
 
-		var bgTrees:FlxSprite = new FlxSprite(repositionShit - 410, -900);
+		var bgTrees:FlxSprite = new FlxSprite(repositionShit - 690, -1490);
 		bgTrees.frames = Paths.getPackerAtlas('weeb/erect/weebTrees');
 		bgTrees.animation.add('treeLoop', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 12);
 		bgTrees.animation.play('treeLoop');
@@ -58,7 +58,7 @@ class SchoolErect extends BaseStage
 
 		if (!VsliceOptions.LOW_QUALITY)
 		{
-			var treeLeaves:BGSprite = new BGSprite('weeb/erect/petals', repositionShit + 30, 0, 0.85, 0.85, ['PETALS ALL'], true);
+			var treeLeaves:BGSprite = new BGSprite('weeb/erect/petals', repositionShit + 30, -40, 0.85, 0.85, ['PETALS ALL'], true);
 			treeLeaves.setGraphicSize(widShit * 0.95);
 			treeLeaves.updateHitbox();
 			add(treeLeaves);

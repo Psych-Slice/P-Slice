@@ -65,7 +65,6 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
-		Paths.clearUnusedMemory();
 
 		if (stickerSubState != null)
 		{
@@ -79,6 +78,7 @@ class StoryMenuState extends MusicBeatState
 		}
 		else
 			Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
 
 		persistentUpdate = persistentDraw = true;
 		PlayState.isStoryMode = true;
@@ -179,7 +179,7 @@ class StoryMenuState extends MusicBeatState
 		difficultySelectors = new FlxGroup();
 		add(difficultySelectors);
 
-		leftArrow = new FlxSprite(850, grpWeekText.members[0].y + 10);
+		leftArrow = new FlxSprite(FlxG.width-430, grpWeekText.members[0].y + 10);
 		leftArrow.antialiasing = VsliceOptions.ANTIALIASING;
 		leftArrow.frames = ui_tex;
 		leftArrow.animation.addByPrefix('idle', "arrow left");
@@ -230,9 +230,9 @@ class StoryMenuState extends MusicBeatState
 		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad('LEFT_FULL', 'A_B_X_Y');
 
-		var button = new TouchZone(415, 470, 420, 160, FlxColor.PURPLE);
+		var button = new TouchZone((FlxG.width/2)-210, 460, 420, 160, FlxColor.PURPLE);
 
-		var scroll = new ScrollableObject(-0.01, 370, 0, 500, FlxG.height, button);
+		var scroll = new ScrollableObject(-0.01, (FlxG.width/2)-240, 0, 500, FlxG.height, button);
 		scroll.onPartialScroll.add(delta -> changeWeek(delta, false));
 		scroll.onFullScroll.add(delta -> {
 				changeDifficulty();

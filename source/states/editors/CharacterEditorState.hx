@@ -512,7 +512,7 @@ class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler
 			animationLoopCheckBox.checked = anim.loop;
 			animationFramerate.value = anim.fps;
 
-			var indicesStr:String = anim.indices.toString();
+			var indicesStr:String = anim.indices?.toString() ?? "";
 			animationIndicesInputText.text = indicesStr.substr(1, indicesStr.length - 2);
 		});
 

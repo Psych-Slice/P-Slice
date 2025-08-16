@@ -115,7 +115,7 @@ class FreeplayHelpers {
 				// 	trace('CHANGED MOD DIRECTORY, RELOADING STUFF');
 				// 	Paths.freeGraphicsFromMemory();
 				// }
-				LoadingState.prepareToSong();
+				#if !STRICT_LOADING_SCREEN LoadingState.prepareToSong(); #end
 
 				trace('CURRENT WEEK: ' + WeekData.getWeekFileName());
 			}

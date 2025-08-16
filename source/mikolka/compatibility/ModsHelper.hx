@@ -52,6 +52,7 @@ class ModsHelper {
 		camera.filtersEnabled = true;
 	}
 	public static function clearStoredWithoutStickers() {
+		//! Doesn't actually clear the stickers
 		@:privateAccess
 		var cache = FlxG.bitmap._cache;
 		Paths.currentTrackedAssets.clear();
@@ -62,6 +63,7 @@ class ModsHelper {
 		) Paths.currentTrackedAssets.set(key,val);
 		}
 		Paths.clearStoredMemory();
+		Paths.currentTrackedAssets.clear();
 	}
 	#if sys
 	public inline static function collectVideos():String{

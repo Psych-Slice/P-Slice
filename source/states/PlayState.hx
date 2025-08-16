@@ -285,8 +285,13 @@ class PlayState extends MusicBeatState
 	{
 		//trace('Playback Rate: ' + playbackRate);
 		_lastLoadedModDirectory = Mods.currentModDirectory;
-		Paths.clearUnusedMemory();
-		Paths.clearStoredMemory();
+		#if !STRICT_LOADING_SCREEN
+		if(!backend.ClientPrefs.data.strictLoadingScreen){
+			
+			Paths.clearStoredMemory();
+			Paths.clearUnusedMemory();
+		}
+		#end
 		if(nextReloadAll)
 		{
 			Paths.clearUnusedMemory();
@@ -1617,7 +1622,8 @@ class PlayState extends MusicBeatState
 				{
 					babyArrow.x += 310;
 					if(i > 1) { //Up and Right
-						babyArrow.x += FlxG.width / 2 + 25;
+						babyArrow.x = FlxG.width-310 -168  -82;
+						//babyArrow.x += FlxG.width / 2 + 25;
 					}
 				}
 				opponentStrums.add(babyArrow);

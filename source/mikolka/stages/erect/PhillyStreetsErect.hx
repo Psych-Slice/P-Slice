@@ -2,9 +2,6 @@ package mikolka.stages.erect;
 
 import mikolka.stages.scripts.PicoCapableStage;
 import mikolka.vslice.StickerSubState;
-import mikolka.compatibility.ModsHelper;
-import mikolka.compatibility.funkin.FunkinControls;
-import mikolka.compatibility.freeplay.FreeplayHelpers;
 import openfl.filters.BlurFilter;
 import mikolka.compatibility.VsliceOptions;
 import shaders.AdjustColorShader;
@@ -59,23 +56,28 @@ class PhillyStreetsErect extends BaseStage
                 add(phillySkyline);
                 darkenable.push(phillySkyline);
     
-                var phillyForegroundCity:BGSprite = new BGSprite('phillyStreets/erect/phillyForegroundCity', 625, 94, 0.3, 0.3);
+                var phillyForegroundCity:BGSprite = new BGSprite('phillyStreets/erect/phillyForegroundCity', 600, 69, 0.3, 0.3);
                 add(phillyForegroundCity);
                 darkenable.push(phillyForegroundCity);
+
+                var phillyForegroundCity2:BGSprite = new BGSprite('phillyStreets/erect/phillyForegroundCity', 1860, 185, 0.3, 0.3);
+                phillyForegroundCity2.angle = 5;
+                add(phillyForegroundCity2);
+                darkenable.push(phillyForegroundCity2);
             }
     
             add(mist5);
-            var phillyConstruction:BGSprite = new BGSprite('phillyStreets/erect/phillyConstruction', 1800, 364, 0.7, 1);
+            var phillyConstruction:BGSprite = new BGSprite('phillyStreets/erect/phillyConstruction', 1795, 360, 0.7, 1);
             add(phillyConstruction);
             darkenable.push(phillyConstruction);
     
-            var phillyHighwayLights:BGSprite = new BGSprite('phillyStreets/erect/phillyHighwayLights', 284, 305, 1, 1);
+            var phillyHighwayLights:BGSprite = new BGSprite('phillyStreets/erect/phillyHighwayLights', 122, 201, 1, 1);
             add(phillyHighwayLights);
             darkenable.push(phillyHighwayLights);
     
             if (!VsliceOptions.LOW_QUALITY)
             {
-                var phillyHighwayLightsLightmap:BGSprite = new BGSprite('phillyStreets/phillyHighwayLights_lightmap', 284, 305, 1, 1);
+                var phillyHighwayLightsLightmap:BGSprite = new BGSprite('phillyStreets/phillyHighwayLights_lightmap', 122, 201, 1, 1);
                 phillyHighwayLightsLightmap.blend = ADD;
                 phillyHighwayLightsLightmap.alpha = 0.6;
                 add(phillyHighwayLightsLightmap);

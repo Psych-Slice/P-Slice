@@ -1,14 +1,12 @@
 package mikolka.stages.standard;
 
 import mikolka.stages.cutscenes.SchoolDoof;
-import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych;
 import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych.DialogueFile;
 import mikolka.compatibility.VsliceOptions;
 
 #if !LEGACY_PSYCH
 import substates.GameOverSubstate;
 #end
-import openfl.utils.Assets as OpenFlAssets;
 
 class School extends BaseStage
 {
@@ -30,54 +28,44 @@ class School extends BaseStage
 		if(_song.gameOverChar == null || _song.gameOverChar.trim().length < 1) GameOverSubstate.characterName = 'bf-pixel-dead';
 		#end
 
-		var bgSky:BGSprite = new BGSprite('weeb/weebSky', 0, 0, 0.1, 0.1);
+
+
+		var bgSky:BGSprite = new BGSprite('weeb/weebSky', -626, -78, 0.2, 0.2);
+		bgSky.makePixel();
 		add(bgSky);
-		bgSky.antialiasing = false;
-
-		var repositionShit = -200;
-
-		var bgSchool:BGSprite = new BGSprite('weeb/weebSchool', repositionShit, 0, 0.75, 0.75);
+		
+		var backTrees:BGSprite = new BGSprite('weeb/weebBackTrees', -842, -80, 0.5, 0.5);
+		backTrees.makePixel();
+		add(backTrees);
+		
+		var bgSchool:BGSprite = new BGSprite('weeb/weebSchool', -816, -38, 0.75, 0.75);
+		bgSchool.makePixel();
 		add(bgSchool);
-		bgSchool.antialiasing = false;
 
-		var bgStreet:BGSprite = new BGSprite('weeb/weebStreet', repositionShit, 0, 0.95, 0.95);
+		var bgStreet:BGSprite = new BGSprite('weeb/weebStreet', -662 , 6,1,1);
+		bgStreet.makePixel();
 		add(bgStreet);
-		bgStreet.antialiasing = false;
 
-		var widShit = Std.int(bgSky.width * PlayState.daPixelZoom);
 		if(!VsliceOptions.LOW_QUALITY) {
-			var fgTrees:BGSprite = new BGSprite('weeb/weebTreesBack', repositionShit + 170, 130, 0.9, 0.9);
-			fgTrees.setGraphicSize(Std.int(widShit * 0.8));
-			fgTrees.updateHitbox();
+			var fgTrees:BGSprite = new BGSprite('weeb/weebTreesBack', -500, 6);
+			fgTrees.makePixel();
 			add(fgTrees);
-			fgTrees.antialiasing = false;
 		}
 
-		var bgTrees:FlxSprite = new FlxSprite(repositionShit - 380, -800);
+		var bgTrees:FlxSprite = new FlxSprite(-806, -1050);
 		bgTrees.frames = Paths.getPackerAtlas('weeb/weebTrees');
 		bgTrees.animation.add('treeLoop', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 12);
 		bgTrees.animation.play('treeLoop');
-		bgTrees.scrollFactor.set(0.85, 0.85);
-		add(bgTrees);
+		bgTrees.scale.set(PlayState.daPixelZoom, PlayState.daPixelZoom);
+		bgTrees.updateHitbox();
 		bgTrees.antialiasing = false;
+		add(bgTrees);
 
 		if(!VsliceOptions.LOW_QUALITY) {
-			var treeLeaves:BGSprite = new BGSprite('weeb/petals', repositionShit, -40, 0.85, 0.85, ['PETALS ALL'], true);
-			treeLeaves.setGraphicSize(widShit);
-			treeLeaves.updateHitbox();
+			var treeLeaves:BGSprite = new BGSprite('weeb/petals', -20, -40, 0.85, 0.85, ['PETALS ALL'], true);
+			treeLeaves.makePixel();
 			add(treeLeaves);
-			treeLeaves.antialiasing = false;
 		}
-
-		bgSky.setGraphicSize(widShit);
-		bgSchool.setGraphicSize(widShit);
-		bgStreet.setGraphicSize(widShit);
-		bgTrees.setGraphicSize(Std.int(widShit * 1.4));
-
-		bgSky.updateHitbox();
-		bgSchool.updateHitbox();
-		bgStreet.updateHitbox();
-		bgTrees.updateHitbox();
 
 		if(!VsliceOptions.LOW_QUALITY) {
 			bgGirls = new BackgroundGirls(-100, 190);

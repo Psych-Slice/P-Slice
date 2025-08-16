@@ -1,5 +1,6 @@
 package options;
 
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 import mikolka.vslice.components.crash.UserErrorSubstate;
 import backend.StageData;
 import flixel.FlxObject;
@@ -92,6 +93,7 @@ class OptionsState extends MusicBeatState
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		bg.color = 0xFFea71fd;
+		bg.setGraphicSize(Std.int(bg.width * 1.175));
 		bg.updateHitbox();
 
 		bg.screenCenter();
@@ -104,6 +106,7 @@ class OptionsState extends MusicBeatState
 		{
 			var optionText:Alphabet = new Alphabet(0, 0, Language.getPhrase('options_$option', option), true);
 			optionText.screenCenter();
+			optionText.x -= MobileScaleMode.gameCutoutSize.x / 2;
 			optionText.y += (92 * (num - (options.length / 2))) + 45;
 			optionText.cameras = [funnyCam];
 			grpOptions.add(optionText);
@@ -129,7 +132,7 @@ class OptionsState extends MusicBeatState
 		#if TOUCH_CONTROLS_ALLOWED
 		addTouchPad('UP_DOWN', 'A_B');
 
-		var button = new TouchZone(90,270,1090,100,FlxColor.PURPLE);
+		var button = new TouchZone(90,270,FlxG.width,100,FlxColor.PURPLE);
 		
 		var scroll = new ScrollableObject(-0.01,100,0,FlxG.width-200,FlxG.height,button);
 		scroll.onPartialScroll.add(delta -> changeSelection(delta,false));

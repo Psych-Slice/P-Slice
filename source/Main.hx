@@ -1,6 +1,6 @@
 package;
 
-
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 import states.InitState;
 import mikolka.vslice.components.crash.Logger;
 #if HSCRIPT_ALLOWED
@@ -22,9 +22,6 @@ import openfl.display.StageScaleMode;
 import lime.app.Application;
 #if (linux || mac)
 import lime.graphics.Image;
-#end
-#if mobile
-import mobile.backend.MobileScaleMode;
 #end
 
 #if (linux && !debug)
@@ -51,13 +48,14 @@ class Main extends Sprite
 	// ? This runs before we attempt to precache things
 	public static function loadGameEarly()
 	{
-		#if (linux || mac) // fix the app icon not showing up on the Linux Panel 
+		#if (linux || mac) // fix the app icon not showing up on the Linux Panel
 		var icon = lime.graphics.Image.fromFile("icon.png");
 		Lib.current.stage.window.setIcon(icon);
 		#end
 
 		#if TITLE_SCREEN_EASTER_EGG
-		if(Date.now().getMonth() == 0 && Date.now().getDate() == 14) Lib.current.stage.window.title = "Friday Night Funkin': Mikolka's Engine";
+		if (Date.now().getMonth() == 0 && Date.now().getDate() == 14)
+			Lib.current.stage.window.title = "Friday Night Funkin': Mikolka's Engine";
 		#end
 
 		// This requests file access on android (otherwise we will crash later)
@@ -68,7 +66,7 @@ class Main extends Sprite
 		#if mobile
 		Sys.setCwd(StorageUtil.getStorageDirectory());
 		#end
-		
+
 		#if sys
 		Logger.startLogging();
 		trace("CWD IS " + StorageUtil.getStorageDirectory());
@@ -86,8 +84,8 @@ class Main extends Sprite
 			trace("Pushing top mod");
 			Mods.loadTopMod();
 		}
-		catch (x:Exception) trace("Something went wrong with mod code: " + x.message);
-		
+		catch (x:Exception)
+			trace("Something went wrong with mod code: " + x.message);
 
 		#if hxvlc
 		trace("Starting hxvlc..");
@@ -127,8 +125,18 @@ class Main extends Sprite
 		setupGame();
 	}
 
+
+
 	private function setupGame():Void
 	{
+
+		trace(backend.Native.buildSystemInfo());
+		#if HXCPP_TRACY
+		trace("Starting tracy");
+		cpp.vm.tracy.TracyProfiler.messageAppInfo(backend.Native.buildSystemInfo());
+		cpp.vm.tracy.TracyProfiler.setThreadName("main");
+		#end
+
 		trace("Starting game setup");
 		#if (openfl <= "9.2.0")
 		var stageWidth:Int = Lib.current.stage.stageWidth;
@@ -250,12 +258,6 @@ class Main extends Sprite
 		ClientPrefs.loadDefaultKeys();
 		#if ACHIEVEMENTS_ALLOWED Achievements.load(); #end
 
-		#if mobile
-		FlxG.signals.postGameStart.addOnce(() ->
-		{
-			FlxG.scaleMode = new MobileScaleMode();
-		});
-		#end
 
 		trace("Loading game objest...");
 		var gameObject = new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate,
@@ -274,9 +276,9 @@ class Main extends Sprite
 		FlxG.game.addChild(fpsVar);
 		#else
 		#if !debug
-		var border = new GameBorder();
-		addChild(border);
-		Lib.current.stage.window.onResize.add(border.updateGameSize);
+		// var border = new GameBorder();
+		// addChild(border);
+		// Lib.current.stage.window.onResize.add(border.updateGameSize);
 		#end
 		addChild(fpsVar);
 		#end
@@ -302,9 +304,9 @@ class Main extends Sprite
 		}
 		#end
 
-		#if (debug)
-		flixel.addons.studio.FlxStudio.create();
-		#end
+		// #if (debug)
+		// flixel.addons.studio.FlxStudio.create();
+		// #end
 
 		#if html5
 		FlxG.autoPause = false;
@@ -326,7 +328,6 @@ class Main extends Sprite
 		#if mobile
 		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
 		lime.system.System.allowScreenTimeout = ClientPrefs.data.screensaver;
-		FlxG.scaleMode = new MobileScaleMode();
 		Application.current.window.vsync = ClientPrefs.data.vsync;
 		#end
 

@@ -6,6 +6,7 @@ import flixel.graphics.FlxGraphic;
 import flixel.util.FlxSpriteUtil;
 import options.ModSettingsSubState;
 import mikolka.vslice.ui.title.TitleState;
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 
 class ModsMenuState extends MusicBeatState
 {
@@ -18,7 +19,7 @@ class ModsMenuState extends MusicBeatState
 
 	var bgList:FlxSprite;
 	var buttonReload:MenuButton;
-	// var buttonModFolder:MenuButton;
+	//var buttonModFolder:MenuButton;
 	var buttonEnableAll:MenuButton;
 	var buttonDisableAll:MenuButton;
 	var buttons:Array<MenuButton> = [];
@@ -50,6 +51,7 @@ class ModsMenuState extends MusicBeatState
 	override function create()
 	{
 		var daButton:String = "BACKSPACE";
+		var CUTOUT_WIDTH:Float = MobileScaleMode.gameCutoutSize.x / 1.5;
 
 		if (controls.mobileC)
 			daButton = 'B';
@@ -68,10 +70,12 @@ class ModsMenuState extends MusicBeatState
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFF665AFF;
 		bg.antialiasing = ClientPrefs.data.antialiasing;
-		add(bg);
+		bg.setGraphicSize(Std.int(bg.width * 1.175));
+		bg.updateHitbox();
 		bg.screenCenter();
+		add(bg);
 
-		bgList = FlxSpriteUtil.drawRoundRect(new FlxSprite(40, 40).makeGraphic(340, 440, FlxColor.TRANSPARENT), 0, 0, 340, 440, 15, 15, FlxColor.BLACK);
+		bgList = FlxSpriteUtil.drawRoundRect(new FlxSprite(CUTOUT_WIDTH+40, 40).makeGraphic(340, 440, FlxColor.TRANSPARENT), 0, 0, 340, 440, 15, 15, FlxColor.BLACK);
 		bgList.alpha = 0.6;
 
 		modsGroup = new FlxTypedGroup<ModItem>();
@@ -98,27 +102,23 @@ class ModsMenuState extends MusicBeatState
 		var buttonX = bgList.x;
 		var buttonWidth = Std.int(bgList.width);
 		var buttonHeight = 80;
-		var daY = 0;
-		if (controls.mobileC)
-			daY = 70;
-		else
-			daY = 20;
+		var daY = 20;
 
 		buttonReload = new MenuButton(buttonX, bgList.y + bgList.height + daY, buttonWidth, buttonHeight, Language.getPhrase('reload_button', 'RELOAD'),
 			reload);
 		add(buttonReload);
 
 		var myY = buttonReload.y + buttonReload.bg.height + 20;
-		/*buttonModFolder = new MenuButton(buttonX, myY, buttonWidth, buttonHeight, "MODS FOLDER", function() {
-				var modFolder = Paths.mods();
-				if(!NativeFileSystem.exists(modFolder))
-				{
-					trace('created missing folder');
-					NativeFileSystem.createDirectory(modFolder);
-				}
-				CoolUtil.openFolder(modFolder);
-			});
-			add(buttonModFolder); */
+		// buttonModFolder = new MenuButton(buttonX, myY, buttonWidth, buttonHeight, "MODS FOLDER", function() {
+		// 		var modFolder = Paths.mods();
+		// 		if(!NativeFileSystem.exists(modFolder))
+		// 		{
+		// 			trace('created missing folder');
+		// 			NativeFileSystem.createDirectory(modFolder);
+		// 		}
+		// 		CoolUtil.openFolder(modFolder);
+		// 	});
+		// add(buttonModFolder);
 
 		buttonEnableAll = new MenuButton(buttonX, myY, buttonWidth, buttonHeight, Language.getPhrase('enable_all_button', 'ENABLE ALL'), function()
 		{
@@ -162,9 +162,8 @@ class ModsMenuState extends MusicBeatState
 		});
 		buttonDisableAll.bg.color = 0xFFFF6666;
 		buttonDisableAll.focusChangeCallback = function(focus:Bool) if (!focus)
-			buttonDisableAll.bg.color = 0xFFFF6666;
-		if (!controls.mobileC)
-			add(buttonDisableAll);
+		buttonDisableAll.bg.color = 0xFFFF6666;
+		add(buttonDisableAll);
 		checkToggleButtons();
 
 		if (modsList.all.length < 1)
@@ -456,7 +455,7 @@ class ModsMenuState extends MusicBeatState
 						if (holdTime > 0.5 && Math.floor(lastHoldTime * 8) != Math.floor(holdTime * 8))
 							changeSelectedMod(shiftMult * (controls.UI_UP ? -1 : 1));
 					}
-					else if (FlxG.mouse.pressed && !controls.mobileC && !gottaClickAgain)
+					else if (FlxG.mouse.pressed  && !gottaClickAgain) //&& !controls.mobileC
 					{
 						var curMod:ModItem = modsGroup.members[curSelectedMod];
 						if (curMod != null)
@@ -506,7 +505,7 @@ class ModsMenuState extends MusicBeatState
 							}
 						}
 					}
-					else if (FlxG.mouse.justReleased && !controls.mobileC && holdingMod)
+					else if (FlxG.mouse.justReleased && holdingMod) //&& !controls.mobileC 
 					{
 						holdingMod = false;
 						holdingElapsed = 0;
@@ -1063,21 +1062,21 @@ class MenuButton extends FlxSpriteGroup
 				setButtonVisibility(TouchUtil.overlaps(this));
 			}
 		}
-		else
-		{
+		else{
+
 			if (!ignoreCheck && !Controls.instance.controllerMode && FlxG.mouse.justMoved && FlxG.mouse.visible)
 				onFocus = FlxG.mouse.overlaps(this);
 
 			if (onFocus && onClick != null && FlxG.mouse.justPressed)
 				onClick();
-
+			
 			if (_needACheck)
-			{
-				_needACheck = false;
-				if (!Controls.instance.controllerMode)
-					setButtonVisibility(FlxG.mouse.overlaps(this));
+				{
+					_needACheck = false;
+					if (!Controls.instance.controllerMode)
+						setButtonVisibility(FlxG.mouse.overlaps(this));
+				}
 			}
-		}
 	}
 
 	function set_onFocus(newValue:Bool)

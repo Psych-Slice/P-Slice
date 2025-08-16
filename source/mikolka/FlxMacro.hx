@@ -1,6 +1,6 @@
 package mikolka;
 
-#if !display
+//#if !display
 #if macro
 class FlxMacro // This shit adds 'zIndex' used by some V-Slice components
 {
@@ -34,4 +34,4 @@ class FlxMacro // This shit adds 'zIndex' used by some V-Slice components
   }
 }
 #end
-#end
+//#end

@@ -53,8 +53,8 @@ class MainMenuState extends MusicBeatState
 	}
 	override function create()
 	{
-		Paths.clearUnusedMemory();
 		ModsHelper.clearStoredWithoutStickers();
+		Paths.clearUnusedMemory();
 		
 		ModsHelper.resetActiveMods();
 
@@ -141,6 +141,7 @@ class MainMenuState extends MusicBeatState
 		super.create();
 
 		FlxG.camera.follow(camFollow, null, 0.06);
+		//FlxG.camera.bgColor = 0xfffde871;
 	}
 
 	var selectedSomethin:Bool = false;
