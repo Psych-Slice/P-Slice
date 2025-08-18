@@ -40,7 +40,8 @@ import android.Settings as AndroidSettings;
 import android.Tools as AndroidTools;
 import android.os.Build.VERSION as AndroidVersion;
 import android.os.Build.VERSION_CODES as AndroidVersionCode;
-import android.os.BatteryManager as AndroidBatteryManager;
+//? Is this even used???
+//import android.os.BatteryManager as AndroidBatteryManager;
 #end
 
 #if sys

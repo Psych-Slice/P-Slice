@@ -10,8 +10,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<app if="mobile" unless="PROFILE_BUILD" title="P-Slice Engine" file="PSliceEngine" packageName="com.mikolka9144.pslice" package="com.mikolka9144.pslice" main="Main" version="3.2"  company="mikolka9144" />
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
-	<meta build-number="320"  minimum-sdk-version="26" target-sdk-version="35" />
-
+	<meta build-number="320"/>
+	<config type="android" gradle-version="8.10.2" gradle-plugin="8.8.0" ndkVersion="27.0"  minimum-sdk-version="26" target-sdk-version="35" />
 	<!-- NOTE TO SELF: DISABLE THIS IF ISSUES ARE FOUND -->
 	<haxedef name="LINC_LUA_RELATIVE_DYNAMIC_LIB"/> <!-- stable luas PUT AFTER FIRST LINE WITH APP NAME AND ETC -->
 
