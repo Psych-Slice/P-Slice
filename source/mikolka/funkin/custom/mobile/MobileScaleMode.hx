@@ -404,8 +404,8 @@ class MobileScaleMode extends BaseScaleMode
   private static function set_enabled(Value:Bool):Bool
   {
     if (ratioAxis == FlxAxes.X #if android
-      && (AndroidVersion.SDK_INT  >= android.os.Build.VERSION_CODES.P
-        || android.Tools.isTablet()) #end)
+      && (AndroidVersion.SDK_INT  >= AndroidVersionCode.P
+        || AndroidTools.isTablet()) #end)
     {
       enabled = Value;
       active = Value;
