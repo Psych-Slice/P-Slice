@@ -42,7 +42,10 @@ jobs:
         uses: krdlab/setup-haxe@master
         with:
           haxe-version: ${{ env.HAXE_VERSION }}
-        
+      - name: Set XCode app
+        if: inputs.os == 'macos-15'
+        run: sudo xcode-select -s /Applications/Xcode_16.4.app
+
       - name: Restore Libraries for compilation
         id: load-lib-cache
         uses: actions/cache@v3
