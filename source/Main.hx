@@ -63,7 +63,8 @@ class Main extends Sprite
 		StorageUtil.requestPermissions();
 		#end
 
-		#if mobile
+		//? iOS seems to be crasing on this line... 
+		#if android
 		Sys.setCwd(StorageUtil.getStorageDirectory());
 		#end
 
