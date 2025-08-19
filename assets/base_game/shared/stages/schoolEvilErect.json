@@ -8,9 +8,9 @@
 	"opponent": [100, 100],
 	"hide_girlfriend": false,
 
-	"camera_boyfriend": [-100, -110],
+	"camera_boyfriend": [-200, -94],
 	"camera_opponent": [0, 0],
-	"camera_girlfriend": [0, 0],
+	"camera_girlfriend": [50, 50],
 	"camera_speed": 1,
 
 	"preload": {

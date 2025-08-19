@@ -8,7 +8,6 @@ import mikolka.vslice.freeplay.obj.CapsuleOptionsMenu;
 import mikolka.compatibility.funkin.FunkinControls;
 import mikolka.vslice.charSelect.CharSelectSubState;
 import openfl.filters.ShaderFilter;
-import mikolka.vslice.freeplay.backcards.NewCharacterCard;
 import mikolka.vslice.freeplay.backcards.PicoCard;
 import mikolka.funkin.freeplay.FreeplayStyleRegistry;
 import mikolka.vslice.freeplay.backcards.BoyfriendCard;
@@ -289,8 +288,6 @@ class FreeplayState extends MusicBeatSubstate
 				case(LuaCard.hasCustomCard(currentCharacterId)) => true:
 					backingCard = new LuaCard(currentCharacter, currentCharacterId, stickerSubState == null);
 				#end
-				case(PlayerRegistry.instance.hasNewCharacter()) => true:
-					backingCard = new NewCharacterCard(currentCharacter);
 				case 'bf':
 					backingCard = new BoyfriendCard(currentCharacter);
 				case 'pico':

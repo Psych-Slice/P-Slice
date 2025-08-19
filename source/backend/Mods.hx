@@ -216,7 +216,7 @@ class Mods
 			fileStr += values[0] + '|' + (values[1] ? '1' : '0');
 		}
 
-		File.saveContent(#if android StorageUtil.getStorageDirectory() + #else Sys.getCwd() + #end 'modsList.txt', fileStr);
+		File.saveContent( StorageUtil.getStorageDirectory() + 'modsList.txt', fileStr);
 		updatedOnState = true;
 		//trace('Saved modsList.txt');
 		#end
