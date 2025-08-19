@@ -2,6 +2,8 @@ package mikolka.vslice.freeplay.backcards;
 
 import flixel.addons.display.FlxBackdrop;
 import mikolka.compatibility.freeplay.FreeplayHelpers;
+import mikolka.vslice.freeplay.FreeplayState;
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 import flixel.math.FlxMath;
 import flixel.FlxSprite;
 import flixel.tweens.FlxTween;
@@ -99,7 +101,8 @@ class PicoCard extends BackingCard
     scrollLower.velocity.x = -110;
     add(scrollLower);
 
-    blueBar = new FlxSprite(0, 239).loadGraphic(Paths.image('freeplay/backingCards/pico/blueBar'));
+    var bitmap = BitmapUtil.scalePartByWidth(Paths.image('freeplay/backingCards/pico/blueBar').bitmap, FreeplayState.CUTOUT_WIDTH);
+    blueBar = new FlxSprite(0, 239).loadGraphic(bitmap);
     blueBar.blend = BlendMode.MULTIPLY;
     blueBar.alpha = 0.4;
     add(blueBar);
@@ -127,7 +130,7 @@ class PicoCard extends BackingCard
     glowDark.blend = BlendMode.MULTIPLY;
     add(glowDark);
 
-    glow = new FlxSprite(-300, 330).loadGraphic(Paths.image('freeplay/backingCards/pico/glow'));
+    glow = new FlxSprite((FreeplayState.CUTOUT_WIDTH * FreeplayState.DJ_POS_MULTI) + -300, 330).loadGraphic(Paths.image('freeplay/backingCards/pico/glow'));
     glow.blend = BlendMode.ADD;
     add(glow);
 
@@ -141,6 +144,8 @@ class PicoCard extends BackingCard
 
     confirmAtlas = new FlxAtlasSprite(5, 55, "freeplay/backingCards/pico/pico-confirm");
     confirmAtlas.visible = false;
+    confirmAtlas.scale.x *= MobileScaleMode.wideScale.x;
+    confirmAtlas.x += ((confirmAtlas.width * MobileScaleMode.wideScale.x) - confirmAtlas.width) * 2.48;
     add(confirmAtlas);
 
     cardGlow.blend = BlendMode.ADD;
