@@ -1,5 +1,7 @@
 package mikolka.vslice.ui;
 
+import mikolka.funkin.custom.mobile.MobileScaleMode;
+import mikolka.vslice.ui.obj.grid.OptionsButton;
 import mikolka.vslice.ui.obj.grid.GridTileDonate;
 import mikolka.vslice.ui.obj.GridButtons;
 import mikolka.compatibility.ui.MainMenuHooks;
@@ -65,8 +67,8 @@ class MainMenuState extends MusicBeatState
 		bg.screenCenter();
 		add(bg);
 
-		camFollow = new FlxObject(FlxG.initialWidth/2,FlxG.initialHeight/2, 1, 1);
-		add(camFollow);
+		// camFollow = new FlxObject(FlxG.initialWidth/2,FlxG.initialHeight/2, 1, 1);
+		// add(camFollow);
 
 		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
 		magenta.antialiasing = VsliceOptions.ANTIALIASING;
@@ -77,7 +79,7 @@ class MainMenuState extends MusicBeatState
 		magenta.color = 0xFFfd719b;
 		add(magenta);
 
-		grid = new GridButtons(50, 50, 2,700);
+		grid = new GridButtons(30, 20, 2,670);
 		add(grid);
 		grid.onItemSelect.add(s ->{
 			FlxG.sound.play(Paths.sound('confirmMenu'));
@@ -88,11 +90,13 @@ class MainMenuState extends MusicBeatState
 				if (VsliceOptions.FLASHBANG)
 					FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 		});
-		grid.makeButton('story_mode', 0, () ->
+		var storyBtn = grid.makeButton('story_mode', 0, () ->
 		{
 			FlxG.mouse.visible = false;
 			MusicBeatState.switchState(new StoryMenuState());
 		});
+		storyBtn.updateHitbox();
+
 		grid.makeButton('freeplay', 0, () ->
 		{
 			FlxG.mouse.visible = false;
@@ -136,7 +140,7 @@ class MainMenuState extends MusicBeatState
 		#if !switch
 		grid.addButton(new GridTileDonate(grid), 1);
 		#end
-		grid.makeButton('options', 1, () ->
+		var optionsBtn = new OptionsButton(grid,() ->
 		{
 			FlxG.mouse.visible = false;
 			MusicBeatState.switchState(new OptionsState());
@@ -148,6 +152,8 @@ class MainMenuState extends MusicBeatState
 				#if !LEGACY_PSYCH PlayState.stageUI = 'normal'; #end
 			}
 		});
+		grid.addButton(optionsBtn,0);
+		optionsBtn.setPosition((MobileScaleMode.gameCutoutSize.x/4)+35, FlxG.height - 200);
 
 		var psychVer:FlxText = new FlxText(0, FlxG.height - 18, FlxG.width, "Psych Engine " + psychEngineVersion, 12);
 		var fnfVer:FlxText = new FlxText(0, FlxG.height - 18, FlxG.width, 'v${funkinVersion} (P-slice ${pSliceVersion})', 12);
@@ -180,7 +186,7 @@ class MainMenuState extends MusicBeatState
 
 		super.create();
 		FlxG.mouse.visible = true;
-		FlxG.camera.follow(camFollow, null, 0.06);
+		//FlxG.camera.follow(camFollow, null, 0.06);
 		// FlxG.camera.bgColor = 0xfffde871;
 	}
 
