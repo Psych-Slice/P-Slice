@@ -41,6 +41,10 @@ class VsliceOptions {
     public static function get_LOGGING():String {
         return ClientPrefs.data.loggingType;
     }
+    public static var VIBRATION(get,never):Bool;    
+    public static function get_VIBRATION():Bool {
+        return ClientPrefs.data.vibrating;
+    }
     public static var LAST_MOD(get,set):CharSave; //format: "mod_dir||char_name"
     public static function get_LAST_MOD():CharSave {
         var shards = ClientPrefs.data.lastFreeplayMod.split('||');
