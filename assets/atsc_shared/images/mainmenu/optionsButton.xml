@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="optionsThing.png">
+	<!-- Created with Adobe Animate version 23.0.0.407 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="options0000" x="0" y="0" width="265" height="246" frameX="-1" frameY="-8" frameWidth="268" frameHeight="265"/>
+	<SubTexture name="options0001" x="0" y="0" width="265" height="246" frameX="-1" frameY="-8" frameWidth="268" frameHeight="265"/>
+	<SubTexture name="options0002" x="0" y="0" width="265" height="246" frameX="-1" frameY="-8" frameWidth="268" frameHeight="265"/>
+	<SubTexture name="options0003" x="270" y="0" width="247" height="233" frameX="-12" frameY="-15" frameWidth="268" frameHeight="265"/>
+	<SubTexture name="options0004" x="522" y="0" width="254" height="254" frameX="-8" frameY="-11" frameWidth="268" frameHeight="265"/>
+	<SubTexture name="options0005" x="0" y="259" width="258" height="253" frameX="-5" frameY="-6" frameWidth="268" frameHeight="265"/>
+	<SubTexture name="options0006" x="263" y="259" width="263" height="256" frameX="-5" frameY="-2" frameWidth="268" frameHeight="265"/>
+	<SubTexture name="options0007" x="531" y="259" width="264" height="255" frameX="-2" frameY="0" frameWidth="268" frameHeight="265"/>
+	<SubTexture name="options0008" x="0" y="520" width="261" height="249" frameX="0" frameY="-6" frameWidth="268" frameHeight="265"/>
+	<SubTexture name="options0009" x="266" y="520" width="264" height="247" frameX="-2" frameY="-7" frameWidth="268" frameHeight="265"/>
+	<SubTexture name="options0010" x="535" y="520" width="264" height="247" frameX="-2" frameY="-7" frameWidth="268" frameHeight="265"/>
+	<SubTexture name="options0011" x="535" y="520" width="264" height="247" frameX="-2" frameY="-7" frameWidth="268" frameHeight="265"/>
+	<SubTexture name="options0012" x="0" y="774" width="265" height="246" frameX="-1" frameY="-8" frameWidth="268" frameHeight="265"/>
+	<SubTexture name="options0013" x="0" y="774" width="265" height="246" frameX="-1" frameY="-8" frameWidth="268" frameHeight="265"/>
+	<SubTexture name="options0014" x="270" y="774" width="265" height="246" frameX="-1" frameY="-8" frameWidth="268" frameHeight="265"/>
+	<SubTexture name="options0015" x="270" y="774" width="265" height="246" frameX="-1" frameY="-8" frameWidth="268" frameHeight="265"/>
+	<SubTexture name="options0016" x="270" y="774" width="265" height="246" frameX="-1" frameY="-8" frameWidth="268" frameHeight="265"/>
+</TextureAtlas>

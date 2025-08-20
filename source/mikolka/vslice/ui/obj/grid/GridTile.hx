@@ -32,8 +32,8 @@ class GridTile extends TouchButton
 		frames = Paths.getSparrowAtlas(imagePath);
 		animation.addByPrefix('idle', anim_idle, 24);
 		animation.addByPrefix('selected', anim_select, 24);
-		animation.play('idle');
-		updateHitbox();
+		scale.x = 0.9;
+		playIdleAnim();
 	}
 
 	public function playSelectedAnim()
@@ -48,10 +48,14 @@ class GridTile extends TouchButton
 	public function playHoverAnim() {
 		animation.play("selected");
 		updateHitbox();
+		centerOrigin();
+		//offset.copyFrom(origin);
 	}
 	public function playIdleAnim() {
 		animation.play("idle");
 		updateHitbox();
+		centerOrigin();
+		//offset.copyFrom(origin);
 	}
     public function hideTile() {
         FlxTween.tween(this, {alpha: 0}, 0.4, {

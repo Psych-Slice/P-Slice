@@ -45,7 +45,7 @@ class GridButtons extends FlxTypedSpriteGroup<GridTile>
 	public function addButton(menuItem:GridTile, gridX:Int)
 	{
 		var offsetX:Float = gridX * xItemOffset;
-		var offsetY:Float = buttons[gridX].length * 140;
+		var offsetY:Float = buttons[gridX].length * 160;
 		menuItem.x = offsetX;
 		menuItem.y = offsetY;
 		menuItem.gridXPos = gridX;
