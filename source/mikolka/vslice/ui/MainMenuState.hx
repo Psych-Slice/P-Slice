@@ -79,7 +79,7 @@ class MainMenuState extends MusicBeatState
 		magenta.color = 0xFFfd719b;
 		add(magenta);
 
-		grid = new GridButtons(30, 20, 2,670);
+		grid = new GridButtons((MobileScaleMode.gameCutoutSize.x/4)+30, 20, 2,670);
 		add(grid);
 		grid.onItemSelect.add(s ->{
 			FlxG.sound.play(Paths.sound('confirmMenu'));
@@ -113,7 +113,7 @@ class MainMenuState extends MusicBeatState
 				selectedSomethin = false;
 				grid.selectButton();
 			});
-			subStateClosed.addOnce((x) ->{
+			if(!controls.mobileC) subStateClosed.addOnce((x) ->{
 				FlxG.mouse.visible = true;
 			});
 		});
@@ -185,7 +185,7 @@ class MainMenuState extends MusicBeatState
 		#end
 
 		super.create();
-		FlxG.mouse.visible = true;
+		if(!controls.mobileC) FlxG.mouse.visible = true;
 		//FlxG.camera.follow(camFollow, null, 0.06);
 		// FlxG.camera.bgColor = 0xfffde871;
 	}

@@ -17,14 +17,16 @@ class GridTile extends TouchButton
 		this.host = host;
 		this.callback = callback;
 		antialiasing = VsliceOptions.ANTIALIASING;
-		onOver.callback = () ->
+		onDown.callback = () ->
 		{
 			host.selectButton(gridXPos, gridYPos);
 		}
 	}
 
     override function update(elapsed:Float) {
-        if(justReleased && host.selectedItem == this) host.confirmCurrentButton();
+        if(justReleased && host.selectedItem == this) {
+			host.confirmCurrentButton();
+		}
         super.update(elapsed);
     }
 	public function configureBitmap(imagePath:String, anim_idle:String, anim_select:String)
