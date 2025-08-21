@@ -1,4 +1,4 @@
-package mikolka.vslice.ui.obj.grid;
+package mobile.objects.grid;
 
 class GridTileDonate extends GridTile {
     public function new(host:GridButtons) {
@@ -12,8 +12,8 @@ class GridTileDonate extends GridTile {
 	{
 		callback();
         host.selectedSomethin = false;
-        var state = cast (FlxG.state,MainMenuState);
-        @:privateAccess
-        state.selectedSomethin = false;
+        // var state = cast (FlxG.state,MainMenuState);
+        // @:privateAccess
+        // state.selectedSomethin = false;
 	}
 }
