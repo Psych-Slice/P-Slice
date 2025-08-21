@@ -32,48 +32,31 @@ jobs:
           restore-keys: |
              ${{ inputs.CACHE_NAME }}
 
-      - name: Exit if cache is present
-        if: steps.load-lib-cache.outputs.cache-hit == 'true'
-        run: exit 0
-
       - name: Checkout
+        if: steps.load-lib-cache.outputs.cache-hit != 'true'
         uses: actions/checkout@main
 
       - name: Setup Haxe
+        if: steps.load-lib-cache.outputs.cache-hit != 'true'
         uses: krdlab/setup-haxe@master
         with:
           haxe-version: ${{ env.HAXE_VERSION }}
 
       - name: Setup haxelib
+        if: steps.load-lib-cache.outputs.cache-hit != 'true'
         run: haxelib newrepo    
 
       - name: Install Libraries
+        if: steps.load-lib-cache.outputs.cache-hit != 'true'
         run: ${{ inputs.setupScript }}
 
       - name: Install hxvlc for windows
+        if: steps.load-lib-cache.outputs.cache-hit != 'true'
         run: haxelib install hxvlc 2.2.2 --quiet
         if: inputs.os == 'ubuntu-latest'
    
-      - name: Clearing already existing cache
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const caches = await github.rest.actions.getActionsCacheList({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            })
-            for (const cache of caches.data.actions_caches) {
-              if (cache.key == "${{ inputs.CACHE_NAME }}") {
-                console.log('Clearing ' + cache.key + '...')
-                await github.rest.actions.deleteActionsCacheById({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  cache_id: cache.id,
-                })
-                console.log("Cache cleared.")
-              }
-            }
       - name: Uploading new cache
+        if: steps.load-lib-cache.outputs.cache-hit != 'true'
         uses: actions/cache@v3
         with:
           key: ${{ inputs.CACHE_NAME }}
