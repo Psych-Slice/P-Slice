@@ -1,17 +1,18 @@
-package mikolka.vslice.ui.obj;
+package mobile.objects;
 
-import mikolka.vslice.ui.obj.grid.GridTile;
+
+import mobile.objects.grid.GridTile;
 import flixel.util.FlxSignal.FlxTypedSignal;
 
-@:access(mikolka.vslice.ui.obj.grid.GridTile.new)
+@:access(mobile.objects.grid.GridTile.new)
 class GridButtons extends FlxTypedSpriteGroup<GridTile>
 {
 	public final onItemSelect:FlxTypedSignal<GridTile -> Void> = new FlxTypedSignal();
 	public var selectedItem(get, never):Null<GridTile>;
 	public var selectedSomethin:Bool = false;
 	
-	private var selectedXPosition:Int = 1;
-	private var selectedYPosition:Int = 1;
+	private var selectedXPosition:Int = 0;
+	private var selectedYPosition:Int = 0;
 	private var buttons:Array<Array<GridTile>> = new Array();
 
 

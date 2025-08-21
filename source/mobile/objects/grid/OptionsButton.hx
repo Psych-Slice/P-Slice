@@ -1,4 +1,4 @@
-package mikolka.vslice.ui.obj.grid;
+package mobile.objects.grid;
 
 class OptionsButton extends GridTile
 {

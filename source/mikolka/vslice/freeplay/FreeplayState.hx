@@ -2440,11 +2440,7 @@ class FreeplayState extends MusicBeatSubstate
 	 */
 	public static function build(?params:FreeplayStateParams, ?stickers:StickerSubState):MusicBeatState
 	{
-		var result:MainMenuState;
-		if (params?.fromResults?.playRankAnim)
-			result = new MainMenuState(true);
-		else
-			result = new MainMenuState(false);
+		var result = new MainMenuState();
 		result.openSubState(new FreeplayState(params, stickers));
 		result.persistentUpdate = false;
 		result.persistentDraw = true;

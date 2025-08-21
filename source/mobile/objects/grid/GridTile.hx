@@ -1,4 +1,4 @@
-package mikolka.vslice.ui.obj.grid;
+package mobile.objects.grid;
 
 import mikolka.compatibility.VsliceOptions;
 import flixel.effects.FlxFlicker;
