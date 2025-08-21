@@ -20,6 +20,22 @@ jobs:
     name: Build
     runs-on: ${{ inputs.os }}
     steps:
+      - name: Restore Libraries for compilation
+        id: load-lib-cache
+        uses: actions/cache@v3
+        with:
+          # not caching the bin folder to prevent asset duplication and stuff like that
+          key:  ${{ inputs.CACHE_NAME }}
+          enableCrossOsArchive: true
+          path: |
+            .haxelib/
+          restore-keys: |
+             ${{ inputs.CACHE_NAME }}
+
+      - name: Exit if cache is present
+        if: steps.load-lib-cache.outputs.cache-hit == 'true'
+        run: exit 0
+
       - name: Checkout
         uses: actions/checkout@main
 
