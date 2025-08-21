@@ -1,9 +1,6 @@
 on:
   workflow_call:
     inputs:
-      name:
-        required: true
-        type: string
       artifactName:
         required: true
         type: string
