@@ -51,9 +51,8 @@ jobs:
         run: ${{ inputs.setupScript }}
 
       - name: Install hxvlc for windows
-        if: steps.load-lib-cache.outputs.cache-hit != 'true'
         run: haxelib install hxvlc 2.2.2 --quiet
-        if: inputs.os == 'ubuntu-latest'
+        if: inputs.os == 'ubuntu-latest' && steps.load-lib-cache.outputs.cache-hit != 'true'
    
       - name: Uploading new cache
         if: steps.load-lib-cache.outputs.cache-hit != 'true'
