@@ -15,6 +15,16 @@ class OptionsButton extends GridTile
 		updateHitbox();
 	}
 
+	override function playHoverAnim() {
+		animation.play("selected");
+		updateHitbox();
+		centerOrigin();
+	}
+	override function playIdleAnim() {
+		animation.play("idle");
+		updateHitbox();
+		centerOrigin();
+	}
 	override function playSelectedAnim()
 	{
 		host.hideButtons();

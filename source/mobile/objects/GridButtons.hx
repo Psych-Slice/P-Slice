@@ -10,6 +10,7 @@ class GridButtons extends FlxTypedSpriteGroup<GridTile>
 	public final onItemSelect:FlxTypedSignal<GridTile -> Void> = new FlxTypedSignal();
 	public var selectedItem(get, never):Null<GridTile>;
 	public var selectedSomethin:Bool = false;
+
 	
 	private var selectedXPosition:Int = 0;
 	private var selectedYPosition:Int = 0;
@@ -102,5 +103,6 @@ class GridButtons extends FlxTypedSpriteGroup<GridTile>
 	{
 		super.update(elapsed);
 	}
+
 }
 

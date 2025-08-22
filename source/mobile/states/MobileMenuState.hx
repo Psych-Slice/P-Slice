@@ -31,7 +31,7 @@ class MobileMenuState extends FlxBasic {
         this.host = host;
         host.add(this);
 		
-        grid = new GridButtons((MobileScaleMode.gameCutoutSize.x/4)+30, 20, 2,670);
+        grid = new GridButtons((MobileScaleMode.gameCutoutSize.x/4)+30, 20, 2,Math.floor((MobileScaleMode.gameCutoutSize.x/4)+750));
 		host.add(grid);
 		grid.onItemSelect.add(s ->{
 			FlxG.sound.play(Paths.sound('confirmMenu'));
@@ -47,7 +47,7 @@ class MobileMenuState extends FlxBasic {
 			FlxG.mouse.visible = false;
 			MusicBeatState.switchState(new StoryMenuState());
 		});
-		storyBtn.updateHitbox();
+		storyBtn.selectedOffset.set(10,15);
 
 		grid.makeButton('freeplay', 0, () ->
 		{
@@ -68,7 +68,7 @@ class MobileMenuState extends FlxBasic {
 			if(!host.controls.mobileC) host.subStateClosed.addOnce((x) ->{
 				FlxG.mouse.visible = true;
 			});
-		});
+		}).selectedOffset.set(10,20);
 		#if MODS_ALLOWED
 		grid.makeButton('mods', 0, () ->
 		{
@@ -81,17 +81,21 @@ class MobileMenuState extends FlxBasic {
 		{
 			FlxG.mouse.visible = false;
 			MusicBeatState.switchState(new AchievementsMenuState());
-		});
+		}).selectedOffset.set(70,15);
 		#end
 
 		grid.makeButton('credits', 1, () ->
 		{
 			FlxG.mouse.visible = false;
 			MusicBeatState.switchState(new CreditsState());
-		});
+		}).selectedOffset.set(150,10);
+
 		#if !switch
-		grid.addButton(new GridTileDonate(grid), 1);
+		var donateBtn = new GridTileDonate(grid);
+		grid.addButton(donateBtn, 1);
+		donateBtn.selectedOffset.set(30,0);
 		#end
+
 		var optionsBtn = new OptionsButton(grid,() ->
 		{
 			FlxG.mouse.visible = false;
