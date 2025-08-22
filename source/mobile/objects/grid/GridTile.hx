@@ -7,6 +7,7 @@ class GridTile extends TouchButton
 {
 	public var gridXPos:Int;
 	public var gridYPos:Int;
+	public var selectedOffset(default, never):FlxPoint = FlxPoint.get();
 
 	final host:GridButtons;
 	final callback:() -> Void;
@@ -51,13 +52,13 @@ class GridTile extends TouchButton
 		animation.play("selected");
 		updateHitbox();
 		centerOrigin();
-		//offset.copyFrom(origin);
+		offset.copyFrom(selectedOffset);
 	}
 	public function playIdleAnim() {
 		animation.play("idle");
 		updateHitbox();
 		centerOrigin();
-		//offset.copyFrom(origin);
+		offset.set(0,0);
 	}
     public function hideTile() {
         FlxTween.tween(this, {alpha: 0}, 0.4, {
@@ -68,4 +69,8 @@ class GridTile extends TouchButton
 		}
 	});
     }
+		override function destroy() {
+		selectedOffset.put();
+		super.destroy();
+	}
 }
