@@ -118,14 +118,9 @@ class SongMenuItem extends FlxSpriteGroup
     bpmText.setGraphicSize(Std.int(bpmText.width * 0.9));
     add(bpmText);
 
-
-
     difficultyText = new FlxSprite(414, 87).loadGraphic(Paths.image('freeplay/freeplayCapsule/difficultytext'));
     difficultyText.setGraphicSize(Std.int(difficultyText.width * 0.9));
     add(difficultyText);
-
-    txtWeek = new AtlasText(298, 91, '', AtlasFont.CAPSULE_TEXT);
-    add(txtWeek);
 
 
     // weekType.setGraphicSize(Std.int(weekType.width * 0.9));
@@ -422,6 +417,17 @@ class SongMenuItem extends FlxSpriteGroup
       updateSelected();
     }
 
+  public function updateWeekText(newText:String = "") {
+    if(txtWeek != null){
+        if(newText == txtWeek.text) return;
+        remove(txtWeek);
+        txtWeek.destroy();
+    }
+    if(newText == "") return;
+    txtWeek = new AtlasText(298, 91, newText, AtlasFont.CAPSULE_TEXT);
+    add(txtWeek);
+  }
+
   var prevRating:Int = -1;
   function updateDifficultyRating(newRating:Int):Void
   {
@@ -549,9 +555,7 @@ class SongMenuItem extends FlxSpriteGroup
 
     //? Add custom week text here
     //checkWeek(songData?.levelId);
-    txtWeek.group.destroy();
-    txtWeek.group = new FlxTypedGroup();
-    txtWeek.text = songData?.songWeekName ?? "";
+    updateWeekText(songData?.songWeekName ?? "");
   }
 
   var frameInTicker:Float = 0;
@@ -675,7 +679,7 @@ class SongMenuItem extends FlxSpriteGroup
 
   override function destroy() {
     targetPos.put();
-    txtWeek.text = "";
+    updateWeekText("");
     super.destroy();
   }
   /**

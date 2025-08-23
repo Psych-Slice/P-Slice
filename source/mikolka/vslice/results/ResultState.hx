@@ -344,7 +344,7 @@ class ResultState extends MusicBeatSubState
     // maskShaderSongName.swagMaskX = difficulty.x - 15;
     //maskShaderDifficulty.swagMaskX = difficulty.x - 15;
 
-    var blackTopBar:FlxSprite = new FlxSprite().loadGraphic(Paths.image("resultScreen/topBarBlack"));
+    var blackTopBar:FlxSprite = new FlxSprite().loadGraphic(BitmapUtil.createResultsBar());
     blackTopBar.y = -blackTopBar.height;
     FlxTween.tween(blackTopBar, {y: 0}, 7 / 24, {ease: FlxEase.quartOut, startDelay: 3 / 24});
     blackTopBar.zIndex = 1010;

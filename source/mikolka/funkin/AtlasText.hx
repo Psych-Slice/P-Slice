@@ -62,7 +62,7 @@ class AtlasText extends FlxTypedSpriteGroup<AtlasChar>
 
     value = caseValue;
 
-    group.kill();
+    group?.kill();
 
     if (value == "") return this.text;
 

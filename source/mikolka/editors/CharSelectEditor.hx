@@ -75,12 +75,15 @@ class CharSelectEditor extends MusicBeatState
 		add(stageSpr);
 
 		nametag = new Nametag(0, 0, initPlayerId); // ? Set to current char
+		nametag.midpointX += cutoutSize;
 		add(nametag);
 
 		gfChill = new CharSelectGF();
+		gfChill.x += cutoutSize;
 		switchEditorGF(activePlayer._data.charSelect.gf);
 		add(gfChill);
-		playerChill = new CharSelectPlayer(0, 0);
+
+		playerChill = new CharSelectPlayer(cutoutSize*2, 0);
 		playerChill.switchChar(initPlayerId); // ? Set to current character
 		playerChill.onAnimationComplete.removeAll(); // ? clear imposed triggers
 		add(playerChill);

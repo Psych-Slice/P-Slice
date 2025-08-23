@@ -916,7 +916,6 @@ class FreeplayState extends MusicBeatSubstate
 		randomCapsule.alpha = 0;
 		randomCapsule.songText.visible = false;
 		randomCapsule.favIcon.visible = false;
-		randomCapsule.txtWeek.text = "Random";
 		randomCapsule.favIconBlurred.visible = false;
 		randomCapsule.ranking.visible = false;
 		randomCapsule.blurredRanking.visible = false;
@@ -1420,7 +1419,9 @@ class FreeplayState extends MusicBeatSubstate
 			}
 		}
 		funnyCam.filtersEnabled = true;
-    	fadeShader.fade(0.0, 1.0, 0.8, {ease: FlxEase.quadIn, onComplete: (twn) -> funnyCam.filtersEnabled = false});
+
+		//? The values are reversed here, otherwise it breaks because ????
+    	fadeShader.fade(1.0, 0.0, 0.8, {ease: FlxEase.quadIn});
 		FlxG.sound.music?.fadeOut(0.9, 0);
 		new FlxTimer().start(0.9, _ ->
 		{
@@ -1484,7 +1485,8 @@ class FreeplayState extends MusicBeatSubstate
 		//       });
 		//   }
 		// }
-		fadeShader.fade(0.0, 1.0, 0.8, {ease: FlxEase.quadIn});
+		funnyCam.filtersEnabled = true;
+		fadeShader.fade(0.0, 1.0, 0.8, {ease: FlxEase.quadIn,onComplete: (twn) -> funnyCam.filtersEnabled = false});
 		for (grpSpr in exitMoversCharSel.keys())
 		{
 			var moveData:Null<MoveData> = exitMoversCharSel.get(grpSpr);
