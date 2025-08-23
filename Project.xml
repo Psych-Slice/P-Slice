@@ -195,7 +195,6 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<haxelib name="hxcpp"/>
 	<haxelib name="extension-haptics" if="mobile"/>
 	<haxelib name="tjson" version="1.4.0"/>
-	<haxelib name="FlxPartialSound" version="git"/>
 	<haxelib name="grig.audio" />
 	<haxelib name="funkin.vis" />
 
@@ -305,14 +304,14 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 		<icon path="art/desktop/icon16.png"/>
 	</section>
 	<section unless="PROFILE_BUILD">
-		<section if="mobile">
+		<section if="mobile || mac">
 			<icon path="art/mobile/iconAdaptive.png" if="android" />
 			<icon path="art/mobile/iconMobile.png" unless="android" />
 			<icon path="art/mobile/icon32.png" size='32'/>
 			<icon path="art/mobile/icon64.png" size='64'/>
 			<icon path="art/mobile/icon128.png" size='128'/>
 		</section>
-		<section unless="mobile">
+		<section unless="mobile || mac">
 
 			<assets path='art/desktop/iconOG.png' rename='icon.png' if="linux" />
 			<icon path="art/desktop/icon16.png" size='16'/>

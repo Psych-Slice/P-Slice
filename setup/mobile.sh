@@ -5,7 +5,6 @@ echo Installing dependencies...
 
 #Universal
 haxelib git flixel https://github.com/Psych-Slice/p-slice-1.0-flixel.git 9b1192a23fcfb456123efa14c63c8506ded20e5e --quiet --skip-dependencies
-haxelib git FlxPartialSound https://github.com/FunkinCrew/FlxPartialSound.git 0ff6aff4931908f9acb7eb116a9ce9715c880920 --quiet
 haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio.git cbf91e2180fd2e374924fe74844086aab7891666 --quiet --skip-dependencies
 haxelib install tink_core 1.26.0
 haxelib git flxanimate https://github.com/Psych-Slice/FlxAnimate.git 82a720663f9ed6328d91a727c2b17501d91e3b11 --quiet --skip-dependencies

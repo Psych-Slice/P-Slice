@@ -105,7 +105,7 @@ class MobileMenuState extends FlxBasic {
 		optionsBtn.setPosition((MobileScaleMode.gameCutoutSize.x/4)+35, FlxG.height - 200);
 
         #if TOUCH_CONTROLS_ALLOWED
-		host.addTouchPad('NONE', 'A_B_E');
+		host.addTouchPad('NONE', 'B_E');
 		#end
 
 		if(!host.controls.mobileC) {
