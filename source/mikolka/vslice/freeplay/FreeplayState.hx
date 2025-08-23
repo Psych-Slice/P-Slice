@@ -334,6 +334,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		var fadeShaderFilter:ShaderFilter = new ShaderFilter(fadeShader);
 		ModsHelper.setFiltersOnCam(funnyCam, [fadeShaderFilter]);
+		funnyCam.filtersEnabled = false;
 
 		if (stickerSubState != null)
 		{
@@ -500,6 +501,8 @@ class FreeplayState extends MusicBeatSubstate
 		}
 
 		albumRoll.albumId = null;
+		@:privateAccess // Force update the album
+		albumRoll.updateAlbum();
 		add(albumRoll);
 
 		var overhangStuff:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 164, FlxColor.BLACK);
@@ -1416,8 +1419,9 @@ class FreeplayState extends MusicBeatSubstate
 				});
 			}
 		}
-		fadeShader.fade(1.0, 0.0, 0.8, {ease: FlxEase.quadIn});
-		FlxG.sound.music.fadeOut(0.9, 0);
+		funnyCam.filtersEnabled = true;
+    	fadeShader.fade(0.0, 1.0, 0.8, {ease: FlxEase.quadIn, onComplete: (twn) -> funnyCam.filtersEnabled = false});
+		FlxG.sound.music?.fadeOut(0.9, 0);
 		new FlxTimer().start(0.9, _ ->
 		{
 			FlxG.switchState(new CharSelectSubState());
@@ -2261,8 +2265,6 @@ class FreeplayState extends MusicBeatSubstate
 		curCapsule.confirm();
 
 		backingCard?.confirm();
-		// FlxTween.color(backingImage, 0.33, 0xFFFFFFFF, 0xFF555555, {ease: FlxEase.quadOut});
-		// FlxTween.color(pinkBack, 0.33, 0xFFFFD0D5, 0xFF171831, {ease: FlxEase.quadOut});
 
 		new FlxTimer().start(styleData?.getStartDelay(), function(tmr:FlxTimer)
 		{
@@ -2303,7 +2305,14 @@ class FreeplayState extends MusicBeatSubstate
 
 			capsule.selected = index == curSelected + 1;
 
-			capsule.targetPos.y = capsule.intendedY(index - curSelectedFractal);
+			var capsuleIndex = index - curSelected;
+			var yOffset:Float = 0;
+
+			// Small offset so edge capsules actually go offscreen enough to not require to be rendered.
+			if (capsuleIndex < 0) yOffset += 50;
+			else if (capsuleIndex > 4) yOffset -= 10;
+
+			capsule.targetPos.y = capsule.intendedY(index - curSelectedFractal) - yOffset;
 			capsule.targetPos.x = capsule.intendedX(index - curSelectedFractal) + (CUTOUT_WIDTH * SONGS_POS_MULTI);
 
 			if (index < curSelected)
@@ -2478,7 +2487,7 @@ class DifficultySelector extends FlxSprite
 
 		whiteShader = new PureColor(FlxColor.WHITE);
 
-		shader = whiteShader;
+		whiteShader.colorSet = true;
 
 		flipX = flipped;
 	}
@@ -2497,15 +2506,16 @@ class DifficultySelector extends FlxSprite
 	{
 		if (!press)
 		{
+			shader = null;
 			scale.x = scale.y = 1;
-			whiteShader.colorSet = false;
 			updateHitbox();
 		}
 		else
 		{
 			offset.y -= 5;
-			whiteShader.colorSet = true;
+			shader = whiteShader;
 			scale.x = scale.y = 0.5;
+			
 		}
 	}
 
@@ -2513,14 +2523,14 @@ class DifficultySelector extends FlxSprite
 	{
 		offset.y -= 5;
 
-		whiteShader.colorSet = true;
-
 		scale.x = scale.y = 0.5;
+
+		shader = whiteShader;
 
 		new FlxTimer().start(2 / 24, function(tmr)
 		{
 			scale.x = scale.y = 1;
-			whiteShader.colorSet = false;
+			shader = null;
 			updateHitbox();
 		});
 	}

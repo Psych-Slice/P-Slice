@@ -22,6 +22,8 @@ import flixel.tweens.FlxTween;
 import flixel.addons.effects.FlxTrail;
 import flixel.util.FlxColor;
 
+using mikolka.funkin.utils.SpriteTools;
+
 //? Documented
 // changed FunkinSprite to FlxSprite
 class SongMenuItem extends FlxSpriteGroup
@@ -401,7 +403,7 @@ class SongMenuItem extends FlxSpriteGroup
         blurredRanking.visible = false;
         favIcon.visible = false;
         favIconBlurred.visible = false;
-        newText.visible = false;
+        newText.setVisibility(false);
       }
       else
       {
@@ -412,7 +414,7 @@ class SongMenuItem extends FlxSpriteGroup
         updateBPM(Std.int(songData.songStartingBpm) ?? 0);
         updateDifficultyRating(songData.difficultyRating ?? 0);
         updateScoringRank(songData.scoringRank);
-        newText.visible = songData.isNew;
+        newText.setVisibility(songData.isNew);
         favIcon.visible = songData.isFav;
         favIconBlurred.visible = songData.isFav;
         checkClip();
@@ -538,6 +540,8 @@ class SongMenuItem extends FlxSpriteGroup
     }
 
     updateScoringRank(songData?.scoringRank);
+
+    // I think this ends the anim early
     favIcon.animation.curAnim.curFrame = favIcon.animation.curAnim.numFrames - 1;
     favIconBlurred.animation.curAnim.curFrame = favIconBlurred.animation.curAnim.numFrames - 1;
 
@@ -545,6 +549,8 @@ class SongMenuItem extends FlxSpriteGroup
 
     //? Add custom week text here
     //checkWeek(songData?.levelId);
+    txtWeek.group.destroy();
+    txtWeek.group = new FlxTypedGroup();
     txtWeek.text = songData?.songWeekName ?? "";
   }
 
@@ -619,26 +625,6 @@ class SongMenuItem extends FlxSpriteGroup
   {
     if (impactThing != null) impactThing.angle = capsule.angle;
 
-    // if (FlxG.keys.justPressed.I)
-    // {
-    //   newText.y -= 1;
-    //   trace(this.x - newText.x, this.y - newText.y);
-    // }
-    // if (FlxG.keys.justPressed.J)
-    // {
-    //   newText.x -= 1;
-    //   trace(this.x - newText.x, this.y - newText.y);
-    // }
-    // if (FlxG.keys.justPressed.L)
-    // {
-    //   newText.x += 1;
-    //   trace(this.x - newText.x, this.y - newText.y);
-    // }
-    // if (FlxG.keys.justPressed.K)
-    // {
-    //   newText.y += 1;
-    //   trace(this.x - newText.x, this.y - newText.y);
-    // }
     if (doJumpIn)
     {
       frameInTicker += elapsed;
