@@ -33,7 +33,7 @@
 			"name": "monster idle"
 		},
 		{
-			"offsets": [0, 0],
+			"offsets": [-20, 94],
 			"loop": true,
 			"fps": 24,
 			"anim": "singUP-loop",
