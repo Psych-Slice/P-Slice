@@ -12,7 +12,7 @@ body:
   - type: textarea
     id: terminal
     attributes:
-      label: "Command Prompt/Terminal logs (latest.log)"
+      label: "Terminal logs (latest.log)"
       render: bash
     validations:
       required: false
@@ -28,10 +28,18 @@ body:
     validations:
       required: true  
 
+  - type: input
+    id: pslice-version
+    attributes:
+      label: "In which version of P-Slice this occurs in (if it's the build from the Actions tab, then also include the commit hash of the build)"
+      placeholder: "3.2.1"
+    validations:
+      required: true
+
   - type: dropdown
     id: psych
     attributes:
-      label: "Which psych version of P-Slice this occurs in"
+      label: "Which \"Psych engine\" version of P-Slice this occurs in"
       options:
         - 0.6.3
         - 1.0.4
@@ -50,8 +58,6 @@ body:
         - "Android"
         - "iOS"
         - "HTML5"
-        - "Flash/Air-based target"
-        - "Neko, HashLink, or other build system"
     validations:
       required: true
 

@@ -672,6 +672,104 @@ class ResultState extends MusicBeatSubState
     }
   }
 
+    private function handleAnimationVibrations()
+  {
+    for (atlas in characterAtlasAnimations)
+    {
+      if (atlas == null || atlas.sprite == null) continue;
+
+      switch (rank)
+      {
+        case ScoringRank.PERFECT | ScoringRank.PERFECT_GOLD:
+          switch (playerCharacterId)
+          {
+            // Feel the bed fun :freaky:
+            case "bf":
+              if (atlas.sprite.anim.curFrame > 87 && atlas.sprite.anim.curFrame % 5 == 0)
+              {
+                HapticUtil.vibrate(0, 0.01, Constants.MAX_VIBRATION_AMPLITUDE);
+                break;
+              }
+
+              // GF slams into the wall.
+              if (atlas.sprite.anim.curFrame == 51)
+              {
+                HapticUtil.vibrate(0, 0.01, (Constants.MAX_VIBRATION_AMPLITUDE / 3) * 2.5);
+                break;
+              }
+
+            // Pico drop-kicking Nene.
+            case "pico":
+              if (atlas.sprite.anim.curFrame == 52)
+              {
+                HapticUtil.vibrate(Constants.DEFAULT_VIBRATION_PERIOD, Constants.DEFAULT_VIBRATION_DURATION * 5, Constants.MAX_VIBRATION_AMPLITUDE);
+                break;
+              }
+
+            default:
+              break;
+          }
+
+        case ScoringRank.GREAT | ScoringRank.EXCELLENT:
+          switch (playerCharacterId)
+          {
+            // Pico explodes the targets with a rocket launcher.
+            case "pico":
+              // Pico shoots.
+              if (atlas.sprite.anim.curFrame == 45)
+              {
+                HapticUtil.vibrate(0, 0.01, (Constants.MAX_VIBRATION_AMPLITUDE / 3) * 2.5);
+                break;
+              }
+
+              // The targets explode.
+              if (atlas.sprite.anim.curFrame == 50)
+              {
+                HapticUtil.vibrate(Constants.DEFAULT_VIBRATION_PERIOD, Constants.DEFAULT_VIBRATION_DURATION, Constants.MAX_VIBRATION_AMPLITUDE);
+                break;
+              }
+
+            default:
+              break;
+          }
+
+        case ScoringRank.GOOD:
+          switch (playerCharacterId)
+          {
+            // Pico shooting the targets.
+            case "pico":
+              if (atlas.sprite.anim.curFrame % 2 != 0) continue;
+
+              final frames:Array<Array<Int>> = [[40, 50], [80, 90], [140, 157]];
+              for (i in 0...frames.length)
+              {
+                if (atlas.sprite.anim.curFrame < frames[i][0] || atlas.sprite.anim.curFrame > frames[i][1]) continue;
+
+                HapticUtil.vibrate(0, 0.01, Constants.MAX_VIBRATION_AMPLITUDE);
+                break;
+              }
+
+            default:
+              break;
+          }
+
+        case ScoringRank.SHIT:
+          switch (playerCharacterId)
+          {
+            // BF falling and GF slams on BF with her ass.
+            case "bf":
+              if (atlas.sprite.anim.curFrame == 5 || atlas.sprite.anim.curFrame == 90)
+              {
+                HapticUtil.vibrate(Constants.DEFAULT_VIBRATION_PERIOD * 2, Constants.DEFAULT_VIBRATION_DURATION * 2, Constants.MAX_VIBRATION_AMPLITUDE);
+                break;
+              }
+
+            default:
+              break;
+          }
+      }
+    }
+  }
   function timerThenSongName(timerLength:Float = 3.0, autoScroll:Bool = true):Void
   {
     movingSongStuff = false;
@@ -874,7 +972,8 @@ class ResultState extends MusicBeatSubState
         }
       }
     }
-
+    
+    if (HapticUtil.hapticsAvailable) handleAnimationVibrations();
     super.update(elapsed);
   }
 }

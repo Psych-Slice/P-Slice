@@ -7,8 +7,41 @@ on:
     branches: [master-dev]
   workflow_dispatch:
 jobs:
+  
+  BuildCaches:
+    name: ${{ matrix.name }}
+    permissions: write-all
+    strategy:
+      matrix:
+        include:
+          - name: Linux
+            os: ubuntu-latest
+            setupScript: sh ./setup/unix.sh
+            CACHE_NAME: P-Slice.1.0.desktop-cache
+
+          - name: Mobile
+            os: macos-latest
+            setupScript: sh ./setup/mobile.sh
+            CACHE_NAME: P-Slice.1.0.mobile-cache
+    uses: ./.github/workflows/dependencies.yml
+    with:
+      os: ${{ matrix.os }}
+      CACHE_NAME: ${{ matrix.CACHE_NAME }}
+      setupScript: ${{ matrix.setupScript }}
+  BuildMacos:
+    name: macos
+    needs: BuildCaches
+    permissions: write-all
+    uses: ./.github/workflows/mac-universal.yml
+    with:
+      exportPath: macos
+      cachePath: P-Slice.1.0.build-macos
+      cacheLibrariesPath: P-Slice.1.0.mobile-cache
+      artifactName: P-Slice.1.0.macos
+      artifactPath: export/release/macos/bin/*
   BuildDesktop:
     name: ${{ matrix.name }}
+    needs: BuildCaches
     permissions: write-all
     strategy:
       matrix:
@@ -29,23 +62,7 @@ jobs:
             cachePath: P-Slice.1.0.build-linux
             cacheLibrariesPath: P-Slice.1.0.desktop-cache
             artifactPath: export/release/linux/bin/*
-          - name: macOS x86_64
-            os: macos-14
-            buildArgs: "mac -64 -D HXCPP_M64"
-            cachePath: P-Slice.1.0.build-macos_m64
-            exportPath: macos
-            cacheLibrariesPath: P-Slice.1.0.mobile-cache
-            artifactName: P-Slice.1.0.macosx64
-            artifactPath: export/release/macos/bin/*
-            
-          - name: macOS AArch64
-            os: macos-15
-            buildArgs: mac
-            exportPath: macos
-            cachePath: P-Slice.1.0.build-macos
-            cacheLibrariesPath: P-Slice.1.0.mobile-cache
-            artifactName: P-Slice.1.0.macosarm64
-            artifactPath: export/release/macos/bin/*
+
     uses: ./.github/workflows/build.yml
     with:
       name: ${{ matrix.name }}
@@ -56,8 +73,10 @@ jobs:
       artifactName: ${{ matrix.artifactName }}
       artifactPath: ${{ matrix.artifactPath }}
       cachePath: ${{matrix.cachePath}}
+
   BuildMobile:
     permissions: write-all
+    needs: BuildCaches
     name: ${{ matrix.name }}
     strategy:
       matrix:

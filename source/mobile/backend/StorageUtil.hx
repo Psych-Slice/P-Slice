@@ -22,9 +22,6 @@
 
 package mobile.backend;
 
-#if android
-import android.os.Environment;
-#end
 import lime.system.System as LimeSystem;
 import haxe.io.Path;
 import haxe.Exception;
@@ -112,7 +109,7 @@ class StorageUtil
 			// 	AndroidSettings.requestSetting('REQUEST_MANAGE_MEDIA');
 			AndroidSettings.requestSetting('MANAGE_APP_ALL_FILES_ACCESS_PERMISSION');
 		}
-		var has_MANAGE_EXTERNAL_STORAGE = Environment.isExternalStorageManager();
+		var has_MANAGE_EXTERNAL_STORAGE = AndroidEnvironment.isExternalStorageManager();
 		var has_READ_EXTERNAL_STORAGE = AndroidPermissions.getGrantedPermissions().contains('android.permission.READ_EXTERNAL_STORAGE');
 		//var has_READ_MEDIA_IMAGES = AndroidPermissions.getGrantedPermissions().contains('android.permission.READ_MEDIA_IMAGES');
 		if ((isAPI33 && !has_MANAGE_EXTERNAL_STORAGE)
