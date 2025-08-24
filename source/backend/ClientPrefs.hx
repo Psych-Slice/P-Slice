@@ -48,6 +48,7 @@ import states.InitState;
 	public var camZooms:Bool = true;
 	public var hideHud:Bool = false;
 
+	public var vsliceMobileControls:Bool = false;
 	public var vsliceFreeplayColors:Bool = true;
 	public var vsliceResults:Bool = true;
 	public var vsliceSpecialCards:Bool = true;
