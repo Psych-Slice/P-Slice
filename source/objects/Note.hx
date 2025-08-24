@@ -121,6 +121,7 @@ class Note extends FlxSprite
 	public var copyY:Bool = true;
 	public var copyAngle:Bool = true;
 	public var copyAlpha:Bool = true;
+	public var copyScale:Bool = true;
 
 	public var hitHealth:Float = 0.02;
 	public var missHealth:Float = 0.1;
@@ -510,6 +511,7 @@ class Note extends FlxSprite
 		var strumY:Float = myStrum.y;
 		var strumAngle:Float = myStrum.angle;
 		var strumAlpha:Float = myStrum.alpha;
+		var strumScale:FlxPoint = myStrum.scale;
 		var strumDirection:Float = myStrum.direction;
 
 		distance = (0.45 * (Conductor.songPosition - strumTime) * songSpeed * multSpeed);
@@ -536,6 +538,11 @@ class Note extends FlxSprite
 				}
 				y -= (frameHeight * scale.y) - (Note.swagWidth / 2);
 			}
+		}
+		if(copyScale){
+			scale.x = strumScale.x;
+			if(!isSustainNote) scale.y = strumScale.y;
+			updateHitbox();
 		}
 	}
 
