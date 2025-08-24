@@ -143,8 +143,17 @@ class StrumNote extends FlxSprite
 
 	public function playerPosition()
 	{
+		// Arrow mode hitboxes require arrows to be in special place.
+		final isHitboxArrowMode = ClientPrefs.data.extraHints == "ARROWS";
 		x += Note.swagWidth * noteData;
+
+		//Spacing between arrows
+		if(isHitboxArrowMode && player == 1) {
+			x += 70 * (noteData-1);
+			x -= 35;
+		}
 		x += 50;
+
 		x += ((FlxG.width / 2) * player);
 	}
 

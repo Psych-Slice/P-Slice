@@ -19,20 +19,12 @@ import flixel.util.FlxSort;
 import flixel.util.FlxStringUtil;
 import flixel.util.FlxSave;
 import flixel.input.keyboard.FlxKey;
-import flixel.animation.FlxAnimationController;
-import lime.utils.Assets;
-import openfl.utils.Assets as OpenFlAssets;
 import openfl.events.KeyboardEvent;
-import haxe.Json;
 
-
-
-import lime.math.Matrix3;
 import mikolka.funkin.Scoring;
 import mikolka.funkin.custom.FunkinTools;
 import mikolka.vslice.results.Tallies;
 import mikolka.vslice.results.ResultState;
-import openfl.media.Sound;
 
 import states.editors.ChartingState;
 import states.editors.CharacterEditorState;
@@ -641,6 +633,7 @@ class PlayState extends MusicBeatState
 		hitbox.visible = true;
 		hitbox.onButtonDown.add(onHintPress);
 		hitbox.onButtonUp.add(onHintRelease);
+		
 		#end
 
 		startCallback();
@@ -1616,7 +1609,7 @@ class PlayState extends MusicBeatState
 				{
 					babyArrow.x += 310;
 					if(i > 1) { //Up and Right
-						babyArrow.x = FlxG.width-310 -168  -82;
+						babyArrow.x = FlxG.width-310 -168  -100;
 						//babyArrow.x += FlxG.width / 2 + 25;
 					}
 				}
