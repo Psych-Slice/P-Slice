@@ -1,11 +1,8 @@
 package mikolka.funkin;
 
 import mikolka.funkin.sound.FlxPartialSound;
-import haxe.io.Path;
 import openfl.media.Sound;
 import mikolka.vslice.freeplay.FreeplayState;
-import haxe.exceptions.NotImplementedException;
-import openfl.media.SoundMixer;
 import flixel.system.FlxAssets.FlxSoundAsset;
 
 class FunkinSound extends FlxSound
@@ -90,7 +87,11 @@ class FunkinSound extends FlxSound
 				#if MODS_ALLOWED
 				var modsInstPath = Paths.modFolders('songs/${Paths.formatToSongPath(key)}/Inst.${Paths.SOUND_EXT}');
 				var real_modSngPath = NativeFileSystem.getPathLike(modsInstPath);
-				if(real_modSngPath != null) instPath = Path.join([StorageUtil.getStorageDirectory(),real_modSngPath]);
+				#if mac
+				if(real_modSngPath != null) instPath = haxe.io.Path.join([StorageUtil.getStorageDirectory(),real_modSngPath]);
+				#else
+				if(real_modSngPath != null) instPath = real_modSngPath;
+				#end
 
 				#end
 				

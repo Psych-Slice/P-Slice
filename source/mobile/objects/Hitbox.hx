@@ -78,7 +78,7 @@ class Hitbox extends MobileInputManager
 				add(buttonExtra = createHint(0, offsetFir, Std.int(FlxG.width / 2), Std.int(FlxG.height / 4), colorMap[4]));
 			case ARROWS: // This is a special case
 				final SCREEN_MIDDLE = FlxG.width/2;
-				final ARROW_HITBOX_SIZE = 245;
+				final ARROW_HITBOX_SIZE = 250;
 				final ARROW_DISTANCE = 215;
 
 
