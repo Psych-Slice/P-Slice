@@ -39,11 +39,13 @@ class ScrollableObject extends TouchZone {
         }
         else if( #if mobile TouchUtil.justReleased #else FlxG.mouse.justReleased #end) {
             if(isTapping){
-                #if mobile
-                if(getjustPressed()?.overlaps(clickButton,clickButton.camera) ?? false) onTap.dispatch();
-                #else
-                if(FlxG.mouse.overlaps(clickButton,clickButton.camera)) onTap.dispatch();
-                #end
+                if(clickButton.camera == null || clickButton.camera.scroll != null){
+                    #if mobile
+                    if(getjustPressed()?.overlaps(clickButton,clickButton.camera) ?? false) onTap.dispatch();
+                    #else
+                    if(FlxG.mouse.overlaps(clickButton,clickButton.camera)) onTap.dispatch();
+                    #end
+                }
                 isTapping = false;
             }
             else if(isDragging) {
