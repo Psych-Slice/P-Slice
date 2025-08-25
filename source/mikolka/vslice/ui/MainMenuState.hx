@@ -4,7 +4,6 @@ import mikolka.vslice.ui.mainmenu.DesktopMenuState;
 import mikolka.compatibility.ui.MainMenuHooks;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.vslice.ui.title.TitleState;
-
 import mikolka.compatibility.ModsHelper;
 import options.OptionsState;
 
@@ -20,7 +19,6 @@ class MainMenuState extends MusicBeatState
 
 	var bg:FlxSprite;
 	var magenta:FlxSprite;
-	
 
 	override function create()
 	{
@@ -76,22 +74,25 @@ class MainMenuState extends MusicBeatState
 
 		super.create();
 		#if TOUCH_CONTROLS_ALLOWED
-		if(controls.mobileC) new mobile.states.MobileMenuState(this);
+		if (controls.mobileC)
+			new mobile.states.MobileMenuState(this);
 		else
 		#end
 		new DesktopMenuState(this);
 	}
 
-	function goToOptions() {
-					MusicBeatState.switchState(new OptionsState());
-			#if !LEGACY_PSYCH OptionsState.onPlayState = false; #end
-			if (PlayState.SONG != null)
-			{
-				PlayState.SONG.arrowSkin = null;
-				PlayState.SONG.splashSkin = null;
-				#if !LEGACY_PSYCH PlayState.stageUI = 'normal'; #end
-			}
+	function goToOptions()
+	{
+		MusicBeatState.switchState(new OptionsState());
+		#if !LEGACY_PSYCH OptionsState.onPlayState = false; #end
+		if (PlayState.SONG != null)
+		{
+			PlayState.SONG.arrowSkin = null;
+			PlayState.SONG.splashSkin = null;
+			#if !LEGACY_PSYCH PlayState.stageUI = 'normal'; #end
+		}
 	}
+
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music.volume < 0.8)

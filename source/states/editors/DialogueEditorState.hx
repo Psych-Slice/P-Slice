@@ -487,7 +487,7 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 		if(_file.__path != null) fullPath = _file.__path;
 
 		if(fullPath != null) {
-			var rawJson:String = NativeFileSystem.getContent(fullPath);
+			var rawJson:String = File.getContent(fullPath);
 			if(rawJson != null) {
 				var loadedDialog:DialogueFile = cast Json.parse(rawJson);
 				if(loadedDialog.dialogue != null && loadedDialog.dialogue.length > 0) //Make sure it's really a dialogue file
