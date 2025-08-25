@@ -65,13 +65,17 @@ jobs:
         run: |
           haxelib run lime build mac -D HXCPP_ARM64 
           mv ./export/release/macos/bin/PSliceEngine.app/Contents/MacOS/PSliceEngine ./pslice-arm
+          mv ./export/release/macos/bin/PSliceEngine.app/Contents/MacOS/lime.ndll ./lime-arm.ndll
 
       - name: Compile (x86_64)
         run: |
           haxelib run lime build mac -64  -D HXCPP_M64 
           mv ./export/release/macos/bin/PSliceEngine.app/Contents/MacOS/PSliceEngine ./pslice-x86
+          mv ./export/release/macos/bin/PSliceEngine.app/Contents/MacOS/lime.ndll ./lime-x86.ndll
       - name: Reflux because yes
-        run: lipo -create -output ./export/release/macos/bin/PSliceEngine.app/Contents/MacOS/PSliceEngine ./pslice-x86 ./pslice-arm
+        run: |
+          lipo -create -output ./export/release/macos/bin/PSliceEngine.app/Contents/MacOS/PSliceEngine ./pslice-x86 ./pslice-arm
+          lipo -create -output ./export/release/macos/bin/PSliceEngine.app/Contents/MacOS/lime.ndll ./lime-x86.ndll ./lime-arm.ndll
           
       - name: Upload Artifact
         uses: actions/upload-artifact@main
