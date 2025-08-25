@@ -72,7 +72,9 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		titleText.alpha = 0.4;
 		add(titleText);
 
-		descText = new FlxText(50, 600, 1180, "", 32);
+		var txtWidthOffset:Float = Math.max(MobileScaleMode.gameCutoutSize.x / 2,50);
+
+		descText = new FlxText(txtWidthOffset, 600, FlxG.width-(txtWidthOffset*2), "", 32);
 		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		descText.scrollFactor.set();
 		descText.borderSize = 2.4;

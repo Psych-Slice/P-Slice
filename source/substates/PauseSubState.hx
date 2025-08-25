@@ -328,7 +328,7 @@ class PauseSubState extends MusicBeatSubstate
 					var curDiffText = selectedOption;
 					if(songLowercase.endsWith("-erect") && curDiffText != "Erect" && curDiffText != "Nightmare"){
 						//not nightmare anymore
-						songLowercase = songLowercase.substring(0,songLowercase.length-1-"-erect".length);
+						songLowercase = songLowercase.substring(0,songLowercase.length-"-erect".length);
 					}
 					else if(!songLowercase.endsWith("-erect") && (curDiffText == "Erect" || curDiffText == "Nightmare")){
 						//now it's nightmare
