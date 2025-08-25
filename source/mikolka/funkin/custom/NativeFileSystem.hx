@@ -309,49 +309,42 @@ class NativeFileSystem
 		#end
 	}
 
-	#if linux
-	/**
+	#if (linux || ios)
+		/**
 	 * Returns a path to the existing file similar to the given one.
 	 * (For instance "mod/firelight" and  "Mod/FireLight" are *similar* paths)
-	 * @param path
-	 * @return Null<String>
+	 * @param path The path to find
+	 * @return Null<String> Found path or null if such doesn't exist
 	 */
-	public static function getPathLike(path:String):Null<String>
-	{
-		if (sys.FileSystem.exists(path))
-			return path;
+	public static function getPathLike(path:String):Null<String> {
+		var path = addCwd(path);// fir ios
+		if(sys.FileSystem.exists(path)) return path;
 
 		var baseParts:Array<String> = path.replace('\\', '/').split('/');
 		var keyParts = [];
-		if (baseParts.length == 0)
-			return null;
+		if (baseParts.length == 0) return null;
 
-		while (!sys.FileSystem.exists(baseParts.join("/")) && baseParts.length != 0)
+		while(!sys.FileSystem.exists(baseParts.join("/")) && baseParts.length != 0)
 			keyParts.insert(0, baseParts.pop());
 
-		return findFile(baseParts.join("/"), keyParts);
+		return findFile(baseParts.join("/"),keyParts);
 	}
 
-	private static function findFile(base_path:String, keys:Array<String>):Null<String>
-	{
+	private static function findFile(base_path:String,keys:Array<String>):Null<String> {
 		var nextDir:String = base_path;
-		for (part in keys)
-		{
-			if (part == '')
-				continue;
+		for (part in keys) {
+			if (part == '') continue;
 
 			var foundNode = findNode(nextDir, part);
 
-			if (foundNode == null)
-			{
+			if (foundNode == null) {
 				return null;
 			}
-			nextDir = nextDir + "/" + foundNode;
+			nextDir = nextDir+"/"+foundNode;
 		}
 
 		return nextDir;
 	}
-
 	/**
 	 * Searches a given directory and returns a name of the existing file/directory
 	 * *similar* to the **key**
@@ -359,22 +352,17 @@ class NativeFileSystem
 	 * @param key The file/directory you want to find
 	 * @return Either a file name, or null if the one doesn't exist
 	 */
-	private static function findNode(dir:String, key:String):Null<String>
-	{
-		try
-		{
+	private static function findNode(dir:String, key:String):Null<String> {
+		try {
 			var allFiles:Array<String> = sys.FileSystem.readDirectory(dir);
 			var fileMap:Map<String, String> = new Map();
 
-			for (file in allFiles)
-			{
+			for (file in allFiles) {
 				fileMap.set(file.toLowerCase(), file);
 			}
 
 			return fileMap.get(key.toLowerCase());
-		}
-		catch (e:Dynamic)
-		{
+		} catch (e:Dynamic) {
 			return null;
 		}
 	}
@@ -389,6 +377,8 @@ class NativeFileSystem
 	public static function getPathLike(path:String):Null<String>
 	{
 		var cwd_path = addCwd(path);
+		trace(path);
+		trace(cwd_path);
 		if (sys.FileSystem.exists(cwd_path))
 			return cwd_path;
 		return null;

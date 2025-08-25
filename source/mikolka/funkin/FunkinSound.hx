@@ -87,7 +87,7 @@ class FunkinSound extends FlxSound
 				#if MODS_ALLOWED
 				var modsInstPath = Paths.modFolders('songs/${Paths.formatToSongPath(key)}/Inst.${Paths.SOUND_EXT}');
 				var real_modSngPath = NativeFileSystem.getPathLike(modsInstPath);
-				#if mac
+				#if (mac || ios)
 				if(real_modSngPath != null) instPath = haxe.io.Path.join([StorageUtil.getStorageDirectory(),real_modSngPath]);
 				#else
 				if(real_modSngPath != null) instPath = real_modSngPath;
