@@ -385,8 +385,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		add(selectionBox);
 
 		//? Apply Mobile cutout offset
-		infoBoxPosition.x = (MobileScaleMode.gameCutoutSize.x / 2.5);
-		mainBoxPosition.x = (MobileScaleMode.gameCutoutSize.x / 2.5);
+		infoBoxPosition.x += (MobileScaleMode.gameCutoutSize.x / 2.5);
+		mainBoxPosition.x += (MobileScaleMode.gameCutoutSize.x / 2.5);
 		var upperBoxOffsetX = (MobileScaleMode.gameCutoutSize.x / 2.5);
 		
 		infoBox = new PsychUIBox(infoBoxPosition.x , infoBoxPosition.y , 220, 220, ['Information']);
@@ -742,7 +742,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 				var dataToSave:String = haxe.Json.stringify(songCopy);
 				//trace(chartName, dataToSave);
 				#if sys
-				if(!NativeFileSystem.isDirectory('backups')) NativeFileSystem.createDirectory('backups');
+				if(!FileSystem.isDirectory('backups')) NativeFileSystem.createDirectory('backups');
 				try{
 
 					File.saveContent('backups/$chartName.$BACKUP_EXT', dataToSave);

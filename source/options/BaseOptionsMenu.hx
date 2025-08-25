@@ -166,10 +166,12 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 		if (controls.UI_UP_P)
 		{
+			FlxG.sound.play(Paths.sound('scrollMenu'));
 			changeSelection(-1,true);
 		}
 		if (controls.UI_DOWN_P)
 		{
+			FlxG.sound.play(Paths.sound('scrollMenu'));
 			changeSelection(1,true);
 		}
 
@@ -543,7 +545,6 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	{
 		if (usePrecision)
 		{
-			FlxG.sound.play(Paths.sound('scrollMenu'));
 			curSelected = FlxMath.wrap(curSelected + Std.int(delta), 0, optionsArray.length - 1);
 			curSelectedPartial = curSelected;
 		}
