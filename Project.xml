@@ -251,6 +251,9 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<!--Disable the Flixel core focus lost screen-->
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
+
+	<!-- Let user access P-Slice files-->
+	<haxedef name="SHARE_MOBILE_FILES" if="mobile" />
 	
 	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
 	<haxedef name="FLX_NO_DEBUG" unless="PROFILE_BUILD || debug" />
