@@ -1,12 +1,12 @@
 {
 "AN": {
-"N": "Character Select Assets",
+"N": "character select assets V2",
 "STI": {
 "SI": {
 "SN": "Speakers ALL",
 "IN": "",
 "ST": "G",
-"FF": 12,
+"FF": 0,
 "LP": "LP",
 "TRP": {
 "x": 718.35,
@@ -2182,7 +2182,7 @@
 0.0,
 1.0,
 0.0,
-0.0,
+-80.5,
 0.0,
 0.0,
 1.0

@@ -429,6 +429,7 @@ class FunkinPreloader extends FlxBasePreloader
 				{
 					cachingGraphicsPercent = 0.0;
 					cachingGraphicsStartTime = elapsed;
+					#if !LEGACY_PSYCH
 					// ? P-Slice precache commonly used graphics
 					//* FIles here won't be editable by mods
 					var assetsToCache:Array<String> = [
@@ -451,11 +452,8 @@ class FunkinPreloader extends FlxBasePreloader
 						{
 							try
 							{
-								#if LEGACY_PSYCH
-								if (Paths.returnGraphic(item) != null)
-								#else
+								
 								if (Paths.cacheBitmap(item) != null)
-								#end
 								{
 									#if debug trace("Cached: " + item); #end
 									Paths.excludeAsset(item);
@@ -481,9 +479,11 @@ class FunkinPreloader extends FlxBasePreloader
 						cachingGraphicsComplete = true;
 						trace('Completed caching graphics.');
 					});
+					#else
 
-					// TODO: Reimplement this.
-					// cachingGraphicsPercent = 1.0;
+					cachingGraphicsComplete = true;
+					cachingGraphicsPercent = 1.0;
+					#end
 
 					return 0.0;
 				}
@@ -585,12 +585,13 @@ class FunkinPreloader extends FlxBasePreloader
 				{
 					cachingDataPercent = 0.0;
 					cachingDataStartTime = elapsed;
+					#if !LEGACY_PSYCH
 
 					var assetsToCache:Array<String> = [
-            "freeplay/freeplayStars",
-            "freeplay/albumRoll/freeplayAlbum",
-            "freeplay/sortedLetters"
-            ];
+					"freeplay/freeplayStars",
+					"freeplay/albumRoll/freeplayAlbum",
+					"freeplay/sortedLetters"
+					];
 
 					trace("Load misc");
 					// ? Some misc caching
@@ -628,9 +629,13 @@ class FunkinPreloader extends FlxBasePreloader
 					promise.future.onComplete((_result) ->
 					{
 						cachingDataComplete = true;
-						trace('Completed caching graphics.');
+						trace('Completed caching JSONs.');
 					});
+					#else
 
+					cachingDataComplete = true;
+					cachingDataPercent = 1.0;
+					#end
 					return 0.0;
 				}
 				else if (0.0 > 0)
