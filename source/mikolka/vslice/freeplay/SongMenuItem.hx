@@ -410,6 +410,7 @@ class SongMenuItem extends FlxSpriteGroup
         updateDifficultyRating(songData.difficultyRating ?? 0);
         updateScoringRank(songData.scoringRank);
         newText.setVisibility(songData.isNew);
+        if(newText.visible) newText.animation.play('newAnim', true);
         favIcon.visible = songData.isFav;
         favIconBlurred.visible = songData.isFav;
         checkClip();
