@@ -13,12 +13,13 @@ class PsychDialogueStyle extends DialogueStyle
 
 	public function new()
 	{
+		super();
 	}
 
 	// {"","left-","center-"}+{"angry","normal"}+{"","Open","Wait"}
 	public function makeDialogueBox():FlxSprite
 	{
-		box = new FlxSprite(70, 370);
+		box = new FlxSprite(70+((FlxG.width-FlxG.initialWidth)/2), 370);
 		box.antialiasing = VsliceOptions.ANTIALIASING;
 		box.frames = Paths.getSparrowAtlas('speech_bubble');
 		box.scrollFactor.set();

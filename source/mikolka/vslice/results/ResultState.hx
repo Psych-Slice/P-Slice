@@ -124,7 +124,7 @@ class ResultState extends MusicBeatSubState
 
     bgFlash = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [0xFFFFF1A6, 0xFFFFF1BE], 90);
 
-    resultsAnim = FunkinSprite.createSparrow(-200+ MobileScaleMode.gameNotchSize.x, -10, "resultScreen/results");
+    resultsAnim = FunkinSprite.createSparrow(FlxG.width -(1480 + (MobileScaleMode.gameCutoutSize.x / 2)), -10, "resultScreen/results");
 
     ratingsPopin = FunkinSprite.createSparrow(-135+ MobileScaleMode.gameNotchSize.x, 135, "resultScreen/ratingsPopin");
 
@@ -461,17 +461,6 @@ class ResultState extends MusicBeatSubState
         FlxTween.tween(rating, {curNumber: rating.neededNumber}, 0.5, {ease: FlxEase.quartOut});
       });
     }
-
-    // if (params.isNewHighscore ?? false)
-    // {
-    //   highscoreNew.visible = true;
-    //   highscoreNew.animation.play("new");
-    //   //FlxTween.tween(highscoreNew, {y: highscoreNew.y + 10}, 0.8, {ease: FlxEase.quartOut});
-    // }
-    // else
-    // {
-    //   highscoreNew.visible = false;
-    // }
 
     new FlxTimer().start(rank.getMusicDelay(), _ -> {
       //? Changed a little sound loading

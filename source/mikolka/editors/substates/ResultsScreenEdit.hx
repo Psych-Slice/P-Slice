@@ -27,7 +27,7 @@ class ResultsScreenEdit extends VsliceSubState
 	public function new(activePlayer:PlayableCharacter)
 	{
 		this.activePlayer = activePlayer;
-		resultsAnim = FunkinSprite.createSparrow(-200, -10, "resultScreen/results");
+		resultsAnim = FunkinSprite.createSparrow(FlxG.width -(1480 + (MobileScaleMode.gameCutoutSize.x / 2)), -10, "resultScreen/results");
 		bgFlash = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [0xFFFFF1A6, 0xFFFFF1BE], 90);
 		super();
 	}

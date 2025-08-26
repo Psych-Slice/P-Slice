@@ -43,9 +43,18 @@ abstract class DialogueStyle{
 	private var _last_style:DialogueBoxState;
 	public var last_style(get,null):DialogueBoxState;
 	function get_last_style():DialogueBoxState return _last_style;
+
 	private var _last_position:DialogueBoxPosition;
 	public var last_position(get,null):DialogueBoxPosition;
 	function get_last_position():DialogueBoxPosition return _last_position;
+
+	function new() {
+		var centerOffset = (FlxG.width-FlxG.initialWidth)/2;
+		LEFT_CHAR_X += centerOffset;
+		DEFAULT_TEXT_X += Std.int(centerOffset);
+		RIGHT_CHAR_X -= centerOffset;
+	}
+
 	public function playBoxAnim(pos:DialogueBoxPosition,style:DialogueBoxState,boxType:String) {
 		if(_last_style == style && _last_position == pos) return;
 		_last_style = style;

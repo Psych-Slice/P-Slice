@@ -203,7 +203,7 @@ class CharSelectSubState extends MusicBeatSubState
 			playerChillOut.visible = false;
 			add(playerChillOut);
 
-			playerChill = new CharSelectPlayer(cutoutSize*2, 0);
+			playerChill = new CharSelectPlayer(cutoutSize*2.5, 0);
 			playerChill.switchChar(character);
 			add(playerChill);
 		}

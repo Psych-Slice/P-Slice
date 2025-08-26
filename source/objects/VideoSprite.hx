@@ -70,7 +70,7 @@ class VideoSprite extends FlxSpriteGroup {
 			videoSprite.scale.set(FlxG.width / wd, FlxG.height / hg);
 			#end
 			*/
-			videoSprite.setGraphicSize(FlxG.width);
+			videoSprite.setGraphicSize(FlxG.initialWidth);
 			videoSprite.updateHitbox();
 			videoSprite.screenCenter();
 		});
