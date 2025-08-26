@@ -1694,8 +1694,9 @@ class PlayState extends MusicBeatState
 		final isHitboxArrowMode = ClientPrefs.data.extraHints == "ARROWS" && ClientPrefs.data.middleScroll;
 		var strumLineX:Float = ClientPrefs.data.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X;
 		var strumLineY:Float = ClientPrefs.data.downScroll ? (FlxG.height - 150) : 50;
-		if (isHitboxArrowMode)
-			strumLineY += ClientPrefs.data.downScroll ? -50 : 50;
+		var playerStrumLineY = strumLineY;
+		if(isHitboxArrowMode && ClientPrefs.data.downScroll) playerStrumLineY -= 50;
+
 		#if TOUCH_CONTROLS_ALLOWED
 		Note.swagWidth = 160 * (isHitboxArrowMode ? 0.8 : 0.7);
 		#end
@@ -1712,7 +1713,7 @@ class PlayState extends MusicBeatState
 				targetAlpha = 0.35;
 		}
 
-		var babyArrow:StrumNote = new StrumNote(strumLineX, strumLineY, i, player);
+		var babyArrow:StrumNote = new StrumNote(strumLineX, player==1 ? playerStrumLineY : strumLineY, i, player);
 		babyArrow.downScroll = ClientPrefs.data.downScroll;
 		if (!isStoryMode && !skipArrowStartTween)
 		{
@@ -1743,7 +1744,7 @@ class PlayState extends MusicBeatState
 				{ // Up and Right
 					babyArrow.x = FlxG.width - 310 - 168 - 100;
 					if(isHitboxArrowMode)
-						babyArrow.x += 60;
+						babyArrow.x += 50;
 					// babyArrow.x += FlxG.width / 2 + 25;
 				}
 				else if(isHitboxArrowMode)
