@@ -4,7 +4,6 @@ import mikolka.vslice.freeplay.FreeplayState;
 import options.OptionsState;
 import flixel.FlxBasic;
 import flixel.effects.FlxFlicker;
-import flixel.group.FlxSpriteContainer.FlxTypedSpriteContainer;
 import mikolka.vslice.ui.title.TitleState;
 #if !LEGACY_PSYCH
 #if MODS_ALLOWED
@@ -18,7 +17,6 @@ import editors.MasterEditorMenu;
 #end
 import mikolka.compatibility.VsliceOptions;
 import flixel.FlxObject;
-import flixel.group.FlxSpriteContainer;
 
 @:access(mikolka.vslice.ui.MainMenuState)
 class DesktopMenuState extends FlxBasic
