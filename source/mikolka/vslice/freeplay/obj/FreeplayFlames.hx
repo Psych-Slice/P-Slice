@@ -3,10 +3,11 @@ package mikolka.vslice.freeplay.obj;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxSprite;
 import flixel.util.FlxTimer;
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 
 class FreeplayFlames extends FlxSpriteGroup
 {
-  var flameX(default, set):Float = 917;
+  var flameX(default, set):Float = (FlxG.width - 363) - MobileScaleMode.gameNotchSize.x;
   var flameY(default, set):Float = 103;
   var flameSpreadX(default, set):Float = 29;
   var flameSpreadY(default, set):Float = 6;

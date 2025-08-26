@@ -116,8 +116,6 @@ class FreeplayDialogBox extends PsychUIBox
 				backingCard.moreWays.funnyColor = backingCard.moreWays2.funnyColor = 0xFFFFF383;
 				backingCard.add(backingCard.moreWays);
 				backingCard.add(backingCard.moreWays2);
-				backingCard.moreWays.grpTexts.forEach(x -> x.text = currentCharacter.getFreeplayDJText(2));
-				backingCard.moreWays2.grpTexts.forEach(x -> x.text = currentCharacter.getFreeplayDJText(2));
 			}
 			input_text3.onChange = (prev, current) ->
 			{

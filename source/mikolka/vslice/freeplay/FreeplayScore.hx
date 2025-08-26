@@ -52,11 +52,11 @@ class FreeplayScore extends FlxTypedSpriteGroup<ScoreNum>
     {
       if (styleData == null)
       {
-        add(new ScoreNum(x + (45 * i), y, 0));
+        add(new ScoreNum( (45 * i), y, 0));
       }
       else
       {
-        add(new ScoreNum(x + (45 * i), y, 0, styleData));
+        add(new ScoreNum( (45 * i), y, 0, styleData));
       }
     }
 

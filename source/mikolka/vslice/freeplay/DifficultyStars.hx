@@ -4,10 +4,10 @@ import mikolka.compatibility.VsliceOptions;
 import shaders.HSVShader;
 import mikolka.vslice.freeplay.obj.FreeplayFlames;
 import flixel.group.FlxSpriteGroup;
-import mikolka.compatibility.funkin.FunkinPath as Paths;
 
 class DifficultyStars extends FlxSpriteGroup
 {
+
   /**
    * Internal handler var for difficulty... ranges from 0... to 15
    * 0 is 1 star... 15 is 0 stars!
@@ -19,7 +19,7 @@ class DifficultyStars extends FlxSpriteGroup
    */
   public var difficulty(default, set):Int = 1;
 
-  public var stars:FlxAtlasSprite;
+  public var stars:FlxAnimate;
 
   public var flames:FreeplayFlames;
 
@@ -34,7 +34,9 @@ class DifficultyStars extends FlxSpriteGroup
     flames = new FreeplayFlames(0, 0);
     add(flames);
     
+    //? Using base FlxAnimate to sideload JSON obj "freeplay/freeplayStars
     stars = new FlxAtlasSprite(0, 0, "freeplay/freeplayStars");
+
     stars.anim.play("diff stars");
     add(stars);
     if(VsliceOptions.SHADERS){

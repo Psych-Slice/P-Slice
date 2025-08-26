@@ -56,14 +56,6 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
-		#if mobile
-		#if android
-		StorageUtil.requestPermissions();
-		#end
-		Sys.setCwd(StorageUtil.getStorageDirectory());
-		#end
-		#if sys Logger.startLogging(); #end
-		CrashHandler.init();
 
 		if (stage != null)
 		{
@@ -85,6 +77,53 @@ class Main extends Sprite
 		setupGame();
 	}
 
+		// Game pre-flixel init code
+	// ? This runs before we attempt to precache things
+	public static function loadGameEarly()
+	{
+		#if (linux || mac) // fix the app icon not showing up on the Linux Panel
+		var icon = lime.graphics.Image.fromFile("icon.png");
+		Lib.current.stage.window.setIcon(icon);
+		#end
+
+		#if TITLE_SCREEN_EASTER_EGG
+		if (Date.now().getMonth() == 0 && Date.now().getDate() == 14)
+			Lib.current.stage.window.title = "Friday Night Funkin': Mikolka's Engine";
+		#end
+
+		// This requests file access on android (otherwise we will crash later)
+		#if android
+		StorageUtil.requestPermissions();
+		#end
+
+		//? iOS seems to be crasing on this line... 
+		#if android
+		Sys.setCwd(StorageUtil.getStorageDirectory());
+		#end
+
+		#if sys
+		Logger.startLogging();
+		trace("CWD IS " + StorageUtil.getStorageDirectory());
+		#end
+		CrashHandler.init();
+		trace("Crash handler is up!");
+
+		// This initialises mods
+		try
+		{
+			#if LUA_ALLOWED
+			trace("Loading global mods");
+			Paths.pushGlobalMods();
+			#end
+			// Just to load a mod on start up if ya got one. For mods that change the menu music and bg
+			trace("Pushing top mod");
+			WeekData.loadTheFirstEnabledMod();
+
+		}
+		catch (x:Exception)
+			trace("Something went wrong with mod code: " + x.message);
+
+	}
 	private function setupGame():Void
 	{
 		#if (openfl <= "9.2.0")

@@ -1,5 +1,6 @@
 #if !macro
 
+import haxe.Exception;
 
 //Psych
 #if LUA_ALLOWED
