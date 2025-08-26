@@ -38,6 +38,9 @@ class InitState extends MusicBeatState
 		trace("ACTUALLY load saves");
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 
+		trace("Load scores");
+		Highscore.load();
+
 		ClientPrefs.loadPrefs();
 		
 		trace("Setting some save related values");

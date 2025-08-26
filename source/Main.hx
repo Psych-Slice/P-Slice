@@ -3,19 +3,14 @@ package;
 import mikolka.GameBorder;
 import mikolka.vslice.components.MemoryCounter;
 import mikolka.vslice.components.crash.Logger;
-import lime.graphics.Image;
-import flixel.graphics.FlxGraphic;
-import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
-import openfl.Assets;
 import openfl.Lib;
 import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.display.StageScaleMode;
 
-import vlc.MP4Handler;
 
 #if COPYSTATE_ALLOWED
 import mobile.states.CopyState;
