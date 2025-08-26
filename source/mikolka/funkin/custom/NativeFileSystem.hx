@@ -377,8 +377,6 @@ class NativeFileSystem
 	public static function getPathLike(path:String):Null<String>
 	{
 		var cwd_path = addCwd(path);
-		trace(path);
-		trace(cwd_path);
 		if (sys.FileSystem.exists(cwd_path))
 			return cwd_path;
 		return null;

@@ -205,17 +205,18 @@ class DialogueEditorState extends MusicBeatState implements PsychUIEventHandler.
 	}
 
 	function reloadCharacter() {
+		var characterXPadding = Std.int((FlxG.width-FlxG.initialWidth)/2);
 		character.frames = Paths.getSparrowAtlas('dialogue/' + character.jsonFile.image);
 		character.jsonFile = character.jsonFile;
 		character.reloadAnimations();
 		character.setGraphicSize(Std.int(character.width * DialogueCharacter.DEFAULT_SCALE * character.jsonFile.scale));
 		character.updateHitbox();
-		character.x = DialogueBoxPsych.LEFT_CHAR_X;
-		character.y = DialogueBoxPsych.DEFAULT_CHAR_Y;
+		character.x = DialogueBoxPsych.LEFT_CHAR_X + characterXPadding;
+		character.y = DialogueBoxPsych.DEFAULT_CHAR_Y; 
 
 		switch(character.jsonFile.dialogue_pos) {
 			case 'right':
-				character.x = FlxG.width - character.width + DialogueBoxPsych.RIGHT_CHAR_X;
+				character.x = FlxG.width - character.width + DialogueBoxPsych.RIGHT_CHAR_X - characterXPadding;
 			
 			case 'center':
 				character.x = FlxG.width / 2;

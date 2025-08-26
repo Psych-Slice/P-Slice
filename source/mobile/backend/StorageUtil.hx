@@ -25,6 +25,10 @@ class StorageUtil
 		if (!FileSystem.exists(rootDir + 'storagetype.txt'))
 			File.saveContent(rootDir + 'storagetype.txt', ClientPrefs.data.storageType);
 		var curStorageType:String = File.getContent(rootDir + 'storagetype.txt');
+		if(curStorageType == "EXTERNAL_DATA"){
+			curStorageType = "INTERNAL";
+			ClientPrefs.data.storageType = "INTERNAL";
+		}
 		daPath = force ? StorageType.fromStrForce(curStorageType) : StorageType.fromStr(curStorageType);
 		daPath = Path.addTrailingSlash(daPath);
 		#elseif ios
@@ -129,7 +133,7 @@ enum abstract StorageType(String) from String to String
 	final packageNameLocal = 'com.mikolka9144.pslice';
 	final fileLocal = 'PSliceEngine';
 
-	var EXTERNAL_DATA = "EXTERNAL_DATA";
+	var INTERNAL = "INTERNAL";
 	var EXTERNAL = "EXTERNAL";
 
 	public static function fromStr(str:String):StorageType
@@ -137,9 +141,9 @@ enum abstract StorageType(String) from String to String
 		try{
 			return switch (str)
 			{
-				case "EXTERNAL_DATA": 
-					final EXTERNAL_DATA = AndroidContext.getExternalFilesDir();
-					EXTERNAL_DATA;
+				case "INTERNAL": 
+					final INTERNAL = AndroidContext.getExternalFilesDir();
+					INTERNAL;
 				case "EXTERNAL": 
 					final EXTERNAL = AndroidEnvironment.getExternalStorageDirectory() + '/.' + lime.app.Application.current.meta.get('file');
 					EXTERNAL;
@@ -155,12 +159,12 @@ enum abstract StorageType(String) from String to String
 
 	public static function fromStrForce(str:String):StorageType
 	{
-		final EXTERNAL_DATA = forcedPath + 'Android/data/' + packageNameLocal + '/files';
+		final INTERNAL = forcedPath + 'Android/data/' + packageNameLocal + '/files';
 		final EXTERNAL = forcedPath + '.' + fileLocal;
 
 		return switch (str)
 		{
-			case "EXTERNAL_DATA": EXTERNAL_DATA;
+			case "INTERNAL": INTERNAL;
 			case "EXTERNAL": EXTERNAL;
 			default: StorageUtil.getExternalDirectory(str) + '.' + fileLocal;
 		}

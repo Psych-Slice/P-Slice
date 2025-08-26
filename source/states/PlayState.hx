@@ -1744,7 +1744,7 @@ class PlayState extends MusicBeatState
 				{ // Up and Right
 					babyArrow.x = FlxG.width - 310 - 168 - 100;
 					if(isHitboxArrowMode)
-						babyArrow.x += 50;
+						babyArrow.x += 40;
 					// babyArrow.x += FlxG.width / 2 + 25;
 				}
 				else if(isHitboxArrowMode)
