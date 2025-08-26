@@ -1,10 +1,8 @@
 package mikolka.funkin;
 
+import mikolka.funkin.sound.FlxPartialSound;
 import openfl.media.Sound;
 import mikolka.vslice.freeplay.FreeplayState;
-import funkin.util.flixel.sound.FlxPartialSound;
-import haxe.exceptions.NotImplementedException;
-import openfl.media.SoundMixer;
 import flixel.system.FlxAssets.FlxSoundAsset;
 
 class FunkinSound extends FlxSound
@@ -89,7 +87,11 @@ class FunkinSound extends FlxSound
 				#if MODS_ALLOWED
 				var modsInstPath = Paths.modFolders('songs/${Paths.formatToSongPath(key)}/Inst.${Paths.SOUND_EXT}');
 				var real_modSngPath = NativeFileSystem.getPathLike(modsInstPath);
+				#if (mac || ios)
+				if(real_modSngPath != null) instPath = haxe.io.Path.join([StorageUtil.getStorageDirectory(),real_modSngPath]);
+				#else
 				if(real_modSngPath != null) instPath = real_modSngPath;
+				#end
 
 				#end
 				
@@ -114,8 +116,9 @@ class FunkinSound extends FlxSound
 					});
 				return true;
 			}
-			catch (x){
+			catch (x:Exception){
 				var targetPath = instPath == "" ? "" : "from "+instPath;
+				trace(x.message);
 				trace('Failed to parialy load instrumentals for ${key} ${targetPath}');
 				return false;
 			}

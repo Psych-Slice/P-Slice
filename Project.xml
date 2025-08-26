@@ -149,7 +149,6 @@
 	<!--In case you want to use the addons package-->
 	<haxelib name="flixel-addons" />
 	<haxelib name="hscript" />
-	<haxelib name="FlxPartialSound" />
 	<define name="hscriptPos" />
 
 	<!--In case you want to use the ui package-->

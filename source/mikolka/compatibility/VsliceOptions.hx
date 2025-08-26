@@ -38,6 +38,10 @@ class VsliceOptions {
     public static function get_NAUGHTYNESS():Bool {
         return ClientPrefs.vsliceNaughtyness;
     }
+    public static var VIBRATION(get,never):Bool;    
+    public static function get_VIBRATION():Bool {
+        return ClientPrefs.vibrating;
+    }
     public static var LOGGING(get,never):String;    
     public static function get_LOGGING():String {
         return ClientPrefs.psliceLogging;

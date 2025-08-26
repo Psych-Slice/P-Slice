@@ -24,12 +24,6 @@ class InitState extends MusicBeatState
 		persistentUpdate = true;
 		persistentDraw = true;
 		FlxG.mouse.visible = false;
-		#if LUA_ALLOWED
-		trace("Loading global mods");
-		Paths.pushGlobalMods();
-		#end
-		// Just to load a mod on start up if ya got one. For mods that change the menu music and bg
-		WeekData.loadTheFirstEnabledMod();
 
 		FlxG.game.focusLostFramerate = 60;
 		FlxG.mouse.load(Assets.getBitmapData(Paths.getPreloadPath("images/cursor-default.png")).clone());

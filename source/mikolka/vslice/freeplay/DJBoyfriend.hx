@@ -78,7 +78,7 @@ class FreeplayDJ extends FlxAtlasSprite
 
   public override function update(elapsed:Float):Void
   {
-    super.update(elapsed);
+
 
     switch (currentState)
     {
@@ -216,6 +216,11 @@ class FreeplayDJ extends FlxAtlasSprite
       }
     }
     #end
+
+
+    // Call the superclass function AFTER updating the current state and playing the next animation.
+    // This ensures that FlxAnimate starts rendering the new animation immediately.
+    super.update(elapsed);
   }
 
   function onFinishAnim(name:String):Void
