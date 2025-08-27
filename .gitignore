@@ -8,6 +8,8 @@ art/test_x64-debug-officialrelease.bat
 ### VS Code
 export/*
 .vscode/*
+### Added just because its easier to manage with a folder like this for me ✌️
+ignore/* 
 .haxelib/
 #.github/
 *.code-workspace
