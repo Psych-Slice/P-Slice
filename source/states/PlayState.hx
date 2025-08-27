@@ -3429,8 +3429,40 @@ class PlayState extends MusicBeatState
 
 	public function invalidateNote(note:Note):Void {
 		//if(!ClientPrefs.data.lowQuality || !ClientPrefs.data.popUpRating || !cpuControlled) note.kill();
-		notes.remove(note, true);
-		note.destroy();
+		
+		if (note.rating == 'bad' || note.rating == 'shit')
+		{
+			var LastComb:Int = combo;
+			var char:Character = boyfriend;
+
+			note.rgbShader.r = 0x43929292;
+			note.rgbShader.g = 0x43FFFFFF;
+			note.rgbShader.b = 0x434C4C4C;
+			
+			note.multAlpha = 0.8;
+			combo = 0;
+			note.tooLate = true;
+			//note.mustPress = false;
+			note.ignoreNote = true;
+			note.canBeHit = false;
+			note.noteWasHit = true;
+			note.copyAlpha = false;
+
+			if(char != gf && LastComb > 5 && gf != null && gf.hasAnimation('sad'))
+			{
+				gf.playAnim('sad');
+				gf.specialAnim = true;
+			}
+
+		}
+		else
+		{
+			notes.remove(note, true);
+			note.destroy();
+			
+		}
+		
+		
 	}
 
 	public function spawnHoldSplashOnNote(note:Note) {
