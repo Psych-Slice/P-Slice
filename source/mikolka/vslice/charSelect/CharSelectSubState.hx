@@ -59,8 +59,7 @@ class CharSelectSubState extends MusicBeatSubState
 	var gfChillOut:CharSelectGF;
 	var barthing:FlxAtlasSprite;
 	var dipshitBacking:FlxSprite;
-	var dipshitLeftArrow:Null<FlxSprite>;
-	var dipshitRightArrow:Null<FlxSprite>;
+	var modArrows:Null<ModArrows>;
 	var chooseDipshit:FlxSprite;
 	var dipshitBlur:FlxSprite;
 	var transitionGradient:FlxSprite;
@@ -276,16 +275,8 @@ class CharSelectSubState extends MusicBeatSubState
 
 		if (modSelector.hasModsAvailable)
 		{
-			dipshitLeftArrow = new FlxSprite(240 + cutoutSize, 135);
-			dipshitLeftArrow.loadGraphic(Paths.image('charSelect/charSelectArrow'));
-			dipshitLeftArrow.scale.set(0.4, 0.4);
-			add(dipshitLeftArrow);
-
-			dipshitRightArrow = new FlxSprite(663 + cutoutSize, 135);
-			dipshitRightArrow.loadGraphic(Paths.image('charSelect/charSelectArrow'));
-			dipshitRightArrow.scale.set(0.4, 0.4);
-			dipshitRightArrow.flipX = true;
-			add(dipshitRightArrow);
+			modArrows = new ModArrows(cutoutSize,modSelector);
+			add(modArrows);
 		}
 
 		modSelector.y += 80;
@@ -299,22 +290,16 @@ class CharSelectSubState extends MusicBeatSubState
 		dipshitBlur.y += 220;
 		FlxTween.tween(dipshitBlur, {y: dipshitBlur.y - 220}, 1.2, {ease: FlxEase.expoOut});
 
-		if (dipshitLeftArrow != null)
+		if (modArrows != null)
 		{
-			dipshitLeftArrow.y += 200;
-			FlxTween.tween(dipshitLeftArrow, {y: dipshitLeftArrow.y - 200}, 1.2, {ease: FlxEase.expoOut});
-		}
-		if (dipshitRightArrow != null)
-		{
-			dipshitRightArrow.y += 200;
-			FlxTween.tween(dipshitRightArrow, {y: dipshitRightArrow.y - 200}, 1.2, {ease: FlxEase.expoOut});
+			modArrows.y += 200;
+			FlxTween.tween(modArrows, {y: modArrows.y - 200}, 1.2, {ease: FlxEase.expoOut});
 		}
 
 		chooseDipshit.scrollFactor.set();
 		dipshitBacking.scrollFactor.set();
 		dipshitBlur.scrollFactor.set();
-		dipshitLeftArrow?.scrollFactor.set();
-		dipshitRightArrow?.scrollFactor.set();
+		modArrows?.scrollFactor.set();
 
 		nametag = new Nametag(curChar);
 		nametag.midpointX += cutoutSize;
@@ -508,11 +493,7 @@ class CharSelectSubState extends MusicBeatSubState
 		});
 
 		#if TOUCH_CONTROLS_ALLOWED
-		if (modSelector?.hasModsAvailable ?? false)
-			addTouchPad('ALT_LEFT_RIGHT', 'NONE');
-		else
-			addTouchPad('NONE', 'NONE');
-
+		addTouchPad('NONE', 'NONE');
 		addTouchPadCamera();
 		// if (allowInput && pressedSelect && controls.BACK) onAcceptPress();
 		#end
@@ -779,10 +760,8 @@ class CharSelectSubState extends MusicBeatSubState
 		FlxTween.tween(chooseDipshit, {y: chooseDipshit.y + 200}, 0.8, {ease: FlxEase.backIn});
 		FlxTween.tween(dipshitBlur, {y: dipshitBlur.y + 220}, 0.8, {ease: FlxEase.backIn});
 
-		if (dipshitLeftArrow != null)
-			FlxTween.tween(dipshitLeftArrow, {y: dipshitLeftArrow.y + 200}, 0.8, {ease: FlxEase.backIn});
-		if (dipshitRightArrow != null)
-			FlxTween.tween(dipshitRightArrow, {y: dipshitRightArrow.y + 200}, 0.8, {ease: FlxEase.backIn});
+		if (modArrows != null)
+			FlxTween.tween(modArrows, {y: modArrows.y + 200}, 0.8, {ease: FlxEase.backIn});
 
 		for (index => member in grpIcons.members)
 		{
@@ -833,16 +812,6 @@ class CharSelectSubState extends MusicBeatSubState
 
 		if (!pressedSelect && allowInput)
 		{
-			#if TOUCH_CONTROLS_ALLOWED
-			if (touchPad.buttonL.justPressed)
-			{
-				modSelector?.changeDirectory(-1);
-			}
-			else if (touchPad.buttonR.justPressed)
-			{
-				modSelector?.changeDirectory(1);
-			}
-			#end
 
 			if (controls.UI_UP)
 				holdTmrUp += elapsed;
@@ -924,14 +893,14 @@ class CharSelectSubState extends MusicBeatSubState
 		{
 			cursorX = 1;
 			#if MODS_ALLOWED
-			modSelector.changeDirectory(-1);
+			modArrows?.previousModPress();
 			#end
 		}
 		if (cursorX > 1)
 		{
 			cursorX = -1;
 			#if MODS_ALLOWED
-			modSelector.changeDirectory(1);
+			modArrows?.nextModPress();
 			#end
 		}
 		if (cursorY < -1)

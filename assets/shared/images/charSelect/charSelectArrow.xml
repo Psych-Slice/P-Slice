@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="charSelectArrow.png" width="4342" height="424">
+	<SubTexture name="cs arrow left idle0000" x="2744" y="1" width="197" height="389" frameX="-12" frameY="-36" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0001" x="3144" y="1" width="197" height="403" frameX="-12" frameY="-29" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0002" x="1136" y="1" width="198" height="363" frameX="-11" frameY="-49" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0003" x="3944" y="1" width="197" height="422" frameX="-12" frameY="-20" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0004" x="2342" y="1" width="198" height="384" frameX="-11" frameY="-38" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0005" x="530" y="1" width="199" height="333" frameX="-10" frameY="-64" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0006" x="1940" y="1" width="198" height="379" frameX="-11" frameY="-41" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0007" x="3344" y="1" width="197" height="403" frameX="-12" frameY="-29" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0008" x="1538" y="1" width="198" height="368" frameX="-11" frameY="-46" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0009" x="3744" y="1" width="197" height="413" frameX="-12" frameY="-24" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0010" x="2342" y="1" width="198" height="384" frameX="-11" frameY="-38" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0011" x="530" y="1" width="199" height="333" frameX="-10" frameY="-64" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0012" x="2944" y="1" width="197" height="389" frameX="-12" frameY="-36" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0013" x="3544" y="1" width="197" height="403" frameX="-12" frameY="-29" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0014" x="1739" y="1" width="198" height="373" frameX="-11" frameY="-44" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0015" x="2744" y="1" width="197" height="389" frameX="-12" frameY="-36" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0016" x="3144" y="1" width="197" height="403" frameX="-12" frameY="-29" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0017" x="1337" y="1" width="198" height="363" frameX="-11" frameY="-49" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0018" x="4144" y="1" width="197" height="422" frameX="-12" frameY="-20" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0019" x="2543" y="1" width="198" height="384" frameX="-11" frameY="-38" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0020" x="732" y="1" width="199" height="333" frameX="-10" frameY="-64" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0021" x="2141" y="1" width="198" height="379" frameX="-11" frameY="-41" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0022" x="3144" y="1" width="197" height="403" frameX="-12" frameY="-29" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0023" x="1538" y="1" width="198" height="368" frameX="-11" frameY="-46" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0024" x="3744" y="1" width="197" height="413" frameX="-12" frameY="-24" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0025" x="2342" y="1" width="198" height="384" frameX="-11" frameY="-38" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0026" x="934" y="1" width="199" height="333" frameX="-10" frameY="-64" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0027" x="2944" y="1" width="197" height="389" frameX="-12" frameY="-36" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0028" x="3144" y="1" width="197" height="403" frameX="-12" frameY="-29" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left idle0029" x="1739" y="1" width="198" height="373" frameX="-11" frameY="-44" frameWidth="218" frameHeight="463"/>
+	<SubTexture name="cs arrow left select0000" x="1" y="1" width="146" height="234" frameX="-31" frameY="-38" frameWidth="211" frameHeight="316"/>
+	<SubTexture name="cs arrow left select0001" x="150" y="1" width="182" height="287" frameX="-15" frameY="-13" frameWidth="211" frameHeight="316"/>
+	<SubTexture name="cs arrow left select0002" x="335" y="1" width="192" height="297" frameX="-9" frameY="-8" frameWidth="211" frameHeight="316"/>
+</TextureAtlas>
