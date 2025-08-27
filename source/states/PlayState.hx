@@ -3240,7 +3240,8 @@ class PlayState extends MusicBeatState
 		}
 
 		var lastCombo:Int = combo;
-		combo = 0;
+		if (ClientPrefs.data.grayBreak == true)
+			combo = 0;
 
 		health -= subtract * healthLoss;
 		if(!practiceMode) songScore -= 10;
@@ -3454,6 +3455,15 @@ class PlayState extends MusicBeatState
 				gf.specialAnim = true;
 			}
 
+			new FlxTimer().start(0.2, function(tmr:FlxTimer)
+			{
+				if (notes != null && note != null && note.exists)
+				{
+					notes.remove(note, true);
+					note.destroy();
+				}
+			});
+			
 		}
 		else
 		{
