@@ -3240,8 +3240,8 @@ class PlayState extends MusicBeatState
 		}
 
 		var lastCombo:Int = combo;
-		if (ClientPrefs.data.grayBreak == true)
-			combo = 0;
+		
+		combo = 0;
 
 		health -= subtract * healthLoss;
 		if(!practiceMode) songScore -= 10;
@@ -3441,7 +3441,8 @@ class PlayState extends MusicBeatState
 			note.rgbShader.b = 0x434C4C4C;
 			
 			note.multAlpha = 0.8;
-			combo = 0;
+			if (ClientPrefs.data.grayBreak == true)
+				combo = 0;
 			note.tooLate = true;
 			//note.mustPress = false;
 			note.ignoreNote = true;
