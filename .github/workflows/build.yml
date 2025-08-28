@@ -89,7 +89,7 @@ jobs:
       - name: Sign APK with the proper key
         if: inputs.exportPath == 'android'
         env:
-          SIGNING_KEY: ${{ secrets.LILY_PASSWORD }}
+          SIGNING_KEY: pslice
           OUT_DIR: ./export/release/android/bin/app/build/outputs/apk/release/
         run: |
           rm ./key.keystore
