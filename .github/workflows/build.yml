@@ -89,10 +89,11 @@ jobs:
       - uses: ilharp/sign-android-release@v2.0.0
         name: Sign app APK
         id: sign_app
+        env:
+          ANDROID_SIGNING_KEY: ${{ secrets.LILY_KEYSTORE }}
         if: inputs.exportPath == 'android'
         with:
-          releaseDir: |
-            export/release/android/bin/app/build/outputs/apk/release
+          releaseDir: export/release/android/bin/app/build/outputs/apk/release
           signingKey: ${{ secrets.LILY_KEYSTORE }}
           keyAlias: pslice
           keyStorePassword: ${{ secrets.LILY_PASSWORD }}
