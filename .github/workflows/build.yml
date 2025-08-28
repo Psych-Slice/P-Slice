@@ -97,15 +97,6 @@ jobs:
           alias: pslice
           keyStorePassword: ${{ secrets.LILY_PASSWORD }}
           keyPassword: ${{ secrets.LILY_PASSWORD }}
-
-      - name: Compile (Android)
-        if: inputs.exportPath == 'android'
-        env:
-          KEY_STORE: key.keystore
-          KEY_STORE_ALIAS: pslice
-          KEY_STORE_ALIAS_PASSWORD: ${{secrets.LILY_PASSWORD}}
-          KEY_STORE_PASSWORD: ${{secrets.LILY_PASSWORD}}
-        run: haxelib run lime build ${{ inputs.buildArgs }} -DUSE_ENV_KEYSTORE
       
       - name: Make IPA
         if: inputs.name == 'iOS'
