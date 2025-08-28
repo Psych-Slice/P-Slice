@@ -86,17 +86,15 @@ jobs:
       - name: Compile
         run: haxelib run lime build ${{ inputs.buildArgs }}
 
-      - uses: r0adkll/sign-android-release@v1
+      - uses: ilharp/sign-android-release@v2.0.0
         name: Sign app APK
         id: sign_app
         if: inputs.exportPath == 'android'
-        env:
-          BUILD_TOOLS_VERSION: 36.0.0
         with:
-          releaseDirectory: |
+          releaseDir: |
             export/release/android/bin/app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.LILY_KEYSTORE }}
-          alias: pslice
+          signingKey: ${{ secrets.LILY_KEYSTORE }}
+          keyAlias: pslice
           keyStorePassword: ${{ secrets.LILY_PASSWORD }}
           keyPassword: ${{ secrets.LILY_PASSWORD }}
       
@@ -113,7 +111,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: ${{ inputs.artifactName }}
-          path: ${{steps.sign_app.outputs.signedReleaseFile}}
+          path: ${{steps.sign_app.outputs.signedFile}}
           if-no-files-found: error  
 
       - name: Upload Artifact
