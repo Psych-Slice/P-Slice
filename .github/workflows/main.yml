@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [master-dev]
   workflow_dispatch:
-env:
-  SIGNING_KEY: ${{ secrets.LILY_PASSWORD }}
-  SIGNING_ALIAS: psliceport
-  SIGNING_FILE: ${{ secrets.LILY_KEYSTORE }}
 jobs:
   
   BuildCaches:
