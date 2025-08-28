@@ -82,23 +82,24 @@ jobs:
           haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_LATEST_HOME
           haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
           haxelib run lime config ANDROID_SETUP true
-        
+
       - name: Compile
         run: haxelib run lime build ${{ inputs.buildArgs }}
 
-      - uses: ilharp/sign-android-release@v2.0.0
-        name: Sign app APK
-        id: sign_app
-        env:
-          ANDROID_SIGNING_KEY: ${{ secrets.LILY_KEYSTORE }}
+      - name: Sign APK with the proper key
         if: inputs.exportPath == 'android'
-        with:
-          releaseDir: export/release/android/bin/app/build/outputs/apk/release
-          signingKey: ${{ secrets.LILY_KEYSTORE }}
-          keyAlias: pslice
-          keyStorePassword: ${{ secrets.LILY_PASSWORD }}
-          keyPassword: ${{ secrets.LILY_PASSWORD }}
-      
+        env:
+          SIGNING_KEY: ${{ secrets.LILY_KEYSTORE }}
+          OUT_DIR: ./export/release/android/bin/app/build/outputs/apk/release/
+        run: |
+          rm ./key.keystore
+          echo  ${{ secrets.LILY_KEYSTORE }}> ./key.keystore.tmp
+          base64 -d -i ./key.keystore.tmp > ./key.keystore
+          rm ./key.keystore.tmp   
+          zipalign -P 16 -f -v 4 '${{env.OUT_DIR}}PSliceEngine-release.apk' '${{env.OUT_DIR}}PSliceEngine-signed.apk'
+          apksigner sign --ks ./key.keystore --ks-key-alias pslice --ks-pass 'env:SIGNING_KEY'--key-pass 'env:SIGNING_KEY' '${{env.OUT_DIR}}PSliceEngine-signed.apk'
+          rm '${{env.OUT_DIR}}PSliceEngine-release.apk'
+       
       - name: Make IPA
         if: inputs.name == 'iOS'
         run: |
@@ -106,14 +107,6 @@ jobs:
           mkdir Payload
           mv *.app Payload
           zip -r ${{ env.PROJECT_NAME }}.ipa Payload
-
-      - name: Upload Artifact (Android)
-        if: inputs.exportPath == 'android'
-        uses: actions/upload-artifact@main
-        with:
-          name: ${{ inputs.artifactName }}
-          path: ${{steps.sign_app.outputs.signedFile}}
-          if-no-files-found: error  
 
       - name: Upload Artifact
         if: inputs.exportPath != 'android'
