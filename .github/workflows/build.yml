@@ -97,8 +97,9 @@ jobs:
           base64 -d -i ./key.keystore.tmp > ./key.keystore
           rm ./key.keystore.tmp   
           $ANDROID_HOME/build-tools/36.0.0/zipalign -P 16 -f -v 4 '${{env.OUT_DIR}}PSliceEngine-release.apk' '${{env.OUT_DIR}}PSliceEngine-signed.apk'
-          $ANDROID_HOME/build-tools/36.0.0/apksigner sign --ks ./key.keystore --ks-key-alias pslice --ks-pass 'env:SIGNING_KEY'--key-pass 'env:SIGNING_KEY' '${{env.OUT_DIR}}PSliceEngine-signed.apk'
-          rm '${{env.OUT_DIR}}PSliceEngine-release.apk'
+          echo "signing"
+          $ANDROID_HOME/build-tools/36.0.0/apksigner sign --ks ./key.keystore --ks-key-alias=pslice --ks-pass='env:SIGNING_KEY'--key-pass='env:SIGNING_KEY' '${{env.OUT_DIR}}PSliceEngine-signed.apk';
+          rm '${{env.OUT_DIR}}PSliceEngine-release.apk';
        
       - name: Make IPA
         if: inputs.name == 'iOS'
