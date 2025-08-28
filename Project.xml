@@ -290,7 +290,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<haxedef name="message.reporting" value="pretty" />
 
 	<!-- Do whatever you want I'm tired uninstall and install everytime -->
-	<certificate path="key.keystore" password="pslice" alias="pslice" alias-password="pslice" if="android" unless="USE_ENV_KEYSTORE" />
+	<certificate path="key.keystore" password="pslice" alias="pslice" alias-password="pslice" if="android" unless="debug" />
 
 	<!--Macro fixes-->
 	<haxeflag name="--macro" value="allowPackage('flash')" />
