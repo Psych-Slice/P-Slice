@@ -90,6 +90,8 @@ jobs:
         name: Sign app APK
         id: sign_app
         if: inputs.exportPath == 'android'
+        env:
+          BUILD_TOOLS_VERSION: 36.0.0
         with:
           releaseDirectory: |
             export/release/android/bin/app/build/outputs/apk/release
@@ -113,7 +115,7 @@ jobs:
           name: ${{ inputs.artifactName }}
           path: ${{steps.sign_app.outputs.signedReleaseFile}}
           if-no-files-found: error  
-              
+
       - name: Upload Artifact
         if: inputs.exportPath != 'android'
         uses: actions/upload-artifact@main
