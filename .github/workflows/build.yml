@@ -86,7 +86,7 @@ jobs:
       - name: Compile
         run: haxelib run lime build ${{ inputs.buildArgs }}
 
-      - uses: Tlaster/android-sign@v1
+      - uses: r0adkll/sign-android-release@v1
         name: Sign app APK
         if: inputs.exportPath == 'android'
         with:
