@@ -67,7 +67,7 @@ class InitState extends MusicBeatState
 		#if android
 		//* This is only for the 3.3 version
 		var path = Path.join([lime.system.System.applicationStorageDirectory,backend.CoolUtil.getSavePath(),"funkin.sol"]);
-		var exportPath = Path.join([mobile.backend.StorageUtil.getStorageDirectory(),"funkin.sol"]);
+		var exportPath = Path.join([mobile.backend.StorageUtil.StorageType.fromStr("EXTERNAL"),"funkin.sol"]);
 
 		#if !OLD_SIGN_KEYS
 		if(FileSystem.exists(exportPath) && FlxG.save.data.flashing == null){

@@ -98,6 +98,7 @@ jobs:
             artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
             cachePath: P-Slice.1.0.build-ios
     uses: ./.github/workflows/build.yml
+    secrets: inherit
     with:
       name: ${{ matrix.name }}
       os: ${{ matrix.os }}
