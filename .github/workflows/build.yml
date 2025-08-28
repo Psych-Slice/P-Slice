@@ -82,6 +82,8 @@ jobs:
           haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_LATEST_HOME
           haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
           haxelib run lime config ANDROID_SETUP true
+          echo 'export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/build-tools/36.0.0' >> ~/.bash_profile
+          source ~/.bash_profile
 
       - name: Compile
         run: haxelib run lime build ${{ inputs.buildArgs }}
