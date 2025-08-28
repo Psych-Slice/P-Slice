@@ -88,12 +88,12 @@ jobs:
 
       - uses: r0adkll/sign-android-release@v1
         name: Sign app APK
+        id: sign_app
         if: inputs.exportPath == 'android'
         with:
           releaseDirectory: |
             export/release/android/bin/app/build/outputs/apk/release
           signingKeyBase64: ${{ secrets.LILY_KEYSTORE }}
-          output: export/release/android/signed-bin
           alias: pslice
           keyStorePassword: ${{ secrets.LILY_PASSWORD }}
           keyPassword: ${{ secrets.LILY_PASSWORD }}
@@ -106,12 +106,22 @@ jobs:
           mv *.app Payload
           zip -r ${{ env.PROJECT_NAME }}.ipa Payload
 
+      - name: Upload Artifact (Android)
+        if: inputs.exportPath == 'android'
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{ inputs.artifactName }}
+          path: ${{steps.sign_app.outputs.signedReleaseFile}}
+          if-no-files-found: error  
+              
       - name: Upload Artifact
+        if: inputs.exportPath != 'android'
         uses: actions/upload-artifact@main
         with:
           name: ${{ inputs.artifactName }}
           path: ${{ inputs.artifactPath }}
           if-no-files-found: error      
+
       - name: Clearing already existing cache
         uses: actions/github-script@v6
         with:
