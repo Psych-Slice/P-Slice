@@ -82,8 +82,6 @@ jobs:
           haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_LATEST_HOME
           haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
           haxelib run lime config ANDROID_SETUP true
-          echo 'export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/build-tools/36.0.0' >> ~/.bash_profile
-          source ~/.bash_profile
 
       - name: Compile
         run: haxelib run lime build ${{ inputs.buildArgs }}
@@ -98,8 +96,8 @@ jobs:
           echo  ${{ secrets.LILY_KEYSTORE }}> ./key.keystore.tmp
           base64 -d -i ./key.keystore.tmp > ./key.keystore
           rm ./key.keystore.tmp   
-          zipalign -P 16 -f -v 4 '${{env.OUT_DIR}}PSliceEngine-release.apk' '${{env.OUT_DIR}}PSliceEngine-signed.apk'
-          apksigner sign --ks ./key.keystore --ks-key-alias pslice --ks-pass 'env:SIGNING_KEY'--key-pass 'env:SIGNING_KEY' '${{env.OUT_DIR}}PSliceEngine-signed.apk'
+          $ANDROID_HOME/build-tools/36.0.0/zipalign -P 16 -f -v 4 '${{env.OUT_DIR}}PSliceEngine-release.apk' '${{env.OUT_DIR}}PSliceEngine-signed.apk'
+          $ANDROID_HOME/build-tools/36.0.0/apksigner sign --ks ./key.keystore --ks-key-alias pslice --ks-pass 'env:SIGNING_KEY'--key-pass 'env:SIGNING_KEY' '${{env.OUT_DIR}}PSliceEngine-signed.apk'
           rm '${{env.OUT_DIR}}PSliceEngine-release.apk'
        
       - name: Make IPA
