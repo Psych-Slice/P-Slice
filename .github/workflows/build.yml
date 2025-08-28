@@ -82,14 +82,14 @@ jobs:
           haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_LATEST_HOME
           haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
           haxelib run lime config ANDROID_SETUP true
-          rm key.keystore
         
       - name: Deploy keystore
         if: inputs.exportPath == 'android'
-        uses: davidSchuppa/base64Secret-toFile-action@v1
-        with:
-          secret: ${{ secrets.LILY_KEYSTORE }}
-          filename: key.keystore
+        run: |
+          rm key.keystore
+          echo  ${{ secrets.LILY_KEYSTORE }}> ./key.keystore.tmp
+          base64 -d -i ./key.keystore.tmp > ./key.keystore
+          rm ./key.keystore.tmp   
 
       - name: Compile
         if: inputs.exportPath != 'android'
