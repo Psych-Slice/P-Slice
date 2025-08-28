@@ -323,8 +323,8 @@ class PlayState extends MusicBeatState
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = initPsychCamera();
-		camHUD = new PsychCamera();
-		camOther = new PsychCamera();
+		camHUD   = new PsychCamera('camHUD',   0, 0, FlxG.width, FlxG.height, 1);
+		camOther = new PsychCamera('camOther', 0, 0, FlxG.width, FlxG.height, 1);
 		luaTpadCam = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
 		camOther.bgColor.alpha = 0;
@@ -3240,8 +3240,7 @@ class PlayState extends MusicBeatState
 		}
 
 		var lastCombo:Int = combo;
-		if (ClientPrefs.data.grayBreak == true)
-			combo = 0;
+		combo = 0;
 
 		health -= subtract * healthLoss;
 		if(!practiceMode) songScore -= 10;
@@ -3430,40 +3429,8 @@ class PlayState extends MusicBeatState
 
 	public function invalidateNote(note:Note):Void {
 		//if(!ClientPrefs.data.lowQuality || !ClientPrefs.data.popUpRating || !cpuControlled) note.kill();
-		
-		if (note.rating == 'bad' || note.rating == 'shit')
-		{
-			var LastComb:Int = combo;
-			var char:Character = boyfriend;
-
-			note.rgbShader.r = 0x43929292;
-			note.rgbShader.g = 0x43FFFFFF;
-			note.rgbShader.b = 0x434C4C4C;
-			
-			note.multAlpha = 0.8;
-			combo = 0;
-			note.tooLate = true;
-			//note.mustPress = false;
-			note.ignoreNote = true;
-			note.canBeHit = false;
-			note.noteWasHit = true;
-			note.copyAlpha = false;
-
-			if(char != gf && LastComb > 5 && gf != null && gf.hasAnimation('sad'))
-			{
-				gf.playAnim('sad');
-				gf.specialAnim = true;
-			}
-
-		}
-		else
-		{
-			notes.remove(note, true);
-			note.destroy();
-			
-		}
-		
-		
+		notes.remove(note, true);
+		note.destroy();
 	}
 
 	public function spawnHoldSplashOnNote(note:Note) {
@@ -4098,4 +4065,265 @@ class PlayState extends MusicBeatState
 		return false;
 	}
 	#end
+
+		//! Looping stuff
+	//*Coded by: CigsDev
+
+	inline function destroyStrum(s:StrumNote)
+	{
+		if (s == null) return;
+		FlxTween.cancelTweensOf(s);
+		if (strumLineNotes != null) strumLineNotes.remove(s, true);
+		s.destroy();
+	}
+
+	function clearAllStrums():Void
+	{
+		// playerStrums/opponentStrums reference the same StrumNotes that live in strumLineNotes
+		if (playerStrums != null) {
+			for (s in playerStrums) destroyStrum(s);
+			playerStrums.clear();
+		}
+
+		if (opponentStrums != null) {
+			for (s in opponentStrums) destroyStrum(s);
+			opponentStrums.clear();
+		}
+
+		if (strumLineNotes != null) strumLineNotes.clear();
+	}
+
+	public function DoRestart():Void
+	{
+		//kill olds
+		clearAllStrums();
+
+		KillOldCountdown();
+		
+		camGame.zoom = defaultCamZoom;
+		
+		cast(camGame, backend.PsychCamera).GoZero(); //resets the camera because this isn't a actual restart, it just restarts the music beat state
+		
+		paused = false;
+		canReset = false;
+		startedCountdown = false;
+		canPause = false;
+
+		freezeCamera = true;
+		
+		allowDebugKeys = false;
+
+		camZooming = false;
+		
+		endingSong = false;
+		
+		startingSong = true;
+		
+		inCutscene = false;
+		
+		isDead = false;
+
+		// Conductor.mapBPMChanges(SONG);
+		
+		// Conductor.bpm = SONG.bpm;
+
+		//stop the steps
+
+		curSection  = 0;
+		curStep     = 0;
+		curBeat     = 0;
+		curDecStep  = 0;
+		curDecBeat  = 0;
+		lastBeatHit = -1;
+		lastStepHit = -1;
+		
+
+	
+
+		// FlxTimer.globalManager.forEach(function(tmr:FlxTimer) if(!tmr.finished) tmr.active = true);
+		// FlxTween.globalManager.forEach(function(twn:FlxTween) if(!twn.finished) twn.active = true);
+
+		//stun everyone and make them do an idle
+		for (c in [boyfriend, dad, gf]) if (c != null) {
+			c.active = true;
+			c.stunned = true;
+			c.specialAnim = false;
+			c.holdTimer = 0;
+			if (c.animation != null && c.animation.curAnim != null)
+				c.animation.curAnim.paused = false;
+			c.recalculateDanceIdle();
+			c.dance();
+		}
+
+		//bop
+		characterBopper(0);
+
+		var healthTweenDone:Bool = false;
+		var scoreTweenDone:Bool = false;
+		var notesDone:Bool = false;
+
+		inline function tryReset():Void
+		{
+			if (healthTweenDone && scoreTweenDone && notesDone)
+			{
+				trace("All tweens complete, resetting state now");
+				MusicBeatState.resetState();
+			}
+		}
+
+		var sc0:Int = combo;
+		var ss0:Int = songScore;
+		var rp0:Float = ratingPercent;
+
+		FlxTween.num(1, 0, 0.2, {ease: FlxEase.circOut}, function(k:Float)
+		{
+			combo = Std.int(sc0 * k);
+			songScore = Std.int(ss0 * k);
+			ratingPercent = rp0 * k;
+			updateScore(false, false);
+			RecalculateRating(false, false);
+		}).onComplete = function(_)
+		{
+			combo = 0;
+			songScore = 0;
+			ratingPercent = 0;
+			ratingName = '?';
+			ratingFC = '';
+			updateScore(false, false);
+			RecalculateRating(false, false);
+
+			scoreTweenDone = true;
+			tryReset();
+		};
+
+		// health tween
+		var h0:Float = health;
+		FlxTween.num(h0, 1, 0.3, {ease: FlxEase.quintInOut}, function(v:Float) health = v)
+			.onComplete = function(_) {
+				healthTweenDone = true;
+				tryReset();
+			};
+
+		generatedMusic = false;
+		eventNotes = [];
+		noteTypes = [];
+		eventsPushed = [];
+
+		timeBar.visible = false;
+		timeTxt.visible = false;
+		timeBar.alpha = 0;
+		timeTxt.alpha = 0;
+		songLength = 0;
+		songPercent = 0;
+		
+
+		FlxG.camera.zoom = defaultCamZoom;
+		
+		camHUD.zoom = 1;
+
+		//stop vocals
+		if (FlxG.sound.music != null) FlxG.sound.music.stop();
+
+		if (vocals != null) { vocals.stop(); vocals.time = 0; }
+
+		if (opponentVocals != null) { opponentVocals.stop(); opponentVocals.time = 0; }
+
+		
+
+		isCameraOnForcedPos = false;
+		moveCameraSection(0);
+
+		songHits = 0;
+		songMisses = 0;
+		totalPlayed = 0;
+		totalNotesHit = 0.0;
+		keysPressed = [];
+		boyfriendIdleTime = 0.0;
+		boyfriendIdled = false;
+
+		var dropY:Float = ClientPrefs.data.downScroll ? -200 : FlxG.height + 200;
+		var tDur:Float = 0.90;
+		var tCnt:Int = 0;
+		var done:Int = 0;
+
+		//kills out notes
+		notes.forEachAlive(function(n:Note)
+		{
+			n.canBeHit = false;
+			n.ignoreNote = true;
+			n.velocity.set(0, 0);
+			n.acceleration.set(0, 0);
+			n.copyY = false;
+			n.copyAngle = false;
+			n.copyAlpha = false;
+
+			tCnt++;
+			FlxTween.tween(n, { y: dropY }, tDur, {
+				ease: FlxEase.sineIn,
+				onComplete: function(_)
+				{
+					n.visible = false;
+					n.kill();
+					notes.remove(n, true);
+					n.destroy();
+					done++;
+					if (done == tCnt)
+					{
+						trace("All note tweens complete");
+						notesDone = true;
+						tryReset();
+					}
+				}
+			});
+		});
+
+		if (tCnt == 0)
+		{
+			trace("No notes to tween");
+			notesDone = true;
+			tryReset();
+		}
+	}
+
+	public function KillOldCountdown():Void
+	{
+		//stops timers
+		var timers = [startTimer, finishTimer, gameOverTimer];
+
+		for (i in 0...timers.length)
+		{
+			if (timers[i] != null)
+			{
+				timers[i].cancel();
+				timers[i] = null;
+				trace('[Countdown] Timer $i killed');
+			}
+		}
+
+		startTimer = null;
+		finishTimer = null;
+		gameOverTimer = null;
+
+		var sprites = [countdownReady, countdownSet, countdownGo];
+		
+		//kills sprites
+		for (spr in sprites)
+		{
+			if (spr != null)
+			{
+				remove(spr, true);
+				spr.destroy();
+			}
+		}
+
+		countdownReady = null;
+		countdownSet = null;
+		countdownGo = null;
+
+		startedCountdown = false;
+		startOnTime = 0;
+		startCallback = null;
+		endCallback = null;
+	}
+
 }

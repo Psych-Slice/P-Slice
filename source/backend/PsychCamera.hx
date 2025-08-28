@@ -8,22 +8,48 @@ import openfl.filters.ShaderFilter;
 
 class PsychCamera extends FlxCamera
 {
-	override public function update(elapsed:Float):Void
-	{
-		// follow the target, if there is one
-		if (target != null)
-		{
-			updateFollowDelta(elapsed);
+	
+	var camName:String;
+
+	public var X:Int;
+	public var Y:Int;
+
+	public var ForcePos:Bool = false;
+
+	var resetActive:Bool = false;
+	var resetTarget:FlxPoint = FlxPoint.get();
+	var resetEpsilon:Float = 0.5;
+
+	override public function update(elapsed:Float):Void {
+		if (ForcePos) {
+			
+			scroll.set(resetTarget.x, resetTarget.y);
+			resetActive = false;
+		} else {
+			if (target != null && !resetActive) updateFollowDelta(elapsed);
+
+			if (resetActive) {
+				var m:Float = 1 - Math.exp(-elapsed * followLerp / (1 / 60));
+				scroll.x += (resetTarget.x - scroll.x) * m;
+				scroll.y += (resetTarget.y - scroll.y) * m;
+				if (Math.abs(scroll.x - resetTarget.x) <= resetEpsilon && Math.abs(scroll.y - resetTarget.y) <= resetEpsilon) {
+					scroll.set(resetTarget.x, resetTarget.y);
+					resetActive = false;
+				}
+			}
 		}
 
 		updateScroll();
 		updateFlash(elapsed);
 		updateFade(elapsed);
-
-		flashSprite.filters = filtersEnabled ? filters : null;
-
-		updateFlashSpritePosition();
 		updateShake(elapsed);
+	}
+
+	public function new(name:String, X:Int = 0, Y:Int = 0, Width:Int = 0, Height:Int = 0, Zoom:Float = 0) {
+		camName = name;
+		this.X = X;
+		this.Y = Y;
+		super(X, Y, Width, Height, Zoom);
 	}
 
 	public function updateFollowDelta(?elapsed:Float = 0):Void
@@ -117,4 +143,35 @@ class PsychCamera extends FlxCamera
 	// {
 	// 	return followLerp = value;
 	// }
+
+	public inline function resetToPoint(p:FlxPoint):Void {
+		resetTo(p.x, p.y);
+		if (ForcePos) {
+
+			scroll.set(resetTarget.x, resetTarget.y);
+			resetActive = false;
+		}
+	}
+
+	public inline function resetTo(x:Float, y:Float):Void {
+		resetTarget.set(x, y);
+		if (ForcePos) {
+
+			scroll.set(resetTarget.x, resetTarget.y);
+			resetActive = false;
+		} else {
+			resetActive = true;
+		}
+	}
+
+	public inline function GoZero():Void {
+		resetTarget.set(X, Y);
+		if (ForcePos) {
+			scroll.set(resetTarget.x, resetTarget.y);
+			resetActive = false;
+		} else {
+			resetActive = true;
+		}
+	}
+
 }
