@@ -89,22 +89,16 @@ jobs:
       - name: Sign APK with the proper key
         if: inputs.exportPath == 'android'
         env:
-          SIGNING_KEY: pslice
-          SIGNING_FILE: ${{ secrets.LILY_KEYSTORE }}
-          SIGNING_ALIAS: psliceport
           OUT_DIR: ./export/release/android/bin/app/build/outputs/apk/release/
         run: |
           rm -f ./key.keystore;
-          SIGNING_KEY='${{env.SIGNING_KEY}}';
-          SIGNING_ALIAS='${{env.SIGNING_ALIAS}}';
-          SIGNING_FILE='${{env.SIGNING_FILE}}';
           echo $SIGNING_FILE | base64 -d > ./key.keystore;
           sha256sum ./key.keystore;
 
           mv '${{env.OUT_DIR}}PSliceEngine-release.apk' '${{env.OUT_DIR}}PSliceEngine-unsigned.apk';
-          $ANDROID_HOME/build-tools/35.0.1/zipalign -P 16 -f -v 4 '${{env.OUT_DIR}}PSliceEngine-unsigned.apk' '${{env.OUT_DIR}}PSliceEngine-release.apk';
+          $ANDROID_HOME/build-tools/35.0.1/zipalign -P 16 -f -v 4 '${{env.OUT_DIR}}PSliceEngine-unsigned.apk' '${{env.OUT_DIR}}PSliceEngine-release.apk' > /dev/null;
 
-          $ANDROID_HOME/build-tools/35.0.1/apksigner sign --ks key.keystore --ks-key-alias $SIGNING_ALIAS --ks-pass "pass:$SIGNING_KEY" --key-pass "pass:$SIGNING_KEY" '${{env.OUT_DIR}}PSliceEngine-release.apk';
+          $ANDROID_HOME/build-tools/35.0.1/apksigner sign --ks key.keystore --ks-key-alias $SIGNING_ALIAS --ks-pass "env:SIGNING_KEY" --key-pass "env:SIGNING_KEY" '${{env.OUT_DIR}}PSliceEngine-release.apk';
           rm '${{env.OUT_DIR}}PSliceEngine-unsigned.apk';
 
       - name: Make IPA
