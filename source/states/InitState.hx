@@ -1,13 +1,16 @@
 package states;
 
 import mikolka.funkin.custom.mobile.MobileScaleMode;
-import openfl.Assets;
 import mikolka.vslice.ui.title.TitleState;
 import flixel.input.keyboard.FlxKey;
-import mikolka.vslice.ui.disclaimer.WarningState;
 import mikolka.vslice.ui.disclaimer.TextWarnings.FlashingState;
 import mikolka.vslice.ui.disclaimer.TextWarnings.OutdatedState;
 import mikolka.vslice.components.ScreenshotPlugin;
+
+#if android
+import mikolka.vslice.ui.disclaimer.WarningState;
+import haxe.io.Path;
+#end
 
 class InitState extends MusicBeatState
 {
