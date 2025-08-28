@@ -4066,8 +4066,7 @@ class PlayState extends MusicBeatState
 	}
 	#end
 
-		//! Looping stuff
-	//*Coded by: CigsDev
+
 
 	inline function destroyStrum(s:StrumNote)
 	{
