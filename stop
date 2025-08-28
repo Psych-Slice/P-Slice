@@ -1,0 +1,752 @@
+[33mcommit ff8d4ad1bb014915d927384f9f3a69702832dba4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: cigsCICKgars <cigsfridayfunkin@gmail.com>
+Date:   Wed Aug 27 19:44:50 2025 -0400
+
+    forgot to remove this, my bad gang
+    
+    bleh bleh bleh, fixed my credits color also ✈️
+
+[33mcommit bb4d1eedfeef199db215db65c54c8f680d280a4b[m
+Author: cigsCICKgars <cigsfridayfunkin@gmail.com>
+Date:   Wed Aug 27 19:27:30 2025 -0400
+
+    Added myself to the credits + Made better credit icons
+    
+    Changed some of the credit icons to fit the artstyle of the other icons, i also added myself since i committed other assets,
+    
+    i did not touch lilys.
+
+[33mcommit 1463f6b77915f2994b14c4f25f2686aa727471a0[m
+Author: cigsCICKgars <cigsfridayfunkin@gmail.com>
+Date:   Wed Aug 27 19:06:16 2025 -0400
+
+    Move the check to the right area
+    
+    lol whoops
+
+[33mcommit efc509c333f53fb5b9f76538d4142146d379ec46[m
+Author: cigsCICKgars <cigsfridayfunkin@gmail.com>
+Date:   Wed Aug 27 19:04:39 2025 -0400
+
+    Fixed combo getting stuck at 1 (oops)
+    
+    Made it so that when gray notes happen, they got the combo stuck at 1, fixed this
+    
+    Also added a setting to toggle this for those that don't think they should lose their combo doing this
+
+[33mcommit a10de3496968c2666c2849dfc96bc0cbe5c58993[m
+Author: cigsCICKgars <cigsfridayfunkin@gmail.com>
+Date:   Wed Aug 27 18:16:42 2025 -0400
+
+    Better Restart effect + Ghost Note effect on Shit and Bad scores
+    
+    Makes it so the restart effect (minus changing difficulty) will now instead do something more accurate to the base game, i also made it so when you get shitty note ratings the notes desaturate and become more ghost like, not 100% accurate but it looks good
+
+[33mcommit ff94f529a11b9fb19044eeab15ad94d1d455b338[m
+Author: cigsCICKgars <cigsfridayfunkin@gmail.com>
+Date:   Wed Aug 27 17:15:47 2025 -0400
+
+    Added "facepixel.xml" for the freeplay menu
+    
+    just kinda makes sense given we have one for every other instance
+
+[33mcommit 4af015f8e0b64867bdd050cf83b435f44ff98cae[m
+Author: cigsCICKgars <cigsfridayfunkin@gmail.com>
+Date:   Wed Aug 27 00:06:26 2025 -0400
+
+    Added "PsychFlxAnimate" and updated .gitignore
+    
+    Feel free to reject the gitignore one, i don't mind it, however, PsychFlxAnimate is nessacary as there are alot of compile errors that beg for it otherwise...
+
+[33mcommit 0d8ef6ae46699b37b2c61e8a4f1c1d0857899a02[m[33m ([m[1;31mupstream/master[m[33m, [m[1;31mupstream/HEAD[m[33m)[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Thu Aug 21 21:13:13 2025 +0200
+
+    update github stuff
+
+[33mcommit 16d01129396904a50351620979b29ab1d8c88f81[m[33m ([m[1;33mtag: [m[1;33m3.2.1[m[33m)[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Sat Jul 19 15:41:29 2025 +0200
+
+    fix story state
+
+[33mcommit ce52e68846bceb20884ffdfef7f85845128adbf9[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Fri Jul 18 23:09:40 2025 +0200
+
+    missing char
+
+[33mcommit 1092a5904c85e8ec332bb21208b5013f10087069[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Fri Jul 18 23:05:57 2025 +0200
+
+    fixing some bugs found by people (better preload + fixed Master menu mod selector)
+
+[33mcommit b7d5654c53b76c75d5ea7b9b9ee9acd786f81c63[m
+Merge: d4bd3598 c64b1eb7
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Fri Jul 18 08:49:08 2025 +0200
+
+    Merge branch 'master-dev'
+
+[33mcommit c64b1eb71be3d0ebf829a9e5fce03a6a41770080[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Fri Jul 18 08:35:00 2025 +0200
+
+    fix android
+
+[33mcommit d4bd3598b68bb247fe0b14e41a86759e872fef69[m[33m ([m[1;33mtag: [m[1;33m3.2[m[33m)[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Thu Jul 17 23:22:04 2025 +0200
+
+    Final build
+
+[33mcommit af10c457c0bc156a81f19c419d6e0d37131e87ba[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Thu Jul 17 19:52:54 2025 +0200
+
+    Added caching???
+
+[33mcommit d18f17dda8b757d4776df1a49961cf551bcd5fd3[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Thu Jul 17 08:12:34 2025 +0200
+
+    ?
+
+[33mcommit 98cb012cd0215f581384f64240e9cc7e74665e6e[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Thu Jul 17 08:02:10 2025 +0200
+
+    Update ?
+
+[33mcommit 93be7f48b01ff6741b78d537d5572c3ffb4de273[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Thu Jul 17 07:57:05 2025 +0200
+
+    Update CharSelectSubState.hx
+
+[33mcommit 80b499773a4bf9ff641bcf635aba82cceb026ec7[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 23:45:13 2025 +0200
+
+    fix for desktop
+
+[33mcommit ee94f28472dd7e5818ea7fdd33967190e501a2bb[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 23:30:17 2025 +0200
+
+    bump git version
+
+[33mcommit 90a1210936d8e16bc2d10495e5394cd519198bef[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 21:43:43 2025 +0200
+
+    fix the one crash reported
+
+[33mcommit d3f1eae823f0997ec096baed74a28f36ef215d1c[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 20:39:08 2025 +0200
+
+    fix
+
+[33mcommit bea0fd8ddfa0d98060805c5f103fdf88bef812cb[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 20:36:53 2025 +0200
+
+    restored cpp crash handling and added a fallback for faulty saves
+
+[33mcommit 8172995284fc735884f8006849d20c7a3dc83a6c[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 17:17:12 2025 +0200
+
+    hixes in the way we handle init stage
+
+[33mcommit ff39a410c6fcf98df4b7c36de9e9dd409524f44a[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 17:11:16 2025 +0200
+
+    Revert "Update Main.hx (did the scaling broke?)"
+    
+    This reverts commit 17ce40c40cb35e18d20d2630ac5e347966c8279d.
+
+[33mcommit 6c21032f2a6325e6a7a21551a90c7b5773dd61c9[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 17:11:03 2025 +0200
+
+    updated control locking mechanism
+
+[33mcommit c20acf956d0889e584af2d817b2c97656ed07abf[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 08:40:17 2025 +0200
+
+    Update Main.hx (did the scaling broke?)
+
+[33mcommit b1e319014a663747af90943ca7d4305ee9c7c35d[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 00:59:47 2025 +0200
+
+    update with 0.6.3
+
+[33mcommit 566aa5160330f4098ec9115c553b9f22af272525[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 15 12:31:03 2025 +0200
+
+    fix this spam issue
+
+[33mcommit 43799eaee80e56058db75684f8426c5484e7778f[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 15 12:10:15 2025 +0200
+
+    update
+
+[33mcommit 1bbf66b32acb44afba2aa313717f0c64066b7f00[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 15 09:08:00 2025 +0200
+
+    try fixing the compile issue
+
+[33mcommit 2a5b13899d30c414b0e689e86ac6d68869906a46[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 15 01:52:45 2025 +0200
+
+    flixed doesn't pull
+
+[33mcommit aaf754662c4d732c39709c0fa3ffdd0e46b7e87e[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 15 01:42:48 2025 +0200
+
+    invalid commit (no way)
+
+[33mcommit 204fbdd8801b8db1ef6e2109adeeec2bbbfac3b9[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 15 01:29:07 2025 +0200
+
+    ios fix?
+
+[33mcommit a0beb43e8ead48701c2568c76127ef537fbad44b[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 15 01:26:13 2025 +0200
+
+    did some fixes
+
+[33mcommit 198535b9b83748b0cd7b4a4fc0b0ee417c2c452e[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Mon Jul 14 01:24:52 2025 +0200
+
+    sixed some bugs (and reverted custom names. they might not be a good idea after all)
+
+[33mcommit 6bd8c183081fcf7cdf9134cbcb5f9c6709fa203e[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Sat Jul 12 23:47:53 2025 +0200
+
+    new titles
+
+[33mcommit 6bd3937b1b97599c7e7710c5f413a717daa4787e[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Sat Jul 12 23:15:09 2025 +0200
+
+    P
+
+[33mcommit b3facd1f202722c4d83f68d1c81c54c6c4b635a5[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Sat Jul 12 22:09:53 2025 +0200
+
+    Added custom flixel to fix note color bug, Fixed dialugues, translations and some sounds
+
+[33mcommit 79e005681c39a02459d53ca9b857f8738056ce0f[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Sat Jul 12 00:23:44 2025 +0200
+
+    improved dialogues and added scrolling to midificator options
+
+[33mcommit 995a991234ec69165b725f2dbf253dbba17cd803[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Fri Jul 11 18:05:14 2025 +0200
+
+    update game over
+
+[33mcommit 1cc6a11bcda555c078fe9b9a327199b565a8e8cd[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Fri Jul 11 15:28:51 2025 +0200
+
+    Added init week names and touch for reset
+
+[33mcommit 7dcf9590c50ebf187498e98ccfdcdb0c84c79fec[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 8 18:38:23 2025 +0200
+
+    updated mobile ui + fixed event select bug
+
+[33mcommit f85f15f5ee8025e4ef5114aea8098e9e079c9269[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 8 00:06:15 2025 +0200
+
+    did some tweaks
+
+[33mcommit 66272c425413987debd3bea06f024a4202e7c690[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Mon Jul 7 21:21:48 2025 +0200
+
+    saving buttons
+
+[33mcommit 7cd62edc9c3d55185dc24a08c1897817df936b17[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Mon Jul 7 09:08:15 2025 +0200
+
+    Added log enforcement + new button keys (and title screen refactor)
+
+[33mcommit 07fbc24cdf2f3d811f6b2a0367bd7965edbe7cf2[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Sat Jul 5 12:33:39 2025 +0200
+
+    minor fixes
+
+[33mcommit e5f83b5eb36efccd5de798b5eb64865ea8ac505e[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Fri Jul 4 22:42:15 2025 +0200
+
+    Update mobile controls I think
+
+[33mcommit e6d51cb46cc695c58291605141e61b2162b3e460[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Thu Jul 3 16:50:24 2025 +0200
+
+    fix shader bugs
+
+[33mcommit 887e0e2a04049d26fcfc4e362979c5d6134c88fb[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Thu Jul 3 16:28:39 2025 +0200
+
+    I fixed some things in mobile controls
+
+[33mcommit 60169eae954c0f61bf1096cbb7e55b9a59b19b40[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 2 13:26:19 2025 +0200
+
+    look at him. Isn't he cute?
+
+[33mcommit d926a1ccf5f63852627a74160f3cb04fc71ffbfe[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 2 01:06:54 2025 +0200
+
+    update code
+
+[33mcommit cd6c1c456236d25f02aacf4f0366bb9f49d1c869[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Mon Jun 30 21:04:48 2025 +0200
+
+    capsule texts (wip)
+
+[33mcommit 2590de6136bc45cd547e317829c05680e4115952[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Sun Jun 29 23:21:54 2025 +0200
+
+    update code
+
+[33mcommit 23dee01b93ef80564050e87d56172a2d670e6f4d[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Sat Jun 28 22:54:02 2025 +0200
+
+    update some code for atlas sprites
+
+[33mcommit f244b1cd273f5f8711d5190ca28d924ae8406a37[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Sat Jun 28 22:38:46 2025 +0200
+
+    preload fixes
+
+[33mcommit 9ae4a457bb926f06c8f1c5a32a68e18c40235190[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Fri Jun 27 16:04:00 2025 +0200
+
+    atlas cache fix (push to main)
+
+[33mcommit d1748f3871d9a9024d1626a2296ea38c24e2dc23[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jun 25 22:51:31 2025 +0200
+
+    fixed preload (push to main)
+
+[33mcommit 4bc7f0059f4e498812d104060e08d60ef6198c73[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jun 25 23:26:40 2025 +0200
+
+    ABot broke
+
+[33mcommit 05bb4bd8c9f56afbc9e21208de7befaba2d12ab6[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jun 25 23:03:54 2025 +0200
+
+    forgot to update shaders in some parts
+
+[33mcommit 3a7718e7236e2f828b8b5b82f6e7ee1d2394ce54[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Fri Jun 13 00:18:22 2025 +0200
+
+    more parity to 0.7.3
+
+[33mcommit d6bb024c9febdb56fab3fbd71becbb2c57e4dcf4[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Thu Jun 12 01:49:13 2025 +0200
+
+    Revert unnecessary changes
+
+[33mcommit f8db1d18d4c0e50f723d00b879c3f829c2c1c340[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Thu Jul 17 23:22:04 2025 +0200
+
+    Final build
+
+[33mcommit 34ba24d170561e0ff7676e659037942b28d9b7d2[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Thu Jul 17 19:52:54 2025 +0200
+
+    Added caching???
+
+[33mcommit 230b83e0dda1811a1e4529def5df7e356b0e93f4[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Thu Jul 17 08:12:34 2025 +0200
+
+    ?
+
+[33mcommit b18728dbb76c1dae58eef376e39d41245ffdfe63[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Thu Jul 17 08:02:10 2025 +0200
+
+    Update ?
+
+[33mcommit 689e0dc151920d280d6433158a0cbacb3d55a316[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Thu Jul 17 07:57:05 2025 +0200
+
+    Update CharSelectSubState.hx
+
+[33mcommit 3848b7232a2d132caba7d7ba89ee929cb7ba079a[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 23:45:13 2025 +0200
+
+    fix for desktop
+
+[33mcommit 9861e6cc2cf82fa67f3f39d82f268e8b1b790d1e[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 23:30:17 2025 +0200
+
+    bump git version
+
+[33mcommit 6699a87698aa00c08b99f3e5fb4fe4d62afb63a4[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 21:43:43 2025 +0200
+
+    fix the one crash reported
+
+[33mcommit 60cb231cc37bdfb60304b9599967892d12677a26[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 20:39:08 2025 +0200
+
+    fix
+
+[33mcommit 67d22c832d1ccb7a1118f2841dbbb07c48c24829[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 20:36:53 2025 +0200
+
+    restored cpp crash handling and added a fallback for faulty saves
+
+[33mcommit b77d5bda1c4a43c2130dbfb9c9126da6efde60cf[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 17:17:12 2025 +0200
+
+    hixes in the way we handle init stage
+
+[33mcommit 726c116802c12ae31142ff3493482b3b1bdf86ba[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 17:11:16 2025 +0200
+
+    Revert "Update Main.hx (did the scaling broke?)"
+    
+    This reverts commit 17ce40c40cb35e18d20d2630ac5e347966c8279d.
+
+[33mcommit 5ad12beaf44736c574f898012234e95f976346ff[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 17:11:03 2025 +0200
+
+    updated control locking mechanism
+
+[33mcommit 17ce40c40cb35e18d20d2630ac5e347966c8279d[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 08:40:17 2025 +0200
+
+    Update Main.hx (did the scaling broke?)
+
+[33mcommit 9866a4bc445a969a023e77b0ff2f1e5b95d5818c[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 16 00:59:47 2025 +0200
+
+    update with 0.6.3
+
+[33mcommit 7b40356058fcb85894a73437662a77e72b3a1de0[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 15 12:31:03 2025 +0200
+
+    fix this spam issue
+
+[33mcommit 220634713f5963bc9366c531a1c5882f3ee2c77c[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 15 12:10:15 2025 +0200
+
+    update
+
+[33mcommit 0cf3959f5209903c99a8df3d4d3b03b58f8d6c68[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 15 09:08:00 2025 +0200
+
+    try fixing the compile issue
+
+[33mcommit 5b801e02860debf2fc934f0e3df8f86bdd91c008[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 15 01:52:45 2025 +0200
+
+    flixed doesn't pull
+
+[33mcommit ae9cdc7876d3c2103565d94a12ddce2a47f2f2b2[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 15 01:42:48 2025 +0200
+
+    invalid commit (no way)
+
+[33mcommit 713b18f63782675c11fe79479c2e5940a19fe4e6[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 15 01:29:07 2025 +0200
+
+    ios fix?
+
+[33mcommit 9880304641ad21b3fc943470970046302bea4f53[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 15 01:26:13 2025 +0200
+
+    did some fixes
+
+[33mcommit 09e9698440a58044019e93f7f3456ad77dbeba0d[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Mon Jul 14 01:24:52 2025 +0200
+
+    sixed some bugs (and reverted custom names. they might not be a good idea after all)
+
+[33mcommit eb06b212ca9c3979311a49ec3368c594757b4043[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Sat Jul 12 23:47:53 2025 +0200
+
+    new titles
+
+[33mcommit 18c43c0f13cae0414f07e2ae5fa7894e7452b198[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Sat Jul 12 23:15:09 2025 +0200
+
+    P
+
+[33mcommit a64f3cc72725690b8e4fd84711bd8bbd23a016ef[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Sat Jul 12 22:09:53 2025 +0200
+
+    Added custom flixel to fix note color bug, Fixed dialugues, translations and some sounds
+
+[33mcommit 5340dfbdb8117c089f39a18c87b671ad073aa283[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Sat Jul 12 00:23:44 2025 +0200
+
+    improved dialogues and added scrolling to midificator options
+
+[33mcommit 329f45516d94acade2bbb028555d1aaaa832d61a[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Fri Jul 11 18:05:14 2025 +0200
+
+    update game over
+
+[33mcommit ee32f0141339b82a7dd67364a3066af52cbd874d[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Fri Jul 11 15:28:51 2025 +0200
+
+    Added init week names and touch for reset
+
+[33mcommit da7c277e55c7437b82a34a61df6d7286d5ce8cea[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 8 18:38:23 2025 +0200
+
+    updated mobile ui + fixed event select bug
+
+[33mcommit 6e73bc2760ecdca4041dc8ffe4476e732700e2ca[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jul 8 00:06:15 2025 +0200
+
+    did some tweaks
+
+[33mcommit 2d47189dedd01bd678f9fa4da2558d51e1718750[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Mon Jul 7 21:21:48 2025 +0200
+
+    saving buttons
+
+[33mcommit e259428e2e6241ded90f2f8f1e3fca8537f259e9[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Mon Jul 7 09:08:15 2025 +0200
+
+    Added log enforcement + new button keys (and title screen refactor)
+
+[33mcommit 4aff5e82a0bcddf2ac06843da1c1b46cb646dde6[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Sat Jul 5 12:33:39 2025 +0200
+
+    minor fixes
+
+[33mcommit db7a826ad765940f8e92ed3c5bcbedaad9b94dd8[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Fri Jul 4 22:42:15 2025 +0200
+
+    Update mobile controls I think
+
+[33mcommit ec52113c70a5ad58e0f95dfbe3f850da62a53506[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Thu Jul 3 16:50:24 2025 +0200
+
+    fix shader bugs
+
+[33mcommit 242e48ab0255a13b6776e17bc64126bad274ccfb[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Thu Jul 3 16:28:39 2025 +0200
+
+    I fixed some things in mobile controls
+
+[33mcommit 25b867e10ca9bed3fe58f592193a7f90839b469c[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 2 13:26:19 2025 +0200
+
+    look at him. Isn't he cute?
+
+[33mcommit 816d8d450c3f6ea1745e9c56ed4ccc1a453ce460[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jul 2 01:06:54 2025 +0200
+
+    update code
+
+[33mcommit aa003205794accd312e806d20bfa023ad1760e2b[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Mon Jun 30 21:04:48 2025 +0200
+
+    capsule texts (wip)
+
+[33mcommit 41bcf95f8f74c1483582617ffb6043793ef49b90[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Sun Jun 29 23:21:54 2025 +0200
+
+    update code
+
+[33mcommit ba9ba2cba856d7f1602a77e6fc1791414913dbed[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Sat Jun 28 22:54:02 2025 +0200
+
+    update some code for atlas sprites
+
+[33mcommit c0a422628077e5dea24cf0b526b36c700bad1c2d[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Sat Jun 28 22:38:46 2025 +0200
+
+    preload fixes
+
+[33mcommit f0dca4378b9d6b108a114f25fba8b7e8bf88f5c0[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Fri Jun 27 16:04:00 2025 +0200
+
+    atlas cache fix (push to main)
+
+[33mcommit 985c87f13eeeadc5f1ebdc373e0c4847118d8a42[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jun 25 22:51:31 2025 +0200
+
+    fixed preload (push to main)
+
+[33mcommit 2a1f3eca3afeb362525fa287054d0a66ce2c72e6[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jun 25 23:26:40 2025 +0200
+
+    ABot broke
+
+[33mcommit b74e51a0c98d9a37995fa59f3f58651f120da99f[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jun 25 23:03:54 2025 +0200
+
+    forgot to update shaders in some parts
+
+[33mcommit 9e7b5a74a004dd30c093faae05806da17068f562[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Fri Jun 13 00:18:22 2025 +0200
+
+    more parity to 0.7.3
+
+[33mcommit f2c6da06a9a09bb8b40e7ce2bba7e850fe31c0e0[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Thu Jun 12 01:49:13 2025 +0200
+
+    Revert unnecessary changes
+
+[33mcommit 631e40d7ef3ca5e6ec657586bfe8250886cc74a9[m[33m ([m[1;33mtag: [m[1;33m3.1.1[m[33m)[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jun 11 21:46:47 2025 +0200
+
+    last fixes
+
+[33mcommit 16b73e933c2c3d68b8a67768396b8a80417eba6a[m
+Author: Derpy The Hedgeone <93553944+DerpyTheHedgeone@users.noreply.github.com>
+Date:   Wed Jun 11 16:26:02 2025 -0300
+
+    P-slice Tweaks 2 (#243)
+    
+    * change offsets a little bit
+    
+    i forgot about otis
+    
+    * fix offsets
+    
+    no sliding
+    
+    * implement v-slice like holds
+    
+    might need fixing (especially daddy dearest)
+    
+    * remove nightmare pico mix??
+    
+    i thought i removed it
+
+[33mcommit 5bc53a12a714a5352907cc10890d3783084e9873[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jun 11 21:11:27 2025 +0200
+
+    not feeling like it
+
+[33mcommit 146518386b64d07bef9aecb6ff156e3bc6713332[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jun 11 18:03:21 2025 +0200
+
+    telemetry in P-Slice???
+
+[33mcommit e49175667bc509e7c4b3bd8cc1f8f70730e5e530[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jun 11 13:48:49 2025 +0200
+
+    low quality is better
+
+[33mcommit 5bdedb5f11b7f5066b80f5a4f56bc0c76f6bd8e7[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Wed Jun 11 00:47:08 2025 +0200
+
+    This should fix path issues
+
+[33mcommit 38551c6c56ebb0a92b559d47ccc16b4402e46bb9[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jun 10 16:36:24 2025 +0200
+
+    android char select fix
+
+[33mcommit 5513e2c9f6afcde0a64fe160fbc25d56b3d7332c[m
+Author: Mikolka <51335952+mikolka9144@users.noreply.github.com>
+Date:   Tue Jun 10 14:33:01 2025 +0200
+
+    fixes for characters on mobile
