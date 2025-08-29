@@ -90,9 +90,9 @@ jobs:
         if: inputs.exportPath == 'android'
         env:
           OUT_DIR: ./export/release/android/bin/app/build/outputs/apk/release/
-          SIGNING_KEY: ${{ secrets.LILY_PASSWORD }}
+          SIGNING_KEY: ${{ secrets.MIKOLKA_PASSWORD }}
           SIGNING_ALIAS: psliceport
-          SIGNING_FILE: ${{ secrets.LILY_KEYSTORE }}
+          SIGNING_FILE: ${{ secrets.MIKOLKA_KEYSTORE }}
         run: |
           rm -f ./key.keystore;
           echo $SIGNING_FILE | base64 -d > ./key.keystore;
