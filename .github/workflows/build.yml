@@ -91,7 +91,7 @@ jobs:
         env:
           OUT_DIR: ./export/release/android/bin/app/build/outputs/apk/release/
           SIGNING_KEY: ${{ secrets.MIKOLKA_PASSWORD }}
-          SIGNING_ALIAS: psliceport
+          SIGNING_ALIAS: pslice
           SIGNING_FILE: ${{ secrets.MIKOLKA_KEYSTORE }}
         run: |
           rm -f ./key.keystore;
