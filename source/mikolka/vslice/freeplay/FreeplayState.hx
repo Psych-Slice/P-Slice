@@ -174,7 +174,7 @@ class FreeplayState extends MusicBeatSubstate
 	var grpFallbackDifficulty:FlxText;
 
 	var grpSongs:FlxTypedGroup<Alphabet>;
-	var grpCapsules:FlxTypedGroup<SongMenuItem>;
+	var grpCapsules:SongCapsuleGroup;
 	var curCapsule(get,never):SongMenuItem;
 	function get_curCapsule() {
 		return grpCapsules.members[curSelected];
@@ -306,7 +306,10 @@ class FreeplayState extends MusicBeatSubstate
 		fp = new FreeplayScore(FlxG.width - (MobileScaleMode.gameNotchSize.x + 353), 60, 7, 100, styleData);
 		rankCamera = new FunkinCamera('rankCamera', 0, 0, FlxG.width, FlxG.height);
 		funnyCam = new FunkinCamera('freeplayFunny', 0, 0, FlxG.width, FlxG.height);
-		grpCapsules = new FlxTypedGroup<SongMenuItem>();
+		grpCapsules = new SongCapsuleGroup();
+		grpCapsules.onRandomSelected.add(capsuleOnConfirmRandom);
+		grpCapsules.onSongSelected.add(capsuleOnOpenDefault);
+		
 		grpDifficulties = new FlxTypedSpriteGroup<DifficultySprite>(-300, 80);
 		letterSort = new LetterSort((CUTOUT_WIDTH * SONGS_POS_MULTI) + 400, 75);
 		grpSongs = new FlxTypedGroup<Alphabet>();
@@ -893,73 +896,13 @@ class FreeplayState extends MusicBeatSubstate
 		// If curSelected is 0, the result will be null and fall back to the rememberedSongId.
 		rememberedSongId = curCapsule?.songData?.songId ?? rememberedSongId;
 
-		for (cap in grpCapsules.members)
-		{
-			cap.songText.resetText();
-			cap.kill();
-		}
-
 		currentFilter = filterStuff;
 
 		currentFilteredSongs = tempSongs;
 		curSelected = 0;
 		curSelectedFractal = 0;
 
-		var randomCapsule:SongMenuItem = grpCapsules.recycle(SongMenuItem);
-		randomCapsule.init(FlxG.width, 0, null, styleData);
-		randomCapsule.onConfirm = function()
-		{
-			capsuleOnConfirmRandom(randomCapsule);
-		};
-		randomCapsule.y = randomCapsule.intendedY(0) + 10;
-		randomCapsule.targetPos.x = randomCapsule.x;
-		randomCapsule.alpha = 0;
-		randomCapsule.songText.visible = false;
-		randomCapsule.favIcon.visible = false;
-		randomCapsule.favIconBlurred.visible = false;
-		randomCapsule.ranking.visible = false;
-		randomCapsule.blurredRanking.visible = false;
-		randomCapsule.hsvShader = SongMenuItem.static_hsvShader;
-		if (fromCharSelect == false)
-		{
-			randomCapsule.initJumpIn(0, force);
-		}
-		else
-		{
-			randomCapsule.forcePosition();
-		}
-		grpCapsules.add(randomCapsule);
-
-		for (i in 0...tempSongs.length)
-		{
-			var tempSong = tempSongs[i];
-			if (tempSong == null)
-				continue;
-
-			var funnyMenu:SongMenuItem = grpCapsules.recycle(SongMenuItem);
-
-			//? Update difficulty as part of difficulty change action;
-			tempSong.currentDifficulty = currentDifficulty;
-			funnyMenu.init(FlxG.width, 0, tempSong, styleData);
-			funnyMenu.onConfirm = function()
-			{
-				capsuleOnOpenDefault(funnyMenu);
-			};
-			funnyMenu.y = funnyMenu.intendedY(i + 1) + 10;
-			funnyMenu.targetPos.x = funnyMenu.x;
-			funnyMenu.ID = i;
-			funnyMenu.capsule.alpha = 0.5;
-			funnyMenu.songText.visible = false;
-			funnyMenu.favIcon.visible = tempSong.isFav;
-			funnyMenu.favIconBlurred.visible = tempSong.isFav;
-			funnyMenu.hsvShader = SongMenuItem.static_hsvShader;
-
-			funnyMenu.newText.animation.curAnim.curFrame = 45 - ((i * 4) % 45);
-			funnyMenu.checkClip();
-			funnyMenu.forcePosition();
-
-			grpCapsules.add(funnyMenu);
-		}
+		grpCapsules.generateFullSongList(tempSongs,currentDifficulty,fromCharSelect,force);
 
 		FlxG.console.registerFunction('changeSelection', changeSelection);
 
@@ -2027,24 +1970,8 @@ class FreeplayState extends MusicBeatSubstate
 		}
 		var areSongsTheSame = tempSongs.isEqualUnordered(currentFilteredSongs);
 
-		if(areSongsTheSame){
-			// Update the song capsules to reflect the new difficulty info.
-			for (songCapsule in grpCapsules.members)
-			{
-				if (songCapsule == null)
-					continue;
-				if (songCapsule.songData != null)
-				{
-					songCapsule.songData.currentDifficulty = currentDifficulty;
-					songCapsule.init(null, null, songCapsule.songData);
-					//songCapsule.checkClip();
-				}
-				else
-				{
-					songCapsule.init(null, null, null);
-				}
-			}
-		}
+		if(areSongsTheSame)
+			grpCapsules.updateSongDifficulties(currentDifficulty);
 		else // Refresh the songs
 			generateSongList(currentFilter, true);
 	}

@@ -4,8 +4,6 @@ import mikolka.funkin.AtlasText.AtlasFont;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.funkin.freeplay.FreeplayStyle;
 import mikolka.vslice.freeplay.obj.PixelatedIcon;
-import mikolka.compatibility.ModsHelper;
-import mikolka.compatibility.freeplay.FreeplayHelpers;
 import mikolka.funkin.Scoring.ScoringRank;
 import mikolka.compatibility.freeplay.FreeplaySongData;
 import shaders.Grayscale;
@@ -21,6 +19,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.addons.effects.FlxTrail;
 import flixel.util.FlxColor;
+import mikolka.vslice.freeplay.SongCapsuleGroup;
 
 using mikolka.funkin.utils.SpriteTools;
 
@@ -840,13 +839,9 @@ class CapsuleNumber extends FlxSprite
     super(x, y);
 
     if (big)
-    {
-      frames = Paths.getSparrowAtlas('freeplay/freeplayCapsule/bignumbers');
-    }
+      frames = SongCapsuleGroup.BIG_NUMBER_FRAMES;
     else
-    {
-      frames = Paths.getSparrowAtlas('freeplay/freeplayCapsule/smallnumbers');
-    }
+      frames = SongCapsuleGroup.SMALL_NUMBER_FRAMES;
 
     for (i in 0...10)
     {
