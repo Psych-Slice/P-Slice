@@ -246,7 +246,7 @@ class PauseSubState extends MusicBeatSubstate
 						var curDiffText = daSelected;
 						if(name.endsWith("-erect") && curDiffText != "Erect" && curDiffText != "Nightmare"){
 							//not nightmare anymore
-							name = name.substring(0,name.length-1-"-erect".length);
+							name = name.substring(0,name.length-"-erect".length);
 						}
 						else if(!name.endsWith("-erect") && (curDiffText == "Erect" || curDiffText == "Nightmare")){
 							//now it's nightmare
