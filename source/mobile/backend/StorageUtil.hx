@@ -25,9 +25,12 @@ class StorageUtil
 		if (!FileSystem.exists(rootDir + 'storagetype.txt'))
 			File.saveContent(rootDir + 'storagetype.txt', ClientPrefs.data.storageType);
 		var curStorageType:String = File.getContent(rootDir + 'storagetype.txt');
+
+		//Migrate for people using older ports
 		if(curStorageType == "EXTERNAL_DATA"){
 			curStorageType = "INTERNAL";
 			ClientPrefs.data.storageType = "INTERNAL";
+			File.saveContent(rootDir + 'storagetype.txt', "INTERNAL");
 		}
 		daPath = force ? StorageType.fromStrForce(curStorageType) : StorageType.fromStr(curStorageType);
 		daPath = Path.addTrailingSlash(daPath);

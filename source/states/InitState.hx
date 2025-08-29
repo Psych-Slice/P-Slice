@@ -71,7 +71,7 @@ class InitState extends MusicBeatState
 
 		#if !OLD_SIGN_KEYS
 		if(FileSystem.exists(exportPath) && FlxG.save.data.flashing == null){
-			var txt = "Save data found!!!\n\n"+
+			var txt = "Migration save data found!!!\n\n"+
 			"Press A to import it\n";
 			MusicBeatState.switchState(new WarningState(txt,() ->{
 				File.copy(exportPath,path);
@@ -106,13 +106,15 @@ class InitState extends MusicBeatState
 		{
 			#if OLD_SIGN_KEYS
 			var txt = "You are using a build with old signing keys!\n"
-			+ "Due to the many factors, P-Slice will now use peoper signing keys on the Android.\n\n"+
+			+ "P-Slice will now use new signing keys on the Android.\n"+
+			+ "Use migration guide to move over your data\nto the new version of P-Slice\n\n"+
 			"Press A to export your save data and open the migration guide\n"+
 			"Press B to ignore"
 			;
 			MusicBeatState.switchState(new WarningState(txt,() ->{
 				File.copy(path,exportPath);
-				CoolUtil.browserLoad("");
+				File.copy(path,exportPath+".bak");
+				CoolUtil.browserLoad("https://github.com/Psych-Slice/P-Slice/wiki/P%E2%80%90Slice-port-migration#you-should-land-here-after-doing-that");
 			},() ->{},new TitleState()));
 			#else
 			new FlxTimer().start(0.05, function(tmr:FlxTimer)

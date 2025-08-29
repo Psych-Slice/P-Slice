@@ -53,7 +53,7 @@ class FlxAtlasSprite extends PsychFlxAnimate
     SETTINGS.Antialiasing = VsliceOptions.ANTIALIASING; //? bit dirty, but should work
     if (path == null)
     {
-      throw 'Null path specified for FlxAtlasSprite!';
+      //throw 'Null path specified for FlxAtlasSprite!';
     }
     else if (path.startsWith("assets") || path.startsWith("mods")){
       throw '$path is an absolute path. This is discouraged!';
@@ -62,7 +62,7 @@ class FlxAtlasSprite extends PsychFlxAnimate
 
     super(x, y, path, settings);
 
-    if (this.anim.stageInstance == null)
+    if (this.anim.stageInstance == null && path != null)
     {
       throw 'FlxAtlasSprite not initialized properly. Are you sure the path (${path}) exists?';
     }
@@ -71,8 +71,12 @@ class FlxAtlasSprite extends PsychFlxAnimate
 
     // This defaults the sprite to play the first animation in the atlas,
     // then pauses it. This ensures symbols are intialized properly.
-    this.anim.play('');
-    this.anim.pause();
+    if (path != null)
+    {
+      //throw 'Null path specified for FlxAtlasSprite!';
+      this.anim.play('');
+      this.anim.pause();
+    }
 
     this.anim.onComplete.add(_onAnimationComplete);
     this.anim.onFrame.add(_onAnimationFrame);

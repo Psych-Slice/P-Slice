@@ -1,14 +1,12 @@
 package mikolka.vslice.charSelect;
 
-import flixel.FlxSprite;
+
 import mikolka.funkin.FlxAtlasSprite;
-import flxanimate.animate.FlxKeyFrame;
-import mikolka.compatibility.funkin.FunkinPath as Paths;
 class CharSelectPlayer extends FlxAtlasSprite 
 {
   public function new(x:Float, y:Float)
   {
-    super(x, y, "charSelect/bfChill");
+    super(x, y, null);
 
     onAnimationComplete.add(function(animLabel:String) { //? changed the hook here
       switch (animLabel)
