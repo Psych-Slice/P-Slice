@@ -17,7 +17,7 @@ import openfl.display.BlendMode;
 class CapsuleText extends FlxSpriteGroup
 {
   public var text(default, set):String;
-  public var blurredText:FlxText;
+  public var blurredText:FlxSprite;
   public var clipWidth(default, set):Int = 255;
   public var tooLong:Bool = false;
 
@@ -34,10 +34,13 @@ class CapsuleText extends FlxSpriteGroup
   {
     super(x, y);
 
-    blurredText = initText(songTitle, size);
+    whiteText = initText(songTitle, size);
+    @:privateAccess
+    whiteText.regenGraphic();
+
+    blurredText = new FlxSprite().loadGraphic(whiteText.graphic);
     if(VsliceOptions.SHADERS && blurShader == null) blurShader = new GaussianBlurShader(1);
     blurredText.shader = blurShader;
-    whiteText = initText(songTitle, size);
     // whiteText.shader = new GaussianBlurShader(0.3);
     text = songTitle;
 
@@ -47,7 +50,7 @@ class CapsuleText extends FlxSpriteGroup
     add(whiteText);
   }
 
-  function initText(songTitle, size:Float):FlxText
+  function initText(songTitle:String, size:Float):FlxText
   {
     var text:FlxText = new FlxText(0, 0, 0, songTitle, Std.int(size));
     text.font = "5by7";
@@ -108,8 +111,10 @@ class CapsuleText extends FlxSpriteGroup
       return text = value;
     }
 
-    blurredText.text = value;
     whiteText.text = value;
+    @:privateAccess
+    whiteText.regenGraphic();
+    blurredText.loadGraphic(whiteText.graphic);
     checkClipWidth();
     if(VsliceOptions.SHADERS)
     whiteText.textField.filters = [
