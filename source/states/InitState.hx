@@ -107,7 +107,7 @@ class InitState extends MusicBeatState
 			#if OLD_SIGN_KEYS
 			var txt = "You are using a build with old signing keys!\n"
 			+ "P-Slice will now use new signing keys on the Android.\n"+
-			+ "Use migration guide to move over your data\nto the new version of P-Slice\n\n"+
+			"Use migration guide to move over your data\nto the new version of P-Slice\n\n"+
 			"Press A to export your save data and open the migration guide\n"+
 			"Press B to ignore"
 			;
