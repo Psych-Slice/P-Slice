@@ -229,15 +229,15 @@ class SongMenuItem extends FlxSpriteGroup
       fakeRanking = new FreeplayRank(420, 41);
       insert(index,fakeRanking);
 
-      fakeBlurredRanking = new FreeplayRank(fakeRanking.x, fakeRanking.y);
-      fakeBlurredRanking.shader = gaussianBlur;
-      insert(index,fakeBlurredRanking);
+      // fakeBlurredRanking = new FreeplayRank(fakeRanking.x, fakeRanking.y);
+      // fakeBlurredRanking.shader = gaussianBlur;
+      // insert(index,fakeBlurredRanking);
 
       fakeRanking.visible = false;
-      fakeBlurredRanking.visible = false;
+      //fakeBlurredRanking.visible = false;
     }
     	fakeRanking.rank = oldRank;
-			fakeBlurredRanking.rank = oldRank;
+			//fakeBlurredRanking.rank = oldRank;
   }
   function sparkleEffect(timer:FlxTimer):Void
   {
