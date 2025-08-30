@@ -113,7 +113,6 @@ jobs:
           zip -r ${{ env.PROJECT_NAME }}.ipa Payload
 
       - name: Upload Artifact
-        if: inputs.exportPath != 'android'
         uses: actions/upload-artifact@main
         with:
           name: ${{ inputs.artifactName }}
