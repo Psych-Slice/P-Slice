@@ -423,10 +423,10 @@ class ResultState extends MusicBeatSubState
      * NOTE: We display how many notes were HIT, not how many notes there were in total.
      *
      */
-    var totalHit:TallyCounter = new TallyCounter(375, hStuf * 3, params.scoreData.totalNotesHit);
+    var totalHit:TallyCounter = new TallyCounter(375 + MobileScaleMode.gameNotchSize.x, hStuf * 3, params.scoreData.totalNotesHit);
     ratingGrp.add(totalHit);
 
-    var maxCombo:TallyCounter = new TallyCounter(375, hStuf * 4, params.scoreData.maxCombo);
+    var maxCombo:TallyCounter = new TallyCounter(375 + MobileScaleMode.gameNotchSize.x, hStuf * 4, params.scoreData.maxCombo);
     ratingGrp.add(maxCombo);
 
     hStuf += 2;
@@ -434,19 +434,19 @@ class ResultState extends MusicBeatSubState
 
     hStuf += 2;
 
-    var tallySick:TallyCounter = new TallyCounter(230, (hStuf * 5) + extraYOffset, params.scoreData.sick, 0xFF89E59E);
+    var tallySick:TallyCounter = new TallyCounter(230 + MobileScaleMode.gameNotchSize.x, (hStuf * 5) + extraYOffset, params.scoreData.sick, 0xFF89E59E);
     ratingGrp.add(tallySick);
 
-    var tallyGood:TallyCounter = new TallyCounter(210, (hStuf * 6) + extraYOffset, params.scoreData.good, 0xFF89C9E5);
+    var tallyGood:TallyCounter = new TallyCounter(210+ MobileScaleMode.gameNotchSize.x, (hStuf * 6) + extraYOffset, params.scoreData.good, 0xFF89C9E5);
     ratingGrp.add(tallyGood);
 
-    var tallyBad:TallyCounter = new TallyCounter(190, (hStuf * 7) + extraYOffset, params.scoreData.bad, 0xFFE6CF8A);
+    var tallyBad:TallyCounter = new TallyCounter(190 + MobileScaleMode.gameNotchSize.x, (hStuf * 7) + extraYOffset, params.scoreData.bad, 0xFFE6CF8A);
     ratingGrp.add(tallyBad);
 
-    var tallyShit:TallyCounter = new TallyCounter(220, (hStuf * 8) + extraYOffset, params.scoreData.shit, 0xFFE68C8A);
+    var tallyShit:TallyCounter = new TallyCounter(220 + MobileScaleMode.gameNotchSize.x, (hStuf * 8) + extraYOffset, params.scoreData.shit, 0xFFE68C8A);
     ratingGrp.add(tallyShit);
 
-    var tallyMissed:TallyCounter = new TallyCounter(260, (hStuf * 9) + extraYOffset, params.scoreData.missed, 0xFFC68AE6);
+    var tallyMissed:TallyCounter = new TallyCounter(260 + MobileScaleMode.gameNotchSize.x, (hStuf * 9) + extraYOffset, params.scoreData.missed, 0xFFC68AE6);
     ratingGrp.add(tallyMissed);
 
     score.visible = false;
@@ -763,7 +763,7 @@ class ResultState extends MusicBeatSubState
   {
     movingSongStuff = false;
 
-    difficulty.x = 555;
+    difficulty.x = 555 + MobileScaleMode.gameNotchSize.x;
 
     var diffYTween:Float = 122;
 
