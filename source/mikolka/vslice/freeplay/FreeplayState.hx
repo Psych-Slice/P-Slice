@@ -177,7 +177,7 @@ class FreeplayState extends MusicBeatSubstate
 	var grpCapsules:SongCapsuleGroup;
 	var curCapsule(get,never):SongMenuItem;
 	function get_curCapsule() {
-		return grpCapsules.members[curSelected];
+		return grpCapsules.activeSongItems[curSelected];
 	}
 	var curPlaying:Bool = false;
 
@@ -623,7 +623,7 @@ class FreeplayState extends MusicBeatSubstate
 
 			// We want to land on the first song of the group, rather than random song when changing letter sorts
 			// that is, only if there's more than one song in the group!
-			if (grpCapsules.members.length > 0)
+			if (grpCapsules.activeSongItems.length > 0)
 			{
 				FunkinSound.playOnce(Paths.sound('scrollMenu'), 0.4);
 				curSelected = 1;
@@ -1199,7 +1199,7 @@ class FreeplayState extends MusicBeatSubstate
 			FlxTween.tween(rankCamera, {"zoom": 1}, 1, {ease: FlxEase.elasticOut});
 			FlxTween.tween(funnyCam, {"zoom": 1}, 0.8, {ease: FlxEase.elasticOut});
 
-			for (index => capsule in grpCapsules.members)
+			for (index => capsule in grpCapsules.activeSongItems)
 			{
 				var distFromSelected:Float = Math.abs(index - curSelected) - 1;
 
@@ -1348,7 +1348,7 @@ class FreeplayState extends MusicBeatSubstate
 			wait: 0.1
 		});
 		add(transitionGradient);
-		for (index => capsule in grpCapsules.members)
+		for (index => capsule in grpCapsules.activeSongItems)
 		{
 			var distFromSelected:Float = Math.abs(index - curSelected) - 1;
 			if (distFromSelected < 5)
@@ -1414,7 +1414,7 @@ class FreeplayState extends MusicBeatSubstate
 		add(transitionGradient);
 		changeDiff(0, true);
 		// FlxTween.tween(transitionGradient, {alpha: 0}, 1, {ease: FlxEase.circIn});
-		// for (index => capsule in grpCapsules.members)
+		// for (index => capsule in grpCapsules.activeSongItems)
 		// {
 		//   var distFromSelected:Float = Math.abs(index - curSelected) - 1;
 		//   if (distFromSelected < 5)
@@ -1452,7 +1452,7 @@ class FreeplayState extends MusicBeatSubstate
 					ease: FlxEase.expoOut,
 					onComplete: function(_)
 					{
-						for (index => capsule in grpCapsules.members)
+						for (index => capsule in grpCapsules.activeSongItems)
 						{
 							capsule.doLerp = true;
 							fromCharSelect = false;
@@ -1557,7 +1557,7 @@ class FreeplayState extends MusicBeatSubstate
 					intendedScore = 0;
 					intendedCompletion = 0;
 					curSng.songData.updateIsNewTag();
-					curSng.refreshDisplay();
+					curSng.refreshDisplayDifficulty();
 				});
 				FunkinSound.playOnce(Paths.sound('scrollMenu'), 0.4);
 			} // ? //!
@@ -1572,50 +1572,50 @@ class FreeplayState extends MusicBeatSubstate
 				var isFav = targetSong.toggleFavorite();
 				if (isFav)
 				{
-					grpCapsules.members[realShit].favIcon.visible = true;
-					grpCapsules.members[realShit].favIconBlurred.visible = true;
-					grpCapsules.members[realShit].favIcon.animation.play('fav');
-					grpCapsules.members[realShit].favIconBlurred.animation.play('fav');
+					curCapsule.favIcon.visible = true;
+					curCapsule.favIconBlurred.visible = true;
+					curCapsule.favIcon.animation.play('fav');
+					curCapsule.favIconBlurred.animation.play('fav');
 					FunkinSound.playOnce(Paths.sound('fav'), 1);
-					grpCapsules.members[realShit].checkClip();
-					grpCapsules.members[realShit].selected = grpCapsules.members[realShit].selected; // set selected again, so it can run it's getter function to initialize movement
+					curCapsule.checkClip();
+					curCapsule.selected = curCapsule.selected; // set selected again, so it can run it's getter function to initialize movement
 					busy = true;
 
-					grpCapsules.members[realShit].doLerp = false;
-					FlxTween.tween(grpCapsules.members[realShit], {y: grpCapsules.members[realShit].y - 5}, 0.1, {ease: FlxEase.expoOut});
+					curCapsule.doLerp = false;
+					FlxTween.tween(curCapsule, {y: curCapsule.y - 5}, 0.1, {ease: FlxEase.expoOut});
 
-					FlxTween.tween(grpCapsules.members[realShit], {y: grpCapsules.members[realShit].y + 5}, 0.1, {
+					FlxTween.tween(curCapsule, {y: curCapsule.y + 5}, 0.1, {
 						ease: FlxEase.expoIn,
 						startDelay: 0.1,
 						onComplete: function(_)
 						{
-							grpCapsules.members[realShit].doLerp = true;
+							curCapsule.doLerp = true;
 							busy = false;
 						}
 					});
 				}
 				else
 				{
-					grpCapsules.members[realShit].favIcon.animation.play('fav', true, true, 9);
-					grpCapsules.members[realShit].favIconBlurred.animation.play('fav', true, true, 9);
+					curCapsule.favIcon.animation.play('fav', true, true, 9);
+					curCapsule.favIconBlurred.animation.play('fav', true, true, 9);
 					FunkinSound.playOnce(Paths.sound('unfav'), 1);
 					new FlxTimer().start(0.2, _ ->
 					{
-						grpCapsules.members[realShit].favIcon.visible = false;
-						grpCapsules.members[realShit].favIconBlurred.visible = false;
-						grpCapsules.members[realShit].checkClip();
+						curCapsule.favIcon.visible = false;
+						curCapsule.favIconBlurred.visible = false;
+						curCapsule.checkClip();
 					});
 
 					busy = true;
-					grpCapsules.members[realShit].doLerp = false;
-					FlxTween.tween(grpCapsules.members[realShit], {y: grpCapsules.members[realShit].y + 5}, 0.1, {ease: FlxEase.expoOut});
+					curCapsule.doLerp = false;
+					FlxTween.tween(curCapsule, {y: curCapsule.y + 5}, 0.1, {ease: FlxEase.expoOut});
 
-					FlxTween.tween(grpCapsules.members[realShit], {y: grpCapsules.members[realShit].y - 5}, 0.1, {
+					FlxTween.tween(curCapsule, {y: curCapsule.y - 5}, 0.1, {
 						ease: FlxEase.expoIn,
 						startDelay: 0.1,
 						onComplete: function(_)
 						{
-							grpCapsules.members[realShit].doLerp = true;
+							curCapsule.doLerp = true;
 							busy = false;
 						}
 					});
@@ -1822,7 +1822,7 @@ class FreeplayState extends MusicBeatSubstate
 				}
 			}
 
-			for (caps in grpCapsules.members)
+			for (caps in grpCapsules.activeSongItems)
 			{
 				caps.doJumpIn = false;
 				caps.doLerp = false;
@@ -2067,7 +2067,7 @@ class FreeplayState extends MusicBeatSubstate
 		busy = true;
 		letterSort.inputEnabled = false;
 
-		var availableSongCapsules:Array<SongMenuItem> = grpCapsules.members.filter(function(cap:SongMenuItem)
+		var availableSongCapsules:Array<SongMenuItem> = grpCapsules.activeSongItems.filter(function(cap:SongMenuItem)
 		{
 			// Dead capsules are ones which were removed from the list when changing filters.
 			return cap.alive && cap.songData != null;
@@ -2089,7 +2089,7 @@ class FreeplayState extends MusicBeatSubstate
 		var targetSong:SongMenuItem = FlxG.random.getObject(availableSongCapsules);
 
 		// Seeing if I can do an animation...
-		curSelected = grpCapsules.members.indexOf(targetSong);
+		curSelected = grpCapsules.activeSongItems.indexOf(targetSong);
 		curSelectedFractal = curSelected;
 		changeSelection(0); // Trigger an update.
 
@@ -2228,7 +2228,7 @@ class FreeplayState extends MusicBeatSubstate
 	function changeSelectionFractal(change:Float)
 	{
 		curSelectedFractal = FlxMath.bound(curSelectedFractal + change, 0, grpCapsules.countLiving() - 1);
-		for (index => capsule in grpCapsules.members)
+		for (index => capsule in grpCapsules.activeSongItems)
 		{
 			index += 1;
 
