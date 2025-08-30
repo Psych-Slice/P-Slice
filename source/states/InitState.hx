@@ -68,12 +68,12 @@ class InitState extends MusicBeatState
 		//* This is only for the 3.3 version
 		var path = Path.join([lime.system.System.applicationStorageDirectory,backend.CoolUtil.getSavePath(),"funkin.sol"]);
 		var exportPath = Path.join([mobile.backend.StorageUtil.StorageType.fromStr("EXTERNAL"),"funkin.sol"]);
-
 		#if !OLD_SIGN_KEYS
 		if(FileSystem.exists(exportPath) && FlxG.save.data.flashing == null){
 			var txt = "Migration save data found!!!\n\n"+
 			"Press A to import it\n";
 			MusicBeatState.switchState(new WarningState(txt,() ->{
+				FlxG.save.flush();
 				File.copy(exportPath,path);
 				lime.system.System.exit(0);
 			},() ->{},new TitleState()));
