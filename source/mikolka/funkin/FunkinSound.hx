@@ -76,6 +76,8 @@ class FunkinSound extends FlxSound
 
 		return sound;
 	}
+
+	static var prevSound:Sound = null;
 	public static function playMusic(key:String, params:FunkinSoundPlayMusicParams):Bool {
 		if(params.pathsFunction == INST){
 			var instPath = "";
@@ -111,7 +113,12 @@ class FunkinSound extends FlxSound
 						}
 						
 						trace("Playing preview!");
+
 						FlxG.sound.playMusic(sound,0);
+						#if (lime_vorbis && !windows)
+						prevSound?.close();
+						prevSound = sound;
+						#end
 						params.onLoad();
 					});
 				return true;
