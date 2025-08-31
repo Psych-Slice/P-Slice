@@ -1691,14 +1691,16 @@ class PlayState extends MusicBeatState
 
 	private function generateStaticArrows(player:Int):Void
 	{
-		final isHitboxArrowMode = ClientPrefs.data.extraHints == "ARROWS" && ClientPrefs.data.middleScroll;
 		var strumLineX:Float = ClientPrefs.data.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X;
 		var strumLineY:Float = ClientPrefs.data.downScroll ? (FlxG.height - 150) : 50;
 		var playerStrumLineY = strumLineY;
-		if(isHitboxArrowMode && ClientPrefs.data.downScroll) playerStrumLineY -= 50;
 
 		#if TOUCH_CONTROLS_ALLOWED
+		final isHitboxArrowMode = ClientPrefs.data.extraHints == "ARROWS" && ClientPrefs.data.middleScroll;
+		if(isHitboxArrowMode && ClientPrefs.data.downScroll) playerStrumLineY -= 50;
 		Note.swagWidth = 160 * (isHitboxArrowMode ? 0.8 : 0.7);
+		#else
+		final isHitboxArrowMode = false;
 		#end
 
 		for (i in 0...4)
@@ -1733,6 +1735,9 @@ class PlayState extends MusicBeatState
 				babyArrow.updateHitbox();
 				babyArrow.x -= 25;
 			}
+			else if(!ClientPrefs.data.middleScroll){
+				babyArrow.x += (FlxG.width-FlxG.initialWidth)/2;
+			}
 			playerStrums.add(babyArrow);
 		}
 		else
@@ -1749,9 +1754,6 @@ class PlayState extends MusicBeatState
 				}
 				else if(isHitboxArrowMode)
 					babyArrow.x -= 90;
-			}
-			else{
-				babyArrow.x += (FlxG.width-FlxG.initialWidth)/2;
 			}
 			opponentStrums.add(babyArrow);
 		}

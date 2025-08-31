@@ -215,8 +215,10 @@ class Mods
 			if(fileStr.length > 0) fileStr += '\n';
 			fileStr += values[0] + '|' + (values[1] ? '1' : '0');
 		}
-
-		File.saveContent( StorageUtil.getStorageDirectory() + 'modsList.txt', fileStr);
+		try{
+			File.saveContent( StorageUtil.getStorageDirectory() + 'modsList.txt', fileStr);
+		}
+		catch(x:Exception){} // In case you don't move it from AppTranslocation
 		updatedOnState = true;
 		//trace('Saved modsList.txt');
 		#end

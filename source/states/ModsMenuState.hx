@@ -865,7 +865,11 @@ class ModsMenuState extends MusicBeatState
 		}
 
 		var path:String = StorageUtil.getStorageDirectory()+'/modsList.txt';
-		File.saveContent(path, fileStr);
+		try{
+			File.saveContent(path, fileStr);
+		}
+		catch(x:Exception){} // In case you don't move it from AppTranslocation
+
 		Mods.parseList();
 		Mods.loadTopMod();
 	}

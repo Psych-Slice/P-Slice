@@ -35,7 +35,11 @@ class InitState extends MusicBeatState
 		trace("Fixing DPI aware:");
 		backend.Native.fixScaling();
 		#end
-		
+
+		#if CHECK_FOR_UPDATES
+		fetchUpdateData();
+		#end
+
 		trace("Loading game settings");
 		ClientPrefs.loadPrefs();
 
@@ -76,7 +80,7 @@ class InitState extends MusicBeatState
 				File.saveContent(path,File.getContent(exportPath));
 				FileSystem.deleteFile(exportPath);
 				Sys.exit(0);
-			},() ->{},new TitleState()));
+			},null,new TitleState()));
 		}else
 		#end
 		#end
@@ -115,7 +119,7 @@ class InitState extends MusicBeatState
 				File.copy(path,exportPath);
 				File.copy(path,exportPath+".bak");
 				CoolUtil.browserLoad("https://github.com/Psych-Slice/P-Slice/wiki/P%E2%80%90Slice-port-migration#you-should-land-here-after-doing-that");
-			},() ->{},new TitleState()));
+			},null,new TitleState()));
 			#else
 			new FlxTimer().start(0.05, function(tmr:FlxTimer)
 				{
