@@ -36,14 +36,10 @@ class ModArrows extends FlxSpriteGroup {
 				pressedUiRight = TouchUtil.justPressed;
 			#end
 
-            if(pressedUiLeft){
-				dipshitLeftArrow.pressButton();
-			    modSelector.changeDirectory(-1);
-			}
-            else if(pressedUiRight){
-				dipshitRightArrow.pressButton();
-			    modSelector.changeDirectory(1);
-			}
+            if(pressedUiLeft && modSelector.allowInput)
+				previousModPress();
+            else if(pressedUiRight && modSelector.allowInput)
+				nextModPress();
             
         super.update(elapsed);
     }
