@@ -402,7 +402,7 @@ class ModsMenuState extends MusicBeatState
 			var lastMode = hoveringOnMods;
 			if (modsList.all.length > 1)
 			{
-				if (!controls.mobileC && FlxG.mouse.justPressed)
+				if (FlxG.mouse.justPressed) // !controls.mobileC && 
 				{
 					for (i in centerMod - 2...centerMod + 3)
 					{
