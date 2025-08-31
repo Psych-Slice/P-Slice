@@ -35,6 +35,10 @@ class InitState extends MusicBeatState
 		trace("Loading game settings");
 		PlayerSettings.init();
 
+		#if CHECK_FOR_UPDATES
+		fetchUpdateData();
+		#end
+
 		trace("ACTUALLY load saves");
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 
