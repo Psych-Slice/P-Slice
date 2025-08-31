@@ -45,6 +45,7 @@ class CreditsState extends MusicBeatState
 			['Mikolka9144',			'mikolka',			'The lead for the mod',								 'https://gamebanana.com/members/3329541',									'2ebcfa'],
 			[""],
 			['P-Slice Contributors'],
+			['CigsDev',				'cigsdev',			'Contributed code and assets',								 'https://x.com/CigsDev',									'744da1'],
 			['Lily',				'lily',             'Contributed a mobile port of P-slice (no longer in the community)',                       '',		'FFE7C0'],
 			["Fazecarl",			'fazecarl',			'Made the new logo for P-Slice',									'https://gamebanana.com/members/2121406',	'29170a'],
 			["Derpy The Hedgeone",	'derpy',			'Made a lot of PRs to the repo',									'https://github.com/DerpyTheHedgeone',	'd86b00'],

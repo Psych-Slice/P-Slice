@@ -78,6 +78,13 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.decimals = 1;
 		option.onChange = onChangeHitsoundVolume;
 
+		var option:Option = new Option('Shit/Bad Ratings Cause a Combo Break',
+			"If checked, when you hit shit/bad, it'll cause your combo to go back to zero",
+			'grayBreak',
+			BOOL);
+		option.defaultValue = true;
+		addOption(option);
+
 		var option:Option = new Option('Rating Offset',
 			'Changes how late/early you have to hit for a "Sick!"\nHigher values mean you have to hit later.',
 			'ratingOffset',
@@ -130,6 +137,8 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.maxValue = 10;
 		option.changeValue = 0.1;
 		addOption(option);
+
+		
 
 		
 

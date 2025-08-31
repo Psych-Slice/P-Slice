@@ -387,7 +387,7 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.changedDifficulty = true;
 					practiceText.visible = PlayState.instance.practiceMode;
 				case "Restart Song":
-					restartSong();
+					restartSong(!PlayState.chartingMode); //restarts normally if charting, does effect if not
 				case 'Chart Editor':
 					PlayState.instance.openChartEditor();
 				case "Leave Charting Mode":
@@ -489,13 +489,24 @@ class PauseSubState extends MusicBeatSubstate
 		FlxG.sound.music.volume = 0;
 		PlayState.instance.vocals.volume = 0;
 
+		//close this substate if no trans
+		if (PlayState.instance.subState != null && noTrans)
+		{
+			PlayState.instance.closeSubState();
+		}
+
 		if (noTrans)
 		{
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
+			PlayState.instance.DoRestart();
 		}
-		MusicBeatState.resetState();
+		else
+		{
+			MusicBeatState.resetState();
+		}
 	}
+
 
 	override function destroy()
 	{
