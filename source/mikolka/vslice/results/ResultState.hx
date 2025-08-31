@@ -102,7 +102,7 @@ class ResultState extends MusicBeatSubState
     // This prevents having to do `null` checks everywhere.
 
     var fontLetters:String = "AaBbCcDdEeFfGgHhiIJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz:1234567890";
-    songName = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.weak(49 , 62)));
+    songName = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.weak(49 + MobileScaleMode.gameNotchSize.x , 62)));
     songName.text = params.title;
     songName.letterSpacing = -15;
     songName.angle = -4.4;

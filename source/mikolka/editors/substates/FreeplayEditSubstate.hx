@@ -1,5 +1,6 @@
 package mikolka.editors.substates;
 
+import mikolka.vslice.freeplay.FreeplayState;
 import mikolka.funkin.custom.mobile.MobileScaleMode;
 import mikolka.compatibility.funkin.FunkinPath;
 import mikolka.editors.forms.FreeplayDialogBox;
@@ -53,6 +54,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 	override function create()
 	{
 		final CUTOUT_WIDTH:Float = MobileScaleMode.gameCutoutSize.x / 1.5;
+		FreeplayState.CUTOUT_WIDTH = CUTOUT_WIDTH;
 		backingCard = new BoyfriendCard(data);
 		backingCard.init();
 		add(backingCard);

@@ -59,11 +59,10 @@ class InitState extends MusicBeatState
 		#end
 
 		FlxG.scaleMode = new MobileScaleMode(ClientPrefs.data.wideScreen); 
-
+		
 		trace("Init plugins:");
 		//* FIRST INIT! iNITIALISE IMPORTED PLUGINS
 		ScreenshotPlugin.initialize();
-
 		#if android
 		//* This is only for the 3.3 version
 		var path = Path.join([lime.system.System.applicationStorageDirectory,backend.CoolUtil.getSavePath(),"funkin.sol"]);
@@ -73,9 +72,10 @@ class InitState extends MusicBeatState
 			var txt = "Migration save data found!!!\n\n"+
 			"Press A to import it\n";
 			MusicBeatState.switchState(new WarningState(txt,() ->{
-				FlxG.save.flush();
-				File.copy(exportPath,path);
-				lime.system.System.exit(0);
+				FlxG.save.close();
+				File.saveContent(path,File.getContent(exportPath));
+				FileSystem.deleteFile(exportPath);
+				Sys.exit(0);
 			},() ->{},new TitleState()));
 		}else
 		#end
