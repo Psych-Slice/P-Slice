@@ -4,8 +4,6 @@ import mikolka.funkin.AtlasText.AtlasFont;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.funkin.freeplay.FreeplayStyle;
 import mikolka.vslice.freeplay.obj.PixelatedIcon;
-import mikolka.compatibility.ModsHelper;
-import mikolka.compatibility.freeplay.FreeplayHelpers;
 import mikolka.funkin.Scoring.ScoringRank;
 import mikolka.compatibility.freeplay.FreeplaySongData;
 import shaders.Grayscale;
@@ -21,6 +19,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.addons.effects.FlxTrail;
 import flixel.util.FlxColor;
+import mikolka.vslice.freeplay.SongCapsuleGroup;
 
 using mikolka.funkin.utils.SpriteTools;
 
@@ -230,15 +229,15 @@ class SongMenuItem extends FlxSpriteGroup
       fakeRanking = new FreeplayRank(420, 41);
       insert(index,fakeRanking);
 
-      fakeBlurredRanking = new FreeplayRank(fakeRanking.x, fakeRanking.y);
-      fakeBlurredRanking.shader = gaussianBlur;
-      insert(index,fakeBlurredRanking);
+      // fakeBlurredRanking = new FreeplayRank(fakeRanking.x, fakeRanking.y);
+      // fakeBlurredRanking.shader = gaussianBlur;
+      // insert(index,fakeBlurredRanking);
 
       fakeRanking.visible = false;
-      fakeBlurredRanking.visible = false;
+      //fakeBlurredRanking.visible = false;
     }
     	fakeRanking.rank = oldRank;
-			fakeBlurredRanking.rank = oldRank;
+			//fakeBlurredRanking.rank = oldRank;
   }
   function sparkleEffect(timer:FlxTimer):Void
   {
@@ -388,34 +387,60 @@ class SongMenuItem extends FlxSpriteGroup
   {
     return evilTrail.color;
   }
-  public function refreshDisplay():Void
+
+  /**
+   * Refreshes all displayed items by this card.
+   * Use only for changing the song data on this card.
+   */
+  function refreshDisplayFull():Void
     {
       if (songData == null)
       {
         songText.text = 'Random';
         pixelIcon.visible = false;
+      }
+      else
+      {
+        songText.text = songData.songName;
+        if (songData.songCharacter != null) pixelIcon.setCharacter(songData.songCharacter);
+        pixelIcon.visible = true;
+      }
+      refreshDisplayDifficulty();
+    }
+
+    /**
+     * Updates difficulty on this song.
+     * 
+     * Call this if you've changed the current difficulty for this song. 
+     */
+    public function refreshDisplayDifficulty() {
+      if (songData == null)
+      {
+        updateScoringRank(null);
         ranking.visible = false;
         blurredRanking.visible = false;
         favIcon.visible = false;
         favIconBlurred.visible = false;
         newText.setVisibility(false);
       }
-      else
-      {
-        
-        songText.text = songData.songName;
-        if (songData.songCharacter != null) pixelIcon.setCharacter(songData.songCharacter);
-        pixelIcon.visible = true;
+      else{
         updateBPM(Std.int(songData.songStartingBpm) ?? 0);
         updateDifficultyRating(songData.difficultyRating ?? 0);
         updateScoringRank(songData.scoringRank);
         newText.setVisibility(songData.isNew);
-        if(newText.visible) newText.animation.play('newAnim', true);
+        if(newText.visible) {
+          newText.animation.play('newAnim', true);
+          newText.animation.curAnim.curFrame = 45 - ((ID * 4) % 45);
+        }
         favIcon.visible = songData.isFav;
         favIconBlurred.visible = songData.isFav;
         checkClip();
       }
       updateSelected();
+
+      // I think this ends the "favorite" anim early
+      favIcon.animation.curAnim.curFrame = favIcon.animation.curAnim.numFrames - 1;
+      favIconBlurred.animation.curAnim.curFrame = favIconBlurred.animation.curAnim.numFrames - 1;
     }
 
   public function updateWeekText(newText:String = "") {
@@ -524,18 +549,33 @@ class SongMenuItem extends FlxSpriteGroup
 
     updateSelected();
   }
-
+  /**
+   * Reconstructs all the data in this card based on the parameters frovided. Use only when fully recycling! 
+   * @param x 
+   * @param y 
+   * @param songData 
+   * @param styleData 
+   */
   public function init(?x:Float, ?y:Float, songData:Null<FreeplaySongData>, ?styleData:FreeplayStyle = null):Void
   {
     if (x != null) this.x = x;
     if (y != null) this.y = y;
     this.songData = songData;
 
-    // im so mad i have to do this but im pretty sure with the capsules recycling i cant call the new function properly :/
-    // if thats possible someone Please change the new function to be something like
-    // capsule.frames = Paths.getSparrowAtlas(styleData == null ? 'freeplay/freeplayCapsule/capsule/freeplayCapsule' : styleData.getCapsuleAssetKey()); thank u luv u
-    if (styleData != null && styleData != currentFpStyle)
-    {
+    if (styleData != null) initFreeplayStyle(styleData);
+
+    refreshDisplayFull();
+    updateWeekText(songData?.songWeekName ?? "");
+  }
+
+  /**
+   * Initialises new freeplay style on this card.
+   * 
+   * To be honest we don't even seed this!
+   */
+  public function initFreeplayStyle(styleData:FreeplayStyle) {
+    if (styleData == currentFpStyle) return;
+    
       currentFpStyle = styleData;
 
       capsule.frames = Paths.getSparrowAtlas(styleData.getCapsuleAssetKey());
@@ -544,19 +584,7 @@ class SongMenuItem extends FlxSpriteGroup
       capsule.animation.addByPrefix('unselected', 'mp3 capsule w backing NOT SELECTED', 24);
       songText.applyStyle(styleData);
       //
-    }
-
-    updateScoringRank(songData?.scoringRank);
-
-    // I think this ends the anim early
-    favIcon.animation.curAnim.curFrame = favIcon.animation.curAnim.numFrames - 1;
-    favIconBlurred.animation.curAnim.curFrame = favIconBlurred.animation.curAnim.numFrames - 1;
-
-    refreshDisplay();
-
-    //? Add custom week text here
-    //checkWeek(songData?.levelId);
-    updateWeekText(songData?.songWeekName ?? "");
+    
   }
 
   var frameInTicker:Float = 0;
@@ -840,13 +868,9 @@ class CapsuleNumber extends FlxSprite
     super(x, y);
 
     if (big)
-    {
-      frames = Paths.getSparrowAtlas('freeplay/freeplayCapsule/bignumbers');
-    }
+      frames = SongCapsuleGroup.BIG_NUMBER_FRAMES;
     else
-    {
-      frames = Paths.getSparrowAtlas('freeplay/freeplayCapsule/smallnumbers');
-    }
+      frames = SongCapsuleGroup.SMALL_NUMBER_FRAMES;
 
     for (i in 0...10)
     {
