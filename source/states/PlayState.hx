@@ -1750,6 +1750,9 @@ class PlayState extends MusicBeatState
 				else if(isHitboxArrowMode)
 					babyArrow.x -= 90;
 			}
+			else{
+				babyArrow.x += (FlxG.width-FlxG.initialWidth)/2;
+			}
 			opponentStrums.add(babyArrow);
 		}
 
