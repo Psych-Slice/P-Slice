@@ -76,6 +76,8 @@ class FunkinSound extends FlxSound
 
 		return sound;
 	}
+
+	static var prevSound:Sound = null;
 	public static function playMusic(key:String, params:FunkinSoundPlayMusicParams):Bool {
 		if(params.pathsFunction == INST){
 			var instPath = "";
@@ -106,12 +108,17 @@ class FunkinSound extends FlxSound
 							if(!Std.isOfType(FlxG.state.subState,FreeplayState)) return;
 							var fp = cast (FlxG.state.subState,FreeplayState);
 
-							var cap = fp.grpCapsules.members[fp.curSelected];
+							var cap = fp.grpCapsules.activeSongItems[fp.curSelected];
 							if(cap.songData == null || cap.songData.getNativeSongId() != key || fp.busy) return;
 						}
 						
 						trace("Playing preview!");
+
 						FlxG.sound.playMusic(sound,0);
+						// #if (lime_vorbis && linux)
+						// prevSound?.close();
+						// prevSound = sound;
+						// #end
 						params.onLoad();
 					});
 				return true;

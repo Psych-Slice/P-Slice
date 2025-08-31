@@ -52,18 +52,12 @@ class NativeFileSystem
 	// Loads a given bitmap. Returns null if it doesn't exist
 	public static function getBitmap(path:String):Null<BitmapData>
 	{
-		#if nativesys_profile var timeStart = Sys.time(); #end
 		var isModded = path.startsWith("mods");
 
 		#if OPENFL_LOOKUP
 		if (#if NATIVE_LOOKUP !isModded && #end openFlAssets.contains(path))
 		{
 			var result = OpenFlAssets.getBitmapData(path);
-			#if nativesys_profile
-			var timeEnd = Sys.cpuTime() - timeStart;
-			if (timeEnd > 1.2)
-				trace('Getting native bitmap ${path} took: $timeEnd');
-			#end
 			return result;
 		}
 		#end
@@ -77,11 +71,6 @@ class NativeFileSystem
 		if (sys_path != null)
 		{
 			var result = BitmapData.fromFile(sys_path);
-			#if nativesys_profile
-			var timeEnd = Sys.cpuTime() - timeStart;
-			if (timeEnd > 1.2)
-				trace('Getting system bitmap ${path} took: $timeEnd');
-			#end
 			return result;
 		}
 		#end
@@ -92,7 +81,6 @@ class NativeFileSystem
 	public static function getSound(path:String):Null<Sound>
 	{
 		var isModded = path.startsWith("mods");
-		#if nativesys_profile var timeStart = Sys.time(); #end
 
 		#if OPENFL_LOOKUP
 		if (!isModded)
@@ -139,7 +127,6 @@ class NativeFileSystem
 	public static function exists(path:String)
 	{
 		var isModded = path.startsWith("mods");
-		#if nativesys_profile var timeStart = Sys.time(); #end
 
 		#if OPENFL_LOOKUP
 		if (!isModded)
@@ -219,11 +206,6 @@ class NativeFileSystem
 		}
 		#end
 
-		#if nativesys_profile
-		var timeEnd = Sys.cpuTime() - timeStart;
-		if (timeEnd > 1.2)
-			trace('Getting (failed) directory ${directory} took: $timeEnd');
-		#end
 		return [];
 	}
 
@@ -245,11 +227,6 @@ class NativeFileSystem
 		if (!result && !isModded)
 		{
 			result = openFlAssets.filter(folder -> folder.startsWith(directory) && folder != directory).length > 0;
-			#if nativesys_profile
-			var timeEnd = Sys.cpuTime() - timeStart;
-			if (timeEnd > 1.2)
-				trace('Checking native directory ${directory} took: $timeEnd');
-			#end
 		}
 		#end
 
@@ -261,11 +238,6 @@ class NativeFileSystem
 		if (!result)
 		{
 			result = sys.FileSystem.isDirectory(addCwd(directory));
-			#if nativesys_profile
-			var timeEnd = Sys.cpuTime() - timeStart;
-			if (timeEnd > 1.2)
-				trace('Checking system directory ${directory} took: $timeEnd');
-			#end
 		}
 		#end
 		return result;
@@ -377,8 +349,6 @@ class NativeFileSystem
 	public static function getPathLike(path:String):Null<String>
 	{
 		var cwd_path = addCwd(path);
-		trace(path);
-		trace(cwd_path);
 		if (sys.FileSystem.exists(cwd_path))
 			return cwd_path;
 		return null;

@@ -590,7 +590,8 @@ class FunkinPreloader extends FlxBasePreloader
 					var assetsToCache:Array<String> = [
 					"freeplay/freeplayStars",
 					"freeplay/albumRoll/freeplayAlbum",
-					"freeplay/sortedLetters"
+					"freeplay/sortedLetters",
+					"charSelect/charSelectStage"
 					];
 
 					trace("Load misc");

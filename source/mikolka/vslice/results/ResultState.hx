@@ -102,7 +102,7 @@ class ResultState extends MusicBeatSubState
     // This prevents having to do `null` checks everywhere.
 
     var fontLetters:String = "AaBbCcDdEeFfGgHhiIJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz:1234567890";
-    songName = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.weak(49 , 62)));
+    songName = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.weak(49 + MobileScaleMode.gameNotchSize.x , 62)));
     songName.text = params.title;
     songName.letterSpacing = -15;
     songName.angle = -4.4;
@@ -124,7 +124,7 @@ class ResultState extends MusicBeatSubState
 
     bgFlash = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [0xFFFFF1A6, 0xFFFFF1BE], 90);
 
-    resultsAnim = FunkinSprite.createSparrow(-200+ MobileScaleMode.gameNotchSize.x, -10, "resultScreen/results");
+    resultsAnim = FunkinSprite.createSparrow(FlxG.width -(1480 + (MobileScaleMode.gameCutoutSize.x / 2)), -10, "resultScreen/results");
 
     ratingsPopin = FunkinSprite.createSparrow(-135+ MobileScaleMode.gameNotchSize.x, 135, "resultScreen/ratingsPopin");
 
@@ -423,10 +423,10 @@ class ResultState extends MusicBeatSubState
      * NOTE: We display how many notes were HIT, not how many notes there were in total.
      *
      */
-    var totalHit:TallyCounter = new TallyCounter(375, hStuf * 3, params.scoreData.totalNotesHit);
+    var totalHit:TallyCounter = new TallyCounter(375 + MobileScaleMode.gameNotchSize.x, hStuf * 3, params.scoreData.totalNotesHit);
     ratingGrp.add(totalHit);
 
-    var maxCombo:TallyCounter = new TallyCounter(375, hStuf * 4, params.scoreData.maxCombo);
+    var maxCombo:TallyCounter = new TallyCounter(375 + MobileScaleMode.gameNotchSize.x, hStuf * 4, params.scoreData.maxCombo);
     ratingGrp.add(maxCombo);
 
     hStuf += 2;
@@ -434,19 +434,19 @@ class ResultState extends MusicBeatSubState
 
     hStuf += 2;
 
-    var tallySick:TallyCounter = new TallyCounter(230, (hStuf * 5) + extraYOffset, params.scoreData.sick, 0xFF89E59E);
+    var tallySick:TallyCounter = new TallyCounter(230 + MobileScaleMode.gameNotchSize.x, (hStuf * 5) + extraYOffset, params.scoreData.sick, 0xFF89E59E);
     ratingGrp.add(tallySick);
 
-    var tallyGood:TallyCounter = new TallyCounter(210, (hStuf * 6) + extraYOffset, params.scoreData.good, 0xFF89C9E5);
+    var tallyGood:TallyCounter = new TallyCounter(210+ MobileScaleMode.gameNotchSize.x, (hStuf * 6) + extraYOffset, params.scoreData.good, 0xFF89C9E5);
     ratingGrp.add(tallyGood);
 
-    var tallyBad:TallyCounter = new TallyCounter(190, (hStuf * 7) + extraYOffset, params.scoreData.bad, 0xFFE6CF8A);
+    var tallyBad:TallyCounter = new TallyCounter(190 + MobileScaleMode.gameNotchSize.x, (hStuf * 7) + extraYOffset, params.scoreData.bad, 0xFFE6CF8A);
     ratingGrp.add(tallyBad);
 
-    var tallyShit:TallyCounter = new TallyCounter(220, (hStuf * 8) + extraYOffset, params.scoreData.shit, 0xFFE68C8A);
+    var tallyShit:TallyCounter = new TallyCounter(220 + MobileScaleMode.gameNotchSize.x, (hStuf * 8) + extraYOffset, params.scoreData.shit, 0xFFE68C8A);
     ratingGrp.add(tallyShit);
 
-    var tallyMissed:TallyCounter = new TallyCounter(260, (hStuf * 9) + extraYOffset, params.scoreData.missed, 0xFFC68AE6);
+    var tallyMissed:TallyCounter = new TallyCounter(260 + MobileScaleMode.gameNotchSize.x, (hStuf * 9) + extraYOffset, params.scoreData.missed, 0xFFC68AE6);
     ratingGrp.add(tallyMissed);
 
     score.visible = false;
@@ -461,17 +461,6 @@ class ResultState extends MusicBeatSubState
         FlxTween.tween(rating, {curNumber: rating.neededNumber}, 0.5, {ease: FlxEase.quartOut});
       });
     }
-
-    // if (params.isNewHighscore ?? false)
-    // {
-    //   highscoreNew.visible = true;
-    //   highscoreNew.animation.play("new");
-    //   //FlxTween.tween(highscoreNew, {y: highscoreNew.y + 10}, 0.8, {ease: FlxEase.quartOut});
-    // }
-    // else
-    // {
-    //   highscoreNew.visible = false;
-    // }
 
     new FlxTimer().start(rank.getMusicDelay(), _ -> {
       //? Changed a little sound loading
@@ -774,7 +763,7 @@ class ResultState extends MusicBeatSubState
   {
     movingSongStuff = false;
 
-    difficulty.x = 555;
+    difficulty.x = 555 + MobileScaleMode.gameNotchSize.x;
 
     var diffYTween:Float = 122;
 
