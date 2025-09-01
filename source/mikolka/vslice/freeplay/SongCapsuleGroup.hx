@@ -117,8 +117,8 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 			{
 				onSongSelected.dispatch(funnyMenu);
 			};
-			funnyMenu.y = funnyMenu.intendedY(i + 1) + 10;
-			funnyMenu.targetPos.x = funnyMenu.x;
+			funnyMenu.targetPos.x = funnyMenu.x; // This is target position on X
+			funnyMenu.y = funnyMenu.intendedY(i + 1) + 10; 
 			funnyMenu.ID = i;
 			funnyMenu.capsule.alpha = 0.5;
 			funnyMenu.songText.visible = false;
@@ -128,17 +128,28 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 			funnyMenu.checkClip();
 			
 			funnyMenu.forcePosition();
-			funnyMenu.x = FlxG.width;
 
 			activeSongItems.push(funnyMenu);
 			
 		}
 	}
-
-	//TODO Make it so it first lods up a list, and then 
 	/**
-	 * Searches for the song in the graveyard located nearby.
-	 * @return 
+	 * Sets initial positions for all cards.
+	 * 
+	 * Useful after setting their target positions via "targetPos" property
+	 */
+	inline public function setInitialAnimPosition() {
+		for (card in activeSongItems){
+			card.x = FlxG.width;// This is starting position on X
+			card.y = card.targetPos.y;// This is starting position on X
+		}
+	}
+
+	/**
+	 * Given the song data list, searches for corresponding dead cards.
+	 * Such cards will have most elements reads (like song name and charIcon),
+	 * but will need to be refreshed with "refreshDisplayDifficulty" to update difficulty data.
+	 * @return A map of found song cards. If a cord for a given song wasn't found, there won't be a corresponding key in the map!
 	 */
 	function findSongItems(songData:Array<FreeplaySongData>):Map<FreeplaySongData,Null<SongMenuItem>> {
 		var foundSongItem = new Map<FreeplaySongData,Null<SongMenuItem>>();

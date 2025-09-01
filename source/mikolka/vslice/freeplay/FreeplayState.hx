@@ -904,12 +904,11 @@ class FreeplayState extends MusicBeatSubstate
 
 		grpCapsules.generateFullSongList(tempSongs,currentDifficulty,fromCharSelect,force);
 
-		FlxG.console.registerFunction('changeSelection', changeSelection);
-
 		rememberSelection();
 
 		changeSelection();
 		changeDiff(0);
+		grpCapsules.setInitialAnimPosition();
 	}
 
 	/**
