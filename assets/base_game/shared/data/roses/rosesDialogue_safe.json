@@ -24,7 +24,7 @@
 			"text": "Almost as loud as I'll make your girlfriend scream later tonight, you fat midget."
 		},
 		{
-			"sound": "",
+			"sound": "pixelText",
 			"speed": 0.05,
 			"portrait": "bf-pixel",
 			"boxState": "normal",
