@@ -306,7 +306,7 @@ class FreeplayState extends MusicBeatSubstate
 		fp = new FreeplayScore(FlxG.width - (MobileScaleMode.gameNotchSize.x + 353), 60, 7, 100, styleData);
 		rankCamera = new FunkinCamera('rankCamera', 0, 0, FlxG.width, FlxG.height);
 		funnyCam = new FunkinCamera('freeplayFunny', 0, 0, FlxG.width, FlxG.height);
-		grpCapsules = new SongCapsuleGroup();
+		grpCapsules = new SongCapsuleGroup(styleData);
 		grpCapsules.onRandomSelected.add(capsuleOnConfirmRandom);
 		grpCapsules.onSongSelected.add(capsuleOnOpenDefault);
 		

@@ -102,14 +102,12 @@ class SongMenuItem extends FlxSpriteGroup
     gaussianBlur_12 = null;
   }
   }
-  public function new(x:Float, y:Float)
+  public function new(x:Float, y:Float,styleData:FreeplayStyle)
   {
     super(x, y);
 
     capsule = new FlxSprite();
-    capsule.frames = Paths.getSparrowAtlas('freeplay/freeplayCapsule/capsule/freeplayCapsule');
-    capsule.animation.addByPrefix('selected', 'mp3 capsule w backing0', 24);
-    capsule.animation.addByPrefix('unselected', 'mp3 capsule w backing NOT SELECTED', 24);
+    initFreeplayStyle(styleData);
     // capsule.animation
     add(capsule);
 
@@ -121,22 +119,13 @@ class SongMenuItem extends FlxSpriteGroup
     difficultyText.setGraphicSize(Std.int(difficultyText.width * 0.9));
     add(difficultyText);
 
-
-    // weekType.setGraphicSize(Std.int(weekType.width * 0.9));
-    // add(weekType);
-
     newText = new FlxSprite(454, 9);
     newText.frames = Paths.getSparrowAtlas('freeplay/freeplayCapsule/new');
     newText.animation.addByPrefix('newAnim', 'NEW notif', 24, true);
     newText.animation.play('newAnim', true);
     newText.setGraphicSize(Std.int(newText.width * 0.9));
 
-    // newText.visible = false;
-
     add(newText);
-
-    // var debugNumber2:CapsuleNumber = new CapsuleNumber(0, 0, true, 2);
-    // add(debugNumber2);
 
     for (i in 0...2)
     {
@@ -179,6 +168,7 @@ class SongMenuItem extends FlxSpriteGroup
     grayscaleShader = new Grayscale(1);
 
     songText = new CapsuleText(capsule.width * 0.26, 45, 'Random', Std.int(40 * realScaled));
+    songText.applyStyle(styleData);
     add(songText);
     grpHide.add(songText);
 
@@ -208,15 +198,6 @@ class SongMenuItem extends FlxSpriteGroup
     favIcon.visible = false;
     favIcon.blend = BlendMode.ADD;
     add(favIcon);
-
-    // //? Added another week num. I should really make 3 of them
-    // var weekNumber:CapsuleNumber = new CapsuleNumber(355, 88.5, false, 0);
-    // var weekNumber2:CapsuleNumber = new CapsuleNumber(365, 88.5, false, 0);
-    // add(weekNumber);
-    // add(weekNumber2);
-
-    // weekNumbers.push(weekNumber);
-    // weekNumbers.push(weekNumber2);
 
     setVisibleGrp(false);
   }
@@ -345,9 +326,7 @@ class SongMenuItem extends FlxSpriteGroup
     impactThing.frames = capsule.frames;
     impactThing.frame = capsule.frame;
     impactThing.updateHitbox();
-    // impactThing.x = capsule.x;
-    // impactThing.y = capsule.y;
-    // picoFade.stamp(this, 0, 0);
+
     impactThing.alpha = 0;
     impactThing.zIndex = capsule.zIndex - 3;
     add(impactThing);
@@ -404,6 +383,7 @@ class SongMenuItem extends FlxSpriteGroup
         songText.text = songData.songName;
         if (songData.songCharacter != null) pixelIcon.setCharacter(songData.songCharacter);
         pixelIcon.visible = true;
+        updateWeekText(songData?.songWeekName ?? "");
       }
       refreshDisplayDifficulty();
     }
@@ -549,6 +529,7 @@ class SongMenuItem extends FlxSpriteGroup
 
     updateSelected();
   }
+
   /**
    * Reconstructs all the data in this card based on the parameters frovided. Use only when fully recycling! 
    * @param x 
@@ -556,18 +537,16 @@ class SongMenuItem extends FlxSpriteGroup
    * @param songData 
    * @param styleData 
    */
-  public function init(?x:Float, ?y:Float, songData:Null<FreeplaySongData>, ?styleData:FreeplayStyle = null):Void
+  public function initPosition(?x:Float, ?y:Float):Void
   {
     if (x != null) this.x = x;
     if (y != null) this.y = y;
-    this.songData = songData;
-
-    if (styleData != null) initFreeplayStyle(styleData);
-
-    refreshDisplayFull();
-    updateWeekText(songData?.songWeekName ?? "");
+    
   }
-
+  public function applySongData(songData:Null<FreeplaySongData>) {
+    this.songData = songData;
+    refreshDisplayFull();
+  }
   /**
    * Initialises new freeplay style on this card.
    * 
@@ -582,7 +561,8 @@ class SongMenuItem extends FlxSpriteGroup
       // This applies new style in case we change it
       capsule.animation.addByPrefix('selected', 'mp3 capsule w backing0', 24);
       capsule.animation.addByPrefix('unselected', 'mp3 capsule w backing NOT SELECTED', 24);
-      songText.applyStyle(styleData);
+
+      songText?.applyStyle(styleData);
       //
     
   }

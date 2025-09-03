@@ -19,24 +19,20 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 
 	public final activeSongItems:Array<SongMenuItem> = new Array<SongMenuItem>();
 
-    var styleData:Null<FreeplayStyle>;
-    public function new(styleData:Null<FreeplayStyle> = null) {
+    var styleData:FreeplayStyle;
+    public function new(styleData:FreeplayStyle) {
         super();
         this.styleData = styleData;
-		randomCapsule = new SongMenuItem(0,0);
-		randomCapsule.init(FlxG.width, 0, null, styleData);
+		randomCapsule = new SongMenuItem(FlxG.width,0,styleData);
 		randomCapsule.onConfirm = function()
 		{
 			onRandomSelected.dispatch(randomCapsule);
 		};
+		randomCapsule.applySongData(null);
 		randomCapsule.alpha = 0;
 		randomCapsule.songText.visible = false;
-		randomCapsule.favIcon.visible = false;
-		randomCapsule.favIconBlurred.visible = false;
-		randomCapsule.ranking.visible = false;
-		randomCapsule.blurredRanking.visible = false;
 		randomCapsule.hsvShader = SongMenuItem.static_hsvShader;
-		randomCapsule.updateWeekText("Random!");
+
 		add(randomCapsule);
 
         BIG_NUMBER_FRAMES = Paths.getSparrowAtlas('freeplay/freeplayCapsule/bignumbers');
@@ -64,7 +60,7 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 				}
 				else
 				{
-					songCapsule.init(null, null, null);
+					songCapsule.applySongData(null);
 				}
 			}
     }
@@ -83,7 +79,7 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 		activeSongItems.resize(0);
 		var recycledSongCards = findSongItems(songList);
 
-		randomCapsule.init(FlxG.width, 0, null, styleData);
+		randomCapsule.initPosition(FlxG.width, 0);
 		randomCapsule.y = randomCapsule.intendedY(0) + 10;
 		randomCapsule.targetPos.x = randomCapsule.x;
 		if (fromCharSelect == false)
@@ -105,8 +101,11 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 
 			var funnyMenu:SongMenuItem = recycledSongCards.get(tempSong);
 			if(funnyMenu == null){
-				funnyMenu = recycle(SongMenuItem);
-				funnyMenu.init(FlxG.width,0,tempSong);
+				funnyMenu = recycle(SongMenuItem,() ->{
+					return new SongMenuItem(FlxG.width,0,styleData);
+				});
+				funnyMenu.initPosition(FlxG.width,0);
+				funnyMenu.applySongData(tempSong);
 				// This actually protects from adding the card twice!
 				add(funnyMenu); 
 			}
@@ -122,8 +121,6 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 			funnyMenu.ID = i;
 			funnyMenu.capsule.alpha = 0.5;
 			funnyMenu.songText.visible = false;
-			funnyMenu.favIcon.visible = tempSong.isFav;
-			funnyMenu.favIconBlurred.visible = tempSong.isFav;
 			funnyMenu.hsvShader = SongMenuItem.static_hsvShader;
 			funnyMenu.checkClip();
 			
