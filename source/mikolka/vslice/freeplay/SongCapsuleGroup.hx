@@ -48,7 +48,7 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 
     public function updateSongDifficulties(currentDifficulty:String) {
         // Update the song capsules to reflect the new difficulty info.
-			for (songCapsule in members)
+			for (songCapsule in activeSongItems)
 			{
 				if (songCapsule == null)
 					continue;

@@ -1063,7 +1063,7 @@ class FreeplayState extends MusicBeatSubstate
 		// curCapsule.targetPos.set((FlxG.width / 2) - (curCapsule.width / 2),
 		//  (FlxG.height / 2) - (curCapsule.height / 2));
 
-		curCapsule.setPosition((FlxG.width / 2) - (curCapsule.width / 2),
+		curCapsule.initPosition((FlxG.width / 2) - (curCapsule.capsule.width / 2),
 			(FlxG.height / 2) - (curCapsule.height / 2));
 
 		new FlxTimer().start(0.5, _ ->
@@ -1513,6 +1513,15 @@ class FreeplayState extends MusicBeatSubstate
 				newRank: PERFECT_GOLD,
 				songId: "tutorial",
 				oldRank: SHIT,
+				difficultyId: "hard"
+			});
+		}
+		if (FlxG.keys.justPressed.Y)
+		{
+			rankAnimStart(fromResultsParams ?? {
+				playRankAnim: true,
+				newRank: PERFECT_GOLD,
+				songId: "tutorial",
 				difficultyId: "hard"
 			});
 		}
