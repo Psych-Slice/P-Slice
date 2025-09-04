@@ -652,8 +652,8 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 
 		var folderList:Array<String> = [''];
 		#if sys
-		for (folder in NativeFileSystem.readDirectory('assets/'))
-			if (NativeFileSystem.isDirectory('assets/$folder') && folder != 'shared' && !Mods.ignoreModFolders.contains(folder))
+		for (folder in FileSystem.readDirectory('assets/'))
+			if (FileSystem.isDirectory('assets/$folder') && folder != 'shared' && !Mods.ignoreModFolders.contains(folder))
 				folderList.push(folder);
 		#end
 
@@ -1051,7 +1051,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 		var characterList = Mods.mergeAllTextsNamed('data/characterList.txt');
 		var foldersToCheck:Array<String> = Mods.directoriesWithFile(Paths.getSharedPath(), 'characters/');
 		for (folder in foldersToCheck)
-			for (file in NativeFileSystem.readDirectory(folder))
+			for (file in FileSystem.readDirectory(folder))
 				if(file.toLowerCase().endsWith('.json'))
 				{
 					var charToCheck:String = file.substr(0, file.length - 5);
@@ -1193,7 +1193,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 		{
 			var characterPath:String = 'stages/$selected.json';
 			var path:String = Paths.getPath(characterPath, TEXT, null, true);
-			if (NativeFileSystem.exists(path))
+			if (FileSystem.exists(path))
 			{
 				stageJson = StageData.getStageFile(selected);
 				lastLoadedStage = selected;
@@ -1353,7 +1353,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 		var stageList:Array<String> = [];
 		var foldersToCheck:Array<String> = Mods.directoriesWithFile(Paths.getSharedPath(), 'stages/');
 		for (folder in foldersToCheck)
-			for (file in NativeFileSystem.readDirectory(folder))
+			for (file in FileSystem.readDirectory(folder))
 				if (file.toLowerCase().endsWith('.json'))
 				{
 					var stageToCheck:String = file.substr(0, file.length - '.json'.length);
@@ -1926,11 +1926,11 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 						var p1:String = '$pathNoExt.$ext';
 						var p2:String = modFolder + '$fileName.$ext';
 						trace(p1, p2);
-						if (NativeFileSystem.exists(p1))
+						if (FileSystem.exists(p1))
 							File.saveBytes(p2, File.getBytes(p1));
 					}
 
-					NativeFileSystem.createDirectory(modFolder);
+					FileSystem.createDirectory(modFolder);
 					saveFile('png');
 					saveFile('xml');
 					saveFile('txt');
