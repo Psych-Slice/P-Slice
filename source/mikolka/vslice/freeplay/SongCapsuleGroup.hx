@@ -19,24 +19,20 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 
 	public final activeSongItems:Array<SongMenuItem> = new Array<SongMenuItem>();
 
-    var styleData:Null<FreeplayStyle>;
-    public function new(styleData:Null<FreeplayStyle> = null) {
+    var styleData:FreeplayStyle;
+    public function new(styleData:FreeplayStyle) {
         super();
         this.styleData = styleData;
-		randomCapsule = new SongMenuItem(0,0);
-		randomCapsule.init(FlxG.width, 0, null, styleData);
+		randomCapsule = new SongMenuItem(FlxG.width,0,styleData);
 		randomCapsule.onConfirm = function()
 		{
 			onRandomSelected.dispatch(randomCapsule);
 		};
+		randomCapsule.applySongData(null);
 		randomCapsule.alpha = 0;
 		randomCapsule.songText.visible = false;
-		randomCapsule.favIcon.visible = false;
-		randomCapsule.favIconBlurred.visible = false;
-		randomCapsule.ranking.visible = false;
-		randomCapsule.blurredRanking.visible = false;
 		randomCapsule.hsvShader = SongMenuItem.static_hsvShader;
-		randomCapsule.updateWeekText("Random!");
+
 		add(randomCapsule);
 
         BIG_NUMBER_FRAMES = Paths.getSparrowAtlas('freeplay/freeplayCapsule/bignumbers');
@@ -52,7 +48,7 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 
     public function updateSongDifficulties(currentDifficulty:String) {
         // Update the song capsules to reflect the new difficulty info.
-			for (songCapsule in members)
+			for (songCapsule in activeSongItems)
 			{
 				if (songCapsule == null)
 					continue;
@@ -64,7 +60,7 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 				}
 				else
 				{
-					songCapsule.init(null, null, null);
+					songCapsule.applySongData(null);
 				}
 			}
     }
@@ -83,7 +79,7 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 		activeSongItems.resize(0);
 		var recycledSongCards = findSongItems(songList);
 
-		randomCapsule.init(FlxG.width, 0, null, styleData);
+		randomCapsule.initPosition(FlxG.width, 0);
 		randomCapsule.y = randomCapsule.intendedY(0) + 10;
 		randomCapsule.targetPos.x = randomCapsule.x;
 		if (fromCharSelect == false)
@@ -105,8 +101,11 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 
 			var funnyMenu:SongMenuItem = recycledSongCards.get(tempSong);
 			if(funnyMenu == null){
-				funnyMenu = recycle(SongMenuItem);
-				funnyMenu.init(FlxG.width,0,tempSong);
+				funnyMenu = recycle(SongMenuItem,() ->{
+					return new SongMenuItem(FlxG.width,0,styleData);
+				});
+				funnyMenu.initPosition(FlxG.width,0);
+				funnyMenu.applySongData(tempSong);
 				// This actually protects from adding the card twice!
 				add(funnyMenu); 
 			}
@@ -117,28 +116,37 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 			{
 				onSongSelected.dispatch(funnyMenu);
 			};
-			funnyMenu.y = funnyMenu.intendedY(i + 1) + 10;
-			funnyMenu.targetPos.x = funnyMenu.x;
+			funnyMenu.targetPos.x = funnyMenu.x; // This is target position on X
+			funnyMenu.y = funnyMenu.intendedY(i + 1) + 10; 
 			funnyMenu.ID = i;
 			funnyMenu.capsule.alpha = 0.5;
 			funnyMenu.songText.visible = false;
-			funnyMenu.favIcon.visible = tempSong.isFav;
-			funnyMenu.favIconBlurred.visible = tempSong.isFav;
 			funnyMenu.hsvShader = SongMenuItem.static_hsvShader;
 			funnyMenu.checkClip();
 			
 			funnyMenu.forcePosition();
-			funnyMenu.x = FlxG.width;
 
 			activeSongItems.push(funnyMenu);
 			
 		}
 	}
-
-	//TODO Make it so it first lods up a list, and then 
 	/**
-	 * Searches for the song in the graveyard located nearby.
-	 * @return 
+	 * Sets initial positions for all cards.
+	 * 
+	 * Useful after setting their target positions via "targetPos" property
+	 */
+	inline public function setInitialAnimPosition() {
+		for (card in activeSongItems){
+			card.x = FlxG.width;// This is starting position on X
+			card.y = card.targetPos.y;// This is starting position on X
+		}
+	}
+
+	/**
+	 * Given the song data list, searches for corresponding dead cards.
+	 * Such cards will have most elements reads (like song name and charIcon),
+	 * but will need to be refreshed with "refreshDisplayDifficulty" to update difficulty data.
+	 * @return A map of found song cards. If a cord for a given song wasn't found, there won't be a corresponding key in the map!
 	 */
 	function findSongItems(songData:Array<FreeplaySongData>):Map<FreeplaySongData,Null<SongMenuItem>> {
 		var foundSongItem = new Map<FreeplaySongData,Null<SongMenuItem>>();

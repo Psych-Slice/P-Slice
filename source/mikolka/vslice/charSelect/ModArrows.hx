@@ -40,7 +40,6 @@ class ModArrows extends FlxSpriteGroup {
 				previousModPress();
             else if(pressedUiRight && modSelector.allowInput)
 				nextModPress();
-			
             
         super.update(elapsed);
     }

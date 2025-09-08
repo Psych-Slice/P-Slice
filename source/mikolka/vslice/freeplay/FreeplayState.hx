@@ -306,7 +306,7 @@ class FreeplayState extends MusicBeatSubstate
 		fp = new FreeplayScore(FlxG.width - (MobileScaleMode.gameNotchSize.x + 353), 60, 7, 100, styleData);
 		rankCamera = new FunkinCamera('rankCamera', 0, 0, FlxG.width, FlxG.height);
 		funnyCam = new FunkinCamera('freeplayFunny', 0, 0, FlxG.width, FlxG.height);
-		grpCapsules = new SongCapsuleGroup();
+		grpCapsules = new SongCapsuleGroup(styleData);
 		grpCapsules.onRandomSelected.add(capsuleOnConfirmRandom);
 		grpCapsules.onSongSelected.add(capsuleOnOpenDefault);
 		
@@ -904,12 +904,11 @@ class FreeplayState extends MusicBeatSubstate
 
 		grpCapsules.generateFullSongList(tempSongs,currentDifficulty,fromCharSelect,force);
 
-		FlxG.console.registerFunction('changeSelection', changeSelection);
-
 		rememberSelection();
 
 		changeSelection();
 		changeDiff(0);
+		grpCapsules.setInitialAnimPosition();
 	}
 
 	/**
@@ -1064,7 +1063,7 @@ class FreeplayState extends MusicBeatSubstate
 		// curCapsule.targetPos.set((FlxG.width / 2) - (curCapsule.width / 2),
 		//  (FlxG.height / 2) - (curCapsule.height / 2));
 
-		curCapsule.setPosition((FlxG.width / 2) - (curCapsule.width / 2),
+		curCapsule.initPosition((FlxG.width / 2) - (curCapsule.capsule.width / 2),
 			(FlxG.height / 2) - (curCapsule.height / 2));
 
 		new FlxTimer().start(0.5, _ ->
@@ -1514,6 +1513,15 @@ class FreeplayState extends MusicBeatSubstate
 				newRank: PERFECT_GOLD,
 				songId: "tutorial",
 				oldRank: SHIT,
+				difficultyId: "hard"
+			});
+		}
+		if (FlxG.keys.justPressed.Y)
+		{
+			rankAnimStart(fromResultsParams ?? {
+				playRankAnim: true,
+				newRank: PERFECT_GOLD,
+				songId: "tutorial",
 				difficultyId: "hard"
 			});
 		}
