@@ -84,7 +84,7 @@ class StorageUtil
 	public static function checkUserStoragePermissions() {
 		var isAPI33 = AndroidVersion.SDK_INT >= AndroidVersionCode.TIRAMISU;
 		trace("Check perms...");
-
+		if(ClientPrefs.data.storageType == "INTERNAL") return;
 		if (!isAPI33){
 			trace("Requesting EXTERNAL_STORAGE");
 			AndroidPermissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']);
