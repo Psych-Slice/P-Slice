@@ -59,7 +59,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- <define name="ATSC_SUPPORT" if="android"/>  -->
 	
 	<!-- Displays a "Touch here to play" screen-->
-	<define name="TOUCH_HERE_TO_PLAY" if="TOUCH_CONTROLS_ALLOWED"/>
+	<define name="TOUCH_HERE_TO_PLAY" if="TOUCH_CONTROLS_ALLOWED debug"/>
 
 	<!-- Other stuff -->
 	<define name="ACHIEVEMENTS_ALLOWED" />

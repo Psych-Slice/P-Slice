@@ -1,5 +1,7 @@
-package mikolka.vslice.freeplay;
+package mikolka.vslice.freeplay.capsule;
 
+import mikolka.vslice.freeplay.capsule.SongMenuItem.SongCapsuleAnim;
+import mikolka.vslice.freeplay.capsule.CustomAnimControl;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.util.FlxSignal.FlxTypedSignal;
 import mikolka.compatibility.freeplay.FreeplaySongData;
@@ -8,9 +10,9 @@ import mikolka.funkin.freeplay.FreeplayStyle;
 // This is not a sprite group!
 class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 
-    @:allow(mikolka.vslice.freeplay.SongMenuItem)
+    @:allow(mikolka.vslice.freeplay.capsule.CapsuleNumber)
     static var BIG_NUMBER_FRAMES:FlxAtlasFrames;
-    @:allow(mikolka.vslice.freeplay.SongMenuItem)
+    @:allow(mikolka.vslice.freeplay.capsule.CapsuleNumber)
     static var SMALL_NUMBER_FRAMES:FlxAtlasFrames;
     
     public final onRandomSelected:FlxTypedSignal<SongMenuItem -> Void> = new FlxTypedSignal<SongMenuItem -> Void>();
@@ -67,7 +69,7 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
     	/**
 	 * Rebuilds the entire song list.
 	 */
-	public function generateFullSongList(songList:Array<Null<FreeplaySongData>>,currentDifficulty:String,fromCharSelect = false, force:Bool = false):Void
+	public function generateFullSongList(songList:Array<Null<FreeplaySongData>>,currentDifficulty:String,animation:SongCapsuleAnim,randomAnimation:SongCapsuleAnim):Void
 	{
 		
 		for (cap in members)
@@ -80,12 +82,10 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 		var recycledSongCards = findSongItems(songList);
 
 		randomCapsule.initPosition(FlxG.width, 0);
-		randomCapsule.y = randomCapsule.intendedY(0) + 10;
+		randomCapsule.y = randomCapsule.intendedY(1) + 10;
+		randomCapsule.ID = 1;
 		randomCapsule.targetPos.x = randomCapsule.x;
-		if (fromCharSelect == false)
-			randomCapsule.initJumpIn(0, force);
-		else
-			randomCapsule.forcePosition();
+		randomCapsule.setCapsuleAnimation(randomAnimation);
 		
 		activeSongItems.push(randomCapsule);
 		add(randomCapsule);
@@ -124,22 +124,21 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 			funnyMenu.hsvShader = SongMenuItem.static_hsvShader;
 			funnyMenu.checkClip();
 			
-			funnyMenu.forcePosition();
+			funnyMenu.setCapsuleAnimation(animation);
 
 			activeSongItems.push(funnyMenu);
 			
 		}
 	}
+
 	/**
 	 * Sets initial positions for all cards.
 	 * 
 	 * Useful after setting their target positions via "targetPos" property
 	 */
 	inline public function setInitialAnimPosition() {
-		for (card in activeSongItems){
-			card.x = FlxG.width;// This is starting position on X
-			card.y = card.targetPos.y;// This is starting position on X
-		}
+		for (card in activeSongItems)
+			card.setCapsuleAnimInitPosition();
 	}
 
 	/**

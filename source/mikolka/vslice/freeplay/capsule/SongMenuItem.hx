@@ -1,4 +1,4 @@
-package mikolka.vslice.freeplay;
+package mikolka.vslice.freeplay.capsule;
 
 import mikolka.funkin.AtlasText.AtlasFont;
 import mikolka.compatibility.VsliceOptions;
@@ -19,7 +19,6 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.addons.effects.FlxTrail;
 import flixel.util.FlxColor;
-import mikolka.vslice.freeplay.SongCapsuleGroup;
 
 using mikolka.funkin.utils.SpriteTools;
 
@@ -28,7 +27,7 @@ using mikolka.funkin.utils.SpriteTools;
 class SongMenuItem extends FlxSpriteGroup
 {
 	public var capsule:FlxSprite;
-
+	
 	var pixelIcon:PixelatedIcon;
 
 	/**
@@ -39,6 +38,13 @@ class SongMenuItem extends FlxSpriteGroup
 
 	public var selected(default, set):Bool;
 
+	public var doLerp(null, set):Bool;
+	function set_doLerp(value:Bool):Bool {
+		animBox.doLerp = value;
+		return value;
+	}
+
+	public var animBox:CustomAnimControl;
 	public var songText:CapsuleText;
 	public var favIconBlurred:FlxSprite;
 	public var favIcon:FlxSprite;
@@ -53,10 +59,6 @@ class SongMenuItem extends FlxSpriteGroup
 	public var txtWeek:AtlasText;
 
 	public var targetPos:FlxPoint = FlxPoint.get();
-	public var doLerp:Bool = false;
-	public var doJumpIn:Bool = false;
-
-	public var doJumpOut:Bool = false;
 
 	public var onConfirm:Void->Void;
 	public var grayscaleShader:Grayscale;
@@ -77,7 +79,7 @@ class SongMenuItem extends FlxSpriteGroup
 
 	// public var weekNumbers:Array<CapsuleNumber> = [];
 	var impactThing:FunkinSprite;
-
+	var grpHide:FlxGroup;
 	public var sparkle:FlxSprite;
 
 	var sparkleTimer:FlxTimer;
@@ -107,6 +109,7 @@ class SongMenuItem extends FlxSpriteGroup
 	public function new(x:Float, y:Float, styleData:FreeplayStyle)
 	{
 		super(x, y);
+		animBox = new CustomAnimControl(this);
 
 		capsule = new FlxSprite();
 		initFreeplayStyle(styleData);
@@ -169,7 +172,7 @@ class SongMenuItem extends FlxSpriteGroup
 
 		grayscaleShader = new Grayscale(1);
 
-		songText = new CapsuleText(capsule.width * 0.26, 45, 'Random', Std.int(40 * realScaled));
+		songText = new CapsuleText(capsule.width * 0.26, 45, 'Random', Std.int(40 * animBox.realScaled));
 		songText.applyStyle(styleData);
 		add(songText);
 		grpHide.add(songText);
@@ -214,15 +217,9 @@ class SongMenuItem extends FlxSpriteGroup
 			fakeRanking = new FreeplayRank(420, 41);
 			insert(index, fakeRanking);
 
-			// fakeBlurredRanking = new FreeplayRank(fakeRanking.x, fakeRanking.y);
-			// fakeBlurredRanking.shader = gaussianBlur;
-			// insert(index,fakeBlurredRanking);
-
 			fakeRanking.visible = false;
-			// fakeBlurredRanking.visible = false;
 		}
 		fakeRanking.rank = oldRank;
-		// fakeBlurredRanking.rank = oldRank;
 	}
 
 	function sparkleEffect(timer:FlxTimer):Void
@@ -326,8 +323,6 @@ class SongMenuItem extends FlxSpriteGroup
 			}
 			smallNumbers[i].x += tempShift;
 		}
-		// diffRatingSprite.loadGraphic(Paths.image('freeplay/diffRatings/diff${ratingPadded}'));
-		// diffRatingSprite.visible = false;
 	}
 
 	var evilTrail:FlxTrail;
@@ -439,6 +434,10 @@ class SongMenuItem extends FlxSpriteGroup
 		favIconBlurred.animation.curAnim.curFrame = favIconBlurred.animation.curAnim.numFrames - 1;
 	}
 
+	/**
+	 * Updated the week text at the bottom of the capsule
+	 * @param newText A new value for the text
+	 */
 	public function updateWeekText(newText:String = "")
 	{
 		if (txtWeek != null)
@@ -550,7 +549,7 @@ class SongMenuItem extends FlxSpriteGroup
 		});
 	}
 
-	function setVisibleGrp(value:Bool):Void
+	public function setVisibleGrp(value:Bool):Void
 	{
 		for (spr in grpHide.members)
 		{
@@ -567,8 +566,6 @@ class SongMenuItem extends FlxSpriteGroup
 	 * Reconstructs all the data in this card based on the parameters frovided. Use only when fully recycling! 
 	 * @param x 
 	 * @param y 
-	 * @param songData 
-	 * @param styleData 
 	 */
 	public function initPosition(?x:Float, ?y:Float):Void
 	{
@@ -605,127 +602,45 @@ class SongMenuItem extends FlxSpriteGroup
 		//
 	}
 
-	var frameInTicker:Float = 0;
-	var frameInTypeBeat:Int = 0;
+	var capsuleAnimation:SongCapsuleAnim = JUMPIN;
 
-	var frameOutTicker:Float = 0;
-	var frameOutTypeBeat:Int = 0;
-
-	var xFrames:Array<Float> = [1.7, 1.8, 0.85, 0.85, 0.97, 0.97, 1];
-	var xPosLerpLol:Array<Float> = [0.9, 0.4, 0.16, 0.16, 0.22, 0.22, 0.245]; // NUMBERS ARE JANK CUZ THE SCALING OR WHATEVER
-	var xPosOutLerpLol:Array<Float> = [0.245, 0.75, 0.98, 0.98, 1.2]; // NUMBERS ARE JANK CUZ THE SCALING OR WHATEVER
-
-	public var realScaled:Float = 0.8;
-
-	public function initJumpIn(maxTimer:Float, ?force:Bool):Void
+	public function setCapsuleAnimation(anim:SongCapsuleAnim)
 	{
-		frameInTypeBeat = 0;
-
-		new FlxTimer().start((1 / 24) * maxTimer, function(doShit)
+		capsuleAnimation = anim;
+		switch (anim)
 		{
-			doJumpIn = true;
-		});
-
-		new FlxTimer().start((0.09 * maxTimer) + 0.85, function(lerpTmr)
-		{
-			doLerp = true;
-		});
-
-		if (force)
-		{
-			visible = true;
-			capsule.alpha = 1;
-			setVisibleGrp(true);
-		}
-		else
-		{
-			new FlxTimer().start((xFrames.length / 24) * 2.5, function(_)
-			{
-				visible = true;
-				capsule.alpha = 1;
-				setVisibleGrp(true);
-			});
+			case JUMPIN:
+				animBox.initJumpIn(0, false);
+			case JUMPIN_FORCE:
+				animBox.initJumpIn(0, true);
+			case SLIDE_LEFT | SLIDE_RIGHT:
+				animBox.forcePosition();
 		}
 	}
-
-	var grpHide:FlxGroup;
-
-	public function forcePosition():Void
-	{
-		visible = true;
-		capsule.alpha = 1;
-		updateSelected();
-		doLerp = true;
-		doJumpIn = false;
-		doJumpOut = false;
-
-		frameInTypeBeat = xFrames.length;
-		frameOutTypeBeat = 0;
-
-		capsule.scale.x = xFrames[frameInTypeBeat - 1];
-		capsule.scale.y = 1 / xFrames[frameInTypeBeat - 1];
-		// x = FlxG.width * xPosLerpLol[Std.int(Math.min(frameInTypeBeat - 1, xPosLerpLol.length - 1))];
-
-		x = targetPos.x;
-		y = targetPos.y;
-
-		capsule.scale.x *= realScaled;
-		capsule.scale.y *= realScaled;
-
-		setVisibleGrp(true);
-	}
-
-	override function update(elapsed:Float):Void
-	{
+	override function update(elapsed:Float) {
 		if (impactThing != null)
 			impactThing.angle = capsule.angle;
-
-		if (doJumpIn)
-		{
-			frameInTicker += elapsed;
-
-			if (frameInTicker >= 1 / 24 && frameInTypeBeat < xFrames.length)
-			{
-				frameInTicker = 0;
-
-				capsule.scale.x = xFrames[frameInTypeBeat];
-				capsule.scale.y = 1 / xFrames[frameInTypeBeat];
-				x = FlxG.width * xPosLerpLol[Std.int(Math.min(frameInTypeBeat, xPosLerpLol.length - 1))];
-
-				capsule.scale.x *= realScaled;
-				capsule.scale.y *= realScaled;
-
-				frameInTypeBeat += 1;
-			}
-		}
-
-		if (doJumpOut)
-		{
-			frameOutTicker += elapsed;
-
-			if (frameOutTicker >= 1 / 24 && frameOutTypeBeat < xFrames.length)
-			{
-				frameOutTicker = 0;
-
-				capsule.scale.x = xFrames[frameOutTypeBeat];
-				capsule.scale.y = 1 / xFrames[frameOutTypeBeat];
-				x = FlxG.width * xPosOutLerpLol[Std.int(Math.min(frameOutTypeBeat, xPosOutLerpLol.length - 1))];
-
-				capsule.scale.x *= realScaled;
-				capsule.scale.y *= realScaled;
-
-				frameOutTypeBeat += 1;
-			}
-		}
-
-		if (doLerp)
-		{
-			x = MathUtil.smoothLerp(x, targetPos.x, elapsed, 0.3); // ? update lerping for lower FPS
-			y = MathUtil.smoothLerp(y, targetPos.y, elapsed, 0.4); // ? kinda cool tbh
-			// TODO capsule.visible = songData?.isFav;
-		}
+		animBox.update(elapsed);
 
 		super.update(elapsed);
+	}
+	public function setCapsuleAnimInitPosition()
+	{
+		switch (capsuleAnimation)
+		{
+			case SLIDE_LEFT:
+				x = -800; // This is starting position on X
+				y = targetPos.y; // This is starting position on X
+			case SLIDE_RIGHT:
+				x = FlxG.width; // This is starting position on X
+				y = targetPos.y; // This is starting position on X
+			default:
+		}
+	}
+	public function playJumpOut() {
+		animBox.doJumpIn = false;
+		animBox.doLerp = false;
+		animBox.doJumpOut = true;
 	}
 
 	override function destroy()
@@ -750,7 +665,7 @@ class SongMenuItem extends FlxSpriteGroup
 
 	public function intendedY(index:Float):Float
 	{
-		return index * ((height * realScaled) + 10) + 120;
+		return index * ((height * animBox.realScaled) + 10) + 120;
 	}
 
 	public function intendedX(index:Float):Float
@@ -786,132 +701,10 @@ class SongMenuItem extends FlxSpriteGroup
 	}
 }
 
-class FreeplayRank extends FlxSprite
+enum SongCapsuleAnim
 {
-	public var rank(default, set):Null<ScoringRank> = null;
-
-	function set_rank(val:Null<ScoringRank>):Null<ScoringRank>
-	{
-		rank = val;
-
-		if (rank == null || val == null)
-		{
-			this.visible = false;
-		}
-		else
-		{
-			this.visible = true;
-
-			animation.play(val.getFreeplayRankIconAsset(), true, false);
-
-			centerOffsets(false);
-
-			switch (val)
-			{
-				case SHIT:
-					// offset.x -= 1;
-				case GOOD:
-					// offset.x -= 1;
-					offset.y -= 8;
-				case GREAT:
-					// offset.x -= 1;
-					offset.y -= 8;
-				case EXCELLENT:
-					// offset.y += 5;
-				case PERFECT:
-					// offset.y += 5;
-				case PERFECT_GOLD:
-					// offset.y += 5;
-				default:
-					centerOffsets(false);
-					this.visible = false;
-			}
-			updateHitbox();
-		}
-
-		return rank = val;
-	}
-
-	public var baseX:Float = 0;
-	public var baseY:Float = 0;
-
-	public function new(x:Float, y:Float)
-	{
-		super(x, y);
-
-		frames = Paths.getSparrowAtlas('freeplay/rankbadges');
-
-		animation.addByPrefix('PERFECT', 'PERFECT rank0', 24, false);
-		animation.addByPrefix('EXCELLENT', 'EXCELLENT rank0', 24, false);
-		animation.addByPrefix('GOOD', 'GOOD rank0', 24, false);
-		animation.addByPrefix('PERFECTSICK', 'PERFECT rank GOLD', 24, false);
-		animation.addByPrefix('GREAT', 'GREAT rank0', 24, false);
-		animation.addByPrefix('LOSS', 'LOSS rank0', 24, false);
-
-		blend = BlendMode.ADD;
-
-		this.rank = null;
-
-		// setGraphicSize(Std.int(width * 0.9));
-		scale.set(0.9, 0.9);
-		updateHitbox();
-	}
-}
-
-class CapsuleNumber extends FlxSprite
-{
-	public var digit(default, set):Int = 0;
-
-	function set_digit(val):Int
-	{
-		animation.play(numToString[val], true, false, 0);
-
-		centerOffsets(false);
-
-		switch (val)
-		{
-			case 1:
-				offset.x -= 4;
-			case 3:
-				offset.x -= 1;
-
-			case 6:
-
-			case 4:
-				// offset.y += 5;
-			case 9:
-				// offset.y += 5;
-			default:
-				centerOffsets(false);
-		}
-		return val;
-	}
-
-	public var baseY:Float = 0;
-	public var baseX:Float = 0;
-
-	var numToString:Array<String> = ["ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE"];
-
-	public function new(x:Float, y:Float, big:Bool = false, ?initDigit:Int = 0)
-	{
-		super(x, y);
-
-		if (big)
-			frames = SongCapsuleGroup.BIG_NUMBER_FRAMES;
-		else
-			frames = SongCapsuleGroup.SMALL_NUMBER_FRAMES;
-
-		for (i in 0...10)
-		{
-			var stringNum:String = numToString[i];
-			animation.addByPrefix(stringNum, '$stringNum', 24, false);
-		}
-
-		this.digit = initDigit;
-
-		animation.play(numToString[initDigit], true);
-
-		setGraphicSize(Std.int(width * 0.9));
-		updateHitbox();
-	}
+	SLIDE_LEFT;
+	SLIDE_RIGHT;
+	JUMPIN;
+	JUMPIN_FORCE;
 }
