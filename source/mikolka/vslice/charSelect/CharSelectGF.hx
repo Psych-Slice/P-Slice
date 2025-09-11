@@ -2,11 +2,15 @@ package mikolka.vslice.charSelect;
 
 import haxe.Exception;
 import mikolka.funkin.FlxAtlasSprite;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import flixel.math.FlxMath;
 import mikolka.funkin.FramesJSFLParser;
 import mikolka.funkin.FramesJSFLParser.FramesJSFLInfo;
 import mikolka.funkin.FramesJSFLParser.FramesJSFLFrame;
 import flixel.math.FlxMath;
 import funkin.vis.dsp.SpectralAnalyzer;
+import mikolka.compatibility.funkin.FunkinPath as Paths;
 
 class CharSelectGF extends FlxAtlasSprite 
 {
@@ -19,6 +23,7 @@ class CharSelectGF extends FlxAtlasSprite
 
   var intendedYPos:Float = 0;
   var intendedAlpha:Float = 0;
+  var list:Array<String> = [];
 
   var analyzer:SpectralAnalyzer;
 
@@ -27,7 +32,9 @@ class CharSelectGF extends FlxAtlasSprite
 
   public function new()
   {
-    super(0, 0, null);
+    super(0, 0, "charSelect/gfChill");
+
+    list = anim.curSymbol.getFrameLabelNames();
 
     switchGF("bf");
   }
