@@ -9,7 +9,7 @@
 	"hide_girlfriend": false,
 
 	"camera_boyfriend": [-150, 0],
-	"camera_opponent": [150, 0],
+	"camera_opponent": [50, 0],
 	"camera_girlfriend": [0, 0],
 	"camera_speed": 1,
 
