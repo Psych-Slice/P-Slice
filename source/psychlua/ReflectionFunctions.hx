@@ -18,12 +18,28 @@ class ReflectionFunctions
 	{
 		var lua:State = funk.lua;
 		Lua_helper.add_callback(lua, "getProperty", function(variable:String, ?allowMaps:Bool = false) {
+			switch(variable)
+			{
+				case 'camFollowPos.x':
+					return PlayState.instance.camFollow.x;
+				case 'camFollowPos.y':
+					return PlayState.instance.camFollow.y;
+			}
 			var split:Array<String> = variable.split('.');
 			if(split.length > 1)
 				return LuaUtils.getVarInArray(LuaUtils.getPropertyLoop(split, true, allowMaps), split[split.length-1], allowMaps);
 			return LuaUtils.getVarInArray(LuaUtils.getTargetInstance(), variable, allowMaps);
 		});
 		Lua_helper.add_callback(lua, "setProperty", function(variable:String, value:Dynamic, ?allowMaps:Bool = false, ?allowInstances:Bool = false) {
+			switch(variable)
+			{
+				case 'camFollowPos.x':
+					PlayState.instance.camFollow.x = value;
+					return value;
+				case 'camFollowPos.y':
+					PlayState.instance.camFollow.y = value;
+					return value;
+			}
 			var split:Array<String> = variable.split('.');
 			if(split.length > 1) {
 				LuaUtils.setVarInArray(LuaUtils.getPropertyLoop(split, true, allowMaps), split[split.length-1], allowInstances ? parseInstances(value) : value, allowMaps);
@@ -33,6 +49,14 @@ class ReflectionFunctions
 			return value;
 		});
 		Lua_helper.add_callback(lua, "getPropertyFromClass", function(classVar:String, variable:String, ?allowMaps:Bool = false) {
+			if (classVar == 'ClientPrefs')
+			{
+				classVar = 'backend.ClientPrefs';
+				variable = 'data.' + variable;
+			}
+			else if (classVar == 'GameOverSubstate')
+				classVar = 'substates.GameOverSubstate';
+
 			var myClass:Dynamic = resolveClass(classVar);
 			if(myClass == null)
 			{
@@ -51,6 +75,14 @@ class ReflectionFunctions
 			return LuaUtils.getVarInArray(myClass, variable, allowMaps);
 		});
 		Lua_helper.add_callback(lua, "setPropertyFromClass", function(classVar:String, variable:String, value:Dynamic, ?allowMaps:Bool = false, ?allowInstances:Bool = false) {
+			if (classVar == 'ClientPrefs')
+			{
+				classVar = 'backend.ClientPrefs';
+				variable = 'data.' + variable;
+			}
+			else if (classVar == 'GameOverSubstate')
+				classVar = 'substates.GameOverSubstate';
+
 			var myClass:Dynamic = resolveClass(classVar);
 			if(myClass == null)
 			{
