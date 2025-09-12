@@ -231,7 +231,7 @@ class LuaUtils
 		else Reflect.setProperty(leArray, variable, value);
 		return value;
 	}
-	public static function getGroupStuff(leArray:Dynamic, variable:String, ?allowMaps:Bool = false) {
+	public static function getGroupStuff(leArray:Dynamic, variable:String, ?allowMaps:Bool = false):Any {
 		if (Std.isOfType(leArray, Note))
 		{
 			var note:Note = cast leArray;
