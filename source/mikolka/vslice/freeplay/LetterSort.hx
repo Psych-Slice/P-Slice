@@ -87,6 +87,8 @@ class LetterSort extends FlxTypedSpriteGroup<FlxSprite>
 
   public function changeSelection(diff:Int = 0):Void
   {
+    @:privateAccess // Changes animations to match better
+    FreeplayState.instance.difficultyLastChange = diff;
     doLetterChangeAnims(diff);
 
     var multiPosOrNeg:Float = diff > 0 ? 1 : -1;
@@ -101,8 +103,8 @@ class LetterSort extends FlxTypedSpriteGroup<FlxSprite>
   }
 
   /**
-   * Buncho timers and stuff to move the letters and seperators
-   * Seperated out so we can call it again on letters with songs within them
+   * Buncho timers and stuff to move the letters and separators
+   * Separated out so we can call it again on letters with songs within them
    * @param diff
    */
   function doLetterChangeAnims(diff:Int):Void

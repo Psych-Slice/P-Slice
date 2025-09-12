@@ -10,7 +10,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<app if="mobile" unless="PROFILE_BUILD" title="P-Slice Engine" file="PSliceEngine" packageName="com.mikolka9144.pslice" package="com.mikolka9144.pslice" main="Main" version="3.2"  company="mikolka9144" />
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
-	<meta build-number="330"/>
+	<meta build-number="331"/>
 	<config type="android" gradle-version="8.10.2" gradle-plugin="8.8.0" ndkVersion="27.0"  minimum-sdk-version="26" target-sdk-version="35" />
 	<!-- NOTE TO SELF: DISABLE THIS IF ISSUES ARE FOUND -->
 	<haxedef name="LINC_LUA_RELATIVE_DYNAMIC_LIB"/> <!-- stable luas PUT AFTER FIRST LINE WITH APP NAME AND ETC -->
@@ -44,7 +44,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<define name="DISCORD_ALLOWED" if="desktop" unless="hl"/>
 	
 	<!-- Adds a Base game content to your build. Feel free to disable if you're making a source mod. -->
-	<define name="BASE_GAME_FILES" />
+	<define name="BASE_GAME_FILES" unless="NO_BASEGAME_FILES" />
 
 	<!-- Adds support for touchscreen devices (like mobiles)-->
 	<define name="TOUCH_CONTROLS_ALLOWED" if="mobile || web || debug" />
@@ -59,7 +59,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- <define name="ATSC_SUPPORT" if="android"/>  -->
 	
 	<!-- Displays a "Touch here to play" screen-->
-	<define name="TOUCH_HERE_TO_PLAY" if="TOUCH_CONTROLS_ALLOWED"/>
+	<define name="TOUCH_HERE_TO_PLAY" if="TOUCH_CONTROLS_ALLOWED debug"/>
 
 	<!-- Other stuff -->
 	<define name="ACHIEVEMENTS_ALLOWED" />
@@ -86,6 +86,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 		<define name="FEATURE_DEBUG_FUNCTIONS" />
 		<haxedef name="HXVLC_VERBOSE" value="2" />
 		<haxedef name="HXVLC_LOGGING" />
+		<!-- Pico will always kill the other (unless you skip the cutscene) -->
+		<define name="pico_always_kill" />
 	</section>
 
 	 <!-- Flags for the profile builds (used for assessing performance and such)-->
@@ -258,7 +260,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	
 	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
 	<haxedef name="FLX_NO_DEBUG" unless="PROFILE_BUILD || debug" />
-
+	<haxedef name="analyzer-optimize" unless="debug" />
 	<!--Enable this for Nape release builds for a serious performance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
@@ -311,11 +313,10 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	</section>
 	<section unless="PROFILE_BUILD">
 		<section if="mobile || mac">
+			<config type="android" pslice-mono-icon="art/mobile/iconMono.png" />
+			<config type="ios" pslice-icon-dir="art/mobile/PSlice.appiconset" />
 			<icon path="art/mobile/iconAdaptive.png" if="android" />
 			<icon path="art/mobile/iconMobile.png" unless="android" />
-			<icon path="art/mobile/icon32.png" size='32'/>
-			<icon path="art/mobile/icon64.png" size='64'/>
-			<icon path="art/mobile/icon128.png" size='128'/>
 		</section>
 		<section unless="mobile || mac">
 

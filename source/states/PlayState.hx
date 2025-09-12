@@ -1734,6 +1734,10 @@ class PlayState extends MusicBeatState
 				babyArrow.scale.set(playerArrowScale,playerArrowScale);
 				babyArrow.updateHitbox();
 				babyArrow.x -= 25;
+				if (i > 1)
+					babyArrow.x += 15;
+				else 
+					babyArrow.x -= 15;
 			}
 			else if(!ClientPrefs.data.middleScroll){
 				babyArrow.x += (FlxG.width-FlxG.initialWidth)/2;

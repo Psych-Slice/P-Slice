@@ -78,7 +78,7 @@ class PixelatedIcon extends FlxFilteredSprite
         //? If 'idle' has one frame, we don't want to loop over it
         var idleAnim = this.animation.getByName('idle');
         #if !LEGACY_PSYCH
-        if(idleAnim.numFrames == 1) idleAnim.looped = false;
+        if(idleAnim?.numFrames == 1) idleAnim.looped = false;
         #end
 
         this.animation.finishCallback = function(name:String):Void {
