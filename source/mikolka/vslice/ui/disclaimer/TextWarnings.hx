@@ -17,7 +17,7 @@ class OutdatedState extends WarningState
 		Thank you for using the Engine!";
 		super(guh,() ->{
 			CoolUtil.browserLoad("https://github.com/Psych-Slice/P-Slice/releases");
-			onExit();
+			if(onExit != null) onExit();
 		},onExit,nextState);
 	}
 }
