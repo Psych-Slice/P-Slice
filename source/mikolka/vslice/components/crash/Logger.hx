@@ -22,6 +22,12 @@ class Logger{
             #if (LEGACY_PSYCH)
             FlxG.stage.window.alert(x.message, "File logging failed to init");
             #else
+            #if macos
+            if(StorageUtil.getStorageDirectory().contains("AppTranslocation"))
+                CoolUtil.showPopUp("MacOS decided to isolate P-Slice from the rest of your system!"+
+                "As such, you need to move P-Slice away from the \"Downloads\" folder into either your applications, or another folder.","File logging failed to init");
+            else
+            #end
             CoolUtil.showPopUp(x.message,"File logging failed to init");
             #end
         }

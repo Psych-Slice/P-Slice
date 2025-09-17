@@ -1,5 +1,7 @@
 package mikolka.vslice.freeplay;
 
+import mikolka.vslice.freeplay.capsule.SongMenuItem;
+import mikolka.vslice.freeplay.capsule.SongCapsuleGroup;
 import mikolka.funkin.custom.mobile.MobileScaleMode;
 import flixel.math.FlxRect;
 import mikolka.vslice.ui.MainMenuState;
@@ -209,6 +211,8 @@ class FreeplayState extends MusicBeatSubstate
 	 */
 	public static var rememberedSongId:Null<String> = 'tutorial';
 
+	public static var instance:FreeplayState;
+
 	var funnyCam:FunkinCamera;
 	var rankCamera:FunkinCamera;
 	var rankBg:FunkinSprite;
@@ -228,6 +232,7 @@ class FreeplayState extends MusicBeatSubstate
 
 	public function new(?params:FreeplayStateParams, ?stickers:StickerSubState)
 	{
+		instance = this;
 		controls.isInSubstate = true;
 		super();
 		var saveBox = VsliceOptions.LAST_MOD;
@@ -306,7 +311,7 @@ class FreeplayState extends MusicBeatSubstate
 		fp = new FreeplayScore(FlxG.width - (MobileScaleMode.gameNotchSize.x + 353), 60, 7, 100, styleData);
 		rankCamera = new FunkinCamera('rankCamera', 0, 0, FlxG.width, FlxG.height);
 		funnyCam = new FunkinCamera('freeplayFunny', 0, 0, FlxG.width, FlxG.height);
-		grpCapsules = new SongCapsuleGroup();
+		grpCapsules = new SongCapsuleGroup(styleData);
 		grpCapsules.onRandomSelected.add(capsuleOnConfirmRandom);
 		grpCapsules.onSongSelected.add(capsuleOnOpenDefault);
 		
@@ -902,14 +907,15 @@ class FreeplayState extends MusicBeatSubstate
 		curSelected = 0;
 		curSelectedFractal = 0;
 
-		grpCapsules.generateFullSongList(tempSongs,currentDifficulty,fromCharSelect,force);
-
-		FlxG.console.registerFunction('changeSelection', changeSelection);
+		grpCapsules.generateFullSongList(tempSongs,currentDifficulty,
+			difficultyLastChange > 0 ? SLIDE_RIGHT : SLIDE_LEFT, 
+			fromCharSelect ? SLIDE_LEFT : JUMPIN_FORCE);
 
 		rememberSelection();
 
 		changeSelection();
 		changeDiff(0);
+		grpCapsules.setInitialAnimPosition();
 	}
 
 	/**
@@ -1064,7 +1070,7 @@ class FreeplayState extends MusicBeatSubstate
 		// curCapsule.targetPos.set((FlxG.width / 2) - (curCapsule.width / 2),
 		//  (FlxG.height / 2) - (curCapsule.height / 2));
 
-		curCapsule.setPosition((FlxG.width / 2) - (curCapsule.width / 2),
+		curCapsule.initPosition((FlxG.width / 2) - (curCapsule.capsule.width / 2),
 			(FlxG.height / 2) - (curCapsule.height / 2));
 
 		new FlxTimer().start(0.5, _ ->
@@ -1517,6 +1523,15 @@ class FreeplayState extends MusicBeatSubstate
 				difficultyId: "hard"
 			});
 		}
+		if (FlxG.keys.justPressed.Y)
+		{
+			rankAnimStart(fromResultsParams ?? {
+				playRankAnim: true,
+				newRank: PERFECT_GOLD,
+				songId: "tutorial",
+				difficultyId: "hard"
+			});
+		}
 
 		if (FlxG.keys.justPressed.H)
 		{
@@ -1824,9 +1839,7 @@ class FreeplayState extends MusicBeatSubstate
 
 			for (caps in grpCapsules.activeSongItems)
 			{
-				caps.doJumpIn = false;
-				caps.doLerp = false;
-				caps.doJumpOut = true;
+				caps.playJumpOut();
 			}
 
 			if (Type.getClass(_parentState) == MainMenuState)
@@ -1878,11 +1891,17 @@ class FreeplayState extends MusicBeatSubstate
 		}
 		// remove and destroy freeplay camera
 		FlxG.cameras.remove(funnyCam);
+		instance = null;
 	}
 
+	/**
+	 * Internally used for playing card slide ins
+	 */
+	var difficultyLastChange:Int = 0;
 	function changeDiff(change:Int = 0, forceUpdateSongList:Bool = false):Void
 	{
 		touchTimer = 0;
+		difficultyLastChange = change;
 
 		var currentDifficultyIndex:Int = diffIdsCurrent.indexOf(currentDifficulty);
 
@@ -2000,6 +2019,7 @@ class FreeplayState extends MusicBeatSubstate
 			{
 				grpFallbackDifficulty.text = diffObj.difficultyId;
 				grpFallbackDifficulty.updateHitbox();
+				grpFallbackDifficulty.offset.x = 15;
 			}
 			else {
 				diffSprite.visible = true;
@@ -2190,7 +2210,7 @@ class FreeplayState extends MusicBeatSubstate
 		if (dj != null)
 			dj.confirm();
 
-		curCapsule.forcePosition();
+		curCapsule.animBox.forcePosition();
 		curCapsule.confirm();
 
 		backingCard?.confirm();
