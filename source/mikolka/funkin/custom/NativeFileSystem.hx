@@ -282,6 +282,11 @@ class NativeFileSystem
 	}
 
 	#if (linux || ios)
+	/**
+	A local cache for non existent directories.
+	Make sure to clean it regularly in case user adds a missing file(s)
+	*/
+	public static final excludePaths:Array<String> = []; 
 		/**
 	 * Returns a path to the existing file similar to the given one.
 	 * (For instance "mod/firelight" and  "Mod/FireLight" are *similar* paths)
@@ -290,7 +295,14 @@ class NativeFileSystem
 	 */
 	public static function getPathLike(path:String):Null<String> {
 		var path = addCwd(path);// fir ios
+		
+		for(exclude in excludePaths){
+			if(path.startsWith(exclude)) 
+				return null;
+			
+		}
 		if(sys.FileSystem.exists(path)) return path;
+		trace("RESOLVING PATH: "+path);
 
 		var baseParts:Array<String> = path.replace('\\', '/').split('/');
 		var keyParts = [];
@@ -310,6 +322,7 @@ class NativeFileSystem
 			var foundNode = findNode(nextDir, part);
 
 			if (foundNode == null) {
+				excludePaths.push(nextDir+"/"+part);
 				return null;
 			}
 			nextDir = nextDir+"/"+foundNode;

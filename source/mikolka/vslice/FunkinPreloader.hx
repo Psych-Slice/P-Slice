@@ -357,6 +357,9 @@ class FunkinPreloader extends FlxBasePreloader
 					// ? Some misc caching
 					// Cache assets list for future use
 					NativeFileSystem.openFlAssets = Assets.list();
+					FlxG.signals.preStateCreate.add(state ->{
+						mikolka.funkin.custom.NativeFileSystem.excludePaths.resize(0);
+					});
 
 					/*
 						// Make a future to retrieve the manifest

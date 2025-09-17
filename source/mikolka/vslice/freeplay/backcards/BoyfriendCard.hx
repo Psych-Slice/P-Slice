@@ -128,26 +128,26 @@ class BoyfriendCard extends BackingCard
     moreWays2.visible = false;
     funnyScroll3.visible = false;
 
-    moreWays.funnyColor = 0xFFFFF383;
+    moreWays.color = 0xFFFFF383;
     moreWays.speed = 6.8;
     add(moreWays);
 
-    funnyScroll.funnyColor = 0xFFFF9963;
+    funnyScroll.color = 0xFFFF9963;
     funnyScroll.speed = -3.8;
     add(funnyScroll);
 
     txtNuts.speed = 3.5;
     add(txtNuts);
 
-    funnyScroll2.funnyColor = 0xFFFF9963;
+    funnyScroll2.color = 0xFFFF9963;
     funnyScroll2.speed = -3.8;
     add(funnyScroll2);
 
-    moreWays2.funnyColor = 0xFFFFF383;
+    moreWays2.color = 0xFFFFF383;
     moreWays2.speed = 6.8;
     add(moreWays2);
 
-    funnyScroll3.funnyColor = 0xFFFEA400;
+    funnyScroll3.color = 0xFFFEA400;
     funnyScroll3.speed = -3.8;
     add(funnyScroll3);
 

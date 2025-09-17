@@ -305,9 +305,9 @@ class Main extends Sprite
 		}
 		#end
 
-		// #if (debug)
-		// flixel.addons.studio.FlxStudio.create();
-		// #end
+		#if (debug)
+		flixel.addons.studio.FlxStudio.create();
+		#end
 
 		#if html5
 		FlxG.autoPause = false;
