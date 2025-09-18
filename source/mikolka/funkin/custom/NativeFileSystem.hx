@@ -1,5 +1,6 @@
 package mikolka.funkin.custom;
 
+import haxe.io.Path;
 import openfl.media.Sound;
 import openfl.display.BitmapData;
 #if (!NATIVE_LOOKUP && !OPENFL_LOOKUP)
@@ -296,8 +297,9 @@ class NativeFileSystem
 	public static function getPathLike(path:String):Null<String> {
 		var path = addCwd(path);// fir ios
 		
+		var dir = Path.directory(path);
 		for(exclude in excludePaths){
-			if(path.startsWith(exclude)) 
+			if(dir.startsWith(exclude)) 
 				return null;
 			
 		}
