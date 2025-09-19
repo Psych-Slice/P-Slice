@@ -1,9 +1,7 @@
 package mikolka.vslice.charSelect;
 
-import flixel.FlxSprite;
+
 import mikolka.funkin.FlxAtlasSprite;
-import flxanimate.animate.FlxKeyFrame;
-import mikolka.compatibility.funkin.FunkinPath as Paths;
 class CharSelectPlayer extends FlxAtlasSprite 
 {
   public function new(x:Float, y:Float)

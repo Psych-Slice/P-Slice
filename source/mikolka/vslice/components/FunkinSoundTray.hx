@@ -2,11 +2,7 @@ package mikolka.vslice.components;
 
 import mikolka.compatibility.VsliceOptions;
 import flixel.system.ui.FlxSoundTray;
-import flixel.tweens.FlxTween;
-import flixel.system.FlxAssets;
-import flixel.tweens.FlxEase;
 import openfl.display.Bitmap;
-import openfl.display.BitmapData;
 import openfl.utils.Assets;
 import mikolka.compatibility.funkin.FunkinPath as Paths;
 

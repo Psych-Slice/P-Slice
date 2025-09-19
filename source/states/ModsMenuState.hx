@@ -139,9 +139,8 @@ class ModsMenuState extends MusicBeatState
 		});
 		buttonEnableAll.bg.color = FlxColor.GREEN;
 		buttonEnableAll.focusChangeCallback = function(focus:Bool) if (!focus)
-			buttonEnableAll.bg.color = FlxColor.GREEN;
-		if (!controls.mobileC)
-			add(buttonEnableAll);
+		buttonEnableAll.bg.color = FlxColor.GREEN;
+		add(buttonEnableAll);
 
 		buttonDisableAll = new MenuButton(buttonX, myY, buttonWidth, buttonHeight, Language.getPhrase('disable_all_button', 'DISABLE ALL'), function()
 		{
@@ -403,7 +402,7 @@ class ModsMenuState extends MusicBeatState
 			var lastMode = hoveringOnMods;
 			if (modsList.all.length > 1)
 			{
-				if (!controls.mobileC && FlxG.mouse.justPressed)
+				if (FlxG.mouse.justPressed) // !controls.mobileC && 
 				{
 					for (i in centerMod - 2...centerMod + 3)
 					{
@@ -833,8 +832,9 @@ class ModsMenuState extends MusicBeatState
 
 	function checkToggleButtons()
 	{
-		buttonEnableAll.visible = buttonEnableAll.enabled = buttonEnableAll.active = modsList.disabled.length > 0;
-		buttonDisableAll.visible = buttonDisableAll.enabled = buttonDisableAll.active = !buttonEnableAll.visible;
+		var anyDisabledMods = modsList.disabled.length > 0;
+		buttonEnableAll.visible = buttonEnableAll.enabled = buttonEnableAll.active = anyDisabledMods;
+		buttonDisableAll.visible = buttonDisableAll.enabled = buttonDisableAll.active = !anyDisabledMods;
 	}
 
 	function reload()
@@ -865,7 +865,11 @@ class ModsMenuState extends MusicBeatState
 		}
 
 		var path:String = StorageUtil.getStorageDirectory()+'/modsList.txt';
-		File.saveContent(path, fileStr);
+		try{
+			File.saveContent(path, fileStr);
+		}
+		catch(x:Exception){} // In case you don't move it from AppTranslocation
+
 		Mods.parseList();
 		Mods.loadTopMod();
 	}
@@ -986,6 +990,7 @@ class MenuButton extends FlxSpriteGroup
 	public var icon:FlxSprite;
 	public var onClick:Void->Void = null;
 	public var enabled(default, set):Bool = true;
+	private var skipThisFrame:Bool = false;
 
 	public function new(x:Float, y:Float, width:Int, height:Int, ?text:String = null, ?img:FlxGraphic = null, onClick:Void->Void = null, animWidth:Int = 0,
 			animHeight:Int = 0)
@@ -1053,7 +1058,7 @@ class MenuButton extends FlxSpriteGroup
 			if (onFocus && TouchUtil.justReleased)
 				onFocus = false;
 
-			if (onFocus && onClick != null && TouchUtil.justPressed)
+			if (onFocus && onClick != null && !skipThisFrame && TouchUtil.justPressed)
 				onClick();
 
 			if (_needACheck)
@@ -1067,7 +1072,7 @@ class MenuButton extends FlxSpriteGroup
 			if (!ignoreCheck && !Controls.instance.controllerMode && FlxG.mouse.justMoved && FlxG.mouse.visible)
 				onFocus = FlxG.mouse.overlaps(this);
 
-			if (onFocus && onClick != null && FlxG.mouse.justPressed)
+			if (onFocus && onClick != null && !skipThisFrame &&  FlxG.mouse.justPressed)
 				onClick();
 			
 			if (_needACheck)
@@ -1077,6 +1082,7 @@ class MenuButton extends FlxSpriteGroup
 						setButtonVisibility(FlxG.mouse.overlaps(this));
 				}
 			}
+		skipThisFrame = false;
 	}
 
 	function set_onFocus(newValue:Bool)
@@ -1091,6 +1097,7 @@ class MenuButton extends FlxSpriteGroup
 	function set_enabled(newValue:Bool)
 	{
 		enabled = newValue;
+		skipThisFrame = true;
 		setButtonVisibility(false);
 		alpha = enabled ? 1 : 0.4;
 

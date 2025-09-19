@@ -12,6 +12,7 @@ import mikolka.funkin.FlxFilteredSprite;
  */
 class PixelatedIcon extends FlxFilteredSprite
 {
+  private inline static final ICON_FRAMERATE = 10;
 	public var type:IconType;
   public function new(x:Float, y:Float)
   {
@@ -48,8 +49,8 @@ class PixelatedIcon extends FlxFilteredSprite
           image = Paths.image("icons/icon-face");
         }
         this.loadGraphic(image,true,Math.floor(image.width / 2), Math.floor(image.height));
-        animation.add("idle",[0]);
-        animation.add("confirm",[1]);
+        animation.add("idle",[0],ICON_FRAMERATE,false);
+        animation.add("confirm",[1],ICON_FRAMERATE,false);
         this.scale.x = this.scale.y = 0.58;
         this.updateHitbox();
         this.origin.x = 100;
@@ -60,8 +61,8 @@ class PixelatedIcon extends FlxFilteredSprite
         this.loadGraphic(image);
         this.scale.x = this.scale.y = 2;
         this.updateHitbox();
-        animation.add("idle",[0]);
-        animation.add("confirm",[0]);
+        animation.add("idle",[0],ICON_FRAMERATE,false);
+        animation.add("confirm",[0],ICON_FRAMERATE,false);
         this.origin.x = 25;
         if(char == "parents") this.origin.x = 55;
       case ANIMATED:
@@ -70,9 +71,15 @@ class PixelatedIcon extends FlxFilteredSprite
         this.active = true;
         this.scale.x = this.scale.y = 2;
         this.updateHitbox();
-        this.animation.addByPrefix('idle', 'idle0', 10, true);
-        this.animation.addByPrefix('confirm', 'confirm0', 10, false);
-        this.animation.addByPrefix('confirm-hold', 'confirm-hold0', 10, true);
+        this.animation.addByPrefix('idle', 'idle0', ICON_FRAMERATE, true);
+        this.animation.addByPrefix('confirm', 'confirm0', ICON_FRAMERATE, false);
+        this.animation.addByPrefix('confirm-hold', 'confirm-hold0', ICON_FRAMERATE, true);
+
+        //? If 'idle' has one frame, we don't want to loop over it
+        var idleAnim = this.animation.getByName('idle');
+        #if !LEGACY_PSYCH
+        if(idleAnim?.numFrames == 1) idleAnim.looped = false;
+        #end
 
         this.animation.finishCallback = function(name:String):Void {
           trace('Finish pixel animation: ${name}');

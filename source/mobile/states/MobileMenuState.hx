@@ -105,7 +105,7 @@ class MobileMenuState extends FlxBasic {
 		optionsBtn.setPosition((MobileScaleMode.gameCutoutSize.x/4)+35, FlxG.height - 200);
 
         #if TOUCH_CONTROLS_ALLOWED
-		host.addTouchPad('NONE', 'A_B_E');
+		host.addTouchPad('NONE', 'B_C');
 		#end
 
 		if(!host.controls.mobileC) {
@@ -141,7 +141,7 @@ class MobileMenuState extends FlxBasic {
 				selectedSomethin = true;
 				grid.confirmCurrentButton();
 			}
-			if (#if TOUCH_CONTROLS_ALLOWED host.touchPad.buttonE.justPressed || #end#if LEGACY_PSYCH FlxG.keys.anyJustPressed(ClientPrefs.keyBinds.get('debug_1')
+			if (#if TOUCH_CONTROLS_ALLOWED host.touchPad.buttonC.justPressed || #end#if LEGACY_PSYCH FlxG.keys.anyJustPressed(ClientPrefs.keyBinds.get('debug_1')
 				.filter(s -> s != -1)) #else controls.justPressed('debug_1') #end)
 			{
 				selectedSomethin = true;

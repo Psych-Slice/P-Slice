@@ -14,6 +14,7 @@ class DecayDialogueStyle extends DialogueStyle {
 	var isDone:Bool = false;
 	var lastSnd:String = "";
 	public function new() {
+		super();
 		BG_COLOR = 0xBF0A3D35;
 		FADE_DURATION = 1;
 
@@ -25,11 +26,11 @@ class DecayDialogueStyle extends DialogueStyle {
 
 		DEFAULT_TEXT_Y = 470;
 		DEFAULT_TEXT_X = 206;
-
+		DEFAULT_TEXT_X += Std.int((FlxG.width-FlxG.initialWidth)/2);
 		closeSound = "clickText";
 	}
 	public function makeDialogueBox():FlxSprite{
-		box = new FlxSprite(537, 335);
+		box = new FlxSprite(537+((FlxG.width-FlxG.initialWidth)/2), 335);
 		var staticBox = ["Spirit Textbox0000"];
 		box.antialiasing = false;
 		box.frames = Paths.getSparrowAtlas('pixelUI/dialogueBox-evilNew');

@@ -48,7 +48,7 @@ class WarningState extends MusicBeatState
 				FlxTransitionableState.skipNextTransIn = true;
 				FlxTransitionableState.skipNextTransOut = true;
 				if(!back) {
-					onAccept();
+					if(onAccept != null) onAccept();
 					FlxG.sound.play(Paths.sound('confirmMenu'));
 					FlxTween.tween(warnText, {alpha: 0}, 0.5, {
 						onComplete: function (twn:FlxTween) {
@@ -57,7 +57,7 @@ class WarningState extends MusicBeatState
 					});
 
 				} else {
-					onExit();
+					if(onExit != null) onExit();
 					FlxG.sound.play(Paths.sound('cancelMenu'));
 					FlxTween.tween(warnText, {alpha: 0}, 0.5, {
 						onComplete: function (twn:FlxTween) {

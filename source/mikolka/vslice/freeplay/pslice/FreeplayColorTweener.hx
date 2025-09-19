@@ -63,12 +63,12 @@ class FreeplayColorTweener
 
 	private function twnText(sprite:BGScrollingText, offset:Array<Int>)
 	{
-		var textCurColor = sprite.funnyColor;
+		var textCurColor = sprite.color;
 		var realColor = FlxColor.fromRGB(addClrComp(intendedColor.red, offset[0]), addClrComp(intendedColor.green, offset[1]),
 			addClrComp(intendedColor.blue, offset[2]));
 		return FlxTween.num(0, 1, 1, twnOptions, f ->
 		{
-			sprite.funnyColor = FlxColor.interpolate(textCurColor, realColor, f);
+			sprite.color = FlxColor.interpolate(textCurColor, realColor, f);
 		});
 	}
 

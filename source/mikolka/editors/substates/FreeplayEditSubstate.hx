@@ -1,5 +1,7 @@
 package mikolka.editors.substates;
 
+import mikolka.vslice.freeplay.FreeplayState;
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 import mikolka.compatibility.funkin.FunkinPath;
 import mikolka.editors.forms.FreeplayDialogBox;
 import mikolka.editors.editorProps.DJAnimPreview;
@@ -14,6 +16,12 @@ import mikolka.vslice.freeplay.backcards.BoyfriendCard;
 
 class FreeplayEditSubstate extends MusicBeatSubstate
 {
+
+	/**
+	 * For positioning the DJ on wide displays.
+	 */
+	public static final DJ_POS_MULTI:Float = 0.44;
+
 	public static var instance:FreeplayEditSubstate;
 
 	public var data:PlayableCharacter;
@@ -45,18 +53,22 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 
 	override function create()
 	{
+		final CUTOUT_WIDTH:Float = MobileScaleMode.gameCutoutSize.x / 1.5;
+		FreeplayState.CUTOUT_WIDTH = CUTOUT_WIDTH;
 		backingCard = new BoyfriendCard(data);
 		backingCard.init();
 		add(backingCard);
 
-		var blackOverlayBullshitLOLXD:FlxSprite = new FlxSprite(FlxG.width, 0, Paths.image("back"));
-		blackOverlayBullshitLOLXD.alpha = 1; // ? graphic because shareds are shit
-		add(blackOverlayBullshitLOLXD); // used to mask the text lol!
-
 		bgDad = new FlxSprite(backingCard.pinkBack.width * 0.74, 0);
-		setDadBG();
 		bgDad.shader = angleMaskShader;
 		bgDad.visible = false;
+
+
+		var blackOverlayBullshitLOLXD:FlxSprite = new FlxSprite(FlxG.width).makeGraphic(Std.int(bgDad.width), Std.int(bgDad.height), FlxColor.BLACK);
+    	add(blackOverlayBullshitLOLXD); // used to mask the text lol!
+		blackOverlayBullshitLOLXD.shader = bgDad.shader;
+		
+		setDadBG();
 		add(bgDad);
 
 		// this makes the texture sizes consistent, for the angle shader
@@ -82,11 +94,11 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		add(ostName);
 
 		try{
-			dj = new FlxAtlasSprite(640, 366, data.getFreeplayDJData().getAtlasPath());
+			dj = new FlxAtlasSprite((CUTOUT_WIDTH * DJ_POS_MULTI) + 640, 366, data.getFreeplayDJData().getAtlasPath());
 		}
 		catch(x){
 			trace(x);
-			dj = new FlxAtlasSprite(640, 366, "freeplay/freeplay-boyfriend");
+			dj = new FlxAtlasSprite((CUTOUT_WIDTH * DJ_POS_MULTI) + 640, 366, "freeplay/freeplay-boyfriend");
 		}
 		add(dj);
 		dj.playAnimation(data.getFreeplayDJData().getAnimationPrefix("idle"));

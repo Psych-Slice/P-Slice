@@ -17,6 +17,9 @@ import openfl.text.TextField;
 import openfl.text.TextFormat;
 import openfl.text.TextFormatAlign;
 import shaders.VFDOverlay;
+#if !LEGACY_PSYCH
+import backend.Paths;
+#end
 
 using StringTools;
 
@@ -354,6 +357,11 @@ class FunkinPreloader extends FlxBasePreloader
 					// ? Some misc caching
 					// Cache assets list for future use
 					NativeFileSystem.openFlAssets = Assets.list();
+					#if (linux || ios)
+					FlxG.signals.preStateCreate.add(state ->{
+						mikolka.funkin.custom.NativeFileSystem.excludePaths.resize(0);
+					});
+					#end
 
 					/*
 						// Make a future to retrieve the manifest
@@ -426,6 +434,7 @@ class FunkinPreloader extends FlxBasePreloader
 				{
 					cachingGraphicsPercent = 0.0;
 					cachingGraphicsStartTime = elapsed;
+					#if !LEGACY_PSYCH
 					// ? P-Slice precache commonly used graphics
 					//* FIles here won't be editable by mods
 					var assetsToCache:Array<String> = [
@@ -448,10 +457,11 @@ class FunkinPreloader extends FlxBasePreloader
 						{
 							try
 							{
-								if (backend.Paths.cacheBitmap(item) != null)
+								
+								if (Paths.cacheBitmap(item) != null)
 								{
 									#if debug trace("Cached: " + item); #end
-									backend.Paths.excludeAsset(item);
+									Paths.excludeAsset(item);
 								}
 								else
 								{
@@ -474,9 +484,11 @@ class FunkinPreloader extends FlxBasePreloader
 						cachingGraphicsComplete = true;
 						trace('Completed caching graphics.');
 					});
+					#else
 
-					// TODO: Reimplement this.
-					// cachingGraphicsPercent = 1.0;
+					cachingGraphicsComplete = true;
+					cachingGraphicsPercent = 1.0;
+					#end
 
 					return 0.0;
 				}
@@ -578,12 +590,14 @@ class FunkinPreloader extends FlxBasePreloader
 				{
 					cachingDataPercent = 0.0;
 					cachingDataStartTime = elapsed;
+					#if !LEGACY_PSYCH
 
 					var assetsToCache:Array<String> = [
-            "freeplay/freeplayStars",
-            "freeplay/albumRoll/freeplayAlbum",
-            "freeplay/sortedLetters"
-            ];
+					"freeplay/freeplayStars",
+					"freeplay/albumRoll/freeplayAlbum",
+					"freeplay/sortedLetters",
+					"charSelect/charSelectStage"
+					];
 
 					trace("Load misc");
 					// ? Some misc caching
@@ -621,9 +635,13 @@ class FunkinPreloader extends FlxBasePreloader
 					promise.future.onComplete((_result) ->
 					{
 						cachingDataComplete = true;
-						trace('Completed caching graphics.');
+						trace('Completed caching JSONs.');
 					});
+					#else
 
+					cachingDataComplete = true;
+					cachingDataPercent = 1.0;
+					#end
 					return 0.0;
 				}
 				else if (0.0 > 0)

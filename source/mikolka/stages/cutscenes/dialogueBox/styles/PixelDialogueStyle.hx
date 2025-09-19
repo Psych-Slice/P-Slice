@@ -14,6 +14,7 @@ class PixelDialogueStyle extends DialogueStyle {
 	var isDone:Bool = false;
 	var lastSnd:String = "";
 	public function new() {
+		super();
 		BG_COLOR = 0xBFB3DFD8;
 		FADE_DURATION = 1;
 
@@ -25,10 +26,11 @@ class PixelDialogueStyle extends DialogueStyle {
 
 		DEFAULT_TEXT_Y = 470;
 		DEFAULT_TEXT_X = 206;
+		DEFAULT_TEXT_X += Std.int((FlxG.width-FlxG.initialWidth)/2);
 		closeSound = "clickText";
 	}
 	public function makeDialogueBox():FlxSprite{
-		box = new FlxSprite(537, 347);
+		box = new FlxSprite(537+((FlxG.width-FlxG.initialWidth)/2), 347);
 		var staticBox = ["Text Box Speaking0001"];
 		var senpaiBox = ['SENPAI ANGRY IMPACT SPEECH0007'];
 		box.antialiasing = false;

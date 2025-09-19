@@ -188,7 +188,7 @@
 		}
 	],
 	"no_antialiasing": false,
-	"image": "characters/GF_assets",
+	"image": "characters/GF_assets,characters/GF_assets_blow,characters/GF_assets_note",
 	"position": [
 		0,
 		0

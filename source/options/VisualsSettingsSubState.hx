@@ -337,6 +337,7 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 	#if sys
 	function onChangeVSync()
 	{
+		@:privateAccess
 		var file:String = StorageUtil.rootDir + "vsync.txt";
 		if(NativeFileSystem.exists(file))
 			NativeFileSystem.deleteFile(file);

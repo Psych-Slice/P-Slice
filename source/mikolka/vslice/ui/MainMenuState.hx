@@ -4,7 +4,6 @@ import mikolka.vslice.ui.mainmenu.DesktopMenuState;
 import mikolka.compatibility.ui.MainMenuHooks;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.vslice.ui.title.TitleState;
-
 import mikolka.compatibility.ModsHelper;
 import options.OptionsState;
 
@@ -15,12 +14,11 @@ class MainMenuState extends MusicBeatState
 	#else
 	public static var psychEngineVersion:String = '0.6.3'; // This is also used for Discord RPC
 	#end
-	public static var pSliceVersion:String = '3.2.1';
-	public static var funkinVersion:String = '0.6.3'; // Version of funkin' we are emulationg
+	public static var pSliceVersion:String = '3.3.1';
+	public static var funkinVersion:String = '0.7.4'; // Version of funkin' we are emulationg
 
 	var bg:FlxSprite;
 	var magenta:FlxSprite;
-	
 
 	override function create()
 	{
@@ -76,22 +74,25 @@ class MainMenuState extends MusicBeatState
 
 		super.create();
 		#if TOUCH_CONTROLS_ALLOWED
-		if(controls.mobileC) new mobile.states.MobileMenuState(this);
+		if (controls.mobileC)
+			new mobile.states.MobileMenuState(this);
 		else
 		#end
 		new DesktopMenuState(this);
 	}
 
-	function goToOptions() {
-					MusicBeatState.switchState(new OptionsState());
-			#if !LEGACY_PSYCH OptionsState.onPlayState = false; #end
-			if (PlayState.SONG != null)
-			{
-				PlayState.SONG.arrowSkin = null;
-				PlayState.SONG.splashSkin = null;
-				#if !LEGACY_PSYCH PlayState.stageUI = 'normal'; #end
-			}
+	function goToOptions()
+	{
+		MusicBeatState.switchState(new OptionsState());
+		#if !LEGACY_PSYCH OptionsState.onPlayState = false; #end
+		if (PlayState.SONG != null)
+		{
+			PlayState.SONG.arrowSkin = null;
+			PlayState.SONG.splashSkin = null;
+			#if !LEGACY_PSYCH PlayState.stageUI = 'normal'; #end
+		}
 	}
+
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music.volume < 0.8)

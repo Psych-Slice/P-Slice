@@ -1,5 +1,6 @@
 package mikolka.editors.editorProps;
 
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 import mikolka.vslice.charSelect.Lock;
 import mikolka.vslice.freeplay.obj.PixelatedIcon;
 
@@ -27,7 +28,7 @@ class CharIconGrid extends FlxTypedSpriteGroup<FlxSprite>{
             }
             add(charIcon);
     
-            x = 450;
+            x = 450 + (MobileScaleMode.gameCutoutSize.x / 2); 
             y = 120;
             for (index => member in members)
             {

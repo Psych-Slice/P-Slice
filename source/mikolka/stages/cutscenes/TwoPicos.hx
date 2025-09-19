@@ -110,6 +110,7 @@ class TwoPicos
 					if (seenOutcome)
 					{
 						pico.playAnimation("loopPlayer", true, true, true);
+						FlxG.sound.music.fadeTween?.cancel();
 						game.endSong();
 					}
 					else

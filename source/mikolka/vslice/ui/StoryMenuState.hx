@@ -1,5 +1,6 @@
 package mikolka.vslice.ui;
 
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.vslice.components.crash.UserErrorSubstate;
 import mikolka.compatibility.freeplay.FreeplayHelpers;
@@ -211,7 +212,7 @@ class StoryMenuState extends MusicBeatState
 		add(bgSprite);
 		add(grpWeekCharacters);
 
-		var tracksSprite:FlxSprite = new FlxSprite(FlxG.width * 0.07 + 100, bgSprite.y + 425).loadGraphic(Paths.image('Menu_Tracks'));
+		var tracksSprite:FlxSprite = new FlxSprite(FlxG.width * 0.05 + 160, bgSprite.y + 425).loadGraphic(Paths.image('Menu_Tracks'));
 		tracksSprite.antialiasing = VsliceOptions.ANTIALIASING;
 		tracksSprite.x -= tracksSprite.width / 2;
 		add(tracksSprite);
@@ -297,21 +298,18 @@ class StoryMenuState extends MusicBeatState
 			if (controls.UI_UP_P)
 			{
 				changeWeek(-1,true);
-				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeDiff = true;
 			}
 
 			if (controls.UI_DOWN_P)
 			{
 				changeWeek(1,true);
-				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeDiff = true;
 			}
 
 			if (FlxG.mouse.wheel != 0)
 			{
-				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-				changeWeek(-FlxG.mouse.wheel);
+				changeWeek(-FlxG.mouse.wheel,true);
 				changeDifficulty();
 			}
 
@@ -524,6 +522,8 @@ class StoryMenuState extends MusicBeatState
 		else
 		{
 			bgSprite.loadGraphic(Paths.image('menubackgrounds/menu_' + assetName));
+			// In case some 2 year old mod breaks
+			if(MobileScaleMode.enabled) bgSprite.screenCenter(X); 
 		}
 		PlayState.storyWeek = curWeek;
 

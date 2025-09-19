@@ -1,5 +1,6 @@
 package mikolka.editors.substates;
 
+import mikolka.funkin.custom.mobile.MobileScaleMode;
 import mikolka.vslice.components.crash.UserErrorSubstate;
 import mikolka.editors.forms.ResultsDialogBox;
 import mikolka.funkin.Scoring.ScoringRank;
@@ -26,7 +27,7 @@ class ResultsScreenEdit extends VsliceSubState
 	public function new(activePlayer:PlayableCharacter)
 	{
 		this.activePlayer = activePlayer;
-		resultsAnim = FunkinSprite.createSparrow(-200, -10, "resultScreen/results");
+		resultsAnim = FunkinSprite.createSparrow(FlxG.width -(1480 + (MobileScaleMode.gameCutoutSize.x / 2)), -10, "resultScreen/results");
 		bgFlash = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [0xFFFFF1A6, 0xFFFFF1BE], 90);
 		super();
 	}
@@ -54,7 +55,7 @@ class ResultsScreenEdit extends VsliceSubState
 		propSystem.zIndex = 50;
 		add(propSystem);
 		// The sound system which falls into place behind the score text. Plays every time!
-		var soundSystem:FlxSprite = FunkinSprite.createSparrow(-15, -180, 'resultScreen/soundSystem');
+		var soundSystem:FlxSprite = FunkinSprite.createSparrow(-15+ MobileScaleMode.gameNotchSize.x, -180, 'resultScreen/soundSystem');
 		soundSystem.animation.addByPrefix("idle", "sound system", 24, false);
 		soundSystem.visible = false;
 		new FlxTimer().start(8 / 24, _ ->
@@ -64,7 +65,7 @@ class ResultsScreenEdit extends VsliceSubState
 		});
 		propSystem.addStaticProp(soundSystem, "soundSystem", 1100);
 
-		var blackTopBar:FlxSprite = new FlxSprite().loadGraphic(Paths.image("resultScreen/topBarBlack"));
+		var blackTopBar:FlxSprite = new FlxSprite().loadGraphic(BitmapUtil.createResultsBar());
 		blackTopBar.y = -blackTopBar.height;
 		FlxTween.tween(blackTopBar, {y: 0}, 7 / 24, {ease: FlxEase.quartOut, startDelay: 3 / 24});
 		propSystem.addStaticProp(blackTopBar, "blackTopBar", 1010);
