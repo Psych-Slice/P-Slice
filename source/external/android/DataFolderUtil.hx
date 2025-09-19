@@ -1,4 +1,4 @@
-package funkin.external.android;
+package external.android;
 
 #if android
 /**
