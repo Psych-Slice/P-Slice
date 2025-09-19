@@ -1,5 +1,6 @@
 package;
 
+import source.mikolka.vslice.components.DebugDisplay.FunkinDebugDisplay;
 import mikolka.funkin.custom.mobile.MobileScaleMode;
 import states.InitState;
 import mikolka.vslice.components.crash.Logger;
@@ -8,7 +9,6 @@ import crowplexus.iris.Iris;
 import psychlua.HScript.HScriptInfos;
 #end
 import openfl.display.FPS;
-import mikolka.vslice.components.MemoryCounter;
 import mikolka.GameBorder;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxGame;
@@ -40,8 +40,7 @@ class Main extends Sprite
 		startFullscreen: false // if the game should start at fullscreen mode
 	};
 
-	public static var fpsVar:FPS;
-	public static var memoryCounter:MemoryCounter;
+	public static var debugDisplay:FunkinDebugDisplay;
 	public static final platform:String = #if mobile "Phones" #else "PCs" #end;
 
 	// Game pre-flixel init code
@@ -272,38 +271,24 @@ class Main extends Sprite
 		addChild(gameObject);
 
 		trace("Finishing up..");
-		fpsVar = new FPS(10, 3, 0xFFFFFF);
+		debugDisplay = new FunkinDebugDisplay(10, 10, 0xFFFFFF);
 		#if mobile
-		FlxG.game.addChild(fpsVar);
+		FlxG.game.addChild(debugDisplay);
 		#else
 		#if !debug
 		// var border = new GameBorder();
 		// addChild(border);
 		// Lib.current.stage.window.onResize.add(border.updateGameSize);
 		#end
-		addChild(fpsVar);
+		addChild(debugDisplay);
 		#end
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 
-		if (fpsVar != null)
+		if (debugDisplay != null)
 		{
-			fpsVar.visible = ClientPrefs.data.showFPS;
+			debugDisplay.visible = ClientPrefs.data.showFPS;
 		}
-
-		#if !html5
-		// TODO: disabled on HTML5 (todo: find another method that works?)
-		memoryCounter = new MemoryCounter(10, 13, 0xFFFFFF);
-		#if mobile
-		FlxG.game.addChild(memoryCounter);
-		#else
-		addChild(memoryCounter);
-		#end
-		if (memoryCounter != null)
-		{
-			memoryCounter.visible = ClientPrefs.data.showFPS;
-		}
-		#end
 
 		#if (debug)
 		flixel.addons.studio.FlxStudio.create();

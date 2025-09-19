@@ -1,5 +1,6 @@
 package states;
 
+import lime.utils.Assets;
 import mikolka.funkin.custom.mobile.MobileScaleMode;
 import mikolka.vslice.ui.title.TitleState;
 import flixel.input.keyboard.FlxKey;
@@ -61,6 +62,10 @@ class InitState extends MusicBeatState
 		trace("Loading mobile data");
 		MobileData.init();
 		#end
+
+		trace("checking asset list cache");
+		if(NativeFileSystem.openFlAssets?.length == 0)
+			NativeFileSystem.openFlAssets = Assets.list();
 
 		FlxG.scaleMode = new MobileScaleMode(ClientPrefs.data.wideScreen); 
 		

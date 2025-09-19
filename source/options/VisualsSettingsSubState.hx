@@ -157,6 +157,13 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 		addOption(option);
 		option.onChange = onChangeFPSCounter;
 
+		var option:Option = new Option('FPS Rework',
+			'If checked, uses the reworked version of FPS counter.',
+			'fpsRework',
+			BOOL);
+		addOption(option);
+		option.onChange = onChangeFPSCounter;
+
 		#if sys
 		var option:Option = new Option('VSync',
 			'If checked, Enables VSync fixing any screen tearing at the cost of capping the FPS to screen refresh rate.\n(Must restart the game to have an effect)',
@@ -328,10 +335,10 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 
 	function onChangeFPSCounter()
 	{
-		if(Main.fpsVar != null)
-			Main.fpsVar.visible = ClientPrefs.data.showFPS;
-		if(Main.memoryCounter != null)
-			Main.memoryCounter.visible = ClientPrefs.data.showFPS;
+		if(Main.debugDisplay != null){
+			Main.debugDisplay.isAdvanced = ClientPrefs.data.fpsRework;
+			Main.debugDisplay.visible = ClientPrefs.data.showFPS;
+		}
 	}
 
 	#if sys

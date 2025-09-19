@@ -129,7 +129,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<set name="BUILD_DIR" value="export/32bit" if="32bits" />
 
 	<classpath name="source" />
-	<java if="android" path="source/mobile/external/android/java" />
+	<java if="android" path="source/external/android/java" />
 
 	<!-- __________________________ Game Assets & Etc. __________________________ -->
 

@@ -1,8 +1,8 @@
-package mobile.external.android;
+package funkin.external.android;
 
+#if android
 import lime.math.Rectangle;
 import lime.system.JNI;
-import mobile.external.android.JNIUtil;
 
 /**
  * A Utility class to get Android screen related informations.
@@ -10,7 +10,6 @@ import mobile.external.android.JNIUtil;
 @:unreflective
 class ScreenUtil
 {
-  #if android
   /**
    * Retrieves the dimensions of display cutouts (such as notches) on Android devices.
    *
@@ -49,5 +48,5 @@ class ScreenUtil
 
     return [];
   }
-  #end
 }
+#end

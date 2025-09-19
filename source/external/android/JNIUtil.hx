@@ -1,4 +1,4 @@
-package mobile.external.android;
+package funkin.external.android;
 
 #if android
 import lime.system.JNI;

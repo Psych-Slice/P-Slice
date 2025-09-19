@@ -63,13 +63,13 @@ jobs:
 
       - name: Compile (ARM64)
         run: |
-          haxelib run lime build mac -D HXCPP_ARM64 
+          haxelib run lime build mac -final -D HXCPP_ARM64 
           mv ./export/release/macos/bin/PSliceEngine.app/Contents/MacOS/PSliceEngine ./pslice-arm
           mv ./export/release/macos/bin/PSliceEngine.app/Contents/MacOS/lime.ndll ./lime-arm.ndll
 
       - name: Compile (x86_64)
         run: |
-          haxelib run lime build mac -64  -D HXCPP_M64 
+          haxelib run lime build mac -final -64  -D HXCPP_M64 
           mv ./export/release/macos/bin/PSliceEngine.app/Contents/MacOS/PSliceEngine ./pslice-x86
           mv ./export/release/macos/bin/PSliceEngine.app/Contents/MacOS/lime.ndll ./lime-x86.ndll
       - name: Reflux because yes
