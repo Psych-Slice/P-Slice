@@ -1,10 +1,10 @@
-package funkin.external.apple;
+package external.apple;
 
 #if ((ios || macos) && cpp)
 /**
  * A utility class to get information about the mem usage.
  */
-@:build(funkin.util.macro.LinkerMacro.xml('project/Build.xml'))
+@:build(mobile.macros.LinkerMacro.xml('project/Build.xml'))
 @:include('MemoryUtil.hpp')
 @:unreflective
 extern class MemoryUtil

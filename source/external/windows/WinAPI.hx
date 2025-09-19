@@ -1,10 +1,10 @@
-package funkin.external.windows;
+package external.windows;
 
 #if (windows && cpp)
 /**
  * This class provides handling for Windows API-related functions.
  */
-@:build(funkin.util.macro.LinkerMacro.xml('project/Build.xml'))
+@:build(mobile.macros.LinkerMacro.xml('project/Build.xml'))
 @:include('winapi.hpp')
 extern class WinAPI
 {

@@ -57,9 +57,9 @@ class MemoryUtil
   public static function getTaskMemory():Float
   {
     #if (windows && cpp)
-    return funkin.external.windows.WinAPI.getProcessMemoryWorkingSetSize();
+    return external.windows.WinAPI.getProcessMemoryWorkingSetSize();
     #elseif ((ios || macos) && cpp)
-    return funkin.external.apple.MemoryUtil.getCurrentProcessRss();
+    return external.apple.MemoryUtil.getCurrentProcessRss();
     #elseif (linux || android)
     try
     {
