@@ -2751,13 +2751,11 @@ public function endSong()
 		{
 			return false;
 		}
-
 		if (ratingName == "Nice") {
-        Achievements.unlockAchievement('nice');
-    	}
+		Achievements.unlockAchievement('nice');
+		}
 	}
-	}
-
+	
 	timeBar.visible = false;
 	timeTxt.visible = false;
 	canPause = false;
