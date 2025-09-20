@@ -2106,6 +2106,7 @@ override public function update(elapsed:Float)
 	}
 	#end
 
+
 	setOnScripts('botPlay', cpuControlled);
 	callOnScripts('onUpdatePost', [elapsed]);
 
@@ -2750,6 +2751,11 @@ public function endSong()
 		{
 			return false;
 		}
+
+		if (ratingName == "Nice") {
+        Achievements.unlockAchievement('nice');
+    	}
+	}
 	}
 
 	timeBar.visible = false;
