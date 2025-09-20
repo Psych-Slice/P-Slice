@@ -3,7 +3,7 @@ package mobile.backend;
 #if ios
 import lime.system.System;
 import lime.system.Orientation;
-import external.ios.ScreenUtil as NativeScreenUtil;
+import external.apple.ScreenUtil as NativeScreenUtil;
 #elseif android
 import external.android.ScreenUtil as NativeScreenUtil;
 #end

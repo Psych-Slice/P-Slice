@@ -883,8 +883,35 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
+	// P-Slice 0.7.3 compatibility stuff
 	public function getLuaObject(tag:String, text:Bool = true):FlxSprite
 		return variables.get(tag);
+
+	public var modchartTweens(get,never):Map<String,Dynamic>;
+	function get_modchartTweens() {
+		return variables;
+	}
+	public var modchartSprites(get,never):Map<String,Dynamic>;
+	function get_modchartSprites() {
+		return variables;
+	}
+	public var modchartTimers(get,never):Map<String,Dynamic>;
+	function get_modchartTimers() {
+		return variables;
+	}
+	public var modchartSounds(get,never):Map<String,Dynamic>;
+	function get_modchartSounds() {
+		return variables;
+	}
+	public var modchartTexts(get,never):Map<String,Dynamic>;
+	function get_modchartTexts() {
+		return variables;
+	}
+	public var bfGroup(get,never):FlxSpriteGroup;
+	function get_bfGroup() {
+		return boyfriendGroup;
+	}
+	//*
 
 	function startCharacterPos(char:Character, ?gfCheck:Bool = false)
 	{
@@ -4033,7 +4060,8 @@ public function initHScript(file:String)
 	try
 	{
 		newScript = new HScript(null, file);
-		newScript.call('onCreate');
+		if(newScript.exists("onCreate"))
+			newScript.call('onCreate');
 		trace('initialized hscript interp successfully: $file');
 		hscriptArray.push(newScript);
 	}

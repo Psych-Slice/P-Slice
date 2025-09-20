@@ -288,6 +288,7 @@ class Main extends Sprite
 		if (debugDisplay != null)
 		{
 			debugDisplay.visible = ClientPrefs.data.showFPS;
+			debugDisplay.isAdvanced = ClientPrefs.data.fpsRework;
 		}
 
 		#if (debug)
