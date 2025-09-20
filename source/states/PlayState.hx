@@ -2752,7 +2752,7 @@ public function endSong()
 			return false;
 		}
 		if (ratingName == "Nice") {
-		Achievements.unlockAchievement('nice');
+		Achievements.unlock('nice');
 		}
 	}
 	
