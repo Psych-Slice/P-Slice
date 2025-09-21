@@ -1,5 +1,6 @@
 package states;
 
+import mikolka.vslice.components.crash.UserErrorSubstate;
 import backend.PsychCamera;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.stages.EventLoader;

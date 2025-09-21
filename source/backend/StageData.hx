@@ -64,7 +64,7 @@ class StageData {
 	public static var forceNextDirectory:String = null;
 	public static function loadDirectory(SONG:SwagSong) {
 		var stage:String = '';
-		if(SONG.stage != null)
+		if(SONG?.stage != null)
 			stage = SONG.stage;
 		else if(Song.loadedSongName != null)
 			stage = vanillaSongStage(Paths.formatToSongPath(Song.loadedSongName));

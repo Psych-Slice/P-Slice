@@ -467,9 +467,12 @@ class Note extends FlxSprite
 	function attemptToAddAnimationByPrefix(name:String, prefix:String, framerate:Float = 24, doLoop:Bool = true)
 	{
 		var animFrames = [];
-		@:privateAccess
-		animation.findByPrefix(animFrames, prefix); // adds valid frames to animFrames
-		if(animFrames.length < 1) return;
+		try{
+			@:privateAccess
+			animation.findByPrefix(animFrames, prefix); // adds valid frames to animFrames
+			if(animFrames.length < 1) return;
+		}
+		catch (x) {return;}
 
 		animation.addByPrefix(name, prefix, framerate, doLoop);
 	}

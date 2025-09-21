@@ -173,7 +173,6 @@ class FreeplayState extends MusicBeatSubstate
 	var intendedScore:Int = 0;
 
 	var grpDifficulties:FlxTypedSpriteGroup<DifficultySprite>;
-	var grpFallbackDifficulty:FlxText;
 
 	var grpSongs:FlxTypedGroup<Alphabet>;
 	var grpCapsules:SongCapsuleGroup;
@@ -466,13 +465,6 @@ class FreeplayState extends MusicBeatSubstate
 		add(grpSongs);
 
 		add(grpCapsules);
-
-		grpFallbackDifficulty = new FlxText(70, 90, 250, "");
-		grpFallbackDifficulty.setFormat("VCR OSD Mono", 60, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
-		grpFallbackDifficulty.borderSize = 2;
-		add(grpFallbackDifficulty);
-
-		
 
 		exitMovers.set([grpDifficulties], {
 			x: -300,
@@ -2009,27 +2001,16 @@ class FreeplayState extends MusicBeatSubstate
 
 		// ? This handles trans OUT
 		var diffObj = getCurrentDiff(); //
-		var diffSprite:FlxSprite = diffObj;
-		if (!diffObj.hasValidTexture)
-			diffSprite = grpFallbackDifficulty;
+		var diffSprite:DifficultySprite = diffObj;
 
 		if (transIn)
 		{
-			if (!diffObj.hasValidTexture)
-			{
-				grpFallbackDifficulty.text = diffObj.difficultyId;
-				grpFallbackDifficulty.updateHitbox();
-				grpFallbackDifficulty.offset.x = 15;
-			}
-			else {
-				diffSprite.visible = true;
-				grpFallbackDifficulty.text = "";
-			}
+			diffSprite.visible = true;
 
 			diffSprite.x = (change > 0) ? 500 : -320;
 			diffSprite.x += (CUTOUT_WIDTH * DJ_POS_MULTI);
 
-			FlxTween.tween(diffSprite, {x:  90 + (CUTOUT_WIDTH * DJ_POS_MULTI)}, 0.2, {
+			FlxTween.tween(diffSprite, {x:  diffSprite.widthOffset + (CUTOUT_WIDTH * DJ_POS_MULTI)}, 0.2, {
 				ease: FlxEase.circInOut
 			});
 
@@ -2053,7 +2034,7 @@ class FreeplayState extends MusicBeatSubstate
 				ease: FlxEase.circInOut,
 				onComplete: function(_)
 				{
-					diffSprite.x = 90 + (CUTOUT_WIDTH * DJ_POS_MULTI);
+					diffSprite.x = diffSprite.widthOffset + (CUTOUT_WIDTH * DJ_POS_MULTI);
 					diffSprite.visible = false;
 				}
 			});

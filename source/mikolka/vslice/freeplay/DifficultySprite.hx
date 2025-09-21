@@ -14,6 +14,7 @@ import mikolka.compatibility.funkin.FunkinPath as Paths;
      public var difficultyId:String;
      public var hasValidTexture = true;
      public var difficultyColor:FlxColor;
+     public var widthOffset:Float = 0;
  
      public function new(diffId:String)
      {
@@ -25,9 +26,23 @@ import mikolka.compatibility.funkin.FunkinPath as Paths;
 
          if(tex == null){
              tex = Paths.noGpuImage('menudifficulties/' + diffId);
+             if(tex != null) widthOffset = (tex.width/2) - 80; // story texture offset
          }
-         hasValidTexture = (tex != null);
-         if(hasValidTexture) this.loadGraphic(tex);
+         else widthOffset = (tex.width/2) - 20; // standard offset
+
+         if(tex == null){
+            var grpFallbackDifficulty = new FlxText(70, 90, 250, difficultyId);
+            grpFallbackDifficulty.setFormat("VCR OSD Mono", 60, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
+            grpFallbackDifficulty.borderSize = 2;
+            @:privateAccess
+            grpFallbackDifficulty.regenGraphic();
+            @:privateAccess
+            tex = grpFallbackDifficulty.graphic;
+            widthOffset = (tex.width/2) - 55; //text offset
+         }
+         
+         this.loadGraphic(tex);
+             
          try{
              difficultyColor = hasValidTexture ? CoolUtil.dominantColor(this) : FlxColor.GRAY;
          }
