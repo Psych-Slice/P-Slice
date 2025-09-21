@@ -2,16 +2,16 @@
 <TextureAtlas imagePath="FNF_main_menu_assets_pt-BR.png">
 	<!-- Created with Adobe Animate version 23.0.2.103 -->
 	<!-- http://www.adobe.com/products/animate.html -->
-	<SubTexture name="idle0000" x="2" y="556" width="690" height="135"/>
-	<SubTexture name="idle0001" x="2" y="556" width="690" height="135"/>
-	<SubTexture name="idle0002" x="2" y="556" width="690" height="135"/>
-	<SubTexture name="idle0003" x="2" y="693" width="690" height="135"/>
-	<SubTexture name="idle0004" x="2" y="693" width="690" height="135"/>
-	<SubTexture name="idle0005" x="2" y="693" width="690" height="135"/>
-	<SubTexture name="idle0006" x="2" y="830" width="690" height="135"/>
-	<SubTexture name="idle0007" x="2" y="830" width="690" height="135"/>
-	<SubTexture name="idle0008" x="2" y="830" width="690" height="135"/>
-	<SubTexture name="selected0000" x="2" y="189" width="809" height="183" frameX="-5" frameY="0" frameWidth="816" frameHeight="188"/>
-	<SubTexture name="selected0001" x="2" y="374" width="811" height="180" frameX="0" frameY="0" frameWidth="816" frameHeight="188"/>
-	<SubTexture name="selected0002" x="2" y="2" width="811" height="185" frameX="-5" frameY="-3" frameWidth="816" frameHeight="188"/>
+	<SubTexture name="story_mode basic0000" x="2" y="556" width="690" height="135"/>
+	<SubTexture name="story_mode basic0001" x="2" y="556" width="690" height="135"/>
+	<SubTexture name="story_mode basic0002" x="2" y="556" width="690" height="135"/>
+	<SubTexture name="story_mode basic0003" x="2" y="693" width="690" height="135"/>
+	<SubTexture name="story_mode basic0004" x="2" y="693" width="690" height="135"/>
+	<SubTexture name="story_mode basic0005" x="2" y="693" width="690" height="135"/>
+	<SubTexture name="story_mode basic0006" x="2" y="830" width="690" height="135"/>
+	<SubTexture name="story_mode basic0007" x="2" y="830" width="690" height="135"/>
+	<SubTexture name="story_mode basic0008" x="2" y="830" width="690" height="135"/>
+	<SubTexture name="story_mode white0000" x="2" y="189" width="809" height="183" frameX="-5" frameY="0" frameWidth="816" frameHeight="188"/>
+	<SubTexture name="story_mode white0001" x="2" y="374" width="811" height="180" frameX="0" frameY="0" frameWidth="816" frameHeight="188"/>
+	<SubTexture name="story_mode white0002" x="2" y="2" width="811" height="185" frameX="-5" frameY="-3" frameWidth="816" frameHeight="188"/>
 </TextureAtlas>
