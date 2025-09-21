@@ -295,7 +295,7 @@ class NativeFileSystem
 	 * @return Null<String> Found path or null if such doesn't exist
 	 */
 	public static function getPathLike(path:String):Null<String> {
-		var path = addCwd(path);// fir ios
+		var path = addCwd(path);// fix ios
 		
 		var dir = Path.directory(path);
 		for(exclude in excludePaths){
@@ -304,7 +304,6 @@ class NativeFileSystem
 			
 		}
 		if(sys.FileSystem.exists(path)) return path;
-		trace("RESOLVING PATH: "+path);
 
 		var baseParts:Array<String> = path.replace('\\', '/').split('/');
 		var keyParts = [];
