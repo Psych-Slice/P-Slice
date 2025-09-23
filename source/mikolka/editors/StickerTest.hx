@@ -77,6 +77,7 @@ class StickerTest extends MusicBeatState {
 	}
     override function update(elapsed:Float) {
         super.update(elapsed);
+
         if(PsychUIInputText.focusOn == null)
             {
                 FunkinControls.enableVolume();
