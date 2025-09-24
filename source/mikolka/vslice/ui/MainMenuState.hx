@@ -1,5 +1,7 @@
 package mikolka.vslice.ui;
 
+import flixel.system.debug.DebuggerUtil;
+import backend.CacheSystem;
 import mikolka.vslice.ui.mainmenu.DesktopMenuState;
 import mikolka.compatibility.ui.MainMenuHooks;
 import mikolka.compatibility.VsliceOptions;
@@ -20,11 +22,23 @@ class MainMenuState extends MusicBeatState
 	var bg:FlxSprite;
 	var magenta:FlxSprite;
 
+	var stickerSubState:Bool;
+
+	public function new(?stickers:Bool = false)
+	{
+		super();
+		stickerSubState = stickers;
+		
+	}
+
 	override function create()
 	{
-		ModsHelper.clearStoredWithoutStickers();
-		Paths.clearUnusedMemory();
-
+		if(stickerSubState) ModsHelper.clearStoredWithoutStickers();
+		else CacheSystem.clearStoredMemory();
+		#if debug
+		FlxG.console.registerFunction("dumpCache",CacheSystem.cacheStatus);
+		#end
+		
 		ModsHelper.resetActiveMods();
 
 		#if DISCORD_ALLOWED
@@ -79,6 +93,7 @@ class MainMenuState extends MusicBeatState
 		else
 		#end
 		new DesktopMenuState(this);
+		CacheSystem.clearUnusedMemory();
 	}
 
 	function goToOptions()

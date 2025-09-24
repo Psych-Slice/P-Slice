@@ -22,8 +22,8 @@ class AchievementsMenuState extends MusicBeatState
 
 	override function create()
 	{
-		Paths.clearStoredMemory();
-		Paths.clearUnusedMemory();
+		CacheSystem.clearStoredMemory();
+		CacheSystem.clearUnusedMemory();
 
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Achievements Menu", null);

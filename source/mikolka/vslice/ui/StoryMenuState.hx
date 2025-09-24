@@ -1,5 +1,6 @@
 package mikolka.vslice.ui;
 
+import backend.CacheSystem;
 import mikolka.funkin.custom.mobile.MobileScaleMode;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.vslice.components.crash.UserErrorSubstate;
@@ -78,8 +79,8 @@ class StoryMenuState extends MusicBeatState
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 		}
 		else
-			Paths.clearStoredMemory();
-		Paths.clearUnusedMemory();
+			CacheSystem.clearStoredMemory();
+		CacheSystem.clearUnusedMemory();
 
 		persistentUpdate = persistentDraw = true;
 		PlayState.isStoryMode = true;

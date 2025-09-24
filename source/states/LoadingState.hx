@@ -94,8 +94,8 @@ class LoadingState extends MusicBeatState
 	{
 		#if STRICT_LOADING_SCREEN
         if(backend.ClientPrefs.data.strictLoadingScreen){	
-			Paths.clearStoredMemory();
-			Paths.clearUnusedMemory();
+			CacheSystem.clearStoredMemory();
+			CacheSystem.clearUnusedMemory();
 			LoadingState.prepareToSong();
 		}
 		#end
@@ -373,7 +373,7 @@ class LoadingState extends MusicBeatState
 	{
 		for (key => bitmap in requestedBitmaps)
 		{
-			if (bitmap != null && Paths.cacheBitmap(originalBitmapKeys.get(key), bitmap) != null) {} //trace('finished preloading image $key');
+			if (bitmap != null && CacheSystem.cacheBitmap(originalBitmapKeys.get(key), bitmap) != null) {} //trace('finished preloading image $key');
 			else trace('failed to cache image $key');
 		}
 		requestedBitmaps.clear();
@@ -790,13 +790,13 @@ class LoadingState extends MusicBeatState
 		var file:String = Paths.getPath(Language.getFileTranslation(key) + '.${Paths.SOUND_EXT}', SOUND, path, modsAllowed);
 
 		//trace('precaching sound: $file');
-		if(!Paths.currentTrackedSounds.exists(file))
+		if(!CacheSystem.currentTrackedSounds.exists(file))
 		{
 			var sound:Sound = NativeFileSystem.getSound(file);
 			if (sound != null)
 			{
 				mutex.acquire();
-				Paths.currentTrackedSounds.set(file, sound);
+				CacheSystem.currentTrackedSounds.set(file, sound);
 				mutex.release();
 			}
 			else if (beepOnNull)
@@ -807,10 +807,10 @@ class LoadingState extends MusicBeatState
 			}
 		}
 		mutex.acquire();
-		Paths.localTrackedAssets.push(file);
+		CacheSystem.localTrackedAssets.push(file);
 		mutex.release();
 
-		return Paths.currentTrackedSounds.get(file);
+		return CacheSystem.currentTrackedSounds.get(file);
 	}
 
 	// thread safe sound loader
@@ -822,7 +822,7 @@ class LoadingState extends MusicBeatState
 			var baseReqKey = requestKey;
 			if(requestKey.lastIndexOf('.') < 0) requestKey += '.png';
 
-			if (!Paths.currentTrackedAssets.exists(requestKey))
+			if (!CacheSystem.currentTrackedAssets.exists(requestKey))
 			{
 				var bitmap:BitmapData = null;
 				var file:String = Paths.getPath(requestKey, IMAGE);
@@ -849,7 +849,7 @@ class LoadingState extends MusicBeatState
 				else trace('no such image $key exists');
 			}
 
-			return Paths.currentTrackedAssets.get(requestKey).bitmap;
+			return CacheSystem.currentTrackedAssets.get(requestKey).bitmap;
 		}
 		catch(e:haxe.Exception)
 		{

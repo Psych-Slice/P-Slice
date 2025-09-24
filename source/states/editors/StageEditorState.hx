@@ -60,8 +60,8 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 
 	override function create()
 	{
-		Paths.clearStoredMemory();
-		Paths.clearUnusedMemory();
+		CacheSystem.clearStoredMemory();
+		CacheSystem.clearUnusedMemory();
 
 		camGame = initPsychCamera();
 		camHUD = new FlxCamera();

@@ -1,5 +1,6 @@
 package mikolka.compatibility.funkin;
 
+
 import flixel.graphics.FlxGraphic;
 import openfl.media.Sound;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -58,6 +59,6 @@ class FunkinPath {
         }
 
     public static function clearUnusedMemory() { 
-        Paths.clearUnusedMemory();
+        CacheSystem.clearUnusedMemory();
     }
 }

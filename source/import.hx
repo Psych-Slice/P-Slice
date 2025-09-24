@@ -68,6 +68,7 @@ import mikolka.stages.cutscenes.dialogueBox.styles.*;
 import states.stages.objects.*;
 
 import backend.Paths;
+import backend.CacheSystem;
 import backend.Controls;
 import backend.CoolUtil;
 import backend.MusicBeatState;

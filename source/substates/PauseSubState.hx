@@ -375,7 +375,7 @@ class PauseSubState extends MusicBeatSubstate
 			switch (selectedOption)
 			{
 				case "Resume":
-					Paths.clearUnusedMemory();
+					CacheSystem.clearUnusedMemory();
 					specialAction = RESUME;
 					close();
 				case 'Change Difficulty':

@@ -1,5 +1,6 @@
 package mikolka.compatibility.ui;
 
+import backend.CacheSystem;
 import backend.StageData;
 import backend.Song;
 using mikolka.funkin.custom.FunkinTools;
@@ -35,7 +36,7 @@ class StoryModeHooks {
 			if(PlayState._lastLoadedModDirectory != Mods.currentModDirectory)
 			{
 				trace('CHANGED MOD DIRECTORY, RELOADING STUFF');
-				Paths.freeGraphicsFromMemory();
+				CacheSystem.freeGraphicsFromMemory();
 			}
             #if STRICT_LOADING_SCREEN
             if(!backend.ClientPrefs.data.strictLoadingScreen)

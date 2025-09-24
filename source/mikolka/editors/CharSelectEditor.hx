@@ -56,8 +56,8 @@ class CharSelectEditor extends MusicBeatState
 	{
 		FlxG.sound.music.pause();
 		FlxG.mouse.visible = true;
-		Paths.clearStoredMemory();
-		Paths.clearUnusedMemory();
+		CacheSystem.clearStoredMemory();
+		CacheSystem.clearUnusedMemory();
 		
 		var cutoutSize = MobileScaleMode.gameCutoutSize.x / 2;
 

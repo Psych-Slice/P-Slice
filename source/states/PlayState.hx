@@ -285,13 +285,13 @@ class PlayState extends MusicBeatState
 		#if !STRICT_LOADING_SCREEN
 		if (!backend.ClientPrefs.data.strictLoadingScreen)
 		{
-			Paths.clearStoredMemory();
-			Paths.clearUnusedMemory();
+			CacheSystem.clearStoredMemory();
+			CacheSystem.clearUnusedMemory();
 		}
 		#end
 		if (nextReloadAll)
 		{
-			Paths.clearUnusedMemory();
+			CacheSystem.clearUnusedMemory();
 			Language.reloadPhrases();
 		}
 		nextReloadAll = false;
@@ -685,7 +685,7 @@ class PlayState extends MusicBeatState
 		#end
 
 		super.create();
-		Paths.clearUnusedMemory();
+		CacheSystem.clearUnusedMemory();
 
 		cacheCountdown();
 		cachePopUpScore();

@@ -1,5 +1,6 @@
 package mikolka.vslice;
 
+import backend.CacheSystem;
 import mikolka.funkin.custom.NativeFileSystem;
 import mikolka.vslice.freeplay.DifficultyStars;
 #if sys import mikolka.vslice.components.crash.Logger; #end
@@ -458,15 +459,16 @@ class FunkinPreloader extends FlxBasePreloader
 							try
 							{
 								
-								if (Paths.cacheBitmap(item) != null)
-								{
-									#if debug trace("Cached: " + item); #end
-									Paths.excludeAsset(item);
-								}
-								else
-								{
-									trace("Failed to cache: " + item);
-								}
+								CacheSystem.excludeAsset(item);
+								// if (CacheSystem.loadBitmap(item) != null)
+								// {
+								// 	#if debug trace("Cached: " + item); #end
+								// 	CacheSystem.excludeAsset(item);
+								// }
+								// else
+								// {
+								// 	trace("Failed to cache: " + item);
+								// }
 							}
 							catch (x:Exception)
 								trace("Exception when caching: " + x.message);
