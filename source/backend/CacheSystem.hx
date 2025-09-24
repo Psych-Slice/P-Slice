@@ -1,5 +1,6 @@
 package backend;
 
+import openfl.utils.AssetCache;
 import flixel.util.FlxStringUtil;
 import flixel.system.FlxAssets;
 import openfl.media.Sound;
@@ -8,6 +9,12 @@ import haxe.io.Path;
 import openfl.display.BitmapData;
 import openfl.system.System;
 import flixel.graphics.FlxGraphic;
+
+typedef ImageLine =
+{
+	size:Int,
+	text:String
+};
 
 @:access(openfl.display.BitmapData)
 class CacheSystem
@@ -79,55 +86,34 @@ class CacheSystem
 		var str = new StringBuf();
 		str.add('-- Cache dump start --');
 		str.add("\n");
-		str.add('( lime caches are ${lime.utils.Assets.cache.enabled})');
-		str.add("\n");
 		str.add('( openfl caches are ${openfl.utils.Assets.cache.enabled})');
 		str.add("\n");
 		var totalMemory = 0;
-		str.add("-- FLXG bitmaps --");
+
+		str.add("-- Managed bitmaps --");
 		str.add("\n");
+		var entries:Array<ImageLine> = [];
 		@:privateAccess
 		for (key => texture in FlxG.bitmap._cache)
 		{
 			var inStored = currentTrackedAssets.exists(key) ? "S" : "-";
 			var inLocal = localTrackedAssets.contains(key) ? "L" : "-";
 			var memory = texture?.bitmap?.image?.data?.byteLength ?? 0;
-			str.add('[ $inStored $inLocal ](${FlxStringUtil.formatBytes(memory)}) $key');
-			str.add("\n");
+			entries.push({
+				size: memory,
+				text: '[ $inStored $inLocal ](${FlxStringUtil.formatBytes(memory)}) $key'
+			});
 			totalMemory += memory;
 		}
-		str.add('Total: ${FlxStringUtil.formatBytes(totalMemory)}');
-		str.add("\n");
-		str.add("-- LIME bitmaps --");
-		str.add("\n");
-		totalMemory = 0;
-		@:privateAccess
-		for (key => texture in lime.utils.Assets.cache.image)
+		entries.sort((x, y) -> cast y.size - x.size);
+		for (entry in entries)
 		{
-			var inStored = currentTrackedAssets.exists(key) ? "S" : "-";
-			var inLocal = localTrackedAssets.contains(key) ? "L" : "-";
-			var memory = texture.data.byteLength;
-			str.add('[ $inStored $inLocal ](${FlxStringUtil.formatBytes(memory)}) $key');
+			str.add(entry.text);
 			str.add("\n");
-			totalMemory += memory;
 		}
 		str.add('Total: ${FlxStringUtil.formatBytes(totalMemory)}');
 		str.add("\n");
-		str.add("-- LIME sounds --");
-		str.add("\n");
-		totalMemory = 0;
-		@:privateAccess
-		for (key => snd in lime.utils.Assets.cache.audio)
-		{
-			var inStored = currentTrackedSounds.exists(key) ? "S" : "-";
-			var inLocal = localTrackedAssets.contains(key) ? "L" : "-";
-			var memory = snd.data.byteLength;
-			str.add('[ $inStored $inLocal ](${FlxStringUtil.formatBytes(memory)}) $key');
-			str.add("\n");
-			totalMemory += memory;
-		}
-		str.add('Total: ${FlxStringUtil.formatBytes(totalMemory)}');
-		str.add("\n");
+
 
 		str.add("-- Managed sounds --");
 		str.add("\n");
@@ -144,10 +130,46 @@ class CacheSystem
 		str.add('Total: ${FlxStringUtil.formatBytes(totalMemory)}');
 		str.add("\n");
 
+
+
+		str.add("-- OPENFL sounds --");
+		str.add("\n");
+		totalMemory = 0;
+		var cache = cast(openfl.utils.Assets.cache, AssetCache);
+		@:privateAccess
+		for (key => snd in cache.sound)
+		{
+			var inStored = currentTrackedSounds.exists(key) ? "S" : "-";
+			var inLocal = localTrackedAssets.contains(key) ? "L" : "-";
+			var memory = snd.bytesLoaded;
+			str.add('[ $inStored $inLocal ](${FlxStringUtil.formatBytes(memory)}) $key');
+			str.add("\n");
+			totalMemory += memory;
+		}
+		str.add('Total: ${FlxStringUtil.formatBytes(totalMemory)}');
+		str.add("\n");
+
+
+		// str.add("-- LIME bitmaps --");
+		// str.add("\n");
+		// totalMemory = 0;
+		// for (key => texture in cache.bitmapData)
+		// {
+		// 	var inStored = currentTrackedAssets.exists(key) ? "S" : "-";
+		// 	var inLocal = localTrackedAssets.contains(key) ? "L" : "-";
+		// 	var memory = texture?.image?.data?.byteLength ?? -1;
+		// 	str.add('[ $inStored $inLocal ](${FlxStringUtil.formatBytes(memory)}) $key');
+		// 	str.add("\n");
+		// 	totalMemory += memory;
+		// }
+		// str.add('Total: ${FlxStringUtil.formatBytes(totalMemory)}');
+		// str.add("\n");
+
 		str.add("-- END --");
 		return str.toString();
 	}
 	#end
+
 	/**
 	 * Clears up internal remnants of graphics not cached by this system.
 	 * It also clears the current context.
