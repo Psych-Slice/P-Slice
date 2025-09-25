@@ -58,10 +58,13 @@ class NoteOffsetState extends MusicBeatState
 		FlxG.sound.pause();
 
 		// Stage
-		Paths.setCurrentLevel(stageDirectory);
-		var stage = new BackgroundStage();
-		stage.create();
-		add(stage);
+		if(Paths.fileExists(stageDirectory,BINARY)){
+
+			Paths.setCurrentLevel(stageDirectory);
+			var stage = new BackgroundStage();
+			stage.create();
+			add(stage);
+		}
 
 		// Characters
 		gf = new Character(400, 130, 'gf');

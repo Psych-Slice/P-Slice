@@ -25,6 +25,9 @@ class ModsHelper {
 	public inline static function getActiveMod():String {
 		return Mods.currentModDirectory;
 	}
+	public inline static function getGlobalMods():Array<String> {
+		return Mods.getGlobalMods();
+	}
 	public inline static function resetActiveMods() {
 		#if MODS_ALLOWED
 		Mods.pushGlobalMods();
