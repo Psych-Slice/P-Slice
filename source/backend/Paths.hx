@@ -41,8 +41,8 @@ class Paths
 				var levelPath = modFolders('$currentLevel/$customFile');
 				if (NativeFileSystem.exists(levelPath))
 					return levelPath;
-			}
-			
+			}	
+
 			var modded:String = modFolders(customFile);
 			if(NativeFileSystem.exists(modded)) return modded;
 		}

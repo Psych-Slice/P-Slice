@@ -1,0 +1,7 @@
+{
+	"name": "Friday Night Funkin'",
+	"description": "The actual game",
+	"restart":true,
+	"runsGlobally": true,
+	"color": [255, 189, 224]
+}
