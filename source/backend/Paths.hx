@@ -28,12 +28,21 @@ class Paths
 
 	public static function getPath(file:String, ?type:AssetType = TEXT, ?parentfolder:String, ?modsAllowed:Bool = true):String
 	{
+
 		#if MODS_ALLOWED
 		if(modsAllowed)
 		{
 			var customFile:String = file;
 			if (parentfolder != null) customFile = '$parentfolder/$file';
 
+			// Load from level folder in a mod
+			if (currentLevel != null && currentLevel != 'shared')
+			{
+				var levelPath = modFolders('$currentLevel/$customFile');
+				if (NativeFileSystem.exists(levelPath))
+					return levelPath;
+			}
+			
 			var modded:String = modFolders(customFile);
 			if(NativeFileSystem.exists(modded)) return modded;
 		}
@@ -44,6 +53,7 @@ class Paths
 		if (parentfolder != null)
 			return getFolderPath(file, parentfolder);
 
+		// Load from a level folder
 		if (currentLevel != null && currentLevel != 'shared')
 		{
 			var levelPath = getFolderPath(file, currentLevel);

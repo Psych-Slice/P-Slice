@@ -205,6 +205,7 @@ class CacheSystem
 
 	public static function cacheBitmap(key:String, bitmap:BitmapData, ?allowGPU:Bool = true):FlxGraphic
 	{
+		if(bitmap == null) return null;
 		if (allowGPU && ClientPrefs.data.cacheOnGPU && bitmap?.image != null)
 		{
 			bitmap.lock(); // This does nothing on cpp
@@ -332,25 +333,57 @@ class CacheSystem
 	{
 		// A ton of stuff uses .png internally, so we fake it for ATSC
 		var intarnalFile = Path.withoutExtension(key);
-		var bitmap:Null<BitmapData> = null;
-
-		#if ATSC_SUPPORT
-		var extension = ".astc";
-		var file:String = Paths.getPath(intarnalFile + extension, IMAGE, parentFolder, true);
-		trace(file);
-		bitmap = NativeFileSystem.getBitmap(file);
-		#end
-
-		if (bitmap == null)
-		{
-			var extension = ".png";
-			var file:String = Paths.getPath(intarnalFile + extension, IMAGE, parentFolder, true);
-			bitmap = NativeFileSystem.getBitmap(file);
+			var file:String = Paths.getPath(intarnalFile, IMAGE, parentFolder, true);
+			var bitmap = NativeFileSystem.getBitmap(file);
 			if (bitmap == null)
 			{
 				trace('Bitmap not found: $file | key: $key');
 			}
-		}
+		
 		return bitmap;
+	}
+
+	private static function getTexturePath(file:String, ?parentfolder:String):String
+	{
+		#if MODS_ALLOWED
+
+			var customFile:String = file;
+			if (parentfolder != null) customFile = '$parentfolder/$file';
+
+			// Load from level folder in a mod
+			if (Paths.currentLevel != null && Paths.currentLevel != 'shared')
+			{
+				var levelPath = astcModFolders('${Paths.currentLevel}/$customFile');
+				if (NativeFileSystem.exists(levelPath))
+					return levelPath;
+			}
+			
+			var modded:String = astcModFolders(customFile);
+			if(NativeFileSystem.exists(modded)) return modded;
+		#end
+		if(parentfolder == "mobile")
+			return getSharedPath('mobile/$file');
+
+		if (parentfolder != null)
+			return getFolderPath(file, parentfolder);
+
+		// Load from a level folder
+		if (currentLevel != null && currentLevel != 'shared')
+		{
+			var levelPath = getFolderPath(file, currentLevel);
+			if (NativeFileSystem.exists(levelPath))
+				return levelPath;
+		}
+		return getSharedPath(file);
+	}
+	private static function astcModFolders(path:String){
+		#if ATSC_SUPPORT
+		if(& openfl.Lib.current.stage.context3D.isASTCSupported()){
+			var assetPath = Paths.modFolders('$path.astc');
+			if(NativeFileSystem.exists(assetPath)) return assetPath;
+		}
+		#end
+		var assetPath = Paths.modFolders('$path.png');
+		return assetPath;
 	}
 }
