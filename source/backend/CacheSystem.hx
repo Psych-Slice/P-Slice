@@ -114,7 +114,6 @@ class CacheSystem
 		str.add('Total: ${FlxStringUtil.formatBytes(totalMemory)}');
 		str.add("\n");
 
-
 		str.add("-- Managed sounds --");
 		str.add("\n");
 		totalMemory = 0;
@@ -129,8 +128,6 @@ class CacheSystem
 		}
 		str.add('Total: ${FlxStringUtil.formatBytes(totalMemory)}');
 		str.add("\n");
-
-
 
 		str.add("-- OPENFL sounds --");
 		str.add("\n");
@@ -148,22 +145,6 @@ class CacheSystem
 		}
 		str.add('Total: ${FlxStringUtil.formatBytes(totalMemory)}');
 		str.add("\n");
-
-
-		// str.add("-- LIME bitmaps --");
-		// str.add("\n");
-		// totalMemory = 0;
-		// for (key => texture in cache.bitmapData)
-		// {
-		// 	var inStored = currentTrackedAssets.exists(key) ? "S" : "-";
-		// 	var inLocal = localTrackedAssets.contains(key) ? "L" : "-";
-		// 	var memory = texture?.image?.data?.byteLength ?? -1;
-		// 	str.add('[ $inStored $inLocal ](${FlxStringUtil.formatBytes(memory)}) $key');
-		// 	str.add("\n");
-		// 	totalMemory += memory;
-		// }
-		// str.add('Total: ${FlxStringUtil.formatBytes(totalMemory)}');
-		// str.add("\n");
 
 		str.add("-- END --");
 		return str.toString();
@@ -205,7 +186,8 @@ class CacheSystem
 
 	public static function cacheBitmap(key:String, bitmap:BitmapData, ?allowGPU:Bool = true):FlxGraphic
 	{
-		if(bitmap == null) return null;
+		if (bitmap == null)
+			return null;
 		if (allowGPU && ClientPrefs.data.cacheOnGPU && bitmap?.image != null)
 		{
 			bitmap.lock(); // This does nothing on cpp
@@ -281,7 +263,6 @@ class CacheSystem
 				}
 			}
 
-			// trace('check...');
 			try
 			{
 				var gfx:FlxGraphic = Reflect.getProperty(spr, 'graphic');
@@ -333,57 +314,91 @@ class CacheSystem
 	{
 		// A ton of stuff uses .png internally, so we fake it for ATSC
 		var intarnalFile = Path.withoutExtension(key);
-			var file:String = Paths.getPath(intarnalFile, IMAGE, parentFolder, true);
-			var bitmap = NativeFileSystem.getBitmap(file);
-			if (bitmap == null)
-			{
-				trace('Bitmap not found: $file | key: $key');
-			}
-		
+		var file:String = getTexturePath(intarnalFile, parentFolder);
+		var bitmap = NativeFileSystem.getBitmap(file);
+		if (bitmap == null)
+		{
+			trace('Bitmap not found: $file | key: $key');
+		}
+
 		return bitmap;
 	}
 
+	/**
+	 * Finds a graphic in the given path. Can give either PNG or ASTC file path.
+	 * @param file 
+	 * @param parentfolder 
+	 * @return String
+	 */
 	private static function getTexturePath(file:String, ?parentfolder:String):String
 	{
-		#if MODS_ALLOWED
-
-			var customFile:String = file;
-			if (parentfolder != null) customFile = '$parentfolder/$file';
-
-			// Load from level folder in a mod
-			if (Paths.currentLevel != null && Paths.currentLevel != 'shared')
-			{
-				var levelPath = astcModFolders('${Paths.currentLevel}/$customFile');
-				if (NativeFileSystem.exists(levelPath))
-					return levelPath;
-			}
-			
-			var modded:String = astcModFolders(customFile);
-			if(NativeFileSystem.exists(modded)) return modded;
-		#end
-		if(parentfolder == "mobile")
-			return getSharedPath('mobile/$file');
-
-		if (parentfolder != null)
-			return getFolderPath(file, parentfolder);
-
-		// Load from a level folder
-		if (currentLevel != null && currentLevel != 'shared')
+		function astcModFolders(path:String)
 		{
-			var levelPath = getFolderPath(file, currentLevel);
+			#if ATSC_SUPPORT
+			if (openfl.Lib.current.stage.context3D.isASTCSupported())
+			{
+				var assetPath = Paths.modFolders('$path.astc');
+				if (NativeFileSystem.exists(assetPath))
+					return assetPath;
+			}
+			#end
+			return Paths.modFolders('$path.png');
+		}
+		function astcGetSharedPath(path:String)
+		{
+			#if ATSC_SUPPORT
+			if (openfl.Lib.current.stage.context3D.isASTCSupported())
+			{
+				var assetPath = Paths.getSharedPath('$path.astc');
+				if (NativeFileSystem.exists(assetPath))
+					return assetPath;
+			}
+			#end
+			return Paths.getSharedPath('$path.png');
+		}
+		function astcGetFolderPath(file:String, folder:String)
+		{
+			#if ATSC_SUPPORT
+			if (openfl.Lib.current.stage.context3D.isASTCSupported())
+			{
+				var assetPath = Paths.getFolderPath('$path.astc', folder);
+				if (NativeFileSystem.exists(assetPath))
+					return assetPath;
+			}
+			#end
+			return Paths.getFolderPath('$file.png', folder);
+		}
+
+		#if MODS_ALLOWED
+		var customFile:String = file;
+		if (parentfolder != null)
+			customFile = '$parentfolder/$file';
+
+		// Load from level folder in a mod
+		if (Paths.currentLevel != null && Paths.currentLevel != 'shared')
+		{
+			var levelPath = astcModFolders('${Paths.currentLevel}/$customFile');
 			if (NativeFileSystem.exists(levelPath))
 				return levelPath;
 		}
-		return getSharedPath(file);
-	}
-	private static function astcModFolders(path:String){
-		#if ATSC_SUPPORT
-		if(& openfl.Lib.current.stage.context3D.isASTCSupported()){
-			var assetPath = Paths.modFolders('$path.astc');
-			if(NativeFileSystem.exists(assetPath)) return assetPath;
-		}
+
+		var modded:String = astcModFolders(customFile);
+		if (NativeFileSystem.exists(modded))
+			return modded;
 		#end
-		var assetPath = Paths.modFolders('$path.png');
-		return assetPath;
+		if (parentfolder == "mobile")
+			return astcGetSharedPath('mobile/$file');
+
+		if (parentfolder != null)
+			return astcGetFolderPath(file, parentfolder);
+
+		// Load from a level folder
+		if (Paths.currentLevel != null && Paths.currentLevel != 'shared')
+		{
+			var levelPath = astcGetFolderPath(file, Paths.currentLevel);
+			if (NativeFileSystem.exists(levelPath))
+				return levelPath;
+		}
+		return astcGetSharedPath(file);
 	}
 }
