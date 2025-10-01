@@ -3,7 +3,6 @@ package backend;
 import lime.app.Application;
 import lime.system.Display;
 import lime.system.System;
-
 import flixel.util.FlxColor;
 
 #if (cpp && windows)
@@ -70,6 +69,15 @@ class Native
 		#if sys
 		fullContents += 'Platform: ${Sys.systemName()}\n';
 		#end
+		#if ATSC_SUPPORT
+		var astcSupport = backend.Native.isASTCSupported();
+		if (astcSupport)
+			fullContents += 'Your computer does support ASTC\n';
+		else
+			fullContents += 'ASTC NOT SUPPORTED\n';
+		#else
+		fullContents += 'This build doesn\'t support ASTC\n';
+		#end
 
 		fullContents += '\n';
 
@@ -105,7 +113,7 @@ class Native
 	public static function registerDPIAware():Void
 	{
 		#if (cpp && windows)
-		// DPI Scaling fix for windows 
+		// DPI Scaling fix for windows
 		// this shouldn't be needed for other systems
 		// Credit to YoshiCrafter29 for finding this function
 		untyped __cpp__('
@@ -124,9 +132,11 @@ class Native
 	}
 
 	private static var fixedScaling:Bool = false;
+
 	public static function fixScaling():Void
 	{
-		if (fixedScaling) return;
+		if (fixedScaling)
+			return;
 		fixedScaling = true;
 
 		#if (cpp && windows)
@@ -155,4 +165,12 @@ class Native
 		#end
 		trace("done fixing scale issue");
 	}
+
+	#if ATSC_SUPPORT
+	public static inline function isASTCSupported():Bool
+	{
+		@:privateAccess
+		return openfl.Lib.current.stage.context3D.gl.getExtension("KHR_texture_compression_astc_ldr") != null;
+	}
+	#end
 }

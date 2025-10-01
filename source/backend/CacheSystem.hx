@@ -335,7 +335,7 @@ class CacheSystem
 		function astcModFolders(path:String)
 		{
 			#if ATSC_SUPPORT
-			if (openfl.Lib.current.stage.context3D.isASTCSupported())
+			if (Native.isASTCSupported())
 			{
 				var assetPath = Paths.modFolders('$path.astc');
 				if (NativeFileSystem.exists(assetPath))
@@ -347,7 +347,7 @@ class CacheSystem
 		function astcGetSharedPath(path:String)
 		{
 			#if ATSC_SUPPORT
-			if (openfl.Lib.current.stage.context3D.isASTCSupported())
+			if (Native.isASTCSupported())
 			{
 				var assetPath = Paths.getSharedPath('$path.astc');
 				if (NativeFileSystem.exists(assetPath))
@@ -356,12 +356,13 @@ class CacheSystem
 			#end
 			return Paths.getSharedPath('$path.png');
 		}
+
 		function astcGetFolderPath(file:String, folder:String)
 		{
 			#if ATSC_SUPPORT
-			if (openfl.Lib.current.stage.context3D.isASTCSupported())
+			if (Native.isASTCSupported())
 			{
-				var assetPath = Paths.getFolderPath('$path.astc', folder);
+				var assetPath = Paths.getFolderPath('$file.astc', folder);
 				if (NativeFileSystem.exists(assetPath))
 					return assetPath;
 			}

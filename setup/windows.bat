@@ -17,7 +17,7 @@ haxelib install tjson 1.4.0 --quiet --skip-dependencies
 
 :: Specific
 haxelib install lime 8.2.2 --quiet --skip-dependencies
-haxelib install openfl 9.4.1 --quiet --skip-dependencies
+haxelib git openfl https://github.com/FunkinCrew/openfl.git a0df7c3afe360c9af59a76e45007dbf4e53b5131 --quiet --skip-dependencies
 haxelib install hxdiscord_rpc 1.2.4 --quiet
 haxelib install hxvlc 2.2.2 --quiet --skip-dependencies
 haxelib git linc_luajit https://github.com/superpowers04/linc_luajit 1906c4a96f6bb6df66562b3f24c62f4c5bba14a7
