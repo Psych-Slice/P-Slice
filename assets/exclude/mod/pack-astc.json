@@ -1,0 +1,7 @@
+{
+	"name": "Friday Night Funkin' (ASTC textures)",
+	"description": "The actual game (but compressed for the mobile and some PCs)",
+	"restart":true,
+	"runsGlobally": true,
+	"color": [232, 228, 9]
+}

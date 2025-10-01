@@ -165,21 +165,14 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	</section>
 
 
-	<assets path="assets/atsc_shared" rename="assets/shared" if="ATSC_SUPPORT" exclude="*.png"/>
-	<assets path="assets/atsc_shared" rename="assets/shared"  exclude="*.astc" unless="ATSC_SUPPORT"/>
+	<assets path="assets/atsc_shared" rename="assets/shared" />
 
 	<section if="BASE_GAME_FILES">
 
-		<section if="ATSC_SUPPORT">
-			<assets path="assets/base_game/week_data" rename="assets"   exclude="*.png"/>
-			<assets path="assets/base_game/week_data/week6" rename="assets/week6"   include="*.png"/>
-			<assets path="assets/base_game/characters" rename="assets/shared/images/characters" exclude="*.png"/>
-		</section>
 
-		<section unless="ATSC_SUPPORT">
-			<assets path="assets/base_game/week_data" rename="assets"   exclude="*.astc"/>
-			<assets path="assets/base_game/characters" rename="assets/shared/images/characters" exclude="*.astc"/>
-		</section>
+			<assets path="assets/base_game/week_data" rename="assets"/>
+			<assets path="assets/base_game/characters" rename="assets/shared/images/characters"/>
+
 		<assets path="assets/base_game/shared" rename="assets/shared" />
 		<assets path="assets/base_game/characters_pixel" rename="assets/shared/images/characters" />
 	</section>

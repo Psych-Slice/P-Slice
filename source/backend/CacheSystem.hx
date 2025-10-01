@@ -76,7 +76,7 @@ class CacheSystem
 
 		System.gc();
 		#if cpp
-		cpp.NativeGc.run(true);
+		cpp.NativeGc.compact();
 		#end
 	}
 
