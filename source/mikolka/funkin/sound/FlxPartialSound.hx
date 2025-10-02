@@ -52,9 +52,9 @@ class FlxPartialSound
 	{
 		var promise:Promise<Sound> = new Promise<Sound>();
 
-		if (Assets.cache.hasSound(path + ".partial-" + rangeStart + "-" + rangeEnd))
+		if (CacheSystem.currentTrackedSounds.exists(path + ".partial-" + rangeStart + "-" + rangeEnd))
 		{
-			promise.complete(Assets.cache.getSound(path + ".partial-" + rangeStart + "-" + rangeEnd));
+			promise.complete(CacheSystem.currentTrackedSounds.get(path + ".partial-" + rangeStart + "-" + rangeEnd));
 			return promise;
 		}
 
@@ -86,7 +86,7 @@ class FlxPartialSound
 
 
 						var snd = Sound.fromAudioBuffer(audioBuffer);
-						Assets.cache.setSound(path + ".partial-" + rangeStart + "-" + rangeEnd, snd);
+						CacheSystem.currentTrackedSounds.set(path + ".partial-" + rangeStart + "-" + rangeEnd, snd);
 						PartialSoundMetadata.instance.set(path + rangeStart, {kbps:mp3Data.kbps, introOffsetMs:mp3Data.introLengthMs});
 						promise.complete(snd);
 
@@ -104,7 +104,7 @@ class FlxPartialSound
 							fullBytes.blit(cleanIntroBytes.length, cleanFullBytes, 0, cleanFullBytes.length);
 
 							audioBuffer = parseBytesOgg(fullBytes, true);
-							Assets.cache.setSound(path + ".partial-" + rangeStart + "-" + rangeEnd, Sound.fromAudioBuffer(audioBuffer));
+							CacheSystem.currentTrackedSounds.set(path + ".partial-" + rangeStart + "-" + rangeEnd, Sound.fromAudioBuffer(audioBuffer));
 							promise.complete(Sound.fromAudioBuffer(audioBuffer));
 						});
 

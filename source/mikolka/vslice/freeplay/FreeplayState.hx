@@ -1876,11 +1876,7 @@ class FreeplayState extends MusicBeatSubstate
 	{
 		controls.isInSubstate = false;
 		super.destroy();
-		var daSong:Null<FreeplaySongData> = currentFilteredSongs[curSelected];
-		if (daSong != null)
-		{
-			clearDaCache(daSong.songName);
-		}
+
 		// remove and destroy freeplay camera
 		FlxG.cameras.remove(funnyCam);
 		instance = null;
@@ -2041,25 +2037,6 @@ class FreeplayState extends MusicBeatSubstate
 		}
 	}
 
-	// Clears the cache of songs, frees up memory, they' ll have to be loaded in later tho function clearDaCache(actualSongTho:String)
-	function clearDaCache(actualSongTho:String):Void
-	{
-		// ? changed implementation of this
-		trace("Purging song previews!");
-		var cacheObj = cast(openfl.Assets.cache, AssetCache);
-		@:privateAccess
-		var list = cacheObj.sound.keys();
-		for (song in list)
-		{
-			if (song == null)
-				continue;
-			if (!song.contains(actualSongTho) && song.contains(".partial")) // .partial
-			{
-				trace('trying to remove: ' + song);
-				openfl.Assets.cache.clear(song);
-			}
-		}
-	}
 
 	function capsuleOnConfirmRandom(randomCapsule:SongMenuItem):Void
 	{

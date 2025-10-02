@@ -94,9 +94,11 @@ class LoadingState extends MusicBeatState
 	{
 		#if STRICT_LOADING_SCREEN
         if(backend.ClientPrefs.data.strictLoadingScreen){	
+		#end
 			CacheSystem.clearStoredMemory();
 			CacheSystem.clearUnusedMemory();
 			LoadingState.prepareToSong();
+		#if STRICT_LOADING_SCREEN
 		}
 		#end
 
@@ -446,10 +448,10 @@ class LoadingState extends MusicBeatState
 	{
 		if(PlayState.SONG == null)
 		{
-			imagesToPrepare = [];
-			soundsToPrepare = [];
-			musicToPrepare = [];
-			songsToPrepare = [];
+			imagesToPrepare.resize(0);
+			soundsToPrepare.resize(0);
+			musicToPrepare.resize(0);
+			songsToPrepare.resize(0);
 			loaded = 0;
 			loadMax = 0;
 			initialThreadCompleted = true;
@@ -458,10 +460,10 @@ class LoadingState extends MusicBeatState
 		}
 
 		_startPool();
-		imagesToPrepare = [];
-		soundsToPrepare = [];
-		musicToPrepare = [];
-		songsToPrepare = [];
+		imagesToPrepare.resize(0);
+		soundsToPrepare.resize(0);
+		musicToPrepare.resize(0);
+		songsToPrepare.resize(0);
 
 		initialThreadCompleted = false;
 		var threadsCompleted:Int = 0;
@@ -828,8 +830,7 @@ class LoadingState extends MusicBeatState
 				var file:String = Paths.getPath(requestKey, IMAGE);
 
 				#if ATSC_SUPPORT
-				var atscFile:String = Paths.getPath(baseReqKey+'.astc', IMAGE);
-				bitmap = NativeFileSystem.getBitmap(atscFile);
+				if(Paths.fileExists(baseReqKey+'.astc', IMAGE)) return null;
 				#end
 
 				if(bitmap == null)
@@ -841,6 +842,10 @@ class LoadingState extends MusicBeatState
 
 
 					mutex.acquire();
+
+			if (bitmap != null && CacheSystem.cacheBitmap(originalBitmapKeys.get(key), bitmap) != null) {} //trace('finished preloading image $key');
+			else trace('failed to cache image $key');
+
 					requestedBitmaps.set(file, bitmap);
 					originalBitmapKeys.set(file, requestKey);
 					mutex.release();

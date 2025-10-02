@@ -70,7 +70,12 @@ class CacheSystem
 			if (!localTrackedAssets.contains(key) && !dumpExclusions.contains(key) && asset != null)
 			{
 				Assets.cache.clear(key);
+				var snd = currentTrackedSounds.get(key);
 				currentTrackedSounds.remove(key);
+				try{
+					snd?.close();
+				}
+				catch(x){}
 			}
 		}
 

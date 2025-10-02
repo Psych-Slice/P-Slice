@@ -38,10 +38,9 @@ class StoryModeHooks {
 				trace('CHANGED MOD DIRECTORY, RELOADING STUFF');
 				CacheSystem.freeGraphicsFromMemory();
 			}
-            #if STRICT_LOADING_SCREEN
-            if(!backend.ClientPrefs.data.strictLoadingScreen)
+
+            #if STRICT_LOADING_SCREEN if(!backend.ClientPrefs.data.strictLoadingScreen) #end
                 LoadingState.prepareToSong();
-			#end
 
 			new FlxTimer().start(0.8, function(tmr:FlxTimer)
 			{
