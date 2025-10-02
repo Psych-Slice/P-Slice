@@ -72,10 +72,11 @@ class CacheSystem
 				Assets.cache.clear(key);
 				var snd = currentTrackedSounds.get(key);
 				currentTrackedSounds.remove(key);
-				try{
-					snd?.close();
-				}
-				catch(x){}
+				// @:privateAccess(){
+				// 	snd.__buffer.data.buffer.b.resize(0);
+				// 	snd.__buffer.data.buffer = null;
+				// 	snd.__buffer = null;
+				// }
 			}
 		}
 
@@ -198,11 +199,13 @@ class CacheSystem
 				bitmap.image.premultiplied = true;
 				bitmap.getTexture(FlxG.stage.context3D);
 			}
-			bitmap.getSurface();
-			bitmap.disposeImage();
-			bitmap.image.data = null;
-			bitmap.image = null;
-			bitmap.readable = true;
+			if(#if ATSC_SUPPORT !Std.isOfType(bitmap.__texture,openfl.display3D.textures.ASTCTexture) #else true #end){	
+				bitmap.getSurface();
+				bitmap.disposeImage();
+				bitmap.image.data = null;
+				bitmap.image = null;
+				bitmap.readable = true;
+			}
 		}
 
 		var graph:FlxGraphic = FlxGraphic.fromBitmapData(bitmap, false, key);

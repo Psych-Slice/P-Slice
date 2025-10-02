@@ -52,9 +52,9 @@ class FlxPartialSound
 	{
 		var promise:Promise<Sound> = new Promise<Sound>();
 
-		if (CacheSystem.currentTrackedSounds.exists(path + ".partial-" + rangeStart + "-" + rangeEnd))
+		if (Assets.cache.hasSound(path + ".partial-" + rangeStart + "-" + rangeEnd))
 		{
-			promise.complete(CacheSystem.currentTrackedSounds.get(path + ".partial-" + rangeStart + "-" + rangeEnd));
+			promise.complete(Assets.cache.getSound(path + ".partial-" + rangeStart + "-" + rangeEnd));
 			return promise;
 		}
 
@@ -86,7 +86,7 @@ class FlxPartialSound
 
 
 						var snd = Sound.fromAudioBuffer(audioBuffer);
-						CacheSystem.currentTrackedSounds.set(path + ".partial-" + rangeStart + "-" + rangeEnd, snd);
+						Assets.cache.setSound(path + ".partial-" + rangeStart + "-" + rangeEnd, Sound.fromAudioBuffer(audioBuffer));
 						PartialSoundMetadata.instance.set(path + rangeStart, {kbps:mp3Data.kbps, introOffsetMs:mp3Data.introLengthMs});
 						promise.complete(snd);
 
@@ -104,7 +104,7 @@ class FlxPartialSound
 							fullBytes.blit(cleanIntroBytes.length, cleanFullBytes, 0, cleanFullBytes.length);
 
 							audioBuffer = parseBytesOgg(fullBytes, true);
-							CacheSystem.currentTrackedSounds.set(path + ".partial-" + rangeStart + "-" + rangeEnd, Sound.fromAudioBuffer(audioBuffer));
+							Assets.cache.setSound(path + ".partial-" + rangeStart + "-" + rangeEnd, Sound.fromAudioBuffer(audioBuffer));
 							promise.complete(Sound.fromAudioBuffer(audioBuffer));
 						});
 
@@ -176,6 +176,10 @@ class FlxPartialSound
 							var oggFullBytes = Bytes.alloc(oggBytesIntro.length + fullAssOgg.length);
 							oggFullBytes.blit(0, oggBytesIntro, 0, oggBytesIntro.length);
 							oggFullBytes.blit(oggBytesIntro.length, fullAssOgg, 0, fullAssOgg.length);
+							@:privateAccess{
+								oggBytesIntro.b.resize(0);
+								fullAssOgg.b.resize(0);
+							}
 							input.close();
 
 							var audioBuffer:AudioBuffer = parseBytesOgg(oggFullBytes, true);
@@ -349,9 +353,12 @@ class FlxPartialSound
 		}
 
 		var byteLength = lastByte - firstByte;
+
 		var output = Bytes.alloc(byteLength + 1);
 		output.blit(0, data, firstByte, byteLength);
 
+		@:privateAccess
+		data.b.resize(0);
 		return output;
 	}
 
