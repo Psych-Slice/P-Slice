@@ -1,9 +1,14 @@
 package backend;
 
+
 import lime.app.Application;
 import lime.system.Display;
 import lime.system.System;
 import flixel.util.FlxColor;
+#if cpp
+import cpp.vm.Gc;
+import flixel.util.FlxStringUtil;
+#end
 
 #if (cpp && windows)
 @:buildXml('
@@ -87,10 +92,10 @@ class Native
 
 		#if cpp
 		fullContents += 'HXCPP-Immix:';
-		fullContents += '\n- Memory Used: ${cpp.vm.Gc.memInfo64(cpp.vm.Gc.MEM_INFO_USAGE)} bytes';
-		fullContents += '\n- Memory Reserved: ${cpp.vm.Gc.memInfo64(cpp.vm.Gc.MEM_INFO_RESERVED)} bytes';
-		fullContents += '\n- Memory Current Pool: ${cpp.vm.Gc.memInfo64(cpp.vm.Gc.MEM_INFO_CURRENT)} bytes';
-		fullContents += '\n- Memory Large Pool: ${cpp.vm.Gc.memInfo64(cpp.vm.Gc.MEM_INFO_LARGE)} bytes';
+		fullContents += '\n- Memory Used: ${FlxStringUtil.formatBytes(Gc.memInfo64(cpp.vm.Gc.MEM_INFO_USAGE))} bytes';
+		fullContents += '\n- Memory Reserved: ${FlxStringUtil.formatBytes(Gc.memInfo64(cpp.vm.Gc.MEM_INFO_RESERVED))} bytes';
+		fullContents += '\n- Memory Current Pool: ${FlxStringUtil.formatBytes(Gc.memInfo64(cpp.vm.Gc.MEM_INFO_CURRENT))} bytes';
+		fullContents += '\n- Memory Large Pool: ${FlxStringUtil.formatBytes(Gc.memInfo64(cpp.vm.Gc.MEM_INFO_LARGE))} bytes';
 		fullContents += '\n- HXCPP Debugger: ${#if HXCPP_DEBUGGER 'Enabled' #else 'Disabled' #end}';
 		fullContents += '\n- HXCPP Exp Generational Mode: ${#if HXCPP_GC_GENERATIONAL 'Enabled' #else 'Disabled' #end}';
 		fullContents += '\n- HXCPP Exp Moving GC: ${#if HXCPP_GC_MOVING 'Enabled' #else 'Disabled' #end}';

@@ -8,7 +8,7 @@ import mikolka.vslice.freeplay.backcards.BoyfriendCard;
 class FreeplayColorTweener
 {
 	private static final twnOptions:TweenOptions = {
-		startDelay: 0.2,
+		startDelay: 0.15,
 		ease: FlxEase.circIn
 	};
 	private var targetState:BoyfriendCard;
@@ -27,8 +27,9 @@ class FreeplayColorTweener
 		for (tw in tweens)
 		{
 			tw.cancel();
+			tw.destroy();
 		}
-		tweens = new List<FlxTween>();
+		tweens.clear();
 	}
 
 	public function tweenColor(newColor:FlxColor)

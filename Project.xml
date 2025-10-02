@@ -263,7 +263,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!--Used for crash handler-->
 	<section if="cpp">
 		<haxedef name="HXCPP_CHECK_POINTER" />
-		<!-- <haxedef name="HXCPP_GC_MOVING" unless="HXCPP_TRACY_MEMORY"/> -->
+		<haxedef name="HXCPP_GC_MOVING" unless="HXCPP_TRACY_MEMORY"/>
 		<haxedef name="HXCPP_STACK_LINE" />
 		<haxedef name="HXCPP_STACK_TRACE" />
 		<haxedef name="HXCPP_CATCH_SEGV" />

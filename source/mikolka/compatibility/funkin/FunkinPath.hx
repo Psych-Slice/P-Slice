@@ -39,8 +39,8 @@ class FunkinPath {
         return Paths.image(s);
     }
 
-    public static function getSparrowAtlas(s:String):FlxAtlasFrames {
-        return Paths.getSparrowAtlas(s);
+    public static function getSparrowAtlas(s:String,?allowGPU:Bool = true):FlxAtlasFrames {
+        return Paths.getSparrowAtlas(s,null,allowGPU);
     }
 
     public static function noGpuImage(s:String):FlxGraphic {

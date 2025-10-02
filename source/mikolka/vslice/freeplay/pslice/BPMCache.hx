@@ -1,5 +1,7 @@
 package mikolka.vslice.freeplay.pslice;
 
+import cpp.vm.Gc;
+
 //? no psych. uses sys
 class BPMCache {
     private static final DEFAULT_BPM_MAP:Map<String,Int> = [

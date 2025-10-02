@@ -132,14 +132,11 @@ class CacheSystem
 		str.add("-- OPENFL sounds --");
 		str.add("\n");
 		totalMemory = 0;
-		var cache = cast(openfl.utils.Assets.cache, AssetCache);
 		@:privateAccess
-		for (key => snd in cache.sound)
+		for (key => snd in currentTrackedSounds)
 		{
-			var inStored = currentTrackedSounds.exists(key) ? "S" : "-";
-			var inLocal = localTrackedAssets.contains(key) ? "L" : "-";
-			var memory = snd.bytesLoaded;
-			str.add('[ $inStored $inLocal ](${FlxStringUtil.formatBytes(memory)}) $key');
+			var memory = snd.__buffer.data.length;
+			str.add(' (${FlxStringUtil.formatBytes(memory)}) $key');
 			str.add("\n");
 			totalMemory += memory;
 		}

@@ -26,7 +26,7 @@ class DifficultySprite extends FlxSprite
 		var tex:FlxGraphic = null;
 		if (Paths.exists('images/freeplay/freeplayDifficulties/freeplay' + diffId + ".xml"))
 		{
-			frames = Paths.getSparrowAtlas('freeplay/freeplayDifficulties/freeplay' + diffId);
+			frames = Paths.getSparrowAtlas('freeplay/freeplayDifficulties/freeplay' + diffId,false);
 			animation.addByPrefix('idle', 'idle0', 24, true);
 			widthOffset = (frames.frames[0].frame.width / 2) - 20; // Animated offset
 			if (VsliceOptions.FLASHBANG)

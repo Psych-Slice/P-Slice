@@ -36,7 +36,8 @@ class MainMenuState extends MusicBeatState
 		if(stickerSubState) ModsHelper.clearStoredWithoutStickers();
 		else CacheSystem.clearStoredMemory();
 		#if debug
-		FlxG.console.registerFunction("dumpCache",CacheSystem.cacheStatus);
+		FlxG.console.registerFunction("dumpCache",CacheSystem.cacheStatus); 
+		FlxG.console.registerFunction("dumpSystem",backend.Native.buildSystemInfo);
 		#end
 		
 		ModsHelper.resetActiveMods();
