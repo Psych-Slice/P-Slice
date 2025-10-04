@@ -1,7 +1,5 @@
 package mikolka.vslice.ui;
 
-import flixel.system.debug.DebuggerUtil;
-import backend.CacheSystem;
 import mikolka.vslice.ui.mainmenu.DesktopMenuState;
 import mikolka.compatibility.ui.MainMenuHooks;
 import mikolka.compatibility.VsliceOptions;
@@ -35,7 +33,7 @@ class MainMenuState extends MusicBeatState
 	{
 		if(stickerSubState) ModsHelper.clearStoredWithoutStickers();
 		else CacheSystem.clearStoredMemory();
-		#if debug
+		#if (debug && !LEGACY_PSYCH)
 		FlxG.console.registerFunction("dumpCache",CacheSystem.cacheStatus); 
 		FlxG.console.registerFunction("dumpSystem",backend.Native.buildSystemInfo);
 		#end
