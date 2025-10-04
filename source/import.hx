@@ -39,6 +39,7 @@ import sys.*;
 import sys.io.*;
 #end
 
+import Paths as CacheSystem;
 //P-Slice
 import mikolka.funkin.*;
 import mikolka.compatibility.ui.*;

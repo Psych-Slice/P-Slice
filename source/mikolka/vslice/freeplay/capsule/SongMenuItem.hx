@@ -154,7 +154,7 @@ class SongMenuItem extends FlxSpriteGroup
 		ranking = new FreeplayRank(420, 41);
 		add(ranking);
 
-		blurredRanking = new FreeplayRank(ranking.x, ranking.y);
+		blurredRanking = new FreeplayRank(420, 41);
 		blurredRanking.shader = gaussianBlur;
 		add(blurredRanking);
 

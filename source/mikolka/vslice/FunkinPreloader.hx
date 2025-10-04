@@ -357,6 +357,7 @@ class FunkinPreloader extends FlxBasePreloader
 					// ? Some misc caching
 					// Cache assets list for future use
 					NativeFileSystem.openFlAssets = Assets.list();
+					openfl.utils.Assets.cache.enabled = false;
 					
 					#if (linux || ios)
 					FlxG.signals.preStateCreate.add(state ->{

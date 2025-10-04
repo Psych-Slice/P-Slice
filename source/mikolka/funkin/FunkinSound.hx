@@ -113,7 +113,6 @@ class FunkinSound extends FlxSound
 						}
 						
 						trace("Playing preview!");
-
 						FlxG.sound.playMusic(sound,0);
 						// #if (lime_vorbis && linux)
 						// prevSound?.close();

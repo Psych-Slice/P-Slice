@@ -1,5 +1,11 @@
 package mikolka.vslice.ui;
 
+#if LEGACY_PSYCH
+import Paths as CacheSystem;
+#else
+import flixel.system.debug.DebuggerUtil;
+import backend.CacheSystem;
+#end
 import mikolka.vslice.ui.mainmenu.DesktopMenuState;
 import mikolka.compatibility.ui.MainMenuHooks;
 import mikolka.compatibility.VsliceOptions;
@@ -20,11 +26,24 @@ class MainMenuState extends MusicBeatState
 	var bg:FlxSprite;
 	var magenta:FlxSprite;
 
+	var stickerSubState:Bool;
+
+	public function new(?stickers:Bool = false)
+	{
+		super();
+		stickerSubState = stickers;
+		
+	}
+
 	override function create()
 	{
-		ModsHelper.clearStoredWithoutStickers();
-		Paths.clearUnusedMemory();
-
+		if(stickerSubState) ModsHelper.clearStoredWithoutStickers();
+		else CacheSystem.clearStoredMemory();
+		#if (debug && !LEGACY_PSYCH)
+		FlxG.console.registerFunction("dumpCache",CacheSystem.cacheStatus); 
+		FlxG.console.registerFunction("dumpSystem",backend.Native.buildSystemInfo);
+		#end
+		
 		ModsHelper.resetActiveMods();
 
 		#if DISCORD_ALLOWED
@@ -79,6 +98,7 @@ class MainMenuState extends MusicBeatState
 		else
 		#end
 		new DesktopMenuState(this);
+		CacheSystem.clearUnusedMemory();
 	}
 
 	function goToOptions()
