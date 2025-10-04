@@ -27,6 +27,7 @@ class ClientPrefs {
 	public static var middleScroll:Bool = false;
 	public static var opponentStrums:Bool = true;
 	public static var showFPS:Bool = true;
+	public static var fpsRework:Bool = true;
 	public static var flashing:Bool = true;
 	public static var globalAntialiasing:Bool = true;
 	public static var noteSplashes:Bool = true;
@@ -76,6 +77,8 @@ class ClientPrefs {
 	public static var goodWindow:Int = 90;
 	public static var badWindow:Int = 135;
 	public static var safeFrames:Float = 10;
+
+	public static var cacheOnGPU:Bool = true;
 
 	public static var vsliceFreeplayColors:Bool = true;
 	public static var vsliceResults:Bool = true;
@@ -142,6 +145,7 @@ class ClientPrefs {
 		FlxG.save.data.middleScroll = middleScroll;
 		FlxG.save.data.opponentStrums = opponentStrums;
 		FlxG.save.data.showFPS = showFPS;
+		FlxG.save.data.fpsRework = fpsRework;
 		FlxG.save.data.flashing = flashing;
 		FlxG.save.data.globalAntialiasing = globalAntialiasing;
 		FlxG.save.data.noteSplashes = noteSplashes;
@@ -174,6 +178,8 @@ class ClientPrefs {
 		FlxG.save.data.pauseMusic = pauseMusic;
 		FlxG.save.data.checkForUpdates = checkForUpdates;
 		FlxG.save.data.comboStacking = comboStacking;
+
+		FlxG.save.data.cacheOnGPU = cacheOnGPU;
 
 		FlxG.save.data.vsliceFreeplayColors = vsliceFreeplayColors;
 		FlxG.save.data.vsliceResults = vsliceResults;
@@ -240,12 +246,12 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.showFPS != null) {
 			showFPS = FlxG.save.data.showFPS;
-			if(Main.fpsVar != null) {
-				Main.fpsVar.visible = showFPS;
-			}
 		}
 		if(FlxG.save.data.flashing != null) {
 			flashing = FlxG.save.data.flashing;
+		}
+		if(FlxG.save.data.fpsRework != null) {
+			fpsRework = FlxG.save.data.fpsRework;
 		}
 		if(FlxG.save.data.globalAntialiasing != null) {
 			globalAntialiasing = FlxG.save.data.globalAntialiasing;
@@ -339,6 +345,9 @@ class ClientPrefs {
 			}
 		}
 		//P-slice
+		if(FlxG.save.data.cacheOnGPU != null) {
+			cacheOnGPU = FlxG.save.data.cacheOnGPU;
+		}
 		if(FlxG.save.data.vsliceFreeplayColors != null) {
 			vsliceFreeplayColors = FlxG.save.data.vsliceFreeplayColors;
 		}

@@ -17,6 +17,14 @@ class ArrayTools
     return true;
   }
 
+  public static function pushMany<T>(input:Array<T>, items:Array<T>):Array<T>
+  {
+    for(x in items){
+      input.push(x);
+    }
+    return input;
+  }
+
   /**
    * Remove all elements from the array, without creating a new array.
    * @param array The array to clear.

@@ -357,6 +357,12 @@ class FunkinPreloader extends FlxBasePreloader
 					// ? Some misc caching
 					// Cache assets list for future use
 					NativeFileSystem.openFlAssets = Assets.list();
+					
+					#if (linux || ios)
+					FlxG.signals.preStateCreate.add(state ->{
+						mikolka.funkin.custom.NativeFileSystem.excludePaths.resize(0);
+					});
+					#end
 
 					/*
 						// Make a future to retrieve the manifest
@@ -434,15 +440,15 @@ class FunkinPreloader extends FlxBasePreloader
 					//* FIles here won't be editable by mods
 					var assetsToCache:Array<String> = [
 						// "images/cursor-default.png",
-						#if TOUCH_CONTROLS_ALLOWED
-						'mobile/images/touchpad/bg.png', 'mobile/images/touchpad/A.png', 'mobile/images/touchpad/B.png', 'mobile/images/touchpad/BACK.png',
-						'mobile/images/touchpad/PAUSE.png', 'mobile/images/touchpad/X.png', 'mobile/images/touchpad/Y.png', 'mobile/images/touchpad/UP.png',
-						'mobile/images/touchpad/DOWN.png', 'mobile/images/touchpad/LEFT.png', 'mobile/images/touchpad/RIGHT.png',
-						#end
-						"images/fonts/capsule-text.png",
-						"images/fonts/freeplay-clear.png",
-						"images/charSelect/lockedChill/spritemap1.png",
-						"images/freeplay/albumRoll/volume4.png" // "images/ui/cursor.png"
+						// #if TOUCH_CONTROLS_ALLOWED
+						// 'mobile/images/touchpad/bg.png', 'mobile/images/touchpad/A.png', 'mobile/images/touchpad/B.png', 'mobile/images/touchpad/BACK.png',
+						// 'mobile/images/touchpad/PAUSE.png', 'mobile/images/touchpad/X.png', 'mobile/images/touchpad/Y.png', 'mobile/images/touchpad/UP.png',
+						// 'mobile/images/touchpad/DOWN.png', 'mobile/images/touchpad/LEFT.png', 'mobile/images/touchpad/RIGHT.png',
+						// #end
+						// "images/fonts/capsule-text.png",
+						// "images/fonts/freeplay-clear.png",
+						// "images/charSelect/lockedChill/spritemap1.png",
+						// "images/freeplay/albumRoll/volume4.png" // "images/ui/cursor.png"
 					]; // Assets.listGraphics('core');
 
 					var promise = new Promise<Any>();
@@ -453,15 +459,16 @@ class FunkinPreloader extends FlxBasePreloader
 							try
 							{
 								
-								if (Paths.cacheBitmap(item) != null)
-								{
-									#if debug trace("Cached: " + item); #end
-									Paths.excludeAsset(item);
-								}
-								else
-								{
-									trace("Failed to cache: " + item);
-								}
+								CacheSystem.excludeAsset(item);
+								// if (CacheSystem.loadBitmap(item) != null)
+								// {
+								// 	#if debug trace("Cached: " + item); #end
+								// 	CacheSystem.excludeAsset(item);
+								// }
+								// else
+								// {
+								// 	trace("Failed to cache: " + item);
+								// }
 							}
 							catch (x:Exception)
 								trace("Exception when caching: " + x.message);

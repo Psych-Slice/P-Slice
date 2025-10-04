@@ -1,11 +1,14 @@
 package mikolka.funkin.players;
 
+import mikolka.compatibility.ModsHelper;
 import haxe.Json;
 import mikolka.funkin.players.PlayerData;
 import mikolka.compatibility.funkin.FunkinPath;
 
 using mikolka.funkin.custom.FunkinTools;
 using StringTools;
+using mikolka.funkin.utils.ArrayTools;
+
 //TODO softcode this soon
 class PlayerRegistry extends PsliceRegistry{
     public static var instance:PlayerRegistry = new PlayerRegistry();
@@ -37,7 +40,22 @@ class PlayerRegistry extends PsliceRegistry{
     
     // return ALL characters avaliable (from current mod)
     public function listEntryIds():Array<String> {
-        return listJsons();
+        if(ModsHelper.getActiveMod() == ""){
+            var allJsons:Array<String> = [];
+            var registry_mods = ModsHelper.getModsWithPlayersRegistry();
+            var globalMods = ModsHelper.getGlobalMods().filter(s -> registry_mods.contains(s));
+            for(mod in globalMods){
+                ModsHelper.loadModDir(mod);
+                allJsons.pushMany(listJsons());
+            }
+            ModsHelper.loadModDir("");
+
+            var basedCharFiles = NativeFileSystem.readDirectory("assets/shared/registry/players");
+            allJsons.pushMany(basedCharFiles
+                .filter(s -> s.endsWith(".json")).map(s -> s.substr(0,s.length-5)));
+            return allJsons;
+        }
+        else return listJsons();
     }
     // This is only used to check if we should allow the player to open charSelect
     public function countUnlockedCharacters():Int {

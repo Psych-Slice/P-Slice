@@ -17,6 +17,9 @@ class ModsHelper {
 	public inline static function getActiveMod():String {
 		return Paths.currentModDirectory;
 	}
+	public inline static function getGlobalMods():Array<String> {
+		return Paths.getGlobalMods();
+	}
 	public inline static function resetActiveMods() {
 		#if MODS_ALLOWED
 		Paths.pushGlobalMods();
@@ -66,7 +69,15 @@ class ModsHelper {
 		) Paths.currentTrackedAssets.set(key,val);
 		}
 		Paths.clearStoredMemory();
-		Paths.currentTrackedAssets.clear();
+		cacheStickersToContext();
+	}
+		public static function cacheStickersToContext() {
+		for (key => val in Paths.currentTrackedAssets){
+			if(	key.toLowerCase().contains("transitionswag") || 
+				key.contains("bg_graphic_") ||
+				key == "images/justBf.png"
+			) Paths.localTrackedAssets.push(key);
+		}
 	}
 	#if sys
 	public inline static function collectVideos():String{

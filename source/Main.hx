@@ -1,7 +1,7 @@
 package;
 
 import mikolka.GameBorder;
-import mikolka.vslice.components.MemoryCounter;
+import mikolka.vslice.components.DebugDisplay.FunkinDebugDisplay;
 import mikolka.vslice.components.crash.Logger;
 import flixel.FlxGame;
 import flixel.FlxState;
@@ -37,8 +37,7 @@ class Main extends Sprite
 	var framerate:Int = 60; // How many frames per second the game should run at.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
-	public static var fpsVar:FPS;
-	public static var memoryCounter:MemoryCounter;
+	public static var debugDisplay:FunkinDebugDisplay;
 	public static var border:GameBorder;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
@@ -147,36 +146,19 @@ class Main extends Sprite
     	game._customSoundTray = mikolka.vslice.components.FunkinSoundTray;
 		addChild(game);
 		
-		fpsVar = new FPS(10, 3, 0xFFFFFF);
-		#if mobile
-		FlxG.game.addChild(fpsVar);
-	  	#else
-		#if !debug 
-		  var border = new GameBorder();
-		  addChild(border);
-		  Lib.current.stage.window.onResize.add(border.updateGameSize);
-	  	#end
-		addChild(fpsVar);
-		#end
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
-		if (fpsVar != null)
-		{
-			fpsVar.visible = ClientPrefs.showFPS;
-		}
 
-		#if !html5
-		// TODO: disabled on HTML5 (todo: find another method that works?)
-		memoryCounter = new MemoryCounter(10, 13, 0xFFFFFF);
+		debugDisplay = new FunkinDebugDisplay(10, 10, 0xFFFFFF);
 		#if mobile
-		FlxG.game.addChild(memoryCounter);
-	  	#else
-		addChild(memoryCounter);
+		FlxG.game.addChild(debugDisplay);
+		#else
+		#if !debug
+		// var border = new GameBorder();
+		// addChild(border);
+		// Lib.current.stage.window.onResize.add(border.updateGameSize);
 		#end
-		if (memoryCounter != null)
-		{
-			memoryCounter.visible = ClientPrefs.showFPS;
-		}
+		addChild(debugDisplay);
 		#end
 		
 		#if (debug)

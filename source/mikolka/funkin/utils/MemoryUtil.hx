@@ -44,6 +44,59 @@ class MemoryUtil
     return result;
   }
 
+
+  public static function supportsTaskMem():Bool
+  {
+    #if ((cpp && (windows || ios || macos)) || linux || android)
+    return true;
+    #else
+    return false;
+    #end
+  }
+
+  public static function getTaskMemory():Float
+  {
+    #if (windows && cpp)
+    return external.windows.WinAPI.getProcessMemoryWorkingSetSize();
+    #elseif ((ios || macos) && cpp)
+    return external.apple.MemoryUtil.getCurrentProcessRss();
+    #elseif (linux || android)
+    try
+    {
+      #if cpp
+      final input:sys.io.FileInput = sys.io.File.read('/proc/${cpp.NativeSys.sys_get_pid()}/status', false);
+      #else
+      final input:sys.io.FileInput = sys.io.File.read('/proc/self/status', false);
+      #end
+
+      final regex:EReg = ~/^VmRSS:\s+(\d+)\s+kB/m;
+      var line:String;
+      do
+      {
+        if (input.eof())
+        {
+          input.close();
+          return 0.0;
+        }
+        line = input.readLine();
+      }
+      while (!regex.match(line));
+
+      input.close();
+
+      final kb:Float = Std.parseFloat(regex.matched(1));
+
+      if (kb != Math.NaN)
+      {
+        return kb * 1024.0;
+      }
+    }
+    catch (e:Dynamic) {}
+    #end
+
+    return 0.0;
+  }
+
   /**
    * Calculate the total memory usage of the program, in bytes.
    * @return Int
@@ -58,6 +111,10 @@ class MemoryUtil
     #end
   }
 
+    public static function getGCMemory():Float
+  {
+    return openfl.system.System.totalMemory;
+  }
   /**
    * Enable garbage collection if it was previously disabled.
    */

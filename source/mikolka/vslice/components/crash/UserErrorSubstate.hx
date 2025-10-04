@@ -164,15 +164,11 @@ class UserErrorSubstate extends MusicBeatSubstate
             ScreenshotPlugin.instance = null;
 			TitleState.closedState = false;
 			#if LEGACY_PSYCH
-			if (Main.fpsVar != null)
-				Main.fpsVar.visible = ClientPrefs.showFPS;
-			if (Main.memoryCounter != null)
-				Main.memoryCounter.visible = ClientPrefs.showFPS;
+			if (Main.debugDisplay != null)
+				Main.debugDisplay.visible = ClientPrefs.showFPS;
 			#else
-			if (Main.fpsVar != null)
-				Main.fpsVar.visible = ClientPrefs.data.showFPS;
-			if (Main.memoryCounter != null)
-				Main.memoryCounter.visible = ClientPrefs.data.showFPS;
+			if (Main.debugDisplay != null)
+				Main.debugDisplay.visible = ClientPrefs.data.showFPS;
 			#end
 			FlxG.sound.pause();
 			FlxTween.globalManager.clear();

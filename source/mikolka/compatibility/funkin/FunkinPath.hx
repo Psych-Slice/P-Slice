@@ -26,7 +26,7 @@ class FunkinPath {
         return Paths.image(s);
     }
 
-    public static function getSparrowAtlas(s:String):FlxAtlasFrames {
+    public static function getSparrowAtlas(s:String,cacheGPU:Bool = true):FlxAtlasFrames {
         return Paths.getSparrowAtlas(s);
     }
     public static function getPath(path:String,forceNative:Bool = false){
