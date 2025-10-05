@@ -125,72 +125,71 @@ class FreeplayHelpers
 			#if STRICT_LOADING_SCREEN
 			if (!backend.ClientPrefs.data.strictLoadingScreen)
 				LoadingState.prepareToSong();
-			{
 			#end
 
-				trace('CURRENT WEEK: ' + WeekData.getWeekFileName());
+			trace('CURRENT WEEK: ' + WeekData.getWeekFileName());
+		}
+		catch (e:Exception)
+		{
+			trace('ERROR! $e');
+			UserErrorSubstate.makeMessage("Failed to load a song", '${e.message}\n\n${e.details()}');
+			@:privateAccess {
+				state.busy = false;
+				state.letterSort.inputEnabled = true;
 			}
-			catch (e:Exception)
-			{
-				trace('ERROR! $e');
-				UserErrorSubstate.makeMessage("Failed to load a song", '${e.message}\n\n${e.details()}');
-				@:privateAccess {
-					state.busy = false;
-					state.letterSort.inputEnabled = true;
-				}
-				return;
-			}
-
-			#if !SHOW_LOADING_SCREEN FlxG.sound.music.stop(); #end
-			LoadingState.loadAndSwitchState(new PlayState(), true);
-
-			FlxG.sound.music.volume = 0;
-
-			#if (MODS_ALLOWED && DISCORD_ALLOWED)
-			DiscordClient.loadModRPC();
-			#end
+			return;
 		}
 
-		public static function weekIsLocked(name:String):Bool
-		{
-			var leWeek:WeekData = WeekData.weeksLoaded.get(name);
-			return (!leWeek.startUnlocked
-				&& leWeek.weekBefore != null
-				&& leWeek.weekBefore.length > 0
-				&& (!StoryMenuState.weekCompleted.exists(leWeek.weekBefore) || !StoryMenuState.weekCompleted.get(leWeek.weekBefore)));
-		}
+		#if !SHOW_LOADING_SCREEN FlxG.sound.music.stop(); #end
+		LoadingState.loadAndSwitchState(new PlayState(), true);
 
-		public static function exitFreeplay()
-		{
-			BPMCache.instance.clearCache();
-			Mods.loadTopMod();
-			FlxG.signals.postStateSwitch.dispatch(); // ? for the screenshot plugin to clean itself
-		}
+		FlxG.sound.music.volume = 0;
 
-		public inline static function openResetScoreState(state:FreeplayState, sng:FreeplaySongData, onScoreReset:() -> Void = null)
-		{
-			state.openSubState(new ResetScoreSubState(sng.songName, sng.loadAndGetDiffId(), sng.songCharacter, -1, onScoreReset));
-		}
+		#if (MODS_ALLOWED && DISCORD_ALLOWED)
+		DiscordClient.loadModRPC();
+		#end
+	}
 
-		public inline static function openGameplayChanges(state:FreeplayState)
-		{
-			state.openSubState(new GameplayChangersSubstate());
-		}
+	public static function weekIsLocked(name:String):Bool
+	{
+		var leWeek:WeekData = WeekData.weeksLoaded.get(name);
+		return (!leWeek.startUnlocked
+			&& leWeek.weekBefore != null
+			&& leWeek.weekBefore.length > 0
+			&& (!StoryMenuState.weekCompleted.exists(leWeek.weekBefore) || !StoryMenuState.weekCompleted.get(leWeek.weekBefore)));
+	}
 
-		public static function loadDiffsFromWeek(songData:FreeplaySongData)
-		{
-			Mods.currentModDirectory = songData.folder;
-			PlayState.storyWeek = songData.levelId; // TODO
-			Difficulty.loadFromWeek();
-		}
+	public static function exitFreeplay()
+	{
+		BPMCache.instance.clearCache();
+		Mods.loadTopMod();
+		FlxG.signals.postStateSwitch.dispatch(); // ? for the screenshot plugin to clean itself
+	}
 
-		public static function getDifficultyName()
-		{
-			return Difficulty.list[PlayState.storyDifficulty].toUpperCase();
-		}
+	public inline static function openResetScoreState(state:FreeplayState, sng:FreeplaySongData, onScoreReset:() -> Void = null)
+	{
+		state.openSubState(new ResetScoreSubState(sng.songName, sng.loadAndGetDiffId(), sng.songCharacter, -1, onScoreReset));
+	}
 
-		public static function updateConductorSongTime(time:Float)
-		{
-			Conductor.songPosition = time;
-		}
+	public inline static function openGameplayChanges(state:FreeplayState)
+	{
+		state.openSubState(new GameplayChangersSubstate());
+	}
+
+	public static function loadDiffsFromWeek(songData:FreeplaySongData)
+	{
+		Mods.currentModDirectory = songData.folder;
+		PlayState.storyWeek = songData.levelId; // TODO
+		Difficulty.loadFromWeek();
+	}
+
+	public static function getDifficultyName()
+	{
+		return Difficulty.list[PlayState.storyDifficulty].toUpperCase();
+	}
+
+	public static function updateConductorSongTime(time:Float)
+	{
+		Conductor.songPosition = time;
+	}
 }
