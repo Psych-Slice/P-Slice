@@ -48,7 +48,7 @@ class CacheSystem
 	}
 
 	/**
-	 * Removes every graphic ans sound not contained in the local context.
+	 * Removes every graphic and sound not contained in the local context.
 	 * This means, that if you've requested any cached assets in this context,
 	 * they won't be purged.
 	 */
@@ -199,7 +199,12 @@ class CacheSystem
 				bitmap.image.premultiplied = true;
 				bitmap.getTexture(FlxG.stage.context3D);
 			}
-			if(#if ATSC_SUPPORT !Std.isOfType(bitmap.__texture,openfl.display3D.textures.ASTCTexture) #else true #end){	
+			#if ATSC_SUPPORT
+			else if(!Std.isOfType(bitmap.__texture,openfl.display3D.textures.ASTCTexture)){
+
+			} 
+			#end
+			else{	
 				bitmap.getSurface();
 				bitmap.disposeImage();
 				bitmap.image.data = null;

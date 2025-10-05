@@ -39,8 +39,10 @@ class StoryModeHooks {
 				CacheSystem.freeGraphicsFromMemory();
 			}
 
-            #if STRICT_LOADING_SCREEN if(!backend.ClientPrefs.data.strictLoadingScreen) #end
+            #if STRICT_LOADING_SCREEN 
+            if(!backend.ClientPrefs.data.strictLoadingScreen) 
                 LoadingState.prepareToSong();
+            #end
 
 			new FlxTimer().start(0.8, function(tmr:FlxTimer)
 			{

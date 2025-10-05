@@ -74,7 +74,7 @@ class NativeFileSystem
 			#if ATSC_SUPPORT
 			if(sys_path.endsWith(".astc")){
 				var texture = openfl.Lib.current.stage.context3D.createASTCTexture(File.getBytes(sys_path));
-				return BitmapData.fromTexture(texture,false);
+				return BitmapData.fromTexture(texture);
 			}
 			else#end{
 				var result = BitmapData.fromFile(sys_path);

@@ -686,7 +686,6 @@ class PlayState extends MusicBeatState
 		#end
 
 		super.create();
-		CacheSystem.clearUnusedMemory();
 
 		cacheCountdown();
 		cachePopUpScore();

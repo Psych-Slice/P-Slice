@@ -115,29 +115,6 @@ class MemoryUtil
   {
     return openfl.system.System.totalMemoryNumber;
   }
-  /**
-   * Enable garbage collection if it was previously disabled.
-   */
-  public static function enable():Void
-  {
-    #if cpp
-    cpp.vm.Gc.enable(true);
-    #else
-    throw 'Not implemented!';
-    #end
-  }
-
-  /**
-   * Disable garbage collection entirely.
-   */
-  public static function disable():Void
-  {
-    #if cpp
-    cpp.vm.Gc.enable(false);
-    #else
-    throw 'Not implemented!';
-    #end
-  }
 
   /**
    * Manually perform garbage collection once.
