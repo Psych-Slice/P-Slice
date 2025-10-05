@@ -3,6 +3,7 @@ package psychlua;
 import flixel.FlxState;
 import backend.WeekData;
 import objects.Character;
+import objects.Note;
 
 import openfl.display.BlendMode;
 import Type.ValueType;
@@ -202,6 +203,21 @@ class LuaUtils
 	}
 
 	public static function setGroupStuff(leArray:Dynamic, variable:String, value:Dynamic, ?allowMaps:Bool = false) {
+		if (Std.isOfType(leArray, Note))
+		{
+			var note:Note = cast leArray;
+			switch(variable)
+			{
+				case "noteSplashDisabled": note.noteSplashData.disabled = value; return value;
+				case "noteSplashTexture": note.noteSplashData.texture = value; return value;
+				case "noteSplashUseGlobalShader": note.noteSplashData.useGlobalShader = value; return value;
+				case "noteSplashR": note.noteSplashData.r = value; return value;
+				case "noteSplashG": note.noteSplashData.g = value; return value;
+				case "noteSplashB": note.noteSplashData.b = value; return value;
+				case "noteSplashA": note.noteSplashData.a = value; return value;
+			}
+		}
+
 		var split:Array<String> = variable.split('.');
 		if(split.length > 1) {
 			var obj:Dynamic = Reflect.getProperty(leArray, split[0]);
@@ -215,7 +231,22 @@ class LuaUtils
 		else Reflect.setProperty(leArray, variable, value);
 		return value;
 	}
-	public static function getGroupStuff(leArray:Dynamic, variable:String, ?allowMaps:Bool = false) {
+	public static function getGroupStuff(leArray:Dynamic, variable:String, ?allowMaps:Bool = false):Any {
+		if (Std.isOfType(leArray, Note))
+		{
+			var note:Note = cast leArray;
+			switch(variable)
+			{
+				case "noteSplashDisabled": return note.noteSplashData.disabled;
+				case "noteSplashTexture": return note.noteSplashData.texture;
+				case "noteSplashUseGlobalShader": return note.noteSplashData.useGlobalShader;
+				case "noteSplashR": return note.noteSplashData.r;
+				case "noteSplashG": return note.noteSplashData.g;
+				case "noteSplashB": return note.noteSplashData.b;
+				case "noteSplashA": return note.noteSplashData.a;
+			}
+		}
+
 		var split:Array<String> = variable.split('.');
 		if(split.length > 1) {
 			var obj:Dynamic = Reflect.getProperty(leArray, split[0]);

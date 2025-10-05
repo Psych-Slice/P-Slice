@@ -6,7 +6,7 @@ class CharSelectPlayer extends FlxAtlasSprite
 {
   public function new(x:Float, y:Float)
   {
-    super(x, y, "charSelect/bfChill");
+    super(x, y, null);
 
     onAnimationComplete.add(function(animLabel:String) { //? changed the hook here
       switch (animLabel)
