@@ -97,10 +97,10 @@ class Native
 		fullContents += '\n- Memory Current Pool: ${FlxStringUtil.formatBytes(Gc.memInfo64(cpp.vm.Gc.MEM_INFO_CURRENT))} bytes';
 		fullContents += '\n- Memory Large Pool: ${FlxStringUtil.formatBytes(Gc.memInfo64(cpp.vm.Gc.MEM_INFO_LARGE))} bytes';
 		fullContents += '\n- HXCPP Debugger: ${#if HXCPP_DEBUGGER 'Enabled' #else 'Disabled' #end}';
-		fullContents += '\n- HXCPP Exp Generational Mode: ${#if HXCPP_GC_GENERATIONAL 'Enabled' #else 'Disabled' #end}';
+		fullContents += '\n- HXCPP Exp Generational GC: ${#if HXCPP_GC_GENERATIONAL 'Enabled' #else 'Disabled' #end}';
 		fullContents += '\n- HXCPP Exp Moving GC: ${#if HXCPP_GC_MOVING 'Enabled' #else 'Disabled' #end}';
-		fullContents += '\n- HXCPP Exp Moving GC: ${#if HXCPP_GC_DYNAMIC_SIZE 'Enabled' #else 'Disabled' #end}';
-		fullContents += '\n- HXCPP Exp Moving GC: ${#if HXCPP_GC_BIG_BLOCKS 'Enabled' #else 'Disabled' #end}';
+		fullContents += '\n- HXCPP Exp Dynamic size GC: ${#if HXCPP_GC_DYNAMIC_SIZE 'Enabled' #else 'Disabled' #end}';
+		fullContents += '\n- HXCPP Exp Big blocks GC: ${#if HXCPP_GC_BIG_BLOCKS 'Enabled' #else 'Disabled' #end}';
 		fullContents += '\n- HXCPP Debug Link: ${#if HXCPP_DEBUG_LINK 'Enabled' #else 'Disabled' #end}';
 		fullContents += '\n- HXCPP Stack Trace: ${#if HXCPP_STACK_TRACE 'Enabled' #else 'Disabled' #end}';
 		fullContents += '\n- HXCPP Stack Trace Line Numbers: ${#if HXCPP_STACK_LINE 'Enabled' #else 'Disabled' #end}';
@@ -108,6 +108,7 @@ class Native
 		fullContents += '\n- HXCPP Profiler: ${#if HXCPP_PROFILER 'Enabled' #else 'Disabled' #end}';
 		fullContents += '\n- HXCPP Local Telemetry: ${#if HXCPP_TELEMETRY 'Enabled' #else 'Disabled' #end}';
 		fullContents += '\n- HXCPP C++11: ${#if HXCPP_CPP11 'Enabled' #else 'Disabled' #end}';
+		fullContents += '\n- HXCPP C++17: ${#if HXCPP_CPP17 'Enabled' #else 'Disabled' #end}';
 		fullContents += '\n- Source Annotation: ${#if annotate_source 'Enabled' #else 'Disabled' #end}';
 		#else
 		var result:String = 'Unknown GC';

@@ -470,11 +470,7 @@ class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler
 
 			var characterPath:String = 'characters/$intended.json';
 			var path:String = Paths.getPath(characterPath, TEXT, null, true);
-			#if MODS_ALLOWED
 			if (NativeFileSystem.exists(path))
-			#else
-			if (Assets.exists(path))
-			#end
 			{
 				_char = intended;
 				check_player.checked = character.isPlayer;
@@ -1251,6 +1247,15 @@ class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler
 		/////////////
 		// bg data //
 		/////////////
+		#if BASE_GAME_FILES
+		var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
+			add(bg);
+
+			var stageFront:BGSprite = new BGSprite('stagefront', -650, 600, 0.9, 0.9);
+			stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
+			stageFront.updateHitbox();
+			add(stageFront);
+		#else
 		if (Paths.fileExists(assetFolder, BINARY))
 		{
 			var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
@@ -1263,6 +1268,7 @@ class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler
 		}
 		else
 			camEditor.bgColor = 0xFF3e3040;
+		#end
 
 		dadPosition.set(100, 100);
 		bfPosition.set(770, 100);

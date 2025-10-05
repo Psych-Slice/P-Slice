@@ -68,6 +68,8 @@ class Main extends Sprite
 		#end
 
 		#if sys
+
+		//cpp.vm.Gc.setTargetFreeSpacePercentage(30);
 		Logger.startLogging();
 		trace("CWD IS " + StorageUtil.getStorageDirectory());
 		#end
