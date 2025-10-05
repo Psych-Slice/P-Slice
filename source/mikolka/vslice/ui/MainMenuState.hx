@@ -1,11 +1,5 @@
 package mikolka.vslice.ui;
 
-#if LEGACY_PSYCH
-import Paths as CacheSystem;
-#else
-import flixel.system.debug.DebuggerUtil;
-import backend.CacheSystem;
-#end
 import mikolka.vslice.ui.mainmenu.DesktopMenuState;
 import mikolka.compatibility.ui.MainMenuHooks;
 import mikolka.compatibility.VsliceOptions;
@@ -20,8 +14,8 @@ class MainMenuState extends MusicBeatState
 	#else
 	public static var psychEngineVersion:String = '0.6.3'; // This is also used for Discord RPC
 	#end
-	public static var pSliceVersion:String = '3.3.1';
-	public static var funkinVersion:String = '0.7.4'; // Version of funkin' we are emulationg
+	public static var pSliceVersion:String = '3.4';
+	public static var funkinVersion:String = '0.7.6'; // Version of funkin' we are emulationg
 
 	var bg:FlxSprite;
 	var magenta:FlxSprite;
