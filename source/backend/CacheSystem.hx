@@ -1,5 +1,6 @@
 package backend;
 
+import cpp.vm.Gc;
 import openfl.utils.AssetCache;
 import flixel.util.FlxStringUtil;
 import flixel.system.FlxAssets;
@@ -81,9 +82,6 @@ class CacheSystem
 		}
 
 		System.gc();
-		#if cpp
-		cpp.NativeGc.compact();
-		#end
 	}
 
 	#if debug
@@ -167,8 +165,11 @@ class CacheSystem
 		// clear anything not in the tracked assets list
 		for (key in FlxG.bitmap._cache.keys())
 		{
-			if (!currentTrackedAssets.exists(key) && !dumpExclusions.contains(key))
+			if (!currentTrackedAssets.exists(key) && !dumpExclusions.contains(key)){
+
 				destroyGraphic(FlxG.bitmap.get(key));
+				
+			}
 		}
 
 		// flags everything to be cleared out next unused memory clear
@@ -200,17 +201,19 @@ class CacheSystem
 				bitmap.getTexture(FlxG.stage.context3D);
 			}
 			#if ATSC_SUPPORT
-			else if(!Std.isOfType(bitmap.__texture,openfl.display3D.textures.ASTCTexture)){
-
-			} 
+			if (!Std.isOfType(bitmap.__texture, openfl.display3D.textures.ASTCTexture))
+			{
 			#end
-			else{	
+
 				bitmap.getSurface();
 				bitmap.disposeImage();
 				bitmap.image.data = null;
 				bitmap.image = null;
 				bitmap.readable = true;
+
+			#if ATSC_SUPPORT
 			}
+			#end
 		}
 
 		var graph:FlxGraphic = FlxGraphic.fromBitmapData(bitmap, false, key);
@@ -223,11 +226,11 @@ class CacheSystem
 	}
 
 	/**
-	 * Loads and caches a sound from the given path.
-	 * @param file 
-	 * @param requestName 
-	 * @return Sound
-	 */
+		 * Loads and caches a sound from the given path.
+		 * @param file 
+		 * @param requestName 
+		 * @return Sound
+		 */
 	public static function loadSound(file:String, ?beepOnNull:Bool = true, requestName:String = ""):Sound
 	{
 		// trace('precaching sound: $file');
@@ -251,9 +254,9 @@ class CacheSystem
 	}
 
 	/**
-	 * I believe this ose is used to clear graphics cache while preserving graphics used by
-	 * the current state.
-	 */
+		 * I believe this ose is used to clear graphics cache while preserving graphics used by
+		 * the current state.
+		 */
 	public static function freeGraphicsFromMemory()
 	{
 		var protectedGfx:Array<FlxGraphic> = [];
@@ -309,9 +312,9 @@ class CacheSystem
 	}
 
 	/**
-	 * Destroys a given graphic. Make sure to dereference it as well to avoid any issues.
-	 * @param graphic 
-	 */
+		 * Destroys a given graphic. Make sure to dereference it as well to avoid any issues.
+		 * @param graphic 
+		 */
 	private inline static function destroyGraphic(graphic:FlxGraphic)
 	{
 		// free some gpu memory
@@ -335,11 +338,11 @@ class CacheSystem
 	}
 
 	/**
-	 * Finds a graphic in the given path. Can give either PNG or ASTC file path.
-	 * @param file 
-	 * @param parentfolder 
-	 * @return String
-	 */
+		 * Finds a graphic in the given path. Can give either PNG or ASTC file path.
+		 * @param file 
+		 * @param parentfolder 
+		 * @return String
+		 */
 	private static function getTexturePath(file:String, ?parentfolder:String):String
 	{
 		function astcModFolders(path:String)

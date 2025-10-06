@@ -74,12 +74,12 @@ class NativeFileSystem
 			#if ATSC_SUPPORT
 			if(sys_path.endsWith(".astc")){
 				var texture = openfl.Lib.current.stage.context3D.createASTCTexture(File.getBytes(sys_path));
-				return BitmapData.fromTexture(texture);
+				return BitmapData.fromTexture(texture,true);
 			}
-			else#end{
+			else{#end
 				var result = BitmapData.fromFile(sys_path);
 				return result;
-			}
+			#if ATSC_SUPPORT}#end
 		}
 		#end
 
@@ -115,18 +115,8 @@ class NativeFileSystem
 		if (sys_path != null)
 		{
 			var result = Sound.fromFile(sys_path);
-			#if nativesys_profile
-			var timeEnd = Sys.cpuTime() - timeStart;
-			if (timeEnd > 1.2)
-				trace('Getting system sound ${path} took: $timeEnd');
-			#end
 			return result;
 		}
-		#end
-		#if nativesys_profile
-		var timeEnd = Sys.cpuTime() - timeStart;
-		if (timeEnd > 1.2)
-			trace('Getting failed sound ${path} took: $timeEnd');
 		#end
 		return null;
 	}
@@ -166,9 +156,6 @@ class NativeFileSystem
 	public static function readDirectory(directory:String):Array<String>
 	{
 		var isModded = directory.startsWith("mods");
-		#if nativesys_profile
-		var timeStart = Sys.time();
-		#end
 
 		#if OPENFL_LOOKUP
 		if (#if NATIVE_LOOKUP !isModded #else true #end)
@@ -190,11 +177,7 @@ class NativeFileSystem
 					}
 				}
 			}
-			#if nativesys_profile
-			var timeEnd = Sys.cpuTime() - timeStart;
-			if (timeEnd > 1.2)
-				trace('Getting native directory ${directory} took: $timeEnd');
-			#end
+
 			if (dirs.length > 0)
 				return dirs;
 		}
@@ -205,11 +188,7 @@ class NativeFileSystem
 		if (testdir != null)
 		{
 			var result = FileSystem.readDirectory(testdir);
-			#if nativesys_profile
-			var timeEnd = Sys.cpuTime() - timeStart;
-			if (timeEnd > 1.2)
-				trace('Getting system directory ${directory} took: $timeEnd');
-			#end
+
 			return result;
 		}
 		#end

@@ -385,7 +385,6 @@ class LoadingState extends MusicBeatState
 
 	public static function checkLoaded():Bool
 	{
-		#if mac
 		for (key => bitmap in requestedBitmaps)
 		{
 			if (bitmap != null && CacheSystem.cacheBitmap(originalBitmapKeys.get(key), bitmap) != null)
@@ -394,7 +393,6 @@ class LoadingState extends MusicBeatState
 			else
 				trace('failed to cache image $key');
 		}
-		#end
 		requestedBitmaps.clear();
 		originalBitmapKeys.clear();
 		// trace('we checked if loaded');
@@ -898,21 +896,17 @@ class LoadingState extends MusicBeatState
 				var bitmap:BitmapData = null;
 				var file:String = Paths.getPath(requestKey, IMAGE);
 
+				#if ATSC_SUPPORT
+				if (Paths.fileExists(baseReqKey + '.astc', IMAGE))
+					return null;
+				#end
+
 				if (bitmap == null)
 					bitmap = NativeFileSystem.getBitmap(file);
 
 				if (bitmap != null)
 				{
 					mutex.acquire();
-
-					#if !mac
-					if (bitmap != null && CacheSystem.cacheBitmap(originalBitmapKeys.get(key), bitmap) != null)
-					{
-					} // trace('finished preloading image $key');
-					else
-						trace('failed to cache image $key');
-					#end
-
 					requestedBitmaps.set(file, bitmap);
 					originalBitmapKeys.set(file, requestKey);
 					mutex.release();

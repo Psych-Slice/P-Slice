@@ -33,6 +33,7 @@ class MainMenuState extends MusicBeatState
 	{
 		if(stickerSubState) ModsHelper.clearStoredWithoutStickers();
 		else CacheSystem.clearStoredMemory();
+		CacheSystem.clearUnusedMemory();
 		#if (debug && !LEGACY_PSYCH)
 		FlxG.console.registerFunction("dumpCache",CacheSystem.cacheStatus); 
 		FlxG.console.registerFunction("dumpSystem",backend.Native.buildSystemInfo);
@@ -92,7 +93,7 @@ class MainMenuState extends MusicBeatState
 		else
 		#end
 		new DesktopMenuState(this);
-		CacheSystem.clearUnusedMemory();
+		
 	}
 
 	function goToOptions()
