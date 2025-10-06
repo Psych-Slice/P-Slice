@@ -898,11 +898,6 @@ class LoadingState extends MusicBeatState
 				var bitmap:BitmapData = null;
 				var file:String = Paths.getPath(requestKey, IMAGE);
 
-				#if ATSC_SUPPORT
-				if (Paths.fileExists(baseReqKey + '.astc', IMAGE))
-					return null;
-				#end
-
 				if (bitmap == null)
 					bitmap = NativeFileSystem.getBitmap(file);
 
