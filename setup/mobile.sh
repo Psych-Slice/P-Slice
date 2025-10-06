@@ -9,7 +9,7 @@ haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio.git cbf91e2180fd2
 haxelib install tink_core 1.26.0
 haxelib git flxanimate https://github.com/Psych-Slice/FlxAnimate.git 82a720663f9ed6328d91a727c2b17501d91e3b11 --quiet --skip-dependencies
 haxelib git funkin.vis https://github.com/FunkinCrew/funkVis 22b1ce089dd924f15cdc4632397ef3504d464e90 --quiet --skip-dependencies
-haxelib git hxcpp https://github.com/Psych-Slice/hxcpp.git a6d5f5572dd4f6d8f636c62f5d1fb62045082fa1 --quiet --skip-dependencies
+haxelib git hxcpp https://github.com/Psych-Slice/hxcpp.git 45246fd23956e5cf15d1f8388b93e2aa602e8dae --quiet --skip-dependencies
 
 haxelib git openfl https://github.com/FunkinCrew/openfl.git c4fa1dcfc384f07bb537e08cae671f9507fe49e6 --quiet --skip-dependencies
 haxelib git lime https://github.com/Psych-Slice/lime-mobile.git --quiet # tracks lime 8.2.2
