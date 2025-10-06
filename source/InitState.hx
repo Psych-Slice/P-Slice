@@ -65,6 +65,17 @@ class InitState extends MusicBeatState
 		//* FIRST INIT! iNITIALISE IMPORTED PLUGINS
 		ScreenshotPlugin.initialize();
 
+		#if desktop
+			if (!Discord.DiscordClient.isInitialized)
+			{
+				Discord.DiscordClient.initialize();
+				Application.current.onExit.add(function(exitCode)
+				{
+					Discord.DiscordClient.shutdown();
+				});
+			}
+			#end
+			
 		if (FlxG.save.data.flashing == null)
 		{
 			controls.isInSubstate = false;
@@ -79,16 +90,6 @@ class InitState extends MusicBeatState
         #end
 		else
 		{
-			#if desktop
-			if (!Discord.DiscordClient.isInitialized)
-			{
-				Discord.DiscordClient.initialize();
-				Application.current.onExit.add(function(exitCode)
-				{
-					Discord.DiscordClient.shutdown();
-				});
-			}
-			#end
 			new FlxTimer().start(0.5, function(tmr:FlxTimer)
 			{
 				#if FREEPLAY

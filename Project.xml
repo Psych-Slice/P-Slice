@@ -51,6 +51,7 @@
 	<define name="LEGACY_PSYCH"/>
 	<define name="MODS_ALLOWED" if="desktop || mobile" />
 	<define name="LUA_ALLOWED" if="cpp" />
+	<define name="discord_rpc" if="desktop" />
 	<define name="ACHIEVEMENTS_ALLOWED" />
 	<define name="VIDEOS_ALLOWED" if="desktop || mobile" unless="32bits"/>
 	<define name="COPYSTATE_ALLOWED" if="MODS_ALLOWED mobile"/>
