@@ -266,6 +266,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 		<haxedef name="HXCPP_GC_MOVING" unless="HXCPP_TRACY_MEMORY"/>
 		<haxedef name="HXCPP_STACK_LINE" />
 		<haxedef name="HXCPP_STACK_TRACE" />
+		<haxedef name="HXCPP_CPP17" />
 		<haxedef name="HXCPP_CATCH_SEGV" />
 	</section>
 	<section if="ios">
