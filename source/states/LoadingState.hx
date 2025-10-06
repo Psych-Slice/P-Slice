@@ -385,14 +385,16 @@ class LoadingState extends MusicBeatState
 
 	public static function checkLoaded():Bool
 	{
-		// for (key => bitmap in requestedBitmaps)
-		// {
-		// 	if (bitmap != null && CacheSystem.cacheBitmap(originalBitmapKeys.get(key), bitmap) != null)
-		// 	{
-		// 	} // trace('finished preloading image $key');
-		// 	else
-		// 		trace('failed to cache image $key');
-		// }
+		#if mac
+		for (key => bitmap in requestedBitmaps)
+		{
+			if (bitmap != null && CacheSystem.cacheBitmap(originalBitmapKeys.get(key), bitmap) != null)
+			{
+			} // trace('finished preloading image $key');
+			else
+				trace('failed to cache image $key');
+		}
+		#end
 		requestedBitmaps.clear();
 		originalBitmapKeys.clear();
 		// trace('we checked if loaded');
@@ -788,9 +790,10 @@ class LoadingState extends MusicBeatState
 			{
 				trace('ERROR! fail on preloading $traceData: $e');
 			}
-			// mutex.acquire();
+			mutex.acquire();
 			loaded++;
-			// mutex.release();
+			trace('$loaded/$loadMax assets loaded');
+			mutex.release();
 		});
 	}
 
@@ -907,11 +910,13 @@ class LoadingState extends MusicBeatState
 				{
 					mutex.acquire();
 
+					#if !mac
 					if (bitmap != null && CacheSystem.cacheBitmap(originalBitmapKeys.get(key), bitmap) != null)
 					{
 					} // trace('finished preloading image $key');
 					else
 						trace('failed to cache image $key');
+					#end
 
 					requestedBitmaps.set(file, bitmap);
 					originalBitmapKeys.set(file, requestKey);
