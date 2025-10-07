@@ -81,7 +81,10 @@ class CacheSystem
 			}
 		}
 
-		System.gc();
+		// System.gc();
+		// #if cpp
+		// cpp.NativeGc.compact();
+		// #end
 	}
 
 	#if debug
