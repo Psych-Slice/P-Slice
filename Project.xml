@@ -190,6 +190,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<haxelib name="flixel-addons" version="3.3.2"/>
 	<haxelib name="hxcpp"/>
 	<haxelib name="extension-haptics" if="mobile"/>
+	<haxelib name="extension-androidtools" if="android"/>
 	<haxelib name="tjson" version="1.4.0"/>
 	<haxelib name="grig.audio" />
 	<haxelib name="funkin.vis" />

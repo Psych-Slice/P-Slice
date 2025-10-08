@@ -317,7 +317,7 @@ class Main extends Sprite
 		#if mobile
 		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
 		lime.system.System.allowScreenTimeout = ClientPrefs.data.screensaver;
-		Application.current.window.vsync = ClientPrefs.data.vsync;
+		//Application.current.window.vsync = ClientPrefs.data.vsync;
 		#end
 
 		// shader coords fix

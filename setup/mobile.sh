@@ -12,7 +12,7 @@ haxelib git funkin.vis https://github.com/FunkinCrew/funkVis 22b1ce089dd924f15cd
 haxelib git hxcpp https://github.com/Psych-Slice/hxcpp.git e48576506a270237ec2ec6501c0bedbd03034af1 --quiet --skip-dependencies
 
 haxelib git openfl https://github.com/FunkinCrew/openfl.git c4fa1dcfc384f07bb537e08cae671f9507fe49e6 --quiet --skip-dependencies
-haxelib git lime https://github.com/Psych-Slice/lime-mobile.git --quiet # tracks lime 8.2.2
+haxelib git lime https://github.com/Psych-Slice/lime-pslice.git cd918c2b243383895c367893bfe97b4990e24d11 --quiet 
 
 haxelib install flixel-addons 3.3.2 --quiet --skip-dependencies
 haxelib install flixel-tools 1.5.1 --quiet --skip-dependencies
@@ -23,5 +23,6 @@ haxelib install tjson 1.4.0 --quiet
 haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc f9353b9edce10f4605d125dd1bda24ac36898bfb --quiet --skip-dependencies
 haxelib install hxvlc 2.2.2 --quiet --skip-dependencies
 haxelib install extension-haptics 1.0.4 --quiet --skip-dependencies
+haxelib install extension-androidtools 2.2.2 --quiet --skip-dependencies
 haxelib git linc_luajit https://github.com/Psych-Slice/linc_luajit-mobile.git --quiet
 echo Finished!
