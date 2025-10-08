@@ -55,7 +55,7 @@ class CacheSystem
 	 */
 	public static function clearUnusedMemory()
 	{
-		// clear non local assets in the tracked assets list
+				// clear non local assets in the tracked assets list
 		for (key in currentTrackedAssets.keys())
 		{
 			// if it is not currently contained within the used local assets
@@ -81,7 +81,7 @@ class CacheSystem
 			}
 		}
 
-		// System.gc();
+		System.gc();
 		// #if cpp
 		// cpp.NativeGc.compact();
 		// #end
@@ -322,7 +322,7 @@ class CacheSystem
 	{
 		// free some gpu memory
 		if (graphic != null && graphic.bitmap != null && graphic.bitmap.__texture != null)
-			graphic.bitmap.__texture.dispose();
+		graphic.bitmap.__texture.dispose();
 		FlxG.bitmap.remove(graphic);
 	}
 
