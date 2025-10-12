@@ -12,7 +12,7 @@ haxelib git hxcpp https://github.com/Psych-Slice/hxcpp.git e48576506a270237ec2ec
 
 haxelib git openfl https://github.com/FunkinCrew/openfl.git c4fa1dcfc384f07bb537e08cae671f9507fe49e6 --quiet --skip-dependencies
 
-haxelib git lime https://github.com/Psych-Slice/lime-pslice.git 52e3fd5f90bdc2530ff79b782daa567532230ed0 --quiet 
+haxelib git lime https://github.com/Psych-Slice/lime-pslice.git ea1ae6aad3a92e73d2fb662862dc7a66f08daf19 --quiet
 haxelib install flixel-addons 3.3.2 --quiet --skip-dependencies
 haxelib install flixel-tools 1.5.1 --quiet --skip-dependencies
 haxelib install hscript-iris 1.1.3 --quiet --skip-dependencies
