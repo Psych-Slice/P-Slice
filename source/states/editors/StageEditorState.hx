@@ -1,5 +1,6 @@
 package states.editors;
 
+import states.editors.content.FileDialogHandler;
 import backend.StageData;
 import backend.PsychCamera;
 import objects.Character;
@@ -54,6 +55,8 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 	var outputTxt:FlxText;
 
 	var animationEditor:StageEditorAnimationSubstate;
+
+	var fileDialog:FileDialogHandler = new FileDialogHandler();
 	var unsavedProgress:Bool = false;
 
 	var selectionSprites:FlxSpriteGroup = new FlxSpriteGroup();
@@ -378,6 +381,10 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 				return;
 
 			var copiedSpr = new ModchartSprite();
+
+			if(spr.type == "square") copiedSpr.makeGraphic(1,1,0xFFFFFFFF);
+			else copiedSpr.graphic = spr.sprite.graphic;
+
 			var copiedMeta:StageEditorMetaSprite = new StageEditorMetaSprite(null, copiedSpr);
 			for (field in Reflect.fields(spr))
 			{
@@ -563,8 +570,8 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 			var meta:StageEditorMetaSprite = new StageEditorMetaSprite({type: 'square', scale: [200, 200], name: findUnoccupiedName()}, new ModchartSprite());
 			meta.sprite.makeGraphic(1, 1, FlxColor.WHITE);
 			meta.sprite.scale.set(200, 200);
-			meta.sprite.updateHitbox();
 			meta.sprite.screenCenter();
+			meta.sprite.updateHitbox();
 			insertMeta(meta);
 		});
 		btn.screenCenter(X);
@@ -1319,6 +1326,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 		alphaStepper.value = selected.alpha;
 
 		// Checkboxes
+		antialiasingCheckbox.visible = (selected.type != 'square');
 		antialiasingCheckbox.checked = selected.antialiasing;
 		flipXCheckBox.checked = selected.flipX;
 		flipYCheckBox.checked = selected.flipY;
@@ -1570,7 +1578,8 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 			FlxG.camera.zoom = Math.min(maxZoom, FlxG.camera.zoom + elapsed * FlxG.camera.zoom * shiftMult * ctrlMult);
 		else if (pressed_Q && FlxG.camera.zoom > minZoom)
 			FlxG.camera.zoom = Math.max(minZoom, FlxG.camera.zoom - elapsed * FlxG.camera.zoom * shiftMult * ctrlMult);
-
+		else if(FlxG.mouse.wheel != 0)
+			FlxG.camera.zoom = Math.max(minZoom, FlxG.camera.zoom - elapsed * FlxG.camera.zoom * shiftMult * ctrlMult * -(FlxG.mouse.wheel*1.3));
 		// SPRITE X/Y
 		var shiftMult:Float = 1;
 		var ctrlMult:Float = 1;
@@ -1656,7 +1665,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 			{
 				var spr = stageSprites[spriteListRadioGroup.labels.length - spriteListRadioGroup.checked - 1];
 				if (spr != null)
-					drawDebugOnCamera(spr.sprite);
+					drawDebugOnCamera(spr.sprite,spr.type == "square");
 			}
 		}
 
@@ -1721,7 +1730,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 		boyfriend.y += boyfriend.positionArray[1];
 	}
 
-	public function drawDebugOnCamera(spr:FlxSprite):Void
+	public function drawDebugOnCamera(spr:FlxSprite,usePureColorOffset:Bool = false):Void
 	{
 		if (spr == null || !spr.isOnScreen(FlxG.camera))
 			return;
@@ -1737,6 +1746,10 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 		{
 			sel.x = sprX;
 			sel.y = sprY;
+			if(usePureColorOffset){
+				sel.x -= sprHeight/2;
+				sel.y -= sprWidth/2;
+			}
 			switch (num)
 			{
 				case 0: // Top
@@ -1767,7 +1780,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 
 	function saveData()
 	{
-		if (_file != null)
+		if (!fileDialog.completed)
 			return;
 
 		saveObjectsToJson();
@@ -1778,52 +1791,35 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 		#else
 		if (data.length > 0)
 		{
-			_file = new FileReference();
-			_file.addEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onSaveComplete);
-			_file.addEventListener(Event.CANCEL, onSaveCancel);
-			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data, '$lastLoadedStage.json');
+			fileDialog.save('$lastLoadedStage.json',data,onSaveComplete,onSaveCancel,onSaveError);
 		}
 		#end
 	}
 
-	var _file:FileReference;
 
-	function onSaveComplete(_):Void
+	function onSaveComplete():Void
 	{
-		if (_file == null)
+		if (!fileDialog.completed)
 			return;
-		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
-		_file.removeEventListener(Event.CANCEL, onSaveCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-		_file = null;
 		FlxG.log.notice('Successfully saved file.');
 	}
 
 	/**
 	 * Called when the save file dialog is cancelled.
 	 */
-	function onSaveCancel(_):Void
+	function onSaveCancel():Void
 	{
-		if (_file == null)
+		if (!fileDialog.completed)
 			return;
-		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
-		_file.removeEventListener(Event.CANCEL, onSaveCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-		_file = null;
 	}
 
 	/**
 	 * Called if there is an error while saving the gameplay recording.
 	 */
-	function onSaveError(_):Void
+	function onSaveError():Void
 	{
-		if (_file == null)
+		if (!fileDialog.completed)
 			return;
-		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
-		_file.removeEventListener(Event.CANCEL, onSaveCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-		_file = null;
 		FlxG.log.error('Problem saving file');
 	}
 
@@ -1831,32 +1827,21 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 
 	public function loadImage(onNewSprite:String = null)
 	{
-		if (_file != null)
+		if (!fileDialog.completed)
 			return;
 
 		_makeNewSprite = onNewSprite;
-		_file = new FileReference();
-		_file.addEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
-		_file.addEventListener(Event.CANCEL, onLoadCancel);
-		_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-
+		
 		final filters = [new FileFilter('PNG (Image)', '*.png'), new FileFilter('XML (Sparrow)', '*.xml'), new FileFilter('JSON (Aseprite)', '*.json'), new FileFilter('TXT (Packer)', '*.txt')];
-		_file.browse(#if !mac filters #else [] #end);
+		fileDialog.open(null,"Select a graphic",#if !mac filters #else [] #end,onLoadComplete,onLoadCancel,onLoadError);
 	}
 
-	private function onLoadComplete(_):Void
+	private function onLoadComplete():Void
 	{
-		if (_file == null)
+		if (!fileDialog.completed)
 			return;
-		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
-		_file.removeEventListener(Event.CANCEL, onLoadCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-
 		#if sys
-		var fullPath:String = null;
-		@:privateAccess
-		if (_file.__path != null)
-			fullPath = _file.__path;
+		var fullPath:String = fileDialog.path;
 
 		function loadSprite(imageToLoad:String)
 		{
@@ -1869,7 +1854,6 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 				{
 					showOutput('No Animation file found with the same name of the image!', true);
 					_makeNewSprite = null;
-					_file = null;
 					return;
 				}
 				insertMeta(new StageEditorMetaSprite({type: _makeNewSprite, name: findUnoccupiedName()}, new ModchartSprite()));
@@ -1886,7 +1870,6 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 			}
 			_makeNewSprite = null;
 		}
-		_file = null;
 
 		if (fullPath != null)
 		{
@@ -1959,7 +1942,6 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 			showOutput('ERROR! File cannot be used, move it to "assets" and recompile.', true);
 			#end
 		}
-		_file = null;
 		#else
 		trace('File couldn\' t be loaded!You aren \'t on Desktop, are you?');
 		#end
@@ -1971,20 +1953,17 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 			return;
 
 		spr.image = imgPath;
-		updateSelectedUI();
+		updateSelectedUI();if (!fileDialog.completed)
+			return;
 	}
 
 	/**
 	 * Called when the save file dialog is cancelled.
 	 */
-	private function onLoadCancel(_):Void
+	private function onLoadCancel():Void
 	{
-		if (_file == null)
+		if (!fileDialog.completed)
 			return;
-		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
-		_file.removeEventListener(Event.CANCEL, onLoadCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file = null;
 
 		if (_makeNewSprite != null)
 		{
@@ -1997,14 +1976,10 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 	/**
 	 * Called if there is an error while saving the gameplay recording.
 	 */
-	private function onLoadError(_):Void
+	private function onLoadError():Void
 	{
-		if (_file == null)
+		if (!fileDialog.completed)
 			return;
-		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
-		_file.removeEventListener(Event.CANCEL, onLoadCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file = null;
 
 		if (_makeNewSprite != null)
 		{
