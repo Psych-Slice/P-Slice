@@ -78,22 +78,22 @@ class ScreenUtil
     // see: https://developer.apple.com/documentation/uikit/uiview/safeareainsets
     switch (displayOrientation)
     {
-      case DISPLAY_ORIENTATION_LANDSCAPE: // landscape
+      case LANDSCAPE: // landscape
         notchRect.width = leftInset + rightInset;
         notchRect.height = bottomInset - topInset;
         notchRect.y = topInset;
-      case DISPLAY_ORIENTATION_LANDSCAPE_FLIPPED: // landscape
+      case LANDSCAPE_FLIPPED: // landscape
         notchRect.width = leftInset + rightInset;
         notchRect.height = bottomInset - topInset;
         notchRect.y = topInset;
         notchRect.x = deviceWidth - notchRect.width; // move notchRect if we are flipped, notch is at the right of screen
-      case DISPLAY_ORIENTATION_PORTRAIT: // portrait
+      case PORTRAIT: // portrait
         notchRect.width = deviceWidth;
         notchRect.height = topInset;
-      case DISPLAY_ORIENTATION_PORTRAIT_FLIPPED: // portrait
+      case PORTRAIT_FLIPPED: // portrait
         notchRect.width = deviceWidth;
         notchRect.height = bottomInset;
-        notchRect.y = deviceHeight - notchRect.height; // move notchRect if we are flipped, the notch is at the bottom of
+        notchRect.y = deviceHeight - notchRect.height; // move notchRect if we are flipped, the notch is at the bottom of screen
       default: // display orientation unknown? perhaps this occurs on desktop
     }
     #end
