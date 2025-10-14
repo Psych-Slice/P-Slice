@@ -92,7 +92,7 @@ jobs:
           - name: iOS
             os: macos-15
             buildArgs: "ios -nosign -final"
-            exportPath: ios
+            exportPath: ios/PSliceEngine/haxe/build/Release-iphoneos-64/
             cacheLibrariesPath: P-Slice.1.0.mobile-cache
             artifactName: P-Slice.1.0.ios
             artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
