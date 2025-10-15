@@ -115,33 +115,4 @@ class MemoryUtil
   {
     return openfl.system.System.totalMemoryNumber;
   }
-
-  /**
-   * Manually perform garbage collection once.
-   * Should only be called from the main thread.
-   * @param major `true` to perform major collection, whatever that means.
-   */
-  public static function collect(major:Bool = false):Void
-  {
-    #if cpp
-    cpp.vm.Gc.run(major);
-    #else
-    throw 'Not implemented!';
-    #end
-  }
-
-  /**
-   * Perform major garbage collection repeatedly until less than 16kb of memory is freed in one operation.
-   * Should only be called from the main thread.
-   *
-   * NOTE: This is DIFFERENT from actual compaction,
-   */
-  public static function compact():Void
-  {
-    #if cpp
-    cpp.vm.Gc.compact();
-    #else
-    throw 'Not implemented!';
-    #end
-  }
 }

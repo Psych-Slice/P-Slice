@@ -4,7 +4,7 @@ import haxe.Exception;
 import mikolka.vslice.components.crash.UserErrorSubstate;
 import mikolka.vslice.freeplay.BGScrollingText;
 import mikolka.editors.substates.FreeplayEditSubstate;
-using mikolka.editors.PsychUIUtills;
+
 
 class FreeplayDialogBox extends PsychUIBox
 {

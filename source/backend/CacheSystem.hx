@@ -74,7 +74,7 @@ class CacheSystem
 				var snd = currentTrackedSounds.get(key);
 				currentTrackedSounds.remove(key);
 				// @:privateAccess(){
-				// 	snd.__buffer.data.buffer.b.resize(0);
+				// 	snd.__buffer.data.buffer.b.clear();
 				// 	snd.__buffer.data.buffer = null;
 				// 	snd.__buffer = null;
 				// }

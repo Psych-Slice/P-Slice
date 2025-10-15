@@ -203,7 +203,7 @@ class FileReferenceCustom extends FileReference
 
 			for (type in typeFilter)
 			{
-				filters.push(StringTools.replace(StringTools.replace(type.extension, "*.", ""), ";", ","));
+				filters.push(type.extension.replace("*.", "").replace(";", ","));
 			}
 
 			filter = filters.join(";");

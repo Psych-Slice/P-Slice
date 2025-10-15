@@ -5,9 +5,9 @@ import haxe.Json;
 import mikolka.funkin.players.PlayerData;
 import mikolka.compatibility.funkin.FunkinPath;
 
-using mikolka.funkin.custom.FunkinTools;
-using StringTools;
-using mikolka.funkin.utils.ArrayTools;
+
+
+
 
 //TODO softcode this soon
 class PlayerRegistry extends PsliceRegistry{

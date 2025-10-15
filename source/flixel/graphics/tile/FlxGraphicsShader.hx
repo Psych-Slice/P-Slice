@@ -110,11 +110,11 @@ class FlxGraphicsShader extends GraphicsShader
 			trace("Supported Gl version: "+version_str);
 			useNewerRendering = false;
 			#if lime_opengles
-				var version_part = StringTools.replace(version_str,"OpenGL ES GLSL ES ","");
-				var glslVersion = Std.parseInt(StringTools.replace(version_part,".",""));
+				var version_part = version_str.replace(,"OpenGL ES GLSL ES ","");
+				var glslVersion = Std.parseInt(version_part.replace(".",""));
 				useNewerRendering = glslVersion >= 300;
 			#else
-				var glslVersion = Std.parseInt(StringTools.replace(version_str.split(" ")[0],".",""));
+				var glslVersion = Std.parseInt(version_str.split(" ")[0].replace(".",""));
 				useNewerRendering = glslVersion >= 330;
 			#end
 			if(useNewerRendering){

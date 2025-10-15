@@ -105,7 +105,7 @@ class DJAnimPreview extends AnimPreview {
     public function saveAnimations() {
         @:privateAccess
         var charAnims = dj.getFreeplayDJData().animations;
-        charAnims.resize(0);
+        charAnims.clear();
         for(i in 0...anims.length){
             charAnims.push({
                 name: anims[i].readableName,

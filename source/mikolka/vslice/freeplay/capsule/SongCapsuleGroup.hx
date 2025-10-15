@@ -78,7 +78,7 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 			cap.songText.resetText();
 			cap.kill();
 		}
-		activeSongItems.resize(0);
+		activeSongItems.clear();
 		var recycledSongCards = findSongItems(songList);
 
 		randomCapsule.initPosition(FlxG.width, 0);

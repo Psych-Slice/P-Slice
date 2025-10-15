@@ -144,7 +144,7 @@ class FlxAtlasSprite extends PsychFlxAnimate
         var detected:Bool = false;
         for (entry in ignoreExclusionPref)
         {
-          if (StringTools.startsWith(id, entry))
+          if (id.startsWith(entry))
           {
             detected = true;
             break;

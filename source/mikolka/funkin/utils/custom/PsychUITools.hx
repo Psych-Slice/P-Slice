@@ -1,6 +1,6 @@
-package mikolka.editors;
+package mikolka.funkin.utils.custom;
 
-class PsychUIUtills {
+class PsychUITools {
     public static function makeLabel(ref:FlxSprite, text:String){
         return new FlxText(ref.x, ref.y - 13, 100, text);
     }

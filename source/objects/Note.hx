@@ -10,7 +10,7 @@ import objects.StrumNote;
 
 import flixel.math.FlxRect;
 
-using StringTools;
+
 
 typedef EventNote = {
 	strumTime:Float,

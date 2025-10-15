@@ -13,7 +13,6 @@ import openfl.net.FileReference;
 import openfl.events.IOErrorEvent;
 #end
 
-using mikolka.editors.PsychUIUtills;
 
 class CharSelectDialogBox extends PsychUIBox
 {

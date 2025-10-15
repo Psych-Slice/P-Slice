@@ -7,7 +7,7 @@ import openfl.events.UncaughtErrorEvent;
 import sys.io.File;
 #end
 
-using StringTools;
+
 using flixel.util.FlxArrayUtil;
 
 /**

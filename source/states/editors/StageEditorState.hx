@@ -1,25 +1,17 @@
 package states.editors;
 
+import states.editors.boxes.StageEditorAnimationSubstate;
+import states.editors.boxes.StageEditorMainBox;
 import states.editors.content.FileDialogHandler;
 import backend.StageData;
-import backend.PsychCamera;
 import objects.Character;
-import psychlua.LuaUtils;
 import flixel.FlxObject;
-import flixel.addons.display.FlxBackdrop;
-import flixel.addons.display.FlxGridOverlay;
-import flixel.math.FlxRect;
 import flixel.util.FlxDestroyUtil;
-import openfl.utils.Assets;
-import openfl.display.Sprite;
-import openfl.net.FileReference;
-import openfl.events.Event;
-import openfl.events.IOErrorEvent;
 import psychlua.ModchartSprite;
 import flash.net.FileFilter;
 import states.editors.content.Prompt;
-import states.editors.content.PreloadListSubState;
 
+@:allow(states.editors.boxes.StageEditorMainBox)
 class StageEditorState extends MusicBeatState implements PsychUIEventHandler.PsychUIEvent
 {
 	final minZoom = 0.1;
@@ -35,7 +27,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 	public var camHUD:FlxCamera;
 
 	var UI_stagebox:PsychUIBox;
-	var UI_box:PsychUIBox;
+	var UI_box:StageEditorMainBox;
 	var spriteList_box:PsychUIBox;
 	var stageSprites:Array<StageEditorMetaSprite> = [];
 
@@ -619,7 +611,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 
 	function editorUI()
 	{
-		UI_box = new PsychUIBox(FlxG.width - 225, 10, 200, 400, ['Meta', 'Data', 'Object']);
+		UI_box = new StageEditorMainBox(this);
 		UI_box.cameras = [camHUD];
 		UI_box.scrollFactor.set();
 		add(UI_box);
@@ -631,538 +623,10 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 		add(UI_stagebox);
 		UI_box.y += UI_stagebox.y + UI_stagebox.height;
 
-		addDataTab();
-		addObjectTab();
-		addMetaTab();
+
 		addStageTab();
 	}
 
-	var directoryDropDown:PsychUIDropDownMenu;
-	var uiInputText:PsychUIInputText;
-	var hideGirlfriendCheckbox:PsychUICheckBox;
-	var zoomStepper:PsychUINumericStepper;
-	var cameraSpeedStepper:PsychUINumericStepper;
-	var camDadStepperX:PsychUINumericStepper;
-	var camDadStepperY:PsychUINumericStepper;
-	var camGfStepperX:PsychUINumericStepper;
-	var camGfStepperY:PsychUINumericStepper;
-	var camBfStepperX:PsychUINumericStepper;
-	var camBfStepperY:PsychUINumericStepper;
-
-	function addDataTab()
-	{
-		var tab_group = UI_box.getTab('Data').menu;
-
-		var objX = 10;
-		var objY = 20;
-		tab_group.add(new FlxText(objX, objY - 18, 150, 'Compiled Assets:'));
-
-		var folderList:Array<String> = [''];
-		#if sys
-		for (folder in FileSystem.readDirectory('assets/'))
-			if (FileSystem.isDirectory('assets/$folder') && folder != 'shared' && !Mods.ignoreModFolders.contains(folder))
-				folderList.push(folder);
-		#end
-
-		var saveButton:PsychUIButton = new PsychUIButton(UI_box.width - 90, UI_box.height - 50, 'Save', function()
-		{
-			saveData();
-		});
-		tab_group.add(saveButton);
-
-		directoryDropDown = new PsychUIDropDownMenu(objX, objY, folderList, function(sel:Int, selected:String)
-		{
-			stageJson.directory = selected;
-			saveObjectsToJson();
-			FlxTransitionableState.skipNextTransIn = FlxTransitionableState.skipNextTransOut = true;
-			MusicBeatState.switchState(new StageEditorState(lastLoadedStage, stageJson));
-		});
-		directoryDropDown.selectedLabel = stageJson.directory;
-
-		objY += 50;
-		tab_group.add(new FlxText(objX, objY - 18, 100, 'UI Style:'));
-		uiInputText = new PsychUIInputText(objX, objY, 100, stageJson.stageUI != null ? stageJson.stageUI : '', 8);
-		uiInputText.onChange = function(old:String, cur:String) stageJson.stageUI = uiInputText.text;
-
-		objY += 30;
-		hideGirlfriendCheckbox = new PsychUICheckBox(objX, objY, 'Hide Girlfriend?', 100);
-		hideGirlfriendCheckbox.onClick = function()
-		{
-			stageJson.hide_girlfriend = hideGirlfriendCheckbox.checked;
-			gf.visible = !hideGirlfriendCheckbox.checked;
-			if (focusRadioGroup.checked > -1)
-			{
-				var point = focusOnTarget(focusRadioGroup.labels[focusRadioGroup.checked]);
-				camFollow.setPosition(point.x, point.y);
-			}
-		};
-		hideGirlfriendCheckbox.checked = !gf.visible;
-
-		objY += 50;
-		tab_group.add(new FlxText(objX, objY - 18, 100, 'Camera Offsets:'));
-
-		objY += 20;
-		tab_group.add(new FlxText(objX, objY - 18, 100, 'Opponent:'));
-
-		var cx:Float = 0;
-		var cy:Float = 0;
-		if (stageJson.camera_opponent != null && stageJson.camera_opponent.length > 1)
-		{
-			cx = stageJson.camera_opponent[0];
-			cy = stageJson.camera_opponent[0];
-		}
-		camDadStepperX = new PsychUINumericStepper(objX, objY, 50, cx, -10000, 10000, 0);
-		camDadStepperY = new PsychUINumericStepper(objX + 80, objY, 50, cy, -10000, 10000, 0);
-		camDadStepperX.onValueChange = camDadStepperY.onValueChange = function()
-		{
-			if (stageJson.camera_opponent == null)
-				stageJson.camera_opponent = [0, 0];
-			stageJson.camera_opponent[0] = camDadStepperX.value;
-			stageJson.camera_opponent[1] = camDadStepperY.value;
-			_updateCamera();
-		};
-
-		objY += 40;
-		var cx:Float = 0;
-		var cy:Float = 0;
-		if (stageJson.camera_girlfriend != null && stageJson.camera_girlfriend.length > 1)
-		{
-			cx = stageJson.camera_girlfriend[0];
-			cy = stageJson.camera_girlfriend[0];
-		}
-		tab_group.add(new FlxText(objX, objY - 18, 100, 'Girlfriend:'));
-		camGfStepperX = new PsychUINumericStepper(objX, objY, 50, cx, -10000, 10000, 0);
-		camGfStepperY = new PsychUINumericStepper(objX + 80, objY, 50, cy, -10000, 10000, 0);
-		camGfStepperX.onValueChange = camGfStepperY.onValueChange = function()
-		{
-			if (stageJson.camera_girlfriend == null)
-				stageJson.camera_girlfriend = [0, 0];
-			stageJson.camera_girlfriend[0] = camGfStepperX.value;
-			stageJson.camera_girlfriend[1] = camGfStepperY.value;
-			_updateCamera();
-		};
-
-		objY += 40;
-		var cx:Float = 0;
-		var cy:Float = 0;
-		if (stageJson.camera_boyfriend != null && stageJson.camera_boyfriend.length > 1)
-		{
-			cx = stageJson.camera_boyfriend[0];
-			cy = stageJson.camera_boyfriend[0];
-		}
-		tab_group.add(new FlxText(objX, objY - 18, 100, 'Boyfriend:'));
-		camBfStepperX = new PsychUINumericStepper(objX, objY, 50, cx, -10000, 10000, 0);
-		camBfStepperY = new PsychUINumericStepper(objX + 80, objY, 50, cy, -10000, 10000, 0);
-		camBfStepperX.onValueChange = camBfStepperY.onValueChange = function()
-		{
-			if (stageJson.camera_boyfriend == null)
-				stageJson.camera_boyfriend = [0, 0];
-			stageJson.camera_boyfriend[0] = camBfStepperX.value;
-			stageJson.camera_boyfriend[1] = camBfStepperY.value;
-			_updateCamera();
-		};
-
-		objY += 50;
-		tab_group.add(new FlxText(objX, objY - 18, 100, 'Camera Data:'));
-		objY += 20;
-		tab_group.add(new FlxText(objX, objY - 18, 100, 'Zoom:'));
-		zoomStepper = new PsychUINumericStepper(objX, objY, 0.05, stageJson.defaultZoom, minZoom, maxZoom, 2);
-		zoomStepper.onValueChange = function()
-		{
-			stageJson.defaultZoom = zoomStepper.value;
-			FlxG.camera.zoom = stageJson.defaultZoom;
-		};
-
-		tab_group.add(new FlxText(objX + 80, objY - 18, 100, 'Speed:'));
-		cameraSpeedStepper = new PsychUINumericStepper(objX + 80, objY, 0.1, stageJson.camera_speed != null ? stageJson.camera_speed : 1, 0, 10, 2);
-		cameraSpeedStepper.onValueChange = function()
-		{
-			stageJson.camera_speed = cameraSpeedStepper.value;
-			FlxG.camera.followLerp = 0.04 * stageJson.camera_speed;
-		};
-		FlxG.camera.followLerp = 0.04 * cameraSpeedStepper.value;
-
-		tab_group.add(hideGirlfriendCheckbox);
-		tab_group.add(camDadStepperX);
-		tab_group.add(camDadStepperY);
-		tab_group.add(camGfStepperX);
-		tab_group.add(camGfStepperY);
-		tab_group.add(camBfStepperX);
-		tab_group.add(camBfStepperY);
-		tab_group.add(zoomStepper);
-		tab_group.add(cameraSpeedStepper);
-
-		tab_group.add(uiInputText);
-		tab_group.add(directoryDropDown);
-	}
-
-	function _updateCamera()
-	{
-		if (focusRadioGroup.checked > -1)
-		{
-			var point = focusOnTarget(focusRadioGroup.labels[focusRadioGroup.checked]);
-			camFollow.setPosition(point.x, point.y);
-		}
-	}
-
-	var colorInputText:PsychUIInputText;
-	var nameInputText:PsychUIInputText;
-	var imgTxt:FlxText;
-
-	var scaleStepperX:PsychUINumericStepper;
-	var scaleStepperY:PsychUINumericStepper;
-	var scrollStepperX:PsychUINumericStepper;
-	var scrollStepperY:PsychUINumericStepper;
-	var angleStepper:PsychUINumericStepper;
-	var alphaStepper:PsychUINumericStepper;
-
-	var antialiasingCheckbox:PsychUICheckBox;
-	var flipXCheckBox:PsychUICheckBox;
-	var flipYCheckBox:PsychUICheckBox;
-	var lowQualityCheckbox:PsychUICheckBox;
-	var highQualityCheckbox:PsychUICheckBox;
-
-	function getSelected(blockReserved:Bool = true)
-	{
-		var selected:Int = spriteListRadioGroup.checked;
-		if (selected >= 0)
-		{
-			var spr = stageSprites[spriteListRadioGroup.labels.length - selected - 1];
-			if (spr != null && (!blockReserved || !StageData.reservedNames.contains(spr.type)))
-				return spr;
-		}
-		return null;
-	}
-
-	function addObjectTab()
-	{
-		var tab_group = UI_box.getTab('Object').menu;
-
-		var objX = 10;
-		var objY = 30;
-		tab_group.add(new FlxText(objX, objY - 18, 150, 'Name (for Lua/HScript):'));
-		nameInputText = new PsychUIInputText(objX, objY, 120, '', 8);
-		nameInputText.customFilterPattern = ~/[^a-zA-Z0-9_\-]*/g;
-		nameInputText.onChange = function(old:String, cur:String)
-		{
-			// change name
-			var selected = getSelected();
-			if (selected != null)
-			{
-				var changedName:String = nameInputText.text;
-				if (changedName.length < 1)
-				{
-					showOutput('Sprite name cannot be empty!', true);
-					return;
-				}
-
-				if (StageData.reservedNames.contains(changedName))
-				{
-					showOutput('To avoid conflicts, this name cannot be used!', true);
-					return;
-				}
-
-				for (basic in stageSprites)
-				{
-					if (selected != basic && basic.name == changedName)
-					{
-						showOutput('Name "$changedName" is already in use!', true);
-						return;
-					}
-				}
-
-				selected.name = changedName;
-				spriteListRadioGroup.checkedRadio.label = selected.name;
-				outputTime = 0;
-				outputTxt.alpha = 0;
-			}
-		};
-		tab_group.add(nameInputText);
-
-		objY += 35;
-		imgTxt = new FlxText(objX, objY - 15, 200, 'Image: ', 8);
-		var imgButton:PsychUIButton = new PsychUIButton(objX, objY, 'Change Image', function()
-		{
-			trace('attempt to load image');
-			loadImage();
-		});
-		tab_group.add(imgButton);
-		tab_group.add(imgTxt);
-
-		var animationsButton:PsychUIButton = new PsychUIButton(objX + 90, objY, 'Animations', function()
-		{
-			var selected = getSelected();
-			if (selected == null)
-				return;
-
-			if (selected.type != 'animatedSprite')
-			{
-				showOutput('Only Animated Sprites can hold Animation data.', true);
-				return;
-			}
-
-			destroySubStates = false;
-			persistentDraw = false;
-			animationEditor.target = selected;
-			unsavedProgress = true;
-			openSubState(animationEditor);
-		});
-		tab_group.add(animationsButton);
-
-		objY += 45;
-		tab_group.add(new FlxText(objX, objY - 18, 80, 'Color:'));
-		colorInputText = new PsychUIInputText(objX, objY, 80, 'FFFFFF', 8);
-		colorInputText.filterMode = ONLY_ALPHANUMERIC;
-		colorInputText.onChange = function(old:String, cur:String)
-		{
-			// change color
-			var selected = getSelected();
-			if (selected != null)
-				selected.color = colorInputText.text;
-		};
-		tab_group.add(colorInputText);
-
-		function updateScale()
-		{
-			// scale
-			var selected = getSelected();
-			if (selected != null)
-				selected.setScale(scaleStepperX.value, scaleStepperY.value);
-		}
-
-		objY += 45;
-		tab_group.add(new FlxText(objX, objY - 18, 100, 'Scale (X/Y):'));
-		scaleStepperX = new PsychUINumericStepper(objX, objY, 0.05, 1, 0.05, 10, 2);
-		scaleStepperY = new PsychUINumericStepper(objX + 70, objY, 0.05, 1, 0.05, 10, 2);
-		scaleStepperX.onValueChange = scaleStepperY.onValueChange = updateScale;
-		tab_group.add(scaleStepperX);
-		tab_group.add(scaleStepperY);
-
-		function updateScroll()
-		{
-			// scroll factor
-			var selected = getSelected();
-			if (selected != null)
-				selected.setScrollFactor(scrollStepperX.value, scrollStepperY.value);
-		}
-
-		objY += 40;
-		tab_group.add(new FlxText(objX, objY - 18, 150, 'Scroll Factor (X/Y):'));
-		scrollStepperX = new PsychUINumericStepper(objX, objY, 0.05, 1, 0, 10, 2);
-		scrollStepperY = new PsychUINumericStepper(objX + 70, objY, 0.05, 1, 0, 10, 2);
-		scrollStepperX.onValueChange = scrollStepperY.onValueChange = updateScroll;
-		tab_group.add(scrollStepperX);
-		tab_group.add(scrollStepperY);
-
-		objY += 40;
-		tab_group.add(new FlxText(objX, objY - 18, 80, 'Opacity:'));
-		alphaStepper = new PsychUINumericStepper(objX, objY, 0.1, 1, 0, 1, 2, true);
-		alphaStepper.onValueChange = function()
-		{
-			// alpha/opacity
-			var selected = getSelected();
-			if (selected != null)
-				selected.alpha = alphaStepper.value;
-		};
-		tab_group.add(alphaStepper);
-
-		antialiasingCheckbox = new PsychUICheckBox(objX + 90, objY, 'Anti-Aliasing', 80);
-		antialiasingCheckbox.onClick = function()
-		{
-			// antialiasing
-			var selected = getSelected();
-			if (selected != null)
-			{
-				if (selected.type != 'square')
-					selected.antialiasing = antialiasingCheckbox.checked;
-				else
-				{
-					antialiasingCheckbox.checked = false;
-					selected.antialiasing = false;
-				}
-			}
-		};
-		tab_group.add(antialiasingCheckbox);
-
-		objY += 40;
-		tab_group.add(new FlxText(objX, objY - 18, 80, 'Angle:'));
-		angleStepper = new PsychUINumericStepper(objX, objY, 10, 0, 0, 360, 0);
-		angleStepper.onValueChange = function()
-		{
-			// alpha/opacity
-			var selected = getSelected();
-			if (selected != null)
-				selected.angle = angleStepper.value;
-		};
-		tab_group.add(angleStepper);
-
-		function updateFlip()
-		{
-			// flip X and flip Y
-			var selected = getSelected();
-			if (selected != null)
-			{
-				if (selected.type != 'square')
-				{
-					selected.flipX = flipXCheckBox.checked;
-					selected.flipY = flipYCheckBox.checked;
-				}
-				else
-				{
-					flipXCheckBox.checked = flipYCheckBox.checked = false;
-					selected.flipX = selected.flipY = false;
-				}
-			}
-		}
-
-		objY += 25;
-		flipXCheckBox = new PsychUICheckBox(objX, objY, 'Flip X', 60);
-		flipXCheckBox.onClick = updateFlip;
-		flipYCheckBox = new PsychUICheckBox(objX + 90, objY, 'Flip Y', 60);
-		flipYCheckBox.onClick = updateFlip;
-		tab_group.add(flipXCheckBox);
-		tab_group.add(flipYCheckBox);
-
-		objY += 45;
-		function recalcFilter()
-		{
-			// low and/or high quality
-			var selected = getSelected();
-			if (selected != null)
-			{
-				var filt = 0;
-				if (lowQualityCheckbox.checked)
-					filt |= LOW_QUALITY;
-				if (highQualityCheckbox.checked)
-					filt |= HIGH_QUALITY;
-				selected.filters = filt;
-			}
-		};
-		tab_group.add(new FlxText(objX + 60, objY - 18, 100, 'Visible in:'));
-		lowQualityCheckbox = new PsychUICheckBox(objX, objY, 'Low Quality', 70);
-		highQualityCheckbox = new PsychUICheckBox(objX + 90, objY, 'High Quality', 70);
-		lowQualityCheckbox.onClick = recalcFilter;
-		highQualityCheckbox.onClick = recalcFilter;
-		tab_group.add(lowQualityCheckbox);
-		tab_group.add(highQualityCheckbox);
-	}
-
-	var oppDropdown:PsychUIDropDownMenu;
-	var gfDropdown:PsychUIDropDownMenu;
-	var plDropdown:PsychUIDropDownMenu;
-
-	function addMetaTab()
-	{
-		var tab_group = UI_box.getTab('Meta').menu;
-
-		var characterList = Mods.mergeAllTextsNamed('data/characterList.txt');
-		var foldersToCheck:Array<String> = Mods.directoriesWithFile(Paths.getSharedPath(), 'characters/');
-		for (folder in foldersToCheck)
-			for (file in FileSystem.readDirectory(folder))
-				if(file.toLowerCase().endsWith('.json'))
-				{
-					var charToCheck:String = file.substr(0, file.length - 5);
-					if (!characterList.contains(charToCheck))
-						characterList.push(charToCheck);
-				}
-
-		if (characterList.length < 1)
-			characterList.push(''); // Prevents crash
-
-		var objX = 10;
-		var objY = 20;
-
-		var openPreloadButton:PsychUIButton = new PsychUIButton(objX, objY, 'Preload List', function()
-		{
-			var lockedList:Array<String> = [];
-			var currentMap:Map<String, LoadFilters> = [];
-			for (spr in stageSprites)
-			{
-				if (spr == null || StageData.reservedNames.contains(spr.type))
-					continue;
-
-				switch (spr.type)
-				{
-					case 'sprite', 'animatedSprite':
-						if (spr.image != null && spr.image.length > 0 && !lockedList.contains(spr.image))
-							lockedList.push(spr.image);
-				}
-			}
-
-			if (stageJson.preload != null)
-			{
-				for (field in Reflect.fields(stageJson.preload))
-				{
-					if (!currentMap.exists(field) && !lockedList.contains(field))
-						currentMap.set(field, Reflect.field(stageJson.preload, field));
-				}
-			}
-
-			destroySubStates = true;
-			openSubState(new PreloadListSubState(function(newSave:Map<String, LoadFilters>)
-			{
-				var len:Int = 0;
-				for (name in newSave.keys())
-					len++;
-
-				stageJson.preload = {};
-				for (key => value in newSave)
-				{
-					Reflect.setField(stageJson.preload, key, value);
-				}
-				unsavedProgress = true;
-				showOutput('Saved new Preload List with $len files/folders!');
-			}, lockedList, currentMap));
-		});
-
-		function setMetaData(data:String, char:String)
-		{
-			if (stageJson._editorMeta == null)
-				stageJson._editorMeta = {dad: 'dad', gf: 'gf', boyfriend: 'bf'};
-			Reflect.setField(stageJson._editorMeta, data, char);
-		}
-
-		objY += 60;
-		oppDropdown = new PsychUIDropDownMenu(objX, objY, characterList, function(sel:Int, selected:String)
-		{
-			if (selected == null || selected.length < 1)
-				return;
-			dad.changeCharacter(selected);
-			setMetaData('dad', selected);
-			repositionDad();
-		});
-		oppDropdown.selectedLabel = dad.curCharacter;
-
-		objY += 60;
-		gfDropdown = new PsychUIDropDownMenu(objX, objY, characterList, function(sel:Int, selected:String)
-		{
-			if (selected == null || selected.length < 1)
-				return;
-			gf.changeCharacter(selected);
-			setMetaData('gf', selected);
-			repositionGirlfriend();
-		});
-		gfDropdown.selectedLabel = gf.curCharacter;
-
-		objY += 60;
-		plDropdown = new PsychUIDropDownMenu(objX, objY, characterList, function(sel:Int, selected:String)
-		{
-			if (selected == null || selected.length < 1)
-				return;
-			boyfriend.changeCharacter(selected);
-			setMetaData('boyfriend', selected);
-			repositionBoyfriend();
-		});
-		plDropdown.selectedLabel = boyfriend.curCharacter;
-
-		tab_group.add(openPreloadButton);
-		tab_group.add(new FlxText(plDropdown.x, plDropdown.y - 18, 100, 'Player:'));
-		tab_group.add(plDropdown);
-		tab_group.add(new FlxText(gfDropdown.x, gfDropdown.y - 18, 100, 'Girlfriend:'));
-		tab_group.add(gfDropdown);
-		tab_group.add(new FlxText(oppDropdown.x, oppDropdown.y - 18, 100, 'Opponent:'));
-		tab_group.add(oppDropdown);
-	}
 
 	var stageDropDown:PsychUIDropDownMenu;
 
@@ -1177,7 +641,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 
 			stageJson = StageData.getStageFile(lastLoadedStage);
 			updateSpriteList();
-			updateStageDataUI();
+			UI_box.updateStageDataUI();
 			reloadCharacters();
 			reloadStageDropDown();
 		});
@@ -1190,7 +654,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 
 			stageJson = StageData.dummy();
 			updateSpriteList();
-			updateStageDataUI();
+			UI_box.updateStageDataUI();
 			reloadCharacters();
 		});
 		dummyStage.normalStyle.bgColor = FlxColor.RED;
@@ -1208,7 +672,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 				DiscordClient.changePresence('Stage Editor', 'Stage: ' + lastLoadedStage);
 				#end
 				updateSpriteList();
-				updateStageDataUI();
+				UI_box.updateStageDataUI();
 				reloadCharacters();
 				reloadStageDropDown();
 			}
@@ -1226,58 +690,12 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 		tab_group.add(stageDropDown);
 	}
 
-	function updateStageDataUI()
-	{
-		// input texts
-		uiInputText.text = (stageJson.stageUI != null ? stageJson.stageUI : '');
-		// checkboxes
-		hideGirlfriendCheckbox.checked = (stageJson.hide_girlfriend);
-		gf.visible = !hideGirlfriendCheckbox.checked;
-		// steppers
-		zoomStepper.value = FlxG.camera.zoom = stageJson.defaultZoom;
 
-		if (stageJson.camera_speed != null)
-			cameraSpeedStepper.value = stageJson.camera_speed;
-		else
-			cameraSpeedStepper.value = 1;
-		FlxG.camera.followLerp = 0.04 * cameraSpeedStepper.value;
-
-		if (stageJson.camera_opponent != null && stageJson.camera_opponent.length > 1)
-		{
-			camDadStepperX.value = stageJson.camera_opponent[0];
-			camDadStepperY.value = stageJson.camera_opponent[1];
-		}
-		else
-			camDadStepperX.value = camDadStepperY.value = 0;
-
-		if (stageJson.camera_girlfriend != null && stageJson.camera_girlfriend.length > 1)
-		{
-			camGfStepperX.value = stageJson.camera_girlfriend[0];
-			camGfStepperY.value = stageJson.camera_girlfriend[1];
-		}
-		else
-			camGfStepperX.value = camGfStepperY.value = 0;
-
-		if (stageJson.camera_boyfriend != null && stageJson.camera_boyfriend.length > 1)
-		{
-			camBfStepperX.value = stageJson.camera_boyfriend[0];
-			camBfStepperY.value = stageJson.camera_boyfriend[1];
-		}
-		else
-			camBfStepperX.value = camBfStepperY.value = 0;
-
-		if (focusRadioGroup.checked > -1)
-		{
-			var point = focusOnTarget(focusRadioGroup.labels[focusRadioGroup.checked]);
-			camFollow.setPosition(point.x, point.y);
-		}
-		loadJsonAssetDirectory();
-	}
 
 	function updateSelectedUI()
 	{
 		posTxt.visible = false;
-		var selected = getSelected(false);
+		var selected = UI_box.getSelected(false);
 		if (selected == null)
 			return;
 
@@ -1294,44 +712,8 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 		posTxt.text = 'X: $displayX\nY: $displayY';
 		posTxt.visible = true;
 
-		var selected = getSelected();
-		if (selected == null)
-			return;
+		UI_box.updateSelectedUI();
 
-		// Texts/Input Texts
-		colorInputText.text = selected.color;
-		nameInputText.text = selected.name;
-		imgTxt.text = 'Image: ' + selected.image;
-
-		// Steppers
-		if (selected.type != 'square')
-		{
-			scaleStepperX.decimals = scaleStepperY.decimals = 2;
-			scaleStepperX.max = scaleStepperY.max = 10;
-			scaleStepperX.min = scaleStepperY.min = 0.05;
-			scaleStepperX.step = scaleStepperY.step = 0.05;
-		}
-		else
-		{
-			scaleStepperX.decimals = scaleStepperY.decimals = 0;
-			scaleStepperX.max = scaleStepperY.max = 10000;
-			scaleStepperX.min = scaleStepperY.min = 50;
-			scaleStepperX.step = scaleStepperY.step = 50;
-		}
-		scaleStepperX.value = selected.scale[0];
-		scaleStepperY.value = selected.scale[1];
-		scrollStepperX.value = selected.scroll[0];
-		scrollStepperY.value = selected.scroll[1];
-		angleStepper.value = selected.angle;
-		alphaStepper.value = selected.alpha;
-
-		// Checkboxes
-		antialiasingCheckbox.visible = (selected.type != 'square');
-		antialiasingCheckbox.checked = selected.antialiasing;
-		flipXCheckBox.checked = selected.flipX;
-		flipYCheckBox.checked = selected.flipY;
-		lowQualityCheckbox.checked = (selected.filters & LOW_QUALITY) == LOW_QUALITY;
-		highQualityCheckbox.checked = (selected.filters & HIGH_QUALITY) == HIGH_QUALITY;
 	}
 
 	function reloadCharacters()
@@ -1351,9 +733,9 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 		var point = focusOnTarget('boyfriend');
 		FlxG.camera.scroll.set(point.x - FlxG.width / 2, point.y - FlxG.height / 2);
 		FlxG.camera.zoom = stageJson.defaultZoom;
-		oppDropdown.selectedLabel = dad.curCharacter;
-		gfDropdown.selectedLabel = gf.curCharacter;
-		plDropdown.selectedLabel = boyfriend.curCharacter;
+		UI_box.oppDropdown.selectedLabel = dad.curCharacter;
+		UI_box.gfDropdown.selectedLabel = gf.curCharacter;
+		UI_box.plDropdown.selectedLabel = boyfriend.curCharacter;
 	}
 
 	function reloadStageDropDown()
@@ -1373,7 +755,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 			stageList.push('');
 		stageDropDown.list = stageList;
 		stageDropDown.selectedLabel = lastLoadedStage;
-		directoryDropDown.selectedLabel = stageJson.directory;
+		UI_box.directoryDropDown.selectedLabel = stageJson.directory;
 	}
 
 	function checkUIOnObject()
@@ -1387,8 +769,10 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 				if (spr != null && StageData.reservedNames.contains(spr.type))
 					UI_box.selectedName = 'Data';
 			}
-			else
+			else{
+				showOutput("No object was selected!",true);
 				UI_box.selectedName = 'Data';
+			}
 		}
 	}
 
@@ -1778,6 +1162,14 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 			stageJson.objects.push(basic.formatToJson());
 	}
 
+	function _updateCamera()
+	{
+		if (focusRadioGroup.checked > -1)
+		{
+			var point = focusOnTarget(focusRadioGroup.labels[focusRadioGroup.checked]);
+			camFollow.setPosition(point.x, point.y);
+		}
+	}
 	function saveData()
 	{
 		if (!fileDialog.completed)
@@ -1858,7 +1250,7 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 				}
 				insertMeta(new StageEditorMetaSprite({type: _makeNewSprite, name: findUnoccupiedName()}, new ModchartSprite()));
 			}
-			var selected = getSelected();
+			var selected = UI_box.getSelected();
 			tryLoadImage(selected, imageToLoad);
 
 			if (_makeNewSprite != null)
@@ -2187,509 +1579,3 @@ class StageEditorMetaSprite
 	}
 }
 
-class StageEditorAnimationSubstate extends MusicBeatSubstate
-{
-	var bg:FlxSprite;
-	var originalZoom:Float;
-	var originalCamPoint:FlxPoint;
-	var originalPosition:FlxPoint;
-	var originalCamTarget:FlxObject;
-	var originalAlpha:Float = 1;
-
-	public var target:StageEditorMetaSprite;
-
-	var curAnim:Int = 0;
-	var animsTxtGroup:FlxTypedGroup<FlxText>;
-
-	var UI_animationbox:PsychUIBox;
-	var camHUD:FlxCamera = cast(FlxG.state, StageEditorState).camHUD;
-
-	public function new()
-	{
-		super();
-
-		var grid:FlxBackdrop = new FlxBackdrop(FlxGridOverlay.createGrid(50, 50, 100, 100, true, 0xFFAAAAAA, 0xFF666666));
-		add(grid);
-
-		animsTxtGroup = new FlxTypedGroup<FlxText>();
-		animsTxtGroup.cameras = [camHUD];
-		add(animsTxtGroup);
-
-		UI_animationbox = new PsychUIBox(FlxG.width - 320, 20, 300, 250, ['Animations']);
-		UI_animationbox.cameras = [camHUD];
-		UI_animationbox.scrollFactor.set();
-		add(UI_animationbox);
-		addAnimationsUI();
-
-		openCallback = function()
-		{
-			curAnim = 0;
-			originalZoom = FlxG.camera.zoom;
-			originalCamPoint = FlxPoint.weak(FlxG.camera.scroll.x, FlxG.camera.scroll.y);
-			originalPosition = FlxPoint.weak(target.x, target.y);
-			originalCamTarget = FlxG.camera.target;
-			originalAlpha = target.alpha;
-			FlxG.camera.zoom = 0.5;
-			FlxG.camera.scroll.set(0, 0);
-
-			target.alpha = 1;
-			target.sprite.screenCenter();
-			add(target.sprite);
-			reloadAnimList();
-			trace('Opened substate');
-		};
-
-		closeCallback = function()
-		{
-			FlxG.camera.zoom = originalZoom;
-			FlxG.camera.scroll.set(originalCamPoint.x, originalCamPoint.y);
-			FlxG.camera.target = originalCamTarget;
-
-			target.x = originalPosition.x;
-			target.y = originalPosition.y;
-			target.alpha = originalAlpha;
-			remove(target.sprite);
-
-			if (target.animations.length > 0)
-			{
-				if (target.firstAnimation == null)
-					target.firstAnimation = target.animations[0].anim;
-				playAnim(target.firstAnimation);
-			}
-		};
-	}
-
-	var animationDropDown:PsychUIDropDownMenu;
-	var animationInputText:PsychUIInputText;
-	var animationNameInputText:PsychUIInputText;
-	var animationIndicesInputText:PsychUIInputText;
-	var animationFramerate:PsychUINumericStepper;
-	var animationLoopCheckBox:PsychUICheckBox;
-	var mainAnimTxt:FlxText;
-
-	function addAnimationsUI()
-	{
-		var tab_group = UI_animationbox.getTab('Animations').menu;
-
-		animationInputText = new PsychUIInputText(15, 85, 80, '', 8);
-		animationNameInputText = new PsychUIInputText(animationInputText.x, animationInputText.y + 35, 150, '', 8);
-		animationIndicesInputText = new PsychUIInputText(animationNameInputText.x, animationNameInputText.y + 40, 250, '', 8);
-		animationFramerate = new PsychUINumericStepper(animationInputText.x + 170, animationInputText.y, 1, 24, 0, 240, 0);
-		animationLoopCheckBox = new PsychUICheckBox(animationNameInputText.x + 170, animationNameInputText.y - 1, 'Should it Loop?', 100);
-
-		animationDropDown = new PsychUIDropDownMenu(15, animationInputText.y - 55, [''], function(selectedAnimation:Int, pressed:String)
-		{
-			var anim:AnimArray = target.animations[selectedAnimation];
-			if (anim == null)
-				return;
-
-			animationInputText.text = anim.anim;
-			animationNameInputText.text = anim.name;
-			animationLoopCheckBox.checked = anim.loop;
-			animationFramerate.value = anim.fps;
-
-			var indicesStr:String = anim.indices.toString();
-			animationIndicesInputText.text = indicesStr.substr(1, indicesStr.length - 2);
-		});
-
-		mainAnimTxt = new FlxText(160, animationDropDown.y - 18, 0, 'Main Anim.: ');
-		var initAnimButton:PsychUIButton = new PsychUIButton(160, animationDropDown.y, 'Main Animation', function()
-		{
-			var anim:AnimArray = target.animations[curAnim];
-			if (anim == null)
-				return;
-
-			mainAnimTxt.text = 'Main Anim.: ${anim.anim}';
-			target.firstAnimation = anim.anim;
-		});
-		tab_group.add(mainAnimTxt);
-		tab_group.add(initAnimButton);
-
-		var addUpdateButton:PsychUIButton = new PsychUIButton(40, animationIndicesInputText.y + 35, 'Add/Update', function()
-		{
-			if (animationInputText.text == '')
-				return;
-
-			var indices:Array<Int> = [];
-			var indicesStr:Array<String> = animationIndicesInputText.text.trim().split(',');
-			if (indicesStr.length > 1)
-			{
-				for (i in 0...indicesStr.length)
-				{
-					var index:Int = Std.parseInt(indicesStr[i]);
-					if (indicesStr[i] != null && indicesStr[i] != '' && !Math.isNaN(index) && index > -1)
-					{
-						indices.push(index);
-					}
-				}
-			}
-
-			var lastAnim:String = (target.animations[curAnim] != null) ? target.animations[curAnim].anim : '';
-			var lastOffsets:Array<Int> = null;
-			for (anim in target.animations)
-				if (animationInputText.text == anim.anim)
-				{
-					lastOffsets = anim.offsets;
-					cast(target.sprite, ModchartSprite).animOffsets.remove(animationInputText.text);
-					target.sprite.animation.remove(animationInputText.text);
-					target.animations.remove(anim);
-				}
-
-			var addedAnim:AnimArray = {
-				anim: animationInputText.text,
-				name: animationNameInputText.text,
-				fps: Math.round(animationFramerate.value),
-				loop: animationLoopCheckBox.checked,
-				indices: indices,
-				offsets: lastOffsets
-			};
-
-			if (addedAnim.indices != null && addedAnim.indices.length > 0)
-				target.sprite.animation.addByIndices(addedAnim.anim, addedAnim.name, addedAnim.indices, '', addedAnim.fps, addedAnim.loop);
-			else
-				target.sprite.animation.addByPrefix(addedAnim.anim, addedAnim.name, addedAnim.fps, addedAnim.loop);
-
-			target.animations.push(addedAnim);
-			reloadAnimList();
-			playAnim(addedAnim.anim, true);
-
-			curAnim = target.animations.length - 1;
-			updateTextColors();
-			trace('Added/Updated animation: ' + animationInputText.text);
-		});
-
-		var removeButton:PsychUIButton = new PsychUIButton(160, animationIndicesInputText.y + 35, 'Remove', function()
-		{
-			for (anim in target.animations)
-			{
-				if (animationInputText.text == anim.anim)
-				{
-					var targetSprite:ModchartSprite = cast(target.sprite, ModchartSprite);
-					var resetAnim:Bool = false;
-					if (targetSprite.animation.curAnim != null && anim.anim == targetSprite.animation.curAnim.name)
-						resetAnim = true;
-
-					if (targetSprite.animOffsets.exists(anim.anim))
-						targetSprite.animOffsets.remove(anim.anim);
-
-					target.animations.remove(anim);
-					targetSprite.animation.remove(anim.anim);
-
-					if (resetAnim && target.animations.length > 0)
-					{
-						curAnim = FlxMath.wrap(curAnim, 0, target.animations.length - 1);
-						playAnim(target.animations[curAnim].anim, true);
-						updateTextColors();
-					}
-					else if (target.animations.length < 1)
-						target.sprite.animation.curAnim = null;
-
-					trace('Removed animation: ' + animationInputText.text);
-					reloadAnimList();
-					break;
-				}
-			}
-		});
-
-		tab_group.add(new FlxText(animationDropDown.x, animationDropDown.y - 18, 0, 'Animations:'));
-		tab_group.add(new FlxText(animationInputText.x, animationInputText.y - 18, 0, 'Animation name:'));
-		tab_group.add(new FlxText(animationFramerate.x, animationFramerate.y - 18, 0, 'Framerate:'));
-		tab_group.add(new FlxText(animationNameInputText.x, animationNameInputText.y - 18, 0, 'Animation Symbol Name/Tag:'));
-		tab_group.add(new FlxText(animationIndicesInputText.x, animationIndicesInputText.y - 18, 0, 'ADVANCED - Animation Indices:'));
-
-		tab_group.add(animationInputText);
-		tab_group.add(animationNameInputText);
-		tab_group.add(animationIndicesInputText);
-		tab_group.add(animationFramerate);
-		tab_group.add(animationLoopCheckBox);
-		tab_group.add(addUpdateButton);
-		tab_group.add(removeButton);
-		tab_group.add(animationDropDown);
-	}
-
-	function reloadAnimList()
-	{
-		if (target.animations == null)
-			target.animations = [];
-		else if (target.animations.length > 0)
-			playAnim(target.animations[0].anim, true);
-		curAnim = 0;
-
-		for (text in animsTxtGroup)
-			text.kill();
-
-		var spr:ModchartSprite = cast(target.sprite, ModchartSprite);
-		if (target.animations.length > 0)
-		{
-			if (target.firstAnimation == null || !target.sprite.animation.exists(target.firstAnimation))
-				target.firstAnimation = target.animations[0].anim;
-
-			mainAnimTxt.text = 'Main Anim.: ${target.firstAnimation}';
-		}
-		else
-		{
-			target.firstAnimation = null;
-			mainAnimTxt.text = '(No Main Animation)';
-		}
-
-		for (num => anim in target.animations)
-		{
-			var text:FlxText = animsTxtGroup.recycle(FlxText);
-			text.x = 10;
-			text.y = 32 + (20 * num);
-			text.fieldWidth = 400;
-			text.fieldHeight = 20;
-			if (anim.offsets != null)
-				text.text = '${anim.anim}: ${spr.animOffsets.get(anim.anim)}';
-			else
-				text.text = '${anim.anim}: No offsets';
-
-			text.setFormat(null, 16, FlxColor.WHITE, LEFT, OUTLINE_FAST, FlxColor.BLACK);
-			text.scrollFactor.set();
-			text.borderSize = 1;
-			animsTxtGroup.add(text);
-		}
-		updateTextColors();
-		reloadAnimationDropDown();
-	}
-
-	function reloadAnimationDropDown()
-	{
-		var animList:Array<String> = [];
-		for (anim in target.animations)
-			animList.push(anim.anim);
-		if (animList.length < 1)
-			animList.push('NO ANIMATIONS'); // Prevents crash
-
-		animationDropDown.list = animList;
-	}
-
-	inline function updateTextColors()
-	{
-		for (num => text in animsTxtGroup)
-		{
-			text.color = FlxColor.WHITE;
-			if (num == curAnim)
-				text.color = FlxColor.LIME;
-		}
-	}
-
-	function playAnim(name:String, force:Bool = false)
-	{
-		var spr:ModchartSprite = cast(target.sprite, ModchartSprite);
-		spr.playAnim(name, force);
-		if (!spr.animOffsets.exists(name))
-			spr.updateHitbox();
-	}
-
-	final minZoom = 0.25;
-	final maxZoom = 2;
-	var holdingArrowsTime:Float = 0;
-	var holdingArrowsElapsed:Float = 0;
-	var holdingFrameTime:Float = 0;
-	var holdingFrameElapsed:Float = 0;
-
-	override function update(elapsed:Float)
-	{
-		super.update(elapsed);
-		// ? pulling key presses
-
-		var pressed_I = FlxG.keys.pressed.I;
-		var pressed_J = FlxG.keys.pressed.J;
-		var pressed_K = FlxG.keys.pressed.K;
-		var pressed_L = FlxG.keys.pressed.L;
-
-		var justPressed_W = FlxG.keys.justPressed.W;
-		var justPressed_S = FlxG.keys.justPressed.S;
-		var justPressed_R = FlxG.keys.justPressed.R;
-
-		var pressed_E = FlxG.keys.pressed.E;
-		var pressed_Q = FlxG.keys.pressed.Q;
-
-		var pressed_SHIFT = FlxG.keys.pressed.SHIFT;
-		#if TOUCH_CONTROLS_ALLOWED
-		pressed_I = pressed_I || touchPad.buttonG.pressed && touchPad.buttonUp.pressed;
-		pressed_J = pressed_J || touchPad.buttonG.pressed && touchPad.buttonLeft.pressed;
-		pressed_K = pressed_K || touchPad.buttonG.pressed && touchPad.buttonDown.pressed;
-		pressed_L = pressed_L || touchPad.buttonG.pressed && touchPad.buttonRight.pressed;
-
-		justPressed_W = justPressed_W || touchPad.buttonUp.justPressed;
-		justPressed_S = justPressed_S || touchPad.buttonDown.justPressed;
-		justPressed_R = justPressed_R || touchPad.buttonZ.justPressed;
-
-		pressed_E = pressed_E || touchPad.buttonX.pressed; 
-		pressed_Q = pressed_Q || touchPad.buttonY.pressed;
-
-		pressed_SHIFT = pressed_SHIFT || touchPad.buttonC.pressed;
-		#end
-
-		if (PsychUIInputText.focusOn != null)
-			return;
-
-		// ANIMATION SCROLLING
-		if (target.animations.length > 1)
-		{
-			var changedAnim:Bool = false;
-			if (justPressed_W && (changedAnim = true))
-				curAnim--;
-			else if (justPressed_S && (changedAnim = true))
-				curAnim++;
-			else if (FlxG.keys.justPressed.SPACE)
-				changedAnim = true;
-
-			if (changedAnim)
-			{
-				curAnim = FlxMath.wrap(curAnim, 0, target.animations.length - 1);
-				playAnim(target.animations[curAnim].anim, true);
-				updateTextColors();
-			}
-		}
-
-		var shiftMult:Float = 1;
-		var ctrlMult:Float = 1;
-		var shiftMultBig:Float = 1;
-		if (pressed_SHIFT)
-		{
-			shiftMult = 4;
-			shiftMultBig = 10;
-		}
-		if (FlxG.keys.pressed.CONTROL)
-			ctrlMult = 0.25;
-
-		// OFFSET
-		if (target.sprite.animation.curAnim != null)
-		{
-			var spr:ModchartSprite = cast(target.sprite, ModchartSprite);
-			var anim:String = spr.animation.curAnim.name;
-			var changedOffset = false;
-			var not_G_pressed = true;
-			var moveKeysP = [
-				FlxG.keys.justPressed.LEFT,
-				FlxG.keys.justPressed.RIGHT,
-				FlxG.keys.justPressed.UP,
-				FlxG.keys.justPressed.DOWN
-			];
-			var moveKeys = [
-				FlxG.keys.pressed.LEFT,
-				FlxG.keys.pressed.RIGHT,
-				FlxG.keys.pressed.UP,
-				FlxG.keys.pressed.DOWN
-			];
-			#if TOUCH_CONTROLS_ALLOWED
-			if (controls.mobileC)
-			{
-				moveKeysP = [
-					touchPad.buttonLeft.justPressed,
-					touchPad.buttonRight.justPressed,
-					touchPad.buttonUp.justPressed,
-					touchPad.buttonDown.justPressed
-				];
-				moveKeys = [
-					touchPad.buttonLeft.pressed,
-					touchPad.buttonRight.pressed,
-					touchPad.buttonUp.pressed,
-					touchPad.buttonDown.pressed
-				];
-				not_G_pressed = !touchPad.buttonG.pressed;
-			}
-			#end
-			if (moveKeysP.contains(true) && not_G_pressed)
-			{
-				if (spr.animOffsets.get(anim) != null)
-				{
-					spr.offset.x += ((moveKeysP[0] ? 1 : 0) - (moveKeysP[1] ? 1 : 0)) * shiftMultBig;
-					spr.offset.y += ((moveKeysP[2] ? 1 : 0) - (moveKeysP[3] ? 1 : 0)) * shiftMultBig;
-				}
-				else
-					spr.offset.x = spr.offset.y = 0;
-				changedOffset = true;
-			}
-
-			if (moveKeys.contains(true) && not_G_pressed)
-			{
-				holdingArrowsTime += elapsed;
-				if (holdingArrowsTime > 0.6)
-				{
-					holdingArrowsElapsed += elapsed;
-					while (holdingArrowsElapsed > (1 / 60))
-					{
-						if (spr.animOffsets.get(anim) != null)
-						{
-							spr.offset.x += ((moveKeys[0] ? 1 : 0) - (moveKeys[1] ? 1 : 0)) * shiftMultBig;
-							spr.offset.y += ((moveKeys[2] ? 1 : 0) - (moveKeys[3] ? 1 : 0)) * shiftMultBig;
-						}
-						else
-							spr.offset.x = spr.offset.y = 0;
-						holdingArrowsElapsed -= (1 / 60);
-						changedOffset = true;
-					}
-				}
-			}
-			else
-				holdingArrowsTime = 0;
-
-			if (FlxG.mouse.pressedRight && (FlxG.mouse.deltaScreenX != 0 || FlxG.mouse.deltaScreenY != 0))
-			{
-				spr.offset.x -= FlxG.mouse.deltaScreenX;
-				spr.offset.y -= FlxG.mouse.deltaScreenY;
-				changedOffset = true;
-			}
-
-			if ((FlxG.keys.justPressed.R  && FlxG.keys.pressed.CONTROL) #if TOUCH_CONTROLS_ALLOWED || (touchPad.buttonZ.justPressed && touchPad.buttonC.pressed) #end)
-			{
-				target.animations[curAnim].offsets = null;
-				spr.animOffsets.remove(anim);
-				spr.updateHitbox();
-				animsTxtGroup.members[curAnim].text = '${anim}: No offsets';
-			}
-
-			if (changedOffset)
-			{
-				var offX = Math.round(spr.offset.x);
-				var offY = Math.round(spr.offset.y);
-
-				spr.addOffset(anim, offX, offY);
-				target.animations[curAnim].offsets = [offX, offY];
-				animsTxtGroup.members[curAnim].text = '${anim}: ${spr.animOffsets.get(anim)}';
-			}
-		}
-		else
-		{
-			holdingArrowsTime = 0;
-			holdingArrowsElapsed = 0;
-		}
-
-		// CAMERA CONTROLS
-		var camX:Float = 0;
-		var camY:Float = 0;
-		var camMove:Float = elapsed * 500 * shiftMult * ctrlMult;
-		if (pressed_J)
-			camX -= camMove;
-		if (pressed_K)
-			camY += camMove;
-		if (pressed_L)
-			camX += camMove;
-		if (pressed_I)
-			camY -= camMove;
-
-		if (camX != 0 || camY != 0)
-		{
-			FlxG.camera.scroll.x += camX;
-			FlxG.camera.scroll.y += camY;
-		}
-
-		var lastZoom = FlxG.camera.zoom;
-		if (justPressed_R && !FlxG.keys.pressed.CONTROL)
-			FlxG.camera.zoom = 0.5;
-		else if (pressed_E && FlxG.camera.zoom < maxZoom)
-			FlxG.camera.zoom = Math.min(maxZoom, FlxG.camera.zoom + elapsed * FlxG.camera.zoom * shiftMult * ctrlMult);
-		else if (pressed_Q && FlxG.camera.zoom > minZoom)
-			FlxG.camera.zoom = Math.max(minZoom, FlxG.camera.zoom - elapsed * FlxG.camera.zoom * shiftMult * ctrlMult);
-
-		if (FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justReleased.BACK #end #if TOUCH_CONTROLS_ALLOWED || touchPad.buttonB.justPressed #end)
-		{
-			persistentDraw = true;
-			close();
-		}
-	}
-}

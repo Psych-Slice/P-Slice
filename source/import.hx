@@ -64,6 +64,18 @@ import mikolka.stages.cutscenes.dialogueBox.*;
 import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych.DialogueFile;
 import mikolka.stages.cutscenes.dialogueBox.styles.*;
 
+//utils
+using StringTools;
+using mikolka.funkin.utils.ArrayTools;
+using mikolka.funkin.utils.custom.FunkinTools;
+import mikolka.funkin.utils.custom.FunkinTools;
+using mikolka.funkin.utils.ArrayTools;
+using mikolka.funkin.utils.SpriteTools;
+using mikolka.funkin.utils.custom.PsychUITools;
+using mikolka.funkin.utils.StringTools;
+
+
+
 // Stage imports (for compatibility)
 import states.stages.objects.*;
 
@@ -118,5 +130,5 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.system.FlxAssets.FlxShader;
 
-using StringTools;
+
 #end

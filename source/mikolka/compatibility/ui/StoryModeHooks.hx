@@ -3,7 +3,7 @@ package mikolka.compatibility.ui;
 import backend.CacheSystem;
 import backend.StageData;
 import backend.Song;
-using mikolka.funkin.custom.FunkinTools;
+
 
 class StoryModeHooks {
 	public static var DEFAULT_DIFFICULTIES(get,null):Array<String>;

@@ -20,7 +20,6 @@ import flixel.util.FlxSave;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
 import mikolka.funkin.Scoring;
-import mikolka.funkin.custom.FunkinTools;
 import mikolka.vslice.results.Tallies;
 import mikolka.vslice.results.ResultState;
 import states.editors.ChartingState;

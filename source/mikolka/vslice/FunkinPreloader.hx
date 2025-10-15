@@ -22,7 +22,7 @@ import shaders.VFDOverlay;
 import backend.Paths;
 #end
 
-using StringTools;
+
 
 // Annotation embeds the asset in the executable for faster loading.
 // Polymod can't override this, so we can't use this technique elsewhere.
@@ -362,7 +362,7 @@ class FunkinPreloader extends FlxBasePreloader
 					
 					#if (linux || ios)
 					FlxG.signals.preStateCreate.add(state ->{
-						mikolka.funkin.custom.NativeFileSystem.excludePaths.resize(0);
+						mikolka.funkin.custom.NativeFileSystem.excludePaths.clear();
 					});
 					#end
 

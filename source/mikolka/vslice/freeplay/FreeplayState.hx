@@ -47,8 +47,8 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
-using mikolka.funkin.custom.FunkinTools;
-using mikolka.funkin.utils.ArrayTools;
+
+
 
 /**
  * Parameters used to initialize the FreeplayState.

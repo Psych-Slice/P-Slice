@@ -470,10 +470,10 @@ class LoadingState extends MusicBeatState
 	{
 		if (PlayState.SONG == null)
 		{
-			imagesToPrepare.resize(0);
-			soundsToPrepare.resize(0);
-			musicToPrepare.resize(0);
-			songsToPrepare.resize(0);
+			imagesToPrepare.clear();
+			soundsToPrepare.clear();
+			musicToPrepare.clear();
+			songsToPrepare.clear();
 			loaded = 0;
 			loadMax = 0;
 			initialThreadCompleted = true;
@@ -482,10 +482,10 @@ class LoadingState extends MusicBeatState
 		}
 
 		_startPool();
-		imagesToPrepare.resize(0);
-		soundsToPrepare.resize(0);
-		musicToPrepare.resize(0);
-		songsToPrepare.resize(0);
+		imagesToPrepare.clear();
+		soundsToPrepare.clear();
+		musicToPrepare.clear();
+		songsToPrepare.clear();
 
 		initialThreadCompleted = false;
 		var threadsCompleted:Int = 0;
