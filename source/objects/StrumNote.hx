@@ -149,8 +149,9 @@ class StrumNote extends FlxSprite
 		#if TOUCH_CONTROLS_ALLOWED
 		final isHitboxArrowMode = ClientPrefs.data.extraHints == "ARROWS" && ClientPrefs.data.middleScroll;
 		//Spacing between arrows
+		final ARROW_SPREAD = 90;
 		if(isHitboxArrowMode && player == 1) {
-			x += 90 * (noteData-1);
+			x += ARROW_SPREAD * (noteData-1);
 			x -= 45;
 		}
 		#end

@@ -1758,13 +1758,14 @@ class PlayState extends MusicBeatState
 			if (isHitboxArrowMode)
 			{
 				var playerArrowScale = isPixelStage? 1.2*daPixelZoom : 0.8;
+				final ARROW_SPREAD = 30;
 				babyArrow.scale.set(playerArrowScale,playerArrowScale);
 				babyArrow.updateHitbox();
 				babyArrow.x -= 25;
 				if (i > 1)
-					babyArrow.x += 15;
+					babyArrow.x += ARROW_SPREAD;
 				else 
-					babyArrow.x -= 15;
+					babyArrow.x -= ARROW_SPREAD;
 			}
 			else if(!ClientPrefs.data.middleScroll){
 				babyArrow.x += (FlxG.width-FlxG.initialWidth)/2;
