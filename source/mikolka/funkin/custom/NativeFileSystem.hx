@@ -187,9 +187,14 @@ class NativeFileSystem
 		var testdir = getPathLike(directory);
 		if (testdir != null)
 		{
+			try{
 			var result = FileSystem.readDirectory(testdir);
-
 			return result;
+			}
+			catch(x:Exception){
+				trace('ERROR: Native crash in ${testdir}. This is NOT normal!');
+				return [];
+			}
 		}
 		#end
 

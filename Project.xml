@@ -309,7 +309,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 		<icon path="art/desktop/icon16.png"/>
 	</section>
 	<section if="mac">
-		
+		<assets path="art/desktop/mac-icon-assets.car" rename="Assets.car"/>
 	</section>
 	<section unless="PROFILE_BUILD">
 		<section if="mobile">
