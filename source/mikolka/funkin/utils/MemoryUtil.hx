@@ -113,6 +113,10 @@ class MemoryUtil
 
     public static function getGCMemory():Float
   {
+    #if LEGACY_PSYCH
+    return openfl.system.System.totalMemory;
+    #else
     return openfl.system.System.totalMemoryNumber;
+    #end
   }
 }

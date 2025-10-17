@@ -1,6 +1,5 @@
 package mikolka.vslice;
 
-import backend.CacheSystem;
 import mikolka.funkin.custom.NativeFileSystem;
 import mikolka.vslice.freeplay.DifficultyStars;
 #if sys import mikolka.vslice.components.crash.Logger; #end
@@ -22,7 +21,7 @@ import shaders.VFDOverlay;
 import backend.Paths;
 #end
 
-
+using StringTools;
 
 // Annotation embeds the asset in the executable for faster loading.
 // Polymod can't override this, so we can't use this technique elsewhere.
@@ -358,11 +357,11 @@ class FunkinPreloader extends FlxBasePreloader
 					// ? Some misc caching
 					// Cache assets list for future use
 					NativeFileSystem.openFlAssets = Assets.list();
-					//openfl.utils.Assets.cache.enabled = false;
+					openfl.utils.Assets.cache.enabled = false;
 					
 					#if (linux || ios)
 					FlxG.signals.preStateCreate.add(state ->{
-						mikolka.funkin.custom.NativeFileSystem.excludePaths.clear();
+						mikolka.funkin.custom.NativeFileSystem.excludePaths.resize(0);
 					});
 					#end
 

@@ -1,4 +1,4 @@
-package source.mikolka.vslice.components;
+package mikolka.vslice.components;
 
 import flixel.util.FlxStringUtil;
 import mikolka.funkin.stats.FunkinStatsGraph;
@@ -278,24 +278,4 @@ class FunkinDebugDisplay extends Sprite
 
 		return backgroundOpacity = value;
 	}
-}
-
-enum abstract DebugDisplayMode(Int) from Int to Int
-{
-	/**
-	 * Debug display is disabled.
-	 */
-	var OFF = 0;
-
-	/**
-	 * Simple debug display.
-	 * FPS and Memory counters only.
-	 */
-	var SIMPLE = 1;
-
-	/**
-	 * Advanced debug display.
-	 * Full FPS and Memory info.
-	 */
-	var ADVANCED = 2;
 }

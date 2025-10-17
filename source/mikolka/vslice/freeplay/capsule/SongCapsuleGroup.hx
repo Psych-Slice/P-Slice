@@ -83,7 +83,7 @@ class SongCapsuleGroup extends FlxTypedGroup<SongMenuItem> {
 
 		randomCapsule.initPosition(FlxG.width, 0);
 		randomCapsule.y = randomCapsule.intendedY(1) + 10;
-		randomCapsule.ID = 1;
+		randomCapsule.ID = 0;
 		randomCapsule.targetPos.x = randomCapsule.x;
 		randomCapsule.setCapsuleAnimation(randomAnimation);
 		

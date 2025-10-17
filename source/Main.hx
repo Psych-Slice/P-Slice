@@ -1,6 +1,6 @@
 package;
 
-import source.mikolka.vslice.components.DebugDisplay.FunkinDebugDisplay;
+import mikolka.vslice.components.DebugDisplay.FunkinDebugDisplay;
 import mikolka.funkin.custom.mobile.MobileScaleMode;
 import states.InitState;
 import mikolka.vslice.components.crash.Logger;
