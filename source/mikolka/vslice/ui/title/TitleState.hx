@@ -19,7 +19,7 @@ import mikolka.vslice.components.ScreenshotPlugin;
 import mikolka.vslice.ui.title.AttractState;
 #end
 
-using StringTools;
+
 
 typedef TitleData =
 {

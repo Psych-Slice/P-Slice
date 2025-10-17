@@ -5,9 +5,9 @@ import haxe.Json;
 import mikolka.funkin.players.PlayerData;
 import mikolka.compatibility.funkin.FunkinPath;
 
-using mikolka.funkin.custom.FunkinTools;
-using StringTools;
-using mikolka.funkin.utils.ArrayTools;
+
+
+
 
 //TODO softcode this soon
 class PlayerRegistry extends PsliceRegistry{
@@ -49,8 +49,11 @@ class PlayerRegistry extends PsliceRegistry{
                 allJsons.pushMany(listJsons());
             }
             ModsHelper.loadModDir("");
-
+            #if LEGACY_PSYCH
+            var basedCharFiles = NativeFileSystem.readDirectory("assets/registry/players");
+            #else
             var basedCharFiles = NativeFileSystem.readDirectory("assets/shared/registry/players");
+            #end
             allJsons.pushMany(basedCharFiles
                 .filter(s -> s.endsWith(".json")).map(s -> s.substr(0,s.length-5)));
             return allJsons;

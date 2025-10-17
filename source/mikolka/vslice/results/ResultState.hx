@@ -38,7 +38,7 @@ import flixel.util.FlxTimer;
 import mikolka.funkin.players.*;
 import mikolka.funkin.players.PlayerData.PlayerFreeplayDJData;
 import mikolka.funkin.custom.VsliceSubState as MusicBeatSubState;
-using mikolka.funkin.custom.FunkinTools;
+
 
 /**
  * The state for the results screen after a song or week is finished.

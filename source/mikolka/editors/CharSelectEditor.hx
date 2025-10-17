@@ -22,7 +22,7 @@ import mikolka.compatibility.funkin.FunkinPath;
 import mikolka.vslice.charSelect.CharSelectGF;
 import mikolka.vslice.charSelect.Nametag;
 
-using mikolka.funkin.custom.FunkinTools;
+
 
 class CharSelectEditor extends MusicBeatState
 {

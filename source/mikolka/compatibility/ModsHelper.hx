@@ -27,8 +27,17 @@ class ModsHelper {
 		WeekData.loadTheFirstEnabledMod();
 	}
 	public static function getModsWithPlayersRegistry():Array<String> {
-		return getEnabledMods().filter(s ->FileSystem.exists(Paths.mods(s)+'/registry/players'));
+		#if MODS_ALLOWED
+		return getEnabledMods().filter(s ->{
+			var mod_path = Paths.mods(s)+'/registry/players';
+			return NativeFileSystem.exists(mod_path) && 
+				NativeFileSystem.readDirectory(mod_path).filter(s -> s.endsWith(".json")).length > 0;
+		});
+		#else
+		return [];
+		#end
 	}
+	
 	public inline static function loadabsoluteGraphic(path:String):FlxGraphic {
 		return FlxGraphic.fromBitmapData(BitmapData.fromFile(path)); //! I hate this, but at least it doesn't crash
 	}

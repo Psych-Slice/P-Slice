@@ -1,7 +1,7 @@
 package mikolka.funkin.freeplay.album;
 
 import mikolka.funkin.freeplay.album.AlbumData;
-using mikolka.funkin.custom.FunkinTools;
+
 
 class AlbumRegistry extends PsliceRegistry
 {

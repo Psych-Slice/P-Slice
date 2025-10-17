@@ -47,8 +47,8 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
-using mikolka.funkin.custom.FunkinTools;
-using mikolka.funkin.utils.ArrayTools;
+
+
 
 /**
  * Parameters used to initialize the FreeplayState.
@@ -2058,10 +2058,6 @@ class FreeplayState extends MusicBeatSubstate
 				trace('trying to remove: ' + song);
 				var snd = cacheObj.sound.get(song);
 				openfl.Assets.cache.clear(song);
-				@:privateAccess(){
-					snd.__buffer.data.buffer.b.resize(0);
-					snd.__buffer.data = null;
-				}
 			}
 		}
 	}

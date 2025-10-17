@@ -1,17 +1,11 @@
 package;
 
-import flixel.math.FlxPoint;
-import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
-import openfl.geom.Rectangle;
-import flixel.math.FlxRect;
-import haxe.xml.Access;
 import openfl.system.System;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 import lime.utils.Assets;
-import flixel.FlxSprite;
 #if sys
 import sys.io.File;
 import sys.FileSystem;
@@ -127,29 +121,35 @@ class Paths
 		currentLevel = name.toLowerCase();
 	}
 
-	public static function getPath(file:String, type:AssetType, ?library:Null<String> = null)
+	public static function getPath(file:String, ?type:AssetType = TEXT, ?parentfolder:String):String
 	{
-		if (library == "mobile")
+		#if MODS_ALLOWED
+		var customFile:String = file;
+		if (parentfolder != null)
+			customFile = '$parentfolder/$file';
+
+		var modded:String = modFolders(customFile);
+		if (NativeFileSystem.exists(modded))
+			return modded;
+		#end
+		if (parentfolder == "mobile")
 			return getPreloadPath('mobile/$file');
 
-		if (library != null)
-			return getLibraryPath(file, library);
+		// custom library folder
+		if (parentfolder != null)
+			return getFolderPath(file, parentfolder);
 
-		if (currentLevel != null)
+		var shared_path = getFolderPath(file, 'shared');
+		if(NativeFileSystem.exists(shared_path))
+			return shared_path;
+
+		// Load from a level folder
+		if (currentLevel != null && currentLevel != 'shared')
 		{
-			var levelPath:String = '';
-			if (currentLevel != 'shared')
-			{
-				levelPath = getLibraryPathForce(file, currentLevel);
-				if (OpenFlAssets.exists(levelPath, type))
-					return levelPath;
-			}
-
-			levelPath = getLibraryPathForce(file, "shared");
-			if (OpenFlAssets.exists(levelPath, type))
+			var levelPath = getFolderPath(file, currentLevel);
+			if (NativeFileSystem.exists(levelPath))
 				return levelPath;
 		}
-
 		return getPreloadPath(file);
 	}
 
@@ -160,9 +160,12 @@ class Paths
 
 	inline static function getLibraryPathForce(file:String, library:String)
 	{
-		var returnPath = '$library:assets/$library/$file';
+		var returnPath = 'assets/$library/$file';
 		return returnPath;
 	}
+
+	inline static public function getFolderPath(file:String, folder = "shared")
+		return 'assets/$folder/$file';
 
 	inline public static function getPreloadPath(file:String = '')
 	{
@@ -208,7 +211,7 @@ class Paths
 	{
 		#if MODS_ALLOWED
 		var file:String = modsVideo(key);
-		if (FileSystem.exists(file))
+		if (NativeFileSystem.exists(file))
 		{
 			return file;
 		}
@@ -256,14 +259,13 @@ class Paths
 
 	static public function getTextFromFile(key:String, ?ignoreMods:Bool = false):String
 	{
-		#if sys
 		#if MODS_ALLOWED
-		if (!ignoreMods && FileSystem.exists(modFolders(key)))
-			return File.getContent(modFolders(key));
+		if (!ignoreMods && NativeFileSystem.exists(modFolders(key)))
+			return NativeFileSystem.getContent(modFolders(key));
 		#end
 
-		if (FileSystem.exists(getPreloadPath(key)))
-			return File.getContent(getPreloadPath(key));
+		if (NativeFileSystem.exists(getPreloadPath(key)))
+			return NativeFileSystem.getContent(getPreloadPath(key));
 
 		if (currentLevel != null)
 		{
@@ -271,27 +273,25 @@ class Paths
 			if (currentLevel != 'shared')
 			{
 				levelPath = getLibraryPathForce(key, currentLevel);
-				if (FileSystem.exists(levelPath))
-					return File.getContent(levelPath);
+				if (NativeFileSystem.exists(levelPath))
+					return NativeFileSystem.getContent(levelPath);
 			}
 
 			levelPath = getLibraryPathForce(key, 'shared');
-			if (FileSystem.exists(levelPath))
-				return File.getContent(levelPath);
+			if (NativeFileSystem.exists(levelPath))
+				return NativeFileSystem.getContent(levelPath);
 		}
-		#end
 		var path = getPath(key, TEXT);
-		return Assets.exists(path) ? Assets.getText(path) : null;
+		return NativeFileSystem.getContent(path);
 	}
 
 	inline static public function font(key:String)
 	{
 		#if MODS_ALLOWED
 		var file:String = modsFont(key);
-		if (FileSystem.exists(file))
-		{
+		file = NativeFileSystem.getPathLike(file);
+		if (file != null)
 			return file;
-		}
 		#end
 		return 'assets/fonts/$key';
 	}
@@ -299,72 +299,61 @@ class Paths
 	inline static public function fileExists(key:String, type:AssetType, ?ignoreMods:Bool = false, ?library:String)
 	{
 		#if MODS_ALLOWED
-		if (FileSystem.exists(mods(currentModDirectory + '/' + key)) || FileSystem.exists(mods(key)))
-		{
+		if (NativeFileSystem.exists(mods(currentModDirectory + '/' + key)) || NativeFileSystem.exists(mods(key)))
 			return true;
-		}
 		#end
 
-		if (OpenFlAssets.exists(getPath(key, type,library)))
-		{
-			return true;
-		}
-		return false;
+		return NativeFileSystem.exists(getPath(key, type, library));
 	}
 
 	inline static public function getSparrowAtlas(key:String, ?library:String):FlxAtlasFrames
 	{
-		#if MODS_ALLOWED
 		var imageLoaded:FlxGraphic = returnGraphic(key);
-		var xmlExists:Bool = false;
-		if (FileSystem.exists(modsXml(key)))
-		{
-			xmlExists = true;
-		}
-
-		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)),
-			(xmlExists ? File.getContent(modsXml(key)) : file('images/$key.xml', library)));
-		#else
-		return FlxAtlasFrames.fromSparrow(image(key, library), file('images/$key.xml', library));
+		var xmlContent:String = "";
+		#if MODS_ALLOWED
+		var path = modsXml(key);
+		xmlContent = NativeFileSystem.exists(path) ? NativeFileSystem.getContent(path) : "";
 		#end
-	}
-	static public function getMultiAtlas(keys:Array<String>, ?parentFolder:String = null):FlxAtlasFrames
+		if (xmlContent == "")
 		{
-			function addAtlas(base:FlxAtlasFrames,collection:FlxAtlasFrames)
-				{
-					for (frame in collection.frames)
-						base.pushFrame(frame);
-					
-					return base;
-				}
-			var parentFrames:FlxAtlasFrames = Paths.getSparrowAtlas(keys[0].trim());
-			if(keys.length > 1)
-			{
-				var original:FlxAtlasFrames = parentFrames;
-				parentFrames = new FlxAtlasFrames(parentFrames.parent);
-				addAtlas(parentFrames,original);
-				for (i in 1...keys.length)
-				{
-					var extraFrames:FlxAtlasFrames = Paths.getSparrowAtlas(keys[i].trim(), parentFolder);
-					if(extraFrames != null)
-						addAtlas(parentFrames,extraFrames);
-				}
-			}
-			return parentFrames;
+			xmlContent = NativeFileSystem.getContent(file('images/$key.xml', library));
 		}
+		return FlxAtlasFrames.fromSparrow(imageLoaded, xmlContent);
+	}
+
+	static public function getMultiAtlas(keys:Array<String>, ?parentFolder:String = null):FlxAtlasFrames
+	{
+		function addAtlas(base:FlxAtlasFrames, collection:FlxAtlasFrames)
+		{
+			for (frame in collection.frames)
+				base.pushFrame(frame);
+
+			return base;
+		}
+		var parentFrames:FlxAtlasFrames = Paths.getSparrowAtlas(keys[0].trim());
+		if (keys.length > 1)
+		{
+			var original:FlxAtlasFrames = parentFrames;
+			parentFrames = new FlxAtlasFrames(parentFrames.parent);
+			addAtlas(parentFrames, original);
+			for (i in 1...keys.length)
+			{
+				var extraFrames:FlxAtlasFrames = Paths.getSparrowAtlas(keys[i].trim(), parentFolder);
+				if (extraFrames != null)
+					addAtlas(parentFrames, extraFrames);
+			}
+		}
+		return parentFrames;
+	}
 
 	inline static public function getPackerAtlas(key:String, ?library:String)
 	{
 		#if MODS_ALLOWED
 		var imageLoaded:FlxGraphic = returnGraphic(key);
-		var txtExists:Bool = false;
-		if (FileSystem.exists(modsTxt(key)))
-		{
-			txtExists = true;
-		}
+		var txtContents:String = NativeFileSystem.getContent(modsTxt(key));
 
 		return FlxAtlasFrames.fromSpriteSheetPacker((imageLoaded != null ? imageLoaded : image(key, library)),
-			(txtExists ? File.getContent(modsTxt(key)) : file('images/$key.txt', library)));
+			(txtContents != null ? txtContents : file('images/$key.txt', library)));
 		#else
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
 		#end
@@ -385,40 +374,47 @@ class Paths
 	public static function returnGraphic(key:String, ?library:String)
 	{
 		#if MODS_ALLOWED
-		var modKey:String = modsImages(key);
-		if (FileSystem.exists(modKey))
-		{
-			if (!currentTrackedAssets.exists(modKey))
-			{
-				var newBitmap:BitmapData = BitmapData.fromFile(modKey);
-				var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(newBitmap, false, modKey);
-				if (newGraphic != null)
-					newGraphic.persist = true;
-				else
-					trace('smth up with the graphic ($key)');
-				currentTrackedAssets.set(modKey, newGraphic);
-			}
-			localTrackedAssets.push(modKey);
-			return currentTrackedAssets.get(modKey);
-		}
-		#end
+		var path:String = modsImages(key);
 
-		var path = getPath('images/$key.png', IMAGE, library);
-		// trace(path);
-		if (OpenFlAssets.exists(path, IMAGE))
+		if (!currentTrackedAssets.exists(path))
 		{
-			if (!currentTrackedAssets.exists(path))
+			var newBitmap = NativeFileSystem.getBitmap(path);
+			if (newBitmap != null)
 			{
-				var newGraphic:FlxGraphic = FlxG.bitmap.add(path, false, path);
-				if (newGraphic != null)
-					newGraphic.persist = true;
-				else
-					trace('smth up with the graphic ($key)');
+				var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(newBitmap, false, path);
+				newGraphic.persist = true;
 				currentTrackedAssets.set(path, newGraphic);
+				localTrackedAssets.push(path);
+				return currentTrackedAssets.get(path);
 			}
+		}
+		else
+		{
 			localTrackedAssets.push(path);
 			return currentTrackedAssets.get(path);
 		}
+		#end
+		var path = getPath('images/$key.png', IMAGE, library);
+		if (!currentTrackedAssets.exists(path))
+		{
+			var newBitmap = NativeFileSystem.getBitmap(path);
+			if (newBitmap != null)
+			{
+				var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(newBitmap, false, path);
+				newGraphic.persist = true;
+				currentTrackedAssets.set(path, newGraphic);
+				localTrackedAssets.push(path);
+				return currentTrackedAssets.get(path);
+			}
+			else
+				trace('smth up with the graphic ($key)');
+		}
+		else
+		{
+			localTrackedAssets.push(path);
+			return currentTrackedAssets.get(path);
+		}
+
 		trace('oh no $key returning null NOOOO');
 		return null;
 	}
@@ -429,41 +425,33 @@ class Paths
 	{
 		#if MODS_ALLOWED
 		var file:String = modsSounds(path, key);
-		if (FileSystem.exists(file))
+		if (!currentTrackedSounds.exists(file))
 		{
-			if (!currentTrackedSounds.exists(file))
+			var snd = NativeFileSystem.getSound(file);
+			if (snd != null)
 			{
 				currentTrackedSounds.set(file, Sound.fromFile(file));
+				localTrackedAssets.push(key);
+				return currentTrackedSounds.get(file);
 			}
-			localTrackedAssets.push(key);
-			return currentTrackedSounds.get(file);
 		}
 		#end
 		// I hate this so god damn much
 		var gottenPath:String = getPath('$path/$key.$SOUND_EXT', SOUND, library);
 		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
-		// trace(gottenPath);
-		if (!currentTrackedSounds.exists(gottenPath))
-			#if MODS_ALLOWED
-			currentTrackedSounds.set(gottenPath, Sound.fromFile(gottenPath));
-			#else
-			{
-				var folder:String = '';
-				if (path == 'songs')
-					folder = 'songs:';
 
-				currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(folder + getPath('$path/$key.$SOUND_EXT', SOUND, library)));
-			}
-			#end
+		//* Enforcing OpenFL filesystem here
+		if (!currentTrackedSounds.exists(gottenPath))
+		{
+			currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(getPath('$path/$key.$SOUND_EXT', SOUND, library)));
 			localTrackedAssets.push(gottenPath);
+		}
 		return currentTrackedSounds.get(gottenPath);
 	}
 
 	#if MODS_ALLOWED
 	inline static public function mods(key:String = '')
-	{
-		return #if mobile Sys.getCwd() + #end 'mods/' + key;
-	}
+		return 'mods/' + key;
 
 	inline static public function modsFont(key:String)
 	{
@@ -518,81 +506,21 @@ class Paths
 		if (currentModDirectory != null && currentModDirectory.length > 0)
 		{
 			var fileToCheck:String = mods(currentModDirectory + '/' + key);
-			if (FileSystem.exists(fileToCheck))
+			fileToCheck = NativeFileSystem.getPathLike(fileToCheck);
+			if (fileToCheck != null)
 				return fileToCheck;
-			#if linux
-			else
-			{
-				var newPath:String = findFile(key);
-				if (newPath != null)
-					return newPath;
-			}
-			#end
 		}
 
 		for (mod in getGlobalMods())
 		{
 			var fileToCheck:String = mods(mod + '/' + key);
-			if (FileSystem.exists(fileToCheck))
+			fileToCheck = NativeFileSystem.getPathLike(fileToCheck);
+			if (fileToCheck != null)
 				return fileToCheck;
-			#if linux
-			else
-			{
-				var newPath:String = findFile(key);
-				if (newPath != null)
-					return newPath;
-			}
-			#end
 		}
-		return #if mobile Sys.getCwd() + #end 'mods/' + key;
+		return #if mobile Sys.getCwd() + #end
+		'mods/' + key;
 	}
-
-	#if linux
-	static function findFile(key:String):String // used above ^^^^
-	{
-		var targetDir:Array<String> = key.replace('\\', '/').split('/');
-		var searchDir:String = mods(currentModDirectory + '/' + targetDir[0]);
-		targetDir.remove(targetDir[0]);
-
-		for (x in targetDir)
-		{
-			if (x == '')
-				continue;
-			var newPart:String = findNode(searchDir, x);
-			if (newPart != null)
-			{
-				searchDir += '/' + newPart;
-			}
-			else
-				return null;
-		}
-		// trace('MATCH WITH $key! RETURNING $searchDir');
-		return searchDir;
-	}
-
-	static function findNode(dir:String, key:String):String
-	{
-		var allFiles:Array<String> = null;
-		try
-		{
-			allFiles = FileSystem.readDirectory(dir);
-		}
-		catch (e)
-		{
-			return null;
-		}
-
-		var allSearchies:Array<String> = allFiles.map(s -> s.toLowerCase());
-		for (i => name in allSearchies)
-		{
-			if (key.toLowerCase() == name)
-			{
-				return allFiles[i];
-			}
-		}
-		return null;
-	}
-	#end
 
 	public static var globalMods:Array<String> = [];
 
@@ -603,7 +531,7 @@ class Paths
 	{
 		globalMods = [];
 		var path:String = 'modsList.txt';
-		if (FileSystem.exists(path))
+		if (NativeFileSystem.exists(path))
 		{
 			var list:Array<String> = CoolUtil.coolTextFile(path);
 			for (i in list)
@@ -613,7 +541,7 @@ class Paths
 				{
 					var folder = dat[0];
 					var path = Paths.mods(folder + '/pack.json');
-					if (FileSystem.exists(path))
+					if (NativeFileSystem.exists(path))
 					{
 						try
 						{
@@ -641,12 +569,12 @@ class Paths
 	{
 		var list:Array<String> = [];
 		var modsFolder:String = mods();
-		if (FileSystem.exists(modsFolder))
+		if (NativeFileSystem.exists(modsFolder))
 		{
-			for (folder in FileSystem.readDirectory(modsFolder))
+			for (folder in NativeFileSystem.readDirectory(modsFolder))
 			{
 				var path = haxe.io.Path.join([modsFolder, folder]);
-				if (sys.FileSystem.isDirectory(path) && !ignoreModFolders.contains(folder) && !list.contains(folder))
+				if (NativeFileSystem.isDirectory(path) && !ignoreModFolders.contains(folder) && !list.contains(folder))
 				{
 					list.push(folder);
 				}
@@ -656,26 +584,8 @@ class Paths
 	}
 	#end
 
-	public static function readDirectory(directory:String):Array<String>
-	{
-		#if MODS_ALLOWED
-		return FileSystem.readDirectory(directory);
-		#else
-		var dirs:Array<String> = [];
-		for (dir in Assets.list().filter(folder -> folder.startsWith(directory)))
-		{
-			@:privateAccess
-			for (library in lime.utils.Assets.libraries.keys())
-			{
-				if (library != 'default' && Assets.exists('$library:$dir') && (!dirs.contains('$library:$dir') || !dirs.contains(dir)))
-					dirs.push('$library:$dir');
-				else if (Assets.exists(dir) && !dirs.contains(dir))
-					dirs.push(dir);
-			}
-		}
-		return dirs;
-		#end
-	}
+	public static inline function readDirectory(directory:String):Array<String>
+		return NativeFileSystem.readDirectory(directory);
 
 	#if flxanimate
 	public static function loadAnimateAtlas(spr:FlxAnimate, folderOrImg:Dynamic, spriteJson:Dynamic = null, animationJson:Dynamic = null)

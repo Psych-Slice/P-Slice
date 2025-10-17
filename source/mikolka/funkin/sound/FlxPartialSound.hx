@@ -19,7 +19,7 @@ import sys.io.File;
 import sys.FileSystem;
 #end
 
-using StringTools;
+
 
 class FlxPartialSound
 {
@@ -177,8 +177,8 @@ class FlxPartialSound
 							oggFullBytes.blit(0, oggBytesIntro, 0, oggBytesIntro.length);
 							oggFullBytes.blit(oggBytesIntro.length, fullAssOgg, 0, fullAssOgg.length);
 							@:privateAccess{
-								oggBytesIntro.b.resize(0);
-								fullAssOgg.b.resize(0);
+								oggBytesIntro.b.clear();
+								fullAssOgg.b.clear();
 							}
 							input.close();
 
@@ -358,7 +358,7 @@ class FlxPartialSound
 		output.blit(0, data, firstByte, byteLength);
 
 		@:privateAccess
-		data.b.resize(0);
+		data.b.clear();
 		return output;
 	}
 

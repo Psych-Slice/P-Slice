@@ -149,7 +149,7 @@ class FunkinDebugDisplay extends Sprite
 
 	override function __enterFrame(deltaTime:Int):Void
 	{
-
+		if(!visible) return;
 		#if html5
 		final currentTime:Float = js.Browser.window.performance.now();
 		#else

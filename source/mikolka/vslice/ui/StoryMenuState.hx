@@ -10,6 +10,7 @@ import mikolka.vslice.StickerSubState;
 import flixel.group.FlxGroup;
 import flixel.graphics.FlxGraphic;
 #if !LEGACY_PSYCH
+import backend.CacheSystem;
 import states.editors.MasterEditorMenu;
 import backend.WeekData;
 import backend.Highscore;
@@ -18,6 +19,7 @@ import objects.MenuCharacter;
 import options.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
 #else
+import Paths as CacheSystem;
 import editors.MasterEditorMenu;
 #end
 

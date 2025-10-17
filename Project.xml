@@ -44,7 +44,7 @@
 	<classpath name="source" />
 	
 	<!-- PSYCH ENGINE CUSTOMIZATION -->
-	<!-- <define name="OPENFL_LOOKUP"/> -->
+	<define name="OPENFL_LOOKUP"/>
 	<define name="NATIVE_LOOKUP"/>
 	
 
@@ -103,24 +103,16 @@
 		<library name="weekend1"         preload="false" />
 	</section>
 	
-	<assets path="assets/videos"        library="videos"        if="VIDEOS_ALLOWED"/>
-	<assets path="assets/songs"         library="songs"         exclude="*.ogg" if="web"/>
-	<assets path="assets/songs"         library="songs"         exclude="*.mp3" unless="web"/>
-	<assets path="assets/shared"        library="shared"        exclude="*.ogg" if="web"/>
-	<assets path="assets/shared"        library="shared"        exclude="*.mp3" unless="web"/>
-	<assets path="assets/week2"         library="week2"         exclude="*.ogg" if="web"/>
-	<assets path="assets/week2"         library="week2"         exclude="*.mp3" unless="web"/>
-	<assets path="assets/week3"         library="week3"         exclude="*.ogg" if="web"/>
-	<assets path="assets/week3"         library="week3"         exclude="*.mp3" unless="web"/>
-	<assets path="assets/week4"         library="week4"         exclude="*.ogg" if="web"/>
-	<assets path="assets/week4"         library="week4"         exclude="*.mp3" unless="web"/>
-	<assets path="assets/week5"         library="week5"         exclude="*.ogg" if="web"/>
-	<assets path="assets/week5"         library="week5"         exclude="*.mp3" unless="web"/>
-	<assets path="assets/week6"         library="week6"         exclude="*.ogg" if="web"/>
-	<assets path="assets/week6"         library="week6"         exclude="*.mp3" unless="web"/>
-	<assets path="assets/week7"         library="week7"         exclude="*.ogg" if="web"/>
-	<assets path="assets/week7"         library="week7"         exclude="*.mp3" unless="web"/>
-	<assets path="assets/weekend1"      library="weekend1"   />
+	<assets path="assets/videos"               if="VIDEOS_ALLOWED"/>
+	<assets path="assets/songs"                 />
+	<assets path="assets/shared" />
+	<assets path="assets/week2"              />
+	<assets path="assets/week3"                />
+	<assets path="assets/week4"               />
+	<assets path="assets/week5"                 />
+	<assets path="assets/week6"                />
+	<assets path="assets/week7"                />
+	<assets path="assets/weekend1"        />
 	
 	<section if="MODS_ALLOWED">
 		<assets path='example_mods' rename='mods' embed='false'/>

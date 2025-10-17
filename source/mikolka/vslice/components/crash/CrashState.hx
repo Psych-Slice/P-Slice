@@ -11,7 +11,7 @@ import openfl.events.UncaughtErrorEvent;
 import haxe.CallStack;
 import haxe.io.Path;
 
-using StringTools;
+
 
 class CrashState extends FlxState
 {

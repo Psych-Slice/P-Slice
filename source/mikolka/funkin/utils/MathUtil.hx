@@ -83,16 +83,6 @@ class MathUtil
   }
 
   /**
-   * Get the base-2 logarithm of a value.
-   * @param x value
-   * @return `2^x`
-   */
-  public static function exp2(x:Float):Float
-  {
-    return Math.pow(2, x);
-  }
-
-  /**
    * Linearly interpolate between two values.
    *
    * @param base The starting value, when `progress <= 0`.

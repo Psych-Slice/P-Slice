@@ -51,6 +51,16 @@ import mikolka.vslice.ui.title.TitleState;
 import mikolka.compatibility.stages.misc.BaseStage;
 import flxanimate.PsychFlxAnimate as FlxAnimate;
 
+//utils
+using StringTools;
+using mikolka.funkin.utils.ArrayTools;
+using mikolka.funkin.utils.custom.FunkinTools;
+import mikolka.funkin.utils.custom.FunkinTools;
+using mikolka.funkin.utils.ArrayTools;
+using mikolka.funkin.utils.SpriteTools;
+using mikolka.funkin.utils.custom.PsychUITools;
+using mikolka.funkin.utils.StringTools;
+
 //P-Slice stage system
 import mikolka.compatibility.stages.objects.*;
 import mikolka.compatibility.stages.misc.*;
