@@ -138,6 +138,9 @@ class Song
 	public static function parseJSONshit(rawJson:String):SwagSong
 	{
 		var swagShit:SwagSong = cast Json.parse(rawJson).song;
+		if(Std.isOfType(swagShit,String)){
+			throw 'Psych 1.0 charts are not supported in the P-Slice 0.6.3 flavor';
+		}
 		swagShit.validScore = true;
 		return swagShit;
 	}

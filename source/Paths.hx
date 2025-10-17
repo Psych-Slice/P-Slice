@@ -139,7 +139,7 @@ class Paths
 		if (parentfolder != null)
 			return getFolderPath(file, parentfolder);
 
-		var shared_path = getFolderPath(file, 'shared');
+		var shared_path = getFolderPath(file);
 		if(NativeFileSystem.exists(shared_path))
 			return shared_path;
 

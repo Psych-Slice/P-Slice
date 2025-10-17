@@ -29,11 +29,10 @@ class ArrayTools
    * Remove all elements from the array, without creating a new array.
    * @param array The array to clear.
    */
-  public static function clear<T>(array:Array<T>):Void
+  public inline static function clear<T>(array:Array<T>):Void
   {
     // This method is faster than array.splice(0, array.length)
-    while (array.length > 0)
-      array.pop();
+    array.resize(0);
   }
   	/**
 		It returns the index of the first element of the array that matches the predicate function.

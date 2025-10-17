@@ -171,10 +171,10 @@ class NativeFileSystem
 				{
 					if (library != 'default' && Assets.exists('$library:$dir') && (!dirs.contains('$library:$dir') || !dirs.contains(dir)))
 						dirs.push('$library:$dir');
-					else if (Assets.exists(dir) && !dirs.contains(dir))
+					else if (Assets.exists(dir))
 					{
 						var parts = dir.split("/");
-						dirs.push(parts.pop());
+						dirs.pushUnique(parts.pop());
 					}
 				}
 			}

@@ -88,6 +88,7 @@ class ModsHelper {
 			) Paths.localTrackedAssets.push(key);
 		}
 	}
+	
 	#if sys
 	public inline static function collectVideos():String{
 		var dirsToList = new Array<String>();

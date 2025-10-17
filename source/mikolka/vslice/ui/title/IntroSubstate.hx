@@ -143,7 +143,7 @@ class IntroSubstate extends MusicBeatSubstate
 		#if (MODS_ALLOWED && !LEGACY_PSYCH)
 		var firstArray:Array<String> = Mods.mergeAllTextsNamed('data/introText.txt');
 		#else
-		var fullText:String = lime.utils.Assets.getText(Paths.txt('introText'));
+		var fullText:String = NativeFileSystem.getContent(Paths.txt('introText'));
 		var firstArray:Array<String> = fullText.split('\n');
 		#end
 		var swagGoodArray:Array<Array<String>> = [];
