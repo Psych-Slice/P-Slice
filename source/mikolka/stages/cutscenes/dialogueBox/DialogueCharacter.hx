@@ -56,10 +56,14 @@ class DialogueCharacter extends FlxSprite
 		var characterPath:String = 'images/dialogue/' + character + '.json';
 		var rawJson = null;
 
+		#if MODS_ALLOWED
 		var path:String = Paths.modFolders(characterPath);
 		if (!NativeFileSystem.exists(path)) {
 			path = FunkinPath.getPath(characterPath,true);
 		}
+		#else
+		var path:String = FunkinPath.getPath(characterPath,true);
+		#end
 
 		if(!NativeFileSystem.exists(path)) {
 			path = FunkinPath.getPath('images/dialogue/' + DEFAULT_CHARACTER + '.json',true);

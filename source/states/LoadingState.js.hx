@@ -794,8 +794,8 @@ class LoadingState extends MusicBeatState
 				},
 				onComplete: (snd) ->
 				{
-					Paths.currentTrackedSounds.set(file, snd);
-					Paths.localTrackedAssets.push(file);
+					CacheSystem.currentTrackedSounds.set(file, snd);
+					CacheSystem.localTrackedAssets.push(file);
 				}
 			}
 		}
@@ -817,7 +817,7 @@ class LoadingState extends MusicBeatState
 			if (requestKey.lastIndexOf('.') < 0)
 				requestKey += '.png';
 
-			if (!Paths.currentTrackedAssets.exists(requestKey))
+			if (!CacheSystem.currentTrackedAssets.exists(requestKey))
 			{
 				var file:String = Paths.getPath(requestKey, IMAGE);
 				if (OpenFlAssets.exists(file, IMAGE))
@@ -835,7 +835,7 @@ class LoadingState extends MusicBeatState
 						},
 						onComplete: (bmp) ->
 						{
-							if (Paths.cacheBitmap(requestKey, null, bmp) != null)
+							if (CacheSystem.cacheBitmap(requestKey, bmp) != null)
 							{
 							} // trace('finished preloading image $key');
 							else

@@ -344,18 +344,6 @@ class CacheSystem
 		 */
 	private static function getTexturePath(file:String, ?parentfolder:String):String
 	{
-		function astcModFolders(path:String)
-		{
-			#if ATSC_SUPPORT
-			if (Native.isASTCSupported())
-			{
-				var assetPath = Paths.modFolders('$path.astc');
-				if (NativeFileSystem.exists(assetPath))
-					return assetPath;
-			}
-			#end
-			return Paths.modFolders('$path.png');
-		}
 		function astcGetSharedPath(path:String)
 		{
 			#if ATSC_SUPPORT
@@ -381,8 +369,21 @@ class CacheSystem
 			#end
 			return Paths.getFolderPath('$file.png', folder);
 		}
-
 		#if MODS_ALLOWED
+		
+		function astcModFolders(path:String)
+		{
+			#if ATSC_SUPPORT
+			if (Native.isASTCSupported())
+			{
+				var assetPath = Paths.modFolders('$path.astc');
+				if (NativeFileSystem.exists(assetPath))
+					return assetPath;
+			}
+			#end
+			return Paths.modFolders('$path.png');
+		}
+
 		var customFile:String = file;
 		if (parentfolder != null)
 			customFile = '$parentfolder/$file';

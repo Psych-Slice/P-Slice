@@ -263,7 +263,7 @@ class NativeFileSystem
 	**/
 	private static function addCwd(directory:String):String
 	{
-		#if desktop
+		#if (desktop || web)
 		return directory;
 		#else
 		var cwd = StorageUtil.getStorageDirectory();
@@ -344,7 +344,7 @@ class NativeFileSystem
 			return null;
 		}
 	}
-	#else
+	#elseif sys
 
 	/**
 	 * Returns a path to the existing file similar to the given one.

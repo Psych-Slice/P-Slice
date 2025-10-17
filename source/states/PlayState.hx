@@ -1,5 +1,6 @@
 package states;
 
+import openfl.Assets;
 import mikolka.vslice.components.crash.UserErrorSubstate;
 import backend.PsychCamera;
 import mikolka.compatibility.VsliceOptions;
@@ -939,7 +940,7 @@ class PlayState extends MusicBeatState
 		#if sys
 		if (NativeFileSystem.exists(fileName))
 		#else
-		if (OpenFlAssets.exists(fileName))
+		if (openfl.Assets.exists(fileName))
 		#end
 		foundFile = true;
 
@@ -1680,7 +1681,7 @@ class PlayState extends MusicBeatState
 	function eventEarlyTrigger(event:EventNote):Float
 	{
 		var returnedValue:Null<Float> = callOnScripts('eventEarlyTrigger', [event.event, event.value1, event.value2, event.strumTime], true);
-		if (returnedValue != null && returnedValue != 0)
+		if(returnedValue != null && Std.isOfType(returnedValue,Float) && returnedValue != 0) //! I hate js
 		{
 			return returnedValue;
 		}

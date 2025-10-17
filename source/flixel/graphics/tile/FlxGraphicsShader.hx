@@ -106,7 +106,9 @@ class FlxGraphicsShader extends GraphicsShader
 
 		if(useNewerRendering == null) {
 			var version_str = gl.getParameter(gl.SHADING_LANGUAGE_VERSION);
+			#if sys
 			Sys.println("Supported Gl version: "+version_str);
+			#end
 			trace("Supported Gl version: "+version_str);
 			useNewerRendering = false;
 			#if lime_opengles
@@ -118,11 +120,11 @@ class FlxGraphicsShader extends GraphicsShader
 				useNewerRendering = glslVersion >= 330;
 			#end
 			if(useNewerRendering){
-				Sys.println("Using newer rendering for OpenGL 3");
+				#if sys Sys.println("Using newer rendering for OpenGL 3"); #end
 				trace("Using newer rendering for OpenGL 3");
 			}
 			else{
-				Sys.println("Using legacy rendering. Some shaders may not work on your device!");
+				#if sys Sys.println("Using legacy rendering. Some shaders may not work on your device!"); #end
 				trace("Using legacy rendering. Some shaders may not work on your device!");
 			}
 		}

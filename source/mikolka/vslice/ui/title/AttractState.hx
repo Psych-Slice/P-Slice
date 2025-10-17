@@ -3,10 +3,12 @@ package mikolka.vslice.ui.title;
 import mikolka.compatibility.ModsHelper;
 #if hxCodec
 import hxcodec.flixel.FlxVideoSprite;
-#else
+#elseif hxvlc
 import hxvlc.flixel.FlxVideoSprite;
+#else
+import objects.VideoSprite as FlxVideo;
 #end
-
+using mikolka.funkin.utils.ArrayTools;
 import mikolka.vslice.ui.title.TitleState;
 
 /**
@@ -60,7 +62,8 @@ class AttractState extends MusicBeatSubstate
   function playVideoHTML5(filePath:String):Void
   {
     // Video displays OVER the FlxState.
-    vid = new FlxVideo(filePath);
+    vid = new FlxVideo();
+    vid.netStream.play(filePath);
     if (vid != null)
     {
       vid.zIndex = 0;
@@ -76,7 +79,7 @@ class AttractState extends MusicBeatSubstate
   }
   #end
 
-  #if VIDEOS_ALLOWED
+  #if (VIDEOS_ALLOWED && sys)
   var vid:FlxVideoSprite;
 
   function playVideoNative(filePath:String):Void

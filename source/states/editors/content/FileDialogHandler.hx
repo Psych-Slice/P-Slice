@@ -13,6 +13,7 @@ import sys.io.File;
 import lime.ui.*;
 
 import flixel.FlxBasic;
+import StringTools;
 
 //Currently only supports OPEN and SAVE, might change that in the future, who knows
 class FileDialogHandler extends FlxBasic

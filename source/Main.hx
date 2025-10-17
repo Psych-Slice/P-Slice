@@ -159,6 +159,7 @@ class Main extends Sprite
 		trace("Initializing save .sol");
 		FlxG.save.bind('funkin', CoolUtil.getSavePath(), (rawSave, error) ->
 		{
+			#if sys
 			trace("Couldn't load main save. Attempting to extract");
 			try
 			{
@@ -175,6 +176,7 @@ class Main extends Sprite
 			return
 			{
 			};
+			#end
 		});
 
 		trace("Loading scores..");

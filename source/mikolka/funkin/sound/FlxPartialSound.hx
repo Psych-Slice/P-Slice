@@ -357,8 +357,12 @@ class FlxPartialSound
 		var output = Bytes.alloc(byteLength + 1);
 		output.blit(0, data, firstByte, byteLength);
 
+		#if js
+		data.b.slice(0,0);
+		#else
 		@:privateAccess
 		data.b.clear();
+		#end
 		return output;
 	}
 

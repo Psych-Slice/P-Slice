@@ -457,7 +457,7 @@ class CharSelectSubState extends MusicBeatSubState
 		FlxG.sound.defaultSoundGroup.add(introSound);
 		FlxG.sound.list.add(introSound);
 
-		#if TOUCH_CONTROLS_ALLOWED
+		#if (TOUCH_CONTROLS_ALLOWED && MODS_ALLOWED)
 		touchKeys = new Array();
 		for (index in 0...9)
 		{
