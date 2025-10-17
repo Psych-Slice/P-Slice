@@ -319,7 +319,6 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 			<icon path="art/mobile/iconMobile.png" unless="android" />
 		</section>
 		<section unless="mobile">
-			<assets path='art/desktop/Assets.car' rename='Assets.car' if="linux" />
 			<assets path='art/desktop/iconOG.png' rename='icon.png' if="linux" />
 			<icon path="art/desktop/icon16.png" size='16'/>
 			<icon path="art/desktop//icon32.png" size='32'/>
