@@ -93,7 +93,10 @@ import backend.Difficulty;
 import backend.Mods;
 import backend.Highscore;
 import backend.Language;
+
+#if !js
 import mobile.backend.StorageUtil;
+#end
 
 import backend.ui.*; //Psych-UI
 

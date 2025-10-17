@@ -24,6 +24,9 @@ class TankErect extends BaseStage
 	var tankmanRun:FlxTypedGroup<TankmenBG>;
 	var cutscene:PicoTankman;
 	var pico_stage:PicoCapableStage;
+	#if html5
+	var captainBloody_mask:BitmapData = null;
+	#end
 
 	public function new() {
 		if (songName == "stress-(pico-mix)") pico_stage = new PicoCapableStage(true);
@@ -103,6 +106,15 @@ class TankErect extends BaseStage
 			applyShader(dad, dad.curCharacter);
 			
 		}
+		#if html5
+		//? THis mask doesn't want to load properly and I don't have pationce to fix it
+		//? Band aid should be enough for now.
+		captainBloody_mask = null;
+		var request = Assets.loadBitmapData("assets/week7/images/erect/masks/tankmanCaptainBloody_mask.png");
+		request.onComplete(item ->{
+			captainBloody_mask = item;
+		});
+		#end
 		if (!VsliceOptions.LOW_QUALITY)
 		{
 			var bricks:BGSprite = new BGSprite('erect/bricksGround', 375, 640, 1, 1);
@@ -197,7 +209,11 @@ class TankErect extends BaseStage
 			case "tankman-bloody":
 				{
 					rim.angle = 135;
+					#if html5
+					rim.altMaskImage = captainBloody_mask;
+					#else
 					rim.altMaskImage = Paths.image("erect/masks/tankmanCaptainBloody_mask").bitmap;
+					#end
 					rim.maskThreshold = 1;
 					rim.threshold = 0.1;
 					rim.useAltMask = true;

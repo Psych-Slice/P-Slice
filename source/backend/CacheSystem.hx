@@ -1,6 +1,5 @@
 package backend;
 
-import cpp.vm.Gc;
 import openfl.utils.AssetCache;
 import flixel.util.FlxStringUtil;
 import flixel.system.FlxAssets;
@@ -82,9 +81,6 @@ class CacheSystem
 		}
 
 		System.gc();
-		// #if cpp
-		// cpp.NativeGc.compact();
-		// #end
 	}
 
 	#if debug
