@@ -1,5 +1,6 @@
 package objects;
 
+#if (web && VIDEOS_ALLOWED)
 import flixel.util.FlxColor;
 import flixel.util.FlxSignal.FlxTypedSignal;
 import openfl.display3D.textures.TextureBase;
@@ -10,13 +11,12 @@ import openfl.net.NetConnection;
 import openfl.net.NetStream;
 
 /**
-  * Plays a video via a NetStream. Only works on HTML5.
-  * This does NOT replace hxCodec, nor does hxCodec replace this.
-  * hxCodec only works on desktop and does not work on HTML5!
-  */
-class VideoSprite extends FlxSprite
+ * Plays a video via a NetStream. Only works on HTML5.
+ * This does NOT replace hxCodec, nor does hxCodec replace this.
+ * hxCodec only works on desktop and does not work on HTML5!
+ */
+class WebVideoSprite extends FlxSprite
 {
-  #if VIDEOS_ALLOWED
   public var video:Video;
   public var netStream:NetStream;
 
@@ -156,5 +156,5 @@ class VideoSprite extends FlxSprite
   {
     if (event.info.code == 'NetStream.Play.Complete') finishVideo();
   }
-  #end
 }
+#end

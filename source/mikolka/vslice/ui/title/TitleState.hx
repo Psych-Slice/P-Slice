@@ -70,7 +70,9 @@ class TitleState extends MusicBeatState
 	function startIntro()
 	{
 		trace("Enforcing log settings!");
+		#if sys
 		Logger.enforceLogSettings = true;
+		#end
 
 		persistentUpdate = true;
 		if (!initialized && FlxG.sound.music == null)

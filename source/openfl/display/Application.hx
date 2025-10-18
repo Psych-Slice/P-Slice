@@ -2,6 +2,7 @@ package openfl.display;
 
 import openfl.utils._internal.Lib;
 import openfl.events.Event;
+import openfl.display.Window;
 #if lime
 import lime.app.Application as LimeApplication;
 import lime.ui.WindowAttributes;

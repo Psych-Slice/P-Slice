@@ -6,7 +6,7 @@ import hxcodec.flixel.FlxVideoSprite;
 #elseif hxvlc
 import hxvlc.flixel.FlxVideoSprite;
 #else
-import objects.VideoSprite as FlxVideo;
+import objects.WebVideoSprite as FlxVideo;
 #end
 using mikolka.funkin.utils.ArrayTools;
 import mikolka.vslice.ui.title.TitleState;

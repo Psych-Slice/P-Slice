@@ -735,8 +735,7 @@ class PlayState extends MusicBeatState
 		Conductor.offset = Reflect.hasField(PlayState.SONG, 'offset') ? (PlayState.SONG.offset / value) : 0;
 		Conductor.safeZoneOffset = (ClientPrefs.data.safeFrames / 60) * 1000 * value;
 		#if VIDEOS_ALLOWED
-		if (videoCutscene?.videoSprite?.bitmap != null)
-			videoCutscene.videoSprite.bitmap.rate = value;
+		videoCutscene?.setSpeed(value);
 		#end
 		setOnScripts('playbackRate', playbackRate);
 		#else
@@ -948,7 +947,7 @@ class PlayState extends MusicBeatState
 		{
 			videoCutscene = new VideoSprite(fileName, forMidSong, canSkip, loop);
 			if (forMidSong)
-				videoCutscene.videoSprite.bitmap.rate = playbackRate;
+				videoCutscene.setSpeed(playbackRate);
 
 			// Finish callback
 			if (!forMidSong)
