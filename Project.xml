@@ -196,10 +196,16 @@
 				include="*.xml|*.json" embed="true" />
 			<assets path="assets/base_game/characters" rename="assets/shared/images/characters"
 				include="*.png" embed="false" />
+			<assets path="assets/base_game/characters_pixel" rename="assets/shared/images/characters"
+				include="*.xml|*.json" embed="true" />
+			<assets path="assets/base_game/characters_pixel" rename="assets/shared/images/characters"
+				include="*.png" embed="false" />
 			<assets path="assets/base_game/shared" rename="assets/shared" embed="true" />
 		</section>
 		<assets path="assets/base_game/week_data" rename="assets" unless="web" />
 		<assets path="assets/base_game/characters" rename="assets/shared/images/characters"
+			unless="web" />
+		<assets path="assets/base_game/characters_pixel" rename="assets/shared/images/characters"
 			unless="web" />
 		<assets path="assets/base_game/shared" rename="assets/shared" unless="web" />
 	</section>
