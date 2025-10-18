@@ -18,7 +18,7 @@
 	Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
 	<meta build-number="331" />
-	<config type="android" gradle-version="8.10.2" gradle-plugin="8.8.0" ndkVersion="27.0"
+	<config type="android" gradle-version="8.10.2" gradle-plugin="8.8.0" ndkVersion="28.0"
 		minimum-sdk-version="26" target-sdk-version="35" />
 	<!-- NOTE TO SELF: DISABLE THIS IF ISSUES ARE FOUND -->
 	<haxedef name="LINC_LUA_RELATIVE_DYNAMIC_LIB" /> <!-- stable luas PUT AFTER FIRST LINE WITH APP

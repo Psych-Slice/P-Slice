@@ -4021,7 +4021,7 @@ public function startLuasNamed(luaFile:String)
 	if (NativeFileSystem.exists(luaToLoad))
 	#elseif sys
 	var luaToLoad:String = Paths.getSharedPath(luaFile);
-	if (OpenFlAssets.exists(luaToLoad))
+	if (NativeFileSystem.exists(luaToLoad))
 	#end
 	{
 		for (script in luaArray)
