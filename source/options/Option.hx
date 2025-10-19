@@ -105,10 +105,7 @@ class Option
 	dynamic public function getValue():Dynamic
 	{
 		var value = Reflect.getProperty(ClientPrefs.data, variable);
-		try{
-			if(type == KEYBIND) return !Controls.instance.controllerMode ? value.keyboard : value.gamepad;
-		}
-		catch(x){}
+		if(type == KEYBIND && value != null) return !Controls.instance.controllerMode ? value.keyboard : value.gamepad;
 		return value;
 	}
 
@@ -117,13 +114,13 @@ class Option
 		if(type == KEYBIND)
 		{
 			var keys = Reflect.getProperty(ClientPrefs.data, variable);
-			try{
+			if(keys != null){
 
 				if(!Controls.instance.controllerMode) keys.keyboard = value;
 				else keys.gamepad = value;
+				return value;
 			}
-			catch(x){}
-			return value;
+			else return null;
 		}
 		return Reflect.setProperty(ClientPrefs.data, variable, value);
 	}

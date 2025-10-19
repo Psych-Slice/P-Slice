@@ -56,19 +56,21 @@ class InitState extends MusicBeatState
 		if (FlxG.save.data.weekCompleted != null)
 		{
 			StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
+		}	
+
+		trace("checking asset list cache");
+		if(NativeFileSystem.openFlAssets?.length == 0){
+			trace("Failed to load openflAssets during itit! Doing it now.");
+			NativeFileSystem.openFlAssets = Assets.list();
 		}
+		
+		FlxG.scaleMode = new MobileScaleMode(ClientPrefs.data.wideScreen); 
 		
 		#if TOUCH_CONTROLS_ALLOWED
 		trace("Loading mobile data");
 		MobileData.init();
-		#end		
+		#end	
 
-		trace("checking asset list cache");
-		if(NativeFileSystem.openFlAssets?.length == 0)
-			NativeFileSystem.openFlAssets = Assets.list();
-		
-		FlxG.scaleMode = new MobileScaleMode(ClientPrefs.data.wideScreen); 
-		
 		trace("Init plugins:");
 		//* FIRST INIT! iNITIALISE IMPORTED PLUGINS
 		ScreenshotPlugin.initialize();
