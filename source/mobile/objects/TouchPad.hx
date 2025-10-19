@@ -76,7 +76,7 @@ class TouchPad extends MobileInputManager
 		if (Action != "NONE")
 		{
 			if (!MobileData.actionModes.exists(Action))
-				throw Language.getPhrase('touchpad_actionmode_missing', 'The touchPad actionMode "{1}" doesn\'t exist.', [DPad]);
+				throw Language.getPhrase('touchpad_actionmode_missing', 'The touchPad actionMode "{1}" doesn\'t exist.', [Action]);
 
 			for (buttonData in MobileData.actionModes.get(Action).buttons)
 			{
