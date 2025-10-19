@@ -1,6 +1,6 @@
 package mikolka.compatibility.ui;
 
-using mikolka.funkin.custom.FunkinTools;
+
 
 class StoryModeHooks {
     public static var DEFAULT_DIFFICULTIES(get,null):Array<String>;

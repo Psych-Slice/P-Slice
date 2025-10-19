@@ -1,5 +1,6 @@
 package mikolka.funkin.custom;
 
+import haxe.io.Path;
 import openfl.media.Sound;
 import openfl.display.BitmapData;
 #if (!NATIVE_LOOKUP && !OPENFL_LOOKUP)
@@ -70,8 +71,15 @@ class NativeFileSystem
 		var sys_path = getPathLike(path);
 		if (sys_path != null)
 		{
-			var result = BitmapData.fromFile(sys_path);
-			return result;
+			#if ATSC_SUPPORT
+			if(sys_path.endsWith(".astc")){
+				var texture = openfl.Lib.current.stage.context3D.createASTCTexture(File.getBytes(sys_path));
+				return BitmapData.fromTexture(texture,true);
+			}
+			else{#end
+				var result = BitmapData.fromFile(sys_path);
+				return result;
+			#if ATSC_SUPPORT}#end
 		}
 		#end
 
@@ -107,18 +115,8 @@ class NativeFileSystem
 		if (sys_path != null)
 		{
 			var result = Sound.fromFile(sys_path);
-			#if nativesys_profile
-			var timeEnd = Sys.cpuTime() - timeStart;
-			if (timeEnd > 1.2)
-				trace('Getting system sound ${path} took: $timeEnd');
-			#end
 			return result;
 		}
-		#end
-		#if nativesys_profile
-		var timeEnd = Sys.cpuTime() - timeStart;
-		if (timeEnd > 1.2)
-			trace('Getting failed sound ${path} took: $timeEnd');
 		#end
 		return null;
 	}
@@ -155,12 +153,10 @@ class NativeFileSystem
 		return false;
 	}
 
+	
 	public static function readDirectory(directory:String):Array<String>
 	{
 		var isModded = directory.startsWith("mods");
-		#if nativesys_profile
-		var timeStart = Sys.time();
-		#end
 
 		#if OPENFL_LOOKUP
 		if (#if NATIVE_LOOKUP !isModded #else true #end)
@@ -175,18 +171,14 @@ class NativeFileSystem
 				{
 					if (library != 'default' && Assets.exists('$library:$dir') && (!dirs.contains('$library:$dir') || !dirs.contains(dir)))
 						dirs.push('$library:$dir');
-					else if (Assets.exists(dir) && !dirs.contains(dir))
+					else if (Assets.exists(dir))
 					{
 						var parts = dir.split("/");
-						dirs.push(parts.pop());
+						dirs.pushUnique(parts.pop());
 					}
 				}
 			}
-			#if nativesys_profile
-			var timeEnd = Sys.cpuTime() - timeStart;
-			if (timeEnd > 1.2)
-				trace('Getting native directory ${directory} took: $timeEnd');
-			#end
+
 			if (dirs.length > 0)
 				return dirs;
 		}
@@ -196,13 +188,14 @@ class NativeFileSystem
 		var testdir = getPathLike(directory);
 		if (testdir != null)
 		{
+			try{
 			var result = FileSystem.readDirectory(testdir);
-			#if nativesys_profile
-			var timeEnd = Sys.cpuTime() - timeStart;
-			if (timeEnd > 1.2)
-				trace('Getting system directory ${directory} took: $timeEnd');
-			#end
 			return result;
+			}
+			catch(x:Exception){
+				trace('ERROR: Native crash in ${testdir}. This is NOT normal!');
+				return [];
+			}
 		}
 		#end
 
@@ -282,6 +275,11 @@ class NativeFileSystem
 	}
 
 	#if (linux || ios)
+	/**
+	A local cache for non existent directories.
+	Make sure to clean it regularly in case user adds a missing file(s)
+	*/
+	public static final excludePaths:Array<String> = []; 
 		/**
 	 * Returns a path to the existing file similar to the given one.
 	 * (For instance "mod/firelight" and  "Mod/FireLight" are *similar* paths)
@@ -289,7 +287,14 @@ class NativeFileSystem
 	 * @return Null<String> Found path or null if such doesn't exist
 	 */
 	public static function getPathLike(path:String):Null<String> {
-		var path = addCwd(path);// fir ios
+		var path = addCwd(path);// fix ios
+		
+		var dir = Path.directory(path);
+		for(exclude in excludePaths){
+			if(dir.startsWith(exclude)) 
+				return null;
+			
+		}
 		if(sys.FileSystem.exists(path)) return path;
 
 		var baseParts:Array<String> = path.replace('\\', '/').split('/');
@@ -310,6 +315,7 @@ class NativeFileSystem
 			var foundNode = findNode(nextDir, part);
 
 			if (foundNode == null) {
+				excludePaths.push(nextDir+"/"+part);
 				return null;
 			}
 			nextDir = nextDir+"/"+foundNode;

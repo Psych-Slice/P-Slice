@@ -18,14 +18,8 @@ import lime.system.ThreadPool;
 import sys.io.File;
 import sys.FileSystem;
 #end
-#if lime_vorbis
-import lime.media.vorbis.VorbisFile;
-#end
-#if lime_vorbis
-import lime.media.vorbis.VorbisFile;
-#end
 
-using StringTools;
+
 
 class FlxPartialSound
 {
@@ -50,48 +44,88 @@ class FlxPartialSound
 	 * Will load via HTTP Range header on HTML5, and load the bytes from the file on native.
 	 * On subsequent calls, will return a cached Sound object from Assets.cache
 	 * @param path
-	 * @param rangeStart what percent of the song (between 0 and 1) should it start at
+	 * @param rangeStart what percent of the song should it start at
 	 * @param rangeEnd what percent of the song should it end at
 	 * @return Future<Sound>
 	 */
-	public static function partialLoadFromFile(audioPath:String, ?rangeStart:Float = 0, ?rangeEnd:Float = 1, ?paddedIntro:Bool = false):Promise<Sound>
+	public static function partialLoadFromFile(path:String, ?rangeStart:Float = 0, ?rangeEnd:Float = 1, ?paddedIntro:Bool = false):Promise<Sound>
 	{
 		var promise:Promise<Sound> = new Promise<Sound>();
-		var cacheName:String = audioPath + ".partial-" + rangeStart + "-" + rangeEnd;
 
-		#if sys
-		if (FileSystem.exists(getCacheDir() + cacheName.replace(':', '/') + '.ogg') && !Assets.cache.hasSound(cacheName))
+		if (Assets.cache.hasSound(path + ".partial-" + rangeStart + "-" + rangeEnd))
 		{
-			var oggFullBytes:Bytes = File.getBytes(getCacheDir() + cacheName.replace(':', '/') + '.ogg');
-			var audioBuffer:AudioBuffer = parseBytesOgg(oggFullBytes, true);
-			Assets.cache.setSound(cacheName, Sound.fromAudioBuffer(audioBuffer));
-		}
-		#end
-
-		if (Assets.cache.hasSound(cacheName))
-		{
-			promise.complete(Assets.cache.getSound(cacheName));
+			promise.complete(Assets.cache.getSound(path + ".partial-" + rangeStart + "-" + rangeEnd));
 			return promise;
 		}
 
 		#if web
-		partialLoadHttp(audioPath, promise, rangeStart, rangeEnd, cacheName);
-		#else
-		if (!FileSystem.exists(audioPath) && !Assets.exists(audioPath))
+		requestContentLength(path).onComplete(function(contentLength:Int)
 		{
-			FlxG.log.warn("Could not find audio file for partial playback: " + audioPath);
+			var startByte:Int = Std.int(contentLength * rangeStart);
+			var endByte:Int = Std.int(contentLength * rangeEnd);
+			var byteRange:String = startByte + '-' + endByte;
+
+			// for ogg files, we want to get a certain amount of header info stored at the beginning of the file
+			// which I believe helps initiate the audio stream properly for any section of audio
+			// 0-6400 is a random guess, could be fuckie with other audio
+			if (Path.extension(path) == "ogg")
+				byteRange = '0-' + Std.string(16 * 400);
+
+			var http = new HTTPRequest<Bytes>(path);
+			var rangeHeader:HTTPRequestHeader = new HTTPRequestHeader("Range", "bytes=" + byteRange);
+			http.headers.push(rangeHeader);
+
+			http.load().onComplete(function(data:Bytes)
+			{
+				var audioBuffer:AudioBuffer = new AudioBuffer();
+				switch (Path.extension(path))
+				{
+					case "mp3":
+						var mp3Data = parseBytesMp3(data, startByte);
+						audioBuffer = mp3Data.buf;
+
+
+						var snd = Sound.fromAudioBuffer(audioBuffer);
+						Assets.cache.setSound(path + ".partial-" + rangeStart + "-" + rangeEnd, Sound.fromAudioBuffer(audioBuffer));
+						PartialSoundMetadata.instance.set(path + rangeStart, {kbps:mp3Data.kbps, introOffsetMs:mp3Data.introLengthMs});
+						promise.complete(snd);
+
+					case "ogg":
+						var httpFull = new HTTPRequest<Bytes>(path);
+
+						rangeHeader = new HTTPRequestHeader("Range", "bytes=" + startByte + '-' + endByte);
+						httpFull.headers.push(rangeHeader);
+						httpFull.load().onComplete(function(fullOggData)
+						{
+							var cleanIntroBytes = cleanOggBytes(data);
+							var cleanFullBytes = cleanOggBytes(fullOggData);
+							var fullBytes = Bytes.alloc(cleanIntroBytes.length + cleanFullBytes.length);
+							fullBytes.blit(0, cleanIntroBytes, 0, cleanIntroBytes.length);
+							fullBytes.blit(cleanIntroBytes.length, cleanFullBytes, 0, cleanFullBytes.length);
+
+							audioBuffer = parseBytesOgg(fullBytes, true);
+							Assets.cache.setSound(path + ".partial-" + rangeStart + "-" + rangeEnd, Sound.fromAudioBuffer(audioBuffer));
+							promise.complete(Sound.fromAudioBuffer(audioBuffer));
+						});
+
+					default:
+						promise.error("Unsupported file type: " + Path.extension(path));
+				}
+			});
+		});
+
+		return promise;
+		#else
+		if (!FileSystem.exists(path) && !Assets.exists(path))
+		{
+			FlxG.log.warn("Could not find audio file for partial playback: " + path);
 			return null;
 		}
 
-		// streaming audio has been iffy on windows, need to investigate further
-		#if (lime_vorbis && !windows)
-		var vorb:VorbisFile = VorbisFile.fromFile(audioPath);
-		var snd = Sound.fromAudioBuffer(AudioBuffer.fromVorbisFile(vorb));
-		promise.complete(snd);
-		#else
 		var byteNum:Int = 0;
+
 		// on native, it will always be an ogg file, although eventually we might want to add WAV?
-		loadBytes(audioPath).onComplete(function(data:Bytes)
+		loadBytes(path).onComplete(function(data:Bytes)
 		{
 			var input = new BytesInput(data);
 
@@ -102,7 +136,7 @@ class FlxPartialSound
 			var size = input.length;
 			#end
 
-			switch (Path.extension(audioPath))
+			switch (Path.extension(path))
 			{
 				case "ogg":
 					var oggBytesAsync = new Future<Bytes>(function()
@@ -142,90 +176,39 @@ class FlxPartialSound
 							var oggFullBytes = Bytes.alloc(oggBytesIntro.length + fullAssOgg.length);
 							oggFullBytes.blit(0, oggBytesIntro, 0, oggBytesIntro.length);
 							oggFullBytes.blit(oggBytesIntro.length, fullAssOgg, 0, fullAssOgg.length);
+							@:privateAccess{
+								oggBytesIntro.b.clear();
+								fullAssOgg.b.clear();
+							}
 							input.close();
 
-							FileSystem.createDirectory(Path.directory(getCacheDir() + audioPath.replace(':', '/')));
-							File.saveBytes(getCacheDir() + cacheName.replace(':', '/') + '.ogg', oggFullBytes);
-
 							var audioBuffer:AudioBuffer = parseBytesOgg(oggFullBytes, true);
+
 							var sndShit = Sound.fromAudioBuffer(audioBuffer);
-							Assets.cache.setSound(cacheName, sndShit);
+							Assets.cache.setSound(path + ".partial-" + rangeStart + "-" + rangeEnd, sndShit);
 							promise.complete(sndShit);
 						});
 					});
 
 				default:
-					promise.error("Unsupported file type: " + Path.extension(audioPath));
+					promise.error("Unsupported file type: " + Path.extension(path));
 			}
 		});
-		#end
-		#end
+
 		return promise;
-	}
-
-	static function partialLoadHttp(audioPath:String, promise:Promise<Sound>, rangeStart, rangeEnd, cacheName)
-	{
-		requestContentLength(audioPath).onComplete(function(contentLength:Int)
-		{
-			var startByte:Int = Std.int(contentLength * rangeStart);
-			var endByte:Int = Std.int(contentLength * rangeEnd);
-			var byteRange:String = startByte + '-' + endByte;
-
-			// for ogg files, we want to get a certain amount of header info stored at the beginning of the file
-			// which I believe helps initiate the audio stream properly for any section of audio
-			// 0-6400 is a random guess, could be fuckie with other audio
-			if (Path.extension(audioPath) == "ogg")
-				byteRange = '0-' + Std.string(16 * 400);
-
-			var rangeHeader:HTTPRequestHeader = new HTTPRequestHeader("Range", "bytes=" + byteRange);
-			var http = new HTTPRequest<Bytes>(audioPath);
-			http.headers.push(rangeHeader);
-
-			http.load().onComplete(function(data:Bytes)
-			{
-				switch (Path.extension(audioPath))
-				{
-					case "mp3":
-						var mp3Data = parseBytesMp3(data, startByte);
-						var snd = Sound.fromAudioBuffer(mp3Data.buf);
-						Assets.cache.setSound(cacheName, snd);
-						PartialSoundMetadata.instance.set(audioPath + rangeStart, {kbps: mp3Data.kbps, introOffsetMs: mp3Data.introLengthMs});
-						promise.complete(snd);
-
-					case "ogg":
-						rangeHeader = new HTTPRequestHeader("Range", "bytes=" + startByte + '-' + endByte);
-
-						var httpFull = new HTTPRequest<Bytes>(audioPath);
-						httpFull.headers.push(rangeHeader);
-						httpFull.load().onComplete(function(fullOggData)
-						{
-							var cleanIntroBytes = cleanOggBytes(data);
-							var cleanFullBytes = cleanOggBytes(fullOggData);
-							var fullBytes = Bytes.alloc(cleanIntroBytes.length + cleanFullBytes.length);
-							fullBytes.blit(0, cleanIntroBytes, 0, cleanIntroBytes.length);
-							fullBytes.blit(cleanIntroBytes.length, cleanFullBytes, 0, cleanFullBytes.length);
-
-							var snd = Sound.fromAudioBuffer(parseBytesOgg(fullBytes, true));
-							Assets.cache.setSound(cacheName, snd);
-							promise.complete(snd);
-						});
-
-					default:
-						promise.error("Unsupported file type: " + Path.extension(audioPath));
-				}
-			});
-		});
+		#end
 	}
 
 	static function requestContentLength(path:String):Future<Int>
 	{
 		var promise:Promise<Int> = new Promise<Int>();
+		var fileLengthInBytes:Int = 0;
 		var httpFileLength = new HTTPRequest<Bytes>(path);
 		httpFileLength.headers.push(new HTTPRequestHeader("Accept-Ranges", "bytes"));
 		httpFileLength.method = HEAD;
 		httpFileLength.enableResponseHeaders = true;
 
-		httpFileLength.load(path).onComplete(_ ->
+		httpFileLength.load(path).onComplete(function(data:Bytes)
 		{
 			var contentLengthHeader:HTTPRequestHeader = httpFileLength.responseHeaders.filter(function(header:HTTPRequestHeader)
 			{
@@ -290,6 +273,7 @@ class FlxPartialSound
 					var sampleRate = sampleRateArray[samplingRateIndex];
 
 					bitrateAvg[bitrate] = bitrateAvg.exists(bitrate) ? bitrateAvg.get(bitrate) + 1 : 1;
+
 
 					if (frameSyncBytePos == -1)
 						frameSyncBytePos = byte;
@@ -369,9 +353,12 @@ class FlxPartialSound
 		}
 
 		var byteLength = lastByte - firstByte;
+
 		var output = Bytes.alloc(byteLength + 1);
 		output.blit(0, data, firstByte, byteLength);
 
+		@:privateAccess
+		data.b.clear();
 		return output;
 	}
 
@@ -439,56 +426,4 @@ class FlxPartialSound
 		return promise.future;
 	}
 	#end
-
-	/**
-	 * @return String the platforms temp/cache directory.
-	 */
-	static function getCacheDir():String
-	{
-		#if sys
-		#if windows
-		return Path.addTrailingSlash(Sys.getEnv("TEMP"));
-		#elseif (android || iphoneos)
-		return Path.addTrailingSlash(PathTool.getCacheDirectory());
-		#elseif mac
-		return Path.addTrailingSlash(Sys.getEnv("TMPDIR"));
-		#elseif linux
-		return "/tmp/";
-		#else
-		return ".cache/";
-		#end
-		#end
-	}
 }
-
-#if (android || (iphoneos && cpp))
-#if (iphoneos && cpp)
-@:buildXml('<include name="${haxelib:FlxPartialSound}/extern/Build.xml" />')
-@:include('PathTool.hpp')
-@:unreflective
-#end
-private #if (iphoneos && cpp) extern #end class PathTool
-{
-	#if (iphoneos && cpp)
-	@:native('getCacheDirectory')
-	static function getCacheDirectory():cpp.ConstCahrStar;
-	#end
-
-	#if android
-	@:noCompletion
-	public static inline function getCacheDirectory():String
-	{
-		var context:Dynamic = lime.system.JNI.createStaticField('org/libsdl/app/SDL', 'mContext', 'Landroid/content/Context;').get();
-		var dir:Dynamic = lime.system.JNI.callMember(lime.system.JNI.createMemberMethod('android/content/Context', 'getCacheDir', '()Ljava/io/File;'),
-			context, []);
-		return getAbsolutePath(dir);
-	}
-
-	@:noCompletion
-	private static inline function getAbsolutePath(file:Dynamic):String
-	{
-		return lime.system.JNI.callMember(lime.system.JNI.createMemberMethod('java/io/File', 'getAbsolutePath', '()Ljava/lang/String;'), file, []);
-	}
-	#end
-}
-#end

@@ -19,7 +19,7 @@ import mikolka.vslice.components.ScreenshotPlugin;
 import mikolka.vslice.ui.title.AttractState;
 #end
 
-using StringTools;
+
 
 typedef TitleData =
 {
@@ -55,9 +55,9 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
-		Paths.clearStoredMemory();
+		CacheSystem.clearStoredMemory();
 		super.create();
-		Paths.clearUnusedMemory();
+		CacheSystem.clearUnusedMemory();
 		startIntro();
 	}
 

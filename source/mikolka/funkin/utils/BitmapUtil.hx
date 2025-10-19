@@ -25,32 +25,6 @@ class BitmapUtil
   }
 
   /**
-   * Scales the bitmap at a specific position.
-   * @param bitmap The original bitmap to scale.
-   * @param scale The desired scale for the bitmap part (X Scale only).
-   * @param scalePosition The position of where it should scale the bitmap, If null it'll use the middle of the bitmap.
-   * @return A new BitmapData scaled at the specified position.
-   */
-  public static function scalePart(bitmap:BitmapData, scale:Float, ?scalePosition:Float):BitmapData
-  {
-    if (scalePosition == null) scalePosition = bitmap.width / 2;
-    final scaledPartWidth:Int = Math.ceil(scalePosition * scale);
-    final finalBitmap:BitmapData = new BitmapData(Math.ceil(bitmap.width + scalePosition), bitmap.height, true, 0);
-
-    final matrix:Matrix = new Matrix();
-    final rect:Rectangle = bitmap.rect.clone();
-    matrix.scale(scale, 1);
-    rect.width = scaledPartWidth;
-    finalBitmap.draw(bitmap, matrix, rect, true);
-
-    final rect:Rectangle = bitmap.rect.clone();
-    rect.x = scalePosition;
-    finalBitmap.copyPixels(bitmap, rect, new Point(scaledPartWidth, 0));
-
-    return finalBitmap;
-  }
-
-  /**
    * Scales the bitmap by adding a specific width at a specific position.
    * @param bitmap The original bitmap to modify.
    * @param additionalWidth The desired additional width to add to the bitmap.

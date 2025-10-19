@@ -4,7 +4,7 @@ import mikolka.vslice.freeplay.obj.SngCapsuleData;
 import mikolka.vslice.freeplay.pslice.BPMCache;
 import mikolka.funkin.Scoring.ScoringRank;
 
-using mikolka.funkin.custom.FunkinTools;
+
 using mikolka.funkin.utils.ArrayTools;
 
 /**

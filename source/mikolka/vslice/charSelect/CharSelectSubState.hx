@@ -197,12 +197,12 @@ class CharSelectSubState extends MusicBeatSubState
 			gfChill.x += cutoutSize;
 			add(gfChill);
 
-			playerChillOut = new CharSelectPlayer(cutoutSize*2, 0);
+			playerChillOut = new CharSelectPlayer(cutoutSize * 2, 0);
 			playerChillOut.switchChar(character);
 			playerChillOut.visible = false;
 			add(playerChillOut);
 
-			playerChill = new CharSelectPlayer(cutoutSize*2.5, 0);
+			playerChill = new CharSelectPlayer(cutoutSize * 2.5, 0);
 			playerChill.switchChar(character);
 			add(playerChill);
 		}
@@ -275,7 +275,7 @@ class CharSelectSubState extends MusicBeatSubState
 
 		if (modSelector.hasModsAvailable)
 		{
-			modArrows = new ModArrows(cutoutSize,modSelector);
+			modArrows = new ModArrows(cutoutSize, modSelector);
 			add(modArrows);
 		}
 
@@ -743,7 +743,7 @@ class CharSelectSubState extends MusicBeatSubState
 		allowInput = false;
 		autoFollow = false; // ! Add mod support
 		// ? P-Slice mods
-		VsliceOptions.LAST_MOD = {mod_dir: modSelector?.curMod ?? "", char_name: curChar}; // ? save selected character
+		if(!wentBackToFreeplay) VsliceOptions.LAST_MOD = {mod_dir: modSelector?.curMod ?? "", char_name: curChar}; // ? save selected character
 		#if MODS_ALLOWED
 		modSelector.allowInput = false;
 		FlxTween.tween(modSelector, {y: modSelector.y + 80}, 0.8, {ease: FlxEase.backIn});
@@ -769,6 +769,12 @@ class CharSelectSubState extends MusicBeatSubState
 			FlxTween.tween(member, {y: member.y + 300}, 0.8, {ease: FlxEase.backIn});
 		}
 		FlxG.camera.follow(camFollow, LOCKON);
+
+		// going to freeplay so fast makes the fade effects and the camera to bug, that's why we cancel the tweens
+		FlxTween.cancelTweensOf(transitionGradient);
+		FlxTween.cancelTweensOf(fadeShader);
+		FlxTween.cancelTweensOf(camFollow);
+
 		FlxTween.tween(transitionGradient, {y: -150}, 0.8, {ease: FlxEase.backIn});
 		fadeShader.fade(1.0, 0, 0.8, {ease: FlxEase.quadIn});
 		FlxTween.tween(camFollow, {y: camFollow.y - 150}, 0.8, {
@@ -798,6 +804,7 @@ class CharSelectSubState extends MusicBeatSubState
 	var spamDown:Bool = false;
 	var spamLeft:Bool = false;
 	var spamRight:Bool = false;
+	var wentBackToFreeplay:Bool = false;
 
 	override public function update(elapsed:Float):Void
 	{
@@ -812,7 +819,6 @@ class CharSelectSubState extends MusicBeatSubState
 
 		if (!pressedSelect && allowInput)
 		{
-
 			if (controls.UI_UP)
 				holdTmrUp += elapsed;
 			if (controls.UI_UP_R)
@@ -886,6 +892,14 @@ class CharSelectSubState extends MusicBeatSubState
 				cursorDenied.visible = false;
 				holdTmrRight = 0;
 				selectSound.play(true);
+			}
+
+			if (controls.BACK)
+			{
+				wentBackToFreeplay = true;
+				FunkinSound.playOnce(Paths.sound('cancelMenu'));
+				FlxTween.tween(FlxG.sound.music, {volume: 0.0}, 0.7, {ease: FlxEase.quadInOut});
+				goToFreeplay();
 			}
 		}
 		// Overflow handlers

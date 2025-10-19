@@ -17,6 +17,9 @@ class ModsHelper {
 	public inline static function getActiveMod():String {
 		return Paths.currentModDirectory;
 	}
+	public inline static function getGlobalMods():Array<String> {
+		return Paths.getGlobalMods();
+	}
 	public inline static function resetActiveMods() {
 		#if MODS_ALLOWED
 		Paths.pushGlobalMods();
@@ -24,8 +27,17 @@ class ModsHelper {
 		WeekData.loadTheFirstEnabledMod();
 	}
 	public static function getModsWithPlayersRegistry():Array<String> {
-		return getEnabledMods().filter(s ->FileSystem.exists(Paths.mods(s)+'/registry/players'));
+		#if MODS_ALLOWED
+		return getEnabledMods().filter(s ->{
+			var mod_path = Paths.mods(s)+'/registry/players';
+			return NativeFileSystem.exists(mod_path) && 
+				NativeFileSystem.readDirectory(mod_path).filter(s -> s.endsWith(".json")).length > 0;
+		});
+		#else
+		return [];
+		#end
 	}
+	
 	public inline static function loadabsoluteGraphic(path:String):FlxGraphic {
 		return FlxGraphic.fromBitmapData(BitmapData.fromFile(path)); //! I hate this, but at least it doesn't crash
 	}
@@ -66,8 +78,17 @@ class ModsHelper {
 		) Paths.currentTrackedAssets.set(key,val);
 		}
 		Paths.clearStoredMemory();
-		Paths.currentTrackedAssets.clear();
+		cacheStickersToContext();
 	}
+		public static function cacheStickersToContext() {
+		for (key => val in Paths.currentTrackedAssets){
+			if(	key.toLowerCase().contains("transitionswag") || 
+				key.contains("bg_graphic_") ||
+				key == "images/justBf.png"
+			) Paths.localTrackedAssets.push(key);
+		}
+	}
+	
 	#if sys
 	public inline static function collectVideos():String{
 		var dirsToList = new Array<String>();

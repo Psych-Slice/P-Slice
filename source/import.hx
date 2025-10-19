@@ -39,6 +39,7 @@ import sys.*;
 import sys.io.*;
 #end
 
+import Paths as CacheSystem;
 //P-Slice
 import mikolka.funkin.*;
 import mikolka.compatibility.ui.*;
@@ -49,6 +50,16 @@ import mikolka.vslice.ui.StoryMenuState;
 import mikolka.vslice.ui.title.TitleState;
 import mikolka.compatibility.stages.misc.BaseStage;
 import flxanimate.PsychFlxAnimate as FlxAnimate;
+
+//utils
+using StringTools;
+using mikolka.funkin.utils.ArrayTools;
+using mikolka.funkin.utils.custom.FunkinTools;
+import mikolka.funkin.utils.custom.FunkinTools;
+using mikolka.funkin.utils.ArrayTools;
+using mikolka.funkin.utils.SpriteTools;
+using mikolka.funkin.utils.custom.PsychUITools;
+using mikolka.funkin.utils.StringTools;
 
 //P-Slice stage system
 import mikolka.compatibility.stages.objects.*;
@@ -84,4 +95,5 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.addons.transition.FlxTransitionableState;
 
 using StringTools;
+import Discord.DiscordClient;
 #end

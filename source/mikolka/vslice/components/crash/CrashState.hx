@@ -11,7 +11,7 @@ import openfl.events.UncaughtErrorEvent;
 import haxe.CallStack;
 import haxe.io.Path;
 
-using StringTools;
+
 
 class CrashState extends FlxState
 {
@@ -28,10 +28,9 @@ class CrashState extends FlxState
 
 	override function create()
 	{
-		if (Main.fpsVar != null)
-			Main.fpsVar.visible = false;
-		if (Main.memoryCounter != null)
-			Main.memoryCounter.visible = false;
+		if (Main.debugDisplay != null)
+			Main.debugDisplay.visible = false;
+
 		super.create();
 		#if DISCORD_ALLOWED
 		DiscordClient.shutdown();

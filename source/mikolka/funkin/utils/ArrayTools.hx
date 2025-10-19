@@ -17,15 +17,22 @@ class ArrayTools
     return true;
   }
 
+  public static function pushMany<T>(input:Array<T>, items:Array<T>):Array<T>
+  {
+    for(x in items){
+      input.push(x);
+    }
+    return input;
+  }
+
   /**
    * Remove all elements from the array, without creating a new array.
    * @param array The array to clear.
    */
-  public static function clear<T>(array:Array<T>):Void
+  public inline static function clear<T>(array:Array<T>):Void
   {
     // This method is faster than array.splice(0, array.length)
-    while (array.length > 0)
-      array.pop();
+    array.resize(0);
   }
   	/**
 		It returns the index of the first element of the array that matches the predicate function.
@@ -44,14 +51,6 @@ class ArrayTools
   {
     return [for (element in array) element];
   }
-
-  // /**
-  //  * Create a new array with clones of all elements of the given array, to prevent modifying the original.
-  //  */
-  // public static function deepClone<T, U:ICloneable<T>>(array:Array<U>):Array<T>
-  // {
-  //   return [for (element in array) element.clone()];
-  // }
 
   /**
    * Return true only if both arrays contain the same elements (possibly in a different order).
@@ -73,35 +72,4 @@ class ArrayTools
     return true;
   }
 
-  /**
-   * Returns true if `superset` contains all elements of `subset`.
-   * @param superset The array to query for each element.
-   * @param subset The array containing the elements to query for.
-   * @return Weather `superset` contains all elements of `subset`.
-   */
-  public static function isSuperset<T>(superset:Array<T>, subset:Array<T>):Bool
-  {
-    // Shortcuts.
-    if (subset.length == 0) return true;
-    if (subset.length > superset.length) return false;
-
-    // Check each element.
-    for (element in subset)
-    {
-      if (!superset.contains(element)) return false;
-    }
-    return true;
-  }
-
-  /**
-   * Returns true if `superset` contains all elements of `subset`.
-   * @param subset The array containing the elements to query for.
-   * @param superset The array to query for each element.
-   * @return Weather `superset` contains all elements of `subset`.
-   */
-  public static function isSubset<T>(subset:Array<T>, superset:Array<T>):Bool
-  {
-    // Switch it around.
-    return isSuperset(superset, subset);
-  }
 }

@@ -26,11 +26,11 @@ class BPMCache {
         "guns" => 125,
         "stress" => 178,
     ];
-    private var bpmMap:Map<String,Int> ;
+    private var bpmMap:Map<String,Int> = DEFAULT_BPM_MAP.copy();
+    private var bpmFinder:EReg = ~/"bpm": *([0-9]+)/g; //TODO fix this regex;
+    private var chartClean:EReg = ~/"notes": *\[.*\]/gs;
     public static var instance = new BPMCache();
-    public function new() {
-        bpmMap = DEFAULT_BPM_MAP.copy();
-    }
+    public function new() {}
 
     public function getBPM(sngDataPath:String, fileSngName:String):Int {
         if(bpmMap.exists(sngDataPath)){
@@ -50,12 +50,10 @@ class BPMCache {
         
 		
 		if(NativeFileSystem.exists(chosenChartToScrap)){
-			var bpmFinder = ~/"bpm": *([0-9]+)/g; //TODO fix this regex
-			var cleanChart = ~/"notes": *\[.*\]/gs.replace(NativeFileSystem.getContent(chosenChartToScrap),"");
+			var cleanChart = chartClean.replace(NativeFileSystem.getContent(chosenChartToScrap),"");
 			if(bpmFinder.match(cleanChart)){
                 bpmMap[sngDataPath] = Std.parseInt(bpmFinder.matched(1));
             } 
-                
 			else trace('failed to scrap initial BPM for $fileSngName');
 		}
 		else{
