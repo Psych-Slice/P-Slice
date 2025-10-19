@@ -41,6 +41,12 @@ class InitState extends MusicBeatState
 		fetchUpdateData();
 		#end
 
+		trace("checking asset list cache");
+		if(NativeFileSystem.openFlAssets?.length == 0){
+			trace("Failed to load openflAssets during itit! Doing it now.");
+			NativeFileSystem.openFlAssets = Assets.list();
+		}
+
 		trace("Loading game settings");
 		ClientPrefs.loadPrefs();
 
@@ -58,11 +64,6 @@ class InitState extends MusicBeatState
 			StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
 		}	
 
-		trace("checking asset list cache");
-		if(NativeFileSystem.openFlAssets?.length == 0){
-			trace("Failed to load openflAssets during itit! Doing it now.");
-			NativeFileSystem.openFlAssets = Assets.list();
-		}
 		
 		FlxG.scaleMode = new MobileScaleMode(ClientPrefs.data.wideScreen); 
 		

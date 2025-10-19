@@ -39,11 +39,10 @@ class StageEditorMainBox extends PsychUIBox {
 		tab_group.add(new FlxText(objX, objY - 18, 150, 'Compiled Assets:'));
 
 		var folderList:Array<String> = [''];
-		#if sys
-		for (folder in FileSystem.readDirectory('assets/'))
-			if (FileSystem.isDirectory('assets/$folder') && folder != 'shared' && !Mods.ignoreModFolders.contains(folder))
+
+		for (folder in NativeFileSystem.readDirectory('assets/'))
+			if (NativeFileSystem.isDirectory('assets/$folder') && folder != 'shared' && !Mods.ignoreModFolders.contains(folder))
 				folderList.push(folder);
-		#end
 
 		var saveButton:PsychUIButton = new PsychUIButton(width - 90, height - 50, 'Save', function()
 		{
