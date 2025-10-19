@@ -102,7 +102,7 @@ class ResultState extends MusicBeatSubState
     // This prevents having to do `null` checks everywhere.
 
     var fontLetters:String = "AaBbCcDdEeFfGgHhiIJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz:1234567890";
-    songName = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.get(49 + MobileScaleMode.gameNotchSize.x , 62)));
+    songName = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.get(49, 62)));
     songName.text = params.title;
     songName.letterSpacing = -15;
     songName.angle = -4.4;
@@ -111,7 +111,7 @@ class ResultState extends MusicBeatSubState
     var fractal = difColor.redFloat*0.33;
     difColor.greenFloat = Math.max(difColor.greenFloat,fractal);
 
-    difficulty = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.get(49 + MobileScaleMode.gameNotchSize.x, 62)));
+    difficulty = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.get(49, 62)));
     difficulty.text = FreeplayHelpers.getDifficultyName();
     difficulty.color = difColor;
     difficulty.letterSpacing = -11; //!!!
