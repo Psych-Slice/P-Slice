@@ -9,6 +9,9 @@ import hxvlc.flixel.FlxVideoSprite;
 #if hxCodec
 import hxcodec.flixel.FlxVideoSprite;
 #end
+#if html5
+import objects.WebVideoSprite as FlxVideoSprite;
+#end
 
 class VideoSprite extends FlxSpriteGroup {
 	#if VIDEOS_ALLOWED
@@ -55,6 +58,9 @@ class VideoSprite extends FlxSpriteGroup {
 		if(canSkip) this.canSkip = true;
 
 		// callbacks
+		#if web
+		if(!shouldLoop) videoSprite.finishCallback = finishVideo;
+		#else
 		if(!shouldLoop) videoSprite.bitmap.onEndReached.add(finishVideo);
 		#if hxvlc
 		videoSprite.bitmap.onFormatSetup.add(function()
@@ -77,6 +83,8 @@ class VideoSprite extends FlxSpriteGroup {
 		// start video and adjust resolution to screen size
 		#if hxvlc
 		videoSprite.load(videoName, shouldLoop ? ['input-repeat=65545'] : null);
+		#end
+
 		#end
 	}
 
@@ -128,7 +136,11 @@ class VideoSprite extends FlxSpriteGroup {
 						switch (pauseState.specialAction){
 							case SKIP:{
 								//finishCallback = null;
+								#if web
+								videoSprite.finishVideo();
+								#else
 								videoSprite.bitmap.onEndReached.dispatch();
+								#end
 								PlayState.instance.remove(this);
 								trace('Skipped video');
 							}
@@ -140,8 +152,11 @@ class VideoSprite extends FlxSpriteGroup {
 								finishCallback = null;
 							}
 							case RESTART:{
+								#if web
+								videoSprite.restartVideo();
+								#else
 								videoSprite.bitmap.time = 0;
-								FlxTimer.wait(0.8,() -> pauseJustClosed = false);
+								#end
 								resume();
 							}
 						}
@@ -162,10 +177,21 @@ class VideoSprite extends FlxSpriteGroup {
 		}
 	public function resume() videoSprite?.resume();
 	public function pause() videoSprite?.pause();
+	public function setSpeed(playbackRate:Float) {
+		#if web
+		if (videoSprite?.netStream != null)
+			videoSprite.netStream.speed = playbackRate;
+		#else
+		if (videoSprite?.bitmap != null)
+			videoSprite.bitmap.rate = playbackRate;
+		#end
+	}
 
 	public function play() {
 		#if hxvlc
 		videoSprite.play();
+		#elseif web
+		videoSprite.netStream.play(videoName);
 		#else
 		videoSprite.play(videoName, doWeLoop);
 		if (FlxG.autoPause)

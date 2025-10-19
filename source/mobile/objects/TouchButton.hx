@@ -382,6 +382,7 @@ class TypedTouchButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 	function onDownHandler():Void
 	{
 		status = TouchButton.PRESSED;
+		HapticUtil.vibrate(0, 0.01, 0.5, 0.1);
 		input.press();
 		onDown.fire(); // Order matters here, because onDown.fire() could cause a state change and destroy this object.
 	}

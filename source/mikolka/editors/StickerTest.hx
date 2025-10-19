@@ -1,5 +1,6 @@
 package mikolka.editors;
 
+import backend.CacheSystem;
 import mikolka.compatibility.funkin.FunkinControls;
 import mikolka.compatibility.ModsHelper;
 import mikolka.vslice.StickerSubState;
@@ -34,7 +35,7 @@ class StickerTest extends MusicBeatState {
 			  openSubState(stickerSubState);
 			  stickerSubState.degenStickers();
 			}
-		else Paths.clearStoredMemory();
+		else CacheSystem.clearStoredMemory();
 
         var BG = new FlxSprite(0,0,Paths.image("freeplay/freeplayBGdad"));
         BG.setGraphicSize(FlxG.width,FlxG.height);
@@ -77,6 +78,7 @@ class StickerTest extends MusicBeatState {
 	}
     override function update(elapsed:Float) {
         super.update(elapsed);
+
         if(PsychUIInputText.focusOn == null)
             {
                 FunkinControls.enableVolume();

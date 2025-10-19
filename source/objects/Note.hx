@@ -10,7 +10,7 @@ import objects.StrumNote;
 
 import flixel.math.FlxRect;
 
-using StringTools;
+
 
 typedef EventNote = {
 	strumTime:Float,
@@ -355,6 +355,7 @@ class Note extends FlxSprite
 
 	var _lastNoteOffX:Float = 0;
 	static var _lastValidChecked:String; //optimization
+	var _loadedSkin:String; //optimization
 	public var originalHeight:Float = 6;
 	public var correctionOffset:Float = 0; //dont mess with this
 	public function reloadNote(texture:String = '', postfix:String = '') {
@@ -380,6 +381,7 @@ class Note extends FlxSprite
 		var skinPostfix:String = getNoteSkinPostfix();
 		var customSkin:String = skin + skinPostfix;
 		var path:String = PlayState.isPixelStage ? 'pixelUI/' : '';
+		
 		if(customSkin == _lastValidChecked || Paths.fileExists('images/' + path + customSkin + '.png', IMAGE))
 		{
 			skin = customSkin;
@@ -406,7 +408,10 @@ class Note extends FlxSprite
 				offsetX -= _lastNoteOffX;
 			}
 		} else {
-			frames = Paths.getSparrowAtlas(skin);
+			frames = prevNote?._loadedSkin == skin 
+				? prevNote.frames
+				: Paths.getSparrowAtlas(skin);
+			_loadedSkin = skin;
 			loadNoteAnims();
 			if(!isSustainNote)
 			{
@@ -462,9 +467,12 @@ class Note extends FlxSprite
 	function attemptToAddAnimationByPrefix(name:String, prefix:String, framerate:Float = 24, doLoop:Bool = true)
 	{
 		var animFrames = [];
-		@:privateAccess
-		animation.findByPrefix(animFrames, prefix); // adds valid frames to animFrames
-		if(animFrames.length < 1) return;
+		try{
+			@:privateAccess
+			animation.findByPrefix(animFrames, prefix); // adds valid frames to animFrames
+			if(animFrames.length < 1) return;
+		}
+		catch (x) {return;}
 
 		animation.addByPrefix(name, prefix, framerate, doLoop);
 	}

@@ -48,7 +48,7 @@ jobs:
         include:
           - name: Windows
             os: windows-2022
-            buildArgs: windows
+            buildArgs: "windows -final"
             exportPath: windows
             artifactName: P-Slice.1.0.windows
             cacheLibrariesPath: P-Slice.1.0.desktop-cache
@@ -56,7 +56,7 @@ jobs:
             artifactPath: export\release\windows\bin\*
           - name: Linux
             os: ubuntu-22.04
-            buildArgs: linux
+            buildArgs: "linux -final"
             exportPath: linux
             artifactName: P-Slice.1.0.linux
             cachePath: P-Slice.1.0.build-linux
@@ -91,8 +91,8 @@ jobs:
             artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
           - name: iOS
             os: macos-15
-            buildArgs: "ios -nosign"
-            exportPath: ios
+            buildArgs: "ios -nosign -final"
+            exportPath: ios/PSliceEngine/haxe/build/Release-iphoneos-64/
             cacheLibrariesPath: P-Slice.1.0.mobile-cache
             artifactName: P-Slice.1.0.ios
             artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"

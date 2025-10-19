@@ -44,6 +44,59 @@ class MemoryUtil
     return result;
   }
 
+
+  public static function supportsTaskMem():Bool
+  {
+    #if ((cpp && (windows || ios || macos)) || linux || android)
+    return true;
+    #else
+    return false;
+    #end
+  }
+
+  public static function getTaskMemory():Float
+  {
+    #if (windows && cpp)
+    return external.windows.WinAPI.getProcessMemoryWorkingSetSize();
+    #elseif ((ios || macos) && cpp)
+    return external.apple.MemoryUtil.getCurrentProcessRss();
+    #elseif (linux || android)
+    try
+    {
+      #if cpp
+      final input:sys.io.FileInput = sys.io.File.read('/proc/${cpp.NativeSys.sys_get_pid()}/status', false);
+      #else
+      final input:sys.io.FileInput = sys.io.File.read('/proc/self/status', false);
+      #end
+
+      final regex:EReg = ~/^VmRSS:\s+(\d+)\s+kB/m;
+      var line:String;
+      do
+      {
+        if (input.eof())
+        {
+          input.close();
+          return 0.0;
+        }
+        line = input.readLine();
+      }
+      while (!regex.match(line));
+
+      input.close();
+
+      final kb:Float = Std.parseFloat(regex.matched(1));
+
+      if (kb != Math.NaN)
+      {
+        return kb * 1024.0;
+      }
+    }
+    catch (e:Dynamic) {}
+    #end
+
+    return 0.0;
+  }
+
   /**
    * Calculate the total memory usage of the program, in bytes.
    * @return Int
@@ -58,56 +111,12 @@ class MemoryUtil
     #end
   }
 
-  /**
-   * Enable garbage collection if it was previously disabled.
-   */
-  public static function enable():Void
+    public static function getGCMemory():Float
   {
-    #if cpp
-    cpp.vm.Gc.enable(true);
+    #if LEGACY_PSYCH
+    return openfl.system.System.totalMemory;
     #else
-    throw 'Not implemented!';
-    #end
-  }
-
-  /**
-   * Disable garbage collection entirely.
-   */
-  public static function disable():Void
-  {
-    #if cpp
-    cpp.vm.Gc.enable(false);
-    #else
-    throw 'Not implemented!';
-    #end
-  }
-
-  /**
-   * Manually perform garbage collection once.
-   * Should only be called from the main thread.
-   * @param major `true` to perform major collection, whatever that means.
-   */
-  public static function collect(major:Bool = false):Void
-  {
-    #if cpp
-    cpp.vm.Gc.run(major);
-    #else
-    throw 'Not implemented!';
-    #end
-  }
-
-  /**
-   * Perform major garbage collection repeatedly until less than 16kb of memory is freed in one operation.
-   * Should only be called from the main thread.
-   *
-   * NOTE: This is DIFFERENT from actual compaction,
-   */
-  public static function compact():Void
-  {
-    #if cpp
-    cpp.vm.Gc.compact();
-    #else
-    throw 'Not implemented!';
+    return openfl.system.System.totalMemoryNumber;
     #end
   }
 }

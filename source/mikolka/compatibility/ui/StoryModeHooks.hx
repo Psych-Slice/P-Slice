@@ -1,8 +1,9 @@
 package mikolka.compatibility.ui;
 
+import backend.CacheSystem;
 import backend.StageData;
 import backend.Song;
-using mikolka.funkin.custom.FunkinTools;
+
 
 class StoryModeHooks {
 	public static var DEFAULT_DIFFICULTIES(get,null):Array<String>;
@@ -35,12 +36,13 @@ class StoryModeHooks {
 			if(PlayState._lastLoadedModDirectory != Mods.currentModDirectory)
 			{
 				trace('CHANGED MOD DIRECTORY, RELOADING STUFF');
-				Paths.freeGraphicsFromMemory();
+				CacheSystem.freeGraphicsFromMemory();
 			}
-            #if STRICT_LOADING_SCREEN
-            if(!backend.ClientPrefs.data.strictLoadingScreen)
+
+            #if STRICT_LOADING_SCREEN 
+            if(!backend.ClientPrefs.data.strictLoadingScreen) 
                 LoadingState.prepareToSong();
-			#end
+            #end
 
 			new FlxTimer().start(0.8, function(tmr:FlxTimer)
 			{

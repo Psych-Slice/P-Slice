@@ -1,28 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project
-xmlns="http://lime.openfl.org/project/1.0.4"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/xsd/project-1.0.4.xsd">
+	xmlns="http://lime.openfl.org/project/1.0.4"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/xsd/project-1.0.4.xsd">
 	<!-- _________________________ Application Settings _________________________ -->
-	
-	<app unless="PROFILE_BUILD || mobile" title="Friday Night Funkin': P-Slice Engine" file="PSliceEngine" packageName="com.mikolka9144.pslice" package="com.mikolka9144.pslice" main="Main" version="3.2"  company="mikolka9144" />
-	<app if="PROFILE_BUILD" title="P-Slice Engine Profiling build" file="PSliceEngine" packageName="com.mikolka9144.testPslice" package="com.mikolka9144.testPslice" main="Main" version="3.2"  company="mikolka9144" />
-	<app if="mobile" unless="PROFILE_BUILD" title="P-Slice Engine" file="PSliceEngine" packageName="com.mikolka9144.pslice" package="com.mikolka9144.pslice" main="Main" version="3.2"  company="mikolka9144" />
-	<!--Switch Export with Unique ApplicationID and Icon-->
-	<set name="APP_ID" value="0x0100f6c013bbc000" />
-	<meta build-number="331"/>
-	<config type="android" gradle-version="8.10.2" gradle-plugin="8.8.0" ndkVersion="27.0"  minimum-sdk-version="26" target-sdk-version="35" />
-	<!-- NOTE TO SELF: DISABLE THIS IF ISSUES ARE FOUND -->
-	<haxedef name="LINC_LUA_RELATIVE_DYNAMIC_LIB"/> <!-- stable luas PUT AFTER FIRST LINE WITH APP NAME AND ETC -->
 
-	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
+	<app unless="PROFILE_BUILD || mobile" title="Friday Night Funkin': P-Slice Engine"
+		file="PSliceEngine" packageName="com.mikolka9144.pslice" package="com.mikolka9144.pslice"
+		main="Main" version="3.2" company="mikolka9144" />
+	<app if="PROFILE_BUILD" title="P-Slice Engine Profiling build" file="PSliceEngine"
+		packageName="com.mikolka9144.testPslice" package="com.mikolka9144.testPslice" main="Main"
+		version="3.2" company="mikolka9144" />
+	<app if="mobile" unless="PROFILE_BUILD" title="P-Slice Engine" file="PSliceEngine"
+		packageName="com.mikolka9144.pslice" package="com.mikolka9144.pslice" main="Main"
+		version="3.2" company="mikolka9144" />
+	<!--Switch
+	Export with Unique ApplicationID and Icon-->
+	<set name="APP_ID" value="0x0100f6c013bbc000" />
+	<meta build-number="340" />
+	<config type="android" gradle-version="8.10.2" gradle-plugin="8.8.0" ndkVersion="28.0"
+		minimum-sdk-version="26" target-sdk-version="35" />
+	<!-- NOTE TO SELF: DISABLE THIS IF ISSUES ARE FOUND -->
+	<haxedef name="LINC_LUA_RELATIVE_DYNAMIC_LIB" /> <!-- stable luas PUT AFTER FIRST LINE WITH APP
+	NAME AND ETC -->
+
+	<!--The
+	flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a
+	html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
 	<!-- <app preloader="Preloader" resizable="true" /> -->
 	<app preloader="mikolka.vslice.FunkinPreloader" />
 
-	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
+	<!--Minimum
+	without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
 	<set name="SWF_VERSION" value="11.8" />
-	
+
 	<!-- ______________________ PSYCH ENGINE CUSTOMIZATION ______________________ -->
 
 	<!-- Compiles mod support for P-Slice. Feel free to disable if you're making a source mod -->
@@ -30,19 +42,19 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<section unless="debug">
 		<!-- Adds the ability to use OpenFL asset lookup (defaults to sys if disabled)  -->
-		<define name="OPENFL_LOOKUP"/>
+		<define name="OPENFL_LOOKUP" />
 
 		<!-- Adds the ability to use NativeFileSystem on the computer to acsess files  -->
 		<define name="NATIVE_LOOKUP" if="MODS_ALLOWED" />
 	</section>
 
 	<!-- Adds support for Psych's lua/HScript files-->
-	<define name="HSCRIPT_ALLOWED" if="desktop || mobile"/>
+	<define name="HSCRIPT_ALLOWED" if="desktop || mobile" />
 	<define name="LUA_ALLOWED" if="cpp" />
 
 	<!-- Enables Discord's Rich Presence integration-->
-	<define name="DISCORD_ALLOWED" if="desktop" unless="hl"/>
-	
+	<define name="DISCORD_ALLOWED" if="desktop" unless="hl" />
+
 	<!-- Adds a Base game content to your build. Feel free to disable if you're making a source mod. -->
 	<define name="BASE_GAME_FILES" unless="NO_BASEGAME_FILES" />
 
@@ -50,16 +62,16 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<define name="TOUCH_CONTROLS_ALLOWED" if="mobile || web || debug" />
 
 	<!-- Do you want to check for P-Slice updates?-->
-	<define name="CHECK_FOR_UPDATES" unless="web || hl"/>
+	<define name="CHECK_FOR_UPDATES" unless="web || hl" />
 
 	<!-- Do you want to support playing videos in your build?-->
-	<define name="VIDEOS_ALLOWED" if="desktop || mobile" unless="32bits || hl"/> 
+	<define name="VIDEOS_ALLOWED" if="desktop || mobile || web" unless="32bits || hl" />
 
 	<!-- Do we want to use ATSC compression?-->
-	<!-- <define name="ATSC_SUPPORT" if="android"/>  -->
-	
+	<define name="ATSC_SUPPORT" unless="web"/>
+
 	<!-- Displays a "Touch here to play" screen-->
-	<define name="TOUCH_HERE_TO_PLAY" if="TOUCH_CONTROLS_ALLOWED debug"/>
+	<define name="TOUCH_HERE_TO_PLAY" if="TOUCH_CONTROLS_ALLOWED debug" />
 
 	<!-- Other stuff -->
 	<define name="ACHIEVEMENTS_ALLOWED" />
@@ -72,17 +84,19 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- <define name="STRICT_LOADING_SCREEN" /> -->
 	<define name="STRICT_LOADING_SCREEN" if="mobile SHOW_LOADING_SCREEN" />
 
-	<define name="MULTITHREADED_LOADING" if="cpp" /> <!-- UNCOMMENTING THIS LINE WILL ENABLE MULTITHREADED LOADING, WHICH IMPROVES LOADING TIMES, BUT WITH A LOW CHANCE FOR THE GAME FREEZE ON SONG LOAD -->
-	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN -->
-	<define name="TITLE_SCREEN_EASTER_EGG"/>
+	<define name="MULTITHREADED_LOADING" if="cpp" /> <!-- UNCOMMENTING THIS LINE WILL ENABLE
+	MULTITHREADED LOADING, WHICH IMPROVES LOADING TIMES, BUT WITH A LOW CHANCE FOR THE GAME FREEZE
+	ON SONG LOAD -->
+	<define name="PSYCH_WATERMARKS" /> <!-- DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN -->
+	<define name="TITLE_SCREEN_EASTER_EGG" />
 
-		<!-- Debug utilities (useful when testing the game)-->
+	<!-- Debug utilities (useful when testing the game)-->
 	<section if="debug">
 		<!-- For testing file access times-->
 		<define name="OPENFL_LOOKUP" />
 		<define name="NATIVE_LOOKUP" />
-		
-		<define name="IRIS_DEBUG"/>
+
+		<define name="IRIS_DEBUG" />
 		<define name="FEATURE_DEBUG_FUNCTIONS" />
 		<haxedef name="HXVLC_VERBOSE" value="2" />
 		<haxedef name="HXVLC_LOGGING" />
@@ -90,7 +104,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 		<define name="pico_always_kill" />
 	</section>
 
-	 <!-- Flags for the profile builds (used for assessing performance and such)-->
+	<!-- Flags for the profile builds (used for assessing performance and such)-->
 	<section if="PROFILE_BUILD">
 		<!-- Enables tracy -->
 		<define name="HXCPP_TRACY" />
@@ -99,27 +113,31 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 		<define name="HXCPP_TRACY_ON_DEMAND" />
 		<define name="STRICT_LOADING_SCREEN" />
 		<!-- <define name="HXCPP_TRACY_INCLUDE_CALLSTACKS" /> -->
-		
+
 		<!-- Pico will always kill the other (unless you skip the cutscene) -->
 		<define name="pico_always_kill" />
 	</section>
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
-	<!--These window settings apply to all targets-->
-	<window width="1280" height="720" fps="60" background="#000000" hardware="true" vsync="false" allow-high-dpi="true"/>
+	<!--These
+	window settings apply to all targets-->
+	<window width="1280" height="720" fps="60" background="#000000" hardware="true" vsync="false"
+		allow-high-dpi="true" />
 
 	<!--HTML5-specific-->
 	<window if="html5" resizable="true" fullscreen="true" />
 
 	<!--Desktop-specific-->
-	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false"/>
+	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false" />
 
 	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" resizable="false" allow-shaders="true" require-shaders="true" />
+	<window if="mobile" orientation="landscape" fullscreen="true" resizable="false"
+		allow-shaders="true" require-shaders="true" />
 
 	<!--Switch-specific-->
-	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
+	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0"
+		resizable="true" />
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
@@ -129,59 +147,67 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<set name="BUILD_DIR" value="export/32bit" if="32bits" />
 
 	<classpath name="source" />
-	<java if="android" path="source/mobile/external/android/java" />
+	<java if="android" path="source/external/android/java" />
 
 	<!-- __________________________ Game Assets & Etc. __________________________ -->
 
-	<!--FNF is changing openAL config, because the default one is broken. lol. -->
+	<!--FNF
+	is changing openAL config, because the default one is broken. lol. -->
 	<section if="desktop">
-		<assets path="alsoft.txt" rename="plugins/alsoft.ini" type="text" if="windows"/>
-		<assets path="alsoft.txt" rename="plugins/alsoft.conf" type="text" unless="windows"/>
+		<assets path="alsoft.txt" rename="plugins/alsoft.ini" type="text" if="windows" />
+		<assets path="alsoft.txt" rename="plugins/alsoft.conf" type="text" unless="windows" />
 	</section>
 
 	<!-- Assets -->
 	<assets path="assets/fonts" />
-	<assets path="assets/mobile" 		rename="assets/shared/mobile" if="TOUCH_CONTROLS_ALLOWED" />
-	<assets path="assets/videos"        if="VIDEOS_ALLOWED"/>
+	<assets path="assets/mobile" rename="assets/shared/mobile" if="TOUCH_CONTROLS_ALLOWED" />
+	<assets path="assets/videos" if="VIDEOS_ALLOWED" />
 
-	<assets path="assets/shared"         unless="web"/>
-	<assets path="assets/shared"         if="web"/>
+	<assets path="assets/shared" unless="web" />
+	<assets path="assets/shared" if="web" embed="true" />
 
-	<assets path="assets/embed"          if="web" embed="true"/>
-	<assets path="assets/embed"          unless="web || OPENFL_LOOKUP" embed="false"/>
-	<assets path="assets/embed"          if="OPENFL_LOOKUP" unless="web" embed="true"/>
+	<assets path="assets/embed" if="web" embed="true" />
+	<assets path="assets/embed" unless="web || OPENFL_LOOKUP" embed="false" />
+	<assets path="assets/embed" if="OPENFL_LOOKUP" unless="web" embed="true" />
 
-	<assets path="assets/week_assets"   rename="assets"  if="web"/>
-	<assets path="assets/week_assets"   rename="assets"  unless="web"/>
+	<assets path="assets/week_assets" rename="assets" if="web" />
+	<assets path="assets/week_assets" rename="assets" unless="web" />
 
 	<section if="TITLE_SCREEN_EASTER_EGG">
-		<assets path="assets/secrets" rename="assets/shared" exclude="*.ogg" if="web"/>
-		<assets path="assets/secrets" rename="assets/shared"   unless="web"/>
+		<assets path="assets/secrets" rename="assets/shared" exclude="*.ogg" if="web" />
+		<assets path="assets/secrets" rename="assets/shared" unless="web" />
 	</section>
 
 	<section if="TRANSLATIONS_ALLOWED">
-		<assets path="assets/translations" rename="assets" exclude="*.ogg" if="web"/>
-		<assets path="assets/translations" rename="assets"   unless="web"/>
+		<assets path="assets/translations" rename="assets" exclude="*.ogg" if="web" />
+		<assets path="assets/translations" rename="assets" unless="web" />
 	</section>
 
 
-	<assets path="assets/atsc_shared" rename="assets/shared" if="ATSC_SUPPORT" exclude="*.png"/>
-	<assets path="assets/atsc_shared" rename="assets/shared"  exclude="*.astc" unless="ATSC_SUPPORT"/>
+	<assets path="assets/atsc_shared" rename="assets/shared" />
 
 	<section if="BASE_GAME_FILES">
-
-		<section if="ATSC_SUPPORT">
-			<assets path="assets/base_game/week_data" rename="assets"   exclude="*.png"/>
-			<assets path="assets/base_game/week_data/week6" rename="assets/week6"   include="*.png"/>
-			<assets path="assets/base_game/characters" rename="assets/shared/images/characters" exclude="*.png"/>
+		<section if="web">
+			<assets path="assets/base_game/week_data" rename="assets" include="*.png|*.ogg|*.mp4"
+				embed="false" />
+			<assets path="assets/base_game/week_data" rename="assets" include="*.xml|*.json"
+				embed="true" />
+			<assets path="assets/base_game/characters" rename="assets/shared/images/characters"
+				include="*.xml|*.json" embed="true" />
+			<assets path="assets/base_game/characters" rename="assets/shared/images/characters"
+				include="*.png" embed="false" />
+			<assets path="assets/base_game/characters_pixel" rename="assets/shared/images/characters"
+				include="*.xml|*.json" embed="true" />
+			<assets path="assets/base_game/characters_pixel" rename="assets/shared/images/characters"
+				include="*.png" embed="false" />
+			<assets path="assets/base_game/shared" rename="assets/shared" embed="true" />
 		</section>
-
-		<section unless="ATSC_SUPPORT">
-			<assets path="assets/base_game/week_data" rename="assets"   exclude="*.astc"/>
-			<assets path="assets/base_game/characters" rename="assets/shared/images/characters" exclude="*.astc"/>
-		</section>
-		<assets path="assets/base_game/shared" rename="assets/shared" />
-		<assets path="assets/base_game/characters_pixel" rename="assets/shared/images/characters" />
+		<assets path="assets/base_game/week_data" rename="assets" unless="web" />
+		<assets path="assets/base_game/characters" rename="assets/shared/images/characters"
+			unless="web" />
+		<assets path="assets/base_game/characters_pixel" rename="assets/shared/images/characters"
+			unless="web" />
+		<assets path="assets/base_game/shared" rename="assets/shared" unless="web" />
 	</section>
 
 	<section if="MODS_ALLOWED">
@@ -193,24 +219,26 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- <library name="songs" preload="false" /> -->
 	<!-- _______________________________ Libraries ______________________________ -->
 
-	<haxelib name="flixel"/>
-	<haxelib name="flixel-addons" version="3.3.2"/>
-	<haxelib name="hxcpp"/>
-	<haxelib name="extension-haptics" if="mobile"/>
-	<haxelib name="tjson" version="1.4.0"/>
+	<haxelib name="flixel" />
+	<haxelib name="flixel-addons" version="3.3.2" />
+	<haxelib name="hxcpp" />
+	<haxelib name="extension-haptics" if="mobile" />
+	<haxelib name="extension-androidtools" if="android" />
+	<haxelib name="tjson" version="1.4.0" />
 	<haxelib name="grig.audio" />
 	<haxelib name="funkin.vis" />
 
-	<!--Psych stuff needed-->
-	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
-	<haxelib name="hscript-iris" if="HSCRIPT_ALLOWED" version="1.1.3"/>
-	<section if="VIDEOS_ALLOWED">
-		<haxelib name="hxCodec" if="linux"/>
-		<haxelib name="hxvlc" unless="linux"/>
+	<!--Psych
+	stuff needed-->
+	<haxelib name="linc_luajit" if="LUA_ALLOWED" />
+	<haxelib name="hscript-iris" if="HSCRIPT_ALLOWED" version="1.1.3" />
+	<section if="VIDEOS_ALLOWED" unless="web">
+		<haxelib name="hxCodec" if="linux" />
+		<haxelib name="hxvlc" unless="linux" />
 	</section>
-	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
+	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED" />
 
-	<haxelib name="flxanimate"/>
+	<haxelib name="flxanimate" />
 
 	<!-- Category Type for Apple Systems -->
 	<config:ios category_type="public.app-category.music-games" />
@@ -221,55 +249,74 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<haxedef name="NO_PRECOMPILED_HEADERS" if="linux" />
 
 	<section if="debug">
-		<!--These defines are mostly for testing (aren't required to be used)-->
+		<!--These
+		defines are mostly for testing (aren't required to be used)-->
 		<haxelib name="hxcpp-debug-server" />
-		<!-- <haxelib name="flixel-studio" /> -->
-		<haxelib name="hscript"/>
+		<haxelib name="flixel-studio" />
+		<haxelib name="hscript" />
 	</section>
-	
+
 	<define name="x86_BUILD" if="32bits" />
-	
+
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
-	<!--Enable the Flixel core recording system-->
-	<!--<haxedef name="FLX_RECORD" />-->
+	<!--Enable
+	the Flixel core recording system-->
+	<!--<haxedef
+	name="FLX_RECORD" />-->
 
-	<!--Disable the right and middle mouse buttons-->
+	<!--Disable
+	the right and middle mouse buttons-->
 	<!-- <haxedef name="FLX_NO_MOUSE_ADVANCED" /> -->
 
-	<!--Disable the native cursor API on Flash-->
-	<!--<haxedef name="FLX_NO_NATIVE_CURSOR" />-->
+	<!--Disable
+	the native cursor API on Flash-->
+	<!--<haxedef
+	name="FLX_NO_NATIVE_CURSOR" />-->
 
-	<!--Optimise inputs, be careful you will get null errors if you don't use conditionals in your game-->
+	<!--Optimise
+	inputs, be careful you will get null errors if you don't use conditionals in your game-->
 	<!-- <haxedef name="FLX_NO_MOUSE" if="mobile" /> -->
 	<!-- <haxedef name="FLX_NO_KEYBOARD" if="mobile" /> -->
 	<!-- <haxedef name="FLX_NO_TOUCH" if="desktop" /> -->
-	<!--<haxedef name="FLX_NO_GAMEPAD" />-->
+	<!--<haxedef
+	name="FLX_NO_GAMEPAD" />-->
 
-	<!--Disable the Flixel core sound tray-->
-	<!--<haxedef name="FLX_NO_SOUND_TRAY" />-->
+	<!--Disable
+	the Flixel core sound tray-->
+	<!--<haxedef
+	name="FLX_NO_SOUND_TRAY" />-->
 
-	<!--Disable the Flixel sound management code-->
-	<!--<haxedef name="FLX_NO_SOUND_SYSTEM" />-->
+	<!--Disable
+	the Flixel sound management code-->
+	<!--<haxedef
+	name="FLX_NO_SOUND_SYSTEM" />-->
 
-	<!--Disable the Flixel core focus lost screen-->
+	<!--Disable
+	the Flixel core focus lost screen-->
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
 
 	<!-- Let user access P-Slice files-->
 	<haxedef name="SHARE_MOBILE_FILES" if="mobile" />
-	
-	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
+
+	<!--Disable
+	the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
 	<haxedef name="FLX_NO_DEBUG" unless="PROFILE_BUILD || debug" />
 	<haxedef name="analyzer-optimize" unless="debug" />
-	<!--Enable this for Nape release builds for a serious performance improvement-->
+	<!--Enable
+	this for Nape release builds for a serious performance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
 	<!-- I hate you @superpowers04 for changing commits like that -->
 	<define name="SHUT_UP_LINC_LUAJIT" />
 
-	<!--Used for crash handler-->
+	<!--Used
+	for crash handler-->
 	<section if="cpp">
-		<haxedef name="HXCPP_CHECK_POINTER" />
+		<!-- !DO NOT ENABLE THIS -->
+		<!-- This will break the GC and delete textures on it's own-->
+		<!-- <haxedef name="HXCPP_CHECK_POINTER" /> -->
+
 		<!-- <haxedef name="HXCPP_GC_MOVING" unless="HXCPP_TRACY_MEMORY"/> -->
 		<haxedef name="HXCPP_STACK_LINE" />
 		<haxedef name="HXCPP_STACK_TRACE" />
@@ -279,13 +326,15 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 		<!-- Compile for ARM (hopefully should fix the sim screaming about libs)-->
 		<haxedef name="HXCPP_ARM64" />
 	</section>
-	
-	
-	<!--Disable deprecated warnings-->
-	<haxedef name='no-deprecation-warnings' />	
+
+
+	<!--Disable
+	deprecated warnings-->
+	<haxedef name='no-deprecation-warnings' />
 	<!-- for lime to not recompile asset cache on every build-->
-	<haxedef name='lime_disable_assets_version' />	
-	<!--Disable deprecated warnings-->
+	<haxedef name='lime_disable_assets_version' />
+	<!--Disable
+	deprecated warnings-->
 	<haxedef name='no_ssl' if="hl" />
 
 	<!-- Haxe 4.3.0+: Enable pretty syntax errors and stuff. -->
@@ -293,37 +342,42 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<haxedef name="message.reporting" value="pretty" />
 
 	<!-- Do whatever you want I'm tired uninstall and install everytime -->
-	<certificate path="key.keystore" password="pslice" alias="pslice" alias-password="pslice" if="android" unless="debug" />
+	<certificate path="key.keystore" password="pslice" alias="pslice" alias-password="pslice"
+		if="android" unless="debug" />
 
-	<!--Macro fixes-->
+	<!--Macro
+	fixes-->
 	<haxeflag name="--macro" value="allowPackage('flash')" />
 	<haxeflag name="--macro" value="include('my.pack')" />
 	<!-- This macro allows addition of new functionality to existing Flixel. -->
-	<haxeflag name="--macro" value="addMetadata('@:build(mikolka.FlxMacro.buildFlxBasic())', 'flixel.FlxBasic')" />
+	<haxeflag name="--macro"
+		value="addMetadata('@:build(mikolka.FlxMacro.buildFlxBasic())', 'flixel.FlxBasic')" />
 
 	<!-- more verbose HScript-->
-	
-	<haxedef name="hscriptPos" if="HSCRIPT_ALLOWED"/>
+
+	<haxedef name="hscriptPos" if="HSCRIPT_ALLOWED" />
 
 	<!-- _________________________________ Custom _______________________________ -->
 
 	<section if="PROFILE_BUILD">
 		<assets path='art/desktop/icon16.png' rename='icon.png' if="linux" />
-		<icon path="art/desktop/icon16.png"/>
+		<icon path="art/desktop/icon16.png" />
+	</section>
+	<section if="mac">
+		<assets path="art/desktop/mac-icon-assets.car" rename="Assets.car" />
 	</section>
 	<section unless="PROFILE_BUILD">
-		<section if="mobile || mac">
+		<section if="mobile">
 			<config type="android" pslice-mono-icon="art/mobile/iconMono.png" />
 			<config type="ios" pslice-icon-dir="art/mobile/PSlice.appiconset" />
 			<icon path="art/mobile/iconAdaptive.png" if="android" />
 			<icon path="art/mobile/iconMobile.png" unless="android" />
 		</section>
-		<section unless="mobile || mac">
-
+		<section unless="mobile">
 			<assets path='art/desktop/iconOG.png' rename='icon.png' if="linux" />
-			<icon path="art/desktop/icon16.png" size='16'/>
-			<icon path="art/desktop//icon32.png" size='32'/>
-			<icon path="art/desktop//icon64.png" size='64'/>
+			<icon path="art/desktop/icon16.png" size='16' />
+			<icon path="art/desktop//icon32.png" size='32' />
+			<icon path="art/desktop//icon64.png" size='64' />
 			<icon path="art/desktop//iconOG.png" />
 		</section>
 	</section>

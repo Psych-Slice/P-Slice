@@ -1,10 +1,14 @@
 package backend;
 
+
 import lime.app.Application;
 import lime.system.Display;
 import lime.system.System;
-
 import flixel.util.FlxColor;
+#if cpp
+import cpp.vm.Gc;
+import flixel.util.FlxStringUtil;
+#end
 
 #if (cpp && windows)
 @:buildXml('
@@ -70,6 +74,15 @@ class Native
 		#if sys
 		fullContents += 'Platform: ${Sys.systemName()}\n';
 		#end
+		#if ATSC_SUPPORT
+		var astcSupport = backend.Native.isASTCSupported();
+		if (astcSupport)
+			fullContents += 'Your computer does support ASTC\n';
+		else
+			fullContents += 'ASTC NOT SUPPORTED\n';
+		#else
+		fullContents += 'This build doesn\'t support ASTC\n';
+		#end
 
 		fullContents += '\n';
 
@@ -79,15 +92,15 @@ class Native
 
 		#if cpp
 		fullContents += 'HXCPP-Immix:';
-		fullContents += '\n- Memory Used: ${cpp.vm.Gc.memInfo64(cpp.vm.Gc.MEM_INFO_USAGE)} bytes';
-		fullContents += '\n- Memory Reserved: ${cpp.vm.Gc.memInfo64(cpp.vm.Gc.MEM_INFO_RESERVED)} bytes';
-		fullContents += '\n- Memory Current Pool: ${cpp.vm.Gc.memInfo64(cpp.vm.Gc.MEM_INFO_CURRENT)} bytes';
-		fullContents += '\n- Memory Large Pool: ${cpp.vm.Gc.memInfo64(cpp.vm.Gc.MEM_INFO_LARGE)} bytes';
+		fullContents += '\n- Memory Used: ${FlxStringUtil.formatBytes(Gc.memInfo64(cpp.vm.Gc.MEM_INFO_USAGE))} bytes';
+		fullContents += '\n- Memory Reserved: ${FlxStringUtil.formatBytes(Gc.memInfo64(cpp.vm.Gc.MEM_INFO_RESERVED))} bytes';
+		fullContents += '\n- Memory Current Pool: ${FlxStringUtil.formatBytes(Gc.memInfo64(cpp.vm.Gc.MEM_INFO_CURRENT))} bytes';
+		fullContents += '\n- Memory Large Pool: ${FlxStringUtil.formatBytes(Gc.memInfo64(cpp.vm.Gc.MEM_INFO_LARGE))} bytes';
 		fullContents += '\n- HXCPP Debugger: ${#if HXCPP_DEBUGGER 'Enabled' #else 'Disabled' #end}';
-		fullContents += '\n- HXCPP Exp Generational Mode: ${#if HXCPP_GC_GENERATIONAL 'Enabled' #else 'Disabled' #end}';
+		fullContents += '\n- HXCPP Exp Generational GC: ${#if HXCPP_GC_GENERATIONAL 'Enabled' #else 'Disabled' #end}';
 		fullContents += '\n- HXCPP Exp Moving GC: ${#if HXCPP_GC_MOVING 'Enabled' #else 'Disabled' #end}';
-		fullContents += '\n- HXCPP Exp Moving GC: ${#if HXCPP_GC_DYNAMIC_SIZE 'Enabled' #else 'Disabled' #end}';
-		fullContents += '\n- HXCPP Exp Moving GC: ${#if HXCPP_GC_BIG_BLOCKS 'Enabled' #else 'Disabled' #end}';
+		fullContents += '\n- HXCPP Exp Dynamic size GC: ${#if HXCPP_GC_DYNAMIC_SIZE 'Enabled' #else 'Disabled' #end}';
+		fullContents += '\n- HXCPP Exp Big blocks GC: ${#if HXCPP_GC_BIG_BLOCKS 'Enabled' #else 'Disabled' #end}';
 		fullContents += '\n- HXCPP Debug Link: ${#if HXCPP_DEBUG_LINK 'Enabled' #else 'Disabled' #end}';
 		fullContents += '\n- HXCPP Stack Trace: ${#if HXCPP_STACK_TRACE 'Enabled' #else 'Disabled' #end}';
 		fullContents += '\n- HXCPP Stack Trace Line Numbers: ${#if HXCPP_STACK_LINE 'Enabled' #else 'Disabled' #end}';
@@ -95,6 +108,7 @@ class Native
 		fullContents += '\n- HXCPP Profiler: ${#if HXCPP_PROFILER 'Enabled' #else 'Disabled' #end}';
 		fullContents += '\n- HXCPP Local Telemetry: ${#if HXCPP_TELEMETRY 'Enabled' #else 'Disabled' #end}';
 		fullContents += '\n- HXCPP C++11: ${#if HXCPP_CPP11 'Enabled' #else 'Disabled' #end}';
+		fullContents += '\n- HXCPP C++17: ${#if HXCPP_CPP17 'Enabled' #else 'Disabled' #end}';
 		fullContents += '\n- Source Annotation: ${#if annotate_source 'Enabled' #else 'Disabled' #end}';
 		#else
 		var result:String = 'Unknown GC';
@@ -105,7 +119,7 @@ class Native
 	public static function registerDPIAware():Void
 	{
 		#if (cpp && windows)
-		// DPI Scaling fix for windows 
+		// DPI Scaling fix for windows
 		// this shouldn't be needed for other systems
 		// Credit to YoshiCrafter29 for finding this function
 		untyped __cpp__('
@@ -124,9 +138,11 @@ class Native
 	}
 
 	private static var fixedScaling:Bool = false;
+
 	public static function fixScaling():Void
 	{
-		if (fixedScaling) return;
+		if (fixedScaling)
+			return;
 		fixedScaling = true;
 
 		#if (cpp && windows)
@@ -155,4 +171,12 @@ class Native
 		#end
 		trace("done fixing scale issue");
 	}
+
+	#if ATSC_SUPPORT
+	public static inline function isASTCSupported():Bool
+	{
+		@:privateAccess
+		return openfl.Lib.current.stage.context3D.gl.getExtension("KHR_texture_compression_astc_ldr") != null;
+	}
+	#end
 }

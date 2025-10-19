@@ -55,8 +55,8 @@ class ModsMenuState extends MusicBeatState
 
 		if (controls.mobileC)
 			daButton = 'B';
-		Paths.clearStoredMemory();
-		Paths.clearUnusedMemory();
+		CacheSystem.clearStoredMemory();
+		CacheSystem.clearUnusedMemory();
 		persistentUpdate = false;
 
 		modsList = Mods.parseList();
@@ -942,7 +942,7 @@ class ModItem extends FlxSpriteGroup
 
 		if (bmp != null)
 		{
-			icon.loadGraphic(Paths.cacheBitmap(file, bmp), true, 150, 150);
+			icon.loadGraphic(CacheSystem.cacheBitmap(file, bmp), true, 150, 150);
 			if (isPixel)
 				icon.antialiasing = false;
 		}

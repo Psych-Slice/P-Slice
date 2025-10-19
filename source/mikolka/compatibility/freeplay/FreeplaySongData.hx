@@ -6,8 +6,8 @@ import mikolka.funkin.Scoring.ScoringRank;
 import backend.Highscore;
 import backend.WeekData;
 
-using mikolka.funkin.custom.FunkinTools;
-using mikolka.funkin.utils.ArrayTools;
+
+
 
 /**
  * Data about a specific song in the freeplay menu. Very heaviely dependent on exact engine

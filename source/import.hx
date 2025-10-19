@@ -32,14 +32,14 @@ import mobile.objects.ScrollableObject;
 #end
 // Android
 #if android
-import android.content.Context as AndroidContext;
-import android.widget.Toast as AndroidToast;
-import android.os.Environment as AndroidEnvironment;
-import android.Permissions as AndroidPermissions;
-import android.Settings as AndroidSettings;
-import android.Tools as AndroidTools;
-import android.os.Build.VERSION as AndroidVersion;
-import android.os.Build.VERSION_CODES as AndroidVersionCode;
+import extension.androidtools.content.Context as AndroidContext;
+import extension.androidtools.widget.Toast as AndroidToast;
+import extension.androidtools.os.Environment as AndroidEnvironment;
+import extension.androidtools.Permissions as AndroidPermissions;
+import extension.androidtools.Settings as AndroidSettings;
+import extension.androidtools.Tools as AndroidTools;
+import extension.androidtools.os.Build.VERSION as AndroidVersion;
+import extension.androidtools.os.Build.VERSION_CODES as AndroidVersionCode;
 //? Is this even used???
 //import android.os.BatteryManager as AndroidBatteryManager;
 #end
@@ -57,16 +57,30 @@ import mikolka.funkin.*;
 import mikolka.funkin.utils.*;
 import mikolka.funkin.custom.*;
 import mikolka.funkin.players.*;
+import states.FreeplayState as C_;
 
 //P-Slice Dialouges
 import mikolka.stages.cutscenes.dialogueBox.*;
 import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych.DialogueFile;
 import mikolka.stages.cutscenes.dialogueBox.styles.*;
 
+//utils
+using StringTools;
+using mikolka.funkin.utils.ArrayTools;
+using mikolka.funkin.utils.custom.FunkinTools;
+import mikolka.funkin.utils.custom.FunkinTools;
+using mikolka.funkin.utils.ArrayTools;
+using mikolka.funkin.utils.SpriteTools;
+using mikolka.funkin.utils.custom.PsychUITools;
+using mikolka.funkin.utils.StringTools;
+
+
+
 // Stage imports (for compatibility)
 import states.stages.objects.*;
 
 import backend.Paths;
+import backend.CacheSystem;
 import backend.Controls;
 import backend.CoolUtil;
 import backend.MusicBeatState;
@@ -79,7 +93,10 @@ import backend.Difficulty;
 import backend.Mods;
 import backend.Highscore;
 import backend.Language;
+
+#if !js
 import mobile.backend.StorageUtil;
+#end
 
 import backend.ui.*; //Psych-UI
 
@@ -116,5 +133,5 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.system.FlxAssets.FlxShader;
 
-using StringTools;
+
 #end

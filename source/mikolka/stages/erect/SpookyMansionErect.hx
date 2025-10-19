@@ -90,11 +90,11 @@ class SpookyMansionErect extends BaseStage
 			lightningStrikeShit(); 
 		}
 
-        if (curBeat % game.boyfriend.danceEveryNumBeats == 0 && !StringTools.startsWith(boyfriend.getAnimationName(),'sing') && !game.boyfriend.stunned)
+        if (curBeat % game.boyfriend.danceEveryNumBeats == 0 && !boyfriend.getAnimationName().startsWith('sing') && !game.boyfriend.stunned)
 			boyfriendGhost.dance();
-		if (curBeat % game.dad.danceEveryNumBeats == 0 && !StringTools.startsWith(dad.getAnimationName(),'sing') && !game.dad.stunned)
+		if (curBeat % game.dad.danceEveryNumBeats == 0 && !dad.getAnimationName().startsWith('sing') && !game.dad.stunned)
 			dadGhost.dance();
-		if (curBeat % game.gf.danceEveryNumBeats == 0 && !StringTools.startsWith(gf.getAnimationName(),'sing') && !game.gf.stunned)
+		if (curBeat % game.gf.danceEveryNumBeats == 0 && !gf.getAnimationName().startsWith('sing') && !game.gf.stunned)
 			gfGhost.dance();
 	}
     override function goodNoteHit(note:Note) {

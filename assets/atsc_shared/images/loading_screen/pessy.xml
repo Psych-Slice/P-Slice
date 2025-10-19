@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
+-->
+<TextureAtlas imagePath="pessy.png" width="3213" height="3294">
+	<SubTexture name="run0000" x="970" y="535" width="413" height="533" rotated="true" frameX="-0" frameY="-5" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0001" x="970" y="535" width="413" height="533" rotated="true" frameX="-0" frameY="-5" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0002" x="1777" y="1071" width="401" height="530" rotated="true" frameX="-0" frameY="-8" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0003" x="1797" y="534" width="401" height="530" rotated="true" frameX="-0" frameY="-8" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0004" x="947" y="1607" width="533" height="406" frameX="-0" frameY="-18" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0005" x="947" y="1607" width="533" height="406" frameX="-0" frameY="-18" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0006" x="535" y="1069" width="411" height="533" rotated="true" frameX="-0" frameY="-20" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0007" x="535" y="1069" width="411" height="533" rotated="true" frameX="-0" frameY="-20" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0008" x="537" y="1" width="430" height="531" rotated="true" frameX="-0" frameY="-1" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0009" x="537" y="535" width="430" height="531" rotated="true" frameX="-0" frameY="-1" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0010" x="1" y="435" width="533" height="429" frameX="-0" frameY="-2" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0011" x="1" y="435" width="533" height="429" frameX="-0" frameY="-2" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0012" x="1386" y="535" width="408" height="533" rotated="true" frameX="-0" frameY="-6" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0013" x="1386" y="535" width="408" height="533" rotated="true" frameX="-0" frameY="-6" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0014" x="1403" y="1" width="402" height="530" rotated="true" frameX="-0" frameY="-11" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0015" x="1483" y="1607" width="530" height="402" frameX="-0" frameY="-11" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0016" x="1" y="1300" width="407" height="533" rotated="true" frameX="-0" frameY="-17" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0017" x="411" y="1605" width="533" height="407" frameX="-0" frameY="-17" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0018" x="949" y="1071" width="411" height="533" rotated="true" frameX="-0" frameY="-16" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0019" x="1363" y="1071" width="411" height="533" rotated="true" frameX="-0" frameY="-16" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0020" x="1" y="867" width="531" height="430" frameX="-0" frameY="-1" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0021" x="970" y="1" width="430" height="531" rotated="true" frameX="-0" frameY="-1" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0022" x="1" y="1" width="533" height="431" frameX="-0" frameY="-0" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="run0023" x="1" y="1" width="533" height="431" frameX="-0" frameY="-0" frameWidth="533" frameHeight="431"/>
+	<SubTexture name="spin0000" x="2456" y="467" width="246" height="462" frameX="-23" frameY="-148" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0001" x="2456" y="467" width="246" height="462" frameX="-23" frameY="-148" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0002" x="2705" y="1" width="246" height="459" frameX="-23" frameY="-154" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0003" x="2705" y="1" width="246" height="459" frameX="-23" frameY="-154" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0004" x="2705" y="463" width="246" height="459" frameX="-23" frameY="-154" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0005" x="2250" y="2577" width="461" height="246" rotated="true" frameX="-23" frameY="-152" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0006" x="2469" y="932" width="246" height="462" frameX="-23" frameY="-151" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0007" x="2469" y="932" width="246" height="462" frameX="-23" frameY="-151" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0008" x="469" y="2426" width="463" height="246" rotated="true" frameX="-23" frameY="-150" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0009" x="2250" y="2328" width="463" height="246" rotated="true" frameX="-23" frameY="-114" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0010" x="2250" y="2328" width="463" height="246" rotated="true" frameX="-23" frameY="-114" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0011" x="2478" y="1397" width="246" height="462" frameX="-23" frameY="-115" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0012" x="1269" y="2561" width="460" height="246" rotated="true" frameX="-23" frameY="-113" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0013" x="1" y="2558" width="461" height="246" rotated="true" frameX="-23" frameY="-112" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0014" x="1" y="2558" width="461" height="246" rotated="true" frameX="-23" frameY="-112" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0015" x="1" y="2558" width="461" height="246" rotated="true" frameX="-23" frameY="-112" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0016" x="1" y="2558" width="461" height="246" rotated="true" frameX="-23" frameY="-112" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0017" x="1269" y="2810" width="455" height="246" rotated="true" frameX="-23" frameY="-114" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0018" x="1" y="2807" width="454" height="246" rotated="true" frameX="-23" frameY="-115" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0019" x="1" y="2807" width="454" height="246" rotated="true" frameX="-23" frameY="-115" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0020" x="458" y="2924" width="454" height="246" rotated="true" frameX="-23" frameY="-115" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0021" x="1782" y="2422" width="465" height="246" rotated="true" frameX="-23" frameY="-119" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0022" x="1782" y="2422" width="465" height="246" rotated="true" frameX="-23" frameY="-119" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0023" x="1" y="2309" width="465" height="246" rotated="true" frameX="-23" frameY="-119" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0024" x="2478" y="1862" width="246" height="462" frameX="-23" frameY="-148" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0025" x="2478" y="1862" width="246" height="462" frameX="-23" frameY="-148" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0026" x="2718" y="925" width="246" height="459" frameX="-23" frameY="-154" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0027" x="2718" y="925" width="246" height="459" frameX="-23" frameY="-154" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0028" x="2727" y="1387" width="246" height="459" frameX="-23" frameY="-154" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0029" x="465" y="2675" width="461" height="246" rotated="true" frameX="-23" frameY="-152" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0030" x="1020" y="2425" width="246" height="462" frameX="-23" frameY="-151" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0031" x="1020" y="2425" width="246" height="462" frameX="-23" frameY="-151" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0032" x="2456" y="1" width="246" height="463" frameX="-23" frameY="-150" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0033" x="2250" y="2328" width="463" height="246" rotated="true" frameX="-23" frameY="-114" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0034" x="2250" y="2328" width="463" height="246" rotated="true" frameX="-23" frameY="-114" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0035" x="2478" y="1397" width="246" height="462" frameX="-23" frameY="-115" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0036" x="1269" y="2561" width="460" height="246" rotated="true" frameX="-23" frameY="-113" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0037" x="1" y="2558" width="461" height="246" rotated="true" frameX="-23" frameY="-112" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0038" x="1" y="2558" width="461" height="246" rotated="true" frameX="-23" frameY="-112" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0039" x="1" y="2558" width="461" height="246" rotated="true" frameX="-23" frameY="-112" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0040" x="1" y="2558" width="461" height="246" rotated="true" frameX="-23" frameY="-112" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0041" x="1269" y="2810" width="455" height="246" rotated="true" frameX="-23" frameY="-114" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0042" x="1" y="2807" width="454" height="246" rotated="true" frameX="-23" frameY="-115" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0043" x="1" y="2807" width="454" height="246" rotated="true" frameX="-23" frameY="-115" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0044" x="458" y="2924" width="454" height="246" rotated="true" frameX="-23" frameY="-115" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0045" x="1782" y="2422" width="465" height="246" rotated="true" frameX="-23" frameY="-119" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0046" x="1782" y="2422" width="465" height="246" rotated="true" frameX="-23" frameY="-119" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0047" x="1" y="2309" width="465" height="246" rotated="true" frameX="-23" frameY="-119" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0048" x="2478" y="1862" width="246" height="462" frameX="-23" frameY="-148" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0049" x="2478" y="1862" width="246" height="462" frameX="-23" frameY="-148" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0050" x="1732" y="2671" width="460" height="246" rotated="true" frameX="-23" frameY="-156" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0051" x="1732" y="2671" width="460" height="246" rotated="true" frameX="-23" frameY="-156" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0052" x="2716" y="2327" width="246" height="460" frameX="-23" frameY="-156" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0053" x="2201" y="412" width="252" height="460" frameX="-17" frameY="-160" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0054" x="2201" y="412" width="252" height="460" frameX="-17" frameY="-160" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0055" x="1319" y="2306" width="460" height="252" rotated="true" frameX="-17" frameY="-160" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0056" x="2016" y="1604" width="459" height="260" rotated="true" frameX="-7" frameY="-159" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0057" x="2016" y="1604" width="459" height="260" rotated="true" frameX="-7" frameY="-159" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0058" x="2200" y="1867" width="260" height="458" frameX="-7" frameY="-160" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0059" x="2727" y="1849" width="248" height="453" frameX="-12" frameY="-114" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0060" x="2727" y="1849" width="248" height="453" frameX="-12" frameY="-114" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0061" x="2978" y="1772" width="217" height="456" frameX="-43" frameY="-88" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0062" x="2978" y="1772" width="217" height="456" frameX="-43" frameY="-88" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0063" x="2976" y="1311" width="217" height="458" frameX="-43" frameY="-86" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0064" x="2670" y="2826" width="446" height="244" rotated="true" frameX="-30" frameY="-43" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0065" x="1727" y="2920" width="447" height="244" rotated="true" frameX="-30" frameY="-42" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0066" x="1727" y="2920" width="447" height="244" rotated="true" frameX="-30" frameY="-42" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0067" x="2177" y="3063" width="421" height="230" rotated="true" frameX="-47" frameY="-18" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0068" x="1" y="3056" width="422" height="230" rotated="true" frameX="-47" frameY="-17" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0069" x="1" y="3056" width="422" height="230" rotated="true" frameX="-47" frameY="-17" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0070" x="2967" y="895" width="245" height="413" frameX="-24" frameY="-1" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0071" x="2954" y="478" width="245" height="414" frameX="-24" frameY="-0" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0072" x="2954" y="478" width="245" height="414" frameX="-24" frameY="-0" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0073" x="2181" y="1067" width="285" height="408" frameX="-6" frameY="-1" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0074" x="2181" y="1067" width="285" height="408" frameX="-6" frameY="-1" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0075" x="2110" y="1" width="285" height="408" frameX="-6" frameY="-1" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0076" x="2110" y="1" width="285" height="408" frameX="-6" frameY="-1" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0077" x="1020" y="2016" width="296" height="406" frameX="-3" frameY="-1" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0078" x="1020" y="2016" width="296" height="406" frameX="-3" frameY="-1" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0079" x="1901" y="2012" width="296" height="407" frameX="-3" frameY="-0" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0080" x="1901" y="2012" width="296" height="407" frameX="-3" frameY="-0" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0081" x="721" y="2016" width="296" height="407" frameX="-3" frameY="-0" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0082" x="721" y="2016" width="296" height="407" frameX="-3" frameY="-0" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0083" x="1808" y="1" width="299" height="412" frameX="-0" frameY="-2" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0084" x="1" y="1836" width="299" height="412" frameX="-0" frameY="-2" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0085" x="1" y="1836" width="299" height="412" frameX="-0" frameY="-2" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0086" x="1" y="1836" width="299" height="412" frameX="-0" frameY="-2" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0087" x="303" y="2015" width="415" height="291" rotated="true" frameX="-0" frameY="-19" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0088" x="1483" y="2012" width="415" height="291" rotated="true" frameX="-0" frameY="-19" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0089" x="1483" y="2012" width="415" height="291" rotated="true" frameX="-0" frameY="-19" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0090" x="2965" y="2305" width="225" height="474" frameX="-36" frameY="-53" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0091" x="2965" y="2305" width="225" height="474" frameX="-36" frameY="-53" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0092" x="2954" y="1" width="225" height="474" frameX="-36" frameY="-53" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0093" x="2195" y="2826" width="472" height="234" rotated="true" frameX="-29" frameY="-116" frameWidth="299" frameHeight="620"/>
+	<SubTexture name="spin0094" x="2195" y="2826" width="472" height="234" rotated="true" frameX="-29" frameY="-116" frameWidth="299" frameHeight="620"/>
+</TextureAtlas>

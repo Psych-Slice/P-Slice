@@ -1,0 +1,55 @@
+[
+  {
+    "save": "week1_nomiss",
+    "name": "More Like Daddy Queerest",
+    "description": "Beat Week 1 on Hard with no Misses."
+  },
+  {
+    "save": "week2_nomiss",
+    "name": "IT IS THE SPOOKY MONTH",
+    "description": "Beat Week 2 on Hard with no Misses."
+  },
+  {
+    "save": "week3_nomiss",
+    "name": "Pico Funny",
+    "description": "Beat Week 3 on Hard with no Misses."
+  },
+  {
+    "save": "week4_nomiss",
+    "name": "Mommy Must Murder",
+    "description": "Beat Week 4 on Hard with no Misses."
+  },
+  {
+    "save": "week5_nomiss",
+    "name": "Yule Tide Joy",
+    "description": "Beat Week 5 on Hard with no Misses."
+  },
+  {
+    "save": "week6_nomiss",
+    "name": "A Visual Novelty",
+    "description": "Beat Week 6 on Hard with no Misses."
+  },
+  {
+    "save": "week7_nomiss",
+    "name": "I <3 JohnnyUtah",
+    "description": "Beat Week 7 on Hard with no Misses."
+  },
+  {
+    "save": "weekend1_nomiss",
+    "name": "Yo, Really Think So?",
+    "description": "Beat Weekend 1 on Hard with no Misses."
+  },
+  {
+    "save": "roadkill_enthusiast",
+    "name": "Roadkill Enthusiast",
+    "description": "Watch the Henchmen die 50 times.",
+    "maxScore": 50,
+    "maxDecimals": 0
+  },
+  {
+    "save": "debugger",
+    "name": "Debugger",
+    "description": "Beat the \"Test\" Stage from the Chart Editor.",
+    "hidden": true
+  }
+]

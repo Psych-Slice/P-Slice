@@ -144,7 +144,7 @@ class HScript extends Iris
 		set('Type', Type);
 		#if sys
 		set('File', File);
-		set('NativeFileSystem', NativeFileSystem);
+		set('FileSystem', FileSystem);
 		#end
 		set('FlxG', flixel.FlxG);
 		set('FlxMath', flixel.math.FlxMath);
@@ -161,6 +161,9 @@ class HScript extends Iris
 		set('Paths', Paths);
 		set('StorageUtil', StorageUtil);
 		set('Conductor', Conductor);
+		set('ClientPrefs', ClientPrefs);
+		set('MainMenuState', MainMenuState);
+		set('StoryMenuState', StoryMenuState);
 		set('ClientPrefs', ClientPrefs);
 		#if ACHIEVEMENTS_ALLOWED
 		set('Achievements', Achievements);

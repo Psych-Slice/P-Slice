@@ -157,14 +157,12 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 		addOption(option);
 		option.onChange = onChangeFPSCounter;
 
-		#if sys
-		var option:Option = new Option('VSync',
-			'If checked, Enables VSync fixing any screen tearing at the cost of capping the FPS to screen refresh rate.\n(Must restart the game to have an effect)',
-			'vsync',
+		var option:Option = new Option('FPS Rework',
+			'If checked, uses the reworked version of FPS counter.',
+			'fpsRework',
 			BOOL);
-		option.onChange = onChangeVSync;
 		addOption(option);
-		#end
+		option.onChange = onChangeFPSCounter;
 		
 		var option:Option = new Option('Pause Music:',
 			"What song do you prefer for the Pause Screen?",
@@ -328,20 +326,10 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 
 	function onChangeFPSCounter()
 	{
-		if(Main.fpsVar != null)
-			Main.fpsVar.visible = ClientPrefs.data.showFPS;
-		if(Main.memoryCounter != null)
-			Main.memoryCounter.visible = ClientPrefs.data.showFPS;
+		if(Main.debugDisplay != null){
+			Main.debugDisplay.isAdvanced = ClientPrefs.data.fpsRework;
+			Main.debugDisplay.visible = ClientPrefs.data.showFPS;
+		}
 	}
 
-	#if sys
-	function onChangeVSync()
-	{
-		@:privateAccess
-		var file:String = StorageUtil.rootDir + "vsync.txt";
-		if(NativeFileSystem.exists(file))
-			NativeFileSystem.deleteFile(file);
-		File.saveContent(file, Std.string(ClientPrefs.data.vsync));
-	}
-	#end
 }

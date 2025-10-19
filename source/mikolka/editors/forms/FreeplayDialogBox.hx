@@ -4,7 +4,7 @@ import haxe.Exception;
 import mikolka.vslice.components.crash.UserErrorSubstate;
 import mikolka.vslice.freeplay.BGScrollingText;
 import mikolka.editors.substates.FreeplayEditSubstate;
-using mikolka.editors.PsychUIUtills;
+
 
 class FreeplayDialogBox extends PsychUIBox
 {
@@ -95,9 +95,9 @@ class FreeplayDialogBox extends PsychUIBox
 				backingCard.funnyScroll = new BGScrollingText(0, 220, currentCharacter.getFreeplayDJText(1), FlxG.width / 2, false, 60);
 				backingCard.funnyScroll2 = new BGScrollingText(0, 335, currentCharacter.getFreeplayDJText(1), FlxG.width / 2, false, 60);
 				backingCard.funnyScroll3 = new BGScrollingText(0, backingCard.orangeBackShit.y + 10, currentCharacter.getFreeplayDJText(1), FlxG.width / 2, 60);
-				backingCard.funnyScroll.funnyColor = 0xFFFF9963;
-				backingCard.funnyScroll2.funnyColor = 0xFFFF9963;
-				backingCard.funnyScroll3.funnyColor = 0xFFFEA400;
+				backingCard.funnyScroll.color = 0xFFFF9963;
+				backingCard.funnyScroll2.color = 0xFFFF9963;
+				backingCard.funnyScroll3.color = 0xFFFEA400;
 				backingCard.funnyScroll.speed = backingCard.funnyScroll2.speed = backingCard.funnyScroll3.speed = -3.8;
 				backingCard.add(backingCard.funnyScroll);
 				backingCard.add(backingCard.funnyScroll2);
@@ -113,7 +113,7 @@ class FreeplayDialogBox extends PsychUIBox
 				backingCard.moreWays = new BGScrollingText(0, 160, currentCharacter.getFreeplayDJText(2), FlxG.width, true, 43);
 				backingCard.moreWays2 = new BGScrollingText(0, 397, currentCharacter.getFreeplayDJText(2), FlxG.width, true, 43);
 				backingCard.moreWays.speed = backingCard.moreWays2.speed = 6.8;
-				backingCard.moreWays.funnyColor = backingCard.moreWays2.funnyColor = 0xFFFFF383;
+				backingCard.moreWays.color = backingCard.moreWays2.color = 0xFFFFF383;
 				backingCard.add(backingCard.moreWays);
 				backingCard.add(backingCard.moreWays2);
 			}

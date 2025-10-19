@@ -80,8 +80,7 @@ class Hitbox extends MobileInputManager
 				final SCREEN_MIDDLE = FlxG.width/2;
 				final ARROW_HITBOX_SIZE = 270;
 				final ARROW_DISTANCE = 220;
-				final ARROW_SPREAD = 15;
-
+				final ARROW_SPREAD = 30;
 
 				add(buttonLeft = createHint(SCREEN_MIDDLE-(ARROW_DISTANCE*1.5)-(ARROW_HITBOX_SIZE/2) - ARROW_SPREAD, 0, ARROW_HITBOX_SIZE, FlxG.height, colorMap[0]));
 				add(buttonDown = createHint(SCREEN_MIDDLE-(ARROW_DISTANCE*0.5)-(ARROW_HITBOX_SIZE/2)-ARROW_SPREAD, 0, ARROW_HITBOX_SIZE, FlxG.height, colorMap[1]));

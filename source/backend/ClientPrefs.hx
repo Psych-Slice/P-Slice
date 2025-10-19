@@ -30,9 +30,9 @@ import states.InitState;
 	public var middleScroll:Bool = false;
 	public var opponentStrums:Bool = true;
 	public var showFPS:Bool = true;
+	public var fpsRework:Bool = false;
 	public var flashing:Bool = true;
 	public var autoPause:Bool = true;
-	public var fpsRework:Bool = false;
 	public var antialiasing:Bool = true;
 	public var noteSkin:String = 'Default';
 	public var splashSkin:String = 'Psych';
@@ -43,7 +43,7 @@ import states.InitState;
 	public var shaders:Bool = true;
 	public var cacheOnGPU:Bool = #if !switch false #else true #end; //From Stilic (I think he hates us actually)
 	public var cacheOnCPU:Bool = #if android false #else true #end;
-	public var strictLoadingScreen:Bool = false;
+	public var strictLoadingScreen:Bool = true;
 	public var framerate:Int = 60;
 	public var camZooms:Bool = true;
 	public var hideHud:Bool = false;
@@ -249,8 +249,10 @@ class ClientPrefs {
 			if (key != 'gameplaySettings' && Reflect.hasField(FlxG.save.data, key))
 				Reflect.setField(data, key, Reflect.field(FlxG.save.data, key));
 		
-		if(Main.fpsVar != null)
-			Main.fpsVar.visible = data.showFPS;
+		if(Main.debugDisplay != null){
+			Main.debugDisplay.isAdvanced = data.fpsRework;
+			Main.debugDisplay.visible = data.showFPS;
+		}
 
 		#if (!html5 && !switch)
 		FlxG.autoPause = ClientPrefs.data.autoPause;

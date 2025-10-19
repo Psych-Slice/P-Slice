@@ -4,11 +4,8 @@ import mikolka.stages.cutscenes.SchoolDoof;
 import mikolka.stages.cutscenes.dialogueBox.DialogueBoxPsych;
 import mikolka.stages.scripts.PicoCapableStage;
 import mikolka.compatibility.VsliceOptions;
-import shaders.AdjustColorShader;
-import shaders.ColorSwap;
 import shaders.DropShadowShader;
 #if !LEGACY_PSYCH
-import objects.Character;
 import substates.GameOverSubstate;
 #end
 import openfl.utils.Assets as OpenFlAssets;

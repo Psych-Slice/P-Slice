@@ -25,3 +25,6 @@ vs_Community.exe
 art/build_html.bat
 art/build_html-debug.bat
 *.astc
+
+mod_core
+astc-textures

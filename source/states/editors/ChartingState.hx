@@ -2149,10 +2149,11 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		setSongPlaying(false);
 		var time:Float = Conductor.songPosition;
 
+		// Manual system for clearing up previous inst sound
 		if(killAudio)
 		{
 			var sndsToKill:Array<String> = [];
-			for (key => snd in Paths.currentTrackedSounds)
+			for (key => snd in CacheSystem.currentTrackedSounds)
 			{
 				//trace(key, snd);
 				if(key.contains('/songs/${Paths.formatToSongPath(PlayState.SONG.song)}/') && snd != null)
@@ -2165,8 +2166,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			for (key in sndsToKill)
 			{
 				Assets.cache.clear(key);
-				Paths.currentTrackedSounds.remove(key);
-				Paths.localTrackedAssets.remove(key);
+				CacheSystem.currentTrackedSounds.remove(key);
+				CacheSystem.localTrackedAssets.remove(key);
 			}
 		}
 
@@ -5615,10 +5616,10 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		}
 		waveformSprite.pixels.fillRect(new Rectangle(0, 0, width, height), 0x00FFFFFF);
 
-		wavData[0][0].resize(0);
-		wavData[0][1].resize(0);
-		wavData[1][0].resize(0);
-		wavData[1][1].resize(0);
+		wavData[0][0].clear();
+		wavData[0][1].clear();
+		wavData[1][0].clear();
+		wavData[1][1].clear();
 
 		var sound:FlxSound = switch(waveformTarget)
 		{

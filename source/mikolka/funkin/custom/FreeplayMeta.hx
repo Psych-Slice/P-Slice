@@ -1,7 +1,7 @@
 package mikolka.funkin.custom;
 
 import haxe.Json;
-using mikolka.funkin.custom.FunkinTools;
+
 
 class FreeplayMetaJSON {
     public function new() {}

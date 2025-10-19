@@ -40,7 +40,8 @@ class ModSelector extends FlxTypedSpriteGroup<FlxSprite> {
                 directories.push(folder);
         }
         else{ // char select
-            for (folder in ModsHelper.getModsWithPlayersRegistry())
+            var globalMods = ModsHelper.getGlobalMods();
+            for (folder in ModsHelper.getModsWithPlayersRegistry().filter(s -> !globalMods.contains(s)))
                 directories.push(folder);
         }
 		

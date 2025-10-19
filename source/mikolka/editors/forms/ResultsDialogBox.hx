@@ -4,7 +4,6 @@ import mikolka.funkin.players.PlayerData.PlayerResultsAnimationData;
 import mikolka.editors.editorProps.ResultsPropsGrp.ResultsProp;
 import mikolka.editors.substates.ResultsScreenEdit;
 import mikolka.funkin.Scoring.ScoringRank;
-using mikolka.editors.PsychUIUtills;
 
 class ResultsDialogBox extends PsychUIBox {
 	public var selected_prop:ResultsProp;

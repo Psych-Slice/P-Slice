@@ -1,5 +1,6 @@
 package states;
 
+import lime.utils.Assets;
 import mikolka.funkin.custom.mobile.MobileScaleMode;
 import mikolka.vslice.ui.title.TitleState;
 import flixel.input.keyboard.FlxKey;
@@ -60,8 +61,12 @@ class InitState extends MusicBeatState
 		#if TOUCH_CONTROLS_ALLOWED
 		trace("Loading mobile data");
 		MobileData.init();
-		#end
+		#end		
 
+		trace("checking asset list cache");
+		if(NativeFileSystem.openFlAssets?.length == 0)
+			NativeFileSystem.openFlAssets = Assets.list();
+		
 		FlxG.scaleMode = new MobileScaleMode(ClientPrefs.data.wideScreen); 
 		
 		trace("Init plugins:");
@@ -86,41 +91,16 @@ class InitState extends MusicBeatState
 		#end
 		if (FlxG.save.data.flashing == null)
 		{
-			#if OLD_SIGN_KEYS
-			var txt = "You are using a build with old signing keys!\n\n"
-			+ "Please download the regular android version instead!";
-			MusicBeatState.switchState(new WarningState(txt,() ->{
-				lime.system.System.exit(0);
-			},() ->{
-				lime.system.System.exit(0);
-			},new TitleState()));
-			#else
 			controls.isInSubstate = false;
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
 			MusicBeatState.switchState(new FlashingState(new TitleState()));
-			#end
 		}
-        #if (CHECK_FOR_UPDATES && !OLD_SIGN_KEYS)
         else if (mustUpdate){
             MusicBeatState.switchState(new OutdatedState(updateVersion,new TitleState()));
         }
-        #end
 		else
 		{
-			#if OLD_SIGN_KEYS
-			var txt = "You are using a build with the old signing keys!\n"
-			+ "P-Slice will use the new signing keys for the future versions.\n"+
-			"Use migration guide to move over your data\nto the new build of P-Slice\n\n"+
-			"Press A to export your save data and open the migration guide\n"+
-			"Press B to ignore"
-			;
-			MusicBeatState.switchState(new WarningState(txt,() ->{
-				File.copy(path,exportPath);
-				File.copy(path,exportPath+".bak");
-				CoolUtil.browserLoad("https://github.com/Psych-Slice/P-Slice/wiki/P%E2%80%90Slice-port-migration#you-should-land-here-after-doing-that");
-			},null,new TitleState()));
-			#else
 			new FlxTimer().start(0.05, function(tmr:FlxTimer)
 				{
 					#if FREEPLAY
@@ -131,7 +111,6 @@ class InitState extends MusicBeatState
 					MusicBeatState.switchState(new TitleState());
 					#end
 				});
-			#end
 		}
 	}
 

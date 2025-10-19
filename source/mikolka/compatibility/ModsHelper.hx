@@ -1,12 +1,13 @@
 package mikolka.compatibility;
 
+import backend.CacheSystem;
 import openfl.filters.BitmapFilter;
 import flixel.util.FlxSort;
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
 import haxe.io.Path;
 
-using mikolka.funkin.utils.ArrayTools;
+
 
 class ModsHelper {
 	public inline static function isModDirEnabled(directory:String) {
@@ -23,6 +24,9 @@ class ModsHelper {
 	}
 	public inline static function getActiveMod():String {
 		return Mods.currentModDirectory;
+	}
+	public inline static function getGlobalMods():Array<String> {
+		return Mods.getGlobalMods();
 	}
 	public inline static function resetActiveMods() {
 		#if MODS_ALLOWED
@@ -41,12 +45,7 @@ class ModsHelper {
 		return [];
 		#end
 	}
-	public inline static function loadabsoluteGraphic(path:String):FlxGraphic {
-		if(!Paths.currentTrackedAssets.exists(path)) {
-			Paths.cacheBitmap(path,null,BitmapData.fromFile(path));
-		}
-		return Paths.currentTrackedAssets.get(path);
-	}
+
 	public inline static function getSoundChannel(sound:FlxSound){
 		@:privateAccess
 		return sound._channel.__audioSource;
@@ -59,15 +58,22 @@ class ModsHelper {
 		//! Doesn't actually clear the stickers
 		@:privateAccess
 		var cache = FlxG.bitmap._cache;
-		Paths.currentTrackedAssets.clear();
 		for (key => val in cache){
-		if(	key.toLowerCase().contains("transitionswag") || 
-			key.contains("bg_graphic_") ||
-			key == "images/justBf.png"
-		) Paths.currentTrackedAssets.set(key,val);
+			if(	key.toLowerCase().contains("transitionswag") || 
+				key.contains("bg_graphic_") ||
+				key == "images/justBf.png"
+			) CacheSystem.currentTrackedAssets.set(key,val);
 		}
-		Paths.clearStoredMemory();
-		Paths.currentTrackedAssets.clear();
+		CacheSystem.clearStoredMemory();
+		cacheStickersToContext();
+	}
+	public static function cacheStickersToContext() {
+		for (key => val in CacheSystem.currentTrackedAssets){
+			if(	key.toLowerCase().contains("transitionswag") || 
+				key.contains("bg_graphic_") ||
+				key == "images/justBf.png"
+			) CacheSystem.localTrackedAssets.push(key);
+		}
 	}
 	#if sys
 	public inline static function collectVideos():String{

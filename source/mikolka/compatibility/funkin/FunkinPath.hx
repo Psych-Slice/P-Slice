@@ -1,5 +1,6 @@
 package mikolka.compatibility.funkin;
 
+
 import flixel.graphics.FlxGraphic;
 import openfl.media.Sound;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -38,8 +39,8 @@ class FunkinPath {
         return Paths.image(s);
     }
 
-    public static function getSparrowAtlas(s:String):FlxAtlasFrames {
-        return Paths.getSparrowAtlas(s);
+    public static function getSparrowAtlas(s:String,?allowGPU:Bool = true):FlxAtlasFrames {
+        return Paths.getSparrowAtlas(s,null,allowGPU);
     }
 
     public static function noGpuImage(s:String):FlxGraphic {
@@ -58,6 +59,6 @@ class FunkinPath {
         }
 
     public static function clearUnusedMemory() { 
-        Paths.clearUnusedMemory();
+        CacheSystem.clearUnusedMemory();
     }
 }

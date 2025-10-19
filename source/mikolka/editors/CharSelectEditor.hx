@@ -22,7 +22,7 @@ import mikolka.compatibility.funkin.FunkinPath;
 import mikolka.vslice.charSelect.CharSelectGF;
 import mikolka.vslice.charSelect.Nametag;
 
-using mikolka.funkin.custom.FunkinTools;
+
 
 class CharSelectEditor extends MusicBeatState
 {
@@ -56,8 +56,8 @@ class CharSelectEditor extends MusicBeatState
 	{
 		FlxG.sound.music.pause();
 		FlxG.mouse.visible = true;
-		Paths.clearStoredMemory();
-		Paths.clearUnusedMemory();
+		CacheSystem.clearStoredMemory();
+		CacheSystem.clearUnusedMemory();
 		
 		var cutoutSize = MobileScaleMode.gameCutoutSize.x / 2;
 
