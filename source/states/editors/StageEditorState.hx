@@ -1224,8 +1224,12 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 
 		_makeNewSprite = onNewSprite;
 		
-		final filters = [new FileFilter('PNG (Image)', '*.png'), new FileFilter('XML (Sparrow)', '*.xml'), new FileFilter('JSON (Aseprite)', '*.json'), new FileFilter('TXT (Packer)', '*.txt')];
-		fileDialog.open(null,"Select a graphic",#if !mac filters #else [] #end,onLoadComplete,onLoadCancel,onLoadError);
+		final filters = [new FileFilter('PNG (Image)', '*.png')
+		#if !linux
+			, new FileFilter('XML (Sparrow)', '*.xml'), new FileFilter('JSON (Aseprite)', '*.json'), new FileFilter('TXT (Packer)', '*.txt')
+		#end
+		];
+		fileDialog.open(null,"Select a graphic",filters,onLoadComplete,onLoadCancel,onLoadError);
 	}
 
 	private function onLoadComplete():Void
