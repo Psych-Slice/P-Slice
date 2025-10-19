@@ -177,6 +177,7 @@ class ModSettingsSubState extends BaseOptionsMenu
 
 	override public function update(elapsed:Float)
 	{
+		controls.isInSubstate = true;
 		if(_crashed)
 		{
 			close();
@@ -202,6 +203,7 @@ class ModSettingsSubState extends BaseOptionsMenu
 
 		FlxG.save.data.modSettings.set(folder, save);
 		FlxG.save.flush();
+		controls.isInSubstate = false;
 		super.close();
 	}
 }
