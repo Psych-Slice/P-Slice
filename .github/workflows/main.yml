@@ -15,12 +15,12 @@ jobs:
       matrix:
         include:
           - name: Linux
-            os: ubuntu-latest
+            os: ubuntu-24.04
             setupScript: sh ./setup/unix.sh
             CACHE_NAME: P-Slice.1.0.desktop-cache
 
           - name: Mobile
-            os: macos-latest
+            os: macos-15
             setupScript: sh ./setup/mobile.sh
             CACHE_NAME: P-Slice.1.0.mobile-cache
     uses: ./.github/workflows/dependencies.yml
@@ -82,7 +82,7 @@ jobs:
       matrix:
         include:
           - name: Android
-            os: macos-15
+            os: ubuntu-24.04
             exportPath: android
             buildArgs: "android"
             cacheLibrariesPath: P-Slice.1.0.mobile-cache
