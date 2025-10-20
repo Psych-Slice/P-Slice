@@ -1,10 +1,11 @@
 name: Bug report
 description: Report bugs with the engine here
-labels: [bug]
+labels: ["Type: Bug","Awaits labels"]
 body:
   - type: textarea
     id: description
     attributes:
+      
       label: "Describe your bug here."
     validations:
       required: true
@@ -60,6 +61,7 @@ body:
         - "HTML5"
     validations:
       required: true
+      
 
   - type: input
     id: buildsummary
