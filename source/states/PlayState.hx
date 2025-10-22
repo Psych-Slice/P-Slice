@@ -335,6 +335,8 @@ class PlayState extends MusicBeatState
 		persistentUpdate = true;
 		persistentDraw = true;
 
+		if(SONG == null) throw "SONG value uninitialised!";
+
 		Conductor.mapBPMChanges(SONG);
 		Conductor.bpm = SONG.bpm;
 

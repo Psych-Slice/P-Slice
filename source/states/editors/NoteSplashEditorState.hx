@@ -906,7 +906,7 @@ class NoteSplashEditorState extends MusicBeatState
             #if MODS_ALLOWED
             if (txtLoaded.__path != null)
             {
-                try txt = NativeFileSystem.getContent(txtLoaded.__path) catch (e) txt = null;
+                try txt = File.getContent(txtLoaded.__path) catch (e) txt = null;
                 file = txtLoaded.__path;
                 file = file.substring(0, file.length - 4) + ".json";
             }

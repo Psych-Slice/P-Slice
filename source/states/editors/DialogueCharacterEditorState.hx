@@ -1,5 +1,7 @@
 package states.editors;
 
+import haxe.io.Path;
+import states.editors.content.FileDialogHandler;
 import mikolka.stages.cutscenes.dialogueBox.DialogueCharacter.DialogueCharacterFile;
 import mikolka.stages.cutscenes.dialogueBox.DialogueCharacter.DialogueAnimArray;
 import openfl.net.FileReference;
@@ -674,34 +676,23 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 		else ClientPrefs.toggleVolumeKeys(false);
 	}
 	
-	var _file:FileReference = null;
+	var _file:FileDialogHandler = null;
 	function loadCharacter() {
 		var jsonFilter:FileFilter = new FileFilter('JSON', 'json');
-		_file = new FileReference();
-		_file.addEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
-		_file.addEventListener(Event.CANCEL, onLoadCancel);
-		_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file.browse([#if !mac jsonFilter #end]);
+		_file = new FileDialogHandler();
+		_file.open(null,"Open dialog portrait character",[jsonFilter],onLoadComplete,onLoadCancel,onLoadError);
 	}
 
-	function onLoadComplete(_):Void
+	function onLoadComplete():Void
 	{
-		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
-		_file.removeEventListener(Event.CANCEL, onLoadCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-
-		#if sys
-		var fullPath:String = null;
-		@:privateAccess
-		if(_file.__path != null) fullPath = _file.__path;
-
-		if(fullPath != null) {
-			var rawJson:String = NativeFileSystem.getContent(fullPath);
+		if(_file.data != null) {
+			var rawJson:String = _file.data;
 			if(rawJson != null) {
 				var loadedChar:DialogueCharacterFile = cast Json.parse(rawJson);
 				if(loadedChar.dialogue_pos != null) //Make sure it's really a dialogue character
 				{
-					var cutName:String = _file.name.substr(0, _file.name.length - 5);
+					var cutName:String = Path.withoutDirectory(_file.path);
+					cutName = cutName.substr(0, cutName.length - 5);
 					trace("Successfully loaded file: " + cutName);
 					character.jsonFile = loadedChar;
 					reloadCharacter();
@@ -719,19 +710,13 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 			}
 		}
 		_file = null;
-		#else
-		trace("File couldn't be loaded! You aren't on Desktop, are you?");
-		#end
 	}
 
 	/**
 		* Called when the save file dialog is cancelled.
 		*/
-	function onLoadCancel(_):Void
+	function onLoadCancel():Void
 	{
-		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
-		_file.removeEventListener(Event.CANCEL, onLoadCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
 		trace("Cancelled file loading.");
 	}
@@ -739,11 +724,8 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 	/**
 		* Called if there is an error while saving the gameplay recording.
 		*/
-	function onLoadError(_):Void
+	function onLoadError():Void
 	{
-		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
-		_file.removeEventListener(Event.CANCEL, onLoadCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
 		trace("Problem loading file");
 	}
@@ -759,20 +741,14 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 			unsavedProgress = false;
 			StorageUtil.saveContent('$characterName.json', data);
 			#else
-			_file = new FileReference();
-			_file.addEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onSaveComplete);
-			_file.addEventListener(Event.CANCEL, onSaveCancel);
-			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data, characterName + ".json");
+			_file = new FileDialogHandler();
+			_file.save(characterName + ".json",data,onSaveComplete,onSaveCancel,onSaveError);
 			#end
 		}
 	}
 
-	function onSaveComplete(_):Void
+	function onSaveComplete():Void
 	{
-		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onSaveComplete);
-		_file.removeEventListener(Event.CANCEL, onSaveCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.notice("Successfully saved file.");
 	}
@@ -780,22 +756,16 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 	/**
 		* Called when the save file dialog is cancelled.
 		*/
-	function onSaveCancel(_):Void
+	function onSaveCancel():Void
 	{
-		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onSaveComplete);
-		_file.removeEventListener(Event.CANCEL, onSaveCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 	}
 
 	/**
 		* Called if there is an error while saving the gameplay recording.
 		*/
-	function onSaveError(_):Void
+	function onSaveError():Void
 	{
-		_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onSaveComplete);
-		_file.removeEventListener(Event.CANCEL, onSaveCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.error("Problem saving file");
 	}
