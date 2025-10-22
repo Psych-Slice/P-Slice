@@ -737,6 +737,10 @@ class LoadingState extends MusicBeatState
 
 	public static function startThreads()
 	{
+		if(mutex != null){
+			trace("Mutex already made! Cancelling this request!");
+			return;
+		}
 		mutex = new Mutex();
 		trace("Made mutex");
 		loadMax = imagesToPrepare.length + soundsToPrepare.length + musicToPrepare.length + songsToPrepare.length;
