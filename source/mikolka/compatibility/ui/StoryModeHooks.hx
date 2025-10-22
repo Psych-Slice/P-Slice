@@ -85,6 +85,7 @@ class StoryModeHooks {
 	
 	
 				Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
+                if(PlayState.SONG == null) throw "Song parsing failed!";
 				PlayState.campaignScore = 0;
 				PlayState.campaignMisses = 0;
                 return true;
