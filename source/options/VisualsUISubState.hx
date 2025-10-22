@@ -96,6 +96,13 @@ class VisualsUISubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 		option.onChange = onChangeFPSCounter;
+		var option:Option = new Option('FPS Rework',
+			'If checked, uses more advanced FPS Counter.',
+			'fpsRework',
+			'bool',
+			true);
+		addOption(option);
+		option.onChange = onChangeFPSCounter;
 
 		#if sys
 		var option:Option = new Option('VSync',

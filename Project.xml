@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': P-Slice Engine" file="PSliceEngine" packageName="com.mikolka9144.pslice063" package="com.mikolka9144.pslice063" main="Main" version="3.1.0" company="mikolka9144" />
+	<app title="Friday Night Funkin': P-Slice Engine" file="PSliceEngine" packageName="com.mikolka9144.pslice063" package="com.mikolka9144.pslice063" main="Main" version="3.4.1" company="mikolka9144" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />

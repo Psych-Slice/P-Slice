@@ -35,6 +35,7 @@ class InitState extends MusicBeatState
 		trace("Loading game settings");
 		PlayerSettings.init();
 
+
 		#if CHECK_FOR_UPDATES
 		fetchUpdateData();
 		#end

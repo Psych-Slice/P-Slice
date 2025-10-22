@@ -150,6 +150,10 @@ class Main extends Sprite
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 
 		debugDisplay = new FunkinDebugDisplay(10, 10, 0xFFFFFF);
+		if(debugDisplay != null){
+			debugDisplay.isAdvanced = ClientPrefs.fpsRework;
+			debugDisplay.visible = ClientPrefs.showFPS;
+		}
 		#if mobile
 		FlxG.game.addChild(debugDisplay);
 		#else
