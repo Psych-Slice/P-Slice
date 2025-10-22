@@ -408,7 +408,7 @@ class Note extends FlxSprite
 				offsetX -= _lastNoteOffX;
 			}
 		} else {
-			frames = prevNote?._loadedSkin == skin 
+			frames = (prevNote?._loadedSkin == skin && prevNote?.frames != null)
 				? prevNote.frames
 				: Paths.getSparrowAtlas(skin);
 			_loadedSkin = skin;
