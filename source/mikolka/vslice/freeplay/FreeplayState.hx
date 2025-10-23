@@ -1996,11 +1996,13 @@ class FreeplayState extends MusicBeatSubstate
 				if (diffSprite != null && diffSprite.difficultyId == currentDifficulty)
 					return diffSprite;
 			}
-			throw "NO DIFF! Something is VERY wrong!";
+			trace("No DIFF! Perhaps it isn't available for this character...");
+			return null;
 		}
 
 		// ? This handles trans OUT
 		var diffObj = getCurrentDiff(); //
+		if(diffObj == null) return;
 		var diffSprite:DifficultySprite = diffObj;
 
 		if (transIn)

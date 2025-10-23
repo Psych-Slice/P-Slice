@@ -77,6 +77,10 @@ class DesktopMenuState extends FlxBasic
 
 		FlxG.camera.follow(camFollow, null, 0.06);
         changeItem();
+
+		#if TOUCH_CONTROLS_ALLOWED
+		host.addTouchPad('UP_DOWN', 'A_B');
+		#end
     }
 
 
