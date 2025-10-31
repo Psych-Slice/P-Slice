@@ -4,7 +4,7 @@ import haxe.io.Path;
 import openfl.media.Sound;
 import openfl.display.BitmapData;
 #if (!NATIVE_LOOKUP && !OPENFL_LOOKUP)
-#error "You need to have enabled either OpenFL, or NativeFileSystem lookup to compile this app!"
+#error "You need to have enabled either OpenFL, or FileSystem lookup to compile this app!"
 #end
 #if OPENFL_LOOKUP
 import lime.utils.Assets;

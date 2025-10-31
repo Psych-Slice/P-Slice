@@ -75,6 +75,18 @@ class LoadingState extends MusicBeatState
 
 	override function create()
 	{
+		#if STRICT_LOADING_SCREEN
+		if (backend.ClientPrefs.data.strictLoadingScreen)
+		{
+		#end
+			CacheSystem.clearStoredMemory();
+			CacheSystem.clearUnusedMemory();
+			LoadingState.prepareToSong();
+		#if STRICT_LOADING_SCREEN
+		}
+		#end
+
+		trace("Creating loading screen");
 		persistentUpdate = true;
 		barGroup = new FlxSpriteGroup();
 		add(barGroup);
@@ -302,7 +314,13 @@ class LoadingState extends MusicBeatState
 	static function getNextState(target:FlxState, stopMusic = false):FlxState
 	{
 		// _startPool();
+		trace("Getting next state");
 		loadNextDirectory();
+
+
+		#if STRICT_LOADING_SCREEN
+		if (backend.ClientPrefs.data.strictLoadingScreen) #end
+			isIntrusive = true;
 
 		if (isIntrusive)
 			return new LoadingState(target, stopMusic);
@@ -341,6 +359,7 @@ class LoadingState extends MusicBeatState
 
 	public static function prepareToSong(intrusive:Bool = true)
 	{
+		trace("Preparing song...");
 		#if !SHOW_LOADING_SCREEN
 		intrusive = false;
 		#end
@@ -810,6 +829,7 @@ class LoadingState extends MusicBeatState
 	// not thread safe sound loader
 	static function preloadGraphic(key:String):PreloadTask<BitmapData>
 	{
+		trace("Preloading "+key);
 		try
 		{
 			var requestKey:String = 'images/$key';

@@ -57,6 +57,7 @@ class NoteOffsetState extends MusicBeatState
 		persistentUpdate = true;
 		FlxG.sound.pause();
 		// Stage
+		#if !js
 		if(#if !BASE_GAME_FILES Paths.fileExists(stageDirectory,BINARY) #else true #end){
 
 			Paths.setCurrentLevel(stageDirectory);
@@ -64,6 +65,7 @@ class NoteOffsetState extends MusicBeatState
 			stage.create();
 			add(stage);
 		}
+		#end
 
 		// Characters
 		gf = new Character(400, 130, 'gf');

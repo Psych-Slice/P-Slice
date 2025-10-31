@@ -94,7 +94,7 @@
 	<section if="debug">
 		<!-- For testing file access times-->
 		<define name="OPENFL_LOOKUP" />
-		<define name="NATIVE_LOOKUP" />
+		<define unless="html5" name="NATIVE_LOOKUP" />
 
 		<define name="IRIS_DEBUG" />
 		<define name="FEATURE_DEBUG_FUNCTIONS" />
