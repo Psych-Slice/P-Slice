@@ -1691,7 +1691,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 								var didAdd:Bool = false;
 	
 								var noteSetupData:Array<Dynamic> = [strumTime, noteData, 0];
-								var typeSelected:String = noteTypes[noteTypeDropDown.selectedIndex].trim();
+								var selectedNoteType = noteTypeDropDown.selectedIndex != -1 ? noteTypeDropDown.selectedIndex : 0;
+								var typeSelected:String = noteTypes[selectedNoteType].trim();
 								if(typeSelected != null && typeSelected.length > 0)
 									noteSetupData.push(typeSelected);
 	

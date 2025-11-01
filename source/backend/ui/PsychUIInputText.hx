@@ -512,7 +512,7 @@ class PsychUIInputText extends FlxSpriteGroup
 
 			selection.updateHitbox();
 
-			if(text.length > 0)
+			if((text?.length ?? 0) > 0)
 			{
 				textObj.removeFormat(selectedFormat);
 				if(selectIndex != -1 && selectIndex != caretIndex)
@@ -521,7 +521,7 @@ class PsychUIInputText extends FlxSpriteGroup
 				}
 			}
 		}
-		else if(text.length > 0) textObj.removeFormat(selectedFormat);
+		else if((text?.length ?? 0) > 0) textObj.removeFormat(selectedFormat);
 	}
 
 	function deleteSelection()

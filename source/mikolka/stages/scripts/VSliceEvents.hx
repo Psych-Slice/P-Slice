@@ -5,6 +5,11 @@ class VSliceEvents extends BaseStage {
     private var camTween:FlxTween;
 
     override function eventCalled(eventName:String, value1:String, value2:String, flValue1:Null<Float>, flValue2:Null<Float>, strumTime:Float) {
+        #if js
+        // I hate you JS part 2
+        value1 = Std.string(value1);
+        value2 = Std.string(value1);
+        #end
         switch (eventName){
             case 'Vslice Scroll Speed':
 				if (game.songSpeedType != "constant")
