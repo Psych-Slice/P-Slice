@@ -1,10 +1,7 @@
 {
 	"animations": [
 		{
-			"offsets": [
-				0,
-				0
-			],
+			"offsets": [0, 0],
 			"loop": false,
 			"fps": 24,
 			"anim": "idle",
@@ -12,10 +9,7 @@
 			"name": "Tankman Idle Dance"
 		},
 		{
-			"offsets": [
-				48,
-				54
-			],
+			"offsets": [48, 54],
 			"indices": [],
 			"fps": 24,
 			"anim": "singUP",
@@ -23,10 +17,7 @@
 			"name": "Tankman UP note 1"
 		},
 		{
-			"offsets": [
-				76,
-				-101
-			],
+			"offsets": [76, -101],
 			"indices": [],
 			"fps": 24,
 			"anim": "singDOWN",
@@ -34,10 +25,7 @@
 			"name": "Tankman DOWN note 1"
 		},
 		{
-			"offsets": [
-				84,
-				-14
-			],
+			"offsets": [84, -14],
 			"indices": [],
 			"fps": 24,
 			"anim": "singLEFT",
@@ -45,10 +33,7 @@
 			"name": "Tankman Right Note 1"
 		},
 		{
-			"offsets": [
-				-21,
-				-31
-			],
+			"offsets": [-21, -31],
 			"indices": [],
 			"fps": 24,
 			"anim": "singRIGHT",
@@ -56,10 +41,7 @@
 			"name": "Tankman Note Left 1"
 		},
 		{
-			"offsets": [
-				-15,
-				-8
-			],
+			"offsets": [-15, -8],
 			"indices": [],
 			"fps": 24,
 			"anim": "singUP-alt",
@@ -67,10 +49,7 @@
 			"name": "TANKMAN UGH"
 		},
 		{
-			"offsets": [
-				-15,
-				-8
-			],
+			"offsets": [-15, -8],
 			"indices": [],
 			"fps": 24,
 			"anim": "ugh",
@@ -78,10 +57,7 @@
 			"name": "TANKMAN UGH"
 		},
 		{
-			"offsets": [
-				1,
-				16
-			],
+			"offsets": [1, 16],
 			"indices": [],
 			"fps": 24,
 			"anim": "singDOWN-alt",
@@ -89,10 +65,7 @@
 			"name": "PRETTY GOOD tankman"
 		},
 		{
-			"offsets": [
-				48,
-				54
-			],
+			"offsets": [48, 54],
 			"indices": [],
 			"fps": 24,
 			"anim": "singUPmiss",
@@ -100,10 +73,7 @@
 			"name": "Tankman UP note MISS"
 		},
 		{
-			"offsets": [
-				76,
-				-101
-			],
+			"offsets": [76, -101],
 			"indices": [],
 			"fps": 24,
 			"anim": "singDOWNmiss",
@@ -111,10 +81,7 @@
 			"name": "Tankman DOWN note MISS"
 		},
 		{
-			"offsets": [
-				84,
-				-14
-			],
+			"offsets": [84, -14],
 			"indices": [],
 			"fps": 24,
 			"anim": "singLEFTmiss",
@@ -122,10 +89,7 @@
 			"name": "Tankman Right Note MISS"
 		},
 		{
-			"offsets": [
-				-21,
-				-31
-			],
+			"offsets": [-21, -31],
 			"indices": [],
 			"fps": 24,
 			"anim": "singRIGHTmiss",
@@ -156,21 +120,12 @@
 	],
 	"no_antialiasing": false,
 	"image": "characters/tankmanCaptain",
-	"position": [
-		0,
-		240
-	],
+	"position": [0, 240],
 	"healthicon": "tankman",
 	"flip_x": true,
-	"healthbar_colors": [
-		225,
-		225,
-		225
-	],
-	"camera_position": [
-		0,
-		0
-	],
+	"healthbar_colors": [225, 225, 225],
+	"camera_position": [0, 0],
 	"sing_duration": 4,
-	"scale": 1
+	"scale": 1,
+	"_editor_isPlayer": false
 }

@@ -2,10 +2,7 @@
 	"animations": [
 		{
 			"loop": false,
-			"offsets": [
-				-26,
-				-12
-			],
+			"offsets": [-26, -12],
 			"fps": 24,
 			"anim": "deathConfirm",
 			"indices": [],
@@ -13,10 +10,7 @@
 		},
 		{
 			"loop": true,
-			"offsets": [
-				-30,
-				-12
-			],
+			"offsets": [-30, -12],
 			"fps": 24,
 			"anim": "deathLoop",
 			"indices": [],
@@ -24,10 +18,7 @@
 		},
 		{
 			"loop": false,
-			"offsets": [
-				0,
-				0
-			],
+			"offsets": [0, 0],
 			"fps": 24,
 			"anim": "firstDeath",
 			"indices": [],
@@ -36,21 +27,12 @@
 	],
 	"no_antialiasing": true,
 	"image": "characters/bfPixelsDEAD",
-	"position": [
-		0,
-		350
-	],
+	"position": [0, 350],
 	"healthicon": "bf-pixel",
 	"flip_x": true,
-	"healthbar_colors": [
-		123,
-		214,
-		246
-	],
-	"camera_position": [
-		50,
-		-60
-	],
+	"healthbar_colors": [123, 214, 246],
+	"camera_position": [50, -60],
 	"sing_duration": 4,
-	"scale": 6
+	"scale": 6,
+	"_editor_isPlayer": true
 }

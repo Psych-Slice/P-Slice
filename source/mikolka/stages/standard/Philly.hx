@@ -33,7 +33,7 @@ class Philly extends BaseStage
 		phillyWindow.alpha = 0;
 
 		if(!VsliceOptions.LOW_QUALITY) {
-			var streetBehind:BGSprite = new BGSprite('philly/behindTrain', -299, 144);
+			var streetBehind:BGSprite = new BGSprite('philly/behindTrain', 178, 148);
 			add(streetBehind);
 		}
 

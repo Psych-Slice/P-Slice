@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TextureAtlas imagePath="crowd.png">
-	<!-- Created with Adobe Animate version 23.0.0.407 -->
-	<!-- http://www.adobe.com/products/animate.html -->
 	<SubTexture name="idle0000" x="0" y="0" width="1873" height="450" frameX="0" frameY="-2" frameWidth="1873" frameHeight="452"/>
 	<SubTexture name="idle0001" x="1878" y="0" width="1863" height="443" frameX="-10" frameY="-9" frameWidth="1873" frameHeight="452"/>
 	<SubTexture name="idle0002" x="0" y="455" width="1859" height="442" frameX="-10" frameY="-9" frameWidth="1873" frameHeight="452"/>

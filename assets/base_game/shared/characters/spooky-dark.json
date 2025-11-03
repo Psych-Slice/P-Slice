@@ -2,10 +2,7 @@
 	"animations": [
 		{
 			"loop": false,
-			"offsets": [
-				0,
-				0
-			],
+			"offsets": [0, 0],
 			"anim": "hey",
 			"fps": 24,
 			"name": "Cheer",
@@ -13,21 +10,15 @@
 		},
 		{
 			"loop": false,
-			"offsets": [
-				0,
-				0
-			],
-			"anim": "hey",
+			"offsets": [0, 0],
+			"anim": "cheer",
 			"fps": 24,
-			"name": "cheer",
+			"name": "Cheer",
 			"indices": []
 		},
 		{
 			"loop": false,
-			"offsets": [
-				130,
-				-10
-			],
+			"offsets": [130, -10],
 			"anim": "singLEFT",
 			"fps": 24,
 			"name": "SingLEFT",
@@ -35,10 +26,7 @@
 		},
 		{
 			"loop": false,
-			"offsets": [
-				-150,
-				-14
-			],
+			"offsets": [-150, -14],
 			"anim": "singRIGHT",
 			"fps": 24,
 			"name": "SingRIGHT",
@@ -46,10 +34,7 @@
 		},
 		{
 			"loop": false,
-			"offsets": [
-				-50,
-				-130
-			],
+			"offsets": [-50, -130],
 			"anim": "singDOWN",
 			"fps": 24,
 			"name": "SingDOWN",
@@ -64,40 +49,16 @@
 			"name": "SingUP"
 		},
 		{
-			"offsets": [
-				0,
-				0
-			],
-			"indices": [
-				0,
-				1,
-				2,
-				3,
-				4,
-				5,
-				6,
-				7
-			],
+			"offsets": [0, 0],
+			"indices": [0, 1, 2, 3, 4, 5, 6, 7],
 			"fps": 24,
 			"anim": "danceLeft",
 			"loop": false,
 			"name": "Idle"
 		},
 		{
-			"offsets": [
-				0,
-				0
-			],
-			"indices": [
-				8,
-				9,
-				10,
-				11,
-				12,
-				13,
-				14,
-				15
-			],
+			"offsets": [0, 0],
+			"indices": [8, 9, 10, 11, 12, 13, 14, 15],
 			"fps": 24,
 			"anim": "danceRight",
 			"loop": false,
@@ -107,21 +68,11 @@
 	"vocals_file": "",
 	"no_antialiasing": false,
 	"image": "characters/dark/spooky_dark",
-	"position": [
-		0,
-		200
-	],
+	"position": [0, 200],
 	"healthicon": "spooky",
 	"flip_x": false,
-	"healthbar_colors": [
-		213,
-		126,
-		0
-	],
-	"camera_position": [
-		0,
-		0
-	],
+	"healthbar_colors": [213, 126, 0],
+	"camera_position": [0, 0],
 	"sing_duration": 4,
 	"scale": 1,
 	"_editor_isPlayer": false

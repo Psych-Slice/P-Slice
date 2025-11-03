@@ -4,20 +4,17 @@
 		["Fresh (Pico Mix)", "dad", [146, 113, 253]],
 		["Dad Battle (Pico Mix)", "dad", [146, 113, 253]]
 	],
-
 	"weekCharacters": [
 		"dad",
 		"bf",
 		"gf"
 	],
 	"weekBackground": "stage",
-
 	"storyName": "Daddy Dearest",
 	"weekBefore": "tutorial",
 	"difficulties": "Easy,Normal,Hard",
 	"weekName": "Week 1",
 	"startUnlocked": true,
-
 	"hideStoryMode": true,
 	"hideFreeplay": false
 }

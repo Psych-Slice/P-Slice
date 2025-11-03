@@ -4,20 +4,17 @@
 		["Philly Nice", "pico", [148, 22, 83]],
 		["Blammed", "pico", [148, 22, 83]]
 	],
-
 	"weekCharacters": [
 		"pico",
 		"bf",
 		"gf"
 	],
 	"weekBackground": "philly",
-
 	"storyName": "PICO",
 	"weekBefore": "week2",
 	"weekName": "Week 3",
 	"difficulties": "Easy,Normal,Hard,Erect,Nightmare",
 	"startUnlocked": true,
-
 	"hideStoryMode": false,
 	"hideFreeplay": false
 }
