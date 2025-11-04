@@ -21,7 +21,7 @@
 			"offsets": [10, -60],
 			"anim": "singRIGHT",
 			"fps": 24,
-			"name": "Mom Pose Left",
+			"name": "Mom Right Pose",
 			"indices": []
 		},
 		{
@@ -29,7 +29,7 @@
 			"offsets": [20, -160],
 			"anim": "singDOWN",
 			"fps": 24,
-			"name": "MOM DOWN POSE",
+			"name": "Mom Down Pose",
 			"indices": []
 		},
 		{
@@ -39,6 +39,38 @@
 			"fps": 24,
 			"name": "Mom Up Pose",
 			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [250, -23],
+			"anim": "singLEFT-loop",
+			"fps": 24,
+			"name": "Mom Left Pose",
+			"indices": [7, 8, 9, 10]
+		},
+		{
+			"loop": false,
+			"offsets": [10, -60],
+			"anim": "singRIGHT-loop",
+			"fps": 24,
+			"name": "Mom Right POse",
+			"indices": [7, 8, 9, 10]
+		},
+		{
+			"loop": false,
+			"offsets": [20, -160],
+			"anim": "singDOWN-loop",
+			"fps": 24,
+			"name": "Mom Down Pose",
+			"indices": [12, 13, 14, 15]
+		},
+		{
+			"loop": false,
+			"offsets": [14, 71],
+			"anim": "singUP-loop",
+			"fps": 24,
+			"name": "Mom Up Pose",
+			"indices": [12, 13, 14, 15]
 		}
 	],
 	"no_antialiasing": false,
