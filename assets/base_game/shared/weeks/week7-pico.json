@@ -14,7 +14,7 @@
 	"storyName": "Tankman ft. JohnnyUtah",
 	"difficulties": "Easy,Normal,Hard",
 	"weekName": "Week 7",
-	"hideStoryMode": false,
+	"hideStoryMode": true,
 	"weekBefore": "week6",
 	"startUnlocked": true
 }
