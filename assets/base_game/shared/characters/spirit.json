@@ -1,10 +1,7 @@
 {
 	"animations": [
 		{
-			"offsets": [
-				-218,
-				-280
-			],
+			"offsets": [-218, -280],
 			"loop": false,
 			"anim": "idle",
 			"fps": 24,
@@ -12,10 +9,7 @@
 			"indices": []
 		},
 		{
-			"offsets": [
-				-200,
-				-280
-			],
+			"offsets": [-200, -280],
 			"loop": false,
 			"anim": "singLEFT",
 			"fps": 24,
@@ -23,21 +17,15 @@
 			"indices": []
 		},
 		{
-			"offsets": [
-				170,
-				110
-			],
+			"offsets": [170, 110],
 			"loop": false,
 			"anim": "singDOWN",
 			"fps": 24,
-			"name": "spirit down_",
+			"name": "down_",
 			"indices": []
 		},
 		{
-			"offsets": [
-				-220,
-				-280
-			],
+			"offsets": [-220, -280],
 			"loop": false,
 			"anim": "singRIGHT",
 			"fps": 24,
@@ -45,10 +33,7 @@
 			"indices": []
 		},
 		{
-			"offsets": [
-				-220,
-				-240
-			],
+			"offsets": [-220, -240],
 			"loop": false,
 			"anim": "singUP",
 			"fps": 24,
@@ -58,21 +43,12 @@
 	],
 	"no_antialiasing": true,
 	"image": "characters/spirit",
-	"position": [
-		-150,
-		100
-	],
+	"position": [-150, 100],
 	"healthicon": "spirit-pixel",
 	"flip_x": false,
-	"healthbar_colors": [
-		255,
-		60,
-		110
-	],
-	"camera_position": [
-		0,
-		0
-	],
+	"healthbar_colors": [255, 60, 110],
+	"camera_position": [0, 0],
 	"sing_duration": 4,
-	"scale": 6
+	"scale": 6,
+	"_editor_isPlayer": false
 }

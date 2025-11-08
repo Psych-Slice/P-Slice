@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TextureAtlas imagePath="bfLol.png">
-	<!-- Created with Adobe Animate version 20.0.0.17400 -->
-	<!-- http://www.adobe.com/products/animate.html -->
 	<SubTexture name="funnyThing instance 10000" x="0" y="0" width="280" height="184" frameX="0" frameY="-12" frameWidth="280" frameHeight="204"/>
 	<SubTexture name="funnyThing instance 10001" x="0" y="0" width="280" height="184" frameX="0" frameY="-12" frameWidth="280" frameHeight="204"/>
 	<SubTexture name="funnyThing instance 10002" x="0" y="0" width="280" height="184" frameX="0" frameY="-12" frameWidth="280" frameHeight="204"/>

@@ -1,10 +1,7 @@
 {
 	"animations": [
 		{
-			"offsets": [
-				2,
-				0
-			],
+			"offsets": [2, 0],
 			"loop": false,
 			"anim": "idle",
 			"fps": 24,
@@ -12,10 +9,7 @@
 			"indices": []
 		},
 		{
-			"offsets": [
-				5,
-				37
-			],
+			"offsets": [5, 37],
 			"loop": false,
 			"anim": "singUP",
 			"fps": 24,
@@ -23,10 +17,7 @@
 			"indices": []
 		},
 		{
-			"offsets": [
-				40,
-				0
-			],
+			"offsets": [40, 0],
 			"loop": false,
 			"anim": "singLEFT",
 			"fps": 24,
@@ -34,10 +25,7 @@
 			"indices": []
 		},
 		{
-			"offsets": [
-				0,
-				0
-			],
+			"offsets": [0, 0],
 			"loop": false,
 			"anim": "singRIGHT",
 			"fps": 24,
@@ -45,10 +33,7 @@
 			"indices": []
 		},
 		{
-			"offsets": [
-				14,
-				0
-			],
+			"offsets": [14, 0],
 			"loop": false,
 			"anim": "singDOWN",
 			"fps": 24,
@@ -58,21 +43,12 @@
 	],
 	"no_antialiasing": true,
 	"image": "characters/senpai",
-	"position": [
-		150,
-		360
-	],
+	"position": [150, 360],
 	"healthicon": "senpai-angry-pixel",
 	"flip_x": false,
-	"healthbar_colors": [
-		255,
-		170,
-		111
-	],
-	"camera_position": [
-		-240,
-		-330
-	],
+	"healthbar_colors": [255, 170, 111],
+	"camera_position": [-240, -330],
 	"sing_duration": 4,
-	"scale": 6
+	"scale": 6,
+	"_editor_isPlayer": false
 }

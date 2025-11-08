@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TextureAtlas imagePath="aBotVizPixel.png">
-	<!-- Created with Adobe Animate version 24.0.7.61 -->
-	<!-- http://www.adobe.com/products/animate.html -->
 	<SubTexture name="viz10000" x="0" y="0" width="8" height="27"/>
 	<SubTexture name="viz10001" x="11" y="0" width="8" height="27"/>
 	<SubTexture name="viz10002" x="22" y="0" width="8" height="27"/>

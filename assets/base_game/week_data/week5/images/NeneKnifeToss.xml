@@ -2,7 +2,7 @@
 <!--
 Created with Free texture packer v0.6.7 http://free-tex-packer.com
 -->
-<TextureAtlas imagePath="NeneKnifeToss.png" width="1654" height="1183">
+<TextureAtlas imagePath="NeneKnifeToss.png">
   <SubTexture name="knife toss0001" x="0" y="0"  width="346" height="397" frameX="-0" frameY="-8" frameWidth="346" frameHeight="405"/>
   <SubTexture name="knife toss0005" x="346" y="0"  width="327" height="393" frameX="-18" frameY="-0" frameWidth="346" frameHeight="405"/>
   <SubTexture name="knife toss0007" x="346" y="393"  width="327" height="393" frameX="-18" frameY="-0" frameWidth="346" frameHeight="405"/>

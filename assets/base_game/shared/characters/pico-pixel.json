@@ -2,10 +2,7 @@
 	"animations": [
 		{
 			"loop": false,
-			"offsets": [
-				0,
-				0
-			],
+			"offsets": [0, 0],
 			"fps": 24,
 			"anim": "idle",
 			"indices": [],
@@ -13,10 +10,7 @@
 		},
 		{
 			"loop": false,
-			"offsets": [
-				0,
-				0
-			],
+			"offsets": [0, 0],
 			"anim": "singLEFTmiss",
 			"fps": 24,
 			"name": "leftmiss0",
@@ -24,10 +18,7 @@
 		},
 		{
 			"loop": false,
-			"offsets": [
-				0,
-				0
-			],
+			"offsets": [0, 0],
 			"anim": "singLEFT",
 			"fps": 24,
 			"name": "left0",
@@ -35,10 +26,7 @@
 		},
 		{
 			"loop": false,
-			"offsets": [
-				0,
-				0
-			],
+			"offsets": [0, 0],
 			"anim": "singUPmiss",
 			"fps": 24,
 			"name": "upmiss0",
@@ -46,10 +34,7 @@
 		},
 		{
 			"loop": false,
-			"offsets": [
-				0,
-				0
-			],
+			"offsets": [0, 0],
 			"anim": "singUP",
 			"fps": 24,
 			"name": "up0",
@@ -57,10 +42,7 @@
 		},
 		{
 			"loop": false,
-			"offsets": [
-				0,
-				0
-			],
+			"offsets": [0, 0],
 			"anim": "singRIGHT",
 			"fps": 24,
 			"name": "right0",
@@ -68,10 +50,7 @@
 		},
 		{
 			"loop": false,
-			"offsets": [
-				0,
-				0
-			],
+			"offsets": [0, 0],
 			"anim": "singRIGHTmiss",
 			"fps": 24,
 			"name": "rightmiss0",
@@ -79,10 +58,7 @@
 		},
 		{
 			"loop": false,
-			"offsets": [
-				0,
-				0
-			],
+			"offsets": [0, 0],
 			"anim": "singDOWN",
 			"fps": 24,
 			"name": "down0",
@@ -90,19 +66,14 @@
 		},
 		{
 			"loop": false,
-			"offsets": [
-				0,
-				0
-			],
+			"offsets": [0, 0],
 			"anim": "singDOWNmiss",
 			"fps": 24,
 			"name": "downmiss0",
 			"indices": []
 		},
-				{
-			"offsets": [
-				0,0
-			],
+		{
+			"offsets": [0, 0],
 			"indices": [],
 			"fps": 24,
 			"anim": "deathLoop",
@@ -110,9 +81,7 @@
 			"name": "deathLoop0"
 		},
 		{
-			"offsets": [
-				0,0
-			],
+			"offsets": [0, 0],
 			"indices": [],
 			"fps": 24,
 			"anim": "firstDeath",
@@ -120,9 +89,7 @@
 			"name": "firstDeath0"
 		},
 		{
-			"offsets": [
-				0,0
-			],
+			"offsets": [0, 0],
 			"indices": [],
 			"fps": 24,
 			"anim": "deathConfirm",
@@ -132,17 +99,12 @@
 	],
 	"no_antialiasing": true,
 	"image": "characters/picoPixel/picoPixel",
-	"position": [
-		0,
-		350
-	],
+	"position": [0, 350],
 	"healthicon": "pico-pixel",
 	"flip_x": true,
 	"healthbar_colors": [136, 255, 88],
-	"camera_position": [
-		50,
-		-60
-	],
+	"camera_position": [50, -60],
 	"sing_duration": 6,
-	"scale": 6
+	"scale": 6,
+	"_editor_isPlayer": true
 }

@@ -121,67 +121,67 @@
 			"name": "shoot and return0"
 		},
 		{
-		"anim": "burpSmile",
-		"loop": false,
-		"indices": [],
-		"fps": 24,
-		"name": "burpsmile",
-		"offsets": [33, -3]
+			"anim": "burpSmile",
+			"loop": false,
+			"indices": [],
+			"fps": 24,
+			"name": "burpsmile",
+			"offsets": [33, -3]
 		},
 		{
-		"anim": "shit",
-		"loop": false,
-		"indices": [],
-		"fps": 24,
-		"name": "shit",
-		"offsets": [0, -3]
+			"anim": "shit",
+			"loop": false,
+			"indices": [],
+			"fps": 24,
+			"name": "shit",
+			"offsets": [0, -3]
 		},
 		{
-      "anim": "singRIGHT-alt",
-      "loop": false,
-		"indices": [],
-		"fps": 24,
-      "name": "pico swear right",
-      "offsets": [-50, 1]
-    },
-    {
-      "anim": "singDOWN-alt",
-      "loop": false,
-		"indices": [],
-		"fps": 24,
-      "name": "pico swear down",
-      "offsets": [84, -77]
-    },
-    {
-      "anim": "singUP-alt",
-      "loop": false,
-		"indices": [],
-		"fps": 24,
-      "name": "pico swear up",
-      "offsets": [21, 28]
-    },
-    {
-      "anim": "singLEFT-alt",
-      "loop": false,
-		"indices": [],
-		"fps": 24,
-      "name": "pico swear left",
-      "offsets": [84, -11]
-    },
-    {
-      "anim": "hey",
-      "loop": false,
-	  "fps": 24,
-      "name": "Pico HEY!!0",
-      "offsets": [38, 2]
-    },
-    {
-      "anim": "cheer",
-      "loop": false,
-	  "fps": 24,
-      "name": "Pico YEAH cheer0",
-      "offsets": [0, 0]
-    }
+			"anim": "singRIGHT-alt",
+			"loop": false,
+			"indices": [],
+			"fps": 24,
+			"name": "pico swear right",
+			"offsets": [-50, 1]
+		},
+		{
+			"anim": "singDOWN-alt",
+			"loop": false,
+			"indices": [],
+			"fps": 24,
+			"name": "pico swear down",
+			"offsets": [84, -77]
+		},
+		{
+			"anim": "singUP-alt",
+			"loop": false,
+			"indices": [],
+			"fps": 24,
+			"name": "pico swear up",
+			"offsets": [21, 28]
+		},
+		{
+			"anim": "singLEFT-alt",
+			"loop": false,
+			"indices": [],
+			"fps": 24,
+			"name": "pico swear left",
+			"offsets": [84, -11]
+		},
+		{
+			"anim": "hey",
+			"loop": false,
+			"fps": 24,
+			"name": "Pico HEY!!0",
+			"offsets": [38, 2]
+		},
+		{
+			"anim": "cheer",
+			"loop": false,
+			"fps": 24,
+			"name": "Pico YEAH cheer0",
+			"offsets": [0, 0]
+		}
 	],
 	"vocals_file": "",
 	"no_antialiasing": false,

@@ -2,7 +2,7 @@
 <!--
 Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
 -->
-<TextureAtlas imagePath="upperBop.png" width="2598" height="1471">
+<TextureAtlas imagePath="upperBop.png">
 	<SubTexture name="Upper Crowd Bob0000" x="1" y="1" width="2596" height="354" frameX="-0" frameY="-20" frameWidth="2596" frameHeight="375"/>
 	<SubTexture name="Upper Crowd Bob0001" x="1" y="1" width="2596" height="354" frameX="-0" frameY="-20" frameWidth="2596" frameHeight="375"/>
 	<SubTexture name="Upper Crowd Bob0002" x="1" y="358" width="2584" height="361" frameX="-6" frameY="-13" frameWidth="2596" frameHeight="375"/>

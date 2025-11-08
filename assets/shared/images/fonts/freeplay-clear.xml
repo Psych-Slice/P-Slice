@@ -1,13 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TextureAtlas imagePath="Freeplay_redesign_assets_VER3.png">
-	<SubTexture name="00000" x="4" y="4" width="25" height="24" />
-	<SubTexture name="10000" x="33" y="4" width="10" height="23" />
-	<SubTexture name="20000" x="47" y="4" width="24" height="24" />
-	<SubTexture name="30000" x="75" y="4" width="25" height="23" />
-	<SubTexture name="40000" x="4" y="32" width="24" height="24" />
-	<SubTexture name="50000" x="32" y="32" width="25" height="23" />
-	<SubTexture name="60000" x="61" y="32" width="25" height="24" />
-	<SubTexture name="70000" x="90" y="32" width="25" height="24" />
-	<SubTexture name="80000" x="4" y="60" width="24" height="24" />
-	<SubTexture name="90000" x="32" y="60" width="24" height="24" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
+-->
+<TextureAtlas imagePath="freeplay-clear.png">
+	<SubTexture name="00000" x="0" y="0" width="25" height="24" frameWidth="25" frameHeight="24"/>
+	<SubTexture name="10000" x="238" y="0" width="10" height="23" frameWidth="10" frameHeight="23"/>
+	<SubTexture name="20000" x="82" y="0" width="23" height="24" rotated="true" frameWidth="24" frameHeight="24"/>
+	<SubTexture name="30000" x="108" y="0" width="23" height="24" rotated="true" frameWidth="25" frameHeight="23"/>
+	<SubTexture name="40000" x="134" y="0" width="23" height="24" frameWidth="24" frameHeight="24"/>
+	<SubTexture name="50000" x="160" y="0" width="23" height="24" rotated="true" frameWidth="25" frameHeight="23"/>
+	<SubTexture name="60000" x="28" y="0" width="24" height="24" frameWidth="25" frameHeight="24"/>
+	<SubTexture name="70000" x="186" y="0" width="23" height="24" rotated="true" frameWidth="25" frameHeight="24"/>
+	<SubTexture name="80000" x="212" y="0" width="23" height="24" rotated="true" frameWidth="24" frameHeight="24"/>
+	<SubTexture name="90000" x="55" y="0" width="24" height="24" frameWidth="24" frameHeight="24"/>
 </TextureAtlas>

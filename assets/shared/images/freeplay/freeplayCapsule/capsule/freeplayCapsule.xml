@@ -2,7 +2,7 @@
 <!--
 Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
 -->
-<TextureAtlas imagePath="freeplayCapsule.png" width="1085" height="1142">
+<TextureAtlas imagePath="freeplayCapsule.png">
 	<SubTexture name="mp3 capsule w backing0000" x="1" y="505" width="564" height="126" frameX="-35" frameY="-6" frameWidth="612" frameHeight="132"/>
 	<SubTexture name="mp3 capsule w backing0001" x="577" y="1" width="126" height="564" rotated="true" frameX="-35" frameY="-6" frameWidth="612" frameHeight="132"/>
 	<SubTexture name="mp3 capsule w backing0002" x="1" y="758" width="561" height="127" frameX="-38" frameY="-5" frameWidth="612" frameHeight="132"/>

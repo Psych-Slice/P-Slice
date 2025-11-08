@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TextureAtlas imagePath="Menu_GF.png">
-	<!-- Created with Adobe Animate version 21.0.1.37179 -->
-	<!-- http://www.adobe.com/products/animate.html -->
 	<SubTexture name="M GF Idle0000" x="4" y="4" width="340" height="308" pivotX="0" pivotY="5.4" frameX="0" frameY="-5" frameWidth="340" frameHeight="313"/>
 	<SubTexture name="M GF Idle0001" x="348" y="4" width="340" height="308" frameX="0" frameY="-5" frameWidth="340" frameHeight="313"/>
 	<SubTexture name="M GF Idle0002" x="692" y="4" width="340" height="310" frameX="0" frameY="-3" frameWidth="340" frameHeight="313"/>

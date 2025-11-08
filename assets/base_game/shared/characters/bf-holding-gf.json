@@ -1,10 +1,7 @@
 {
 	"animations": [
 		{
-			"offsets": [
-				-5,
-				0
-			],
+			"offsets": [-5, 0],
 			"loop": false,
 			"fps": 24,
 			"anim": "idle",
@@ -12,10 +9,7 @@
 			"name": "BF idle dance"
 		},
 		{
-			"offsets": [
-				12,
-				7
-			],
+			"offsets": [12, 7],
 			"loop": false,
 			"fps": 24,
 			"anim": "singLEFT",
@@ -23,10 +17,7 @@
 			"name": "BF NOTE LEFT0"
 		},
 		{
-			"offsets": [
-				-10,
-				-10
-			],
+			"offsets": [-10, -10],
 			"loop": false,
 			"fps": 24,
 			"anim": "singDOWN",
@@ -34,10 +25,7 @@
 			"name": "BF NOTE DOWN0"
 		},
 		{
-			"offsets": [
-				-29,
-				10
-			],
+			"offsets": [-29, 10],
 			"loop": false,
 			"fps": 24,
 			"anim": "singUP",
@@ -45,10 +33,7 @@
 			"name": "BF NOTE UP0"
 		},
 		{
-			"offsets": [
-				-41,
-				23
-			],
+			"offsets": [-41, 23],
 			"loop": false,
 			"fps": 24,
 			"anim": "singRIGHT",
@@ -56,10 +41,7 @@
 			"name": "BF NOTE RIGHT0"
 		},
 		{
-			"offsets": [
-				12,
-				7
-			],
+			"offsets": [12, 7],
 			"loop": false,
 			"fps": 24,
 			"anim": "singLEFTmiss",
@@ -67,10 +49,7 @@
 			"name": "BF NOTE LEFT MISS"
 		},
 		{
-			"offsets": [
-				-10,
-				-10
-			],
+			"offsets": [-10, -10],
 			"loop": false,
 			"fps": 24,
 			"anim": "singDOWNmiss",
@@ -78,10 +57,7 @@
 			"name": "BF NOTE DOWN MISS"
 		},
 		{
-			"offsets": [
-				-29,
-				10
-			],
+			"offsets": [-29, 10],
 			"loop": false,
 			"fps": 24,
 			"anim": "singUPmiss",
@@ -89,10 +65,7 @@
 			"name": "BF NOTE UP MISS"
 		},
 		{
-			"offsets": [
-				-41,
-				33
-			],
+			"offsets": [-41, 33],
 			"loop": false,
 			"fps": 24,
 			"anim": "singRIGHTmiss",
@@ -101,10 +74,7 @@
 		},
 		{
 			"loop": false,
-			"offsets": [
-				0,
-				90
-			],
+			"offsets": [0, 90],
 			"anim": "bfCatch",
 			"fps": 24,
 			"name": "BF catches GF",
@@ -113,21 +83,11 @@
 	],
 	"no_antialiasing": false,
 	"image": "characters/bfAndGF",
-	"position": [
-		0,
-		350
-	],
+	"position": [0, 350],
 	"healthicon": "bf",
 	"flip_x": true,
-	"healthbar_colors": [
-		49,
-		176,
-		209
-	],
-	"camera_position": [
-		0,
-		0
-	],
+	"healthbar_colors": [49, 176, 209],
+	"camera_position": [0, 0],
 	"sing_duration": 4,
 	"scale": 1,
 	"_editor_isPlayer": true

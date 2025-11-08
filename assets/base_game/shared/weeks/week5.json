@@ -4,20 +4,17 @@
 		["Eggnog", "parents", [160, 209, 255]],
 		["Winter Horrorland", "monster", [160, 209, 255]]
 	],
-
 	"weekCharacters": [
 		"parents-christmas",
 		"bf",
 		"gf"
 	],
 	"weekBackground": "christmas",
-
 	"storyName": "RED SNOW",
 	"weekBefore": "week4",
 	"weekName": "Week 5",
 	"difficulties": "Easy,Normal,Hard,Erect,Nightmare",
 	"startUnlocked": true,
-
 	"hideStoryMode": false,
 	"hideFreeplay": false
 }
