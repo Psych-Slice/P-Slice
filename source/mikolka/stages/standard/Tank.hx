@@ -20,8 +20,8 @@ class Tank extends BaseStage
 
 	override function create()
 	{
-		var sky:BGSprite = new BGSprite('tankSky', -2000, -400, 0, 0);
-		sky.scale.x = 4;
+		var sky:BGSprite = new BGSprite('tankSky', -500, -400, 0, 0);
+		sky.scale.x = 6000;
 		add(sky);
 
 		if(!VsliceOptions.LOW_QUALITY)
@@ -64,7 +64,7 @@ class Tank extends BaseStage
 		tankmanRun = new FlxTypedGroup<TankmenBG>();
 		add(tankmanRun);
 
-		var ground:BGSprite = new BGSprite('tankGround', -420, -150);
+		var ground:BGSprite = new BGSprite('tankGround', -420, 534);
 		ground.setGraphicSize(Std.int(1.15 * ground.width));
 		ground.updateHitbox();
 		add(ground);
@@ -105,7 +105,7 @@ class Tank extends BaseStage
 		{
 			var bricks:BGSprite = new BGSprite('bricksGround', 438, 715, 1, 1);
 			bricks.scale.set(1.15, 1.15);
-			add(bricks);
+			addBehindDad(bricks);
 			for (daGf in gfGroup)
 			{
 				var gf:Character = cast daGf;

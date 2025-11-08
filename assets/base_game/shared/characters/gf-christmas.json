@@ -22,7 +22,7 @@
 			"anim": "danceLeft",
 			"fps": 24,
 			"name": "GF Dancing Beat",
-			"indices": [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+			"indices": [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 		},
 		{
 			"loop": false,
@@ -35,21 +35,11 @@
 	],
 	"no_antialiasing": false,
 	"image": "characters/gfChristmas",
-	"position": [
-		0,
-		0
-	],
+	"position": [0, 0],
 	"healthicon": "gf",
 	"flip_x": false,
-	"healthbar_colors": [
-		165,
-		0,
-		77
-	],
-	"camera_position": [
-		0,
-		0
-	],
+	"healthbar_colors": [165, 0, 77],
+	"camera_position": [0, 0],
 	"sing_duration": 4,
 	"scale": 1
 }

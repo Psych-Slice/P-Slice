@@ -121,7 +121,7 @@ class TankErect extends BaseStage
 		{
 			var bricks:BGSprite = new BGSprite('erect/bricksGround', 375, 640, 1, 1);
 			bricks.scale.set(1.15, 1.15);
-			add(bricks);
+			addBehindDad(bricks);
 
 			for (daGf in gfGroup)
 			{
