@@ -118,12 +118,12 @@ jobs:
           restore-keys: |
             ${{ inputs.cachePath }}
 
-      - name: Upload debugging symbols
-        if: inputs.exportPath == 'android' 
-        run: |
-          cd ./export/release/android/bin
-          ./gradlew app:uploadCrashlyticsSymbolFileRelease
-          cd -
+      # - name: Upload debugging symbols
+      #   if: inputs.exportPath == 'android' 
+      #   run: |
+      #     cd ./export/release/android/bin
+      #     ./gradlew app:uploadCrashlyticsSymbolFileRelease
+      #     cd -
 
       - name: Sign APK with the proper key
         if: inputs.exportPath == 'android'
