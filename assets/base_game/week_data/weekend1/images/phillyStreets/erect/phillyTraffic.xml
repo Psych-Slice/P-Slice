@@ -2,82 +2,82 @@
 <!--
 Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
 -->
-<TextureAtlas imagePath="phillyTraffic.png" width="7231" height="805">
-	<SubTexture name="greentored0001" x="1" y="1" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0002" x="1" y="1" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0003" x="1" y="460" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0004" x="348" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0005" x="460" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0006" x="807" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0007" x="807" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0008" x="1154" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0009" x="1266" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0010" x="1501" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0011" x="1501" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0012" x="1501" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0013" x="1501" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0014" x="1725" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0015" x="1848" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0016" x="2184" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0017" x="2195" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0018" x="2542" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0019" x="2643" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0020" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0021" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0022" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0023" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0024" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0025" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0026" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0027" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0028" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0029" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0030" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0031" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0032" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0033" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0034" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0035" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0036" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0037" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0038" x="2889" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0039" x="3102" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0040" x="3236" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0041" x="3561" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0042" x="3583" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0043" x="3930" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0044" x="4020" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0045" x="4277" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0046" x="1501" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0047" x="1501" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0048" x="1501" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0049" x="1501" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0050" x="4479" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0051" x="4624" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0052" x="4938" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0053" x="4971" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0054" x="5318" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0055" x="5397" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0056" x="5665" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="greentored0057" x="5665" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0001" x="5665" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0002" x="5665" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0003" x="5856" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0004" x="6012" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0005" x="6315" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0006" x="6359" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0007" x="6706" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0008" x="6774" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0009" x="1501" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0010" x="1501" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0011" x="1501" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0012" x="1501" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0013" x="1266" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0014" x="1154" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0015" x="807" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0016" x="807" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0017" x="460" y="348" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0018" x="348" y="1" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0019" x="1" y="460" width="456" height="344" rotated="true" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
-	<SubTexture name="redtogreen0020" x="1" y="1" width="344" height="456" frameX="-0" frameY="-0" frameWidth="348" frameHeight="459"/>
+<TextureAtlas imagePath="phillyTraffic.png">
+	<SubTexture name="greentored0001" x="1" y="1" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0002" x="1" y="1" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0003" x="1" y="460" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0004" x="348" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0005" x="460" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0006" x="807" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0007" x="807" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0008" x="1154" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0009" x="1266" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0010" x="1501" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0011" x="1501" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0012" x="1501" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0013" x="1501" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0014" x="1725" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0015" x="1848" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0016" x="2184" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0017" x="2195" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0018" x="2542" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0019" x="2643" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0020" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0021" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0022" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0023" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0024" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0025" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0026" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0027" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0028" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0029" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0030" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0031" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0032" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0033" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0034" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0035" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0036" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0037" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0038" x="2889" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0039" x="3102" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0040" x="3236" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0041" x="3561" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0042" x="3583" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0043" x="3930" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0044" x="4020" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0045" x="4277" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0046" x="1501" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0047" x="1501" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0048" x="1501" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0049" x="1501" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0050" x="4479" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0051" x="4624" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0052" x="4938" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0053" x="4971" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0054" x="5318" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0055" x="5397" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0056" x="5665" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="greentored0057" x="5665" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0001" x="5665" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0002" x="5665" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0003" x="5856" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0004" x="6012" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0005" x="6315" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0006" x="6359" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0007" x="6706" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0008" x="6774" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0009" x="1501" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0010" x="1501" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0011" x="1501" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0012" x="1501" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0013" x="1266" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0014" x="1154" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0015" x="807" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0016" x="807" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0017" x="460" y="348" width="344" height="456" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0018" x="348" y="1" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0019" x="1" y="460" width="456" height="344" rotated="true" frameWidth="348" frameHeight="459"/>
+	<SubTexture name="redtogreen0020" x="1" y="1" width="344" height="456" frameWidth="348" frameHeight="459"/>
 </TextureAtlas>

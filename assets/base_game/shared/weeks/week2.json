@@ -4,20 +4,17 @@
 		["South", "spooky", [34, 51, 68]],
 		["Monster", "monster", [34, 51, 68]]
 	],
-
 	"weekCharacters": [
 		"spooky",
 		"bf",
 		"gf"
 	],
 	"weekBackground": "halloween",
-
 	"storyName": "Spooky Month",
 	"weekBefore": "week1",
 	"weekName": "Week 2",
 	"difficulties": "Easy,Normal,Hard,Erect,Nightmare",
 	"startUnlocked": true,
-
 	"hideStoryMode": false,
 	"hideFreeplay": false
 }

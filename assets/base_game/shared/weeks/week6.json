@@ -4,20 +4,17 @@
 		["Roses", "senpai-pixel", [255, 120, 191]],
 		["Thorns", "spirit-pixel", [255, 120, 191]]
 	],
-
 	"weekCharacters": [
 		"senpai",
 		"bf",
 		"gf"
 	],
 	"weekBackground": "school",
-
 	"storyName": "hating simulator ft. moawling",
 	"weekBefore": "week5",
 	"weekName": "Week 6",
 	"difficulties": "Easy,Normal,Hard,Erect,Nightmare",
 	"startUnlocked": true,
-
 	"hideStoryMode": false,
 	"hideFreeplay": false
 }

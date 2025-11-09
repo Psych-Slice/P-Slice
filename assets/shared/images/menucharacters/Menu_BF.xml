@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TextureAtlas imagePath="Menu_BF.png">
-	<!-- Created with Adobe Animate version 21.0.1.37179 -->
-	<!-- http://www.adobe.com/products/animate.html -->
 	<SubTexture name="M BF Idle0000" x="4" y="4" width="326" height="315" pivotX="0" pivotY="15.15" frameX="0" frameY="-15" frameWidth="328" frameHeight="330"/>
 	<SubTexture name="M BF Idle0001" x="4" y="4" width="326" height="315" frameX="0" frameY="-15" frameWidth="328" frameHeight="330"/>
 	<SubTexture name="M BF Idle0002" x="335" y="4" width="324" height="319" frameX="-2" frameY="-11" frameWidth="328" frameHeight="330"/>

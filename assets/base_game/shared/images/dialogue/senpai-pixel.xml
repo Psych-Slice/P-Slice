@@ -2,9 +2,9 @@
 <!--
 Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
 -->
-<TextureAtlas imagePath="senpai-pixel.png" width="110" height="167">
+<TextureAtlas imagePath="senpai-pixel.png">
 	<SubTexture name="angry0000" x="1" y="1" width="54" height="58" frameX="-8" frameY="-0" frameWidth="66" frameHeight="58"/>
 	<SubTexture name="bwuh0000" x="1" y="62" width="54" height="58" frameX="-17" frameY="-0" frameWidth="72" frameHeight="58"/>
-	<SubTexture name="dead0000" x="58" y="1" width="47" height="106" frameX="-0" frameY="-0" frameWidth="47" frameHeight="106"/>
+	<SubTexture name="dead0000" x="58" y="1" width="47" height="106" frameWidth="47" frameHeight="106"/>
 	<SubTexture name="idle0000" x="58" y="110" width="51" height="56" frameX="-7" frameY="-0" frameWidth="63" frameHeight="57"/>
 </TextureAtlas>

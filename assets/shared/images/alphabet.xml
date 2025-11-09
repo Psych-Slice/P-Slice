@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TextureAtlas imagePath="alphabet.png">
-	<!-- Created with Adobe Animate version 23.0.2.103 -->
-	<!-- http://www.adobe.com/products/animate.html -->
 	<SubTexture name="# bold instance 10000" x="1537" y="85" width="55" height="68"/>
 	<SubTexture name="# bold instance 10001" x="1537" y="85" width="55" height="68"/>
 	<SubTexture name="# bold instance 10002" x="1164" y="87" width="54" height="68" frameX="-1" frameY="0" frameWidth="55" frameHeight="68"/>

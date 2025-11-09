@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TextureAtlas imagePath="charSelectorDenied.png">
-	<!-- Created with Adobe Animate version 24.0.0.305 -->
-	<!-- http://www.adobe.com/products/animate.html -->
 	<SubTexture name="cursor DENIED instance 10000" x="0" y="0" width="125" height="113" frameX="-1" frameY="-4" frameWidth="129" frameHeight="122"/>
 	<SubTexture name="cursor DENIED instance 10001" x="130" y="0" width="128" height="114" frameX="-1" frameY="-4" frameWidth="129" frameHeight="122"/>
 	<SubTexture name="cursor DENIED instance 10002" x="263" y="0" width="126" height="117" frameX="0" frameY="0" frameWidth="129" frameHeight="122"/>

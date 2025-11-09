@@ -2,31 +2,11 @@
 	"animations": [
 		{
 			"loop": false,
-			"offsets": [
-				0,
-				0
-			],
+			"offsets": [0, 0],
 			"anim": "danceLeft",
 			"fps": 24,
 			"name": "GF IDLE",
-			"indices": [
-				30,
-				0,
-				1,
-				2,
-				3,
-				4,
-				5,
-				6,
-				7,
-				8,
-				9,
-				10,
-				11,
-				12,
-				13,
-				14
-			]
+			"indices": [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 		},
 		{
 			"loop": false,
@@ -37,30 +17,11 @@
 			"anim": "danceRight",
 			"fps": 24,
 			"name": "GF IDLE",
-			"indices": [
-				15,
-				16,
-				17,
-				18,
-				19,
-				20,
-				21,
-				22,
-				23,
-				24,
-				25,
-				26,
-				27,
-				28,
-				29
-			]
+			"indices": [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
 		},
 		{
 			"loop": false,
-			"offsets": [
-				0,
-				0
-			],
+			"offsets": [0, 0],
 			"anim": "singUP",
 			"fps": 24,
 			"name": "GF IDLE",
@@ -69,21 +30,11 @@
 	],
 	"no_antialiasing": true,
 	"image": "characters/gfPixel",
-	"position": [
-		0,
-		0
-	],
+	"position": [0, 0],
 	"healthicon": "gf",
 	"flip_x": false,
-	"healthbar_colors": [
-		165,
-		0,
-		77
-	],
-	"camera_position": [
-		-300,
-		-130
-	],
+	"healthbar_colors": [165, 0, 77],
+	"camera_position": [-300, -130],
 	"sing_duration": 4,
 	"scale": 5.99999999999999
 }

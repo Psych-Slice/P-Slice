@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TextureAtlas imagePath="bignumbers.png">
-	<!-- Created with Adobe Animate version 22.0.5.191 -->
-	<!-- http://www.adobe.com/products/animate.html -->
 	<SubTexture name="ZERO0000" x="369" y="0" width="41" height="67"/>
 	<SubTexture name="ONE0000" x="0" y="0" width="41" height="67"/>
 	<SubTexture name="TWO0000" x="41" y="0" width="41" height="67"/>

@@ -2,7 +2,7 @@
 <!--
 Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
 -->
-<TextureAtlas imagePath="nene-pixel.png" width="53" height="107">
-	<SubTexture name="idle0000" x="1" y="1" width="51" height="51" frameX="-0" frameY="-0" frameWidth="63" frameHeight="51"/>
-	<SubTexture name="peeved0000" x="1" y="55" width="51" height="51" frameX="-0" frameY="-0" frameWidth="63" frameHeight="51"/>
+<TextureAtlas imagePath="nene-pixel.png">
+	<SubTexture name="idle0000" x="1" y="1" width="51" height="51" frameWidth="63" frameHeight="51"/>
+	<SubTexture name="peeved0000" x="1" y="55" width="51" height="51" frameWidth="63" frameHeight="51"/>
 </TextureAtlas>

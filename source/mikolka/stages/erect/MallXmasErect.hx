@@ -33,7 +33,7 @@ class MallXmasErect extends BaseStage
 			upperBoppers.updateHitbox();
 			add(upperBoppers);
 
-			var bgEscalator:BGSprite = new BGSprite('christmas/erect/bgEscalator', -1100, -540, 0.3, 0.3);
+			var bgEscalator:BGSprite = new BGSprite('christmas/erect/bgEscalator', -690, -144, 0.3, 0.3);
 			bgEscalator.setGraphicSize(Std.int(bgEscalator.width * 0.9));
 			bgEscalator.updateHitbox();
 			add(bgEscalator);

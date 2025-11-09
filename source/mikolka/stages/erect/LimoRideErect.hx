@@ -101,7 +101,7 @@ class LimoRideErect extends BaseStage
 
 			for (i in 0...5)
 			{
-				var dancer:BackgroundDancer = new BackgroundDancer((370 * i) + dancersDiff + bgLimo.x, bgLimo.y - 400);
+				var dancer:BackgroundDancer = new BackgroundDancer((370 * i) + dancersDiff + bgLimo.x, bgLimo.y - 380);
 				dancer.scrollFactor.set(0.4, 0.4);
 				grpLimoDancers.add(dancer);
 			}
@@ -186,10 +186,7 @@ class LimoRideErect extends BaseStage
 		addBehindGF(fastCar);
 
 		var limo:BGSprite = new BGSprite('limo/erect/limoDrive', -120, 550, 1, 1, ['Limo stage'], true);
-		if(FlxG.random.bool(25)){
-			addBehindGF(limo); // Shitty layering but whatev it works LOL
-		}
-		else insert(members.indexOf(game.gfGroup)+1, limo);
+		addBehindDad(limo);
 		addBehindGF(mist4);
 		addBehindGF(mist3);
 

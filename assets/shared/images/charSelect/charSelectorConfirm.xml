@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TextureAtlas imagePath="charSelectorConfirm.png">
-	<!-- Created with Adobe Animate version 24.0.0.305 -->
-	<!-- http://www.adobe.com/products/animate.html -->
 	<SubTexture name="cursor ACCEPTED instance 10000" x="0" y="0" width="125" height="113" frameX="-4" frameY="-5" frameWidth="132" frameHeight="123"/>
 	<SubTexture name="cursor ACCEPTED instance 10001" x="130" y="0" width="128" height="116" frameX="-1" frameY="-5" frameWidth="132" frameHeight="123"/>
 	<SubTexture name="cursor ACCEPTED instance 10002" x="263" y="0" width="128" height="115" frameX="-4" frameY="-5" frameWidth="132" frameHeight="123"/>
