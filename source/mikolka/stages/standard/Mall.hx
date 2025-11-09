@@ -38,13 +38,19 @@ class Mall extends BaseStage
 		var fgSnow:BGSprite = new BGSprite('christmas/fgSnow', -1150, 680);
 		add(fgSnow);
 
-		santa = new BGSprite('christmas/santa', -840, 150, 1, 1, ['santa idle in fear']);
-		add(santa);
 		Paths.sound('Lights_Shut_off');
 		setDefaultGF('gf-christmas');
 
 		if(isStoryMode && !seenCutscene)
 			setEndCallback(eggnogEndCutscene);
+	}
+
+	override function createPost()
+	{
+		super.createPost();
+
+		santa = new BGSprite('christmas/santa', -840, 150, 1, 1, ['santa idle in fear']);
+		add(santa);
 	}
 
 	override function countdownTick(count:Countdown, num:Int) everyoneDance();

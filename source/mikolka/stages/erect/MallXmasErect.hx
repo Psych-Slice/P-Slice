@@ -33,7 +33,7 @@ class MallXmasErect extends BaseStage
 			upperBoppers.updateHitbox();
 			add(upperBoppers);
 
-			var bgEscalator:BGSprite = new BGSprite('christmas/erect/bgEscalator', -690, -144, 0.3, 0.3);
+			var bgEscalator:BGSprite = new BGSprite('christmas/erect/bgEscalator', -909, -204, 0.3, 0.3);
 			bgEscalator.setGraphicSize(Std.int(bgEscalator.width * 0.9));
 			bgEscalator.updateHitbox();
 			add(bgEscalator);
@@ -52,8 +52,6 @@ class MallXmasErect extends BaseStage
 		var fgSnow:BGSprite = new BGSprite('christmas/erect/fgSnow', -880, 700);
 		add(fgSnow);
 
-		santa = new BGSprite('christmas/santa', -840, 150, 1, 1, ['santa idle in fear']);
-		add(santa);
 		setDefaultGF('gf-christmas');
 
 		if(songName == "eggnog-erect" || songName == "eggnog-(pico-mix)"){
@@ -64,6 +62,8 @@ class MallXmasErect extends BaseStage
 	}
 	override function createPost() {
 		super.createPost();
+		santa = new BGSprite('christmas/santa', -840, 150, 1, 1, ['santa idle in fear']);
+		add(santa);
 		if(VsliceOptions.SHADERS){
 			var colorShader = new AdjustColorShader();
 			colorShader.hue = 5;
