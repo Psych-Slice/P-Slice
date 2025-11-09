@@ -8,29 +8,25 @@ on:
   workflow_dispatch:
 jobs:
   
-  BuildCaches:
-    name: ${{ matrix.name }}
+  BuildMobileCache:
+    name: Build Caches
     permissions: write-all
-    strategy:
-      matrix:
-        include:
-          - name: Linux
-            os: ubuntu-24.04
-            setupScript: sh ./setup/unix.sh
-            CACHE_NAME: P-Slice.1.0.desktop-cache
-
-          - name: Mobile
-            os: macos-15
-            setupScript: sh ./setup/mobile.sh
-            CACHE_NAME: P-Slice.1.0.mobile-cache
     uses: ./.github/workflows/dependencies.yml
     with:
-      os: ${{ matrix.os }}
-      CACHE_NAME: ${{ matrix.CACHE_NAME }}
-      setupScript: ${{ matrix.setupScript }}
+      os: macos-15
+      CACHE_NAME: P-Slice.1.0.mobile-cache
+      setupScript: sh ./setup/mobile.sh
+  BuildDesktopCache:
+    name: Build Caches
+    permissions: write-all
+    uses: ./.github/workflows/dependencies.yml
+    with:
+      os: ubuntu-24.04
+      setupScript: sh ./setup/unix.sh
+      CACHE_NAME: P-Slice.1.0.desktop-cache
   BuildMacos:
     name: macos
-    needs: BuildCaches
+    needs: BuildMobileCache
     permissions: write-all
     uses: ./.github/workflows/mac-universal.yml
     with:
@@ -40,8 +36,8 @@ jobs:
       artifactName: P-Slice.1.0.macos
       artifactPath: export/release/macos/bin/*
   BuildDesktop:
-    name: ${{ matrix.name }}
-    needs: BuildCaches
+    name: Build Desktop
+    needs: BuildDesktopCache
     permissions: write-all
     strategy:
       matrix:
@@ -76,8 +72,8 @@ jobs:
 
   BuildMobile:
     permissions: write-all
-    needs: BuildCaches
-    name: ${{ matrix.name }}
+    needs: BuildMobileCache
+    name: Build mobile
     strategy:
       matrix:
         include:
