@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TextureAtlas imagePath="spooky_dark.png">
-	<!-- Created with Adobe Animate version 22.0.5.191 -->
-	<!-- http://www.adobe.com/products/animate.html -->
 	<SubTexture name="Cheer0000" x="0" y="0" width="644" height="578"/>
 	<SubTexture name="Cheer0001" x="0" y="0" width="644" height="578"/>
 	<SubTexture name="Cheer0002" x="649" y="0" width="618" height="557" frameX="-14" frameY="-20" frameWidth="644" frameHeight="578"/>
@@ -85,27 +83,27 @@
 	<SubTexture name="Idle0016" x="1947" y="583" width="354" height="494" frameX="-78" frameY="-52" frameWidth="492" frameHeight="549"/>
 	<SubTexture name="SingRIGHT0000" x="3289" y="583" width="442" height="524" frameX="0" frameY="-9" frameWidth="442" frameHeight="533"/>
 	<SubTexture name="SingRIGHT0001" x="3289" y="583" width="442" height="524" frameX="0" frameY="-9" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0002" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0003" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0004" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0005" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0006" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0007" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0008" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0009" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0010" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0011" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0012" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0013" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0014" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0015" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0016" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0017" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0018" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0019" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0020" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0021" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0022" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0023" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
-	<SubTexture name="SingRIGHT0024" x="0" y="1159" width="437" height="533" frameX="0" frameY="0" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0002" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0003" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0004" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0005" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0006" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0007" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0008" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0009" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0010" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0011" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0012" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0013" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0014" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0015" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0016" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0017" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0018" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0019" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0020" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0021" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0022" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0023" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
+	<SubTexture name="SingRIGHT0024" x="0" y="1159" width="437" height="533" frameWidth="442" frameHeight="533"/>
 </TextureAtlas>

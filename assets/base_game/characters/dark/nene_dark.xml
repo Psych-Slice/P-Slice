@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TextureAtlas imagePath="Nene assets2_dark_U2NLIT.png">
-	<!-- Created with Adobe Animate version 22.0.5.191 -->
-	<!-- http://www.adobe.com/products/animate.html -->
+<TextureAtlas imagePath="nene_dark.png">
 	<SubTexture name="Nene Idle0001" x="0" y="0" width="321" height="458" frameX="-97" frameY="-7" frameWidth="461" frameHeight="476"/>
 	<SubTexture name="Nene Idle0002" x="0" y="0" width="321" height="458" frameX="-97" frameY="-7" frameWidth="461" frameHeight="476"/>
 	<SubTexture name="Nene Idle0003" x="326" y="0" width="406" height="470" frameX="-13" frameY="-6" frameWidth="461" frameHeight="476"/>

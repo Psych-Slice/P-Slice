@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TextureAtlas imagePath="pico_dark.png">
-	<!-- Created with Adobe Animate version 22.0.5.191 -->
-	<!-- http://www.adobe.com/products/animate.html -->
 	<SubTexture name="Pico Down Note0000" x="0" y="0" width="723" height="382" frameX="-13" frameY="-9" frameWidth="736" frameHeight="392"/>
 	<SubTexture name="Pico Down Note0001" x="0" y="0" width="723" height="382" frameX="-13" frameY="-9" frameWidth="736" frameHeight="392"/>
 	<SubTexture name="Pico Down Note0002" x="728" y="0" width="502" height="392" frameX="0" frameY="0" frameWidth="736" frameHeight="392"/>

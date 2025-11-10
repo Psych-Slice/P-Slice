@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="dotPulse.png">
+	<SubTexture name="pulse0000" x="0" y="0" width="26" height="26" frameX="-7" frameY="-7" frameWidth="40" frameHeight="40"/>
+	<SubTexture name="pulse0001" x="31" y="0" width="32" height="32" frameX="-4" frameY="-4" frameWidth="40" frameHeight="40"/>
+	<SubTexture name="pulse0002" x="68" y="0" width="36" height="36" frameX="-2" frameY="-2" frameWidth="40" frameHeight="40"/>
+	<SubTexture name="pulse0003" x="0" y="41" width="38" height="38" frameX="-1" frameY="-1" frameWidth="40" frameHeight="40"/>
+	<SubTexture name="pulse0004" x="43" y="41" width="38" height="38" frameX="-1" frameY="-1" frameWidth="40" frameHeight="40"/>
+	<SubTexture name="pulse0005" x="86" y="41" width="40" height="40"/>
+	<SubTexture name="pulse0006" x="0" y="86" width="40" height="40"/>
+	<SubTexture name="pulse0007" x="45" y="86" width="40" height="40"/>
+	<SubTexture name="pulse0008" x="90" y="86" width="8" height="8" frameX="-16" frameY="-16" frameWidth="40" frameHeight="40"/>
+	<SubTexture name="pulse0009" x="90" y="86" width="8" height="8" frameX="-16" frameY="-16" frameWidth="40" frameHeight="40"/>
+	<SubTexture name="pulse0010" x="90" y="86" width="8" height="8" frameX="-16" frameY="-16" frameWidth="40" frameHeight="40"/>
+	<SubTexture name="pulse0011" x="90" y="86" width="8" height="8" frameX="-16" frameY="-16" frameWidth="40" frameHeight="40"/>
+</TextureAtlas>
