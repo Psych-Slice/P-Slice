@@ -41,7 +41,7 @@
 			"indices": []
 		},
 		{
-			"loop": false,
+			"loop": true,
 			"offsets": [250, -23],
 			"anim": "singLEFT-loop",
 			"fps": 24,
@@ -49,15 +49,15 @@
 			"indices": [7, 8, 9, 10]
 		},
 		{
-			"loop": false,
+			"loop": true,
 			"offsets": [10, -60],
 			"anim": "singRIGHT-loop",
 			"fps": 24,
-			"name": "Mom Right POse",
+			"name": "Mom Right Pose",
 			"indices": [7, 8, 9, 10]
 		},
 		{
-			"loop": false,
+			"loop": true,
 			"offsets": [20, -160],
 			"anim": "singDOWN-loop",
 			"fps": 24,
@@ -65,7 +65,7 @@
 			"indices": [12, 13, 14, 15]
 		},
 		{
-			"loop": false,
+			"loop": true,
 			"offsets": [14, 71],
 			"anim": "singUP-loop",
 			"fps": 24,
