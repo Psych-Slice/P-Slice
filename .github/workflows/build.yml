@@ -92,12 +92,7 @@ jobs:
 
       - name: Upload debugging symbols
         if: inputs.exportPath == 'android' 
-        run: |
-          cd ./export/release/android/bin
-          pwd
-          ./gradlew tasks
-          ./gradlew app:uploadCrashlyticsSymbolFileRelease
-          cd -
+        run: sh ./setup/firebase_spell.sh
 
       - name: Sign APK with the proper key
         if: inputs.exportPath == 'android'

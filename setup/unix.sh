@@ -11,7 +11,7 @@ haxelib git funkin.vis https://github.com/FunkinCrew/funkVis 22b1ce089dd924f15cd
 haxelib git hxcpp https://github.com/Psych-Slice/hxcpp.git 65b851f749a10c1df34f2ef55836bdec67ee81c2 --quiet --skip-dependencies
 
 haxelib git openfl https://github.com/FunkinCrew/openfl.git c4fa1dcfc384f07bb537e08cae671f9507fe49e6 --quiet --skip-dependencies
-haxelib git lime https://github.com/Psych-Slice/lime-pslice.git 305490d26798c54fad191e983c785015793ed299 --quiet
+haxelib git lime https://github.com/Psych-Slice/lime-pslice.git c6ed780a33cfc07d3fd2fd7325c1428236bc4b61 --quiet
 
 haxelib install flixel-addons 3.3.2 --quiet --skip-dependencies
 haxelib install flixel-tools 1.5.1 --quiet --skip-dependencies
