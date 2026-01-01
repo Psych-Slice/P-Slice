@@ -91,9 +91,9 @@ class LoadingState extends MusicBeatState
 		if (backend.ClientPrefs.data.strictLoadingScreen)
 		{
 		#end
-			CacheSystem.clearStoredMemory();
-			CacheSystem.clearUnusedMemory();
-			LoadingState.prepareToSong();
+		CacheSystem.clearStoredMemory();
+		CacheSystem.clearUnusedMemory();
+		LoadingState.prepareToSong();
 		#if STRICT_LOADING_SCREEN
 		}
 		#end
@@ -505,27 +505,27 @@ class LoadingState extends MusicBeatState
 		var folder:String = Paths.formatToSongPath(Song.loadedSongName);
 		new Future<Bool>(() ->
 		{
-			// LOAD NOTE IMAGE
-			var noteSkin:String = Note.defaultNoteSkin;
-			if (PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1)
-				noteSkin = PlayState.SONG.arrowSkin;
-
-			var customSkin:String = noteSkin + Note.getNoteSkinPostfix();
-			if (Paths.fileExists('images/$customSkin.png', IMAGE))
-				noteSkin = customSkin;
-			imagesToPrepare.push(noteSkin);
-			//
-
-			// LOAD NOTE SPLASH IMAGE
-			var noteSplash:String = NoteSplash.defaultNoteSplash;
-			if (PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0)
-				noteSplash = PlayState.SONG.splashSkin;
-			else
-				noteSplash += NoteSplash.getSplashSkinPostfix();
-			imagesToPrepare.push(noteSplash);
-
 			try
 			{
+				// LOAD NOTE IMAGE
+				var noteSkin:String = Note.defaultNoteSkin;
+				if (PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1)
+					noteSkin = PlayState.SONG.arrowSkin;
+
+				var customSkin:String = noteSkin + Note.getNoteSkinPostfix();
+				if (Paths.fileExists('images/$customSkin.png', IMAGE))
+					noteSkin = customSkin;
+				imagesToPrepare.push(noteSkin);
+				//
+
+				// LOAD NOTE SPLASH IMAGE
+				var noteSplash:String = NoteSplash.defaultNoteSplash;
+				if (PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0)
+					noteSplash = PlayState.SONG.splashSkin;
+				else
+					noteSplash += NoteSplash.getSplashSkinPostfix();
+				imagesToPrepare.push(noteSplash);
+
 				var path:String = Paths.json('$folder/preload');
 				var json:Dynamic = null;
 
@@ -560,11 +560,14 @@ class LoadingState extends MusicBeatState
 					prepare(imgs, snds, mscs);
 				}
 			}
-			catch (e:Dynamic)
+			catch (e:Exception)
 			{
+				trace(e.details());
+				#if FIREBASE_CRASH_HANDLER
+				Crashlytics.sendException(e);
+				#end
 			}
-			return true;
-		}, isIntrusive).then((_) -> new Future<Bool>(() ->
+			try
 			{
 				if (song.stage == null || song.stage.length < 1)
 					song.stage = StageData.vanillaSongStage(folder);
@@ -671,276 +674,288 @@ class LoadingState extends MusicBeatState
 					startThreads();
 					initialThreadCompleted = true;
 				}
+			}
+			catch (e:Exception)
+				{
+					trace(e.details());
+					#if FIREBASE_CRASH_HANDLER
+				Crashlytics.sendException(e);
+				#end
+				}
 				return true;
-			}, isIntrusive)).onError((err:Dynamic) ->
+			},
+			isIntrusive
+		)
+			.onError((err:Dynamic) ->
 			{
 				trace('ERROR! while preparing song: $err');
 			});
-	}
+		}
 
-	public static function clearInvalids()
-	{
-		clearInvalidFrom(imagesToPrepare, 'images', '.png', IMAGE);
-		clearInvalidFrom(soundsToPrepare, 'sounds', '.${Paths.SOUND_EXT}', SOUND);
-		clearInvalidFrom(musicToPrepare, 'music', '.${Paths.SOUND_EXT}', SOUND);
-		clearInvalidFrom(songsToPrepare, 'songs', '.${Paths.SOUND_EXT}', SOUND, 'songs');
-
-		for (arr in [imagesToPrepare, soundsToPrepare, musicToPrepare, songsToPrepare])
-			while (arr.contains(null))
-				arr.remove(null);
-	}
-
-	static function clearInvalidFrom(arr:Array<String>, prefix:String, ext:String, type:AssetType, ?parentFolder:String = null)
-	{
-		for (folder in arr.copy())
+			public static function clearInvalids()
 		{
-			var nam:String = folder.trim();
-			if (nam.endsWith('/'))
-			{
-				for (subfolder in Mods.directoriesWithFile(Paths.getSharedPath(), '$prefix/$nam'))
+				clearInvalidFrom(imagesToPrepare, 'images', '.png', IMAGE);
+				clearInvalidFrom(soundsToPrepare, 'sounds', '.${Paths.SOUND_EXT}', SOUND);
+				clearInvalidFrom(musicToPrepare, 'music', '.${Paths.SOUND_EXT}', SOUND);
+				clearInvalidFrom(songsToPrepare, 'songs', '.${Paths.SOUND_EXT}', SOUND, 'songs');
+
+				for (arr in [imagesToPrepare, soundsToPrepare, musicToPrepare, songsToPrepare])
+					while (arr.contains(null))
+						arr.remove(null);
+		}
+
+			static function clearInvalidFrom(arr:Array<String>, prefix:String, ext:String, type:AssetType, ?parentFolder:String = null)
+		{
+				for (folder in arr.copy())
 				{
-					for (file in NativeFileSystem.readDirectory(subfolder))
+					var nam:String = folder.trim();
+					if (nam.endsWith('/'))
 					{
-						if (file.endsWith(ext))
+						for (subfolder in Mods.directoriesWithFile(Paths.getSharedPath(), '$prefix/$nam'))
 						{
-							var toAdd:String = nam + haxe.io.Path.withoutExtension(file);
-							if (!arr.contains(toAdd))
-								arr.push(toAdd);
+							for (file in NativeFileSystem.readDirectory(subfolder))
+							{
+								if (file.endsWith(ext))
+								{
+									var toAdd:String = nam + haxe.io.Path.withoutExtension(file);
+									if (!arr.contains(toAdd))
+										arr.push(toAdd);
+								}
+							}
 						}
+
+						// trace('Folder detected! ' + folder);
 					}
 				}
 
-				// trace('Folder detected! ' + folder);
-			}
+				var i:Int = 0;
+				while (i < arr.length)
+				{
+					var member:String = arr[i];
+					var myKey = '$prefix/$member$ext';
+					if (parentFolder == 'songs')
+						myKey = '$member$ext';
+
+					// trace('attempting on $prefix: $myKey');
+					var doTrace:Bool = false;
+					if (member.endsWith('/') || (!Paths.fileExists(myKey, type, false, parentFolder) && (doTrace = true)))
+					{
+						arr.remove(member);
+						if (doTrace)
+							trace('Removed invalid $prefix: $member');
+					}
+					else
+						i++;
+				}
 		}
 
-		var i:Int = 0;
-		while (i < arr.length)
+			public static function startThreads()
 		{
-			var member:String = arr[i];
-			var myKey = '$prefix/$member$ext';
-			if (parentFolder == 'songs')
-				myKey = '$member$ext';
+				if (mutex != null)
+				{
+					trace("Mutex already made! Cancelling this request!");
+					return;
+				}
+				mutex = new Mutex();
+				trace("Made mutex");
+				loadMax = imagesToPrepare.length + soundsToPrepare.length + musicToPrepare.length + songsToPrepare.length;
+				loaded = 0;
 
-			// trace('attempting on $prefix: $myKey');
-			var doTrace:Bool = false;
-			if (member.endsWith('/') || (!Paths.fileExists(myKey, type, false, parentFolder) && (doTrace = true)))
-			{
-				arr.remove(member);
-				if (doTrace)
-					trace('Removed invalid $prefix: $member');
-			}
-			else
-				i++;
+				// then start threads
+				_threadFunc();
 		}
-	}
 
-	public static function startThreads()
-	{
-		if(mutex != null){
-			trace("Mutex already made! Cancelling this request!");
-			return;
-		}
-		mutex = new Mutex();
-		trace("Made mutex");
-		loadMax = imagesToPrepare.length + soundsToPrepare.length + musicToPrepare.length + songsToPrepare.length;
-		loaded = 0;
-
-		// then start threads
-		_threadFunc();
-	}
-
-	static function _threadFunc()
-	{
-		_startPool();
-		for (sound in soundsToPrepare)
-			initThread(() -> preloadSound('sounds/$sound'), 'sound $sound');
-		for (music in musicToPrepare)
-			initThread(() -> preloadSound('music/$music'), 'music $music');
-		for (song in songsToPrepare)
-			initThread(() -> preloadSound(song, 'songs', true, false), 'song $song');
-
-		// for images, they get to have their own thread
-		for (image in imagesToPrepare)
-			initThread(() -> preloadGraphic(image), 'image $image');
-	}
-
-	static function initThread(func:Void->Dynamic, traceData:String)
-	{
-		// trace('scheduled $func in threadPool');
-		#if debug
-		var threadSchedule = Sys.time();
-		#end
-		threadPool.run(() ->
+			static function _threadFunc()
 		{
-			#if debug
-			var threadStart = Sys.time();
-			trace('$traceData took ${threadStart - threadSchedule}s to start preloading');
-			#end
+				_startPool();
+				for (sound in soundsToPrepare)
+					initThread(() -> preloadSound('sounds/$sound'), 'sound $sound');
+				for (music in musicToPrepare)
+					initThread(() -> preloadSound('music/$music'), 'music $music');
+				for (song in songsToPrepare)
+					initThread(() -> preloadSound(song, 'songs', true, false), 'song $song');
 
-			try
-			{
-				if (func() != null)
+				// for images, they get to have their own thread
+				for (image in imagesToPrepare)
+					initThread(() -> preloadGraphic(image), 'image $image');
+		}
+
+			static function initThread(func:Void->Dynamic, traceData:String)
+		{
+				// trace('scheduled $func in threadPool');
+				#if debug
+				var threadSchedule = Sys.time();
+				#end
+				threadPool.run(() ->
 				{
 					#if debug
-					var diff = Sys.time() - threadStart;
-					trace('finished preloading $traceData in ${diff}s');
+					var threadStart = Sys.time();
+					trace('$traceData took ${threadStart - threadSchedule}s to start preloading');
 					#end
-				}
-				else
-					trace('ERROR! fail on preloading $traceData ');
-			}
-			catch (e:Dynamic)
-			{
-				trace('ERROR! fail on preloading $traceData: $e');
-			}
-			mutex.acquire();
-			loaded++;
-			trace('$loaded/$loadMax assets loaded');
-			mutex.release();
-		});
-	}
 
-	inline private static function preloadCharacter(char:String, ?prefixVocals:String)
-	{
-		try
-		{
-			var path:String = Paths.getPath('characters/$char.json', TEXT);
-			var character:Dynamic = Json.parse(NativeFileSystem.getContent(path));
-
-			var isAnimateAtlas:Bool = false;
-			var img:String = character.image;
-			img = img.trim();
-			#if flxanimate
-			var animToFind:String = Paths.getPath('images/$img/Animation.json', TEXT);
-			if (#if MODS_ALLOWED NativeFileSystem.exists(animToFind) || #end Assets.exists(animToFind))
-				isAnimateAtlas = true;
-			#end
-
-			if (!isAnimateAtlas)
-			{
-				var split:Array<String> = img.split(',');
-				for (file in split)
-				{
-					imagesToPrepare.push(file.trim());
-				}
-			}
-			#if flxanimate
-			else
-			{
-				for (i in 0...10)
-				{
-					var st:String = '$i';
-					if (i == 0)
-						st = '';
-
-					if (Paths.fileExists('images/$img/spritemap$st.png', IMAGE))
+					try
 					{
-						// trace('found Sprite PNG');
-						imagesToPrepare.push('$img/spritemap$st');
-						break;
+						if (func() != null)
+						{
+							#if debug
+							var diff = Sys.time() - threadStart;
+							trace('finished preloading $traceData in ${diff}s');
+							#end
+						}
+						else
+							trace('ERROR! fail on preloading $traceData ');
+					}
+					catch (e:Dynamic)
+					{
+						trace('ERROR! fail on preloading $traceData: $e');
+					}
+					mutex.acquire();
+					loaded++;
+					trace('$loaded/$loadMax assets loaded');
+					mutex.release();
+				});
+		}
+
+			inline private static function preloadCharacter(char:String, ?prefixVocals:String)
+		{
+				try
+				{
+					var path:String = Paths.getPath('characters/$char.json', TEXT);
+					var character:Dynamic = Json.parse(NativeFileSystem.getContent(path));
+
+					var isAnimateAtlas:Bool = false;
+					var img:String = character.image;
+					img = img.trim();
+					#if flxanimate
+					var animToFind:String = Paths.getPath('images/$img/Animation.json', TEXT);
+					if (#if MODS_ALLOWED NativeFileSystem.exists(animToFind) || #end Assets.exists(animToFind))
+						isAnimateAtlas = true;
+					#end
+
+					if (!isAnimateAtlas)
+					{
+						var split:Array<String> = img.split(',');
+						for (file in split)
+						{
+							imagesToPrepare.push(file.trim());
+						}
+					}
+					#if flxanimate
+					else
+					{
+						for (i in 0...10)
+						{
+							var st:String = '$i';
+							if (i == 0)
+								st = '';
+
+							if (Paths.fileExists('images/$img/spritemap$st.png', IMAGE))
+							{
+								// trace('found Sprite PNG');
+								imagesToPrepare.push('$img/spritemap$st');
+								break;
+							}
+						}
+					}
+					#end
+
+					if (prefixVocals != null && character.vocals_file != null && character.vocals_file.length > 0)
+					{
+						songsToPrepare.push(prefixVocals + "-" + character.vocals_file);
+						if (char == PlayState.SONG.player1)
+							dontPreloadDefaultVoices = true;
 					}
 				}
-			}
-			#end
-
-			if (prefixVocals != null && character.vocals_file != null && character.vocals_file.length > 0)
-			{
-				songsToPrepare.push(prefixVocals + "-" + character.vocals_file);
-				if (char == PlayState.SONG.player1)
-					dontPreloadDefaultVoices = true;
-			}
-		}
-		catch (e:haxe.Exception)
-		{
-			trace(e.details());
-		}
-	}
-
-	// thread safe sound loader
-	static function preloadSound(key:String, ?path:String, ?modsAllowed:Bool = true, ?beepOnNull:Bool = true):Null<Sound>
-	{
-		var file:String = Paths.getPath(Language.getFileTranslation(key) + '.${Paths.SOUND_EXT}', SOUND, path, modsAllowed);
-
-		// trace('precaching sound: $file');
-		if (!CacheSystem.currentTrackedSounds.exists(file))
-		{
-			var sound:Sound = NativeFileSystem.getSound(file);
-			if (sound != null)
-			{
-				mutex.acquire();
-				CacheSystem.currentTrackedSounds.set(file, sound);
-				mutex.release();
-			}
-			else if (beepOnNull)
-			{
-				trace('SOUND NOT FOUND: $key, PATH: $path');
-				FlxG.log.error('SOUND NOT FOUND: $key, PATH: $path');
-				return FlxAssets.getSound('flixel/sounds/beep');
-			}
-		}
-		mutex.acquire();
-		CacheSystem.localTrackedAssets.push(file);
-		mutex.release();
-
-		return CacheSystem.currentTrackedSounds.get(file);
-	}
-
-	// thread safe sound loader
-	static function preloadGraphic(key:String):Null<BitmapData>
-	{
-		try
-		{
-			var requestKey:String = 'images/$key';
-			#if TRANSLATIONS_ALLOWED requestKey = Language.getFileTranslation(requestKey); #end
-			var baseReqKey = requestKey;
-			if (requestKey.lastIndexOf('.') < 0)
-				requestKey += '.png';
-
-			if (!CacheSystem.currentTrackedAssets.exists(requestKey))
-			{
-				var bitmap:BitmapData = null;
-				var file:String = Paths.getPath(requestKey, IMAGE);
-
-				#if ATSC_SUPPORT
-				if (Paths.fileExists(baseReqKey + '.astc', IMAGE))
-					return null;
-				#end
-
-				if (bitmap == null)
-					bitmap = NativeFileSystem.getBitmap(file);
-
-				if (bitmap != null)
+				catch (e:haxe.Exception)
 				{
-					mutex.acquire();
-					requestedBitmaps.set(file, bitmap);
-					originalBitmapKeys.set(file, requestKey);
-					mutex.release();
-					return bitmap;
+					trace(e.details());
 				}
-				else
-					trace('no such image $key exists');
-			}
-
-			return CacheSystem.currentTrackedAssets.get(requestKey).bitmap;
 		}
-		catch (e:haxe.Exception)
+
+			// thread safe sound loader
+			static function preloadSound(key:String, ?path:String, ?modsAllowed:Bool = true, ?beepOnNull:Bool = true):Null<Sound>
 		{
-			trace('ERROR! fail on preloading image $key ${e.details()}');
+				var file:String = Paths.getPath(Language.getFileTranslation(key) + '.${Paths.SOUND_EXT}', SOUND, path, modsAllowed);
+
+				// trace('precaching sound: $file');
+				if (!CacheSystem.currentTrackedSounds.exists(file))
+				{
+					var sound:Sound = NativeFileSystem.getSound(file);
+					if (sound != null)
+					{
+						mutex.acquire();
+						CacheSystem.currentTrackedSounds.set(file, sound);
+						mutex.release();
+					}
+					else if (beepOnNull)
+					{
+						trace('SOUND NOT FOUND: $key, PATH: $path');
+						FlxG.log.error('SOUND NOT FOUND: $key, PATH: $path');
+						return FlxAssets.getSound('flixel/sounds/beep');
+					}
+				}
+				mutex.acquire();
+				CacheSystem.localTrackedAssets.push(file);
+				mutex.release();
+
+				return CacheSystem.currentTrackedSounds.get(file);
 		}
 
-		return null;
-	}
+			// thread safe sound loader
+			static function preloadGraphic(key:String):Null<BitmapData>
+		{
+				try
+				{
+					var requestKey:String = 'images/$key';
+					#if TRANSLATIONS_ALLOWED requestKey = Language.getFileTranslation(requestKey); #end
+					var baseReqKey = requestKey;
+					if (requestKey.lastIndexOf('.') < 0)
+						requestKey += '.png';
 
-	#if cpp
-	@:functionCode('
+					if (!CacheSystem.currentTrackedAssets.exists(requestKey))
+					{
+						var bitmap:BitmapData = null;
+						var file:String = Paths.getPath(requestKey, IMAGE);
+
+						#if ATSC_SUPPORT
+						if (Paths.fileExists(baseReqKey + '.astc', IMAGE))
+							return null;
+						#end
+
+						if (bitmap == null)
+							bitmap = NativeFileSystem.getBitmap(file);
+
+						if (bitmap != null)
+						{
+							mutex.acquire();
+							requestedBitmaps.set(file, bitmap);
+							originalBitmapKeys.set(file, requestKey);
+							mutex.release();
+							return bitmap;
+						}
+						else
+							trace('no such image $key exists');
+					}
+
+					return CacheSystem.currentTrackedAssets.get(requestKey).bitmap;
+				}
+				catch (e:haxe.Exception)
+				{
+					trace('ERROR! fail on preloading image $key ${e.details()}');
+				}
+
+				return null;
+		}
+
+			#if cpp
+			@:functionCode('
 		return std::thread::hardware_concurrency();
     	')
-	@:noCompletion
-	public static function getCPUThreadsCount():Int
-	{
-		trace("Running base implementation. Did the cpp code break?");
-		return 2;
+			@:noCompletion
+			public static function getCPUThreadsCount():Int
+			{
+				trace("Running base implementation. Did the cpp code break?");
+				return 2;
+			}
+			#end
 	}
-	#end
-}
