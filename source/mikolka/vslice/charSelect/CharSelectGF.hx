@@ -26,6 +26,7 @@ class CharSelectGF extends FlxAtlasSprite
   var list:Array<String> = [];
 
   var analyzer:SpectralAnalyzer;
+  var analyzerLevelsCache:Array<Bar> = new Array<Bar>();
 
   var currentGFPath:Null<String>;
   var enableVisualizer:Bool = false;
@@ -85,7 +86,7 @@ class CharSelectGF extends FlxAtlasSprite
     if (getCurrentAnimation() == "idle" && (beat % danceEvery == 0))
     {
       //trace('GF beat hit');
-      playAnimation("idle", true, false, false);
+       anim.play("idle", true);
     }
   };
 
@@ -97,19 +98,18 @@ class CharSelectGF extends FlxAtlasSprite
 
   function drawFFT()
   {
-    try{
-          if (enableVisualizer)
+    if (enableVisualizer && analyzer != null)
     {
-      var levels = analyzer.getLevels();
-      var frame = anim.curSymbol.timeline.get("VIZ_bars").get(anim.curFrame);
-      var elements = frame.getList();
+      analyzerLevelsCache = analyzer.getLevels(analyzerLevelsCache);
+      var frame:Null<animate.internal.Frame> = this.timeline.getLayer("VIZ_bars")?.getFrameAtIndex(anim.curAnim.curFrame) ?? null;
+      var elements:Array<animate.internal.elements.Element> = frame?.elements ?? [];
       var len:Int = cast Math.min(elements.length, 7);
 
       for (i in 0...len)
       {
-        var animFrame:Int = Math.round(levels[i].value * 12);
+        var animFrame:Int = (FlxG.sound.volume == 0 || FlxG.sound.muted) ? 0 : Math.round(analyzerLevelsCache[i].value * 12);
 
-        #if desktop
+        #if sys
         // Web version scales with the Flixel volume level.
         // This line brings platform parity but looks worse.
         // animFrame = Math.round(animFrame * FlxG.sound.volume);
@@ -120,12 +120,11 @@ class CharSelectGF extends FlxAtlasSprite
 
         animFrame = Std.int(Math.abs(animFrame - 12)); // shitty dumbass flip, cuz dave got da shit backwards lol!
 
-        elements[i].symbol.firstFrame = animFrame;
+        var convertedSymbol = elements[i].toSymbolInstance();
+        convertedSymbol.firstFrame = animFrame;
+
+        elements[i] = convertedSymbol;
       }
-    }
-    }
-    catch(x:Exception){
-      // tracing this would waste CPU
     }
   }
 

@@ -21,9 +21,7 @@ class GraphicCursorCross extends BitmapData
 class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler.PsychUIEvent
 {
 	var character:Character;
-	var ghost:FlxSprite;
-	var animateGhost:FlxAnimate;
-	var animateGhostImage:String;
+	var ghost:FunkinSprite;
 	var cameraFollowPointer:FlxSprite;
 	var isAnimateSprite:Bool = false;
 

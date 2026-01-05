@@ -20,7 +20,6 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 import mikolka.funkin.FunkinSound;
 import mikolka.funkin.players.PlayerRegistry;
-import mikolka.funkin.FlxAtlasSprite;
 import openfl.filters.DropShadowFilter;
 import mikolka.compatibility.funkin.FunkinCamera;
 import shaders.BlueFade;
@@ -57,7 +56,7 @@ class CharSelectSubState extends MusicBeatSubState
 	var playerChillOut:CharSelectPlayer;
 	var gfChill:CharSelectGF;
 	var gfChillOut:CharSelectGF;
-	var barthing:FlxAtlasSprite;
+	var barthing:PsliceSprite;
 	var dipshitBacking:FlxSprite;
 	var modArrows:Null<ModArrows>;
 	var chooseDipshit:FlxSprite;
@@ -144,7 +143,7 @@ class CharSelectSubState extends MusicBeatSubState
 
 		add(bg);
 
-		var crowd:FlxAtlasSprite = new FlxAtlasSprite(cutoutSize, 0, "charSelect/crowd");
+		var crowd:PsliceSprite = PsliceSprite.createTextureAtlas(cutoutSize, 0, "charSelect/crowd");
 
 		crowd.anim.play();
 		crowd.anim.onComplete.add(function()
@@ -154,7 +153,7 @@ class CharSelectSubState extends MusicBeatSubState
 		crowd.scrollFactor.set(0.3, 0.3);
 		add(crowd);
 
-		var stageSpr:FlxAtlasSprite = new FlxAtlasSprite(cutoutSize + -2, 1, "charSelect/charSelectStage");
+		var stageSpr:PsliceSprite = PsliceSprite.createTextureAtlas(cutoutSize + -2, 1, "charSelect/charSelectStage");
 		stageSpr.anim.play("");
 		stageSpr.anim.onComplete.add(function()
 		{
@@ -167,7 +166,7 @@ class CharSelectSubState extends MusicBeatSubState
 		curtains.scrollFactor.set(1.4, 1.4);
 		add(curtains);
 
-		barthing = new FlxAtlasSprite(0, 0, "charSelect/barThing");
+		barthing = PsliceSprite.createTextureAtlas(0, 0, "charSelect/barThing");
 
 		barthing.anim.play("");
 		barthing.anim.onComplete.add(function()
@@ -225,7 +224,7 @@ class CharSelectSubState extends MusicBeatSubState
 		else
 			setupPlayerChill(Constants.DEFAULT_CHARACTER);
 
-		var speakers:FlxAtlasSprite = new FlxAtlasSprite(cutoutSize - 10, 0, "charSelect/charSelectSpeakers");
+		var speakers:FlxAtlasSprite = PsliceSprite.createTextureAtlas(cutoutSize - 10, 0, "charSelect/charSelectSpeakers");
 		speakers.anim.play("");
 		speakers.anim.onComplete.add(function()
 		{

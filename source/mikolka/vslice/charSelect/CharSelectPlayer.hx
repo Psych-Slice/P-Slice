@@ -1,37 +1,64 @@
 package mikolka.vslice.charSelect;
 
 
-import mikolka.funkin.FlxAtlasSprite;
-class CharSelectPlayer extends FlxAtlasSprite 
+import mikolka.funkin.FunkinSprite;
+class CharSelectPlayer extends FunkinSprite
 {
+  static final DEFAULT_PATH = "charSelect/bfChill";
+
+  var initialX:Float = 0;
+  var initialY:Float = 0;
+
+  var currentBFPath:Null<String>;
+
   public function new(x:Float, y:Float)
   {
-    super(x, y, "charSelect/bfChill");
+    initialX = x;
+    initialY = y;
 
-    onAnimationComplete.add(function(animLabel:String) { //? changed the hook here
+    super(x, y);
+
+    loadTextureAtlas(DEFAULT_PATH,
+      {
+        applyStageMatrix: true,
+        swfMode: true
+      });
+
+    anim.onFinish.add(function(animLabel:String) {
       switch (animLabel)
       {
         case "slidein":
           if (hasAnimation("slidein idle point"))
           {
-            playAnimation("slidein idle point", true, false, false);
+            anim.play("slidein idle point", true);
           }
           else
           {
-            playAnimation("idle", true, false, false);
+            anim.play("idle", true);
+            anim.curAnim.looped = true;
           }
         case "deselect":
-          playAnimation("deselect loop start", true, false, true);
-
+          anim.play("deselect loop start", true);
         case "slidein idle point", "cannot select Label", "unlock":
-          playAnimation("idle", true, false, false);
+          anim.play("idle", true);
         case "idle":
           trace('Waiting for onBeatHit');
+
+          // TODO: once char select data is refactored, add a `shouldBop` field or something IDK
+          if (currentBFPath != null)
+          {
+            if (currentBFPath.endsWith("locked"))
+            {
+              anim.curAnim.looped = true;
+            }
+          }
       }
     });
   }
 
-  public function onBeatHit():Void
+  public function onStepHit(event:SongTimeScriptEvent):Void {}
+
+  public function onBeatHit(event:SongTimeScriptEvent):Void
   {
     // TODO: There's a minor visual bug where there's a little stutter.
     // This happens because the animation is getting restarted while it's already playing.
@@ -39,40 +66,29 @@ class CharSelectPlayer extends FlxAtlasSprite
     // but isAnimationFinished() and isLoopComplete() both don't work! What the hell?
     // danceEvery isn't necessary if that gets fixed.
     //
-    if (getCurrentAnimation() == "idle")
+    if (getCurrentAnimation() == "idle" && isAnimationFinished())
     {
-      //trace('Player beat hit');
-      playAnimation("idle", true, false, false);
+      anim.play("idle", true);
     }
   };
 
-  public function updatePosition(str:String)
+  public function switchChar(str:String, playSlideAnim:Bool = true):Void
   {
-    switch (str)
-    {
-      case "bf":
-        x = 0;
-        y = 0;
-      case "pico":
-        x = 0;
-        y = 0;
-      case "random":
-    }
-  }
+    var texture:Null<animate.FlxAnimateFrames> = CharSelectAtlasHandler.loadAtlas('charSelect/${str}Chill');
 
-  public function switchChar(str:String)
-  {
-    switch str
+    if (texture != null)
     {
-      default:
-        loadAtlas("charSelect/" + str + "Chill");
+      frames = texture;
+    }
+    else
+    {
+      trace('Failed to load character atlas for ${str}');
+      return;
     }
 
-    playAnimation("slidein", true, false, false);
+    final animName:String = playSlideAnim ? "slidein" : "idle";
+    anim.play(animName, true);
 
     updateHitbox();
-
-    updatePosition(str);
   }
-
 }

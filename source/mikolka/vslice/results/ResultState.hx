@@ -4,7 +4,6 @@ import mikolka.funkin.custom.mobile.MobileScaleMode;
 import haxe.Exception;
 import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.VsliceOptions;
-import mikolka.funkin.FlxAtlasSprite;
 import mikolka.funkin.FunkinSprite;
 import mikolka.funkin.players.PlayerData;
 import flixel.FlxSubState;

@@ -16,7 +16,7 @@ import mikolka.vslice.freeplay.backcards.BoyfriendCard;
 import shaders.BlueFade;
 import mikolka.funkin.freeplay.FreeplayStyle;
 import mikolka.vslice.freeplay.backcards.BackingCard;
-import mikolka.vslice.freeplay.DJBoyfriend.FreeplayDJ;
+import mikolka.vslice.freeplay.dj.BaseFreeplayDJ;
 import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.compatibility.funkin.FunkinCamera;
@@ -183,7 +183,7 @@ class FreeplayState extends MusicBeatSubstate
 	}
 	var curPlaying:Bool = false;
 
-	var dj:Null<FreeplayDJ> = null;
+	var dj:Null<BaseFreeplayDJ> = null;
 
 	var ostName:FlxText;
 	var albumRoll:AlbumRoll;

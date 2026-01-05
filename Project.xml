@@ -246,7 +246,7 @@
 	</section>
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED" />
 
-	<haxelib name="flxanimate" />
+	<haxelib name="flixel-animate" />
 
 	<!-- Category Type for Apple Systems -->
 	<config:ios category_type="public.app-category.music-games" />

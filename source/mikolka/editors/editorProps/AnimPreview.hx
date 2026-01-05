@@ -1,7 +1,7 @@
 package mikolka.editors.editorProps;
 
+import animate.FlxAnimate;
 import mikolka.vslice.components.crash.UserErrorSubstate;
-import flxanimate.animate.FlxSymbol;
 
 class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 {
@@ -20,7 +20,7 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 		this.useAtlasSymbols = useAtlasSymbols;
 		super(x,y);
 	}
-	public function attachSprite(value:FlxAtlasSprite)
+	public function attachSprite(value:FlxAnimate)
 	{
 		anims = new Array();
 		labels = new Array();
@@ -55,7 +55,7 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 
 	}
 
-	private function registerAnims(value:FlxAtlasSprite) {
+	private function registerAnims(value:FlxAnimate) {
 		for (x in value.listAnimations())
 			{
 				addAnim({
