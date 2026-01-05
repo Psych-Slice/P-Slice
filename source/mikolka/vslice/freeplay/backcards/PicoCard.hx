@@ -25,7 +25,7 @@ class PicoCard extends BackingCard
   var glowDark:FlxSprite;
   var blueBar:FlxSprite;
 
-  var confirmAtlas:FlxAtlasSprite;
+  var confirmAtlas:FunkinSprite;
 
   public override function enterCharSel():Void
   {
@@ -143,7 +143,7 @@ class PicoCard extends BackingCard
     glow.visible = false;
     glowDark.visible = false;
 
-    confirmAtlas = new FlxAtlasSprite(5, 55, "freeplay/backingCards/pico/pico-confirm");
+    confirmAtlas = FunkinSprite.createTextureAtlas(5, 55, "freeplay/backingCards/pico/pico-confirm");
     confirmAtlas.visible = false;
     confirmAtlas.scale.x *= MobileScaleMode.wideScale.x;
     confirmAtlas.x += ((confirmAtlas.width * MobileScaleMode.wideScale.x) - confirmAtlas.width) * 2.48;

@@ -1,6 +1,7 @@
 package mikolka.vslice.freeplay.dj;
 
 import flixel.util.FlxSignal;
+import mikolka.funkin.players.PlayerData.PlayerFreeplayDJData;
 
 enum FreeplayDJState
 {
@@ -232,62 +233,4 @@ class BaseFreeplayDJ extends FunkinSprite
       offset.set(0, 0);
     }
   }
-
-  public function onScriptEvent(event:ScriptEvent) {}
-
-  public function onCreate(event:ScriptEvent) {}
-
-  public function onDestroy(event:ScriptEvent):Void {}
-
-  public function onUpdate(event:UpdateScriptEvent):Void {}
-
-  public function onStepHit(event:SongTimeScriptEvent):Void {}
-
-  public function onBeatHit(event:SongTimeScriptEvent):Void {}
-
-  public function onStateChangeBegin(event:StateChangeScriptEvent):Void {}
-
-  public function onStateChangeEnd(event:StateChangeScriptEvent):Void {}
-
-  public function onSubStateOpenBegin(event:SubStateScriptEvent):Void {}
-
-  public function onSubStateOpenEnd(event:SubStateScriptEvent):Void {}
-
-  public function onSubStateCloseBegin(event:SubStateScriptEvent):Void {}
-
-  public function onSubStateCloseEnd(event:SubStateScriptEvent):Void {}
-
-  public function onFocusLost(event:FocusScriptEvent):Void {}
-
-  public function onFocusGained(event:FocusScriptEvent):Void {}
-
-  /**
-   * Called when a capsule is selected.
-   */
-  public function onCapsuleSelected(event:CapsuleScriptEvent):Void {}
-
-  /**
-   * Called when the current difficulty is changed.
-   */
-  public function onDifficultySwitch(event:CapsuleScriptEvent):Void {}
-
-  /**
-   * Called when a song is selected.
-   */
-  public function onSongSelected(event:CapsuleScriptEvent):Void {}
-
-  /**
-   * Called when the intro for Freeplay finishes.
-   */
-  public function onFreeplayIntroDone(event:FreeplayScriptEvent):Void {}
-
-  /**
-   * Called when the Freeplay outro begins.
-   */
-  public function onFreeplayOutro(event:FreeplayScriptEvent):Void {}
-
-  /**
-   * Called when Freeplay is closed.
-   */
-  public function onFreeplayClose(event:FreeplayScriptEvent):Void {}
 }

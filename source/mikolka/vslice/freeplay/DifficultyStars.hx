@@ -19,7 +19,7 @@ class DifficultyStars extends FlxSpriteGroup
    */
   public var difficulty(default, set):Int = 1;
 
-  public var stars:FlxAnimate;
+  public var stars:FunkinSprite;
 
   public var flames:FreeplayFlames;
 
@@ -35,7 +35,7 @@ class DifficultyStars extends FlxSpriteGroup
     add(flames);
     
     //? Using base FlxAnimate to sideload JSON obj "freeplay/freeplayStars
-    stars = new FlxAtlasSprite(0, 0, "freeplay/freeplayStars");
+    stars = FunkinSprite.createTextureAtlas(0, 0, "freeplay/freeplayStars");
 
     stars.anim.play("diff stars");
     add(stars);
