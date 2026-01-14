@@ -619,7 +619,7 @@ class FunkinPreloader extends FlxBasePreloader
 								if (jsonBlob != null)
 								{
 									#if debug trace("Cached JSON: " + item); #end
-									mikolka.funkin.FlxAtlasSprite.ANIMATION_OBJECTS.set(item,jsonBlob);
+									mikolka.funkin.FunkinSprite.ANIMATION_OBJECTS.set(item,jsonBlob);
 								}
 								else trace("JSON is null: " + item);
 								

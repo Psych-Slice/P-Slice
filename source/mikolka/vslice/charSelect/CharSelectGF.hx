@@ -29,16 +29,15 @@ class CharSelectGF extends FunkinSprite
     switchGF(Constants.DEFAULT_CHARACTER);
   }
 
-  public function onStepHit(event:SongTimeScriptEvent):Void {}
 
-  public function onBeatHit(event:SongTimeScriptEvent):Void
+  public function onBeatHit(beat:Int):Void //? gather beat instead of event
   {
     // TODO: There's a minor visual bug where there's a little stutter.
     // This happens because the animation is getting restarted while it's already playing.
     // I tried make this not interrupt an existing idle,
     // but isAnimationFinished() and isLoopComplete() both don't work! What the hell?
     // danceEvery isn't necessary if that gets fixed.
-    if (getCurrentAnimation() == "idle" && (event.beat % danceEvery == 0))
+    if (getCurrentAnimation() == "idle" && (beat % danceEvery == 0))
     {
       trace('GF beat hit');
       anim.play("idle", true);

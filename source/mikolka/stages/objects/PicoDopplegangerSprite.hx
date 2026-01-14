@@ -5,7 +5,7 @@ import mikolka.compatibility.funkin.FunkinPath;
 import cutscenes.CutsceneHandler;
 #end
 
-class PicoDopplegangerSprite extends FlxAtlasSprite
+class PicoDopplegangerSprite extends FunkinSprite
 {
 
   public var isPlayer:Bool = false;

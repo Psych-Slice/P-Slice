@@ -114,6 +114,10 @@ typedef AtlasSpriteSettings =
 class FunkinSprite extends FlxAnimate
 {
   /**
+   * A list of precached "animation.json" files in case they're used a lot
+   */
+  public static final ANIMATION_OBJECTS = new Map<String,Dynamic>();
+  /**
    * @param x Starting X position
    * @param y Starting Y position
    * @param path The asset path for the graphic

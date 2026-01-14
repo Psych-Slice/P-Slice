@@ -4,7 +4,7 @@ import mikolka.editors.editorProps.sprites.IResultsSprite;
 import mikolka.funkin.players.PlayerData.PlayerResultsAnimationData;
 import mikolka.compatibility.funkin.FunkinPath;
 
-class ResultsAtlasSprite extends FlxAtlasSprite implements IResultsSprite
+class ResultsAtlasSprite extends FunkinSprite implements IResultsSprite
 {
 	var data:PlayerResultsAnimationData;
 	var timer:Null<FlxTimer>;

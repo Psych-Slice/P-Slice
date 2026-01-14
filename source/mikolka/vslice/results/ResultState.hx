@@ -66,7 +66,7 @@ class ResultState extends MusicBeatSubState
 
   var characterAtlasAnimations:Array<
     {
-      sprite:FlxAtlasSprite,
+      sprite:FunkinSprite,
       delay:Float,
       forceLoop:Bool,
       startFrameLabel:String,
@@ -243,7 +243,7 @@ class ResultState extends MusicBeatSubState
           // offsets[0] -= xDiff*1.8;
           // offsets[1] -= yDiff*1.8;
 
-          var animation:FlxAtlasSprite = new FlxAtlasSprite(offsets[0] + MobileScaleMode.gameNotchSize.x, offsets[1], animPath);
+          var animation:FunkinSprite = FunkinSprite.createTextureAtlas(offsets[0] + MobileScaleMode.gameNotchSize.x, offsets[1], animPath);
           animation.zIndex = animData.zIndex ?? 500;
           animation.scale.set(animData.scale ?? 1.0, animData.scale ?? 1.0);
 

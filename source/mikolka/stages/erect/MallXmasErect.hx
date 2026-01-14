@@ -15,8 +15,8 @@ class MallXmasErect extends BaseStage
 	var bottomBoppers:MallCrowd;
 	var santa:BGSprite;
 	
-	var erectSanta:FlxAtlasSprite;
-	var erectParents:FlxAtlasSprite;
+	var erectSanta:FunkinSprite;
+	var erectParents:FunkinSprite;
 
 	override function create()
 	{
@@ -55,8 +55,8 @@ class MallXmasErect extends BaseStage
 		setDefaultGF('gf-christmas');
 
 		if(songName == "eggnog-erect" || songName == "eggnog-(pico-mix)"){
-			erectSanta = new FlxAtlasSprite(-840 +380, 150 +347,"christmas/santa_speaks_assets");
-			erectParents = new FlxAtlasSprite(100 -620, 100 + 401,"christmas/parents_shoot_assets");	
+			erectSanta = FunkinSprite.createTextureAtlas(-840 +380, 150 +347,"christmas/santa_speaks_assets");
+			erectParents = FunkinSprite.createTextureAtlas(100 -620, 100 + 401,"christmas/parents_shoot_assets");	
 			setEndCallback(eggnogEndCutscene);
 		}
 	}

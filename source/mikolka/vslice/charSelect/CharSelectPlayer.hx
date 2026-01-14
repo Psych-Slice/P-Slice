@@ -56,9 +56,7 @@ class CharSelectPlayer extends FunkinSprite
     });
   }
 
-  public function onStepHit(event:SongTimeScriptEvent):Void {}
-
-  public function onBeatHit(event:SongTimeScriptEvent):Void
+  public function onBeatHit():Void
   {
     // TODO: There's a minor visual bug where there's a little stutter.
     // This happens because the animation is getting restarted while it's already playing.

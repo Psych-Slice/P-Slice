@@ -66,7 +66,7 @@ class CharSelectEditor extends MusicBeatState
 		bg.scrollFactor.set(0.1, 0.1);
 		add(bg);
 
-		var stageSpr:FlxAtlasSprite = new FlxAtlasSprite(cutoutSize + -2, 1, "charSelect/charSelectStage");
+		var stageSpr:FunkinSprite = FunkinSprite.createTextureAtlas(cutoutSize + -2, 1, "charSelect/charSelectStage");
 		stageSpr.anim.play("");
 		stageSpr.anim.onComplete.add(function()
 		{

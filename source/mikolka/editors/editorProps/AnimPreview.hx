@@ -5,7 +5,7 @@ import mikolka.vslice.components.crash.UserErrorSubstate;
 
 class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 {
-	public var activeSprite:FlxAtlasSprite;
+	public var activeSprite:FunkinSprite;
 
 	var selectedFrame:Int = 0;
 	var selectedAnimIndices:Array<Int>;
