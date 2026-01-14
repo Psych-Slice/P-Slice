@@ -138,16 +138,6 @@ class FunkinSprite extends FlxAnimate
 
         case '':
           // Do the opposite of Paths.animateAtlas since that function is called in loadTextureAtlas.
-          var lib:String = Paths.getLibrary(path);
-
-          if (lib == 'preload')
-          {
-            path = path.replace('assets/images/', '');
-          }
-          else
-          {
-            path = path.replace('$lib:assets/$lib/images/', '');
-          }
 
           this.loadTextureAtlas(path, lib, atlasSettings);
 
@@ -161,10 +151,10 @@ class FunkinSprite extends FlxAnimate
   {
     super.initVars();
 
-    var newController:FunkinAnimationController = new FunkinAnimationController(this);
+    // var newController:FunkinAnimationController = new FunkinAnimationController(this);
 
-    animation = newController;
-    anim = newController;
+    // animation = newController;
+    // anim = newController;
   }
 
   /**
@@ -230,17 +220,12 @@ class FunkinSprite extends FlxAnimate
    */
   public function loadTexture(key:String):FunkinSprite
   {
-    var graphicKey:String = Paths.image(key);
+    var graphicKey:FlxGraphic = Paths.image(key);
 
-    if (!Assets.exists(graphicKey, IMAGE))
+    if (graphicKey == null)
     {
       FlxG.log.error('Texture not found, check your path! $graphicKey');
       return this;
-    }
-
-    if (!FunkinMemory.isTextureCached(graphicKey))
-    {
-      FlxG.log.warn('Texture not cached, may experience stuttering! $graphicKey');
     }
 
     loadGraphic(graphicKey);
@@ -337,8 +322,6 @@ class FunkinSprite extends FlxAnimate
    */
   public function loadSparrow(key:String):FunkinSprite
   {
-    var graphicKey:String = Paths.image(key);
-    if (!FunkinMemory.isTextureCached(graphicKey)) FlxG.log.warn('Texture not cached, may experience stuttering! $graphicKey');
 
     this.frames = Paths.getSparrowAtlas(key);
 
@@ -352,8 +335,6 @@ class FunkinSprite extends FlxAnimate
    */
   public function loadPacker(key:String):FunkinSprite
   {
-    var graphicKey:String = Paths.image(key);
-    if (!FunkinMemory.isTextureCached(graphicKey)) FlxG.log.warn('Texture not cached, may experience stuttering! $graphicKey');
 
     this.frames = Paths.getPackerAtlas(key);
 

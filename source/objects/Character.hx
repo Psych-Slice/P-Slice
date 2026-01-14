@@ -37,7 +37,7 @@ typedef AnimArray = {
 	var offsets:Array<Int>;
 }
 
-class Character extends FlxSprite
+class Character extends FunkinSprite
 {
 	/**
 	 * In case a character is missing, it will use this on its place
@@ -226,9 +226,8 @@ class Character extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
-		if(isAnimateAtlas) atlas.update(elapsed);
 
-		if(debugMode || (!isAnimateAtlas && animation.curAnim == null) || (isAnimateAtlas && (atlas.anim.curInstance == null || atlas.anim.curSymbol == null)))
+		if(debugMode || (!isAnimateAtlas && animation.curAnim == null) )
 		{
 			super.update(elapsed);
 			return;
@@ -278,7 +277,8 @@ class Character extends FlxSprite
 
 	inline public function isAnimationNull():Bool
 	{
-		return !isAnimateAtlas ? (animation.curAnim == null) : (atlas.anim.curInstance == null || atlas.anim.curSymbol == null);
+		//return !isAnimateAtlas ? (animation.curAnim == null) : (anim.curInstance == null || this.curSymbol == null);
+		return animation.curAnim == null;
 	}
 
 	var _lastPlayedAnimation:String;
@@ -287,40 +287,40 @@ class Character extends FlxSprite
 		return _lastPlayedAnimation;
 	}
 
-	public function isAnimationFinished():Bool
-	{
-		if(isAnimationNull()) return false;
-		return !isAnimateAtlas ? animation.curAnim.finished : atlas.anim.finished;
-	}
+	// public function isAnimationFinished():Bool
+	// {
+	// 	if(isAnimationNull()) return false;
+	// 	return !isAnimateAtlas ? animation.curAnim.finished : atlas.anim.finished;
+	// }
 
 	public function finishAnimation():Void
 	{
 		if(isAnimationNull()) return;
 
-		if(!isAnimateAtlas) animation.curAnim.finish();
-		else atlas.anim.curFrame = atlas.anim.length - 1;
+		animation.curAnim.finish();
+		//else atlas.anim.curFrame = atlas.anim.length - 1;
 	}
 
-	public function hasAnimation(anim:String):Bool
-	{
-		return animOffsets.exists(anim);
-	}
+	// public function hasAnimation(anim:String):Bool
+	// {
+	// 	return animOffsets.exists(anim);
+	// }
 
 	public var animPaused(get, set):Bool;
 	private function get_animPaused():Bool
 	{
 		if(isAnimationNull()) return false;
-		return !isAnimateAtlas ? animation.curAnim.paused : atlas.anim.isPlaying;
+		return animation.curAnim.paused;
 	}
 	private function set_animPaused(value:Bool):Bool
 	{
 		if(isAnimationNull()) return value;
-		if(!isAnimateAtlas) animation.curAnim.paused = value;
-		else
-		{
-			if(value) atlas.pauseAnimation();
-			else atlas.resumeAnimation();
-		}
+		animation.curAnim.paused = value;
+		// else
+		// {
+		// 	if(value) atlas.pauseAnimation();
+		// 	else atlas.resumeAnimation();
+		// }
 
 		return value;
 	}
@@ -351,15 +351,15 @@ class Character extends FlxSprite
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
 	{
 		specialAnim = false;
-		if(!isAnimateAtlas)
-		{
-			animation?.play(AnimName, Force, Reversed, Frame);
-		}
-		else
-		{
-			atlas?.anim?.play(AnimName, Force, Reversed, Frame);
-			atlas?.update(0);
-		}
+		animation?.play(AnimName, Force, Reversed, Frame);
+		// if(!isAnimateAtlas)
+		// {
+		// }
+		// else
+		// {
+		// 	atlas?.anim?.play(AnimName, Force, Reversed, Frame);
+		// 	atlas?.update(0);
+		// }
 		_lastPlayedAnimation = AnimName;
 
 		if (hasAnimation(AnimName))
