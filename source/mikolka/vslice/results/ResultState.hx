@@ -673,14 +673,14 @@ class ResultState extends MusicBeatSubState
           {
             // Feel the bed fun :freaky:
             case "bf":
-              if (atlas.sprite.anim.curFrame > 87 && atlas.sprite.anim.curFrame % 5 == 0)
+              if (atlas.sprite.anim.frameIndex > 87 && atlas.sprite.anim.frameIndex % 5 == 0)
               {
                 HapticUtil.vibrate(0, 0.01, Constants.MAX_VIBRATION_AMPLITUDE);
                 break;
               }
 
               // GF slams into the wall.
-              if (atlas.sprite.anim.curFrame == 51)
+              if (atlas.sprite.anim.frameIndex == 51)
               {
                 HapticUtil.vibrate(0, 0.01, (Constants.MAX_VIBRATION_AMPLITUDE / 3) * 2.5);
                 break;
@@ -688,7 +688,7 @@ class ResultState extends MusicBeatSubState
 
             // Pico drop-kicking Nene.
             case "pico":
-              if (atlas.sprite.anim.curFrame == 52)
+              if (atlas.sprite.anim.frameIndex == 52)
               {
                 HapticUtil.vibrate(Constants.DEFAULT_VIBRATION_PERIOD, Constants.DEFAULT_VIBRATION_DURATION * 5, Constants.MAX_VIBRATION_AMPLITUDE);
                 break;
@@ -704,14 +704,14 @@ class ResultState extends MusicBeatSubState
             // Pico explodes the targets with a rocket launcher.
             case "pico":
               // Pico shoots.
-              if (atlas.sprite.anim.curFrame == 45)
+              if (atlas.sprite.anim.frameIndex == 45)
               {
                 HapticUtil.vibrate(0, 0.01, (Constants.MAX_VIBRATION_AMPLITUDE / 3) * 2.5);
                 break;
               }
 
               // The targets explode.
-              if (atlas.sprite.anim.curFrame == 50)
+              if (atlas.sprite.anim.frameIndex == 50)
               {
                 HapticUtil.vibrate(Constants.DEFAULT_VIBRATION_PERIOD, Constants.DEFAULT_VIBRATION_DURATION, Constants.MAX_VIBRATION_AMPLITUDE);
                 break;
@@ -726,12 +726,12 @@ class ResultState extends MusicBeatSubState
           {
             // Pico shooting the targets.
             case "pico":
-              if (atlas.sprite.anim.curFrame % 2 != 0) continue;
+              if (atlas.sprite.anim.frameIndex % 2 != 0) continue;
 
               final frames:Array<Array<Int>> = [[40, 50], [80, 90], [140, 157]];
               for (i in 0...frames.length)
               {
-                if (atlas.sprite.anim.curFrame < frames[i][0] || atlas.sprite.anim.curFrame > frames[i][1]) continue;
+                if (atlas.sprite.anim.frameIndex < frames[i][0] || atlas.sprite.anim.frameIndex > frames[i][1]) continue;
 
                 HapticUtil.vibrate(0, 0.01, Constants.MAX_VIBRATION_AMPLITUDE);
                 break;
@@ -746,7 +746,7 @@ class ResultState extends MusicBeatSubState
           {
             // BF falling and GF slams on BF with her ass.
             case "bf":
-              if (atlas.sprite.anim.curFrame == 5 || atlas.sprite.anim.curFrame == 90)
+              if (atlas.sprite.anim.frameIndex == 5 || atlas.sprite.anim.frameIndex == 90)
               {
                 HapticUtil.vibrate(Constants.DEFAULT_VIBRATION_PERIOD * 2, Constants.DEFAULT_VIBRATION_DURATION * 2, Constants.MAX_VIBRATION_AMPLITUDE);
                 break;

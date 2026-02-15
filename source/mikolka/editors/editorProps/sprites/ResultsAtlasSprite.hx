@@ -23,7 +23,7 @@ class ResultsAtlasSprite extends FunkinSprite implements IResultsSprite
 		scale.set(animData.scale ?? 1.0, animData.scale ?? 1.0);
 
 		// Animation is not looped.
-		onAnimationComplete.add((_name:String) ->
+		anim.onFinish.add((_name:String) ->
 		{
 			trace("Pausing atlas anim");
 			if (animation == null)
@@ -34,12 +34,13 @@ class ResultsAtlasSprite extends FunkinSprite implements IResultsSprite
 			}
 			else if (animData.loopFrameLabel != null && animData.loopFrameLabel != "")
 			{
-				playAnimation(animData.loopFrameLabel ?? '', true, false, true); // unpauses this anim, since it's on PlayOnce!
+				anim.play(animData.loopFrameLabel ?? '', true, false); // unpauses this anim, since it's on PlayOnce!
+				anim.curAnim.looped = true;
 			}
 			else if (animData.loopFrame != null)
 			{
-				anim.curFrame = animData.loopFrame ?? 0;
-				anim.play(); // unpauses this anim, since it's on PlayOnce!
+				anim.frameIndex = animData.loopFrame ?? 0;
+				anim.resume(); // unpauses this anim, since it's on PlayOnce!
 			}
 		});
 		// Hide until ready to play.
@@ -51,13 +52,13 @@ class ResultsAtlasSprite extends FunkinSprite implements IResultsSprite
 		return ATLAS;
 	}
 
-	override function pauseAnimation() {
+	public function pauseAnimation() {
 		sound?.pause();
-		super.pauseAnimation();
+		anim.pause();
 		if (timer != null) timer.active = false;
 	}
-	override function resumeAnimation() {
-		super.resumeAnimation();
+	public function resumeAnimation() {
+		anim.resume();
 		sound?.resume();
 		if (timer != null) timer.active = true;
 	}
@@ -70,7 +71,7 @@ class ResultsAtlasSprite extends FunkinSprite implements IResultsSprite
 
 		if(!canShow) return;
 		timer = FlxTimer.wait(data.delay,() ->{
-			playAnimation(data.startFrameLabel ?? ''); 
+			anim.play(data.startFrameLabel ?? ''); 
 			sound?.play();
 			visible = true;
 		});
@@ -88,9 +89,9 @@ class ResultsAtlasSprite extends FunkinSprite implements IResultsSprite
 
 			visible = true;
 			if (data.loopFrame != null && data.looped)
-				anim.curFrame = data.loopFrame;
+				anim.frameIndex = data.loopFrame;
 			else
-				anim.curFrame = anim.curSymbol.length-1;//animation.curAnim.numFrames - 1;
+				anim.frameIndex = anim.curAnim.frames.length-1;//animation.curAnim.numFrames - 1;
 		} else visible = false;
 	}
 

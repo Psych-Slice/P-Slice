@@ -14,7 +14,7 @@ class TwoPicos
 	var cutsceneHandler:CutsceneHandler;
 	public var imposterPico:PicoDopplegangerSprite;
 	var pico:PicoDopplegangerSprite;
-	var bloodPool:FlxAnimate;
+	var bloodPool:FunkinSprite;
 	var cigarette:FlxSprite;
 	var audioPlaying:FlxSound;
 
@@ -51,7 +51,7 @@ class TwoPicos
 
 		if (VsliceOptions.NAUGHTYNESS)
 		{
-			bloodPool = new FlxAnimate(0, 0);
+			bloodPool = new FunkinSprite(0, 0);
 			bloodPool.visible = false;
 			Paths.loadAnimateAtlas(bloodPool, "philly/erect/cutscenes/bloodPool");
 		}

@@ -1,6 +1,5 @@
 package mikolka.editors.editorProps;
 
-import animate.FlxAnimate;
 import mikolka.vslice.components.crash.UserErrorSubstate;
 
 class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
@@ -20,7 +19,7 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 		this.useAtlasSymbols = useAtlasSymbols;
 		super(x,y);
 	}
-	public function attachSprite(value:FlxAnimate)
+	public function attachSprite(value:FunkinSprite)
 	{
 		anims = new Array();
 		labels = new Array();
@@ -30,7 +29,7 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 			remove(s);
 		});
         if(value == null){
-            activeSprite?.onAnimationFrame.remove(onFrameAdvance);
+            activeSprite?.anim.onFrameChange.remove(onFrameAdvance);
             activeSprite = null;
             return;
         }
@@ -41,21 +40,21 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 
 		
 		registerAnims(value);
-		value.onAnimationFrame.add(onFrameAdvance);
-		activeSprite?.onAnimationFrame.remove(onFrameAdvance);
+		value.onFrameChange.add(onFrameAdvance);
+		activeSprite?.onFrameChange.remove(onFrameAdvance);
 		activeSprite = value;
 
 		if(labels.length == 0){
 			UserErrorSubstate.makeMessage("No animations registered",
 			"Looks like you haven't registered any animations.\n\nHave you exported your sprite correctly?");
-            activeSprite?.onAnimationFrame.remove(onFrameAdvance);
+            activeSprite?.onFrameChange.remove(onFrameAdvance);
             activeSprite = null;
         }
 		else input_selectAnim(0);
 
 	}
 
-	private function registerAnims(value:FlxAnimate) {
+	private function registerAnims(value:FunkinSprite) {
 		for (x in value.listAnimations())
 			{
 				addAnim({
@@ -97,7 +96,7 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 		var newAnim = anims[selectedIndex];
         selectedFrame = useAtlasSymbols ? 1 : 0;
         selectedAnimLength = 0;
-		activeSprite.playAnimation(newAnim.anim, true);
+		activeSprite.anim.play(newAnim.anim, true);
 	}
 
 	private function addAnim(anim:CharAnim)
@@ -117,7 +116,7 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 		add(flxTxt);
 	}
 
-	private function onFrameAdvance(anim:String, frame:Int)
+	private function onFrameAdvance(anim:String, frame:Int ,frameIndex:Int)
 	{
 		var mainSymbol = activeSprite.anim.curSymbol;
 		var symbol = mainSymbol.getFrameLabel(anim);

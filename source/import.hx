@@ -111,10 +111,6 @@ import states.PlayState;
 import mikolka.vslice.ui.*;
 import states.LoadingState;
 
-#if flxanimate
-import flxanimate.*;
-import flxanimate.PsychFlxAnimate as FlxAnimate;
-#end
 
 // Mod libs
 import flixel.ui.FlxBar;

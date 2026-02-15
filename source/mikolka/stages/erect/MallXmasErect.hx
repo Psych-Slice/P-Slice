@@ -122,8 +122,8 @@ class MallXmasErect extends BaseStage
 		add(erectParents);
 		add(erectSanta);
 
-		erectSanta.playAnimation("santa whole scene", false, false, false, 0);
-		erectParents.playAnimation("parents whole scene", false, false, false, 0);
+		erectSanta.anim.play("santa whole scene", false, false, 0);
+		erectParents.anim.play("parents whole scene", false, false, 0);
 		FlxG.sound.play(Paths.sound("santa_emotion"));
     	erectSanta.onAnimationComplete.add(s ->erectSanta.anim.pause());
     	erectParents.onAnimationComplete.add(s ->erectParents.anim.pause());

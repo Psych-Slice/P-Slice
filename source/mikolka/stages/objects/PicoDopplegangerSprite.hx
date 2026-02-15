@@ -13,14 +13,7 @@ class PicoDopplegangerSprite extends FunkinSprite
 
   public function new(x:Float, y:Float)
   {
-    super(x, y, 'philly/erect/cutscenes/pico_doppleganger', {
-      FrameRate: 24.0,
-      Reversed: false,
-      // ?OnComplete:Void -> Void,
-      ShowPivot: false,
-      Antialiasing: true,
-      ScrollFactor: new FlxPoint(1, 1),
-    });
+    super(x, y, 'philly/erect/cutscenes/pico_doppleganger');
   }
 
   var cutsceneSounds:FunkinSound = null;
@@ -35,28 +28,29 @@ class PicoDopplegangerSprite extends FunkinSprite
     trace('Doppelganger: doAnim(' + suffix + ', ' + shoot + ', ' + explode + ')');
 
     if(shoot == true){
-      playAnimation("shoot" + suffix, true, false, false);
-
+      anim.play("shoot" + suffix, true, false);
+      anim.curAnim.looped = false;
       cutsceneHandler.timer(6.29, () -> {cutsceneSounds = FunkinSound.load(Paths.sound('cutscene/picoShoot'), 1.0, false, true, true);});
       cutsceneHandler.timer(10.33, () -> {cutsceneSounds = FunkinSound.load(Paths.sound('cutscene/picoSpin'), 1.0, false, true, true);});
     }else{
       if(explode == true){
-        playAnimation("explode" + suffix, true, false, false);
-
-        onAnimationComplete.add(startLoop);
+        anim.play("explode" + suffix, true, false);
+        anim.curAnim.looped = false;
+        anim.onFinish.add(startLoop);
 
         cutsceneHandler.timer(3.7, () -> {cutsceneSounds = FunkinSound.load(Paths.sound('cutscene/picoCigarette2'), 1.0, false, true, true);});
         cutsceneHandler.timer(8.75, () -> {cutsceneSounds = FunkinSound.load(Paths.sound('cutscene/picoExplode'), 1.0, false, true, true);});
         cutsceneHandler.objects.remove(this);
       }else{
-        playAnimation("cigarette" + suffix, true, false, false);
-
+        anim.play("cigarette" + suffix, true, false);
+        anim.curAnim.looped = false;
         cutsceneHandler.timer(3.7, () -> {cutsceneSounds = FunkinSound.load(Paths.sound('cutscene/picoCigarette'), 1.0, false, true, true);});
       }
     }
   }
 
   function startLoop(x:String){
-    playAnimation("loop" + suffix, true, false, true);
+    anim.play("loop" + suffix, true, false);
+    anim.curAnim.looped = true;
   }
 }

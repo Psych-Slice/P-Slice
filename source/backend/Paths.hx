@@ -1,5 +1,6 @@
 package backend;
 
+import animate.FlxAnimateFrames;
 import haxe.io.Path;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
@@ -309,8 +310,7 @@ class Paths
 	}
 	#end
 
-	#if flxanimate
-	public static function loadAnimateAtlas(spr:FlxAnimate, folderOrImg:Dynamic, spriteJson:Dynamic = null, animationJson:Dynamic = null)
+	public static function loadAnimateAtlas(folderOrImg:Dynamic, spriteJson:Dynamic = null, animationJson:Dynamic = null):Null<FlxAnimateFrames>
 	{
 		if (folderOrImg is String)
 		{
@@ -323,7 +323,7 @@ class Paths
 				else
 				{
 					trace(Path.join([dir, "spritemap1.json"]) + " is missing!!");
-					return;
+					return null;
 				}
 			}
 			if (animationJson == null)
@@ -333,12 +333,11 @@ class Paths
 				else
 				{
 					trace(Path.join([dir, "Animation.json"]) + " is missing!!");
-					return;
+					return null;
 				}
 			}
 			folderOrImg = image(Path.join([folderOrImg, "spritemap1"]));
 		}
-		spr.loadAtlasEx(folderOrImg, spriteJson, animationJson);
+		return FlxAnimateFrames.fromAnimate(animationJson,[{json:spriteJson,source:folderOrImg}]);
 	}
-	#end
 }
