@@ -248,37 +248,34 @@ class ResultState extends MusicBeatSubState
           animation.scale.set(animData.scale ?? 1.0, animData.scale ?? 1.0);
 
           if (!(animData.looped ?? true))
-            {
-              // Animation is not looped.
-              animation.onAnimationComplete.add((_name:String) -> {
-                trace("AHAHAH 2");
-                if (animation != null)
-                {
-                  animation.anim.pause();
-                }
-              });
-            }
+          {
+            // Animation is not looped.
+            animation.anim.onFinish.add((_name:String) -> {
+              if (animation != null)
+              {
+                animation.anim.pause();
+              }
+            });
+          }
             else if (animData.loopFrameLabel != null)
-            {
-              animation.onAnimationComplete.add((_name:String) -> {
-                trace("AHAHAH 2");
-                if (animation != null)
-                {
-                  animation.playAnimation(animData.loopFrameLabel ?? '', true, false, true); // unpauses this anim, since it's on PlayOnce!
-                }
-              });
-            }
-            else if (animData.loopFrame != null)
-            {
-              animation.onAnimationComplete.add((_name:String) -> {
-                if (animation != null)
-                {
-                  trace("AHAHAH");
-                  animation.anim.curFrame = animData.loopFrame ?? 0;
-                  animation.anim.play(); // unpauses this anim, since it's on PlayOnce!
-                }
-              });
-            }
+          {
+            animation.anim.onFinish.add((_name:String) -> {
+              if (animation != null)
+              {
+                animation.anim.play(animData.loopFrameLabel ?? '', true); // unpauses this anim, since it's on PlayOnce!
+                animation.anim.curAnim.looped = true;
+              }
+            });
+          }
+          else if (animData.loopFrame != null)
+          {
+            animation.anim.onFinish.add((_name:String) -> {
+              if (animation != null)
+              {
+                animation.anim.play("", true, false, animData.loopFrame ?? 0); // unpauses this anim, since it's on PlayOnce!
+              }
+            });
+          }
 
           // Hide until ready to play.
           animation.visible = false;
@@ -639,7 +636,7 @@ class ResultState extends MusicBeatSubState
       new FlxTimer().start(atlas.delay, _ -> {
         if (atlas.sprite == null) return;
         atlas.sprite.visible = true;
-        atlas.sprite.playAnimation(atlas.startFrameLabel);
+        atlas.sprite.anim.play(atlas.startFrameLabel);
         if (atlas.sound != "")
         {
           var sndPath:String = Paths.stripLibrary(atlas.sound);

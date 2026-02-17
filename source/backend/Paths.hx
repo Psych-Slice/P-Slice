@@ -310,7 +310,7 @@ class Paths
 	}
 	#end
 
-	public static function loadAnimateAtlas(folderOrImg:Dynamic, spriteJson:Dynamic = null, animationJson:Dynamic = null):Null<FlxAnimateFrames>
+	public static function loadAnimateAtlas(folderOrImg:Dynamic, spriteJson:Dynamic = null, animationJson:Dynamic = null,settings:FlxAnimateSettings = null):Null<FlxAnimateFrames>
 	{
 		if (folderOrImg is String)
 		{
@@ -338,6 +338,6 @@ class Paths
 			}
 			folderOrImg = image(Path.join([folderOrImg, "spritemap1"]));
 		}
-		return FlxAnimateFrames.fromAnimate(animationJson,[{json:spriteJson,source:folderOrImg}]);
+		return FlxAnimateFrames.fromAnimate(animationJson,[{json:spriteJson,source:folderOrImg}],null,null,false,settings);
 	}
 }

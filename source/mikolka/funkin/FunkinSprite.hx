@@ -139,7 +139,7 @@ class FunkinSprite extends FlxAnimate
         case '':
           // Do the opposite of Paths.animateAtlas since that function is called in loadTextureAtlas.
 
-          this.loadTextureAtlas(path, lib, atlasSettings);
+          this.loadTextureAtlas(path, null, atlasSettings);
 
         default:
           FlxG.log.warn('Texture path $path is not a valid path. Make sure the path points to either an image or a folder with the texture atlas files!');
@@ -310,7 +310,7 @@ class FunkinSprite extends FlxAnimate
     this.applyStageMatrix = settings.applyStageMatrix ?? false;
     this.useRenderTexture = settings.useRenderTexture ?? false;
 
-    frames = Paths.getAnimateAtlas(key, assetLibrary, settings);
+    frames = Paths.loadAnimateAtlas(key, null,null, settings);
 
     return this;
   }

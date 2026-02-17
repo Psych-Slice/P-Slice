@@ -566,7 +566,7 @@ class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler
 						if (!character.isAnimateAtlas)
 							character.animation.remove(anim.anim);
 						else
-							@:privateAccess character.anim.animsMap.remove(anim.anim);
+							@:privateAccess character.anim.remove(anim.anim);
 						character.animOffsets.remove(anim.anim);
 						character.animationsArray.remove(anim);
 					}
@@ -1127,8 +1127,8 @@ class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler
 			}
 			else if (character.isAnimateAtlas && character.anim != null)
 			{
-				frames = character.anim.curFrame;
-				length = character.anim.length;
+				frames = character.anim.curAnim.curFrame;
+				length = character.anim.curAnim.frames.length;
 			}
 
 			if (length >= 0)
