@@ -101,7 +101,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 			dj = FunkinSprite.createTextureAtlas((CUTOUT_WIDTH * DJ_POS_MULTI) + 640, 366, "freeplay/freeplay-boyfriend");
 		}
 		add(dj);
-		dj.playAnimation(data.getFreeplayDJData().getAnimationPrefix("idle"));
+		dj.anim.play(data.getFreeplayDJData().getAnimationPrefix("idle"));
 		dj_anim = new DJAnimPreview(true,100, 100);
 		dj_anim.visible = false;
 		dj_anim.dj = data;

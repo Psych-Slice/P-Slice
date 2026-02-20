@@ -95,8 +95,10 @@ class TwoPicos
 			{
 				if (playerShoots)
 				{
-					if (seenOutcome)
-						imposterPico.playAnimation("loopOpponent", true, true, true);
+					if (seenOutcome){
+						imposterPico.anim.play("loopOpponent", true, true);
+						imposterPico.anim.curAnim.looped = true;
+					}
 					else
 					{
 						imposterPico.kill();
@@ -109,7 +111,8 @@ class TwoPicos
 				{
 					if (seenOutcome)
 					{
-						pico.playAnimation("loopPlayer", true, true, true);
+						pico.anim.play("loopPlayer", true, true);
+						pico.anim.curAnim.looped = true;
 						FlxG.sound.music.fadeTween?.cancel();
 						game.endSong();
 					}
