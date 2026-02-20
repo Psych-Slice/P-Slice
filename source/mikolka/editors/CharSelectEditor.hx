@@ -68,9 +68,9 @@ class CharSelectEditor extends MusicBeatState
 
 		var stageSpr:FunkinSprite = FunkinSprite.createTextureAtlas(cutoutSize + -2, 1, "charSelect/charSelectStage");
 		stageSpr.anim.play("");
-		stageSpr.anim.onComplete.add(function()
+		stageSpr.anim.onFinish.add(function(animName:String)
 		{
-			stageSpr.anim.play("");
+			stageSpr.anim.play(animName);
 		});
 		add(stageSpr);
 
@@ -78,14 +78,14 @@ class CharSelectEditor extends MusicBeatState
 		nametag.midpointX += cutoutSize;
 		add(nametag);
 
-		gfChill = new CharSelectGF();
+		gfChill = new CharSelectGF(0,0);
 		gfChill.x += cutoutSize;
 		switchEditorGF(activePlayer._data.charSelect.gf);
 		add(gfChill);
 
 		playerChill = new CharSelectPlayer(cutoutSize*2.5, 0);
 		playerChill.switchChar(initPlayerId); // ? Set to current character
-		playerChill.onAnimationComplete.removeAll(); // ? clear imposed triggers
+		playerChill.anim.onFinish.removeAll(); // ? clear imposed triggers
 		add(playerChill);
 
 		var curtains:FlxSprite = new FlxSprite(cutoutSize + (-47 - 165), -49 - 50);
@@ -192,7 +192,7 @@ class CharSelectEditor extends MusicBeatState
 		else
 		{
 			gfChill.visible = true;
-			gfChill.loadAtlas(currentGFPath);
+			gfChill.switchGF(currentGFPath);
 
 			@:privateAccess
 			gfChill.enableVisualizer = gfData?.visualizer ?? false;
@@ -211,7 +211,7 @@ class CharSelectEditor extends MusicBeatState
 			}
 		}
 
-		gfChill.playAnimation("idle", true, false, false);
+		gfChill.anim.play("idle", true, false);
 		gfChill.updateHitbox();
 	}
 }

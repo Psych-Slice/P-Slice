@@ -306,9 +306,9 @@ class Main extends Sprite
 			debugDisplay.isAdvanced = ClientPrefs.data.fpsRework;
 		}
 
-		#if (debug)
-		flixel.addons.studio.FlxStudio.create();
-		#end
+		// #if (debug)
+		// flixel.addons.studio.FlxStudio.create();
+		// #end
 
 		#if html5
 		FlxG.autoPause = false;

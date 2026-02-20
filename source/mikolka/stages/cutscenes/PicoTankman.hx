@@ -47,7 +47,7 @@ class PicoTankman {
 			FlxTween.tween(game.camFollow,{ x:tankmanPos[0] + 320, y:tankmanPos[1] - 70}, 2.8, { ease:FlxEase.expoOut});
 			game.defaultCamZoom = 0.65;
 			game.dad.visible = false;
-			tankmanEnding.playAnimation("tankman stress ending", true, false, false);
+			tankmanEnding.anim.play("tankman stress ending", true, false);
     		cutsceneSounds.play();
 		};
 		cutscene.finishCallback = () ->{

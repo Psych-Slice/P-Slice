@@ -260,7 +260,7 @@
 		<!--These
 		defines are mostly for testing (aren't required to be used)-->
 		<haxelib name="hxcpp-debug-server" />
-		<haxelib name="flixel-studio" />
+		<!-- <haxelib name="flixel-studio" /> -->
 		<haxelib name="hscript" />
 	</section>
 

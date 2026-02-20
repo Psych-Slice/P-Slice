@@ -40,14 +40,14 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 
 		
 		registerAnims(value);
-		value.onFrameChange.add(onFrameAdvance);
-		activeSprite?.onFrameChange.remove(onFrameAdvance);
+		value.anim.onFrameChange.add(onFrameAdvance);
+		activeSprite?.anim.onFrameChange.remove(onFrameAdvance);
 		activeSprite = value;
 
 		if(labels.length == 0){
 			UserErrorSubstate.makeMessage("No animations registered",
 			"Looks like you haven't registered any animations.\n\nHave you exported your sprite correctly?");
-            activeSprite?.onFrameChange.remove(onFrameAdvance);
+            activeSprite?.anim.onFrameChange.remove(onFrameAdvance);
             activeSprite = null;
         }
 		else input_selectAnim(0);
@@ -81,10 +81,10 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 
 	public function input_selectFrame(diff:Int = 0)
 	{
-		activeSprite.pauseAnimation();
+		activeSprite.anim.pause();
         var newFrame = Std.int(FlxMath.bound(selectedFrame+diff,1,selectedAnimLength));
-		if(useAtlasSymbols) activeSprite.anim.curFrame = newFrame-1;
-		else activeSprite.anim.curFrame = selectedAnimIndices[newFrame-1];
+		if(useAtlasSymbols) activeSprite.anim.curAnim.curFrame = newFrame-1;
+		else activeSprite.anim.curAnim.curFrame = selectedAnimIndices[newFrame-1];
 		
         selectedFrame = newFrame;
         frameTxt.text = 'Frame (${selectedFrame}/${selectedAnimLength})';
@@ -118,11 +118,9 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 
 	private function onFrameAdvance(anim:String, frame:Int ,frameIndex:Int)
 	{
-		var mainSymbol = activeSprite.anim.curSymbol;
-		var symbol = mainSymbol.getFrameLabel(anim);
         if(selectedAnimLength == 0) {
-            selectedAnimIndices = symbol.getFrameIndices();
-            selectedAnimLength = symbol.getFrameIndices().length; // timeline.totalFrames;
+            selectedAnimIndices = activeSprite.anim.curAnim.frames;
+            selectedAnimLength = activeSprite.anim.curAnim.frames.length; // timeline.totalFrames;
         }
 		// var labelFrame = indices.indexOf(frame);
 		// if (labelFrame == -1)
