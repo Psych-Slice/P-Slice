@@ -205,10 +205,10 @@ class CharSelectEditor extends MusicBeatState
 				);
 				animInfoPath = 'images/charSelect/gfAnimInfo';
 			}
-			@:privateAccess {
-				gfChill.animInInfo = FramesJSFLParser.parse(animInfoPath + '/In.txt');
-				gfChill.animOutInfo = FramesJSFLParser.parse(animInfoPath + '/Out.txt');
-			}
+			// @:privateAccess {
+			// 	gfChill.animInInfo = FramesJSFLParser.parse(animInfoPath + '/In.txt');
+			// 	gfChill.animOutInfo = FramesJSFLParser.parse(animInfoPath + '/Out.txt');
+			// }
 		}
 
 		gfChill.anim.play("idle", true, false);

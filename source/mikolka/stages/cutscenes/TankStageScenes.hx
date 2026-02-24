@@ -190,8 +190,8 @@ class TankStageScenes {
 		cutsceneHandler.push(pico);
 
 		// prepare pico animation cycle
-		function picoStressCycle() {
-			switch (pico.anim.curInstance.symbol.name) {
+		function picoStressCycle(animName:String) {
+			switch (pico.anim.name) {
 				case "dieBitch", "GF Time to Die sequence":
 					pico.anim.play('picoAppears', true);
 					game.boyfriendGroup.alpha = 1;
