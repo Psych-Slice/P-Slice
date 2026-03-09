@@ -109,7 +109,7 @@ class DifficultyStars extends FlxSpriteGroup
     }
     else
     {
-      stars.anim.curFrame = Std.int(curDifficulty * 100);
+      stars.anim.curAnim.curFrame = Std.int(curDifficulty * 100);
       stars.anim.play("diff stars", true, false, curDifficulty * 100);
     }
 

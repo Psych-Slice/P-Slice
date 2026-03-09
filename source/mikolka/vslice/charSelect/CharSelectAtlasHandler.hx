@@ -1,4 +1,4 @@
-package funkin.ui.charSelect;
+package mikolka.vslice.charSelect;
 
 import animate.FlxAnimateFrames;
 import flixel.FlxG;

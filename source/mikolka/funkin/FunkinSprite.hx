@@ -110,7 +110,7 @@ typedef AtlasSpriteSettings =
  * - A more efficient method for creating solid color sprites.
  * - TODO: Better cache handling for textures.
  */
-@:nullSafety
+// @:nullSafety
 class FunkinSprite extends FlxAnimate
 {
   /**

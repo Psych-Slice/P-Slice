@@ -38,7 +38,7 @@ class SpraycanAtlasSprite extends FlxSpriteGroup
 	}
 
 	public var cutscene:Bool = false;
-	public function finishCanAnimation()
+	public function finishCanAnimation(animName:String)
 	{
 		switch(playingAnim)
 		{

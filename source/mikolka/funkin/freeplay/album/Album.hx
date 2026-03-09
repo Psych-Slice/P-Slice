@@ -89,6 +89,14 @@ class Album
     return 'Album($id)';
   }
 
+    /**
+   * Get the offsets for the album title.
+   */
+  public function getAlbumTitleOffsets():Null<Array<Float>>
+  {
+    return _data?.albumTitleOffsets ?? [0, 0];
+  }
+  
   public function destroy():Void {}
 
 }

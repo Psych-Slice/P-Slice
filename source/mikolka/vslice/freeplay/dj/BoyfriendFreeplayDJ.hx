@@ -2,12 +2,10 @@ package mikolka.vslice.freeplay.dj;
 
 import openfl.utils.Assets;
 import flixel.FlxG;
-import funkin.audio.FunkinSound;
-import funkin.ui.freeplay.dj.AnimateAtlasFreeplayDJ;
-import funkin.ui.freeplay.dj.FreeplayDJState;
-import funkin.data.freeplay.player.PlayerRegistry;
-import funkin.util.Constants;
-import funkin.Paths;
+import mikolka.vslice.freeplay.dj.AnimateAtlasFreeplayDJ;
+import mikolka.vslice.freeplay.dj.BaseFreeplayDJ.FreeplayDJState;
+import mikolka.funkin.players.PlayerRegistry;
+import mikolka.compatibility.funkin.FunkinPath as Paths;
 
 using StringTools;
 
@@ -16,7 +14,7 @@ class BoyfriendFreeplayDJ extends AnimateAtlasFreeplayDJ
   public var cartoonSnd:FunkinSound = null;
   public var playingCartoon:Bool = false;
 
-  final CARTOON_CHANNEL_FRAME:Int = 60;
+  var CARTOON_CHANNEL_FRAME:Int = 60;
   final CARTOON_LIST:Array<String> = Assets.list().filter((path) -> return path.startsWith("assets/sounds/cartoons/"));
 
   public function new(x:Float, y:Float, characterId:String)
@@ -24,7 +22,7 @@ class BoyfriendFreeplayDJ extends AnimateAtlasFreeplayDJ
     super(x, y, characterId);
     this.cartoonSnd?.destroy();
 
-    animation.onFrameChange.add((name, number) -> {
+    animation.onFrameChange.add((name, number,_) -> {
       if (name == playableCharData.getAnimationPrefix('cartoon'))
       {
         if (number == playableCharData.getCartoonSoundClickFrame()) FunkinSound.playOnce(Paths.sound('remote_click'));

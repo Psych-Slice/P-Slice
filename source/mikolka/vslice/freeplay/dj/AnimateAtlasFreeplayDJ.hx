@@ -14,7 +14,7 @@ class AnimateAtlasFreeplayDJ extends BaseFreeplayDJ
   {
     super(x, y, characterId);
 
-    loadTextureAtlas(playableCharData?.getAssetPath(),
+    loadTextureAtlas(playableCharData?.getAtlasPath(),
       {
         swfMode: true
       });

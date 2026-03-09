@@ -106,6 +106,10 @@ class PlayerFreeplayDJData
 
 	var fistPump:Null<PlayerFreeplayDJFistPumpData>;
 
+	var useAnimatePosition:Bool = false;
+	
+	var applyStageMatrix:Bool = true;
+
 	public function new()
 	{
 		animationMap = new Map();
@@ -125,6 +129,11 @@ class PlayerFreeplayDJData
 			animationMap.set(anim.name, anim);
 			prefixToOffsetsMap.set(anim.prefix, anim.offsets);
 		}
+	}
+
+	public function useApplyStageMatrix():Bool
+	{
+		return applyStageMatrix;
 	}
 
 	public function getAtlasPath():String

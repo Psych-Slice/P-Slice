@@ -313,7 +313,9 @@ class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler
 					ghost.animation.play(character.animation.curAnim.name, true, false, character.animation.curAnim.curFrame);
 					ghost.animation.pause();
 				}
-				else
+				else{
+					// TODO Implement for atlases code
+				}
 
 				var spr:FlxSprite = ghost;
 				if (spr != null)

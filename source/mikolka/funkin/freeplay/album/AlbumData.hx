@@ -36,6 +36,11 @@ class AlbumData //? making this a class lets us define some defaults
    */
   public var albumTitleAsset:String;
 
+    /**
+   * Offsets for the album title.
+   */
+  public var albumTitleOffsets:Null<Array<Float>> = [0,0];
+
   /**
    * An optional array of animations for the album title.
    */
