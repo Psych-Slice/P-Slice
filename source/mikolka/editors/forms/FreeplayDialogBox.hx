@@ -55,7 +55,7 @@ class FreeplayDialogBox extends PsychUIBox
 		btn_reload = new PsychUIButton(180, 20, "Reload", () ->
 		{
 			try{
-				var sprite = FunkinSprite.createTextureAtlas(640, 366, data.getFreeplayDJData().getAtlasPath());
+				var sprite = FunkinSprite.createTextureAtlas(640, 366, data.getFreeplayDJData().getAssetPath());
 				host.dj_anim.saveAnimations();
 				host.remove(host.dj);
 				host.dj.destroy();

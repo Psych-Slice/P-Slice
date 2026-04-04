@@ -80,178 +80,185 @@ class PlayerData
 
 class PlayerFreeplayDJData
 {
-	var assetPath:String;
-	var animations:Array<AnimationData> = [{
-		name: "idle",
-		offsets: [0,0],
-		prefix: "idle"
-	}];
+  var assetPath:String;
+  var animations:Array<AnimationData>;
 
+  @:optional
+  @:default(false)
+  var applyStageMatrix:Bool;
 
-	var text1:String = "BOYFRIEND";
+  @:optional
+  @:default("BOYFRIEND")
+  var text1:String;
 
-	var text2:String = "HOT BLOODED IN MORE WAYS THAN ONE";
+  @:optional
+  @:default("HOT BLOODED IN MORE WAYS THAN ONE")
+  var text2:String;
 
-	var text3:String = "PROTECT YO NUTS";
+  @:optional
+  @:default("PROTECT YO NUTS")
+  var text3:String;
 
-	@:jignored
-	var animationMap:Map<String, AnimationData>;
+  @:jignored
+  var animationMap:Map<String, AnimationData>;
 
-	@:jignored
-	var prefixToOffsetsMap:Map<String, Array<Float>>;
+  @:jignored
+  var prefixToOffsetsMap:Map<String, Array<Float>>;
 
-	var charSelect:Null<PlayerFreeplayDJCharSelectData>;
+  @:optional
+  var charSelect:Null<PlayerFreeplayDJCharSelectData>;
 
-	var cartoon:Null<PlayerFreeplayDJCartoonData>;
+  @:optional
+  var fistPump:Null<PlayerFreeplayDJFistPumpData>;
 
-	var fistPump:Null<PlayerFreeplayDJFistPumpData>;
+  @:optional
+  public var atlasSettings:TextureAtlasData;
 
-	var useAnimatePosition:Bool = false;
-	
-	var applyStageMatrix:Bool = true;
+  @:optional
+  @:default("animateatlas")
+  public var renderType:Null<String>;
 
-	public function new()
-	{
-		animationMap = new Map();
-	}
+  @:optional
+  @:default(false)
+  public var useAnimatePosition:Bool;
 
-	function mapAnimations()
-	{
-		if (animationMap == null)
-			animationMap = new Map();
-		if (prefixToOffsetsMap == null)
-			prefixToOffsetsMap = new Map();
+  @:optional
+  @:default([0, 0])
+  var offsets:Array<Float>;
 
-		animationMap.clear();
-		prefixToOffsetsMap.clear();
-		for (anim in animations)
-		{
-			animationMap.set(anim.name, anim);
-			prefixToOffsetsMap.set(anim.prefix, anim.offsets);
-		}
-	}
+  public function new()
+  {
+    animationMap = new Map();
+  }
 
-	public function useApplyStageMatrix():Bool
-	{
-		return applyStageMatrix;
-	}
+  function mapAnimations():Void
+  {
+    if (animationMap == null) animationMap = new Map();
+    if (prefixToOffsetsMap == null) prefixToOffsetsMap = new Map();
 
-	public function getAtlasPath():String
-	{
-		return assetPath;
-	}
+    animationMap.clear();
+    prefixToOffsetsMap.clear();
+    for (anim in animations)
+    {
+      animationMap.set(anim.name, anim);
+      prefixToOffsetsMap.set(anim.prefix, anim.offsets);
+    }
+  }
 
-	public function getFreeplayDJText(index:Int):String
-	{
-		switch (index)
-		{
-			case 1:
-				return text1;
-			case 2:
-				return text2;
-			case 3:
-				return text3;
-			default:
-				return '';
-		}
-	}
+  public inline function getAssetPath():String return assetPath; // return assetPath;
 
-	public function getAnimationPrefix(name:String):Null<String>
-	{
-		if (!animationMap.iterator().hasNext())
-			mapAnimations();
+  public inline function getAnimationsList():Array<AnimationData> return animations;
 
-		var anim = animationMap.get(name);
-		if (anim == null)
-			return null;
-		return anim.prefix;
-	}
+  public function useApplyStageMatrix():Bool
+  {
+    return applyStageMatrix;
+  }
 
-	public function getAnimationOffsetsByPrefix(?prefix:String):Array<Float>
-	{
-		if (!prefixToOffsetsMap.iterator().hasNext())
-			mapAnimations();
-		if (prefix == null)
-			return [0, 0];
-		return prefixToOffsetsMap.get(prefix);
-	}
+  public function getGlobalOffsets():Array<Float>
+  {
+    return offsets;
+  }
 
-	public function getAnimationOffsets(name:String):Array<Float>
-	{
-		return getAnimationOffsetsByPrefix(getAnimationPrefix(name));
-	}
+  /**
+   * Normally, we'd let `FunkinSprite` handle the settings validation, but
+   * Freeplay DJs have a special case where the turntable lights use a movieclip
+   * that remains static without SWF mode enabled!
+   * So we have to manually validate the settings to have SWF mode enabled by default.
+   *
+   * @return The configuration for the texture atlas.
+   */
+  public function getAtlasSettings():FunkinSprite.AtlasSpriteSettings
+  {
+    return {
+      swfMode: atlasSettings?.swfMode ?? true,
+      cacheOnLoad: atlasSettings?.cacheOnLoad ?? false,
+      filterQuality: cast atlasSettings?.filterQuality ?? animate.FlxAnimateFrames.FilterQuality.MEDIUM,
+      applyStageMatrix: atlasSettings?.applyStageMatrix ?? false,
+      useRenderTexture: atlasSettings?.useRenderTexture ?? false
+    }
+  }
 
-	// TODO: These should really be frame labels, ehe.
+  public function getFreeplayDJText(index:Int):String
+  {
+    switch (index)
+    {
+      case 1:
+        return text1;
+      case 2:
+        return text2;
+      case 3:
+        return text3;
+      default:
+        return '';
+    }
+  }
 
-	public function getCartoonSoundClickFrame():Int
-	{
-		return cartoon?.soundClickFrame ?? 80;
-	}
+  
+  public function getAnimationPrefix(name:String):Null<String>
+  {
+    if (animationMap.size() == 0) mapAnimations();
 
-	public function getCartoonSoundCartoonFrame():Int
-	{
-		return cartoon?.soundCartoonFrame ?? 85;
-	}
+    var anim = animationMap.get(name);
+    if (anim == null) return null;
+    return anim.prefix;
+  }
 
-	public function getCartoonLoopBlinkFrame():Int
-	{
-		return cartoon?.loopBlinkFrame ?? 112;
-	}
+  public function getAnimationOffsetsByPrefix(?prefix:String):Array<Float>
+  {
+    if (prefixToOffsetsMap.size() == 0) mapAnimations();
+    if (prefix == null) return [0, 0];
+    return prefixToOffsetsMap.get(prefix);
+  }
 
-	public function getCartoonLoopFrame():Int
-	{
-		return cartoon?.loopFrame ?? 166;
-	}
+  public function getAnimationOffsets(name:String):Array<Float>
+  {
+    return getAnimationOffsetsByPrefix(getAnimationPrefix(name));
+  }
 
-	public function getCartoonChannelChangeFrame():Int
-	{
-		return cartoon?.channelChangeFrame ?? 60;
-	}
+  public function getFistPumpIntroStartFrame():Int
+  {
+    return fistPump?.introStartFrame ?? 0;
+  }
 
-	public function getFistPumpIntroStartFrame():Int
-	{
-		return fistPump?.introStartFrame ?? 0;
-	}
+  public function getFistPumpIntroEndFrame():Int
+  {
+    return fistPump?.introEndFrame ?? 0;
+  }
 
-	public function getFistPumpIntroEndFrame():Int
-	{
-		return fistPump?.introEndFrame ?? 0;
-	}
+  public function getFistPumpLoopStartFrame():Int
+  {
+    return fistPump?.loopStartFrame ?? 0;
+  }
 
-	public function getFistPumpLoopStartFrame():Int
-	{
-		return fistPump?.loopStartFrame ?? 0;
-	}
+  public function getFistPumpLoopEndFrame():Int
+  {
+    return fistPump?.loopEndFrame ?? 0;
+  }
 
-	public function getFistPumpLoopEndFrame():Int
-	{
-		return fistPump?.loopEndFrame ?? 0;
-	}
+  public function getFistPumpIntroBadStartFrame():Int
+  {
+    return fistPump?.introBadStartFrame ?? 0;
+  }
 
-	public function getFistPumpIntroBadStartFrame():Int
-	{
-		return fistPump?.introBadStartFrame ?? 0;
-	}
+  public function getFistPumpIntroBadEndFrame():Int
+  {
+    return fistPump?.introBadEndFrame ?? 0;
+  }
 
-	public function getFistPumpIntroBadEndFrame():Int
-	{
-		return fistPump?.introBadEndFrame ?? 0;
-	}
+  public function getFistPumpLoopBadStartFrame():Int
+  {
+    return fistPump?.loopBadStartFrame ?? 0;
+  }
 
-	public function getFistPumpLoopBadStartFrame():Int
-	{
-		return fistPump?.loopBadStartFrame ?? 0;
-	}
+  public function getFistPumpLoopBadEndFrame():Int
+  {
+    return fistPump?.loopBadEndFrame ?? 0;
+  }
 
-	public function getFistPumpLoopBadEndFrame():Int
-	{
-		return fistPump?.loopBadEndFrame ?? 0;
-	}
-
-	public function getCharSelectTransitionDelay():Float
-	{
-		return charSelect?.transitionDelay ?? 0.25;
-	}
+  public function getCharSelectTransitionDelay():Float
+  {
+    return charSelect?.transitionDelay ?? 0.25;
+  }
 }
 
 typedef PlayerCharSelectData =

@@ -94,7 +94,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		add(ostName);
 
 		try{
-			dj = FunkinSprite.createTextureAtlas((CUTOUT_WIDTH * DJ_POS_MULTI) + 640, 366, data.getFreeplayDJData().getAtlasPath());
+			dj = FunkinSprite.createTextureAtlas((CUTOUT_WIDTH * DJ_POS_MULTI) + 640, 366, data.getFreeplayDJData().getAssetPath());
 		}
 		catch(x){
 			trace(x);

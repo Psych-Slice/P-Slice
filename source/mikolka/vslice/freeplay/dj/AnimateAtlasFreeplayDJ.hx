@@ -14,15 +14,14 @@ class AnimateAtlasFreeplayDJ extends BaseFreeplayDJ
   {
     super(x, y, characterId);
 
-    loadTextureAtlas(playableCharData?.getAtlasPath(),
-      {
-        swfMode: true
-      });
+    loadTextureAtlas(playableCharData?.getAssetPath(),
+      playableCharData?.getAtlasSettings());
 
     if (playableCharData?.useApplyStageMatrix() ?? false)
     {
       this.applyStageMatrix = true;
     }
+    loadAnimations();
 
     animation.onFinish.add(onFinishAnim);
     animation.onLoop.add(onFinishAnim);
@@ -201,8 +200,19 @@ class AnimateAtlasFreeplayDJ extends BaseFreeplayDJ
     }
   }
 
+  public function loadAnimations():Void
+  {
+    trace('[ATLASDJ] Loading ${playableCharData.getAnimationsList().length} animations for ${characterId}');
+
+    FlxAnimationUtil.addTextureAtlasAnimations(this, playableCharData.getAnimationsList());
+
+    var animationList:Array<String> = this.animation.getNameList();
+    trace('[SPARROWDJ] Successfully loaded ${animationList.length} animations for ${characterId}');
+  }
+  
   override public function playFlashAnimation(id:String, Force:Bool = false, Reverse:Bool = false, Loop:Bool = false, Frame:Int = 0):Void
   {
+
     animation.play(id, Force, Reverse, Frame);
 
     if (animation.curAnim != null)

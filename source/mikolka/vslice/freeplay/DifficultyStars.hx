@@ -36,7 +36,7 @@ class DifficultyStars extends FlxSpriteGroup
     
     //? Using base FlxAnimate to sideload JSON obj "freeplay/freeplayStars
     stars = FunkinSprite.createTextureAtlas(0, 0, "freeplay/freeplayStars");
-
+    stars.anim.addBySymbol("diff stars","diff stars");
     stars.anim.play("diff stars");
     add(stars);
     if(VsliceOptions.SHADERS){

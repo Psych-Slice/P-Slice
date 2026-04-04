@@ -319,7 +319,7 @@ class Paths
 			if (spriteJson == null)
 			{
 				if (NativeFileSystem.exists(Path.join([dir, "spritemap1.json"])))
-					spriteJson = NativeFileSystem.getContent(Path.join([dir, "spritemap1.json"]));
+					spriteJson = NativeFileSystem.getContent(Path.join([dir, "spritemap1.json"])).replace("﻿"," ");
 				else
 				{
 					trace(Path.join([dir, "spritemap1.json"]) + " is missing!!");
@@ -338,6 +338,10 @@ class Paths
 			}
 			folderOrImg = image(Path.join([folderOrImg, "spritemap1"]));
 		}
-		return FlxAnimateFrames.fromAnimate(animationJson,[{json:spriteJson,source:folderOrImg}],null,null,false,settings);
+		// Apparently those files can have garbage data because ????
+		//* https://www.fileformat.info/info/unicode/char/feff/index.htm
+		return FlxAnimateFrames.fromAnimate(animationJson,
+			[{json:spriteJson,source:folderOrImg}]
+			,null,null,false,settings);
 	}
 }

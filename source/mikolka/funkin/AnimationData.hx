@@ -56,6 +56,15 @@ package mikolka.funkin;
    @:default(false)
    @:optional
    var looped:Bool;
+
+     /**
+   * The type of animation to use.
+   * Only available for texture atlases.
+   * Options: "framelabel", "symbol"
+   */
+    @:default("framelabel")
+    @:optional
+    var animType:String;
  
    /**
     * Whether the animation's sprites should be flipped horizontally.

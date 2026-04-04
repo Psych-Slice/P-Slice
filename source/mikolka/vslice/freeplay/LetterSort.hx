@@ -195,7 +195,7 @@ class FreeplayLetter extends FunkinSprite
     // /^[OR].*/gi doesn't work for showing the song Pico, so now it's
     // /^[O-R].*/gi ant it works for displaying Pico
     // https://regex101.com/r/bWFPfS/1
-    // we split by underscores, simply for nice lil convinience
+    // we split by underscores, simply for nice lil convenience
     var alphabet:String = 'A-B_C-D_E-H_I-L_M-N_O-R_S_T_U-Z';
     regexLetters = alphabet.split('_');
     regexLetters.insert(0, 'ALL');
@@ -203,9 +203,12 @@ class FreeplayLetter extends FunkinSprite
     regexLetters.insert(0, '#');
 
     // the symbols from flash don't have dashes, so we clean this up for use with animations
-    // (we don't need to re-export, rule of thumb is to accomodate files named in flash from dave
+    // (we don't need to re-export, rule of thumb is to accommodate files named in flash from dave
     //    until we get him programming classes (and since i cant find the .fla file....))
     animLetters = regexLetters.map(animLetter -> animLetter.replace('-', ''));
+    for(letterName in animLetters){
+      addAnimationIfMissing(letterName + " move");
+    }
 
     if (letterInd != null)
     {

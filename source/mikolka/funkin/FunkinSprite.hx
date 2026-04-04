@@ -525,15 +525,10 @@ class FunkinSprite extends FlxAnimate
    * @param name The name of the frame label to retrieve.
    * @return The frame label, or null if it doesn't exist.
    */
-  public function getFrameLabel(name:String):Null<animate.internal.Frame>
+  public function getFrameLabel(name:String, ?timeline:animate.internal.Timeline):Null<animate.internal.Frame>
   {
-    if (!this.isAnimate)
-    {
-      trace('WARNING: getFrameLabel() only works texture atlases!');
-      return null;
-    }
 
-    for (layer in this.timeline.layers)
+    for (layer in (timeline ?? this.timeline).layers)
     {
       @:nullSafety(Off)
       for (frame in layer.frames)
@@ -544,8 +539,10 @@ class FunkinSprite extends FlxAnimate
         }
       }
     }
+
     return null;
   }
+
 
   /**
    * Returns the default symbol in the atlas.
