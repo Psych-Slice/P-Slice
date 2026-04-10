@@ -248,6 +248,9 @@ class Note extends FlxSprite
 
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
+		if (isSustainNote) {
+			noAnimation = true;
+		}
 		this.inEditor = inEditor;
 		this.moves = false;
 
