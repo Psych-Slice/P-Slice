@@ -686,12 +686,6 @@ class PlayState extends MusicBeatState
 		cachePopUpScore();
 
 		if(eventNotes.length < 1) checkEventNote();
-
-		for (i in 0...unspawnNotes.length) {
-        	    if (unspawnNotes[i].isSustainNote) {
-            	        unspawnNotes[i].noAnimation = true;
-		     }
-		}
 	}
 
 	function set_songSpeed(value:Float):Float
