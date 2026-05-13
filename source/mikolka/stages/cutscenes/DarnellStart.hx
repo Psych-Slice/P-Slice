@@ -92,6 +92,7 @@ class DarnellStart {
 		cutsceneHandler.timer(cutsceneDelay + 5.1, function() // pico fires at can
 		{
 			stage.boyfriend.playAnim('intro2', true);
+			stage.boyfriend.specialAnim = true;
 
 			FlxG.sound.play(Paths.soundRandom('shots/shot', 1, 4));
 
@@ -147,6 +148,8 @@ class DarnellStart {
 			stage.boyfriend.dance();
 			stage.dad.animation.finishCallback = null;
 			stage.gf.animation.finishCallback = null;
+			stage.boyfriend.specialAnim = false;
+			stage.boyfriend.animation.finishCallback = null;
 			@:privateAccess
 			game.moveCameraSection();
 			game.cameraSpeed = 1;
