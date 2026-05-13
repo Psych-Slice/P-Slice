@@ -90,7 +90,7 @@ class TankErect extends BaseStage
 		if(eventName == "Change Character" && VsliceOptions.SHADERS){
 			switch(value1.toLowerCase().trim()) {
 				case 'gf' | 'girlfriend' | '2':
-					applyShader(gf, gf.curCharacter);
+					applyGFShader(gf);
 				case 'dad' | 'opponent' | '1':
 					applyShader(dad, dad.curCharacter);
 				default:
@@ -104,7 +104,7 @@ class TankErect extends BaseStage
 		if (VsliceOptions.SHADERS)
 		{
 			applyShader(boyfriend, boyfriend.curCharacter);
-			applyShader(gf, gf.curCharacter);
+			applyGFShader(gf);
 			applyShader(dad, dad.curCharacter);
 			
 		}
@@ -157,6 +157,25 @@ class TankErect extends BaseStage
 		cutscene?.preloadCutscene();
 	}
 
+	// DropShadowShader didn't work for GF for whatever reason so a hack is
+	// to use the abot implementation for the shader and copy the gf-specific data
+	function applyGFShader(sprite:FlxSprite)
+	{
+		var rim = new DropShadowScreenspace();
+		rim.setAdjustColor(-42, -10, 5, -25);
+		rim.color = 0xFFDFEF3C;
+		rim.antialiasAmt = 0;
+		rim.attachedSprite = sprite;
+		rim.distance = 3;
+		rim.angle = 90;
+
+		sprite.shader = rim;
+		sprite.animation.callback = function(anim, frame, index)
+		{
+			rim.updateFrameInfo(sprite.frame);
+			rim.curZoom = camGame.zoom;
+		};
+	}
 
 	function applyAbotShader(sprite:FlxSprite){
 		var rim = new DropShadowScreenspace();
