@@ -147,20 +147,22 @@ class SpookyMansionErect extends BaseStage
 				dad.alpha = 1;
 				gf.alpha = 1;
 
-				gfGhost.alpha = 0;
-				boyfriendGhost.alpha = 0;
-				dadGhost.alpha = 0;
+				gfGhost.alpha = 1;
+				boyfriendGhost.alpha = 1;
+				dadGhost.alpha = 1;
 			});
 			FlxTimer.wait(0.12, () ->
 			{
-				if (boyfriend.hasAnimation('scared'))
+				if (boyfriend.hasAnimation('scared') && boyfriendGhost.hasAnimation('scared') )
 					boyfriend.playAnim('scared', true);
+					boyfriendGhost.playAnim('scared', true);
 
 				if (dad.hasAnimation('scared'))
 					dad.playAnim('scared', true);
 
-				if (gf != null && gf.hasAnimation('scared'))
+				if (gf != null && gf.hasAnimation('scared') && gfGhost.hasAnimation('scared'))
 					gf.playAnim('scared', true);
+					gfGhost.playAnim('scared', true);
 				if (VsliceOptions.FLASHBANG)
 				{
 					PicoCapableStage.instance?.ABot_plink();
