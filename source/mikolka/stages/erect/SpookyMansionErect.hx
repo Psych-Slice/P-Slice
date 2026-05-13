@@ -147,9 +147,9 @@ class SpookyMansionErect extends BaseStage
 				dad.alpha = 1;
 				gf.alpha = 1;
 
-				gfGhost.alpha = 0;
-				boyfriendGhost.alpha = 0;
-				dadGhost.alpha = 0;
+				gfGhost.alpha = 1;
+				boyfriendGhost.alpha = 1;
+				dadGhost.alpha = 1;
 			});
 			FlxTimer.wait(0.12, () ->
 			{
