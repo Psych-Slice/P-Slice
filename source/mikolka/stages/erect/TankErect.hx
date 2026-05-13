@@ -90,7 +90,7 @@ class TankErect extends BaseStage
 		if(eventName == "Change Character" && VsliceOptions.SHADERS){
 			switch(value1.toLowerCase().trim()) {
 				case 'gf' | 'girlfriend' | '2':
-					applyGFShader(gf);
+					applyAbotShader(gf);
 				case 'dad' | 'opponent' | '1':
 					applyShader(dad, dad.curCharacter);
 				default:
@@ -104,7 +104,7 @@ class TankErect extends BaseStage
 		if (VsliceOptions.SHADERS)
 		{
 			applyShader(boyfriend, boyfriend.curCharacter);
-			applyGFShader(gf);
+			applyAbotShader(gf);
 			applyShader(dad, dad.curCharacter);
 			
 		}
