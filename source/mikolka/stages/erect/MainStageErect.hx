@@ -49,9 +49,6 @@ class MainStageErect extends BaseStage {
 			add(orangeLight);
 		}
 
-        var beamLol:BGSprite = new BGSprite('erect/lights', -847, -245,1.2,1.2);
-		add(beamLol);
-
         if(!VsliceOptions.LOW_QUALITY) {
 			var TheOneAbove:BGSprite = new BGSprite('erect/lightAbove', 804, -117);
             TheOneAbove.blend = BlendMode.ADD;
@@ -61,6 +58,10 @@ class MainStageErect extends BaseStage {
 
     override function createPost() {
         super.createPost();
+
+        var beamLol:BGSprite = new BGSprite('erect/lights', -847, -245,1.2,1.2);
+		add(beamLol);
+
         if(VsliceOptions.SHADERS){
             gf.shader = makeCoolShader(-9,0,-30,-4);
             dad.shader = makeCoolShader(-32,0,-33,-23);
