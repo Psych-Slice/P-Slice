@@ -147,15 +147,6 @@ class FunkinSprite extends FlxAnimate
     }
   }
 
-  override function initVars():Void
-  {
-    super.initVars();
-
-    // var newController:FunkinAnimationController = new FunkinAnimationController(this);
-
-    // animation = newController;
-    // anim = newController;
-  }
 
   /**
    * Create a new FunkinSprite with a static texture.
@@ -438,6 +429,17 @@ class FunkinSprite extends FlxAnimate
 
     return frames;
   }
+
+  override function initVars():Void
+  {
+    super.initVars();
+
+    var newController:FunkinAnimationController = new FunkinAnimationController(this);
+
+    animation = newController;
+    anim = newController;
+  }
+
 
   /**
    * Gets the current animation ID.

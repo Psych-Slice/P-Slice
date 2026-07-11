@@ -422,7 +422,6 @@ class FreeplayState extends MusicBeatSubstate
 					x: -dj.width * 1.6,
 					speed: 0.5
 				});
-				add(dj);
 				exitMoversCharSel.set([dj], {
 					y: -175,
 					speed: 0.8,
@@ -765,6 +764,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		if (dj != null)
 		{
+			add(dj);
 			dj.onIntroDone.add(onDJIntroDone);
 		}
 		else
@@ -1899,6 +1899,7 @@ class FreeplayState extends MusicBeatSubstate
 	{
 		controls.isInSubstate = false;
 		super.destroy();
+
 		var daSong:Null<FreeplaySongData> = currentFilteredSongs[curSelected];
 		if (daSong != null)
 		{

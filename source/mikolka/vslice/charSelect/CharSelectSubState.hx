@@ -145,6 +145,7 @@ class CharSelectSubState extends MusicBeatSubState
 
 		var crowd:FunkinSprite = FunkinSprite.createTextureAtlas(cutoutSize, 0, "charSelect/crowd");
 
+		crowd.anim.addBySymbol('',"crowd");
 		crowd.anim.play('');
     	crowd.anim.curAnim.looped = true;
 		crowd.scrollFactor.set(0.3, 0.3);
@@ -154,6 +155,7 @@ class CharSelectSubState extends MusicBeatSubState
       	{
         	applyStageMatrix: true
       	});
+		stageSpr.anim.addBySymbol('',"stage full");
     	stageSpr.anim.play('');
 		stageSpr.anim.curAnim.looped = true;
 		add(stageSpr);
@@ -163,7 +165,7 @@ class CharSelectSubState extends MusicBeatSubState
 		curtains.scrollFactor.set(1.4, 1.4);
 		add(curtains);
 
-		barthing.loadTextureAtlas("charSelect/barThing",
+		barthing = FunkinSprite.createTextureAtlas("charSelect/barThing",
 		{
 			applyStageMatrix: true
 		});

@@ -37,50 +37,58 @@
     "animations": [
       {
         "name": "intro",
-        "prefix": "Intro",
-        "animType": "framelabel"
+        "prefix": "boyfriend dj intro",
+        "animType": "symbol",
+        "offsets": [631.7, 362.6]
       },
       {
         "name": "idle",
-        "prefix": "Idle",
-        "animType": "framelabel"
+        "prefix": "Boyfriend DJ",
+        "animType": "symbol",
+        "offsets": [625, 360]
       },
       {
         "name": "idleEasterEgg",
-        "prefix": "AFK",
-        "animType": "framelabel"
+        "prefix": "bf dj afk",
+        "animType": "symbol",
+        "offsets": [1274.5, 418.5]
       },
       {
         "name": "confirm",
-        "prefix": "Confirm",
-        "animType": "framelabel"
+        "prefix": "Boyfriend DJ confirm",
+        "animType": "symbol",
+        "offsets": [625, 360]
       },
       {
         "name": "fistPump",
-        "prefix": "Fist Pump",
-        "animType": "framelabel"
-      },
-      {
-        "name": "loss",
-        "prefix": "Fist Pump Loss",
-        "animType": "framelabel"
-      },
-      {
-        "name": "charSelect",
-        "prefix": "To Character Select",
-        "animType": "framelabel"
+        "prefix": "Boyfriend DJ fist pump",
+        "animType": "symbol",
+        "offsets": [625, 360]
       },
       {
         "name": "cartoon",
-        "prefix": "Watching TV",
-        "animType": "framelabel"
+        "prefix": "Boyfriend DJ watchin tv OG",
+        "animType": "symbol",
+        "offsets": [625, 360]
+      },
+      {
+        "name": "loss",
+        "prefix": "Boyfriend DJ loss reaction 1",
+        "animType": "symbol",
+        "offsets": [625, 360]
+      },
+      {
+        "name": "charSelect",
+        "prefix": "Boyfriend DJ to CS",
+        "animType": "symbol",
+        "offsets": [625, 360]
       },
       {
         "name": "newUnlock",
-        "prefix": "New Unlock",
-        "animType": "framelabel"
-      }
-    ]
+        "prefix": "Boyfriend DJ new character ",
+        "animType": "symbol",
+        "offsets": [625, 360]
+      }]
   },
   "charSelect": {
     "position": 4,

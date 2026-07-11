@@ -31,7 +31,7 @@ class FlxAnimationUtil
   /**
    * Properly adds an animation to a texture atlas sprite based on the provided animation data.
    */
-  public static function addTextureAtlasAnimation(target:FunkinSprite, anim:AnimationData):Void
+  public static function addTextureAtlasAnimation(target:FunkinSprite, anim:AnimationData,addByPrefix:Bool = false):Void
   {
     if (!target.isAnimate) return;
     if (anim.prefix == null) return;
@@ -41,15 +41,15 @@ class FlxAnimationUtil
     var flipX:Bool = anim.flipX ?? false;
     var flipY:Bool = anim.flipY ?? false;
     var animType:String = anim.animType ?? "framelabel";
-
+    var animName = addByPrefix ? anim.prefix : anim.name;
     if (anim.frameIndices != null && anim.frameIndices.length > 0)
     {
       switch (animType)
       {
         case "framelabel":
-          target.anim.addByFrameLabelIndices(anim.name, anim.prefix, anim.frameIndices, frameRate, looped, flipX, flipY);
+          target.anim.addByFrameLabelIndices(animName, anim.prefix, anim.frameIndices, frameRate, looped, flipX, flipY);
         case "symbol":
-          target.anim.addBySymbolIndices(anim.name, anim.prefix, anim.frameIndices, frameRate, looped, flipX, flipY);
+          target.anim.addBySymbolIndices(animName, anim.prefix, anim.frameIndices, frameRate, looped, flipX, flipY);
       }
     }
     else
@@ -57,9 +57,9 @@ class FlxAnimationUtil
       switch (animType)
       {
         case "framelabel":
-          target.anim.addByFrameLabel(anim.name, anim.prefix, frameRate, looped, flipX, flipY);
+          target.anim.addByFrameLabel(animName, anim.prefix, frameRate, looped, flipX, flipY);
         case "symbol":
-          target.anim.addBySymbol(anim.name, anim.prefix, frameRate, looped, flipX, flipY);
+          target.anim.addBySymbol(animName, anim.prefix, frameRate, looped, flipX, flipY);
       }
     }
   }
@@ -78,11 +78,11 @@ class FlxAnimationUtil
   /**
    * Properly adds multiple animations to a texture atlas sprite based on the provided animation data.
    */
-  public static function addTextureAtlasAnimations(target:FunkinSprite, animations:Array<AnimationData>):Void
+  public static function addTextureAtlasAnimations(target:FunkinSprite, animations:Array<AnimationData>,addByPrefix:Bool = false):Void
   {
     for (anim in animations)
     {
-      addTextureAtlasAnimation(target, anim);
+      addTextureAtlasAnimation(target, anim, addByPrefix);
     }
   }
 

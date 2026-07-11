@@ -340,8 +340,9 @@ class Paths
 		}
 		// Apparently those files can have garbage data because ????
 		//* https://www.fileformat.info/info/unicode/char/feff/index.htm
-		return FlxAnimateFrames.fromAnimate(animationJson,
+		var frames = FlxAnimateFrames.fromAnimate(animationJson,
 			[{json:spriteJson,source:folderOrImg}]
 			,null,null,false,settings);
+		return frames;
 	}
 }
