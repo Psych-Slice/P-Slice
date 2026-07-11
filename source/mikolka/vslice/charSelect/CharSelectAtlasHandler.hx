@@ -5,15 +5,15 @@ import flixel.FlxG;
 
 /**
  * Utility class for handling the atlases loaded by CharSelect & co. in an efficient way.
- * TODO: Maybe this should be a general utility class instead?
+ * TODO: Implement cache system. THis thing collides with P-Slice implementation!
  */
 class CharSelectAtlasHandler
 {
-  static final framesCache:Map<String, FlxAnimateFrames> = [];
+  //static final framesCache:Map<String, FlxAnimateFrames> = [];
 
   public static function loadAtlas(path:String, ?settings:FlxAnimateSettings):Null<FlxAnimateFrames>
   {
-    if (framesCache.exists(path)) return framesCache.get(path);
+    //if (framesCache.exists(path)) return framesCache.get(path);
 
     var result:FlxAnimateFrames = Paths.loadAnimateAtlas(path,null,null,
       {
@@ -29,17 +29,17 @@ class CharSelectAtlasHandler
     }
 
     result.parent.destroyOnNoUse = false;
-    framesCache.set(path, result);
+    //framesCache.set(path, result);
     return result;
   }
 
   public static function clearAtlasCache():Void
   {
-    for (frames in framesCache.iterator())
-    {
-      // NOTE: Doing this already calls checkUseCount!
-      frames.parent.destroyOnNoUse = true;
-    }
-    framesCache.clear();
+    // for (frames in framesCache.iterator())
+    // {
+    //   // NOTE: Doing this already calls checkUseCount!
+    //   frames.parent.destroyOnNoUse = true;
+    // }
+    // framesCache.clear();
   }
 }

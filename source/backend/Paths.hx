@@ -312,6 +312,7 @@ class Paths
 
 	public static function loadAnimateAtlas(folderOrImg:Dynamic, spriteJson:Dynamic = null, animationJson:Dynamic = null,settings:FlxAnimateSettings = null):Null<FlxAnimateFrames>
 	{
+		var imageKey:String = null;
 		if (folderOrImg is String)
 		{
 			var dir = getPath("images/" + folderOrImg);
@@ -336,13 +337,18 @@ class Paths
 					return null;
 				}
 			}
-			folderOrImg = image(Path.join([folderOrImg, "spritemap1"]));
+			imageKey = Path.join([folderOrImg, "spritemap1"]);
+			folderOrImg = image(imageKey);
 		}
 		// Apparently those files can have garbage data because ????
 		//* https://www.fileformat.info/info/unicode/char/feff/index.htm
 		var frames = FlxAnimateFrames.fromAnimate(animationJson,
 			[{json:spriteJson,source:folderOrImg}]
-			,null,null,false,settings);
+			,null,imageKey,false,settings);
+		var Img:FlxGraphic = cast folderOrImg;
+		// Stop flixel-animate from destroying graphics
+		// because we do that
+		frames.parent.destroyOnNoUse = false;
 		return frames;
 	}
 }

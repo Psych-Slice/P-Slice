@@ -733,7 +733,7 @@ class FunkinSprite extends FlxAnimate
     matrix.tx = Math.round(matrix.tx / this.scale.x) * this.scale.x;
     matrix.ty = Math.round(matrix.ty / this.scale.y) * this.scale.y;
   }
-
+  @:privateAccess
   public override function destroy():Void
   {
     @:nullSafety(Off) // TODO: Remove when flixel.FlxSprite is null safed.
