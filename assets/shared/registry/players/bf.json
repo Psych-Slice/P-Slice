@@ -33,62 +33,54 @@
     "text1": "BOYFRIEND",
     "text2": "HOT BLOODED IN MORE WAYS THAN ONE",
     "text3": "PROTECT YO NUTS",
-    "useAnimatePosition": true,
+    "applyStageMatrix": true,
     "animations": [
       {
         "name": "intro",
-        "prefix": "boyfriend dj intro",
-        "animType": "symbol",
-        "offsets": [631.7, 362.6]
+        "prefix": "Intro",
+        "animType": "framelabel"
       },
       {
         "name": "idle",
-        "prefix": "Boyfriend DJ",
-        "animType": "symbol",
-        "offsets": [625, 360]
+        "prefix": "Idle",
+        "animType": "framelabel"
       },
       {
         "name": "idleEasterEgg",
-        "prefix": "bf dj afk",
-        "animType": "symbol",
-        "offsets": [1274.5, 418.5]
+        "prefix": "AFK",
+        "animType": "framelabel"
       },
       {
         "name": "confirm",
-        "prefix": "Boyfriend DJ confirm",
-        "animType": "symbol",
-        "offsets": [625, 360]
+        "prefix": "Confirm",
+        "animType": "framelabel"
       },
       {
         "name": "fistPump",
-        "prefix": "Boyfriend DJ fist pump",
-        "animType": "symbol",
-        "offsets": [625, 360]
-      },
-      {
-        "name": "cartoon",
-        "prefix": "Boyfriend DJ watchin tv OG",
-        "animType": "symbol",
-        "offsets": [625, 360]
+        "prefix": "Fist Pump",
+        "animType": "framelabel"
       },
       {
         "name": "loss",
-        "prefix": "Boyfriend DJ loss reaction 1",
-        "animType": "symbol",
-        "offsets": [625, 360]
+        "prefix": "Fist Pump Loss",
+        "animType": "framelabel"
       },
       {
         "name": "charSelect",
-        "prefix": "Boyfriend DJ to CS",
-        "animType": "symbol",
-        "offsets": [625, 360]
+        "prefix": "To Character Select",
+        "animType": "framelabel"
+      },
+      {
+        "name": "cartoon",
+        "prefix": "Watching TV",
+        "animType": "framelabel"
       },
       {
         "name": "newUnlock",
-        "prefix": "Boyfriend DJ new character ",
-        "animType": "symbol",
-        "offsets": [625, 360]
-      }]
+        "prefix": "New Unlock",
+        "animType": "framelabel"
+      }
+    ]
   },
   "charSelect": {
     "position": 4,

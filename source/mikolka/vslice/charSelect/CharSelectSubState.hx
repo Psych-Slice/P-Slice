@@ -143,7 +143,7 @@ class CharSelectSubState extends MusicBeatSubState
 
 		add(bg);
 
-		var crowd:FunkinSprite = FunkinSprite.createTextureAtlas(cutoutSize, 0, "charSelect/crowd");
+		var crowd:FunkinSprite = FunkinSprite.createTextureAtlas(cutoutSize-100, 200, "charSelect/crowd");
 
 		crowd.anim.addBySymbol('',"crowd");
 		crowd.anim.play('');

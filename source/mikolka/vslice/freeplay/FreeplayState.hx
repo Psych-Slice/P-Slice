@@ -411,11 +411,11 @@ class FreeplayState extends MusicBeatSubstate
 			{
 				switch(currentCharacterId){
 					case "bf":
-						dj = new BoyfriendFreeplayDJ((CUTOUT_WIDTH * DJ_POS_MULTI) + 640, 366, currentCharacterId);
+						dj = new BoyfriendFreeplayDJ((CUTOUT_WIDTH * DJ_POS_MULTI) + 340, 366, currentCharacterId);
 					// case "pico":
-					// 	dj = new BoyfriendFreeplayDJ((CUTOUT_WIDTH * DJ_POS_MULTI) + 640, 366, currentCharacterId);
+					// 	dj = new BoyfriendFreeplayDJ((CUTOUT_WIDTH * DJ_POS_MULTI) + 340, 366, currentCharacterId);
 					default:
-						dj = new AnimateAtlasFreeplayDJ((CUTOUT_WIDTH * DJ_POS_MULTI) + 640, 366, currentCharacterId);
+						dj = new AnimateAtlasFreeplayDJ((CUTOUT_WIDTH * DJ_POS_MULTI) + 340, 366, currentCharacterId);
 
 				}
 				exitMovers.set([dj], {
