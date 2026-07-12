@@ -33,7 +33,7 @@
     "text1": "BOYFRIEND",
     "text2": "HOT BLOODED IN MORE WAYS THAN ONE",
     "text3": "PROTECT YO NUTS",
-    "applyStageMatrix": true,
+    "useAnimatePosition": true,
     "animations": [
       {
         "name": "intro",

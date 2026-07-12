@@ -411,11 +411,11 @@ class FreeplayState extends MusicBeatSubstate
 			{
 				switch(currentCharacterId){
 					case "bf":
-						dj = new BoyfriendFreeplayDJ((CUTOUT_WIDTH * DJ_POS_MULTI) + 340, 366, currentCharacterId);
+						dj = new BoyfriendFreeplayDJ((CUTOUT_WIDTH * DJ_POS_MULTI) , 0, currentCharacterId);
 					// case "pico":
-					// 	dj = new BoyfriendFreeplayDJ((CUTOUT_WIDTH * DJ_POS_MULTI) + 340, 366, currentCharacterId);
+					// 	dj = new BoyfriendFreeplayDJ((CUTOUT_WIDTH * DJ_POS_MULTI), 0, currentCharacterId);
 					default:
-						dj = new AnimateAtlasFreeplayDJ((CUTOUT_WIDTH * DJ_POS_MULTI) + 340, 366, currentCharacterId);
+						dj = new AnimateAtlasFreeplayDJ((CUTOUT_WIDTH * DJ_POS_MULTI) , 0, currentCharacterId);
 
 				}
 				exitMovers.set([dj], {
@@ -461,6 +461,8 @@ class FreeplayState extends MusicBeatSubstate
 		});
 
 		if(VsliceOptions.LOW_QUALITY) add(backingImage);
+
+		if (dj != null) add(dj);
 
 		grpDifficulties = new FlxTypedSpriteGroup<DifficultySprite>(-300, 80);
 		add(grpDifficulties);
@@ -764,7 +766,6 @@ class FreeplayState extends MusicBeatSubstate
 
 		if (dj != null)
 		{
-			add(dj);
 			dj.onIntroDone.add(onDJIntroDone);
 		}
 		else

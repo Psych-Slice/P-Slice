@@ -83,9 +83,7 @@ class PlayerFreeplayDJData
   var assetPath:String;
   var animations:Array<AnimationData>;
 
-  @:optional
-  @:default(false)
-  var applyStageMatrix:Bool;
+
 
   @:optional
   @:default("BOYFRIEND")
@@ -151,7 +149,7 @@ class PlayerFreeplayDJData
 
   public function useApplyStageMatrix():Bool
   {
-    return applyStageMatrix;
+    return useAnimatePosition;
   }
 
   public function getGlobalOffsets():Array<Float>
