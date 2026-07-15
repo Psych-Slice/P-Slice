@@ -66,11 +66,11 @@ class ABotSpeaker extends FlxSpriteGroup
 		eyeBg.updateHitbox();
 		add(eyeBg);
 
-		eyes = new FunkinSprite(-10, 230,'images/abot/systemEyes');
+		eyes = new FunkinSprite(-10, 230,'abot/systemEyes');
 		eyes.anim.addBySymbolIndices('lookleft', 'a bot eyes lookin', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], 24, false);
 		eyes.anim.addBySymbolIndices('lookright', 'a bot eyes lookin', [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35], 24, false);
-		eyes.anim.play('lookright', true);
-		eyes.anim.frameIndex = eyes.anim.curAnim.frames.length - 1;
+		eyes.anim.play('lookright', true,false,17);
+		// eyes.anim.frameIndex = 17;
 		add(eyes);
 
 		speaker = abotLol(useDark);
@@ -80,10 +80,9 @@ class ABotSpeaker extends FlxSpriteGroup
 		}
 	}
 	function abotLol(useDark:Bool) {
-		var temp = new FunkinSprite(-65, -10,'images/${useDark? "abot/dark" : "abot"}/abotSystem');
+		var temp = new FunkinSprite(-65, -10,'${useDark? "abot/dark" : "abot"}/abotSystem');
 		temp.anim.addBySymbol('anim', 'Abot System', 24, false);
 		temp.anim.play('anim', true);
-		temp.anim.frameIndex = temp.anim.curAnim.frames.length - 1;
 		temp.antialiasing = ClientPrefs.data.antialiasing;
 		add(temp);
 		return temp;

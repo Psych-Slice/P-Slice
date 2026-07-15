@@ -39,19 +39,18 @@ class TwoPicos
 		host.camHUD.visible = false;
 		// inCutscene = true; //this would stop the camera movement, oops
 
-		imposterPico = new PicoDopplegangerSprite(host.dad.x + 82, host.dad.y + 400);
+		imposterPico = new PicoDopplegangerSprite(host.dad.x - 200, host.dad.y - 150);
 		imposterPico.antialiasing = VsliceOptions.ANTIALIASING;
 		cutsceneHandler.push(imposterPico);
 
-		pico = new PicoDopplegangerSprite(host.boyfriend.x + 48.5, host.boyfriend.y + 400);
+		pico = new PicoDopplegangerSprite(host.boyfriend.x - 158.5, host.boyfriend.y - 150);
 		pico.antialiasing = VsliceOptions.ANTIALIASING;
 		cutsceneHandler.push(pico);
 
 		if (VsliceOptions.NAUGHTYNESS)
 		{
-			bloodPool = new FunkinSprite(0, 0);
+			bloodPool = new FunkinSprite(0, 0).loadTextureAtlas("philly/erect/cutscenes/bloodPool");
 			bloodPool.visible = false;
-			Paths.loadAnimateAtlas(bloodPool, "philly/erect/cutscenes/bloodPool");
 		}
 
 		cigarette = new FlxSprite();

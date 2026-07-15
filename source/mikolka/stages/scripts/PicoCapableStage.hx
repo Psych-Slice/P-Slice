@@ -290,8 +290,8 @@ class PicoCapableStage extends BaseStage
 		}
 
 		if (finishInstantly){
-			if(abot != null) abot.eyes.anim.frameIndex = abot.eyes.anim.curAnim.numFrames - 1;
-			if(abotPixel != null) abotPixel.eyes.animation.frameIndex= abotPixel.eyes.animation.curAnim.numFrames - 1;
+			if(abot != null) abot.eyes.anim.frameIndex = (abot.eyes.anim.curAnim?.numFrames ?? 17)   - 1;
+			if(abotPixel != null) abotPixel.eyes.animation.frameIndex= (abotPixel.eyes.animation.curAnim?.numFrames ?? 17) - 1;
 		}
 	}
 

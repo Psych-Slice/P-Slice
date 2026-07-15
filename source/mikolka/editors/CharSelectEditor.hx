@@ -66,12 +66,10 @@ class CharSelectEditor extends MusicBeatState
 		bg.scrollFactor.set(0.1, 0.1);
 		add(bg);
 
-		var stageSpr:FunkinSprite = FunkinSprite.createTextureAtlas(cutoutSize + -2, 1, "charSelect/charSelectStage");
-		stageSpr.anim.play("");
-		stageSpr.anim.onFinish.add(function(animName:String)
-		{
-			stageSpr.anim.play(animName);
-		});
+		var stageSpr:FunkinSprite = FunkinSprite.createTextureAtlas(cutoutSize - 20, 400, "charSelect/charSelectStage");
+		stageSpr.anim.addBySymbol('',"stage full");
+    	stageSpr.anim.play('');
+		stageSpr.anim.curAnim.looped = true;
 		add(stageSpr);
 
 		nametag = new Nametag(0, 0, initPlayerId); // ? Set to current char
