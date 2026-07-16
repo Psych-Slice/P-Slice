@@ -41,7 +41,7 @@ jobs:
       matrix:
         include:
           - name: Windows
-            os: windows-2022
+            os: windows-2025
             buildArgs: "windows -final"
             exportPath: windows
             artifactName: P-Slice.1.0.windows
@@ -49,7 +49,7 @@ jobs:
             cachePath: P-Slice.1.0.build-windows
             artifactPath: export\release\windows\bin\*
           - name: Linux
-            os: ubuntu-22.04
+            os: ubuntu-24.04
             buildArgs: "linux -final"
             exportPath: linux
             artifactName: P-Slice.1.0.linux
