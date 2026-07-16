@@ -108,6 +108,7 @@
 		<define name="pico_always_kill" />
 	</section>
 
+	
 	<!-- Flags for the profile builds (used for assessing performance and such)-->
 	<section if="PROFILE_BUILD">
 		<!-- Enables tracy -->
@@ -325,7 +326,7 @@
 		<!-- <haxedef name="HXCPP_GC_MOVING" unless="HXCPP_TRACY_MEMORY"/> -->
 		<!-- This will break the GC and delete textures on it's own-->
 		<haxedef name="HXCPP_CHECK_POINTER" />
-
+		<!-- <haxedef name="HXCPP_EXACT_MARCH" value="x86-64-v4" /> -->
 		<haxedef name="HXCPP_STACK_LINE" />
 		<haxedef name="HXCPP_STACK_TRACE" />
 		<haxedef name="HXCPP_CATCH_SEGV" />

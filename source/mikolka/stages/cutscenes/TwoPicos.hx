@@ -39,11 +39,11 @@ class TwoPicos
 		host.camHUD.visible = false;
 		// inCutscene = true; //this would stop the camera movement, oops
 
-		imposterPico = new PicoDopplegangerSprite(host.dad.x - 200, host.dad.y - 150);
+		imposterPico = new PicoDopplegangerSprite(host.dad.x - 500, host.dad.y - 200);
 		imposterPico.antialiasing = VsliceOptions.ANTIALIASING;
 		cutsceneHandler.push(imposterPico);
 
-		pico = new PicoDopplegangerSprite(host.boyfriend.x - 158.5, host.boyfriend.y - 150);
+		pico = new PicoDopplegangerSprite(host.boyfriend.x - 458.5, host.boyfriend.y - 200);
 		pico.antialiasing = VsliceOptions.ANTIALIASING;
 		cutsceneHandler.push(pico);
 
