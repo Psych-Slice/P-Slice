@@ -151,7 +151,7 @@ class Character extends FunkinSprite
 			atlas.showPivot = false;
 			try
 			{
-				Paths.loadAnimateAtlas(atlas, json.image);
+				atlas.loadTextureAtlas(json.image);
 			}
 			catch(e:haxe.Exception)
 			{

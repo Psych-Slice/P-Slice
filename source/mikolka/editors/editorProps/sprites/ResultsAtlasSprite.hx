@@ -91,7 +91,7 @@ class ResultsAtlasSprite extends FunkinSprite implements IResultsSprite
 			if (data.loopFrame != null && data.looped)
 				anim.frameIndex = data.loopFrame;
 			else
-				anim.frameIndex = anim.curAnim.frames.length-1;//animation.curAnim.numFrames - 1;
+				anim.frameIndex = anim.numFrames-1;//animation.curAnim.numFrames - 1;
 		} else visible = false;
 	}
 

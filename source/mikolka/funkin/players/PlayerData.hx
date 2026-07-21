@@ -149,7 +149,7 @@ class PlayerFreeplayDJData
 
   public function useApplyStageMatrix():Bool
   {
-    return useAnimatePosition;
+    return !useAnimatePosition;
   }
 
   public function getGlobalOffsets():Array<Float>

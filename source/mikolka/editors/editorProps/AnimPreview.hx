@@ -83,8 +83,8 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 	{
 		activeSprite.anim.pause();
         var newFrame = Std.int(FlxMath.bound(selectedFrame+diff,1,selectedAnimLength));
-		if(useAtlasSymbols) activeSprite.anim.curAnim.curFrame = newFrame-1;
-		else activeSprite.anim.curAnim.curFrame = selectedAnimIndices[newFrame-1];
+		if(useAtlasSymbols) activeSprite.anim.frameIndex = newFrame-1;
+		else activeSprite.anim.frameIndex = selectedAnimIndices[newFrame-1];
 		
         selectedFrame = newFrame;
         frameTxt.text = 'Frame (${selectedFrame}/${selectedAnimLength})';
@@ -126,6 +126,7 @@ class AnimPreview extends FlxTypedSpriteGroup<FlxSprite>
 		// if (labelFrame == -1)
 		// 	labelFrame = indices.length;
         selectedFrame +=1;
+		selectedFrame = FlxMath.minInt(selectedFrame,selectedAnimLength);
 		frameTxt.text = 'Frame (${selectedFrame}/${selectedAnimLength})';
 	}
 }

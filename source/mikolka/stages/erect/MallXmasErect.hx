@@ -55,8 +55,8 @@ class MallXmasErect extends BaseStage
 		setDefaultGF('gf-christmas');
 
 		if(songName == "eggnog-erect" || songName == "eggnog-(pico-mix)"){
-			erectSanta = FunkinSprite.createTextureAtlas(-840 +380, 150 +347,"christmas/santa_speaks_assets");
-			erectParents = FunkinSprite.createTextureAtlas(100 -620, 100 + 401,"christmas/parents_shoot_assets");	
+			erectSanta = FunkinSprite.createTextureAtlas(-1318, 138,"christmas/santa_speaks_assets");
+			erectParents = FunkinSprite.createTextureAtlas(-620, 40,"christmas/parents_shoot_assets");	
 			setEndCallback(eggnogEndCutscene);
 		}
 	}
@@ -82,6 +82,7 @@ class MallXmasErect extends BaseStage
 		
 		@:privateAccess
 		if(PicoCapableStage.NENE_LIST.contains(PlayState.SONG.gfVersion)) GameOverSubstate.characterName = 'pico-christmas-dead';
+
 	}
 	override function countdownTick(count:Countdown, num:Int) everyoneDance();
 	override function beatHit() {

@@ -79,6 +79,7 @@ class CharSelectEditor extends MusicBeatState
 		gfChill = new CharSelectGF(0,0);
 		gfChill.x += cutoutSize;
 		switchEditorGF(activePlayer._data.charSelect.gf);
+		gfChill.visible = true;
 		add(gfChill);
 
 		playerChill = new CharSelectPlayer(cutoutSize*2.5, 0);

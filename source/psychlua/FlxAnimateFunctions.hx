@@ -19,14 +19,14 @@ class FlxAnimateFunctions
 			}
 
 			var mySprite:ModchartAnimateSprite = new ModchartAnimateSprite(x, y);
-			if(loadFolder != null) Paths.loadAnimateAtlas(mySprite, loadFolder);
+			if(loadFolder != null) mySprite.loadTextureAtlas(loadFolder);
 			MusicBeatState.getVariables().set(tag, mySprite);
 			mySprite.active = true;
 		});
 
 		Lua_helper.add_callback(lua, "loadAnimateAtlas", function(tag:String, folderOrImg:String, ?spriteJson:String = null, ?animationJson:String = null) {
 			var spr:FunkinSprite = MusicBeatState.getVariables().get(tag);
-			if(spr != null) Paths.loadAnimateAtlas(spr, folderOrImg, spriteJson, animationJson);
+			if(spr != null) spr.frames = Paths.loadAnimateAtlas(folderOrImg, spriteJson, animationJson);
 		});
 		
 		Lua_helper.add_callback(lua, "addAnimationBySymbol", function(tag:String, name:String, symbol:String, ?framerate:Float = 24, ?loop:Bool = false, ?matX:Float = 0, ?matY:Float = 0)

@@ -1145,10 +1145,10 @@ class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler
 					if (holdingFrameTime <= 0.5 || holdingFrameElapsed > 0.1)
 					{
 						frames = FlxMath.wrap(frames + Std.int(isLeft ? -shiftMult : shiftMult), 0, length - 1);
-						//if (!character.isAnimateAtlas)
+						if (!character.isAnimateAtlas)
 							character.animation.curAnim.curFrame = frames;
-						//else
-							//character.atlas.anim.curFrame = frames;
+						else
+							character.anim.frameIndex = frames;
 						holdingFrameElapsed -= 0.1;
 					}
 				}

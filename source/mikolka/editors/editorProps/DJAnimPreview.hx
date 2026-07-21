@@ -22,9 +22,14 @@ class DJAnimPreview extends AnimPreview {
         @:privateAccess
         for (x in dj.getFreeplayDJData().animations)
 			{
-                // I prefer my numbers clean -Mikolka
-                x.offsets[0] = Math.round(x.offsets[0]); 
-                x.offsets[1] = Math.round(x.offsets[1]);
+                if(x.offsets == null){
+                    x.offsets = [0,0];
+                }
+                else{
+                    // I prefer my numbers clean -Mikolka
+                    x.offsets[0] = Math.round(x.offsets[0]); 
+                    x.offsets[1] = Math.round(x.offsets[1]);
+                }
                 offsets.push(x.offsets);
 				addAnim({
 					anim: x.prefix,

@@ -10,6 +10,7 @@ class FreeplayDialogBox extends PsychUIBox
 {
     	// GENERAL
 	public var input_assetPath:PsychUIInputText;
+	public var chkBox_useStageMatrix:PsychUICheckBox;
 	public var btn_reload:PsychUIButton;
 	public var steper_charSelectDelay:PsychUINumericStepper;
 	public var input_text1:PsychUIInputText;
@@ -51,6 +52,11 @@ class FreeplayDialogBox extends PsychUIBox
 				data._data.freeplayDJ.assetPath = cur;
 			};
 		}
+		chkBox_useStageMatrix = new PsychUICheckBox(180,50,"Use FlxAnimate positioning",100,() ->{
+			data._data.freeplayDJ.useAnimatePosition = !chkBox_useStageMatrix.checked;
+			host.dj.applyStageMatrix = chkBox_useStageMatrix.checked;
+		});
+		chkBox_useStageMatrix.checked = data._data.freeplayDJ.useApplyStageMatrix();
 
 		btn_reload = new PsychUIButton(180, 20, "Reload", () ->
 		{
@@ -236,6 +242,7 @@ class FreeplayDialogBox extends PsychUIBox
 
 		tab.add(input_assetPath.makeLabel('Asset path:'));
 		tab.add(input_assetPath);
+		tab.add(chkBox_useStageMatrix);
 		tab.add(btn_reload);
 
 		tab.add(input_text1.makeLabel("Scroll texts:"));

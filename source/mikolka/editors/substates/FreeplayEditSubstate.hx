@@ -94,11 +94,15 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 		add(ostName);
 
 		try{
-			dj = FunkinSprite.createTextureAtlas((CUTOUT_WIDTH * DJ_POS_MULTI) + 640, 366, data.getFreeplayDJData().getAssetPath());
+			dj = FunkinSprite.createTextureAtlas((CUTOUT_WIDTH * DJ_POS_MULTI) , 0, data.getFreeplayDJData().getAssetPath(),null,{
+				applyStageMatrix: data.getFreeplayDJData().useApplyStageMatrix()
+			});
 		}
 		catch(x){
 			trace(x);
-			dj = FunkinSprite.createTextureAtlas((CUTOUT_WIDTH * DJ_POS_MULTI) + 640, 366, "freeplay/freeplay-boyfriend");
+			dj = FunkinSprite.createTextureAtlas((CUTOUT_WIDTH * DJ_POS_MULTI) , 0, "freeplay/freeplay-boyfriend",null,{
+				applyStageMatrix: data?.getFreeplayDJData()?.useApplyStageMatrix() ?? false
+			});
 		}
 		add(dj);
 		dj.anim.play(data.getFreeplayDJData().getAnimationPrefix("idle"));

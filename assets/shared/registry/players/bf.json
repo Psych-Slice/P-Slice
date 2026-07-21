@@ -102,11 +102,11 @@
     "perfectGold": [
       {
         "renderType": "animateatlas",
-        "scriptClass": "BFBedPerfectResults",
+        "assetPath": "shared:resultScreen/results-bf/resultsPERFECT/bed",
         "startFrameLabel": "INTRO",
         "filter": "naughty",
         "zIndex": 500,
-        "offsets": [403, -305],
+        "offsets": [1342, 370],
         "loopFrameLabel": "LOOP START"
       },
       {
@@ -115,16 +115,16 @@
         "filter": "naughty",
         "zIndex": 501,
         "delay": 4.41,
-        "offsets": [630, 300],
+        "offsets": [1342, 370],
         "loopFrame": 43
       },
       {
         "renderType": "animateatlas",
-        "scriptClass": "BFBedPerfectResults",
+        "assetPath": "shared:resultScreen/results-bf/resultsPERFECT/bed",
         "startFrameLabel": "INTRO 2",
         "filter": "safe",
         "zIndex": 500,
-        "offsets": [403, -305],
+        "offsets": [1342, 370],
         "loopFrameLabel": "LOOP 2"
       },
       {
@@ -133,7 +133,7 @@
         "filter": "safe",
         "zIndex": 501,
         "delay": 4.41,
-        "offsets": [413, 314],
+        "offsets": [650, 370],
         "scale": 0.6,
         "sound": "shared:tickleFight",
         "loopFrameLabel": "LOOP"
@@ -142,11 +142,11 @@
     "perfect": [
       {
         "renderType": "animateatlas",
-        "scriptClass": "BFBedPerfectResults",
+        "assetPath": "shared:resultScreen/results-bf/resultsPERFECT/bed",
         "startFrameLabel": "INTRO",
         "filter": "naughty",
         "zIndex": 500,
-        "offsets": [403, -305],
+        "offsets": [1342, 370],
         "loopFrameLabel": "LOOP START"
       },
       {
@@ -155,16 +155,16 @@
         "filter": "naughty",
         "zIndex": 501,
         "delay": 4.41,
-        "offsets": [630, 300],
+        "offsets": [1342, 370],
         "loopFrame": 43
       },
       {
         "renderType": "animateatlas",
-        "scriptClass": "BFBedPerfectResults",
+        "assetPath": "shared:resultScreen/results-bf/resultsPERFECT/bed",
         "startFrameLabel": "INTRO 2",
         "filter": "safe",
         "zIndex": 500,
-        "offsets": [403, -305],
+        "offsets": [1342, 370],
         "loopFrameLabel": "LOOP 2"
       },
       {
@@ -173,7 +173,7 @@
         "filter": "safe",
         "zIndex": 501,
         "delay": 4.41,
-        "offsets": [413, 314],
+        "offsets": [650, 370],
         "scale": 0.6,
         "sound": "shared:tickleFight",
         "loopFrameLabel": "LOOP"
