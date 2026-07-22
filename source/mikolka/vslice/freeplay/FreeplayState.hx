@@ -2392,7 +2392,7 @@ class FreeplayState extends MusicBeatSubstate
 				onLoad: function()
 				{
 					// ? onLoad doesn't start plaing music automatically here
-					var endVolume = dj.getMusicPreviewMult() * FADE_IN_END_VOLUME;
+					var endVolume = (dj?.getMusicPreviewMult() ?? 1) * FADE_IN_END_VOLUME;
 					FlxG.sound.music.fadeIn(FADE_IN_DURATION, FADE_IN_START_VOLUME, endVolume);
 					// ? set BPMs
 					var newBPM = daSongCapsule.songData.songStartingBpm;

@@ -55,6 +55,7 @@ class FreeplayDialogBox extends PsychUIBox
 		chkBox_useStageMatrix = new PsychUICheckBox(180,50,"Use FlxAnimate positioning",100,() ->{
 			data._data.freeplayDJ.useAnimatePosition = !chkBox_useStageMatrix.checked;
 			host.dj.applyStageMatrix = chkBox_useStageMatrix.checked;
+			host.updateDJPosition();
 		});
 		chkBox_useStageMatrix.checked = data._data.freeplayDJ.useApplyStageMatrix();
 

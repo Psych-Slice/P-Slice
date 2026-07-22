@@ -38,46 +38,55 @@
       {
         "name": "intro",
         "prefix": "Intro",
+        "offsets": [150, 170],
         "animType": "framelabel"
       },
       {
         "name": "idle",
         "prefix": "Idle",
+        "offsets": [150, 170],
         "animType": "framelabel"
       },
       {
         "name": "idleEasterEgg",
         "prefix": "AFK",
+        "offsets": [150, 170],
         "animType": "framelabel"
       },
       {
         "name": "confirm",
         "prefix": "Confirm",
+        "offsets": [150, 170],
         "animType": "framelabel"
       },
       {
         "name": "fistPump",
         "prefix": "Fist Pump",
+        "offsets": [150, 170],
         "animType": "framelabel"
       },
       {
         "name": "loss",
         "prefix": "Fist Pump Loss",
+        "offsets": [150, 170],
         "animType": "framelabel"
       },
       {
         "name": "charSelect",
         "prefix": "To Character Select",
+        "offsets": [150, 170],
         "animType": "framelabel"
       },
       {
         "name": "cartoon",
         "prefix": "Watching TV",
+        "offsets": [150, 170],
         "animType": "framelabel"
       },
       {
         "name": "newUnlock",
         "prefix": "New Unlock",
+        "offsets": [150, 170],
         "animType": "framelabel"
       }
     ]

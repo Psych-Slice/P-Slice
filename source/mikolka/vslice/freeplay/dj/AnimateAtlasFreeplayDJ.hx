@@ -22,6 +22,8 @@ class AnimateAtlasFreeplayDJ extends BaseFreeplayDJ
     if (playableCharData?.useApplyStageMatrix() ?? false)
     {
       this.applyStageMatrix = true;
+      this.x += 640;
+      this.y += 365;
     }
     //loadAnimations();
     animation.onFinish.add(onFinishAnim);

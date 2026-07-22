@@ -164,7 +164,7 @@
 	"vocals_file": "",
 	"no_antialiasing": false,
 	"image": "characters/picoBlazin",
-	"position": [-290, 680],
+	"position": [-790, 180],
 	"healthicon": "pico",
 	"flip_x": true,
 	"healthbar_colors": [183, 216, 85],

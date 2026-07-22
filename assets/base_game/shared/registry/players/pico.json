@@ -37,36 +37,43 @@
       {
         "name": "intro",
         "prefix": "Intro",
+        "offsets": [125, 160],
         "animType": "framelabel"
       },
       {
         "name": "idle",
         "prefix": "Idle",
+        "offsets": [125, 160],
         "animType": "framelabel"
       },
       {
         "name": "idleEasterEgg",
         "prefix": "AFK",
+        "offsets": [125, 160],
         "animType": "framelabel"
       },
       {
         "name": "confirm",
         "prefix": "Confirm",
+        "offsets": [125, 160],
         "animType": "framelabel"
       },
       {
         "name": "fistPump",
         "prefix": "Fist Pump",
+        "offsets": [125, 160],
         "animType": "framelabel"
       },
       {
         "name": "loss",
         "prefix": "Fist Pump Loss",
+        "offsets": [125, 160],
         "animType": "framelabel"
       },
       {
         "name": "charSelect",
         "prefix": "To Character Select",
+        "offsets": [125, 160],
         "animType": "framelabel"
       }
     ]

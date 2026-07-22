@@ -139,7 +139,7 @@
 	"vocals_file": "",
 	"no_antialiasing": false,
 	"image": "characters/darnellBlazin",
-	"position": [400, 650],
+	"position": [-100, 150],
 	"healthicon": "darnell",
 	"flip_x": false,
 	"healthbar_colors": [115, 94, 176],

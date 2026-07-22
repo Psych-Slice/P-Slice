@@ -1,6 +1,6 @@
 package objects;
 
-import backend.animation.PsychAnimationController;
+import backend.animation.PsychAtlasAnimController;
 
 import flixel.util.FlxSort;
 
@@ -83,7 +83,10 @@ class Character extends FunkinSprite
 	{
 		super(x, y);
 
-		animation = new PsychAnimationController(this);
+		anim = new PsychAtlasAnimController(this);
+		animation = anim;
+		//? Putting this here as to not break Psych's Atlas positions
+		applyStageMatrix = true;
 
 		animOffsets = new Map<String, Array<Dynamic>>();
 		this.isPlayer = isPlayer;
@@ -131,11 +134,9 @@ class Character extends FunkinSprite
 	{
 		isAnimateAtlas = false;
 
-		#if flxanimate
 		var animToFind:String = Paths.getPath('images/' + json.image + '/Animation.json', TEXT);
 		if (NativeFileSystem.exists(animToFind))
 			isAnimateAtlas = true;
-		#end
 
 		scale.set(1, 1);
 		updateHitbox();
@@ -144,14 +145,12 @@ class Character extends FunkinSprite
 		{
 			frames = Paths.getMultiAtlas(json.image.split(','));
 		}
-		#if flxanimate
 		else
 		{
-			atlas = new FlxAnimate();
-			atlas.showPivot = false;
+			//anim.showPivot = false;
 			try
 			{
-				atlas.loadTextureAtlas(json.image);
+				loadTextureAtlas(json.image);
 			}
 			catch(e:haxe.Exception)
 			{
@@ -159,7 +158,6 @@ class Character extends FunkinSprite
 				trace(e.stack);
 			}
 		}
-		#end
 
 		imageFile = json.image;
 		jsonScale = json.scale;
@@ -202,25 +200,22 @@ class Character extends FunkinSprite
 					else
 						animation.addByPrefix(animAnim, animName, animFps, animLoop);
 				}
-				#if flxanimate
 				else
 				{
+					@:privateAccess
 					if(animIndices != null && animIndices.length > 0)
-						atlas.anim.addBySymbolIndices(animAnim, animName, animIndices, animFps, animLoop);
-					else if (atlas.anim.symbolDictionary.exists(animName)) //? Allow us to use labels please
-						atlas.anim.addBySymbol(animAnim, animName, animFps, animLoop);
+						this.anim.addBySymbolIndices(animAnim, animName, animIndices, animFps, animLoop);
+					else if (this.anim._animate.library.existsSymbol(animName)) //? Allow us to use labels please
+						this.anim.addBySymbol(animAnim, animName, animFps, animLoop);
 					else //? Allow us to use labels please
-						atlas.anim.addByFrameLabel(animAnim, animName, animFps, animLoop);
+						this.anim.addByFrameLabel(animAnim, animName, animFps, animLoop);
 				}
-				#end
 
 				if(anim.offsets != null && anim.offsets.length > 1) addOffset(anim.anim, anim.offsets[0], anim.offsets[1]);
 				else addOffset(anim.anim, 0, 0);
 			}
 		}
-		#if flxanimate
-		if(isAnimateAtlas) copyAtlasValues();
-		#end
+		//if(isAnimateAtlas) copyAtlasValues();
 		//trace('Loaded file to character ' + curCharacter);
 	}
 
@@ -424,8 +419,6 @@ class Character extends FunkinSprite
 	// special thanks ne_eo for the references, you're the goat!!
 	@:allow(states.editors.CharacterEditorState)
 	public var isAnimateAtlas(default, null):Bool = false;
-	#if flxanimate
-	public var atlas:FlxAnimate;
 	public override function draw()
 	{
 		var lastAlpha:Float = alpha;
@@ -436,23 +429,23 @@ class Character extends FunkinSprite
 			color = FlxColor.BLACK;
 		}
 
-		if(isAnimateAtlas)
-		{
-			if(atlas.anim.curInstance != null)
-			{
-				copyAtlasValues();
-				atlas.draw();
-				alpha = lastAlpha;
-				color = lastColor;
-				if(missingCharacter && visible)
-				{
-					missingText.x = getMidpoint().x - 150;
-					missingText.y = getMidpoint().y - 10;
-					missingText.draw();
-				}
-			}
-			return;
-		}
+		// if(isAnimateAtlas)
+		// {
+		// 	if(atlas.anim.curInstance != null)
+		// 	{
+		// 		copyAtlasValues();
+		// 		atlas.draw();
+		// 		alpha = lastAlpha;
+		// 		color = lastColor;
+		// 		if(missingCharacter && visible)
+		// 		{
+		// 			missingText.x = getMidpoint().x - 150;
+		// 			missingText.y = getMidpoint().y - 10;
+		// 			missingText.draw();
+		// 		}
+		// 	}
+		// 	return;
+		// }
 		super.draw();
 		if(missingCharacter && visible)
 		{
@@ -464,33 +457,32 @@ class Character extends FunkinSprite
 		}
 	}
 
-	public function copyAtlasValues()
-	{
-		@:privateAccess
-		{
-			atlas.cameras = cameras;
-			atlas.scrollFactor = scrollFactor;
-			atlas.scale = scale;
-			atlas.offset = offset;
-			atlas.origin = origin;
-			atlas.x = x;
-			atlas.y = y;
-			atlas.angle = angle;
-			atlas.alpha = alpha;
-			atlas.visible = visible;
-			atlas.flipX = flipX;
-			atlas.flipY = flipY;
-			atlas.shader = shader;
-			atlas.antialiasing = antialiasing;
-			atlas.colorTransform = colorTransform;
-			atlas.color = color;
-		}
-	}
+	// public function copyAtlasValues()
+	// {
+	// 	@:privateAccess
+	// 	{
+	// 		atlas.cameras = cameras;
+	// 		atlas.scrollFactor = scrollFactor;
+	// 		atlas.scale = scale;
+	// 		atlas.offset = offset;
+	// 		atlas.origin = origin;
+	// 		atlas.x = x;
+	// 		atlas.y = y;
+	// 		atlas.angle = angle;
+	// 		atlas.alpha = alpha;
+	// 		atlas.visible = visible;
+	// 		atlas.flipX = flipX;
+	// 		atlas.flipY = flipY;
+	// 		atlas.shader = shader;
+	// 		atlas.antialiasing = antialiasing;
+	// 		atlas.colorTransform = colorTransform;
+	// 		atlas.color = color;
+	// 	}
+	// }
 
 	public override function destroy()
 	{
-		atlas = FlxDestroyUtil.destroy(atlas);
+		//atlas = FlxDestroyUtil.destroy(atlas);
 		super.destroy();
 	}
-	#end
 }

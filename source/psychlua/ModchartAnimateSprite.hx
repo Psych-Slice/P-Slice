@@ -1,8 +1,7 @@
 package psychlua;
 
-import animate.FlxAnimate;
 
-class ModchartAnimateSprite extends FlxAnimate
+class ModchartAnimateSprite extends FunkinSprite
 {
 	public var animOffsets:Map<String, Array<Float>> = new Map<String, Array<Float>>();
 	public function new(?x:Float = 0, ?y:Float = 0)

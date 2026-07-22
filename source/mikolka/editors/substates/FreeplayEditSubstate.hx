@@ -104,7 +104,9 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 				applyStageMatrix: data?.getFreeplayDJData()?.useApplyStageMatrix() ?? false
 			});
 		}
+		updateDJPosition();
 		add(dj);
+
 		dj.anim.play(data.getFreeplayDJData().getAnimationPrefix("idle"));
 		dj_anim = new DJAnimPreview(true,100, 100);
 		dj_anim.visible = false;
@@ -145,6 +147,12 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 	}
 	#end
 	
+	public function updateDJPosition(){
+		if(dj.applyStageMatrix)
+			dj.setPosition((FreeplayState.CUTOUT_WIDTH * DJ_POS_MULTI) + 640, 365);
+		else
+			dj.setPosition((FreeplayState.CUTOUT_WIDTH * DJ_POS_MULTI) , 0);
+	}
 	function onLoadAnimDone()
 	{
 		add(UI_box);

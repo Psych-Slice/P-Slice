@@ -222,8 +222,8 @@ class BaseFreeplayDJ extends FunkinSprite
       }
       else
       {
-        finalOffsetX = globalOffsets[0] - animationOffsets[0] - (FreeplayState.CUTOUT_WIDTH * FreeplayState.DJ_POS_MULTI);
-        finalOffsetY = globalOffsets[1] - animationOffsets[1];
+        finalOffsetX = globalOffsets[0] + animationOffsets[0] - (FreeplayState.CUTOUT_WIDTH * FreeplayState.DJ_POS_MULTI);
+        finalOffsetY = globalOffsets[1] + animationOffsets[1];
       }
 
       offset.set(finalOffsetX, finalOffsetY);

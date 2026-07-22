@@ -158,6 +158,7 @@ class VideoSprite extends FlxSpriteGroup {
 								videoSprite.bitmap.time = 0;
 								#end
 								resume();
+								FlxTimer.wait(0.4,() -> pauseJustClosed = false);
 							}
 						}
 						
