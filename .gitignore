@@ -25,6 +25,7 @@ vs_Community.exe
 art/build_html.bat
 art/build_html-debug.bat
 *.astc
+setup/ndll/*
 
 mod_core
 setup/google-services.json

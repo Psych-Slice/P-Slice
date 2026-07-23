@@ -27,11 +27,12 @@ class AlbumRoll extends FlxSpriteGroup
   {
     if (this.albumId != value || value == null)
     {
-      this.albumId = value;
+      if(value == "") this.albumId = null;
+      else this.albumId = value;
       updateAlbum();
     }
 
-    return value;
+    return this.albumId;
   }
 
   final ALBUM_ART_SYMBOL:String = "album art placeholder";
@@ -183,7 +184,7 @@ class AlbumRoll extends FlxSpriteGroup
 
   public function skipIntro():Void
   {
-    this.visible = true;
+    if(!this.visible) return;
     // Weird workaround
     newAlbumArt.anim.play('switch', true);
     if (albumTitle != null) albumTitle.animation.play('switch');

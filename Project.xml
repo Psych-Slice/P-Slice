@@ -94,6 +94,9 @@
 	<define name="PSYCH_WATERMARKS" /> <!-- DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN -->
 	<define name="TITLE_SCREEN_EASTER_EGG" />
 
+	<!-- New compiler tweaks-->
+
+
 	<!-- Debug utilities (useful when testing the game)-->
 	<section if="debug">
 		<!-- For testing file access times-->
@@ -123,6 +126,10 @@
 		<define name="pico_always_kill" />
 	</section>
 
+	<section if="BUILD_LINUX_V3">
+		<assets path="setup/ndll/linux/lime.v3.ndll" rename="lime.ndll" embed="true"/>
+		<haxedef name="HXCPP_EXACT_MARCH" if="cpp" value="x86-64-v3" />
+	</section>
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These
@@ -326,7 +333,6 @@
 		<!-- <haxedef name="HXCPP_GC_MOVING" unless="HXCPP_TRACY_MEMORY"/> -->
 		<!-- This will break the GC and delete textures on it's own-->
 		<haxedef name="HXCPP_CHECK_POINTER" />
-		<haxedef name="HXCPP_EXACT_MARCH" value="x86-64-v3" />
 		<haxedef name="HXCPP_STACK_LINE" />
 		<haxedef name="HXCPP_STACK_TRACE" />
 		<haxedef name="HXCPP_CATCH_SEGV" />

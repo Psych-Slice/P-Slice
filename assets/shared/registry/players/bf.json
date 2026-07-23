@@ -238,7 +238,7 @@
     "loss": [
       {
         "renderType": "animateatlas",
-        "scriptClass": "BFShitResults",
+        "assetPath": "shared:resultScreen/results-bf/resultsSHIT",
         "zIndex": 500,
         "offsets": [570.5, -390.5],
         "loopFrameLabel": "Loop Start"

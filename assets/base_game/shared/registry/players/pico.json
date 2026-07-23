@@ -101,7 +101,7 @@
         "assetPath": "shared:resultScreen/results-pico/resultsPERFECT",
         "zIndex": 500,
         "scale": 0.88,
-        "offsets": [385, 82],
+        "offsets":  [-169.5, -219],
         "loopFrame": 91
       }
     ],
@@ -111,7 +111,7 @@
         "assetPath": "shared:resultScreen/results-pico/resultsPERFECT",
         "zIndex": 500,
         "scale": 0.88,
-        "offsets": [385, 82],
+        "offsets":  [-169.5, -219],
         "loopFrame": 91
       }
     ],
@@ -121,7 +121,7 @@
         "assetPath": "shared:resultScreen/results-pico/resultsGREAT",
         "zIndex": 500,
         "scale": 1.25,
-        "offsets": [350, 25],
+        "offsets": [-160, -265],
         "looped": true,
         "loopFrame": 32
       }
@@ -132,7 +132,7 @@
         "assetPath": "shared:resultScreen/results-pico/resultsGREAT",
         "zIndex": 500,
         "scale": 1.25,
-        "offsets": [350, 25],
+        "offsets": [-160, -265],
         "looped": true,
         "loopFrame": 32
       }
@@ -143,7 +143,7 @@
         "assetPath": "shared:resultScreen/results-pico/resultsGOOD",
         "zIndex": 500,
         "scale": 1.25,
-        "offsets": [350, 25],
+        "offsets": [-200, -120],
         "loopFrame": 41
       }
     ],
@@ -152,7 +152,7 @@
         "renderType": "animateatlas",
         "assetPath": "shared:resultScreen/results-pico/resultsSHIT",
         "zIndex": 500,
-        "offsets": [-185, -125],
+        "offsets": [-50, 60],
         "loopFrame": 0
       }
     ]
