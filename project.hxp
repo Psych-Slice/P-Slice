@@ -1,0 +1,709 @@
+
+import hxp.*;
+import lime.tools.*;
+
+import sys.FileSystem;
+
+enum abstract FeatureFlag(String) to String from String {
+
+	// -- external / passed in from the command line, never set by this script --
+	var PROFILE_BUILD = "PROFILE_BUILD";
+	var THIRTY_TWO_BITS = "32bits";
+	var BUILD_LINUX_V3 = "BUILD_LINUX_V3";
+
+	// -- <define> flags --
+	var MODS_ALLOWED = "MODS_ALLOWED";
+	var OPENFL_LOOKUP = "OPENFL_LOOKUP";
+	var NATIVE_LOOKUP = "NATIVE_LOOKUP";
+	var HSCRIPT_ALLOWED = "HSCRIPT_ALLOWED";
+	var LUA_ALLOWED = "LUA_ALLOWED";
+	var DISCORD_ALLOWED = "DISCORD_ALLOWED";
+	var BASE_GAME_FILES = "BASE_GAME_FILES";
+	var TOUCH_CONTROLS_ALLOWED = "TOUCH_CONTROLS_ALLOWED";
+	var CHECK_FOR_UPDATES = "CHECK_FOR_UPDATES";
+	var VIDEOS_ALLOWED = "VIDEOS_ALLOWED";
+	var ATSC_SUPPORT = "ATSC_SUPPORT";
+	var FIREBASE_CRASH_HANDLER = "FIREBASE_CRASH_HANDLER";
+	var TOUCH_HERE_TO_PLAY = "TOUCH_HERE_TO_PLAY";
+	var ACHIEVEMENTS_ALLOWED = "ACHIEVEMENTS_ALLOWED";
+	var TRANSLATIONS_ALLOWED = "TRANSLATIONS_ALLOWED";
+	var SHOW_LOADING_SCREEN = "SHOW_LOADING_SCREEN";
+	var STRICT_LOADING_SCREEN = "STRICT_LOADING_SCREEN";
+	var MULTITHREADED_LOADING = "MULTITHREADED_LOADING";
+	var PSYCH_WATERMARKS = "PSYCH_WATERMARKS";
+	var TITLE_SCREEN_EASTER_EGG = "TITLE_SCREEN_EASTER_EGG";
+	var IRIS_DEBUG = "IRIS_DEBUG";
+	var FEATURE_DEBUG_FUNCTIONS = "FEATURE_DEBUG_FUNCTIONS";
+	var PICO_ALWAYS_KILL = "pico_always_kill";
+	var HXCPP_TRACY = "HXCPP_TRACY";
+	var HXCPP_TELEMETRY = "HXCPP_TELEMETRY";
+	var HXCPP_TRACY_MEMORY = "HXCPP_TRACY_MEMORY";
+	var HXCPP_TRACY_ON_DEMAND = "HXCPP_TRACY_ON_DEMAND";
+	var NO_FIREBASE_ANDROID_PATCHES = "NO_FIREBASE_ANDROID_PATCHES";
+	var SHUT_UP_LINC_LUAJIT = "SHUT_UP_LINC_LUAJIT";
+	var X86_BUILD = "x86_BUILD";
+
+	// -- <haxedef> flags (compiler-only, no XML-conditional semantics) --
+	var LINC_LUA_RELATIVE_DYNAMIC_LIB = "LINC_LUA_RELATIVE_DYNAMIC_LIB";
+	var HXCPP_OPTIMIZE_FOR_FAST = "HXCPP_OPTIMIZE_FOR_FAST";
+	var FLX_NO_FOCUS_LOST_SCREEN = "FLX_NO_FOCUS_LOST_SCREEN";
+	var SHARE_MOBILE_FILES = "SHARE_MOBILE_FILES";
+	var FLX_NO_DEBUG = "FLX_NO_DEBUG";
+	var ANALYZER_OPTIMIZE = "analyzer-optimize";
+	var NAPE_RELEASE_BUILD = "NAPE_RELEASE_BUILD";
+	var HXCPP_CHECK_POINTER = "HXCPP_CHECK_POINTER";
+	var HXCPP_STACK_LINE = "HXCPP_STACK_LINE";
+	var HXCPP_STACK_TRACE = "HXCPP_STACK_TRACE";
+	var HXCPP_CATCH_SEGV = "HXCPP_CATCH_SEGV";
+	var HXCPP_ARM64 = "HXCPP_ARM64";
+	var NO_DEPRECATION_WARNINGS = "no-deprecation-warnings";
+	var LIME_DISABLE_ASSETS_VERSION = "lime_disable_assets_version";
+	var NO_SSL = "no_ssl";
+	var DISCORD_DISABLE_IO_THREAD = "DISCORD_DISABLE_IO_THREAD";
+	var NO_PRECOMPILED_HEADERS = "NO_PRECOMPILED_HEADERS";
+	var HSCRIPT_POS = "hscriptPos";
+}
+
+class Project extends HXProject {
+
+	/**
+	* The relative location of the templates folder.
+	*/
+	static final TEMPLATES_DIR:String = "templates";
+
+	// Central registry backing setFlag()/hasFlag() -- the single source of
+	// truth for every FeatureFlag's current on/off state.
+	var featureFlags:Map<String, Bool> = new Map ();
+
+	public function new () {
+
+		super ();
+
+		// Seed flags that come in from the command line (-D...) rather than
+		// being set by this script, so hasFlag() works uniformly for them too.
+		featureFlags.set (FeatureFlag.PROFILE_BUILD, defines.exists ("PROFILE_BUILD"));
+		featureFlags.set (FeatureFlag.THIRTY_TWO_BITS, defines.exists ("32bits"));
+		featureFlags.set (FeatureFlag.BUILD_LINUX_V3, defines.exists ("BUILD_LINUX_V3"));
+
+		// --------------------------------------------------------------
+		// Condition flags (replicate the XML's if=/unless= vocabulary)
+		// --------------------------------------------------------------
+		var debug          = this.debug;
+		var profileBuild   = hasFlag (FeatureFlag.PROFILE_BUILD);
+		var mobile         = platformType == PlatformType.MOBILE;
+		var desktop        = platformType == PlatformType.DESKTOP;
+		var web            = target == Platform.HTML5;
+		var android        = target == Platform.ANDROID;
+		var ios            = target == Platform.IOS;
+		var mac            = target == Platform.MAC;
+		var linux          = target == Platform.LINUX;
+		var windows        = target == Platform.WINDOWS;
+		var switchPlatform = targetFlags.exists ("switch"); // TODO(verify): no Platform.SWITCH in stock Lime
+		var hl             = targetFlags.exists ("hl");
+		var flash          = false; // legacy target, effectively unused now
+		// "cpp" in the XML means "this build is compiling to C++" (i.e. every
+		// native target). Approximated as: not web, not hl, not flash.
+		var cpp            = !web && !hl && !flash;
+		var bits32         = hasFlag (FeatureFlag.THIRTY_TWO_BITS) || architectures.indexOf (Architecture.X86) >= 0;
+
+		// ============================================================
+		// Application Settings
+		// ============================================================
+
+		if (!profileBuild && !mobile) {
+			meta.title  = "Friday Night Funkin': P-Slice Engine";
+			app.file   = "PSliceEngine";
+			meta.packageName = "com.mikolka9144.pslice"; // TODO(verify field name: packageName vs package)
+			app.main   = "Main";
+			meta.version = "3.4.2";
+			meta.company = "mikolka9144";
+		}
+		if (profileBuild) {
+			meta.title  = "P-Slice Engine Profiling build";
+			app.file   = "PSliceEngine";
+			meta.packageName = "com.mikolka9144.testPslice";
+			app.main   = "Main";
+			meta.version = "3.4.2";
+			meta.company = "mikolka9144";
+		}
+		if (mobile && !profileBuild) {
+			meta.title  = "P-Slice Engine";
+			app.file   = "PSliceEngine";
+			meta.packageName = "com.mikolka9144.pslice";
+			app.main   = "Main";
+			meta.version = "3.4.2";
+			meta.company = "mikolka9144";
+		}
+
+
+		// Switch: Export with Unique ApplicationID and Icon
+		environment.set ("APP_ID", "0x0100f6c013bbc000");
+
+		meta.buildNumber = "342"; // TODO(verify): <meta build-number="342" />
+
+		// TODO(verify android config API for your Lime version):
+		// <config type="android" gradle-version="8.10.2" gradle-plugin="8.8.0"
+		//         ndkVersion="27.3" minimum-sdk-version="26" target-sdk-version="35" />
+		// e.g. something like:
+		config.set ("android.gradle-version", "8.10.2");
+		config.set ("android.gradle-plugin", "8.8.0");
+		config.set ("android.ndk-version", "27.3");
+		config.set ("android.minimum-sdk-version", "26");
+		config.set ("android.target-sdk-version", "35");
+
+		// stable luas PUT AFTER FIRST LINE WITH APP NAME AND ETC
+		setFlag (FeatureFlag.LINC_LUA_RELATIVE_DYNAMIC_LIB, true, true);
+
+		// The flixel preloader is not accurate in Chrome. You can use it
+		// regularly if you embed the swf into an html file, or set the
+		// actual file size manually at "FlxPreloaderBase-onUpdate-bytesTotal".
+		// app.preloader = "Preloader";
+		app.preloader = "mikolka.vslice.FunkinPreloader";
+
+		// Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2
+		environment.set ("SWF_VERSION", "11.8");
+
+		// ============================================================
+		// PSYCH ENGINE CUSTOMIZATION
+		// ============================================================
+
+		// Compiles mod support for P-Slice. Feel free to disable if you're making a source mod
+		setFlag (FeatureFlag.MODS_ALLOWED, desktop || mobile);
+
+		if (!debug) {
+			// Adds the ability to use OpenFL asset lookup (defaults to sys if disabled)
+			setFlag (FeatureFlag.OPENFL_LOOKUP);
+
+			// Adds the ability to use NativeFileSystem on the computer to access files
+			setFlag (FeatureFlag.NATIVE_LOOKUP, hasFlag (FeatureFlag.MODS_ALLOWED));
+		}
+
+		// Adds support for Psych's lua/HScript files
+		setFlag (FeatureFlag.HSCRIPT_ALLOWED, desktop || mobile);
+		setFlag (FeatureFlag.LUA_ALLOWED, cpp);
+
+		// Enables Discord's Rich Presence integration
+		var discordAllowed = desktop && !hl;
+		setFlag (FeatureFlag.DISCORD_ALLOWED, discordAllowed);
+
+		// Adds a Base game content to your build. Feel free to disable if you're making a source mod.
+		// unless="NO_BASEGAME_FILES" if="web" would go here if re-enabled
+		setFlag (FeatureFlag.BASE_GAME_FILES,!web);
+
+		// Adds support for touchscreen devices (like mobiles)
+		setFlag (FeatureFlag.TOUCH_CONTROLS_ALLOWED, mobile || web || debug);
+
+		// Do you want to check for P-Slice updates?
+		setFlag (FeatureFlag.CHECK_FOR_UPDATES, !web && !hl);
+
+		// Do you want to support playing videos in your build?
+		setFlag (FeatureFlag.VIDEOS_ALLOWED, (desktop || mobile || web) && !bits32 && !hl);
+
+		// Do we want to use ATSC compression?
+		setFlag (FeatureFlag.ATSC_SUPPORT, !web);
+
+		// Enables special crash handler in case you don't trust your players to report issues properly
+		setFlag (FeatureFlag.FIREBASE_CRASH_HANDLER, mobile);
+
+		// Displays a "Touch here to play" screen
+		setFlag (FeatureFlag.TOUCH_HERE_TO_PLAY, hasFlag (FeatureFlag.TOUCH_CONTROLS_ALLOWED) && debug);
+
+		// Other stuff
+		setFlag (FeatureFlag.ACHIEVEMENTS_ALLOWED);
+		setFlag (FeatureFlag.TRANSLATIONS_ALLOWED, !web);
+
+		// Allows the game to display a loading screen when loading songs
+		setFlag (FeatureFlag.SHOW_LOADING_SCREEN);
+
+		// Forces the game to unload UI assets before loading the song assets
+		// setFlag (FeatureFlag.STRICT_LOADING_SCREEN);
+		setFlag (FeatureFlag.STRICT_LOADING_SCREEN, mobile && hasFlag (FeatureFlag.SHOW_LOADING_SCREEN));
+
+		// UNCOMMENTING THIS ENABLES MULTITHREADED LOADING, WHICH IMPROVES
+		// LOADING TIMES, BUT WITH A LOW CHANCE FOR THE GAME TO FREEZE ON SONG LOAD
+		setFlag (FeatureFlag.MULTITHREADED_LOADING, cpp);
+		setFlag (FeatureFlag.PSYCH_WATERMARKS); // DELETE THIS TO REMOVE THE PSYCH LOGO FROM LOADING SCREEN
+		setFlag (FeatureFlag.TITLE_SCREEN_EASTER_EGG);
+
+		// New compiler tweaks
+
+		// Debug utilities (useful when testing the game)
+		if (debug) {
+			// For testing file access times
+			setFlag (FeatureFlag.OPENFL_LOOKUP);
+			setFlag (FeatureFlag.NATIVE_LOOKUP, !web);
+
+			setFlag (FeatureFlag.IRIS_DEBUG);
+			setFlag (FeatureFlag.FEATURE_DEBUG_FUNCTIONS);
+			haxedefs.set ("HXVLC_VERBOSE", "2");
+			haxedefs.set ("HXVLC_LOGGING", "");
+			// Pico will always kill the other (unless you skip the cutscene)
+			setFlag (FeatureFlag.PICO_ALWAYS_KILL);
+		}
+
+		// Flags for the profile builds (used for assessing performance and such)
+		if (profileBuild) {
+			// Enables tracy
+			setFlag (FeatureFlag.HXCPP_TRACY);
+			setFlag (FeatureFlag.HXCPP_TELEMETRY);
+			setFlag (FeatureFlag.HXCPP_TRACY_MEMORY);
+			setFlag (FeatureFlag.HXCPP_TRACY_ON_DEMAND);
+			setFlag (FeatureFlag.STRICT_LOADING_SCREEN);
+			// setFlag (FeatureFlag.HXCPP_TRACY_INCLUDE_CALLSTACKS);
+
+			// Pico will always kill the other (unless you skip the cutscene)
+			setFlag (FeatureFlag.PICO_ALWAYS_KILL);
+		}
+
+		// HXCPP_OPTIMIZE_FOR_SIZE
+		setFlag (FeatureFlag.HXCPP_OPTIMIZE_FOR_FAST, true, true);
+
+		if (hasFlag (FeatureFlag.BUILD_LINUX_V3)) {
+			assets.push (new Asset ("setup/ndll/linux/lime.v3.ndll", "lime.ndll", null, true));
+			if (cpp) {
+				haxedefs.set ("HXCPP_EXACT_MARCH", "x86-64-v3");
+			}
+		}
+
+		// ============================================================
+		// Window Settings
+		// ============================================================
+
+		// These window settings apply to all targets
+		window.width = 1280;
+		window.height = 720;
+		window.fps = 60;
+		window.background = 0x000000;
+		window.hardware = true;
+		window.vsync = false;
+		window.allowHighDPI = true;
+
+		// HTML5-specific
+		if (web) {
+			window.resizable = true;
+			window.fullscreen = true;
+		}
+
+		// Desktop-specific
+		if (desktop) {
+			window.orientation = Orientation.LANDSCAPE;
+			window.fullscreen = false;
+			window.resizable = true;
+			window.vsync = false;
+		}
+
+		// Mobile-specific
+		if (mobile) {
+			window.orientation = Orientation.LANDSCAPE;
+			window.fullscreen = true;
+			window.resizable = false;
+			window.allowShaders = true;   // TODO(verify field name)
+			window.requireShaders = true; // TODO(verify field name)
+		}
+
+		// Switch-specific
+		if (switchPlatform) {
+			window.orientation = Orientation.LANDSCAPE;
+			window.fullscreen = true;
+			window.width = 0;
+			window.height = 0;
+			window.resizable = true;
+		}
+
+		// ============================================================
+		// Path Settings
+		// ============================================================
+
+		if (debug) app.path = "export/debug";
+		if (hasFlag (FeatureFlag.HXCPP_TRACY)) app.path = "export/tracy";
+		if (!debug && !hasFlag (FeatureFlag.HXCPP_TRACY)) app.path = "export/release";
+		if (bits32) app.path = "export/32bit";
+
+		sources.push ("source"); // <classpath name="source" />
+		if (android) {
+			// TODO(verify): <java if="android" path="source/external/android/java" />
+			javaPaths.push ("source/external/android/java");
+		}
+
+		// ============================================================
+		// Game Assets & Etc.
+		// ============================================================
+
+		// FNF is changing openAL config, because the default one is broken.
+		if (desktop) {
+			if (windows) {
+				assets.push (new Asset ("alsoft.txt", "plugins/alsoft.ini", AssetType.TEXT));
+			} else {
+				assets.push (new Asset ("alsoft.txt", "plugins/alsoft.conf", AssetType.TEXT));
+			}
+		}
+
+		// Assets
+		addAssetPath ("assets/fonts", "assets/fonts");
+		if (hasFlag (FeatureFlag.TOUCH_CONTROLS_ALLOWED)) {
+			addAssetPath ("assets/mobile", "assets/shared/mobile");
+		}
+		if (hasFlag (FeatureFlag.VIDEOS_ALLOWED)) {
+			addAssetPath ("assets/videos", "assets/videos", null, false);
+		}
+
+		if (!web) {
+			addAssetPath ("assets/shared", "assets/shared");
+		} else {
+			addAssetPath ("assets/shared", "assets/shared", null, true);
+		}
+
+		if (web) {
+			addAssetPath ("assets/embed", "assets/embed", null, true);
+		}
+		if (!web && !hasFlag (FeatureFlag.OPENFL_LOOKUP)) {
+			addAssetPath ("assets/embed", "assets/embed", null, false);
+		}
+		if (hasFlag (FeatureFlag.OPENFL_LOOKUP) && !web) {
+			addAssetPath ("assets/embed", "assets/embed", null, true);
+		}
+
+		if (web) {
+			addAssetPath ("assets/week_assets", "assets");
+		} else {
+			addAssetPath ("assets/week_assets", "assets");
+		}
+
+		if (hasFlag (FeatureFlag.TITLE_SCREEN_EASTER_EGG)) {
+			if (web) {
+				addAssetPath ("assets/secrets", "assets/shared", null, null, null, "*.ogg");
+			} else {
+				addAssetPath ("assets/secrets", "assets/shared");
+			}
+		}
+
+		if (hasFlag (FeatureFlag.TRANSLATIONS_ALLOWED)) {
+			if (web) {
+				addAssetPath ("assets/translations", "assets", null, null, null, "*.ogg");
+			} else {
+				addAssetPath ("assets/translations", "assets");
+			}
+		}
+
+		addAssetPath ("assets/atsc_shared", "assets/shared");
+
+		if (hasFlag (FeatureFlag.BASE_GAME_FILES)) {
+			if (web) {
+				addAssetPath ("assets/base_game/week_data", "assets", null, false, "*.png|*.ogg|*.mp4");
+				addAssetPath ("assets/base_game/week_data", "assets", null, true, "*.xml|*.json");
+				addAssetPath ("assets/base_game/characters", "assets/shared/images/characters", null, true, "*.xml|*.json");
+				addAssetPath ("assets/base_game/characters", "assets/shared/images/characters", null, false, "*.png");
+				addAssetPath ("assets/base_game/characters_pixel", "assets/shared/images/characters", null, true, "*.xml|*.json");
+				addAssetPath ("assets/base_game/characters_pixel", "assets/shared/images/characters", null, false, "*.png");
+				addAssetPath ("assets/base_game/shared", "assets/shared", null, true);
+			}
+			if (!web) {
+				addAssetPath ("assets/base_game/week_data", "assets");
+				addAssetPath ("assets/base_game/characters", "assets/shared/images/characters");
+				addAssetPath ("assets/base_game/characters_pixel", "assets/shared/images/characters");
+				addAssetPath ("assets/base_game/shared", "assets/shared");
+			}
+		}
+
+		if (hasFlag (FeatureFlag.MODS_ALLOWED)) {
+			addAssetPath ("example_mods", "mods", null, false);
+		}
+		if (!mobile) {
+			addAssetPath ("art/readme.txt", "do NOT readme.txt");
+		}
+
+		// ============================================================
+		// Haxe libs / Libraries
+		// ============================================================
+		// library name="songs" preload="false" -- left commented in the original
+
+		addHaxelib ("flixel");
+		addHaxelib ("flixel-addons", "3.3.2");
+		addHaxelib ("hxcpp");
+		addHaxelib ("extension-haptics", null, mobile);
+		addHaxelib ("extension-androidtools", null, android);
+
+		if (hasFlag (FeatureFlag.FIREBASE_CRASH_HANDLER)) {
+			setFlag (FeatureFlag.NO_FIREBASE_ANDROID_PATCHES);
+			addHaxelib ("extension-firebase-crashlytics");
+		}
+		addHaxelib ("tjson", "1.4.0");
+		addHaxelib ("grig.audio");
+		addHaxelib ("funkin.vis");
+
+		// Psych stuff needed
+		addHaxelib ("linc_luajit", null, hasFlag (FeatureFlag.LUA_ALLOWED));
+		addHaxelib ("hscript-iris", "1.1.3", hasFlag (FeatureFlag.HSCRIPT_ALLOWED));
+
+		if (hasFlag (FeatureFlag.VIDEOS_ALLOWED) && !web) {
+			addHaxelib ("hxCodec", null, linux);
+			addHaxelib ("hxvlc", null, !linux);
+		}
+		addHaxelib ("hxdiscord_rpc", null, discordAllowed);
+
+		addHaxelib ("flixel-animate");
+
+		// TODO(verify API): Category Type for Apple Systems
+		// <config:ios category_type="public.app-category.music-games" />
+		// <config:mac category_type="public.app-category.music-games" />
+		// config.set ("ios::category_type", "public.app-category.music-games");
+		// config.set ("mac::category_type", "public.app-category.music-games");
+
+		// Disable Discord IO Thread
+		setFlag (FeatureFlag.DISCORD_DISABLE_IO_THREAD, discordAllowed, true);
+		setFlag (FeatureFlag.NO_PRECOMPILED_HEADERS, linux, true);
+
+		if (debug) {
+			// These defines are mostly for testing (aren't required to be used)
+			addHaxelib ("hxcpp-debug-server");
+			addHaxelib ("flixel-studio");
+			addHaxelib ("hscript");
+		}
+
+		setFlag (FeatureFlag.X86_BUILD, bits32);
+
+		// ============================================================
+		// Haxedefines
+		// ============================================================
+
+		// Enable the Flixel core recording system
+		// setFlag (FeatureFlag.FLX_RECORD, true, true);
+
+		// Disable the right and middle mouse buttons
+		// setFlag (FeatureFlag.FLX_NO_MOUSE_ADVANCED, true, true);
+
+		// Disable the native cursor API on Flash
+		// setFlag (FeatureFlag.FLX_NO_NATIVE_CURSOR, true, true);
+
+		// Optimise inputs, be careful you will get null errors if you don't
+		// use conditionals in your game
+		// setFlag (FeatureFlag.FLX_NO_MOUSE, mobile, true);
+		// setFlag (FeatureFlag.FLX_NO_KEYBOARD, mobile, true);
+		// setFlag (FeatureFlag.FLX_NO_TOUCH, desktop, true);
+		// setFlag (FeatureFlag.FLX_NO_GAMEPAD, true, true);
+
+		// Disable the Flixel core sound tray
+		// setFlag (FeatureFlag.FLX_NO_SOUND_TRAY, true, true);
+
+		// Disable the Flixel sound management code
+		// setFlag (FeatureFlag.FLX_NO_SOUND_SYSTEM, true, true);
+
+		// Disable the Flixel core focus lost screen
+		setFlag (FeatureFlag.FLX_NO_FOCUS_LOST_SCREEN, true, true);
+
+		// Let user access P-Slice files
+		setFlag (FeatureFlag.SHARE_MOBILE_FILES, mobile, true);
+
+		// Disable the Flixel core debugger. Automatically gets set whenever
+		// you compile in release mode!
+		setFlag (FeatureFlag.FLX_NO_DEBUG, !profileBuild && !debug, true);
+		setFlag (FeatureFlag.ANALYZER_OPTIMIZE, !debug, true);
+		// Enable this for Nape release builds for a serious performance improvement
+		setFlag (FeatureFlag.NAPE_RELEASE_BUILD, !debug, true);
+
+		// I hate you @superpowers04 for changing commits like that
+		setFlag (FeatureFlag.SHUT_UP_LINC_LUAJIT);
+
+		// Used for crash handler
+		if (cpp) {
+			// !DO NOT ENABLE THIS
+			// setFlag (FeatureFlag.HXCPP_GC_MOVING, true, true); // unless HXCPP_TRACY_MEMORY
+			// This will break the GC and delete textures on its own
+			setFlag (FeatureFlag.HXCPP_CHECK_POINTER, true, true);
+			setFlag (FeatureFlag.HXCPP_STACK_LINE, true, true);
+			setFlag (FeatureFlag.HXCPP_STACK_TRACE, true, true);
+			setFlag (FeatureFlag.HXCPP_CATCH_SEGV, true, true);
+		}
+		if (ios) {
+			// Compile for ARM (hopefully should fix the sim screaming about libs)
+			setFlag (FeatureFlag.HXCPP_ARM64, true, true);
+		}
+
+		// Disable deprecated warnings
+		setFlag (FeatureFlag.NO_DEPRECATION_WARNINGS, true, true);
+		// for lime to not recompile asset cache on every build
+		setFlag (FeatureFlag.LIME_DISABLE_ASSETS_VERSION, true, true);
+		// Disable deprecated warnings
+		setFlag (FeatureFlag.NO_SSL, hl, true);
+
+		// Haxe 4.3.0+: Enable pretty syntax errors and stuff.
+		// pretty (haxeflixel default), indent, classic (haxe compiler default)
+		haxedefs.set ("message.reporting", "pretty");
+
+		// Do whatever you want I'm tired uninstall and install everytime
+		if (android && !debug) {
+			// TODO(verify Certificate API for your Lime version):
+			// <certificate path="key.keystore" password="pslice" alias="pslice" alias-password="pslice" />
+			// certificate = new Certificate ("key.keystore", "pslice", "pslice", "pslice");
+		}
+
+		// Macro fixes
+		haxeflags.push ("--macro");
+		haxeflags.push ("allowPackage('flash')");
+		haxeflags.push ("--macro");
+		haxeflags.push ("include('my.pack')");
+		// This macro allows addition of new functionality to existing Flixel.
+		haxeflags.push ("--macro");
+		haxeflags.push ("addMetadata('@:build(mikolka.FlxMacro.buildFlxBasic())', 'flixel.FlxBasic')");
+
+		// more verbose HScript
+		setFlag (FeatureFlag.HSCRIPT_POS, hasFlag (FeatureFlag.HSCRIPT_ALLOWED), true);
+
+		// ============================================================
+		// Custom
+		// ============================================================
+		// Templates stuff
+    	this.templatePaths.push(TEMPLATES_DIR);
+		if (hasFlag (FeatureFlag.FIREBASE_CRASH_HANDLER)) {
+			// TODO(verify template API):
+			// <template path="setup/google-services.json" rename="app/google-services.json"/>
+			// <config:android pslice-firebase-sdk-path="yes" />
+			// <template path="setup/GoogleService-Info.plist" rename="GoogleService-Info.plist" if="ios"/>
+			// <template path="setup/GoogleService-Info.plist" rename="../GoogleService-Info.plist" if="ios"/>
+			templatePaths.push (new Asset ("setup/google-services.json", "app/google-services.json"));
+			config.set("android::pslice-firebase-sdk-path", "yes");
+			if (ios) {
+				templatePaths.push (new Asset ("setup/GoogleService-Info.plist", "GoogleService-Info.plist"));
+				templatePaths.push (new Asset ("setup/GoogleService-Info.plist", "../GoogleService-Info.plist"));
+			}
+		}
+
+		if (profileBuild) {
+			if (linux) addAssetPath ("art/desktop/icon16.png", "icon.png");
+			icons.push (new Icon ("art/desktop/icon16.png"));
+		}
+		if (mac) {
+			addAssetPath ("art/desktop/mac-icon-assets.car", "Assets.car");
+		}
+		if (!profileBuild) {
+			if (mobile) {
+				// TODO(verify config API):
+				// <config type="android" pslice-mono-icon="art/mobile/iconMono.png" />
+				// <config type="ios" pslice-icon-dir="art/mobile/PSlice.appiconset" />
+				config.set("android.pslice-mono-icon", "art/mobile/iconMono.png");
+				config.set("ios.pslice-icon-dir", "art/mobile/PSlice.appiconset");
+				if (android) icons.push (new Icon ("art/mobile/iconAdaptive.png"));
+				if (!android) icons.push (new Icon ("art/mobile/iconMobile.png"));
+			}
+			if (!mobile) {
+				if (linux) addAssetPath ("art/desktop/iconOG.png", "icon.png");
+				icons.push (new Icon ("art/desktop/icon16.png", 16));
+				icons.push (new Icon ("art/desktop/icon32.png", 32));
+				icons.push (new Icon ("art/desktop/icon64.png", 64));
+				icons.push (new Icon ("art/desktop/iconOG.png"));
+			}
+		}
+		
+		for (key in featureFlags.keys()){
+			if(featureFlags.get(key))
+				haxedefs.set(key,true);
+		}
+	}
+
+	// --------------------------------------------------------------
+	// FeatureFlag registry
+	// --------------------------------------------------------------
+
+	/**
+	 * Turn a FeatureFlag on/off. Mirrors the flag into the real
+	 * `defines`/`haxedefs` map (so the compiled build is unaffected) while
+	 * also recording it in `featureFlags` so hasFlag() can answer for any
+	 * flag defined in this file, whether it came from the command line or
+	 * from this constructor.
+	 *
+	 * @param flag         the flag to set
+	 * @param condition    only actually sets the flag if true (default true);
+	 *                     always records the flag's state either way
+	 * @param haxedefOnly  true for flags that started life as <haxedef>
+	 *                     (compiler-only, no XML-conditional semantics)
+	 * @param value        the define/haxedef value, for the rare flag that
+	 *                     carries one (most are presence-only, value "")
+	 */
+	function setFlag (flag:FeatureFlag, condition:Bool = true, haxedefOnly:Bool = false, value:String = ""):Void {
+
+		featureFlags.set (flag, condition);
+		if (!condition) return;
+
+		if (haxedefOnly) {
+			haxedefs.set (flag, value);
+		} else {
+			defines.set (flag, value);
+		}
+	}
+
+	/**
+	 * Whether a FeatureFlag is currently enabled -- replaces
+	 * defines.exists("X") / haxedefs.exists("X") checks scattered through
+	 * the old XML-derived conditionals.
+	 */
+	function hasFlag (flag:FeatureFlag):Bool {
+		return featureFlags.exists (flag) && featureFlags.get (flag);
+	}
+
+	// --------------------------------------------------------------
+	// addHaxelib
+	// Replaces `haxelibs.push (new Haxelib (name, version))` call sites
+	// with a single helper that also accepts an inline condition, so a
+	// <haxelib name="X" if="..."/> becomes one line instead of an
+	// if-block wrapping a push.
+	// --------------------------------------------------------------
+	function addHaxelib (name:String, version:String = null, condition:Bool = true):Void {
+		if (condition) {
+			haxelibs.push (new Haxelib (name, version));
+		}
+	}
+
+	// --------------------------------------------------------------
+	// Helper: replicate <assets path=".." rename=".." include=".."
+	// exclude=".." embed=".."/> directory scanning + glob filtering.
+	// For a single file path, include/exclude are ignored (matches
+	// how the XML parser treats non-directory <assets> entries).
+	// --------------------------------------------------------------
+	function addAssetPath (path:String, rename:String, type:AssetType = null, embed:Null<Bool> = null, include:String = null, exclude:String = null):Void {
+
+		if (!FileSystem.exists (path)) return;
+
+		if (FileSystem.isDirectory (path)) {
+
+			for (file in FileSystem.readDirectory (path)) {
+
+				var sourcePath = path + "/" + file;
+				var targetPath = rename + "/" + file;
+
+				if (FileSystem.isDirectory (sourcePath)) {
+					addAssetPath (sourcePath, targetPath, type, embed, include, exclude);
+				} else if (matchesFilter (file, include, exclude)) {
+					assets.push (new Asset (sourcePath, targetPath, type, embed));
+				}
+			}
+
+		} else {
+			assets.push (new Asset (path, rename, type, embed));
+		}
+	}
+
+	function matchesFilter (file:String, include:String, exclude:String):Bool {
+
+		if (exclude != null) {
+			for (pattern in exclude.split ("|")) {
+				if (matchesGlob (file, pattern)) return false;
+			}
+		}
+
+		if (include != null) {
+			for (pattern in include.split ("|")) {
+				if (matchesGlob (file, pattern)) return true;
+			}
+			return false;
+		}
+
+		return true;
+	}
+
+	function matchesGlob (file:String, pattern:String):Bool {
+
+		// Only handles simple "*.ext" patterns, which is all this project uses
+		var ext = StringTools.startsWith (pattern, "*") ? pattern.substr (1) : pattern;
+		return StringTools.endsWith (file, ext);
+	}
+}
