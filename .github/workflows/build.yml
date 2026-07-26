@@ -84,13 +84,17 @@ jobs:
           haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_HOME
           haxelib run lime config JAVA_HOME $JAVA_HOME_17_X64
           haxelib run lime config ANDROID_SETUP true
-          printf '%s' "$PLAYSTORE_FIREBASE" > ./setup/google-services.json
+          mkdir -p ./templates/android/template
+          printf '%s' "$PLAYSTORE_FIREBASE" > ./templates/android/template/google-services.json
 
       - name: Configure iOS
         if: inputs.name == 'iOS'
         env:
           PLAYSTORE_FIREBASE_IOS: ${{ secrets.PLAYSTORE_FIREBASE_IOS }}
-        run: printf '%s' "$PLAYSTORE_FIREBASE_IOS" > ./setup/GoogleService-Info.plist
+        run: |
+          mkdir -p ./templates/ios/template
+          printf '%s' "$PLAYSTORE_FIREBASE_IOS" > ./templates/ios/template/GoogleService-Info.plist
+          printf '%s' "$PLAYSTORE_FIREBASE_IOS" > ./templates/ios/template/{{app.file}}/GoogleService-Info.plist
 
       - name: Compile
         run: haxelib run lime build ${{ inputs.buildArgs }}

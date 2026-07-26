@@ -560,12 +560,7 @@ class Project extends HXProject {
 			// <config:android pslice-firebase-sdk-path="yes" />
 			// <template path="setup/GoogleService-Info.plist" rename="GoogleService-Info.plist" if="ios"/>
 			// <template path="setup/GoogleService-Info.plist" rename="../GoogleService-Info.plist" if="ios"/>
-			templatePaths.push (new Asset ("setup/google-services.json", "app/google-services.json"));
-			config.set("android::pslice-firebase-sdk-path", "yes");
-			if (ios) {
-				templatePaths.push (new Asset ("setup/GoogleService-Info.plist", "GoogleService-Info.plist"));
-				templatePaths.push (new Asset ("setup/GoogleService-Info.plist", "../GoogleService-Info.plist"));
-			}
+			config.set("android.pslice-firebase-sdk-path", "yes");
 		}
 
 		if (profileBuild) {
