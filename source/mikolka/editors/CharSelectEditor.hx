@@ -79,7 +79,6 @@ class CharSelectEditor extends MusicBeatState
 		gfChill = new CharSelectGF(0,0);
 		gfChill.x += cutoutSize;
 		switchEditorGF(activePlayer._data.charSelect.gf);
-		gfChill.visible = true;
 		add(gfChill);
 
 		playerChill = new CharSelectPlayer(cutoutSize*2.5, 0);
@@ -191,10 +190,13 @@ class CharSelectEditor extends MusicBeatState
 		else
 		{
 			gfChill.visible = true;
-			gfChill.switchGF(currentGFPath);
 
-			@:privateAccess
-			gfChill.enableVisualizer = gfData?.visualizer ?? false;
+			@:privateAccess{	
+				gfChill.currentGFPath = currentGFPath;
+				gfChill.switchGF(null);
+				gfChill.enableVisualizer = gfData?.visualizer ?? false;
+			}
+
 
 			var animInfoPath = 'images/${gfData?.animInfoPath}';
 			if (!FunkinPath.exists(animInfoPath + '/In.txt') || !FunkinPath.exists(animInfoPath + '/Out.txt'))

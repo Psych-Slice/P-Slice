@@ -84,20 +84,26 @@ class CharSelectGF extends FunkinSprite
 
   /**
    * For switching between "GFs" such as gf, nene, etc
-   * @param bf Which BF we are selecting, so that we know the accompyaning GF
+   * @param bf Which BF we are selecting, so that we know the accompyaning GF. If the BF is null, 
+   * we load the GF specified by the currentGFPath value.
    */
-  public function switchGF(bf:String):Void
+  public function switchGF(bf:Null<String>):Void
   {
     var previousGFPath = currentGFPath;
+    var _useVisualiser = false;
     if(bf == "locked"){
       this.visible = false; //? 'locked' is a special character
       return;//? and ??? doesn't have gf (yet)
     }
-    var bfObj = PlayerRegistry.instance.fetchEntry(bf);
-    var gfData = bfObj?.getCharSelectData()?.gf;
-    var assetPath:Null<String> = gfData?.assetPath ?? "";
+    else if(bf != null){
 
-    currentGFPath = assetPath;
+      var bfObj = PlayerRegistry.instance.fetchEntry(bf);
+      var gfData = bfObj?.getCharSelectData()?.gf;
+      var assetPath:Null<String> = gfData?.assetPath ?? "";
+      
+      currentGFPath = assetPath;
+      _useVisualiser = gfData?.visualizer ?? false;
+    }
 
     // We don't need to update any anims if we didn't change GF
     trace('currentGFPath(${currentGFPath})');
@@ -106,7 +112,7 @@ class CharSelectGF extends FunkinSprite
       this.visible = false;
       return;
     }
-    else if (previousGFPath != currentGFPath)
+    else if (previousGFPath != currentGFPath || bf == null)
     {
       this.visible = true;
 
@@ -122,8 +128,7 @@ class CharSelectGF extends FunkinSprite
         currentGFPath = "";
         return;
       }
-
-      enableVisualizer = gfData?.visualizer ?? false;
+      enableVisualizer = _useVisualiser;
     }
 
     anim.play("idle", true);

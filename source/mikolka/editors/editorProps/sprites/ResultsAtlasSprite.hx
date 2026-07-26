@@ -9,6 +9,7 @@ class ResultsAtlasSprite extends FunkinSprite implements IResultsSprite
 	var data:PlayerResultsAnimationData;
 	var timer:Null<FlxTimer>;
 	var sound:FlxSound = new FlxSound();
+	var resetTriggered:Bool = false;
 
 	public function new(animData:PlayerResultsAnimationData)
 	{
@@ -39,8 +40,7 @@ class ResultsAtlasSprite extends FunkinSprite implements IResultsSprite
 			}
 			else if (animData.loopFrame != null)
 			{
-				anim.frameIndex = animData.loopFrame ?? 0;
-				anim.resume(); // unpauses this anim, since it's on PlayOnce!
+				anim.play("", true, false, animData.loopFrame ?? 0);// unpauses this anim, since it's on PlayOnce!
 			}
 		});
 		// Hide until ready to play.
@@ -70,8 +70,8 @@ class ResultsAtlasSprite extends FunkinSprite implements IResultsSprite
 		visible = false;
 
 		if(!canShow) return;
-		timer = FlxTimer.wait(data.delay,() ->{
-			anim.play(data.startFrameLabel ?? ''); 
+		timer = FlxTimer.wait(data.delay ?? 0,() ->{
+			anim.play(data.startFrameLabel ?? '',true); 
 			sound?.play();
 			visible = true;
 		});
@@ -85,6 +85,7 @@ class ResultsAtlasSprite extends FunkinSprite implements IResultsSprite
 		//animation.curAnim = animation.getByName("");
 		var canShow = data.filter == null || data.filter == "" || data.filter == "both";
 		if(data.filter == activeFilter) canShow = true;
+		resetTriggered = true;
 		if(canShow){
 
 			visible = true;

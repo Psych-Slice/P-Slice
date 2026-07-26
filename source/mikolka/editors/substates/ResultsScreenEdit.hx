@@ -116,9 +116,9 @@ class ResultsScreenEdit extends VsliceSubState
 		propSystem.clearProps();
 		resultsDialogBox.list_objSelector.list = [];
 
-		var succsessful = true;
+		var successful = true;
 		for (prop in data){
-			if(succsessful) succsessful = propSystem.addProp(prop);
+			if(successful) successful = propSystem.addProp(prop);
 			else propSystem.addProp(prop);
 		}
 		propSystem.refresh();
@@ -127,7 +127,7 @@ class ResultsScreenEdit extends VsliceSubState
 		for (prop in propSystem.sprites)
 			resultsDialogBox.list_objSelector.addOption(prop.get_name());
 
-		if(!succsessful) UserErrorSubstate.makeMessage("Failed to load",'Some props failed to load\nMake sure all props have correct paths set');
+		if(!successful) UserErrorSubstate.makeMessage("Failed to load",'Some props failed to load\nMake sure all props have correct paths set');
 	}
 
 	override function update(elapsed:Float)
