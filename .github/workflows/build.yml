@@ -48,7 +48,7 @@ jobs:
 
       - name: Restore Libraries for compilation
         id: load-lib-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v6
         with:
           # not caching the bin folder to prevent asset duplication and stuff like that
           key: ${{ inputs.cacheLibrariesPath }}
@@ -60,7 +60,7 @@ jobs:
             ${{ inputs.cacheLibrariesPath }}
       - name: Restore existing build cache for faster compilation
         id: load-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v6
         with:
           # not caching the bin folder to prevent asset duplication and stuff like that
           key: ${{ inputs.cachePath }}
@@ -92,7 +92,7 @@ jobs:
         env:
           PLAYSTORE_FIREBASE_IOS: ${{ secrets.PLAYSTORE_FIREBASE_IOS }}
         run: |
-          mkdir -p ./templates/ios/template
+          mkdir -p ./templates/ios/template/{{app.file}}
           printf '%s' "$PLAYSTORE_FIREBASE_IOS" > ./templates/ios/template/GoogleService-Info.plist
           printf '%s' "$PLAYSTORE_FIREBASE_IOS" > ./templates/ios/template/{{app.file}}/GoogleService-Info.plist
 
