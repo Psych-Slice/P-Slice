@@ -94,6 +94,7 @@ jobs:
         run: |
           mkdir -p ./templates/ios/template/{{app.file}}
           printf '%s' "$PLAYSTORE_FIREBASE_IOS" > ./templates/ios/template/GoogleService-Info.plist
+          printf '%s' "$PLAYSTORE_FIREBASE_IOS" > ./setup/GoogleService-Info.plist
           printf '%s' "$PLAYSTORE_FIREBASE_IOS" > ./templates/ios/template/{{app.file}}/GoogleService-Info.plist
 
       - name: Compile
