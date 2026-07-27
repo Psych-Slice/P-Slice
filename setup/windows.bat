@@ -8,7 +8,7 @@ haxelib git flixel https://github.com/Psych-Slice/p-slice-1.0-flixel.git 9b1192a
 haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio.git cbf91e2180fd2e374924fe74844086aab7891666
 haxelib git flixel-animate https://github.com/MaybeMaru/flixel-animate.git 7d271b0017df2606a31e7736f20450ef65f999b4 --skip-dependencies
 haxelib git funkin.vis https://github.com/FunkinCrew/funkVis 22b1ce089dd924f15cdc4632397ef3504d464e90
-haxelib git hxcpp https://github.com/Psych-Slice/hxcpp.git 1b99e037866c9e34540fc8e385c586c93d2b85d0 --quiet --skip-dependencies
+haxelib git hxcpp https://github.com/Psych-Slice/hxcpp.git 66cae339ce60c21c8d605c7673091fdc47ae1ef1 --quiet --skip-dependencies
 haxelib install hxp 1.3.1 --quiet  --skip-dependencies
 
 haxelib git openfl https://github.com/FunkinCrew/openfl.git c4fa1dcfc384f07bb537e08cae671f9507fe49e6 --quiet --skip-dependencies

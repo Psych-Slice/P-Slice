@@ -72,6 +72,12 @@ class Project extends HXProject
 	static final EXPERIMENT_CRASH_TOOLS:FeatureFlag = "EXPERIMENT_CRASH_TOOLS";
 
 	/**
+	 * `-DEXPERIMENT_O3_OPTIM`
+	 * If enabled, compiles the game with more aggressive optimalisation.
+	 */
+	static final EXPERIMENT_O3_OPTIM:FeatureFlag = "EXPERIMENT_O3_OPTIM";
+
+	/**
 	 * `-DEXPERIMENT_COMPRESSED_TEXTURES`
 	 * If this flag is enabled, ASTC compressed textures will be used over uncompressed PNGs.
 	 * Compressed ASTC textures provide lower memory usage but at the cost of a slightly higher files size & more GPU usage.
@@ -300,12 +306,6 @@ class Project extends HXProject
 	static final LINC_LUA_RELATIVE_DYNAMIC_LIB:FeatureFlag = "LINC_LUA_RELATIVE_DYNAMIC_LIB";
 
 	/**
-	 * `-DHXCPP_OPTIMIZE_FOR_FAST`
-	 * Tells hxcpp to optimize for speed over size. Always enabled.
-	 */
-	static final HXCPP_OPTIMIZE_FOR_FAST:FeatureFlag = "HXCPP_OPTIMIZE_FOR_FAST";
-
-	/**
 	 * `-DSHARE_MOBILE_FILES`
 	 * Lets the user access P-Slice files. Enabled on mobile.
 	 */
@@ -442,7 +442,9 @@ class Project extends HXProject
 		}
 
 		// HXCPP_OPTIMIZE_FOR_SIZE
-		HXCPP_OPTIMIZE_FOR_FAST.enable();
+		if(EXPERIMENT_O3_OPTIM.isEnabled()){
+			setHaxedef("HXCPP_OPTIMIZE_FOR_FAST");
+		}
 
 		if (BUILD_LINUX_V3.isEnabled())
 		{
@@ -781,7 +783,7 @@ class Project extends HXProject
 			config.set("android.gradle-plugin", "8.8.0");
 			config.set("android.ndk-version", "27.3");
 			config.set("android.minimum-sdk-version", "26");
-			config.set("android.target-sdk-version", "35");
+			config.set("android.target-sdk-version", "37");
 			// TODO(verify): <java if="android" path="source/external/android/java" />
 			javaPaths.push("source/external/android/java");
 			if (!debug)
@@ -811,13 +813,13 @@ class Project extends HXProject
 		if (EXPERIMENT_PROFILE_BUILD.isEnabled())
 		{
 			if (isLinux())
-				addAssetPath("art/desktop/icon16.png", "icon.png");
+				addAsset("art/desktop/icon16.png", "icon.png");
 			addIcon("art/desktop/icon16.png");
 			return;
 		}
 		if (isMac())
 		{
-			addAssetPath("art/desktop/mac-icon-assets.car", "Assets.car");
+			addAsset("art/desktop/mac-icon-assets.car", "Assets.car");
 		}
 
 		if (isMobile())

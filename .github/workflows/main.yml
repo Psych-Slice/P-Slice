@@ -42,7 +42,7 @@ jobs:
         include:
           - name: Windows
             os: windows-2025
-            buildArgs: "windows -final"
+            buildArgs: "windows -final -DEXPERIMENT_O3_OPTIM"
             exportPath: windows
             artifactName: P-Slice.1.0.windows
             cacheLibrariesPath: P-Slice.1.0.desktop-cache
@@ -50,7 +50,7 @@ jobs:
             artifactPath: export\release\windows\bin\*
           - name: Linux
             os: ubuntu-24.04
-            buildArgs: "linux -final"
+            buildArgs: "linux -final -DEXPERIMENT_O3_OPTIM"
             exportPath: linux
             artifactName: P-Slice.1.0.linux
             cachePath: P-Slice.1.0.build-linux
@@ -78,7 +78,7 @@ jobs:
           - name: Android
             os: ubuntu-24.04
             exportPath: android
-            buildArgs: "android"
+            buildArgs: "android -DEXPERIMENT_COMPRESSED_TEXTURES -DEXPERIMENT_O3_OPTIM"
             cacheLibrariesPath: P-Slice.1.0.mobile-cache
             artifactName: P-Slice.1.0.android
             cachePath: P-Slice.1.0.build-android
