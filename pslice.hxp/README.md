@@ -1,0 +1,1 @@
+This folder contains a .hxp file source. Used for providing autocompletions.

@@ -1,0 +1,1 @@
+cp ./Project.hx ./../project.hxp

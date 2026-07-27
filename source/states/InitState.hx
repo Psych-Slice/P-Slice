@@ -1,5 +1,6 @@
 package states;
 
+import lime.app.Application;
 import lime.utils.Assets;
 import mikolka.funkin.custom.mobile.MobileScaleMode;
 import mikolka.vslice.ui.title.TitleState;
@@ -27,7 +28,7 @@ class InitState extends MusicBeatState
 	override function create()
 	{
 		super.create();
-
+		MainMenuState.pSliceVersion = Application.current.meta.get('version');
 		persistentUpdate = true;
 		persistentDraw = true;
 		FlxG.mouse.visible = false;

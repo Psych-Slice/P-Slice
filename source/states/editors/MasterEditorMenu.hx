@@ -22,7 +22,7 @@ class MasterEditorMenu extends MusicBeatState
 		'Dialogue Editor', 
 		'Dialogue Portrait Editor',
 		'Player editor',
-		#if PROFILE_BUILD
+		#if EXPERIMENT_CRASH_TOOLS
 		'Crash the game',
 		'Usermess the game',
 		#end
@@ -123,7 +123,7 @@ class MasterEditorMenu extends MusicBeatState
 					MusicBeatState.switchState(new StickerTest());
 				case 'Player editor':
 					MusicBeatState.switchState(new CharSelectEditor());
-				#if PROFILE_BUILD
+				#if EXPERIMENT_CRASH_TOOLS
 				case 'Crash the game':{
 					trace("Break the StackOverflow.com");
 					untyped __cpp__("throw \"This is a native C++ exception!\";");

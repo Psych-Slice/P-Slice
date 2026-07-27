@@ -34,7 +34,7 @@
       "blocksize": "4x4"
     },
     {
-      "asset": "assets/shared/images/noteSkins/*",
+      "asset": "assets/shared/images/noteSkins/",
       "blocksize": "4x4"
     },
     {
@@ -46,7 +46,7 @@
       "blocksize": "4x4"
     },
     {
-      "asset": "assets/shared/images/holdCovers/*",
+      "asset": "assets/shared/images/holdCovers/",
       "blocksize": "4x4"
     },
     {
@@ -74,12 +74,10 @@
     "assets/embed/",
     "assets/mobile/",
     "assets/exclude/",
-    "assets/shared/",
     "assets/meta/",
     "assets/shared/images/fonts/",
     "assets/shared/images/freeplay/",
     "assets/shared/images/icons/",
-    "assets/base_game/images/icons/",
     "assets/shared/images/soundtray/",
     "assets/shared/images/titleEnter.png",
     "assets/shared/images/titleEnter_mobile.png",
@@ -87,18 +85,28 @@
     "assets/shared/images/characters/bfPixel.png",
     "assets/shared/images/characters/bfPixelsDEAD.png",
     "assets/shared/images/characters/gfPixel.png",
-    "assets/base_game/characters_pixel/",
     "assets/shared/images/characters/spirit.png",
     "assets/shared/images/healthBar.png",
     "assets/shared/images/resultScreen/*",
     "assets/shared/images/resultScreen/clearPercent/",
     "assets/shared/images/resultScreen/rankText/",
+    "assets/shared/images/charSelect/dipshitBacking.png",
+    "assets/shared/images/charSelect/dipshitBlur.png",
+    "assets/shared/images/charSelect/charLight.png",
+    "assets/shared/images/charSelect/foregroundBlur.png",
     "assets/shared/images/noteColorMenu/",
     "assets/shared/images/editors/",
+    "assets/shared/images/pixelUI/",
+    "assets/base_game/images/icons/",
     "assets/base_game/shared/images/transitionSwag/*",
-    "assets/shared/images/pixelUI/*",
+    "assets/base_game/characters_pixel/",
     "assets/base_game/week_data/week1/*",
-    "assets/base_game/shared/images/freeplay/icons/*",
+    "assets/base_game/shared/images/freeplay/",
+    "assets/base_game/shared/images/freeplay/freeplayCapsule",
+    "assets/base_game/shared/images/abot",
+    "assets/base_game/shared/images/abot/pixel/",
+    "assets/base_game/shared/images/dialogue/",
+    "assets/base_game/shared/images/icons/",
     "assets/base_game/shared/images/freeplay/icons/*",
     "assets/base_game/week_data/week1/images/erect/brightLightSmall.png",
     "assets/base_game/week_data/week1/images/erect/lightAbove.png",
@@ -107,6 +115,7 @@
     "assets/base_game/week_data/week1/images/erect/orangeLight.png",
     "assets/base_game/week_data/week2/images/erect/stairsDark.png",
     "assets/base_game/week_data/week2/images/erect/stairsLight.png",
+    "assets/base_game/week_data/week5/images/christmas/erect/white.png",
     "assets/base_game/week_data/week6/"
   ]
 }
