@@ -783,7 +783,7 @@ class Project extends HXProject
 			config.set("android.gradle-plugin", "8.8.0");
 			config.set("android.ndk-version", "27.3");
 			config.set("android.minimum-sdk-version", "26");
-			config.set("android.target-sdk-version", "37");
+			config.set("android.target-sdk-version", "35");
 			// TODO(verify): <java if="android" path="source/external/android/java" />
 			javaPaths.push("source/external/android/java");
 			if (!debug)
