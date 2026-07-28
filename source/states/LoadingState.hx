@@ -87,6 +87,7 @@ class LoadingState extends MusicBeatState
 
 	override function create()
 	{
+		giveUpOnLoading = false;
 		#if STRICT_LOADING_SCREEN
 		if (backend.ClientPrefs.data.strictLoadingScreen)
 		{
@@ -371,6 +372,7 @@ class LoadingState extends MusicBeatState
 
 	static function _loaded()
 	{
+		giveUpOnLoading = false;
 		loaded = 0;
 		loadMax = 0;
 		initialThreadCompleted = true;
@@ -383,8 +385,13 @@ class LoadingState extends MusicBeatState
 		mutex = null;
 	}
 
+	private static var giveUpOnLoading:Bool = false;
+
 	public static function checkLoaded():Bool
 	{
+		if(giveUpOnLoading){
+			return true;
+		}
 		for (key => bitmap in requestedBitmaps)
 		{
 			if (bitmap != null && CacheSystem.cacheBitmap(originalBitmapKeys.get(key), bitmap) != null)
@@ -690,7 +697,7 @@ class LoadingState extends MusicBeatState
 			{
 				trace('ERROR! while preparing song: $err');
 				trace("Giving up!");
-				onLoad();
+				giveUpOnLoading = true;
 			});
 		}
 
