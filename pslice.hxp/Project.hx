@@ -783,7 +783,7 @@ class Project extends HXProject
 			config.set("android.gradle-plugin", "8.8.0");
 			config.set("android.ndk-version", "27.3");
 			config.set("android.minimum-sdk-version", "26");
-			config.set("android.target-sdk-version", "37");
+			config.set("android.target-sdk-version", "35");
 			// TODO(verify): <java if="android" path="source/external/android/java" />
 			javaPaths.push("source/external/android/java");
 			if (!debug)
@@ -799,6 +799,8 @@ class Project extends HXProject
 		{
 			// TODO(verify template API):
 			NO_FIREBASE_ANDROID_PATCHES.enable();
+			defines.set("NO_FIREBASE_ANDROID_PATCHES","1");
+			
 			addHaxelib("extension-firebase-crashlytics");
 			// <template path="setup/google-services.json" rename="app/google-services.json"/>
 			// <config:android pslice-firebase-sdk-path="yes" />

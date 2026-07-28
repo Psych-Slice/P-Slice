@@ -799,6 +799,8 @@ class Project extends HXProject
 		{
 			// TODO(verify template API):
 			NO_FIREBASE_ANDROID_PATCHES.enable();
+			defines.set("NO_FIREBASE_ANDROID_PATCHES","1");
+			
 			addHaxelib("extension-firebase-crashlytics");
 			// <template path="setup/google-services.json" rename="app/google-services.json"/>
 			// <config:android pslice-firebase-sdk-path="yes" />
